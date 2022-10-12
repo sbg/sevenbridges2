@@ -1,0 +1,33 @@
+Package: sevenbridges2
+Type: Package
+Title: Seven Bridges Platform API Client and Common Workflow Language Tool Builder in R
+Version: 0.0.1
+Authors@R: c(
+    person("Marko", "Trifunovic", email = "marko.trifunovic@sevenbridges.com", role = c("aut", "cre")),
+    person("Vladimir", "Obucina", role = c("aut")),
+    person("Marija", "Jovanovic", role = c("aut")),
+    person("Seven Bridges Genomics", role = c("cph", "fnd"))
+    )
+Maintainer: Marko Trifunovic <marko.trifunovic@sevenbridges.com>
+Description: R client and utilities for Seven Bridges platform API, from Cancer
+    Genomics Cloud to other Seven Bridges supported platforms.
+License: Apache License 2.0 | file LICENSE
+Encoding: UTF-8
+LazyData: true
+VignetteBuilder: knitr
+URL: https://www.sevenbridges.com
+Depends:
+    R (>= 4.1.0)
+RoxygenNote: 7.2.1
+Imports:
+    httr,
+    R6,
+    purrr,
+    jsonlite,
+    yaml,
+    S4Vectors
+Suggests:
+    knitr,
+    rmarkdown,
+    checkmate,
+    testthat (>= 3.0.0)
