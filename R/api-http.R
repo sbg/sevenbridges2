@@ -39,8 +39,8 @@
 #' specific resource (e.g. a given project). For example, fields="id,name,size"
 #' to return the fields id, name and size for files. More details please check
 #' \url{https://docs.sevenbridges.com/docs/the-api#section-general-api-information}
-#' @param base_url defeault is \code{"https://api.sbgenomics.com/v2"}
-#' @param ... passed to GET/POST/PUT/DELETE/PATCH call.
+#' @param base_url default is \code{"https://api.sbgenomics.com/v2"}
+#' @param ... Other arguments passed to GET/POST/PUT/DELETE/PATCH call.
 #'
 #' @return returned request list of httr
 #'
@@ -76,9 +76,9 @@ api <- function(token = NULL, version = "v2", path = NULL,
     headers <- c("Authorization" = paste("Bearer", token, sep = " "))
   } else {
     headers <- c(
-      "X-SBG-Auth-Token" = token
-      # "Accept" = "application/json",
-      # "Content-type" = "application/json"
+      "X-SBG-Auth-Token" = token,
+      "Accept" = "application/json",
+      "Content-type" = "application/json"
     )
   }
 
@@ -102,8 +102,8 @@ api <- function(token = NULL, version = "v2", path = NULL,
            )
          },
          POST = {
-           # stopifnot(is.list(body))
-           # body_json = toJSON(body, auto_unbox = TRUE)
+           stopifnot(is.list(body))
+           body <- jsonlite::toJSON(body, auto_unbox = TRUE, null = "null")
            POST2(paste0(base_url, path),
                  add_headers(.headers = headers),
                  query = query,
@@ -111,8 +111,8 @@ api <- function(token = NULL, version = "v2", path = NULL,
            )
          },
          PUT = {
-           # stopifnot(is.list(body))
-           # body_json = toJSON(body, auto_unbox = TRUE)
+           stopifnot(is.list(body))
+           body <- jsonlite::toJSON(body, auto_unbox = TRUE, null = "null")
            PUT(paste0(base_url, path),
                add_headers(.headers = headers),
                body = body, encode = encode, ...
@@ -125,8 +125,8 @@ api <- function(token = NULL, version = "v2", path = NULL,
            )
          },
          PATCH = {
-           # stopifnot(is.list(body))
-           # body_json = toJSON(body, auto_unbox = TRUE)
+           topifnot(is.list(body))
+           body <- jsonlite::toJSON(body, auto_unbox = TRUE, null = "null")
            PATCH(paste0(base_url, path),
                  add_headers(.headers = headers),
                  body = body,
