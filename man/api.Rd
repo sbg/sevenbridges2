@@ -67,9 +67,9 @@ specific resource (e.g. a given project). For example, fields="id,name,size"
 to return the fields id, name and size for files. More details please check
 \url{https://docs.sevenbridges.com/docs/the-api#section-general-api-information}}
 
-\item{base_url}{defeault is \code{"https://api.sbgenomics.com/v2"}}
+\item{base_url}{default is \code{"https://api.sbgenomics.com/v2"}}
 
-\item{...}{passed to GET/POST/PUT/DELETE/PATCH call.}
+\item{...}{Other arguments passed to GET/POST/PUT/DELETE/PATCH call.}
 }
 \value{
 returned request list of httr
