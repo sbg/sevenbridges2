@@ -37,7 +37,7 @@
 #' Seven Bridges single sign-on (\code{TRUE})?
 #'
 #' @importFrom R6 R6Class
-#' @import cli
+#' @importFrom  rlang abort warn inform
 #'
 #' @details
 #' This is the main object for authentication to platforms powered by
@@ -59,17 +59,40 @@ Auth <- R6::R6Class(
     #' @description
     #' Create a new Auth object.
     #' All methods can be accessed through this object.
+    #' @param from Authentication method.
+    #' @param platform The platform to use.
+    #' @param url Base URL for API.
+    #' @param token Your authentication token.
+    #' @param sysenv_url Name of the system environment variable storing
+    #' the API base URL. By default: \code{"SB_API_ENDPOINT"}.
+    #' @param sysenv_token Name of the system environment variable storing
+    #' the auth token. By default: \code{"SB_AUTH_TOKEN"}.
+    #' @param config_file Location of the user configuration file.
+    #' By default: \code{"~/.sevenbridges/credentials"}.
+    #' @param profile_name Profile name in the user configuration file.
+    #' The default value is \code{"default"}.
+    #' @param fs FS object, for mount and unmount file system.
+    #' @param authorization Logical. Is the \code{token} an API
+    #' auth token (\code{FALSE}) or an access token from the
+    #' Seven Bridges single sign-on (\code{TRUE})?
+    #' @param ... Other arguments passed to methods.
+    #'
     #' @return A new `Auth` object.
-    initialize = function(from = c("direct", "env", "file"), platform = NULL, url = NULL,
-                          token = NULL, sysenv_url = NULL, sysenv_token = NULL,
-                          config_file = NULL, profile_name = NULL, fs = NULL,
+    initialize = function(from = c("direct", "env", "file"), platform = NULL,
+                          url = NULL, token = NULL, sysenv_url = NULL,
+                          sysenv_token = NULL, config_file = NULL,
+                          profile_name = NULL, fs = NULL,
                           authorization = FALSE, ...) {
-
       self$fs <- fs
       self$from <- match.arg(from)
       self$authorization <- authorization
 
-      if (from == "direct") {
+      # There are three options for authentication
+      #   - direct
+      #   - env
+      #   - file
+
+      if (self$from == "direct") {
         # In this case, `sysenv_url`, `sysenv_token`,
         # `config_file`, and `profile_name`
         # should all be `NULL` even if they
@@ -88,10 +111,11 @@ Auth <- R6::R6Class(
 
         # Case 2: platform and url are both *not* provided
         if (is.null(platform) & is.null(url)) {
-          rlang::warn(paste0("`platform` and `url` are not set, will use the default platform: ",
-                  .sbg_default_platform
+          rlang::warn(paste0(
+            "`platform` and `url` are not set, will use the default platform: ",
+            .sbg_default_platform
           ))
-          self$platform <-  .sbg_default_platform
+          self$platform <- .sbg_default_platform
           self$url <- .sbg_baseurl[[.sbg_default_platform]]
         }
 
@@ -111,19 +135,18 @@ Auth <- R6::R6Class(
         # Case 4: platform is not provided, url is provided
         if (is.null(platform) & !is.null(url)) {
           self$url <- normalize_url(url)
-          # lookup an accurate platform name
+          # look up an accurate platform name
           self$platform <- sbg_platform_lookup(self$url)
         }
 
         if (is.null(token)) {
           rlang::abort('`token` must be set when `from = "direct"`')
         } else {
-          Sys.setenv(.sbg_default_sysenv_token = token)
+          sbg_set_env(url = self$url, token = token)
         }
-
       }
 
-      if (from == "env") {
+      if (self$from == "env") {
 
         # In this case, `config_file` and `profile_name`
         # should be `NULL` even if they
@@ -143,19 +166,25 @@ Auth <- R6::R6Class(
           self$sysenv_token <- sysenv_token
         }
         rlang::inform(
-          paste0("Authenticating with system environment variables: ",
-          self$sysenv_url, " and ", self$sysenv_token)
+          paste0(
+            "Authenticating with system environment variables: ",
+            self$sysenv_url, " and ", self$sysenv_token
+          )
         )
 
-        # extract url
+        # extract url and normalize it if necessary
         self$url <- normalize_url(sbg_get_env(self$sysenv_url))
+
+        .sysenv_url_name <- self$sysenv_url
+
+        Sys.setenv(.sysenv_url_name = self$url)
 
         # lookup an accurate platform name instead of simply `NULL`
         self$platform <- sbg_platform_lookup(self$url)
       }
 
 
-      if (from == "file") {
+      if (self$from == "file") {
 
         # In this case, `sysenv_url`, `sysenv_token`,
         # should be `NULL` even if they
@@ -170,7 +199,10 @@ Auth <- R6::R6Class(
           self$config_file <- config_file
         }
         config_list <- sbg_parse_config(self$config_file)
-        rlang::inform(paste0("Authenticating with user configuration file: ", self$config_file))
+        rlang::inform(paste0(
+          "Authenticating with user configuration file: ",
+          self$config_file
+        ))
 
         # locate user profile with url + token
         if (is.null(profile_name)) {
@@ -182,42 +214,116 @@ Auth <- R6::R6Class(
         self$url <- normalize_url(config_list[[self$profile_name]][["api_endpoint"]])
         .token <- config_list[[self$profile_name]][["auth_token"]]
         if (is.null(self$url) | is.null(.token)) {
-          rlang::abort("`The field api_endpoint` or `auth_token` is missing in profile:",
-               self$profile_name
+          rlang::abort(
+            "`The field api_endpoint` or `auth_token` is missing in profile:",
+            self$profile_name
           )
         } else {
-          Sys.setenv("SB_AUTH_TOKEN" = .token)
+          sbg_set_env(url = self$url, token = .token)
         }
-        rlang::inform(paste0("Authenticating with user profile: ", self$profile_name))
+        rlang::inform(paste0(
+          "Authenticating with user profile: ",
+          self$profile_name
+        ))
 
-        # lookup an accurate platform name instead of simply `NULL`
+        # look up an accurate platform name instead of simply `NULL`
         self$platform <- sbg_platform_lookup(self$url)
       }
     },
+    #' @description
+    #' Returns the authentication token read from system environment variable.
+    #' @return An API authentication token in form of a string.
     get_token = function() {
-      Sys.getenv("SB_AUTH_TOKEN")
+      if (self$from == "env") {
+        Sys.getenv(self$sysenv_token)
+      } else {
+        Sys.getenv("SB_AUTH_TOKEN")
+      }
+    },
+    #' API paths
+    #' @description
+    #' This method returns all API paths and pass arguments to core `api()`
+    #'  function.
+    #' @param limit Defines the number of items you want to get from your API
+    #' request. By default, `limit` is set to `100`.
+    #' @param offset Defines where the retrieved items started.
+    #' By default, `offset` is set to `0`.
+    #' @param fields All API calls take the optional query parameter fields.
+    #' This parameter enables you to specify the fields you want to be returned
+    #' when listing resources (e.g., all your projects) or getting details of a
+    #' specific resource (e.g., a given project).
+    #' @param ... Other arguments passed to core api function.
+    #' @param complete Parameter for API request that allows you to search and
+    #'  list all items. By default, it is set to `FALSE`.
+
+    #' @importFrom httr headers
+    api = function(..., limit = getOption("sevenbridges")$"limit",
+                   offset = getOption("sevenbridges")$"offset",
+                   fields = NULL, complete = FALSE) {
+      "This call returns all API paths, and pass arguments to api() function with input token and url automatically"
+
+      req <- sevenbridges2::api(
+        self$get_token(),
+        base_url = self$url, limit = limit,
+        offset = offset, fields = fields, authorization = self$authorization, ...
+      )
+      req <- status_check(req)
+
+      if (complete) {
+        N <- as.numeric(httr::headers(sbg_get_response(req))[["x-total-matching-query"]])
+        if (length(N)) .item <- length(req$items)
+        if (.item < N) {
+          pb <- txtProgressBar(min = 1, max = N %/% 100 + 1, style = 3)
+          res <- NULL
+
+          for (i in 1:(N %/% 100 + 1)) {
+            .limit <- 100
+            .offset <- (i - 1) * 100
+            req <- sevenbridges2::api(
+              self$get_token(),
+              base_url = self$url,
+              limit = .limit, offset = .offset,
+              fields = fields, authorization = self$authorization, ...
+            )
+            req <- status_check(req)
+            res$items <- c(res$items, req$items)
+            setTxtProgressBar(pb, i)
+          }
+          cat("\n")
+          res$href <- NULL
+        } else {
+          return(req)
+        }
+        return(res)
+      } else {
+        return(req)
+      }
     },
     # user ---------------------------------------------------------------------
     #' @description Get details about the authenticated user
+    #' @param username The user name of a user for whom you want to get basic
+    #' account information.
     user = function(username = NULL) {
       if (is.null(username)) {
-        req <- api(
+        req <- sevenbridges2::api(
           token = self$get_token(),
           path = "user/",
           method = "GET"
         )
         rlang::inform("username not provided, showing the currently authenticated user information")
       } else {
-        req <- api(
+        req <- sevenbridges2::api(
           token = self$get_token(),
           path = paste0("users/", username),
           method = "GET"
         )
       }
 
+      # Extract parsed contents of a request
       req <- status_check(req)
 
-      asUser(req)
+      # Create User object
+      asUser(req, self)
     }
   )
 )
