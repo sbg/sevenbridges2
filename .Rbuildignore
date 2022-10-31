@@ -1,6 +1,8 @@
+^renv$
+^renv\.lock$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-
+^\.DS_Store$
