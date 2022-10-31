@@ -25,9 +25,13 @@ Imports:
     purrr,
     jsonlite,
     yaml,
-    S4Vectors
+    S4Vectors,
+    cli,
+    rlang
 Suggests:
     knitr,
     rmarkdown,
     checkmate,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    stringi
+Config/testthat/edition: 3
