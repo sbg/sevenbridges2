@@ -33,13 +33,14 @@
 #' \dontrun{
 #' sbg_set_env("https://cgc-api.sbgenomics.com/v2", token)
 #' sbg_get_env("SB_API_ENDPOINT")
-#' sbg_get_env("SB_AUTH_TOKEN")}
+#' sbg_get_env("SB_AUTH_TOKEN")
+#' }
 sbg_get_env <- function(x) {
   res <- Sys.getenv(x)
   if (res == "") {
     stop("Environment variable ", x,
-         " is blank, please check if it is set correctly",
-         call. = FALSE
+      " is blank, please check if it is set correctly",
+      call. = FALSE
     )
   }
   res
@@ -49,6 +50,10 @@ sbg_get_env <- function(x) {
 #'
 #' @param url Base URL for API.
 #' @param token Your authentication token.
+#' @param sysenv_url_name Name for the url environment variable.
+#' The default value is `r toString(.sbg_default_sysenv_url)`.
+#' @param sysenv_token_name Name for the token environment variable.
+#' The default value is `r toString(.sbg_default_sysenv_token)`.
 #'
 #' @return set two environment variables for authentication
 #'
@@ -60,16 +65,17 @@ sbg_get_env <- function(x) {
 #' \dontrun{
 #' sbg_set_env("https://cgc-api.sbgenomics.com/v2", token)
 #' sbg_get_env("SB_API_ENDPOINT")
-#' sbg_get_env("SB_AUTH_TOKEN")}
-sbg_set_env <- function(url = NULL, token = NULL) {
+#' sbg_get_env("SB_AUTH_TOKEN")
+#' }
+sbg_set_env <- function(url = NULL, token = NULL, sysenv_url_name = .sbg_default_sysenv_url, sysenv_token_name = .sbg_default_sysenv_token) {
   if (is.null(url) | is.null(token)) {
     stop("url and token must be both specified", call. = FALSE)
   }
 
   args <- list(url, token)
   names(args) <- c(
-    .sbg_default_sysenv_url,
-    .sbg_default_sysenv_token
+    sysenv_url_name,
+    sysenv_token_name
   )
   do.call(Sys.setenv, args)
 }
@@ -118,27 +124,6 @@ sbg_set_env <- function(url = NULL, token = NULL) {
   cfg
 }
 
-# Write ini format file
-# @param x nested list to write
-# @param file character string naming the ini file
-.write_ini <- function(x, file) {
-
-  # create new blank file
-  cat(NULL, file = file)
-
-  for (i in names(x)) {
-    # write section names
-    cat(paste0("[", i, "]"), file = file, sep = "\n", append = TRUE)
-    # write key-value pairs
-    for (j in x[i]) cat(paste0(names(j), "=", j), file = file, sep = "\n", append = TRUE)
-    # write new line between sections
-    cat("", file = file, sep = "\n", append = TRUE)
-  }
-
-  # remove last redundant blank line
-  x <- readLines(file)
-  writeLines(x[1L:(length(x) - 1L)], file)
-}
 
 # parse Seven Bridges user config file into a nested list
 sbg_parse_config <- function(file) {
@@ -166,20 +151,7 @@ sbg_platform_lookup <- function(baseurl) {
   if (length(x) > 0L) names(x) else NULL
 }
 
-# append auth info to a simpleList (to every single component)
-setAuth <- function(res, auth, className = NULL) {
-  stopifnot(!is.null(className))
-
-  rps <- response(res)
-  if (is(res, className)) {
-    res$auth <- auth
-  } else if (is(res, "SimpleList")) {
-    res <- endoapply(res, function(x) {
-      x$auth <- auth
-      x
-    })
-  }
-  response(res) <- rps
-
-  res
+# extract response from httr request
+sbg_get_response <- function(request) {
+  return(attr(request, "response"))
 }
