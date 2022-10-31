@@ -26,6 +26,7 @@ User <- R6::R6Class(
     projects = NULL,
     billing_groups = NULL,
     tasks = NULL,
+    url_test = NULL,
     #' @description
     #' Create a new User object.
     initialize = function(username = NULL,
@@ -43,8 +44,11 @@ User <- R6::R6Class(
                           billing_groups = NULL,
                           tasks = NULL, ...) {
 
+      # Initialize Item class
+      super$initialize(...)
+
       self$username <- username
-      self$email <-email
+      self$email <- email
       self$first_name <- first_name
       self$last_name <- last_name
       self$affiliation <- affiliation
@@ -57,10 +61,6 @@ User <- R6::R6Class(
       self$projects <- projects
       self$billing_groups <- billing_groups
       self$tasks <- tasks
-
-      # Initialize Item class
-      super$initialize(...)
-
     },
     #' @description
     #' Print user information as billeted list
@@ -82,10 +82,10 @@ User <- R6::R6Class(
       cli::cli_bullets(string)
     }
   )
-
 )
 
-asUser <- function(x) {
+# Helper function for creating User objects
+asUser <- function(x, auth = NULL) {
   User$new(
     username = x$username,
     email = x$email,
@@ -102,6 +102,7 @@ asUser <- function(x) {
     billing_groups = x$billing_groups,
     tasks = x$tasks,
     href = x$href,
-    response = attr(x, 'response')
+    auth = auth,
+    response = attr(x, "response")
   )
 }
