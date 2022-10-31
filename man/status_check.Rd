@@ -6,6 +6,11 @@
 \usage{
 status_check(req, as = "parsed", ...)
 }
+\arguments{
+\item{req}{API request}
+
+\item{as}{desired type output (contents of a request): raw, text or parsed}
+}
 \value{
 request content or the message
 }

@@ -16,7 +16,9 @@ User, Project, Task, etc.
 \describe{
 \item{\code{response}}{save the raw response from a request.}
 
-\item{\code{href}}{API href}
+\item{\code{href}}{API href.}
+
+\item{\code{auth}}{Seven Bridges Auth object.}
 }
 \if{html}{\out{</div>}}
 }
@@ -24,7 +26,6 @@ User, Project, Task, etc.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-Item-new}{\code{Item$new()}}
-\item \href{#method-Item-get_token}{\code{Item$get_token()}}
 \item \href{#method-Item-clone}{\code{Item$clone()}}
 }
 }
@@ -32,19 +33,22 @@ User, Project, Task, etc.
 \if{html}{\out{<a id="method-Item-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Item-new}{}}}
 \subsection{Method \code{new()}}{
+Create a new Item object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Item$new(href = NULL, response = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Item$new(href = NULL, response = NULL, auth = NULL)}\if{html}{\out{</div>}}
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Item-get_token"></a>}}
-\if{latex}{\out{\hypertarget{method-Item-get_token}{}}}
-\subsection{Method \code{get_token()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Item$get_token()}\if{html}{\out{</div>}}
-}
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{href}}{API request URL.}
 
+\item{\code{response}}{API response.}
+
+\item{\code{auth}}{Seven Bridges Auth object.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Item-clone"></a>}}

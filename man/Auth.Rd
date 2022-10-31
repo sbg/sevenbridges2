@@ -61,6 +61,7 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \itemize{
 \item \href{#method-Auth-new}{\code{Auth$new()}}
 \item \href{#method-Auth-get_token}{\code{Auth$get_token()}}
+\item \href{#method-Auth-api}{\code{Auth$api()}}
 \item \href{#method-Auth-user}{\code{Auth$user()}}
 \item \href{#method-Auth-clone}{\code{Auth$clone()}}
 }
@@ -87,6 +88,39 @@ All methods can be accessed through this object.
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{from}}{Authentication method.}
+
+\item{\code{platform}}{The platform to use.}
+
+\item{\code{url}}{Base URL for API.}
+
+\item{\code{token}}{Your authentication token.}
+
+\item{\code{sysenv_url}}{Name of the system environment variable storing
+the API base URL. By default: \code{"SB_API_ENDPOINT"}.}
+
+\item{\code{sysenv_token}}{Name of the system environment variable storing
+the auth token. By default: \code{"SB_AUTH_TOKEN"}.}
+
+\item{\code{config_file}}{Location of the user configuration file.
+By default: \code{"~/.sevenbridges/credentials"}.}
+
+\item{\code{profile_name}}{Profile name in the user configuration file.
+The default value is \code{"default"}.}
+
+\item{\code{fs}}{FS object, for mount and unmount file system.}
+
+\item{\code{authorization}}{Logical. Is the \code{token} an API
+auth token (\code{FALSE}) or an access token from the
+Seven Bridges single sign-on (\code{TRUE})?}
+
+\item{\code{...}}{Other arguments passed to methods.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 A new `Auth` object.
 }
@@ -95,10 +129,53 @@ A new `Auth` object.
 \if{html}{\out{<a id="method-Auth-get_token"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-get_token}{}}}
 \subsection{Method \code{get_token()}}{
+Returns the authentication token read from system environment variable.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$get_token()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+An API authentication token in form of a string.
+API paths
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-api"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-api}{}}}
+\subsection{Method \code{api()}}{
+This method returns all API paths and pass arguments to core `api()`
+ function.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$api(
+  ...,
+  limit = getOption("sevenbridges")$limit,
+  offset = getOption("sevenbridges")$offset,
+  fields = NULL,
+  complete = FALSE
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other arguments passed to core api function.}
+
+\item{\code{limit}}{Defines the number of items you want to get from your API
+request. By default, `limit` is set to `100`.}
+
+\item{\code{offset}}{Defines where the retrieved items started.
+By default, `offset` is set to `0`.}
+
+\item{\code{fields}}{All API calls take the optional query parameter fields.
+This parameter enables you to specify the fields you want to be returned
+when listing resources (e.g., all your projects) or getting details of a
+specific resource (e.g., a given project).}
+
+\item{\code{complete}}{Parameter for API request that allows you to search and
+list all items. By default, it is set to `FALSE`.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Auth-user"></a>}}
@@ -109,6 +186,14 @@ Get details about the authenticated user
 \if{html}{\out{<div class="r">}}\preformatted{Auth$user(username = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{username}}{The user name of a user for whom you want to get basic
+account information.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Auth-clone"></a>}}

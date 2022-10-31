@@ -4,12 +4,23 @@
 \alias{sbg_set_env}
 \title{Set authentication environment variables for Seven Bridges API}
 \usage{
-sbg_set_env(url = NULL, token = NULL)
+sbg_set_env(
+  url = NULL,
+  token = NULL,
+  sysenv_url_name = .sbg_default_sysenv_url,
+  sysenv_token_name = .sbg_default_sysenv_token
+)
 }
 \arguments{
 \item{url}{Base URL for API.}
 
 \item{token}{Your authentication token.}
+
+\item{sysenv_url_name}{Name for the url environment variable.
+The default value is `r toString(.sbg_default_sysenv_url)`.}
+
+\item{sysenv_token_name}{Name for the token environment variable.
+The default value is `r toString(.sbg_default_sysenv_token)`.}
 }
 \value{
 set two environment variables for authentication
@@ -23,5 +34,6 @@ token <- "your_token"
 \dontrun{
 sbg_set_env("https://cgc-api.sbgenomics.com/v2", token)
 sbg_get_env("SB_API_ENDPOINT")
-sbg_get_env("SB_AUTH_TOKEN")}
+sbg_get_env("SB_AUTH_TOKEN")
+}
 }

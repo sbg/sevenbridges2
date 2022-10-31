@@ -79,15 +79,15 @@ Core HTTP logic for Seven Bridges API
 }
 \details{
 Used for advanced users and the core method for higher level API
-in this package, please refer to the easy api vignette and
-additional vignettes pages for more convenient usage.
+in this package.
 }
 \examples{
 token <- "your_token"
 # list projects
 \dontrun{
-api(token = token, path = "projects", method = "GET")}
+api(token = token, path = "projects", method = "GET")
+}
 }
 \references{
-\url{https://docs.sevenbridges.com/v1.0/page/api}
+\url{https://docs.sevenbridges.com/page/api}
 }

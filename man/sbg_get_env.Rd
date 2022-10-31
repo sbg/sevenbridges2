@@ -21,5 +21,6 @@ token <- "your_token"
 \dontrun{
 sbg_set_env("https://cgc-api.sbgenomics.com/v2", token)
 sbg_get_env("SB_API_ENDPOINT")
-sbg_get_env("SB_AUTH_TOKEN")}
+sbg_get_env("SB_AUTH_TOKEN")
+}
 }
