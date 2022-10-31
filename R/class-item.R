@@ -9,21 +9,26 @@
 #' User, Project, Task, etc.
 #'
 #' @field response save the raw response from a request.
-#' @field href API href
+#' @field href API href.
+#' @field auth Seven Bridges Auth object.
+#'
 #' @importFrom R6 R6Class
-#' @export
 Item <- R6::R6Class(
   "Item",
   portable = FALSE,
   public = list(
     response = NULL,
+    auth = NULL,
     href = NULL,
-    initialize = function(href = NULL, response = NULL) {
+    #' @description
+    #' Create a new Item object.
+    #' @param href API request URL.
+    #' @param response API response.
+    #' @param auth Seven Bridges Auth object.
+    initialize = function(href = NULL, response = NULL, auth = NULL) {
       self$href <- href
       self$response <- response
-    },
-    get_token = function() {
-      Sys.getenv("SB_AUTH_TOKEN")
+      self$auth <- auth
     }
   )
 )
