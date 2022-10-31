@@ -1,0 +1,236 @@
+---
+title: "Complete Guide for Seven Bridges API R Client"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    number_sections: true
+    theme: "flatly"
+    highlight: "textmate"
+    css: "sevenbridges.css"
+vignette: >
+  %\VignetteIndexEntry{Complete Guide for Seven Bridges API R Client}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<a name="top"></a>
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+
+`Important note:` This is a work-in-progress project to update the `sevenbridges` package. Accordingly, this vignette will also change as new features are implemented.
+
+# Introduction
+
+`sevenbridges2` is an R package that provides an interface for Seven Bridges public API. The supported platforms includes the [Seven Bridges Platform](https://igor.sbgenomics.com/), [Cancer Genomics Cloud (CGC)](https://www.cancergenomicscloud.org), and [Cavatica](https://cavatica.sbgenomics.com).
+
+Learn more from our documentation on the [Seven Bridges Platform](https://docs.sevenbridges.com/page/api) and the [Cancer Genomics Cloud (CGC)](http://docs.cancergenomicscloud.org/v1.0/page/the-cgc-api).
+
+Unlike the current `sevenbridges` package that is built on top of reference classes, the `sevenbridges2` package is based on more modern and lightweight R6 classes. However, the basic idea and way of constructing API requests is largely preserved.
+
+## R Client for Seven Bridges API
+
+The `sevenbridges2` package only supports v2+ versions of the API, since versions prior to V2 are not compatible with the Common Workflow Language (CWL). This package provides a simple interface for accessing and trying out various methods.
+
+There are two ways of constructing API calls. For instance, you can use low-level API calls which use arguments like `path`, `query`, and `body`. These are documented in the API reference libraries for the [Seven Bridges Platform](https://docs.sevenbridges.com/reference#list-all-api-paths) and the [CGC](http://docs.cancergenomicscloud.org/docs/new-1). An example of a low-level request to "list all projects" is shown below. In this request, you can also pass `query` and `body` as a list.
+
+```{r}
+library("sevenbridges2")
+a <- Auth$new(token = "your_token", platform = "aws-us")
+a$api(path = "user", method = "GET")
+```
+
+***(Advanced user option)*** The second way of constructing an API request is to directly use the `httr` package to make your API calls, as shown below.
+
+```{r}
+a$user()
+```
+
+## API General Information
+
+Before we start, keep in mind the following:
+
+__`offset` and `limit`__
+
+Every API call accepts two arguments named `offset` and `limit`.
+
+- Offset defines where the retrieved items started.
+- Limit defines the number of items you want to get.
+
+By default, `offset` is set to `0` and `limit` is set to `100`. As such, your API request returns the __first 100 items__ when you list items or search for items by name. To search and list all items, use `complete = TRUE` in your API request.
+
+
+__Search by ID__
+
+When searching by ID, your request will return your exact resource as it is unique. As such, you do not have to set `offset` and `limit` manually. It is a good practice to find your resources by their ID and pass this ID as an input to your task. You can find a resource's ID in the final part of the URL on the visual interface or via the API requests to list resources or get a resource's details.
+
+__Search by name__
+
+Search by name returns all partial matches unless you specify `exact = TRUE`.
+
+## Installation
+
+The `sevenbridges2` package is currently only available on Seven Bridges internal GitLab repository.
+
+To install it from `develop` branch, use:
+
+```{r}
+remotes::install_gitlab('r-stack/sevenbridges2@develop',auth_token = '${GIT_ACCESS_TOKEN}', host = 'gitlab.sbgenomics.com', force = TRUE, upgrade = 'never')
+```
+
+Where `GIT_ACCESS_TOKEN` is your personal access token for GitLab.
+
+
+# Quickstart
+
+
+## Create `Auth` Object
+
+Before you can access your account via the API, you have to provide your credentials. You can obtain your credentials in the form of an ["authentication token"](https://docs.sevenbridges.com/v1.0/docs/get-your-authentication-token) from the **Developer Tab** under **Account Settings** on the visual interface. Once you've obtained this, create an `Auth` object, so it remembers your authentication token and the path for the API. All subsequent requests will draw upon these two pieces of information.
+
+Let's load the package first:
+
+```{r, eval = TRUE, message = FALSE}
+library("sevenbridges2")
+```
+
+You have three different ways to provide your token. Choose from one method below:
+
+1. [Direct authentication.](#method1) This explicitly and temporarily sets up your token and platform type (or alternatively, API base URL) in the function call arguments to `Auth()`.
+2. [Authentication via system environment variables.](#method2) By default this will read the credential information from two system environment variables: `SB_API_ENDPOINT` and `SB_AUTH_TOKEN`. Alternatively, you can specify the names of the system environment variables you want to be loaded using the `sysenv_token` and `sysenv_url` arguments.
+3. [Authentication via the user configuration file.](#method3) This file, by default `$HOME/.sevenbridges/credentials`, provides an organized way to collect and manage all your API authentication information for Seven Bridges platforms.
+
+
+If you need to be logged into multiple accounts at the same time (which can also be for different platforms), please use either the second or third method.
+
+<div style="margin-left:3em"><a name="method1"/>**Method 1: Direct authentication**
+
+This is the most common method to construct the `Auth` object. For example:
+
+```{r}
+(a <- Auth$new(platform = "cgc", token = "your_token"))
+```
+
+<a name="method2"/>**Method 2: Environment variables**
+
+To set the two environment variables in your system, you could use
+the function `sbg_set_env()`. For example:
+
+```{r}
+sbg_set_env(url = "https://cgc-api.sbgenomics.com/v2", token = "your_token")
+```
+
+Note that this change might be just temporary, please feel free to
+use the standard method to set persistent environment variables
+according to your operating system.
+
+Create an `Auth` object:
+
+```{r}
+a <- Auth$new(from = "env")
+```
+
+<a name="method3"/>***Method 3: User configuration file***
+
+Assume we have already created the configuration file named
+`credentials` under the directory `$HOME/.sevenbridges/`:
+
+```
+[aws-us-rfranklin]
+api_endpoint = https://api.sbgenomics.com/v2
+auth_token = token_for_this_user
+
+# This is a comment:
+# another user on the same platform
+[aws-us-rosalind-franklin]
+api_endpoint = https://api.sbgenomics.com/v2
+auth_token = token_for_this_user
+
+[default]
+api_endpoint = https://cgc-api.sbgenomics.com/v2
+auth_token = token_for_this_user
+
+[gcp]
+api_endpoint = https://gcp-api.sbgenomics.com/v2
+auth_token = token_for_this_user
+```
+
+To load the user profile `aws-us-rfranklin` from this configuration file, simply use:
+
+```{r}
+a <- Auth(from = "file", profile_name = "aws-us-rfranklin")
+```
+
+If `profile_name` is not specified, we will try to load the profile named `[default]`:
+
+```{r}
+a <- Auth(from = "file")
+```
+
+
+***Note:*** API paths (base URLs) differ for each Seven Bridges environment. Be sure to provide the correct path for the environment you are using. API paths for some of the environments are:
+
++-------------------------------------------+---------------------------------------------------+---------------+
+| Platform Name                             | API Base URL                                      | Short Name    |
++===========================================+===================================================+===============+
+| Seven Bridges Platform (US)               | `https://api.sbgenomics.com/v2`                   | `"aws-us"`    |
++-------------------------------------------+---------------------------------------------------+---------------+
+| Seven Bridges Platform (EU)               | `https://eu-api.sbgenomics.com/v2`                | `"aws-eu"`    |
++-------------------------------------------+---------------------------------------------------+---------------+
+| Seven Bridges Platform (China)            | `https://api.sevenbridges.cn/v2`                  | `"ali-cn"`    |
++-------------------------------------------+---------------------------------------------------+---------------+
+| Cancer Genomics Cloud (CGC)               | `https://cgc-api.sbgenomics.com/v2`               | `"cgc"`       |
++-------------------------------------------+---------------------------------------------------+---------------+
+| Cavatica                                  | `https://cavatica-api.sbgenomics.com/v2`          | `"cavatica"`  |
++-------------------------------------------+---------------------------------------------------+---------------+
+| BioData Catalyst Powered by Seven Bridges | `https://api.sb.biodatacatalyst.nhlbi.nih.gov/v2` | `"f4c"`       |
++-------------------------------------------+---------------------------------------------------+---------------+
+
+
+</div>
+
+<div align="right"><a href="#top">top</a></div>
+
+
+## Get User Information
+
+<a name="youruser"/>**Get your own information**
+
+This call returns information about your account.
+
+```{r}
+a$user()
+```
+
+```
+── User ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+• country: United States
+• affiliation: SBG
+• last_name: Franklin
+• first_name: Rosalind
+• email: rosalind.franklin@sbgenomics.com
+• username: RFranklin
+• href: https://cgc-api.sbgenomics.com/v2/users/RFranklin
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+
+**Get information about a user**
+
+This call returns information about the specified user. Note that currently you can view only your own user information, so this call is equivalent to the [call to get information about your account](#youruser).
+
+```{r}
+a$user(username = "RFranklin")
+```
+
+<div align="right"><a href="#top">top</a></div>
