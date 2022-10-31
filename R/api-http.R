@@ -3,8 +3,7 @@
 #' Core HTTP logic for Seven Bridges API
 #'
 #' Used for advanced users and the core method for higher level API
-#' in this package, please refer to the easy api vignette and
-#' additional vignettes pages for more convenient usage.
+#' in this package.
 #'
 #' @param token API auth token or \code{access_token} for
 #' Seven Bridges single sign-on.
@@ -39,23 +38,25 @@
 #' specific resource (e.g. a given project). For example, fields="id,name,size"
 #' to return the fields id, name and size for files. More details please check
 #' \url{https://docs.sevenbridges.com/docs/the-api#section-general-api-information}
+#'
 #' @param base_url default is \code{"https://api.sbgenomics.com/v2"}
 #' @param ... Other arguments passed to GET/POST/PUT/DELETE/PATCH call.
 #'
 #' @return returned request list of httr
 #'
 #' @references
-#' \url{https://docs.sevenbridges.com/v1.0/page/api}
+#' \url{https://docs.sevenbridges.com/page/api}
 #'
-#' @import httr
-#' @import curl
+#' @importFrom  httr PUT DELETE PATCH status_code content handle_find add_headers
+#' @importFrom curl curl_escape
 #'
 #' @export api
 #' @examples
 #' token <- "your_token"
 #' # list projects
 #' \dontrun{
-#' api(token = token, path = "projects", method = "GET")}
+#' api(token = token, path = "projects", method = "GET")
+#' }
 api <- function(token = NULL, version = "v2", path = NULL,
                 method = c("GET", "POST", "PUT", "DELETE", "PATCH"),
                 query = NULL, body = list(),
@@ -95,89 +96,95 @@ api <- function(token = NULL, version = "v2", path = NULL,
   }
 
   switch(method,
-         GET = {
-           GET2(paste0(base_url, path),
-                add_headers(.headers = headers),
-                query = query, ...
-           )
-         },
-         POST = {
-           stopifnot(is.list(body))
-           body <- jsonlite::toJSON(body, auto_unbox = TRUE, null = "null")
-           POST2(paste0(base_url, path),
-                 add_headers(.headers = headers),
-                 query = query,
-                 body = body, encode = encode, ...
-           )
-         },
-         PUT = {
-           stopifnot(is.list(body))
-           body <- jsonlite::toJSON(body, auto_unbox = TRUE, null = "null")
-           PUT(paste0(base_url, path),
-               add_headers(.headers = headers),
-               body = body, encode = encode, ...
-           )
-         },
-         DELETE = {
-           DELETE(
-             paste0(base_url, path),
-             add_headers(.headers = headers), ...
-           )
-         },
-         PATCH = {
-           topifnot(is.list(body))
-           body <- jsonlite::toJSON(body, auto_unbox = TRUE, null = "null")
-           PATCH(paste0(base_url, path),
-                 add_headers(.headers = headers),
-                 body = body,
-                 encode = encode, ...
-           )
-         }
+    GET = {
+      GET2(paste0(base_url, path),
+        httr::add_headers(.headers = headers),
+        query = query, ...
+      )
+    },
+    POST = {
+      stopifnot(is.list(body))
+      body <- jsonlite::toJSON(body, auto_unbox = TRUE, null = "null")
+      POST2(paste0(base_url, path),
+        httr::add_headers(.headers = headers),
+        query = query,
+        body = body, encode = encode, ...
+      )
+    },
+    PUT = {
+      stopifnot(is.list(body))
+      body <- jsonlite::toJSON(body, auto_unbox = TRUE, null = "null")
+      httr::PUT(paste0(base_url, path),
+        httr::add_headers(.headers = headers),
+        body = body, encode = encode, ...
+      )
+    },
+    DELETE = {
+      httr::DELETE(
+        paste0(base_url, path),
+        httr::add_headers(.headers = headers), ...
+      )
+    },
+    PATCH = {
+      stopifnot(is.list(body))
+      body <- jsonlite::toJSON(body, auto_unbox = TRUE, null = "null")
+      httr::PATCH(paste0(base_url, path),
+        httr::add_headers(.headers = headers),
+        body = body,
+        encode = encode, ...
+      )
+    }
   )
 }
 
 #' Check request status
 #'
 #' Check request status
+#' @param req API request
+#' @param as desired type output (contents of a request): raw, text or parsed
 #'
 #' @return request content or the message
 #'
 #' @keywords internal
-#' @export
 status_check <- function(req, as = "parsed", ...) {
-  if (status_code(req) %in% c("200", "201", "202", "204")) {
+  if (httr::status_code(req) %in% c("200", "201", "202", "204")) {
+
+    # Check this !!!
+    if (!is.null(req$request$headers["X-SBG-Auth-Token"])) {
+      req$request$headers["X-SBG-Auth-Token"] <- "<your_auth_token>"
+    }
     res <- content(req, as = as, ...)
     if (!is.null(res)) {
       attr(res, "response") <- req
     }
     return(res)
-  } else if (status_code(req) %in% c("401", "403", "404", "503")) {
-    msg <- content(req, as = as, ...)$message
-    stop(paste0("HTTP Status ", status_code(req), ": ", msg), call. = FALSE)
+  } else if (httr::status_code(req) %in% c("401", "403", "404", "503")) {
+    msg <- httr::content(req, as = as, ...)$message
+    stop(paste0("HTTP Status ", httr::status_code(req), ": ", msg), call. = FALSE)
   } else {
     if ("message" %in% names(content(req, as = as, ...))) {
-      msg <- content(req, as = as, ...)$message
+      msg <- httr::content(req, as = as, ...)$message
     } else {
       msg <- NULL
     }
 
     if (is.null(msg)) {
-      if (status_code(req) %in% names(.codes)) {
-        msg <- .codes[[status_code(req)]]
+      if (httr::status_code(req) %in% names(.codes)) {
+        msg <- .codes[[httr::status_code(req)]]
       }
       if (is.null(msg)) {
         print(content(req, as = as, ...))
-        stop(paste("Error of unknown type occured", status_code(req)))
+        stop(paste("Error of unknown type occured", httr::status_code(req)))
       } else {
-        stop(paste0("HTTP Status ", status_code(req), ": ", msg), call. = FALSE)
+        stop(paste0("HTTP Status ", httr::status_code(req), ": ", msg), call. = FALSE)
       }
     } else {
-      stop(paste0("HTTP Status ", status_code(req), ": ", msg), call. = FALSE)
+      stop(paste0("HTTP Status ", httr::status_code(req), ": ", msg), call. = FALSE)
     }
   }
 }
 
-# Status codes are from API v2 specification
+# Status codes from sevenbridges API v2 specification
 # https://docs.sevenbridges.com/reference#api-status-codes
 
 .codes <- list(
@@ -421,7 +428,7 @@ handle_url2 <- function(handle = NULL, url = NULL, ...) {
   if (is.null(url) && is.null(handle)) {
     stop("Must specify at least one of url or handle")
   }
-  if (is.null(handle)) handle <- handle_find(url)
+  if (is.null(handle)) handle <- httr::handle_find(url)
   if (is.null(url)) url <- handle$url
   # workaround to bypass `:::` checks
   new <- eval(parse(text = "httr:::named(list(...))"))
@@ -439,8 +446,7 @@ build_url2 <- function(url) {
   hostname <- url$hostname
   if (!is.null(url$port)) {
     port <- paste0(":", url$port)
-  }
-  else {
+  } else {
     port <- NULL
   }
   path <- url$path
@@ -486,7 +492,7 @@ POST2 <- function(url = NULL, config = list(), ...,
                   multipart = TRUE, handle = NULL) {
   if (!missing(multipart)) {
     warning("multipart is deprecated, please use encode argument instead",
-            call. = FALSE
+      call. = FALSE
     )
     encode <- ifelse(multipart, "multipart", "form")
   }
