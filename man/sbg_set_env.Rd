@@ -7,8 +7,8 @@
 sbg_set_env(
   url = NULL,
   token = NULL,
-  sysenv_url_name = .sbg_default_sysenv_url,
-  sysenv_token_name = .sbg_default_sysenv_token
+  sysenv_url_name = sbg_default_sysenv_url,
+  sysenv_token_name = sbg_default_sysenv_token
 )
 }
 \arguments{
@@ -17,10 +17,10 @@ sbg_set_env(
 \item{token}{Your authentication token.}
 
 \item{sysenv_url_name}{Name for the url environment variable.
-The default value is `r toString(.sbg_default_sysenv_url)`.}
+The default value is `r toString(sbg_default_sysenv_url)`.}
 
 \item{sysenv_token_name}{Name for the token environment variable.
-The default value is `r toString(.sbg_default_sysenv_token)`.}
+The default value is `r toString(sbg_default_sysenv_token)`.}
 }
 \value{
 set two environment variables for authentication

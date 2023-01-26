@@ -16,37 +16,21 @@ Seven Bridges.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{from}}{[character] Authentication method. Could be \code{"direct"}
-(pass the credential information to the arguments directly),
-\code{"env"} (read from pre-set system environment variables),
-or \code{"file"} (read configurations from a credentials file).
-Default is \code{"direct"}.}
+\item{\code{from}}{Authentication method.}
 
-\item{\code{platform}}{[character] The platform to use.
-If \code{platform} and \code{url} are both not specified,
-the default is \code{"cgc"} (Cancer Genomics Cloud).
-Other possible values include
-\code{"aws-us"} (Seven Bridges Platform - US),
-\code{"aws-eu"} (Seven Bridges Platform - EU),
-\code{"ali-cn"} (Seven Bridges Platform - China),
-\code{"cavatica"} (Cavatica), and
-\code{"f4c"} (BioData Catalyst Powered by Seven Bridges).}
+\item{\code{platform}}{The platform to use.}
 
-\item{\code{url}}{[character] Base URL for API. Please only use this when you
-want to specify a platform that is not in the \code{platform} list
-above, and also leaving \code{platform} unspecified.}
+\item{\code{url}}{Base URL for API.}
 
 \item{\code{sysenv_url}}{Name of the system environment variable storing
-the API base URL. By default: \code{"SB_API_ENDPOINT"}.}
+the API base URL.}
 
 \item{\code{sysenv_token}}{Name of the system environment variable storing
-the auth token. By default: \code{"SB_AUTH_TOKEN"}.}
+the auth token.}
 
-\item{\code{config_file}}{[character] Location of the user configuration file.
-By default: \code{"~/.sevenbridges/credentials"}.}
+\item{\code{config_file}}{Location of the user configuration file.}
 
-\item{\code{profile_name}}{[character] Profile name in the user configuration file.
-The default value is \code{"default"}.}
+\item{\code{profile_name}}{Profile name in the user configuration file.}
 
 \item{\code{fs}}{FS object, for mount and unmount file system.}
 
@@ -63,6 +47,13 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \item \href{#method-Auth-get_token}{\code{Auth$get_token()}}
 \item \href{#method-Auth-api}{\code{Auth$api()}}
 \item \href{#method-Auth-user}{\code{Auth$user()}}
+\item \href{#method-Auth-rate_limit}{\code{Auth$rate_limit()}}
+\item \href{#method-Auth-billing}{\code{Auth$billing()}}
+\item \href{#method-Auth-billing_groups}{\code{Auth$billing_groups()}}
+\item \href{#method-Auth-invoice}{\code{Auth$invoice()}}
+\item \href{#method-Auth-project_query}{\code{Auth$project_query()}}
+\item \href{#method-Auth-project_get}{\code{Auth$project_get()}}
+\item \href{#method-Auth-project_new}{\code{Auth$project_new()}}
 \item \href{#method-Auth-clone}{\code{Auth$clone()}}
 }
 }
@@ -70,8 +61,7 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \if{html}{\out{<a id="method-Auth-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new Auth object.
-All methods can be accessed through this object.
+Create a new Auth object. All methods can be accessed through this object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$new(
   from = c("direct", "env", "file"),
@@ -91,11 +81,25 @@ All methods can be accessed through this object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{from}}{Authentication method.}
+\item{\code{from}}{Authentication method. Could be \code{"direct"}
+(pass the credential information to the arguments directly),
+\code{"env"} (read from pre-set system environment variables),
+or \code{"file"} (read configurations from a credentials file).
+Default is \code{"direct"}.}
 
-\item{\code{platform}}{The platform to use.}
+\item{\code{platform}}{The platform to use.
+If \code{platform} and \code{url} are both not specified,
+the default is \code{"cgc"} (Cancer Genomics Cloud).
+Other possible values include
+\code{"aws-us"} (Seven Bridges Platform - US),
+\code{"aws-eu"} (Seven Bridges Platform - EU),
+\code{"ali-cn"} (Seven Bridges Platform - China),
+\code{"cavatica"} (Cavatica), and
+\code{"f4c"} (BioData Catalyst Powered by Seven Bridges).}
 
-\item{\code{url}}{Base URL for API.}
+\item{\code{url}}{Base URL for API. Please only use this when you
+want to specify a platform that is not in the \code{platform} list
+above, and also leaving \code{platform} unspecified.}
 
 \item{\code{token}}{Your authentication token.}
 
@@ -148,8 +152,8 @@ This method returns all API paths and pass arguments to core `api()`
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$api(
   ...,
-  limit = getOption("sevenbridges")$limit,
-  offset = getOption("sevenbridges")$offset,
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
   fields = NULL,
   complete = FALSE
 )}\if{html}{\out{</div>}}
@@ -191,6 +195,205 @@ Get details about the authenticated user
 \describe{
 \item{\code{username}}{The user name of a user for whom you want to get basic
 account information.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-rate_limit"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-rate_limit}{}}}
+\subsection{Method \code{rate_limit()}}{
+Get information about current rate limit
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$rate_limit()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-billing"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-billing}{}}}
+\subsection{Method \code{billing()}}{
+Get list of paths used to access billing information via the API
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$billing(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other arguments passed to methods.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-billing_groups"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-billing_groups}{}}}
+\subsection{Method \code{billing_groups()}}{
+Get billing group information
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$billing_groups(id = NULL, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{id}}{Billing group identifier.}
+
+\item{\code{...}}{Other arguments passed to methods.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-invoice"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-invoice}{}}}
+\subsection{Method \code{invoice()}}{
+Get invoice information
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$invoice(id = NULL, billing_group_id = NULL, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{id}}{Invoice identifier.}
+
+\item{\code{billing_group_id}}{ID of a particular billing group. If provided,
+the method will return the invoice incurred by that billing group only.}
+
+\item{\code{...}}{Other arguments passed to methods.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-project_query"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-project_query}{}}}
+\subsection{Method \code{project_query()}}{
+A method to list all projects available to particular user.
+if the username is not provided, all projects available to the currently
+authenticated user will be listed. Otherwise, projects will be listed
+for the user whose username is provided. Please keep in mind that this
+way you will only be able to list projects you are a member of.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$project_query(id = NULL, name = NULL, owner = NULL, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{id}}{Project's ID.}
+
+\item{\code{name}}{Project's name.}
+
+\item{\code{owner}}{The username of the owner whose projects you want to query.}
+
+\item{\code{...}}{Other arguments that can be passed to this method.
+Such as query parameters.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-project_get"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-project_get}{}}}
+\subsection{Method \code{project_get()}}{
+This call creates an object containing the details
+of a specified project.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$project_get(
+  project_owner = suppressMessages(self$user()$username),
+  project = NULL,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{project_owner}}{Project owner's Platform username.}
+
+\item{\code{project}}{The short name of the project you are querying.}
+
+\item{\code{...}}{Other arguments.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+Note that project_owner is always case-sensitive, and that project is
+not the project's name but its short name. For full details of
+identifying objects using the API, please see the API overview.
+}
+
+\subsection{Returns}{
+Project object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-project_new"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-project_new}{}}}
+\subsection{Method \code{project_new()}}{
+A method for creating a new project.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$project_new(
+  name = NULL,
+  billing_group = NULL,
+  description = name,
+  tags = NULL,
+  type = "v2",
+  locked = FALSE,
+  controlled = FALSE,
+  location = NULL,
+  use_interruptible_instances = TRUE,
+  use_memoization = FALSE,
+  elastic_disk = FALSE,
+  intermediate_files = list(retention = "LIMITED", duration = 24),
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{name}}{The name of the project you are creating.}
+
+\item{\code{billing_group}}{The ID of the billing group for the project.}
+
+\item{\code{description}}{Description of the project.}
+
+\item{\code{tags}}{The list of project tags.}
+
+\item{\code{type}}{Project's type. All projects have type v2.}
+
+\item{\code{locked}}{(boolean) Set this field to true to lock down a project.
+Locking down a project prevents any Seven Bridges team member from
+viewing any information about the task.}
+
+\item{\code{controlled}}{Set this field to true to define this project as
+controlled i.e. one which will contain controlled data. Set false to
+define the project as open i.e. one which will contain open data.}
+
+\item{\code{location}}{Specify the location for this project:
+aws:us-east-1 or aws:us-west-2}
+
+\item{\code{use_interruptible_instances}}{Defines the use of spot instances.}
+
+\item{\code{use_memoization}}{Set to false by default. Set to true to enable
+memoization.}
+
+\item{\code{elastic_disk}}{Set to true to enable Elastic disk.}
+
+\item{\code{intermediate_files}}{A list defining the retention period for
+intermediate files. Expected elements:
+\itemize{
+\item retention - Specifies that intermediate files should be retained for a
+\item duration - Specifies intermediate files retention period in hours.
+The minimum value is 1. The maximum value is 120 and the default value
+is 24.
+}}
+
+\item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
 }

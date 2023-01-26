@@ -12,12 +12,12 @@ api(
   query = NULL,
   body = list(),
   encode = c("json", "form", "multipart"),
-  limit = getOption("sevenbridges")$limit,
-  offset = getOption("sevenbridges")$offset,
-  advance_access = getOption("sevenbridges")$advance_access,
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
+  advance_access = getOption("sevenbridges2")$advance_access,
   authorization = FALSE,
   fields = NULL,
-  base_url = paste0("https://api.sbgenomics.com/", version, "/"),
+  base_url = NULL,
   ...
 )
 }
@@ -30,11 +30,11 @@ Seven Bridges single sign-on.}
 \item{path}{path connected with \code{base_url}.}
 
 \item{method}{one of \code{"GET"}, \code{"POST"},
-\code{"PUT"}, or \code{"Delete"}.}
+\code{"PUT"}, \code{"DELETE"}, or \code{"PATCH"}.}
 
 \item{query}{Passed to httr package GET/POST call.}
 
-\item{body}{Passed to httr package GET/POST/PUT/DELETE call.}
+\item{body}{Passed to httr package GET/POST/PUT/DELETE/PATCH call.}
 
 \item{encode}{If the body is a named list, how should it be
 encoded? Can be one of \code{"json"} (application/json),
