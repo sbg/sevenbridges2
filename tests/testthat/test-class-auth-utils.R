@@ -96,11 +96,11 @@ testthat::test_that("Utility function sbg_get_env returns proper message if env 
 
 testthat::test_that("Utility function sbg_platform_lookup works", {
   # go through all available platforms
-  for (name in names(.sbg_baseurl)) {
+  for (name in names(sbg_baseurl)) {
     # normalized url
-    testthat::expect_equal(sbg_platform_lookup(.sbg_baseurl[[name]]), name)
+    testthat::expect_equal(sbg_platform_lookup(sbg_baseurl[[name]]), name)
     # non-normalized url
-    testthat::expect_equal(sbg_platform_lookup(gsub("/$", "", .sbg_baseurl[[name]])), name)
+    testthat::expect_equal(sbg_platform_lookup(gsub("/$", "", sbg_baseurl[[name]])), name)
   }
 
   # undefined url

@@ -40,7 +40,7 @@ testthat::test_that("Init authentication from env works", {
   test_sysenv_url_name <- "TEST_AUTH_FROM_ENV_URL_NAME"
   test_sysenv_token_name <- "TEST_AUTH_FROM_ENV_TOKEN_NAME"
 
-  sevenbridges2::sbg_set_env(
+  sbg_set_env(
     url = "https://test-url.com/",
     token = stringi::stri_rand_strings(n = 1, length = 32, pattern = "[a-z0-9]"),
     sysenv_url_name = test_sysenv_url_name,
@@ -58,7 +58,7 @@ testthat::test_that("Init authentication from env works", {
 
   testthat::expect_true(checkmate::test_class(auth, classes = "Auth"))
 
-  testthat::expect_equal(auth$get_token(), sevenbridges2::sbg_get_env(test_sysenv_token_name))
+  testthat::expect_equal(auth$get_token(), sbg_get_env(test_sysenv_token_name))
   # Check the number of characters in the token written in the env variable
   testthat::expect_equal(nchar(auth$get_token()), 32L)
 
@@ -74,7 +74,7 @@ testthat::test_that("Init authentication from env works", {
   testthat::expect_equal(auth$profile_name, NULL)
   testthat::expect_equal(auth$sysenv_token, test_sysenv_token_name)
   testthat::expect_equal(auth$sysenv_url, test_sysenv_url_name)
-  testthat::expect_equal(auth$url, sevenbridges2::sbg_get_env(test_sysenv_url_name))
+  testthat::expect_equal(auth$url, sbg_get_env(test_sysenv_url_name))
 
   # Clear env variables
   Sys.unsetenv(test_sysenv_url_name)
@@ -97,7 +97,7 @@ testthat::test_that("Init authentication from config file works", {
 
   testthat::expect_true(checkmate::test_class(auth, classes = "Auth"))
 
-  testthat::expect_equal(auth$get_token(), sevenbridges2::sbg_get_env("SB_AUTH_TOKEN"))
+  testthat::expect_equal(auth$get_token(), sbg_get_env(paste0(auth$profile_name, "_token")))
   # Check the number of characters in the token written in the env variable
   testthat::expect_equal(nchar(auth$get_token()), 32L)
 
@@ -111,16 +111,12 @@ testthat::test_that("Init authentication from config file works", {
   testthat::expect_equal(auth$fs, NULL)
   testthat::expect_equal(auth$platform, "f4c")
   testthat::expect_equal(auth$profile_name, "BioDataCatalyst")
-  # The following two fields should be empty (equal to NULL) even if they
-  # are provided as arguments to Auth's initialize method
-  testthat::expect_equal(auth$sysenv_token, NULL)
-  testthat::expect_equal(auth$sysenv_url, NULL)
 
-  testthat::expect_equal(auth$url, sevenbridges2::sbg_get_env("SB_API_ENDPOINT"))
+  testthat::expect_equal(auth$url, sbg_get_env(paste0(auth$profile_name, "_url")))
 
   # Clear env variables
-  Sys.unsetenv("SB_AUTH_TOKEN")
-  Sys.unsetenv("SB_API_ENDPOINT")
+  Sys.unsetenv(paste0(auth$profile_name, "_token"))
+  Sys.unsetenv(paste0(auth$profile_name, "_url"))
 })
 
 

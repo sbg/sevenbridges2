@@ -2,7 +2,8 @@ test_that("Status check function works properly for unauthorized request", {
   resp <- sevenbridges2::api(
     token = stringi::stri_rand_strings(1, 32, pattern = "[a-z0-9]"), # fake token
     path = "user/",
-    method = "GET"
+    method = "GET",
+    base_url = "https://api.sbgenomics.com/v2/"
   )
 
   testthat::expect_equal(httr::status_code(resp), 401L)
@@ -23,7 +24,8 @@ test_that("Status check function works properly for undefined resource request",
   resp <- sevenbridges2::api(
     token = stringi::stri_rand_strings(1, 32, pattern = "[a-z0-9]"), # fake token
     path = "wizards/", # non-existent resource
-    method = "GET"
+    method = "GET",
+    base_url = "https://api.sbgenomics.com/v2/"
   )
 
   testthat::expect_equal(httr::status_code(resp), 404L)

@@ -4,7 +4,6 @@ test_that("User print method works", {
   testthat::expect_snapshot(test_user$print())
 })
 
-
 test_that("User initialization works", {
   # Load auth object
   test_auth_obj <- readRDS(testthat::test_path("test_data", "auth.RDS"))
