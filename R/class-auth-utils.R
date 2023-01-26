@@ -1,31 +1,8 @@
-# Seven Bridges API base url
-.sbg_baseurl <- list(
-  "cgc" = "https://cgc-api.sbgenomics.com/v2/",
-  "aws-us" = "https://api.sbgenomics.com/v2/",
-  "aws-eu" = "https://eu-api.sbgenomics.com/v2/",
-  "ali-cn" = "https://api.sevenbridges.cn/v2/",
-  "cavatica" = "https://cavatica-api.sbgenomics.com/v2/",
-  "f4c" = "https://api.sb.biodatacatalyst.nhlbi.nih.gov/v2/"
-)
-
-# default platform
-.sbg_default_platform <- "cgc"
-
-# default user configuration file
-.sbg_default_config_file <- "~/.sevenbridges/credentials"
-.sbg_default_profile_name <- "default"
-
-# default system environment variable names
-.sbg_default_sysenv_url <- "SB_API_ENDPOINT"
-.sbg_default_sysenv_token <- "SB_AUTH_TOKEN"
-
 #' Set authentication environment variables for Seven Bridges API
 #'
 #' @param x Name of the system environment variable
 #'
 #' @return value of the environment variable
-#'
-#' @export sbg_get_env
 #'
 #' @examples
 #' # set and get two environment variables for CGC
@@ -51,13 +28,11 @@ sbg_get_env <- function(x) {
 #' @param url Base URL for API.
 #' @param token Your authentication token.
 #' @param sysenv_url_name Name for the url environment variable.
-#' The default value is `r toString(.sbg_default_sysenv_url)`.
+#' The default value is `r toString(sbg_default_sysenv_url)`.
 #' @param sysenv_token_name Name for the token environment variable.
-#' The default value is `r toString(.sbg_default_sysenv_token)`.
+#' The default value is `r toString(sbg_default_sysenv_token)`.
 #'
 #' @return set two environment variables for authentication
-#'
-#' @export sbg_set_env
 #'
 #' @examples
 #' # set and get environment variables for CGC
@@ -67,7 +42,7 @@ sbg_get_env <- function(x) {
 #' sbg_get_env("SB_API_ENDPOINT")
 #' sbg_get_env("SB_AUTH_TOKEN")
 #' }
-sbg_set_env <- function(url = NULL, token = NULL, sysenv_url_name = .sbg_default_sysenv_url, sysenv_token_name = .sbg_default_sysenv_token) {
+sbg_set_env <- function(url = NULL, token = NULL, sysenv_url_name = sbg_default_sysenv_url, sysenv_token_name = sbg_default_sysenv_token) {
   if (is.null(url) | is.null(token)) {
     stop("url and token must be both specified", call. = FALSE)
   }
@@ -84,7 +59,8 @@ sbg_set_env <- function(url = NULL, token = NULL, sysenv_url_name = .sbg_default
 # @param file character string, path to ini file
 # @return Nested list keeping the hierarchical structure of the ini file
 #' @importFrom stringr str_trim
-.read_ini <- function(file) {
+#' @noRd
+read_ini <- function(file) {
 
   # section name lines: starting with `[` ending with `]`
   pattern_section <- "^\\s*\\[\\s*(.+?)\\s*]"
@@ -129,7 +105,7 @@ sbg_set_env <- function(url = NULL, token = NULL, sysenv_url_name = .sbg_default
 sbg_parse_config <- function(file) {
   f <- file.path(path.expand(file))
   if (file.exists(f)) {
-    res <- try(.read_ini(f), silent = TRUE)
+    res <- try(read_ini(f), silent = TRUE)
     if (inherits(res, "try-error")) {
       stop("User config file format is incorrect", call. = FALSE)
       res <- NULL
@@ -147,7 +123,7 @@ normalize_url <- function(x) if (!grepl("/$", x)) paste0(x, "/") else x
 
 # platform name reverse lookup
 sbg_platform_lookup <- function(baseurl) {
-  x <- which(unlist(.sbg_baseurl) == normalize_url(baseurl))
+  x <- which(unlist(sbg_baseurl) == normalize_url(baseurl))
   if (length(x) > 0L) names(x) else NULL
 }
 
