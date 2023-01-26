@@ -12,23 +12,52 @@ User <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
+    #' @field username User name.
     username = NULL,
+    #' @field email User's email address.
     email = NULL,
+    #' @field first_name User's first name.
     first_name = NULL,
+    #' @field last_name User's last name.
     last_name = NULL,
+    #' @field affiliation The company or the institute the user is affiliated with.
     affiliation = NULL,
+    #' @field phone User's phone number.
     phone = NULL,
+    #' @field address User's residential address.
     address = NULL,
+    #' @field city User's city of residence.
     city = NULL,
+    #' @field  state User's state of residence.
     state = NULL,
+    #' @field  country User's country of residence.
     country = NULL,
+    #' @field zip_code Zip code for the user's residence.
     zip_code = NULL,
-    projects = NULL,
-    billing_groups = NULL,
-    tasks = NULL,
-    url_test = NULL,
+    #' @field role User's role.
+    role = NULL,
+    #' @field tags Platform tags associated with the user.
+    tags = NULL,
+
     #' @description
     #' Create a new User object.
+    #' @param username User name.
+    #' @param email User's email address.
+    #' @param first_name User's first name.
+    #' @param last_name User's last name.
+    #' @param affiliation The company or the institute the user is affiliated with.
+    #' @param phone User's phone number.
+    #' @param address User's residential address.
+    #' @param city User's city of residence.
+    #' @param state User's state of residence.
+    #' @param country User's country of residence.
+    #' @param zip_code Zip code for the user's residence.
+    #' @param role User's role.
+    #' @param tags Platform tags associated with the user.
+    #'
+    #' @param ... Additional arguments.
+    #'
+    #' @return A new User object.
     initialize = function(username = NULL,
                           email = NULL,
                           first_name = NULL,
@@ -40,9 +69,8 @@ User <- R6::R6Class(
                           state = NULL,
                           country = NULL,
                           zip_code = NULL,
-                          projects = NULL,
-                          billing_groups = NULL,
-                          tasks = NULL, ...) {
+                          role = NULL,
+                          tags = NULL, ...) {
 
       # Initialize Item class
       super$initialize(...)
@@ -58,18 +86,19 @@ User <- R6::R6Class(
       self$state <- state
       self$country <- country
       self$zip_code <- zip_code
-      self$projects <- projects
-      self$billing_groups <- billing_groups
-      self$tasks <- tasks
+      self$role <- role
+      self$tags <- tags
     },
     #' @description
-    #' Print user information as billeted list
+    #' Print user information as bullet list
     #' @importFrom purrr discard
-    #' @importFrom glue glue
-    #' @importFrom cli cli_h1 cli_bullets
-    #' @noRd
-    print = function(...) {
+    #' @importFrom glue glue glue_col
+    #' @importFrom cli cli_h1 cli_li cli_ul cli_end
+    print = function() {
       x <- as.list(self)
+      if (!is.null(x$tags)) {
+        tags <- x$tags
+      }
       x <- purrr::discard(x, .p = is.list)
       x <- purrr::discard(x, .p = is.function)
       x <- purrr::discard(x, .p = is.environment)
@@ -79,7 +108,22 @@ User <- R6::R6Class(
       names(string) <- rep("*", times = length(string))
 
       cli::cli_h1("User")
-      cli::cli_bullets(string)
+      cli::cli_li(string)
+
+      if (!is.null(tags)) {
+        tag_names <- sapply(tags, "[[", "tag")
+        tag_expirations <- sapply(tags, "[[", "expires_at")
+
+        tags_list <- as.list(as.character(parse_time(tag_expirations)))
+        names(tags_list) <- tag_names
+
+        string_tags <- glue::glue_col("{blue  tag name:} {names(tags_list)}; {blue expires at:} {tags_list}")
+      }
+
+      ifelse((!is.null(tags) && length(tags) != 0), {cli::cli_li("tags"); cli::cli_ul(string_tags)}, "")
+
+      # Close container elements
+      cli::cli_end()
     }
   )
 )
@@ -98,9 +142,8 @@ asUser <- function(x, auth = NULL) {
     state = x$state,
     country = x$country,
     zip_code = x$zip_code,
-    projects = x$projects,
-    billing_groups = x$billing_groups,
-    tasks = x$tasks,
+    role = x$role,
+    tags = x$tags,
     href = x$href,
     auth = auth,
     response = attr(x, "response")
