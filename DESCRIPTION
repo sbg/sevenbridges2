@@ -27,7 +27,10 @@ Imports:
     yaml,
     S4Vectors,
     cli,
-    rlang
+    rlang,
+    curl,
+    glue,
+    stringr
 Suggests:
     knitr,
     rmarkdown,
