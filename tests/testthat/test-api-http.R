@@ -50,8 +50,8 @@ test_that("Status check function works properly for undefined resource
       whitespace = "[\t\r\n]"
     )
 
-    testthat::expect_equal(error_message, "Error : HTTP Status 404:
-                           /v2/wizards/ not found")
+    testthat::expect_equal(error_message,
+    "Error : HTTP Status 404: /v2/wizards/ not found")
   } else if (class(processed_response) == "list") {
     testthat::fail(message = "Failure has been forced - a valid response was
                    obtained, which is not in accordance with the initial
