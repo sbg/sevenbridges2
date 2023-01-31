@@ -61,7 +61,8 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \if{html}{\out{<a id="method-Auth-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new Auth object. All methods can be accessed through this object.
+Create a new Auth object. All methods can be accessed through this
+object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$new(
   from = c("direct", "env", "file"),
@@ -213,7 +214,8 @@ Get information about current rate limit
 \if{html}{\out{<a id="method-Auth-billing"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-billing}{}}}
 \subsection{Method \code{billing()}}{
-Get list of paths used to access billing information via the API
+Get list of paths used to access billing information via
+the API
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$billing(...)}\if{html}{\out{</div>}}
 }
@@ -387,7 +389,8 @@ memoization.}
 \item{\code{intermediate_files}}{A list defining the retention period for
 intermediate files. Expected elements:
 \itemize{
-\item retention - Specifies that intermediate files should be retained for a
+\item retention - Specifies that intermediate files should be retained
+for a limited amount of time. The value is always LIMITED.
 \item duration - Specifies intermediate files retention period in hours.
 The minimum value is 1. The maximum value is 120 and the default value
 is 24.

@@ -37,7 +37,8 @@
 #' when listing resources (e.g. all your projects) or getting details of a
 #' specific resource (e.g. a given project). For example, fields="id,name,size"
 #' to return the fields id, name and size for files. More details please check
-#' \url{https://docs.sevenbridges.com/docs/the-api#section-general-api-information}
+#' \url{https://docs.sevenbridges.com/docs/the-api#section-general-\n
+#' api-information}
 #'
 #' @param base_url default is \code{"https://api.sbgenomics.com/v2"}
 #' @param ... Other arguments passed to GET/POST/PUT/DELETE/PATCH call.
@@ -47,8 +48,9 @@
 #' @references
 #' \url{https://docs.sevenbridges.com/page/api}
 #'
-#' @importFrom  httr PUT DELETE PATCH status_code content handle_find add_headers
-#' @importFrom curl curl_escape
+#' @importFrom  httr PUT DELETE PATCH status_code content handle_find
+#' add_headers
+#' @importFrom  curl curl_escape
 #'
 #' @export api
 #' @examples
@@ -57,6 +59,7 @@
 #' \dontrun{
 #' api(token = token, path = "projects", method = "GET")
 #' }
+#'
 api <- function(token = NULL, version = "v2", path = NULL,
                 method = c("GET", "POST", "PUT", "DELETE", "PATCH"),
                 query = NULL, body = list(),
@@ -66,7 +69,8 @@ api <- function(token = NULL, version = "v2", path = NULL,
                 advance_access = getOption("sevenbridges2")$advance_access,
                 authorization = FALSE,
                 fields = NULL,
-                #base_url = paste0("https://api.sbgenomics.com/", version, "/"),
+                # base_url = paste0("https://api.sbgenomics.com/",
+                # version, "/"),
                 base_url = NULL,
                 ...) {
   if (is.null(token)) stop("token must be provided")

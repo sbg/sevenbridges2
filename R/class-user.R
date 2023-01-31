@@ -20,7 +20,8 @@ User <- R6::R6Class(
     first_name = NULL,
     #' @field last_name User's last name.
     last_name = NULL,
-    #' @field affiliation The company or the institute the user is affiliated with.
+    #' @field affiliation The company or the institute the user is affiliated
+    #' with.
     affiliation = NULL,
     #' @field phone User's phone number.
     phone = NULL,
@@ -45,7 +46,8 @@ User <- R6::R6Class(
     #' @param email User's email address.
     #' @param first_name User's first name.
     #' @param last_name User's last name.
-    #' @param affiliation The company or the institute the user is affiliated with.
+    #' @param affiliation The company or the institute the user is affiliated
+    #' with.
     #' @param phone User's phone number.
     #' @param address User's residential address.
     #' @param city User's city of residence.
@@ -71,7 +73,6 @@ User <- R6::R6Class(
                           zip_code = NULL,
                           role = NULL,
                           tags = NULL, ...) {
-
       # Initialize Item class
       super$initialize(...)
 
@@ -117,10 +118,17 @@ User <- R6::R6Class(
         tags_list <- as.list(as.character(parse_time(tag_expirations)))
         names(tags_list) <- tag_names
 
-        string_tags <- glue::glue_col("{blue  tag name:} {names(tags_list)}; {blue expires at:} {tags_list}")
+        string_tags <- glue::glue_col("{blue  tag name:} {names(tags_list)};
+                                      {blue expires at:} {tags_list}")
       }
 
-      ifelse((!is.null(tags) && length(tags) != 0), {cli::cli_li("tags"); cli::cli_ul(string_tags)}, "")
+      ifelse((!is.null(tags) && length(tags) != 0),
+        {
+          cli::cli_li("tags")
+          cli::cli_ul(string_tags)
+        },
+        ""
+      )
 
       # Close container elements
       cli::cli_end()

@@ -42,8 +42,10 @@ sbg_get_env <- function(x) {
 #' sbg_get_env("SB_API_ENDPOINT")
 #' sbg_get_env("SB_AUTH_TOKEN")
 #' }
-sbg_set_env <- function(url = NULL, token = NULL, sysenv_url_name = sbg_default_sysenv_url, sysenv_token_name = sbg_default_sysenv_token) {
-  if (is.null(url) | is.null(token)) {
+sbg_set_env <- function(url = NULL, token = NULL,
+                        sysenv_url_name = sbg_default_sysenv_url,
+                        sysenv_token_name = sbg_default_sysenv_token) {
+  if (is.null(url) || is.null(token)) {
     stop("url and token must be both specified", call. = FALSE)
   }
 
@@ -61,7 +63,6 @@ sbg_set_env <- function(url = NULL, token = NULL, sysenv_url_name = sbg_default_
 #' @importFrom stringr str_trim
 #' @noRd
 read_ini <- function(file) {
-
   # section name lines: starting with `[` ending with `]`
   pattern_section <- "^\\s*\\[\\s*(.+?)\\s*]"
   # key-value lines: key=value

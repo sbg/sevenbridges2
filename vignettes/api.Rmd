@@ -84,7 +84,11 @@ The `sevenbridges2` package is currently only available on Seven Bridges interna
 To install it from `develop` branch, use:
 
 ```{r}
-remotes::install_gitlab('r-stack/sevenbridges2@develop',auth_token = '${GIT_ACCESS_TOKEN}', host = 'gitlab.sbgenomics.com', force = TRUE, upgrade = 'never')
+remotes::install_gitlab("r-stack/sevenbridges2@develop",
+  auth_token = "${GIT_ACCESS_TOKEN}",
+  host = "gitlab.sbgenomics.com",
+  force = TRUE, upgrade = "never"
+)
 ```
 
 Where `GIT_ACCESS_TOKEN` is your personal access token for GitLab.
@@ -146,29 +150,36 @@ If you do not have pre-set environment variables, you can create them in the fol
 
 ```{r}
 # Set environment variables for the first account
-sevenbridges2:::sbg_set_env(url = "https://cgc-api.sbgenomics.com/v2/",
-                            token = "<your_token_for_the_1st_account>",
-                            sysenv_url_name = "account_1_url",
-                            sysenv_token_name = "account_1_token")
+sevenbridges2:::sbg_set_env(
+  url = "https://cgc-api.sbgenomics.com/v2/",
+  token = "<your_token_for_the_1st_account>",
+  sysenv_url_name = "account_1_url",
+  sysenv_token_name = "account_1_token"
+)
 
 # Set environment variables for the second account
-sevenbridges2:::sbg_set_env(url = "https://cgc-api.sbgenomics.com/v2/",
-                            token = "<your_token_for_the_2nd_account>",
-                            sysenv_url_name = "account_2_url",
-                            sysenv_token_name = "account_2_token")
-
+sevenbridges2:::sbg_set_env(
+  url = "https://cgc-api.sbgenomics.com/v2/",
+  token = "<your_token_for_the_2nd_account>",
+  sysenv_url_name = "account_2_url",
+  sysenv_token_name = "account_2_token"
+)
 ```
 
 Now you are ready to create authentication object for these two accounts:
 
 ```{r}
-a <- sevenbridges2::Auth$new(from = "env",
-                             sysenv_url = "account_1_url",
-                             sysenv_token = "account_1_token")
+a <- sevenbridges2::Auth$new(
+  from = "env",
+  sysenv_url = "account_1_url",
+  sysenv_token = "account_1_token"
+)
 
-b <- sevenbridges2::Auth$new(from = "env",
-                             sysenv_url = "account_2_url",
-                             sysenv_token = "account_2_token")
+b <- sevenbridges2::Auth$new(
+  from = "env",
+  sysenv_url = "account_2_url",
+  sysenv_token = "account_2_token"
+)
 ```
 
 <a name="method3"/>***Method 3: User configuration file***
@@ -421,7 +432,10 @@ a$billing_groups()
 # set billing group for the new project
 bid <- "<billing_group_id>"
 # create new project
-(p <- a$project_new(name = "api testing", billing_group = bid, description = "Just a test"))
+(p <- a$project_new(
+  name = "api testing", billing_group = bid,
+  description = "Just a test"
+))
 ```
 
 ```
@@ -456,7 +470,7 @@ The **new project** is created on the platform. Notice also that the variable p 
 # list first 50 projects
 a$project_query()
 # list all
-a$project_query(complete = TRUE)  # PROVERITI ZASTO OVO NE RADI !!!
+a$project_query(complete = TRUE) # PROVERITI ZASTO OVO NE RADI !!!
 # return all named match "demo"
 a$project_query(name = "demo")
 # return all projects tagged with "test_tags"
@@ -501,7 +515,12 @@ a$project_get(project_owner = "luna_lovegood", project = "nargles-project")
 ## Create a New Project
 
 ```{r}
-a$project_new(name = "api_created_project", billing_group = "<your_billing_group_id>", description = "This project has been created using the sevenbridges2 R API library.")
+a$project_new(
+  name = "api_created_project",
+  billing_group = "<your_billing_group_id>",
+  description = "This project has been created using the
+              sevenbridges2 R API library."
+)
 ```
 
 ```
@@ -509,7 +528,8 @@ a$project_new(name = "api_created_project", billing_group = "<your_billing_group
 • category: PRIVATE
 • root_folder: 12a123ab1234a12a1ab1234a
 • type: v2
-• description: This project has been created using the sevenbridges2 R API library.
+• description: This project has been created using the sevenbridges2 R 
+API library.
 • billing_group: <your_billing_group_id>
 • name: api_created_project
 • id: <owner>/api-created-project
@@ -527,26 +547,44 @@ a$project_new(name = "api_created_project", billing_group = "<your_billing_group
 
 ## Edit an existing project
 
-If for some reason you want to edit an existing project, you can do so by using the **edit** method on the Project class object. As a project Admin you can use it to change the name, settings, tags or billing group of the project. For example, if you want to change the name and description of the project, you can do it in the following way:
+If for some reason you want to edit an existing project, you can do so by using
+the **edit** method on the Project class object. As a project Admin you can use
+it to change the name, settings, tags or billing group of the project. For 
+example, if you want to change the name and description of the project, you can
+do it in the following way:
 
 ```{r}
-p <- a$project_get(project_owner = "<your_username>", project = "<project's-short-name>")
-p$edit(name = "project_with_modified_name", description = "This is the modified description.")
+p <- a$project_get(
+  project_owner = "<your_username>",
+  project = "<project's-short-name>"
+)
+p$edit(
+  name = "project_with_modified_name",
+  description = "This is the modified description."
+)
 ```
 
-Keep in mind that this modifies only the name of the project, not its short name. Therefore, after calling this method, the id of the project will remain the same \code{your_username/project's-short-name}. 
+Keep in mind that this modifies only the name of the project, not its short 
+name. Therefore, after calling this method, the id of the project will remain 
+the same \code{your_username/project's-short-name}.
 
 
 ## Delete a project
 
-You may also want to delete some project from the Platform using through the R client library. To do that, you need to call the \code{delete} method on the project object:
+You may also want to delete some project from the Platform using through the R 
+client library. To do that, you need to call the \code{delete} method on the 
+project object:
 
 ```{r}
-p <- a$project_get(project_owner = "<your_username>", project = "<project's-short-name>")
+p <- a$project_get(
+  project_owner = "<your_username>",
+  project = "<project's-short-name>"
+)
 p$delete()
 ```
 
-Please be careful when using this method and note that calling it will permanently delete the project from the platform.
+Please be careful when using this method and note that calling it will
+permanently delete the project from the platform.
 
 
 ## List project members
@@ -563,12 +601,16 @@ p$member_list()
 To add a new user to a specified project:
 
 ```{r}
-p <- a$project_get(project_owner = "<your_username>", project = "<project's-short-name>")
+p <- a$project_get(
+  project_owner = "<your_username>",
+  project = "<project's-short-name>"
+)
 p$member_add(username = "<username_of_a_user_you_want_to_add>")
 ```
 
 
-Please keep in mind that this call can only be successfully made by a user who has admin permissions in the project.
+Please keep in mind that this call can only be successfully made by a user who 
+has admin permissions in the project.
 
 
 ## Remove a project member
@@ -582,7 +624,8 @@ p$member_delete("<username_of_a_user_you_want_to_remove>")
 
 ## Get a project member's permissions
 
-Sometimes you may just want to investigate a members's permissions within a specified project, and you can do that by calling:
+Sometimes you may just want to investigate a members's permissions within a 
+specified project, and you can do that by calling:
 
 ```{r}
 p$member_permissions_get(username = "<username_of_a_user_of_interest>")
@@ -591,10 +634,14 @@ p$member_permissions_get(username = "<username_of_a_user_of_interest>")
 
 ## Modify a project member's permissions
 
-To modify a project member's permissions you can use the \code{member_permissions_modify} method. For this method to work, the user calling it must have admin permissions in the project. For example, you may want to give admin permissions to a project member:
+To modify a project member's permissions you can use the \code{
+member_permissions_modify} method. For this method to work, the user calling it 
+must have admin permissions in the project. For example, you may want to give 
+admin permissions to a project member:
 
 ```{r}
-p$member_permissions_modify(username = "username_of_the_member_whose_permissions_you_are_editing", admin = TRUE)
+p$member_permissions_modify(
+  username = "username_of_the_member_whose_permissions_you_are_editing",
+  admin = TRUE
+)
 ```
-
-

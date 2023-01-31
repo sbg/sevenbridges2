@@ -7,7 +7,9 @@
 #' @details
 #' This is main object for Billing
 #' @export
+# nolint start
 Billing <- R6::R6Class(
+  # nolint end
   "Billing",
   inherit = Item,
   portable = FALSE,
@@ -81,74 +83,87 @@ Billing <- R6::R6Class(
       string_balance <- glue::glue("{names(balance)}: {balance}")
 
       cli::cli_h1("Billing group info")
-      cli::cli_ul(); cli::cli_li(string); ifelse(!is.null(balance), {cli::cli_li("balance"); cli::cli_ul(string_balance)}, "")
-
+      cli::cli_ul()
+      cli::cli_li(string)
+      ifelse(!is.null(balance),
+        {
+          cli::cli_li("balance")
+          cli::cli_ul(string_balance)
+        },
+        ""
+      )
     },
     #' @description Method for getting a analysis breakdown for a billing group.
     #'
     #' @param offset The zero-based starting index in the entire collection of
     #' the first item to return. The default value is 0.
-    #' @param date_from A string representing the starting date for retrieving transactions
-    #' analysis in the following format: mm-dd-yyyy.
-    #' @param date_to A string representing the ending date for retrieving transactions
-    #' analysis in the following format: mm-dd-yyyy.
-    #' @param invoice_id A string representing invoice ID to show a breakdown for the
-    #' specific invoice. If omitted, the current spending breakdown is returned.
-    #' @param limit An integer representing the maximum number of collection items
-    #' to return for a single request. The default value is 50, while maximum is 100.
-    #' @param fields Selector specifying a subset of fields to include in the response.
+    #' @param date_from A string representing the starting date for retrieving
+    #' transactions analysis in the following format: mm-dd-yyyy.
+    #' @param date_to A string representing the ending date for retrieving
+    #' transactions analysis in the following format: mm-dd-yyyy.
+    #' @param invoice_id A string representing invoice ID to show a breakdown
+    #' for the specific invoice. If omitted, the current spending breakdown is
+    #' returned.
+    #' @param limit An integer representing the maximum number of collection
+    #' items to return for a single request. The default value is 50, while
+    #' maximum is 100.
+    #' @param fields Selector specifying a subset of fields to include in the
+    #' response.
     analysis_breakdown = function(date_from = NULL,
                                   date_to = NULL,
                                   invoice_id = NULL,
                                   fields = NULL,
                                   limit = getOption("sevenbridges2")$limit,
                                   offset = getOption("sevenbridges2")$offset) {
-
-        req <- sevenbridges2::api(path = paste0("billing/groups/", id, "/breakdown/analysis"),
-                                  method = "GET",
-                                  token = self$auth$get_token(),
-                                  base_url = self$auth$url,
-                                  limit = limit,
-                                  invoice_id = invoice_id,
-                                  offset = offset,
-                                  date_from = date_from,
-                                  date_to = date_to
-                                  )
-        req <- status_check(req)
-        #asAnalysisBreakdownList(req)
-        #req_as_json <- jsonlite::toJSON(req, pretty = TRUE)
-        #cat(req_as_json)
-        return(req)
+      req <- sevenbridges2::api(
+        path = paste0("billing/groups/", id, "/breakdown/analysis"),
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        limit = limit,
+        invoice_id = invoice_id,
+        offset = offset,
+        date_from = date_from,
+        date_to = date_to
+      )
+      req <- status_check(req)
+      # asAnalysisBreakdownList(req)
+      # req_as_json <- jsonlite::toJSON(req, pretty = TRUE)
+      # cat(req_as_json)
+      return(req)
     },
     #' @description Method for getting a storage breakdown for a billing group.
     #'
     #' @param offset The zero-based starting index in the entire collection of
     #' the first item to return. The default value is 0.
-    #' @param date_from A string representing the starting date for retrieving storage
-    #' analysis in the following format: mm-dd-yyyy.
-    #' @param date_to A string representing the ending date for retrieving storage
-    #' analysis in the following format: mm-dd-yyyy.
-    #' @param invoice_id A string representing invoice ID to show a breakdown for the
-    #' specific invoice. If omitted, the current spending breakdown is returned.
-    #' @param limit An integer representing the maximum number of collection items
-    #' to return for a single request. The default value is 50, while maximum is 100.
-    #' @param fields Selector specifying a subset of fields to include in the response.
+    #' @param date_from A string representing the starting date for retrieving
+    #' storage analysis in the following format: mm-dd-yyyy.
+    #' @param date_to A string representing the ending date for retrieving
+    #' storage analysis in the following format: mm-dd-yyyy.
+    #' @param invoice_id A string representing invoice ID to show a breakdown
+    #' for the specific invoice. If omitted, the current spending breakdown is
+    #' returned.
+    #' @param limit An integer representing the maximum number of collection
+    #' items to return for a single request. The default value is 50, while
+    #' maximum is 100.
+    #' @param fields Selector specifying a subset of fields to include in the
+    #' response.
     storage_breakdown = function(date_from = NULL,
-                                  date_to = NULL,
-                                  invoice_id = NULL,
-                                  fields = NULL,
-                                  limit = getOption("sevenbridges2")$limit,
-                                  offset = getOption("sevenbridges2")$offset) {
-
-      req <- sevenbridges2::api(path = paste0("billing/groups/", id, "/breakdown/storage"),
-                                method = "GET",
-                                token = self$auth$get_token(),
-                                base_url = self$auth$url,
-                                limit = limit,
-                                invoice_id = invoice_id,
-                                offset = offset,
-                                date_from = date_from,
-                                date_to = date_to
+                                 date_to = NULL,
+                                 invoice_id = NULL,
+                                 fields = NULL,
+                                 limit = getOption("sevenbridges2")$limit,
+                                 offset = getOption("sevenbridges2")$offset) {
+      req <- sevenbridges2::api(
+        path = paste0("billing/groups/", id, "/breakdown/storage"),
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        limit = limit,
+        invoice_id = invoice_id,
+        offset = offset,
+        date_from = date_from,
+        date_to = date_to
       )
       req <- status_check(req)
       return(req)
@@ -157,37 +172,39 @@ Billing <- R6::R6Class(
     #'
     #' @param offset The zero-based starting index in the entire collection of
     #' the first item to return. The default value is 0.
-    #' @param date_from A string representing the starting date for retrieving egress
-    #' analysis in the following format: mm-dd-yyyy.
-    #' @param date_to A string representing the ending date for retrieving egress
-    #' analysis in the following format: mm-dd-yyyy.
-    #' @param invoice_id A string representing invoice ID to show a breakdown for the
-    #' specific invoice. If omitted, the current spending breakdown is returned.
-    #' @param limit An integer representing the maximum number of collection items
-    #' to return for a single request. The default value is 50, while maximum is 100.
-    #' @param fields Selector specifying a subset of fields to include in the response.
+    #' @param date_from A string representing the starting date for retrieving
+    #' egress analysis in the following format: mm-dd-yyyy.
+    #' @param date_to A string representing the ending date for retrieving
+    #' egress analysis in the following format: mm-dd-yyyy.
+    #' @param invoice_id A string representing invoice ID to show a breakdown
+    #' for the specific invoice. If omitted, the current spending breakdown is
+    #' returned.
+    #' @param limit An integer representing the maximum number of collection
+    #' items to return for a single request. The default value is 50, while
+    #' maximum is 100.
+    #' @param fields Selector specifying a subset of fields to include in the
+    #' response.
     egress_breakdown = function(date_from = NULL,
-                                 date_to = NULL,
-                                 invoice_id = NULL,
-                                 fields = NULL,
-                                 limit = getOption("sevenbridges2")$limit,
-                                 offset = getOption("sevenbridges2")$offset) {
-
-      req <- sevenbridges2::api(path = paste0("billing/groups/", id, "/breakdown/egress"),
-                                method = "GET",
-                                token = self$auth$get_token(),
-                                base_url = self$auth$url,
-                                limit = limit,
-                                invoice_id = invoice_id,
-                                offset = offset,
-                                date_from = date_from,
-                                date_to = date_to
+                                date_to = NULL,
+                                invoice_id = NULL,
+                                fields = NULL,
+                                limit = getOption("sevenbridges2")$limit,
+                                offset = getOption("sevenbridges2")$offset) {
+      req <- sevenbridges2::api(
+        path = paste0("billing/groups/", id, "/breakdown/egress"),
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        limit = limit,
+        invoice_id = invoice_id,
+        offset = offset,
+        date_from = date_from,
+        date_to = date_to
       )
       req <- status_check(req)
       return(req)
     }
   )
-
 )
 
 asBilling <- function(x, auth = NULL) {
@@ -209,4 +226,3 @@ asBillingList <- function(x, auth) {
   obj <- lapply(x$items, asBilling, auth = auth)
   obj
 }
-

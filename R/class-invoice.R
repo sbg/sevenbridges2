@@ -48,7 +48,6 @@ Invoice <- R6::R6Class(
                           analysis_costs = NULL,
                           storage_costs = NULL,
                           total = NULL, ...) {
-
       # Initialize Item class
       super$initialize(...)
 
@@ -86,18 +85,49 @@ Invoice <- R6::R6Class(
       x <- purrr::discard(x, .p = ~ .x == "")
 
       string <- glue::glue("{names(x)}: {x}")
-      string_invoice_period <- glue::glue("{names(invoice_period)}: {invoice_period}")
-      string_analysis_costs <- glue::glue("{names(analysis_costs)}: {analysis_costs}")
-      string_storage_costs <- glue::glue("{names(storage_costs)}: {storage_costs}")
+      string_invoice_period <- glue::glue(
+        "{names(invoice_period)}: {invoice_period}"
+      )
+      string_analysis_costs <- glue::glue(
+        "{names(analysis_costs)}: {analysis_costs}"
+      )
+      string_storage_costs <- glue::glue(
+        "{names(storage_costs)}: {storage_costs}"
+      )
       string_total <- glue::glue("{names(total)}: {total}")
 
       cli::cli_h1("Invoice info")
-      cli::cli_ul(); cli::cli_li(string)
+      cli::cli_ul()
+      cli::cli_li(string)
 
-      ifelse(!is.null(invoice_period), {cli::cli_li("invoice_period"); cli::cli_ul(string_invoice_period)}, "")
-      ifelse(!is.null(analysis_costs), {cli::cli_li("analysis_costs"); cli::cli_ul(string_analysis_costs)}, "")
-      ifelse(!is.null(storage_costs), {cli::cli_li("storage_costs"); cli::cli_ul(string_storage_costs)}, "")
-      ifelse(!is.null(total), {cli::cli_li("total"); cli::cli_ul(string_total)}, "")
+      ifelse(!is.null(invoice_period),
+        {
+          cli::cli_li("invoice_period")
+          cli::cli_ul(string_invoice_period)
+        },
+        ""
+      )
+      ifelse(!is.null(analysis_costs),
+        {
+          cli::cli_li("analysis_costs")
+          cli::cli_ul(string_analysis_costs)
+        },
+        ""
+      )
+      ifelse(!is.null(storage_costs),
+        {
+          cli::cli_li("storage_costs")
+          cli::cli_ul(string_storage_costs)
+        },
+        ""
+      )
+      ifelse(!is.null(total),
+        {
+          cli::cli_li("total")
+          cli::cli_ul(string_total)
+        },
+        ""
+      )
     }
   )
 )

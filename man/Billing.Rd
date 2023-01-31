@@ -116,19 +116,22 @@ Method for getting a analysis breakdown for a billing group.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{date_from}}{A string representing the starting date for retrieving transactions
-analysis in the following format: mm-dd-yyyy.}
+\item{\code{date_from}}{A string representing the starting date for retrieving
+transactions analysis in the following format: mm-dd-yyyy.}
 
-\item{\code{date_to}}{A string representing the ending date for retrieving transactions
-analysis in the following format: mm-dd-yyyy.}
+\item{\code{date_to}}{A string representing the ending date for retrieving
+transactions analysis in the following format: mm-dd-yyyy.}
 
-\item{\code{invoice_id}}{A string representing invoice ID to show a breakdown for the
-specific invoice. If omitted, the current spending breakdown is returned.}
+\item{\code{invoice_id}}{A string representing invoice ID to show a breakdown
+for the specific invoice. If omitted, the current spending breakdown is
+returned.}
 
-\item{\code{fields}}{Selector specifying a subset of fields to include in the response.}
+\item{\code{fields}}{Selector specifying a subset of fields to include in the
+response.}
 
-\item{\code{limit}}{An integer representing the maximum number of collection items
-to return for a single request. The default value is 50, while maximum is 100.}
+\item{\code{limit}}{An integer representing the maximum number of collection
+items to return for a single request. The default value is 50, while
+maximum is 100.}
 
 \item{\code{offset}}{The zero-based starting index in the entire collection of
 the first item to return. The default value is 0.}
@@ -155,19 +158,22 @@ Method for getting a storage breakdown for a billing group.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{date_from}}{A string representing the starting date for retrieving storage
-analysis in the following format: mm-dd-yyyy.}
+\item{\code{date_from}}{A string representing the starting date for retrieving
+storage analysis in the following format: mm-dd-yyyy.}
 
-\item{\code{date_to}}{A string representing the ending date for retrieving storage
-analysis in the following format: mm-dd-yyyy.}
+\item{\code{date_to}}{A string representing the ending date for retrieving
+storage analysis in the following format: mm-dd-yyyy.}
 
-\item{\code{invoice_id}}{A string representing invoice ID to show a breakdown for the
-specific invoice. If omitted, the current spending breakdown is returned.}
+\item{\code{invoice_id}}{A string representing invoice ID to show a breakdown
+for the specific invoice. If omitted, the current spending breakdown is
+returned.}
 
-\item{\code{fields}}{Selector specifying a subset of fields to include in the response.}
+\item{\code{fields}}{Selector specifying a subset of fields to include in the
+response.}
 
-\item{\code{limit}}{An integer representing the maximum number of collection items
-to return for a single request. The default value is 50, while maximum is 100.}
+\item{\code{limit}}{An integer representing the maximum number of collection
+items to return for a single request. The default value is 50, while
+maximum is 100.}
 
 \item{\code{offset}}{The zero-based starting index in the entire collection of
 the first item to return. The default value is 0.}
@@ -194,19 +200,22 @@ Method for getting a egress breakdown for a billing group.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{date_from}}{A string representing the starting date for retrieving egress
-analysis in the following format: mm-dd-yyyy.}
+\item{\code{date_from}}{A string representing the starting date for retrieving
+egress analysis in the following format: mm-dd-yyyy.}
 
-\item{\code{date_to}}{A string representing the ending date for retrieving egress
-analysis in the following format: mm-dd-yyyy.}
+\item{\code{date_to}}{A string representing the ending date for retrieving
+egress analysis in the following format: mm-dd-yyyy.}
 
-\item{\code{invoice_id}}{A string representing invoice ID to show a breakdown for the
-specific invoice. If omitted, the current spending breakdown is returned.}
+\item{\code{invoice_id}}{A string representing invoice ID to show a breakdown
+for the specific invoice. If omitted, the current spending breakdown is
+returned.}
 
-\item{\code{fields}}{Selector specifying a subset of fields to include in the response.}
+\item{\code{fields}}{Selector specifying a subset of fields to include in the
+response.}
 
-\item{\code{limit}}{An integer representing the maximum number of collection items
-to return for a single request. The default value is 50, while maximum is 100.}
+\item{\code{limit}}{An integer representing the maximum number of collection
+items to return for a single request. The default value is 50, while
+maximum is 100.}
 
 \item{\code{offset}}{The zero-based starting index in the entire collection of
 the first item to return. The default value is 0.}

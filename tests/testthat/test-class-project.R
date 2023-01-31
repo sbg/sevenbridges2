@@ -22,10 +22,15 @@ test_that("Project initialization works", {
   testthat::expect_equal(test_project$created_by, "luna_lovegood")
   testthat::expect_equal(test_project$root_folder, "12a1ab12345a12345a12345a")
   testthat::expect_equal(test_project$type, "v2")
-  testthat::expect_equal(test_project$billing_group, "ab12345a-123a-1234-1234-a1ab12a12ab1")
+  testthat::expect_equal(
+    test_project$billing_group,
+    "ab12345a-123a-1234-1234-a1ab12a12ab1"
+  )
   testthat::expect_equal(test_project$name, "nargles-project")
   testthat::expect_equal(test_project$id, "luna_lovegood/nargles-project")
+  # nolint start
   testthat::expect_equal(test_project$href, "https://api.sbgenomics.com/v2/projects/luna_lovegood/nargles-project")
+  # nolint end
 
   # Get settings list from test_project object
   settings_list <- test_project$settings
@@ -63,18 +68,24 @@ test_that("Project initialization works", {
   permissions_keys <- names(permissions_list)
 
   # Compare the two lists
-  expect_equal(permissions_list[permissions_keys], expected_permissions_list[permissions_keys])
+  expect_equal(
+    permissions_list[permissions_keys],
+    expected_permissions_list[permissions_keys]
+  )
 
   # Check if superclass field auth is as expected
   testthat::expect_equal(test_project$auth$platform, "aws-us")
-  testthat::expect_equal(test_project$auth$url, "https://api.sbgenomics.com/v2/")
-
-
-
+  testthat::expect_equal(
+    test_project$auth$url,
+    "https://api.sbgenomics.com/v2/"
+  )
 })
 
 test_that("Project print method works", {
-  project_obj_file <- testthat::test_path("test_data", "luna_lovegood_project_obj.RDS")
+  project_obj_file <- testthat::test_path(
+    "test_data",
+    "luna_lovegood_project_obj.RDS"
+  )
   test_project <- readRDS(project_obj_file)
   testthat::expect_snapshot(test_project$print())
 })

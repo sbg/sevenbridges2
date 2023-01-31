@@ -5,7 +5,7 @@
 #'
 #' @importFrom R6 R6Class
 #' @export
-Permission = R6::R6Class(
+Permission <- R6::R6Class(
   "Permission",
   inherit = Item,
   portable = FALSE,
@@ -40,7 +40,8 @@ Permission = R6::R6Class(
     #' assign the user admin permission. Set to \code{FALSE} to remove admin
     #' permission.
     #' @param ... Other arguments.
-    initialize = function(write = TRUE, read = TRUE, copy = TRUE, execute = TRUE, admin = FALSE, ...) {
+    initialize = function(write = TRUE, read = TRUE, copy = TRUE,
+                          execute = TRUE, admin = FALSE, ...) {
       # Initialize Item class
       super$initialize(...)
 
@@ -72,7 +73,7 @@ Permission = R6::R6Class(
     }
   )
 )
-
+# nolint start
 # Helper function for creating Permission objects
 asPermission <- function(x, auth = NULL) {
   Permission$new(
@@ -85,3 +86,4 @@ asPermission <- function(x, auth = NULL) {
     auth = auth
   )
 }
+# nolint end

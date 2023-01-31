@@ -67,7 +67,8 @@ Create a new rate limit object.
 
 \item{\code{remaining}}{Indicates how many requests remain.}
 
-\item{\code{reset}}{Indicates the time when the request rate limit will be reset.}
+\item{\code{reset}}{Indicates the time when the request rate limit will be
+reset.}
 
 \item{\code{instance_limit}}{Indicates the total number of instances available
 to the user. For the first few months, instance limits are unlimited.

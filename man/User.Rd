@@ -23,7 +23,8 @@ This is main object for Users.
 
 \item{\code{last_name}}{User's last name.}
 
-\item{\code{affiliation}}{The company or the institute the user is affiliated with.}
+\item{\code{affiliation}}{The company or the institute the user is affiliated
+with.}
 
 \item{\code{phone}}{User's phone number.}
 
@@ -86,7 +87,8 @@ Create a new User object.
 
 \item{\code{last_name}}{User's last name.}
 
-\item{\code{affiliation}}{The company or the institute the user is affiliated with.}
+\item{\code{affiliation}}{The company or the institute the user is affiliated
+with.}
 
 \item{\code{phone}}{User's phone number.}
 

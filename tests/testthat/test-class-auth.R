@@ -42,7 +42,10 @@ testthat::test_that("Init authentication from env works", {
 
   sbg_set_env(
     url = "https://test-url.com/",
-    token = stringi::stri_rand_strings(n = 1, length = 32, pattern = "[a-z0-9]"),
+    token = stringi::stri_rand_strings(
+      n = 1, length = 32,
+      pattern = "[a-z0-9]"
+    ),
     sysenv_url_name = test_sysenv_url_name,
     sysenv_token_name = test_sysenv_token_name
   )
@@ -88,7 +91,10 @@ testthat::test_that("Init authentication from config file works", {
   auth <- suppressMessages(
     sevenbridges2::Auth$new(
       from = "file",
-      config_file = testthat::test_path("test_data", "sbg_credentials_test_file"),
+      config_file = testthat::test_path(
+        "test_data",
+        "sbg_credentials_test_file"
+      ),
       profile_name = "BioDataCatalyst",
       sysenv_url = "TEST_SYSENV_URL_NAME",
       sysenv_token = "TEST_SYSENV_TOKEN_NAME"
@@ -97,7 +103,10 @@ testthat::test_that("Init authentication from config file works", {
 
   testthat::expect_true(checkmate::test_class(auth, classes = "Auth"))
 
-  testthat::expect_equal(auth$get_token(), sbg_get_env(paste0(auth$profile_name, "_token")))
+  testthat::expect_equal(
+    auth$get_token(),
+    sbg_get_env(paste0(auth$profile_name, "_token"))
+  )
   # Check the number of characters in the token written in the env variable
   testthat::expect_equal(nchar(auth$get_token()), 32L)
 
@@ -106,13 +115,22 @@ testthat::test_that("Init authentication from config file works", {
 
   # Check auth object fields
   testthat::expect_equal(auth$authorization, FALSE)
-  testthat::expect_equal(auth$config_file, testthat::test_path("test_data", "sbg_credentials_test_file"))
+  testthat::expect_equal(
+    auth$config_file,
+    testthat::test_path(
+      "test_data",
+      "sbg_credentials_test_file"
+    )
+  )
   testthat::expect_equal(auth$from, "file")
   testthat::expect_equal(auth$fs, NULL)
   testthat::expect_equal(auth$platform, "f4c")
   testthat::expect_equal(auth$profile_name, "BioDataCatalyst")
 
-  testthat::expect_equal(auth$url, sbg_get_env(paste0(auth$profile_name, "_url")))
+  testthat::expect_equal(
+    auth$url,
+    sbg_get_env(paste0(auth$profile_name, "_url"))
+  )
 
   # Clear env variables
   Sys.unsetenv(paste0(auth$profile_name, "_token"))
@@ -123,9 +141,11 @@ testthat::test_that("Init authentication from config file works", {
 
 
 
-testthat::test_that("Calling the api method with no arguments returns a list of all API paths", {
+testthat::test_that("Calling the api method with no arguments returns a list of
+                    all API paths", {
   # Generate dummy token
-  dummy_token <- stringi::stri_rand_strings(1, 32, pattern = "[a-z0-9]") # fake token
+  dummy_token <-
+    stringi::stri_rand_strings(1, 32, pattern = "[a-z0-9]") # fake token
 
   # Create dummy authentication object
   auth <- suppressMessages(
@@ -143,12 +163,13 @@ testthat::test_that("Calling the api method with no arguments returns a list of 
   testthat::expect_equal(is.list(api_paths), TRUE)
   testthat::expect_equal(length(api_paths), 12L)
 
-  expected_api_paths <- readRDS(testthat::test_path("test_data",
-                                                      "all_api_paths.RDS"))
+  expected_api_paths <- readRDS(testthat::test_path(
+    "test_data",
+    "all_api_paths.RDS"
+  ))
 
   keys <- names(api_paths)
 
   # Compare the two lists
   expect_equal(api_paths[keys], expected_api_paths[keys])
 })
-

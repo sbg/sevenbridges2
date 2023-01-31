@@ -41,7 +41,8 @@ Rate <- R6::R6Class(
     #' Create a new rate limit object.
     #' @param limit Indicates how many requests can be made in five minutes.
     #' @param remaining Indicates how many requests remain.
-    #' @param reset Indicates the time when the request rate limit will be reset.
+    #' @param reset Indicates the time when the request rate limit will be
+    #' reset.
     #' @param instance_limit Indicates the total number of instances available
     #' to the user. For the first few months, instance limits are unlimited.
     #' This is indicated by a special limit of -1. Correspondingly, the
@@ -68,7 +69,6 @@ Rate <- R6::R6Class(
       # Instance
       self$instance$limit <- instance_limit
       self$instance$remaining <- instance_remaining
-
     },
     #' @description
     #' Print rate limit information as a bullet list.
@@ -85,7 +85,8 @@ Rate <- R6::R6Class(
 
       if (!is.null(x$instance) && length(x$instance) != 0) {
         instance_info <- x$instance
-        string_instance_info <- glue::glue("{names(instance_info)}: {instance_info}")
+        string_instance_info <- glue::glue("{names(instance_info)}:
+                                           {instance_info}")
       }
 
       x <- purrr::discard(x, .p = is.list)
@@ -96,13 +97,19 @@ Rate <- R6::R6Class(
 
       cli::cli_h1("Rate limit")
       ifelse(exists("rate_info") && !is.null(rate_info),
-             {cli::cli_li("rate")
-               cli::cli_ul(string_rate_info)},
-             "")
+        {
+          cli::cli_li("rate")
+          cli::cli_ul(string_rate_info)
+        },
+        ""
+      )
       ifelse(exists("instance_info") && !is.null(instance_info),
-             {cli::cli_li("instance")
-               cli::cli_ul(string_instance_info)},
-             "")
+        {
+          cli::cli_li("instance")
+          cli::cli_ul(string_instance_info)
+        },
+        ""
+      )
       # Close container elements
       cli::cli_end()
     }
@@ -124,10 +131,12 @@ asRate <- function(x, auth = NULL) {
 }
 
 
-parse_time <- function(reset_time_as_unix_epoch, origin = "1970-01-01", time_zone = "") {
-  reset_time_as_posixlt <- as.POSIXlt(reset_time_as_unix_epoch, origin = "1970-01-01", tz = "")
+parse_time <- function(reset_time_as_unix_epoch, origin = "1970-01-01",
+                       time_zone = "") {
+  reset_time_as_posixlt <- as.POSIXlt(reset_time_as_unix_epoch,
+    origin = "1970-01-01", tz = ""
+  )
   reset_date_time <- as.character(reset_time_as_posixlt)
   reset_time_zone <- reset_time_as_posixlt$zone
-  return (paste0(reset_date_time, " ", reset_time_zone))
+  return(paste0(reset_date_time, " ", reset_time_zone))
 }
-

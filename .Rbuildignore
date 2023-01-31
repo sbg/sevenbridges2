@@ -1,8 +1,9 @@
-^renv$
-^renv\.lock$
 ^.*\.Rproj$
+^\.DS_Store$
 ^\.Rproj\.user$
+^\.pre-commit-config\.yaml$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-^\.DS_Store$
+^renv$
+^renv\.lock$

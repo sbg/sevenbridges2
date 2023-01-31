@@ -1,3 +1,4 @@
+# nolint start
 #' @title R6 Class Representing Authentication Object
 #'
 #' @description Authentication object with methods to access API endpoints.
@@ -14,6 +15,7 @@
 #'
 #' @export
 Auth <- R6::R6Class(
+  # nolint end
   "Auth",
   public = list(
     #' @field from Authentication method.
@@ -48,7 +50,8 @@ Auth <- R6::R6Class(
     authorization = NULL,
 
     #' @description
-    #' Create a new Auth object. All methods can be accessed through this object.
+    #' Create a new Auth object. All methods can be accessed through this
+    #' object.
     #'
     #' @param from Authentication method. Could be \code{"direct"}
     #' (pass the credential information to the arguments directly),
@@ -135,13 +138,13 @@ Auth <- R6::R6Class(
 
         # Case 3: platform is provided, url is not provided
         if (!is.null(platform) & is.null(url)) {
-
           # platform name sanity check
           self$platform <- platform
           if (self$platform %in% names(sbg_baseurl)) {
             self$url <- sbg_baseurl[[self$platform]]
           } else {
-            rlang::abort("Platform does not exist, please check its spelling (case-sensitive)")
+            rlang::abort("Platform does not exist, please check its spelling
+                         (case-sensitive)")
           }
           message("Using platform: ", self$platform)
         }
@@ -161,7 +164,6 @@ Auth <- R6::R6Class(
       }
 
       if (self$from == "env") {
-
         # In this case, `config_file` and `profile_name`
         # should be `NULL` even if they
         # are assigned values
@@ -199,7 +201,6 @@ Auth <- R6::R6Class(
 
 
       if (self$from == "file") {
-
         # In this case, `sysenv_url`, `sysenv_token`,
         # should be `NULL` even if they
         # are assigned values
@@ -225,7 +226,8 @@ Auth <- R6::R6Class(
           self$profile_name <- profile_name
         }
         # extract url + token from profile
-        self$url <- normalize_url(config_list[[self$profile_name]][["api_endpoint"]])
+        self$url <-
+          normalize_url(config_list[[self$profile_name]][["api_endpoint"]])
         .token <- config_list[[self$profile_name]][["auth_token"]]
         if (is.null(self$url) || is.null(.token)) {
           rlang::abort(
@@ -233,10 +235,12 @@ Auth <- R6::R6Class(
             self$profile_name
           )
         } else {
-          sbg_set_env(url = self$url,
-                      token = .token,
-                      sysenv_url_name = paste0(self$profile_name, "_url"),
-                      sysenv_token_name = paste0(self$profile_name, "_token"))
+          sbg_set_env(
+            url = self$url,
+            token = .token,
+            sysenv_url_name = paste0(self$profile_name, "_url"),
+            sysenv_token_name = paste0(self$profile_name, "_token")
+          )
         }
         rlang::inform(paste0(
           "Authenticating with user profile: ",
@@ -278,7 +282,8 @@ Auth <- R6::R6Class(
     api = function(..., limit = getOption("sevenbridges2")$"limit",
                    offset = getOption("sevenbridges2")$"offset",
                    fields = NULL, complete = FALSE) {
-      "This call returns all API paths, and pass arguments to api() function with input token and url automatically"
+      "This call returns all API paths, and pass arguments to api() function
+      with input token and url automatically"
 
       req <- sevenbridges2::api(
         self$get_token(),
@@ -292,7 +297,8 @@ Auth <- R6::R6Class(
       req <- status_check(req)
 
       if (complete) {
-        N <- as.numeric(httr::headers(sbg_get_response(req))[["x-total-matching-query"]])
+        N <- as.numeric(httr::headers(sbg_get_response(req))
+        [["x-total-matching-query"]])
         if (length(N)) .item <- length(req$items)
         if (.item < N) {
           pb <- txtProgressBar(min = 1, max = N %/% 100 + 1, style = 3)
@@ -333,7 +339,8 @@ Auth <- R6::R6Class(
           method = "GET",
           base_url = self$url,
         )
-        rlang::inform("username not provided, showing the currently authenticated user information")
+        rlang::inform("username not provided, showing the currently
+                      authenticated user information")
       } else {
         req <- sevenbridges2::api(
           token = self$get_token(),
@@ -352,12 +359,14 @@ Auth <- R6::R6Class(
     # rate limit --------------------------------------------------------------
     #' @description Get information about current rate limit
     rate_limit = function() {
-      "This call returns information about your current rate limit. This is the number of API calls you can make in one hour."
+      "This call returns information about your current rate limit. This is the
+      number of API calls you can make in one hour."
       req <- sevenbridges2::api(
         path = "rate_limit",
         method = "GET",
         token = self$get_token(),
-        base_url = self$url)
+        base_url = self$url
+      )
 
       # Extract parsed contents of a request
       req <- status_check(req)
@@ -365,7 +374,8 @@ Auth <- R6::R6Class(
       asRate(req)
     },
     # billing -----------------------------------------------------------------
-    #' @description Get list of paths used to access billing information via the API
+    #' @description Get list of paths used to access billing information via
+    #' the API
     #' @param ... Other arguments passed to methods.
     #' @importFrom purrr discard
     #' @importFrom glue glue
@@ -377,7 +387,8 @@ Auth <- R6::R6Class(
         method = "GET",
         token = self$get_token(),
         base_url = self$url,
-        ...)
+        ...
+      )
 
       req <- status_check(req)
 
@@ -409,7 +420,8 @@ Auth <- R6::R6Class(
           method = "GET",
           token = self$get_token(),
           base_url = self$url,
-          ...)
+          ...
+        )
 
         req <- status_check(req)
 
@@ -421,7 +433,8 @@ Auth <- R6::R6Class(
           method = "GET",
           token = self$get_token(),
           base_url = self$url,
-          ...)
+          ...
+        )
 
         req <- status_check(req)
 
@@ -435,7 +448,14 @@ Auth <- R6::R6Class(
     #' the method will return the invoice incurred by that billing group only.
     #' @param ... Other arguments passed to methods.
     invoice = function(id = NULL, billing_group_id = NULL, ...) {
-      "If no id provided, This call returns a list of invoices, with information about each, including whether or not the invoice is pending and the billing period it covers. The call returns information about all your available invoices, unless you use the query parameter bg_id to specify the ID of a particular billing group, in which case it will return the invoice incurred by that billing group only. If id was provided, This call retrieves information about a selected invoice, including the costs for analysis and storage, and the invoice period."
+      "If no id provided, This call returns a list of invoices, with
+      information about each, including whether or not the invoice is pending
+      and the billing period it covers. The call returns information about all
+      your available invoices, unless you use the query parameter bg_id to
+      specify the ID of a particular billing group, in which case it will
+      return the invoice incurred by that billing group only. If id was
+      provided, This call retrieves information about a selected invoice,
+      including the costs for analysis and storage, and the invoice period."
 
       if (is.null(id)) {
         if (is.null(billing_group_id)) {
@@ -507,9 +527,10 @@ Auth <- R6::R6Class(
 
       res <- asProjectList(res, auth = self)
 
-      res <- m.match(res, id = id, name = name,
-                     exact = FALSE,
-                     ignore.case = TRUE
+      res <- m.match(res,
+        id = id, name = name,
+        exact = FALSE,
+        ignore.case = TRUE
       )
 
       res
@@ -525,7 +546,9 @@ Auth <- R6::R6Class(
     #' identifying objects using the API, please see the API overview.
     #' @param ... Other arguments.
     #' @return Project object.
-    project_get = function(project_owner = suppressMessages(self$user()$username), project = NULL, ...) {
+    project_get = function(project_owner = suppressMessages(
+                             self$user()$username
+                           ), project = NULL, ...) {
       res <- sevenbridges2::api(
         path = paste0("projects/", project_owner, "/", project),
         method = "GET",
@@ -561,8 +584,8 @@ Auth <- R6::R6Class(
     #' @param intermediate_files A list defining the retention period for
     #' intermediate files. Expected elements:
     #' \itemize{
-    #' \item retention - Specifies that intermediate files should be retained for a
-    #  limited amount of time. The value is always LIMITED.
+    #' \item retention - Specifies that intermediate files should be retained
+    #' for a limited amount of time. The value is always LIMITED.
     #' \item duration - Specifies intermediate files retention period in hours.
     #' The minimum value is 1. The maximum value is 120 and the default value
     #' is 24.
@@ -579,12 +602,17 @@ Auth <- R6::R6Class(
                            use_interruptible_instances = TRUE,
                            use_memoization = FALSE,
                            elastic_disk = FALSE,
-                           intermediate_files = list("retention" = "LIMITED", "duration" = 24),
+                           intermediate_files = list(
+                             "retention" = "LIMITED",
+                             "duration" = 24
+                           ),
                            ...) {
-      "Create new projects, required parameters: name, billing_group_id, optional parameteres: tags, description, type, and settings."
+      "Create new projects, required parameters: name, billing_group_id,
+      optional parameteres: tags, description, type, and settings."
 
       if (is.null(name)) {
-        rlang::abort("You must provide at least a name for the project you want to create.")
+        rlang::abort("You must provide at least a name for the project you want
+                     to create.")
       }
 
       # check tags

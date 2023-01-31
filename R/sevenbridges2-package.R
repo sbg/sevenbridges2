@@ -19,7 +19,11 @@ sbg_default_profile_name <- "default"
 sbg_default_sysenv_url <- "SB_API_ENDPOINT"
 sbg_default_sysenv_token <- "SB_AUTH_TOKEN"
 
-
+utils::globalVariables(c(
+  "sbg_baseurl", "sbg_default_platform",
+  "sbg_default_config_file", "sbg_default_profile_name",
+  "sbg_default_sysenv_url", "sbg_default_sysenv_token"
+))
 # onLoad function sets initial params for future queries
 .onLoad <- function(libname, pkgname) {
   lst <- list(

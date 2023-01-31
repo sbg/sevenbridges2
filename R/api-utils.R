@@ -1,3 +1,4 @@
+# nolint start
 m.fun <- function(x, y, exact = TRUE, ignore.case = TRUE, ...) {
   if (exact) {
     res <- pmatch(x, y, ...)
@@ -17,7 +18,6 @@ m.match <- function(obj,
                     id = NULL, name = NULL,
                     .id = "id", .name = "name",
                     exact = TRUE, ignore.case = TRUE) {
-
   # if no match, return whole list
   if (is.null(id)) {
     if (is.null(name)) {
@@ -34,16 +34,16 @@ m.match <- function(obj,
         nms <- tolower(nms)
       }
       index <- m.fun(name, nms,
-                     exact = exact,
-                     ignore.case = ignore.case
+        exact = exact,
+        ignore.case = ignore.case
       )
     }
   } else {
     # id is not NULL
     ids <- sapply(obj, function(x) x[[.id]])
     index <- m.fun(id, ids,
-                   exact = exact,
-                   ignore.case = ignore.case
+      exact = exact,
+      ignore.case = ignore.case
     )
   }
 
@@ -70,7 +70,6 @@ m.match <- function(obj,
 #' @keywords internal
 status_check <- function(req, as = "parsed", ...) {
   if (httr::status_code(req) %in% c("200", "201", "202", "204")) {
-
     # Check this !!!
     if (!is.null(req$request$headers["X-SBG-Auth-Token"])) {
       req$request$headers["X-SBG-Auth-Token"] <- "<your_auth_token>"
@@ -379,7 +378,7 @@ build_url2 <- function(url) {
   }
   if (is.list(url$query)) {
     url$query <- eval(parse(text = "httr:::compact(url$query)"))
-    names <- curl_escape(names(url$query))
+    names <- curl::curl_escape(names(url$query))
     values <- as.character(url$query)
     query <- paste0(names, "=", values, collapse = "&")
   } else {
@@ -414,7 +413,7 @@ POST2 <- function(url = NULL, config = list(), ...,
                   multipart = TRUE, handle = NULL) {
   if (!missing(multipart)) {
     warning("multipart is deprecated, please use encode argument instead",
-            call. = FALSE
+      call. = FALSE
     )
     encode <- ifelse(multipart, "multipart", "form")
   }
@@ -425,6 +424,4 @@ POST2 <- function(url = NULL, config = list(), ...,
 
   return(eval(parse(text = "httr:::request_perform(req, hu$handle$handle)")))
 }
-
-
-
+# nolint end

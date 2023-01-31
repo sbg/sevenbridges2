@@ -5,7 +5,7 @@
 #'
 #' @importFrom R6 R6Class
 #' @export
-Member = R6::R6Class(
+Member <- R6::R6Class(
   "Member",
   inherit = Item,
   portable = FALSE,
@@ -28,7 +28,8 @@ Member = R6::R6Class(
     #' @param permissions Member's permissions within a project.
     #' Should be an object of class Permission.
     #' @param ... Other arguments.
-    initialize = function(id = NA, username = NA, email = NA, type = NA, permissions = NULL, ...) {
+    initialize = function(id = NA, username = NA, email = NA, type = NA,
+                          permissions = NULL, ...) {
       # Initialize Item class
       super$initialize(...)
 
@@ -47,7 +48,8 @@ Member = R6::R6Class(
 
       if (!is.null(x$permissions) && length(x$permissions) != 0) {
         permissions <- x$permissions
-        # Convert permissions env to a list and keep only those elements that are logical
+        # Convert permissions env to a list and keep only those elements that
+        # are logical
         permissions <- as.list(permissions)
         permissions <- purrr::keep(permissions, .p = is.logical)
         string_permissions <- glue::glue("{names(permissions)}: {permissions}")
@@ -65,12 +67,17 @@ Member = R6::R6Class(
 
       cli::cli_li(string)
 
-      ifelse(exists("permissions") && !is.null(permissions), {cli::cli_li("permissions:"); cli::cli_ul(string_permissions)}, "")
+      ifelse(exists("permissions") && !is.null(permissions),
+        {
+          cli::cli_li("permissions:")
+          cli::cli_ul(string_permissions)
+        },
+        ""
+      )
 
       # Close container elements
       cli::cli_end()
     }
-
   )
 )
 
@@ -83,7 +90,7 @@ asMember <- function(x, auth = NULL) {
     email = x$email,
     type = x$type,
     permissions = asPermission(x$permissions, auth = auth),
-    #permissions = x$permissions,
+    # permissions = x$permissions,
     href = x$href,
     auth = auth,
     response = attr(x, "response")
