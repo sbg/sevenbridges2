@@ -73,7 +73,7 @@ Permission <- R6::R6Class(
     }
   )
 )
-# nolint start
+
 # Helper function for creating Permission objects
 asPermission <- function(x, auth = NULL) {
   Permission$new(
@@ -86,4 +86,3 @@ asPermission <- function(x, auth = NULL) {
     auth = auth
   )
 }
-# nolint end
