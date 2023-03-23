@@ -105,6 +105,17 @@ status_check <- function(req, as = "parsed", ...) {
   }
 }
 
+
+parse_time <- function(reset_time_as_unix_epoch, origin = "1970-01-01",
+                       time_zone = "") {
+  reset_time_as_posixlt <- as.POSIXlt(reset_time_as_unix_epoch,
+                                      origin = "1970-01-01", tz = ""
+  )
+  reset_date_time <- as.character(reset_time_as_posixlt)
+  reset_time_zone <- reset_time_as_posixlt$zone
+  return(paste0(reset_date_time, " ", reset_time_zone))
+}
+
 # Status codes from sevenbridges API v2 specification
 # https://docs.sevenbridges.com/reference#api-status-codes
 
