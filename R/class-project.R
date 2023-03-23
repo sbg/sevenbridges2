@@ -78,19 +78,19 @@ Project <- R6::R6Class(
     #' permissions within the project.
     #' @param category Project's category. By default projects are PRIVATE.
     #' @param ... Other arguments.
-    initialize = function(id = NULL,
-                          name = NULL,
-                          billing_group = NULL,
-                          description = NULL,
+    initialize = function(id = NA,
+                          name = NA,
+                          billing_group = NA,
+                          description = NA,
                           type = "v2",
-                          tags = NULL,
-                          settings = NULL,
-                          root_folder = NULL,
-                          created_by = NULL,
-                          created_on = NULL,
-                          modified_on = NULL,
-                          permissions = NULL,
-                          category = NULL,
+                          tags = NA,
+                          settings = NA,
+                          root_folder = NA,
+                          created_by = NA,
+                          created_on = NA,
+                          modified_on = NA,
+                          permissions = NA,
+                          category = NA,
                           ...) {
       # Initialize Item class
       super$initialize(...)
