@@ -31,12 +31,6 @@ Rate <- R6::R6Class(
     #' available at the moment.
     #' }
     instance = NULL,
-    # @field limit Indicates how many requests can be made in five minutes.
-    # limit = NULL,
-    # @field remaining Indicates how many requests remain.
-    # remaining = NULL,
-    # @field reset Indicates the time when the request rate limit will be reset.
-    # reset = NULL,
     #' @description
     #' Create a new rate limit object.
     #' @param limit Indicates how many requests can be made in five minutes.
@@ -128,15 +122,4 @@ asRate <- function(x, auth = NULL) {
     auth = auth,
     response = attr(x, "response")
   )
-}
-
-
-parse_time <- function(reset_time_as_unix_epoch, origin = "1970-01-01",
-                       time_zone = "") {
-  reset_time_as_posixlt <- as.POSIXlt(reset_time_as_unix_epoch,
-    origin = "1970-01-01", tz = ""
-  )
-  reset_date_time <- as.character(reset_time_as_posixlt)
-  reset_time_zone <- reset_time_as_posixlt$zone
-  return(paste0(reset_date_time, " ", reset_time_zone))
 }
