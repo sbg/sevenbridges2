@@ -8,5 +8,6 @@
 
 library(testthat)
 library(sevenbridges2)
+library(httr)
 
 test_check("sevenbridges2")

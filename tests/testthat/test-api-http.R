@@ -1,5 +1,4 @@
 test_that("Status check function works properly for unauthorized request", {
-  library(httr)
   resp <- sevenbridges2::api(
     token = stringi::stri_rand_strings(1, 32, pattern = "[a-z0-9]"),
     # fake token
