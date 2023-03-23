@@ -44,13 +44,13 @@ Billing <- R6::R6Class(
     #' @param ... Additional arguments.
     #'
     #' @return A new Billing object.
-    initialize = function(id = NULL,
-                          owner = NULL,
-                          name = NULL,
-                          type = NULL,
+    initialize = function(id = NA,
+                          owner = NA,
+                          name = NA,
+                          type = NA,
                           pending = FALSE,
                           disabled = FALSE,
-                          balance = NULL, ...) {
+                          balance = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
