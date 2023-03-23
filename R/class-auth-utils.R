@@ -57,9 +57,9 @@ sbg_set_env <- function(url = NULL, token = NULL,
   do.call(Sys.setenv, args)
 }
 
-# Read ini format file
-# @param file character string, path to ini file
-# @return Nested list keeping the hierarchical structure of the ini file
+#' Read ini format file
+#' @param file character string, path to ini file
+#' @return Nested list keeping the hierarchical structure of the ini file
 #' @importFrom stringr str_trim
 #' @noRd
 read_ini <- function(file) {
