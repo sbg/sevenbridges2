@@ -355,7 +355,7 @@ codes <- list(
 
 # customize underlying http logic
 # (handle_url2, build_url2, GET2, POST2)
-
+#' @importFrom utils modifyList
 handle_url2 <- function(handle = NULL, url = NULL, ...) {
   if (is.null(url) && is.null(handle)) {
     stop("Must specify at least one of url or handle")
@@ -366,11 +366,12 @@ handle_url2 <- function(handle = NULL, url = NULL, ...) {
   new <- eval(parse(text = "httr:::named(list(...))"))
   if (length(new) > 0 || eval(parse(text = "httr:::is.url(url)"))) {
     old <- httr::parse_url(url)
-    url <- build_url2(modifyList(old, new))
+    url <- build_url2(utils::modifyList(old, new))
   }
 
   list(handle = handle, url = url)
 }
+
 
 build_url2 <- function(url) {
   stopifnot(eval(parse(text = "httr:::is.url(url)")))
