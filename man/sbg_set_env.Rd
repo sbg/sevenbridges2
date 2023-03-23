@@ -2,7 +2,7 @@
 % Please edit documentation in R/class-auth-utils.R
 \name{sbg_set_env}
 \alias{sbg_set_env}
-\title{Set authentication environment variables for Seven Bridges API}
+\title{Set environment variables}
 \usage{
 sbg_set_env(
   url = NULL,
@@ -22,17 +22,14 @@ The default value is `r toString(sbg_default_sysenv_url)`.}
 \item{sysenv_token_name}{Name for the token environment variable.
 The default value is `r toString(sbg_default_sysenv_token)`.}
 }
-\value{
-set two environment variables for authentication
-}
 \description{
-Set authentication environment variables for Seven Bridges API
+Set authentication environment variables for Seven Bridges API.
 }
 \examples{
-# set and get environment variables for CGC
-token <- "your_token"
 \dontrun{
-sbg_set_env("https://cgc-api.sbgenomics.com/v2", token)
+# set and get two environment variables for aws-us platform
+token <- "your_token"
+sbg_set_env("https://api.sbgenomics.com/v2/", token)
 sbg_get_env("SB_API_ENDPOINT")
 sbg_get_env("SB_AUTH_TOKEN")
 }

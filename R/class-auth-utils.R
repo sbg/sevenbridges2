@@ -1,14 +1,15 @@
-#' Set authentication environment variables for Seven Bridges API
+#' Get authentication environment variables for Seven Bridges API
 #'
 #' @param x Name of the system environment variable
 #'
-#' @return value of the environment variable
+#' @return A value of the environment variable.
 #'
 #' @examples
-#' # set and get two environment variables for CGC
-#' token <- "your_token"
+#'
 #' \dontrun{
-#' sbg_set_env("https://cgc-api.sbgenomics.com/v2", token)
+#' # set and get two environment variables for aws-us platform
+#' token <- "your_token"
+#' sbg_set_env("https://api.sbgenomics.com/v2/", token)
 #' sbg_get_env("SB_API_ENDPOINT")
 #' sbg_get_env("SB_AUTH_TOKEN")
 #' }
@@ -23,25 +24,29 @@ sbg_get_env <- function(x) {
   res
 }
 
-#' Set authentication environment variables for Seven Bridges API
+#' @title Set environment variables
+#'
+#' @description Set authentication environment variables for Seven Bridges API.
 #'
 #' @param url Base URL for API.
+#'
 #' @param token Your authentication token.
+#'
 #' @param sysenv_url_name Name for the url environment variable.
 #' The default value is `r toString(sbg_default_sysenv_url)`.
+#'
 #' @param sysenv_token_name Name for the token environment variable.
 #' The default value is `r toString(sbg_default_sysenv_token)`.
 #'
-#' @return set two environment variables for authentication
-#'
 #' @examples
-#' # set and get environment variables for CGC
-#' token <- "your_token"
 #' \dontrun{
-#' sbg_set_env("https://cgc-api.sbgenomics.com/v2", token)
+#' # set and get two environment variables for aws-us platform
+#' token <- "your_token"
+#' sbg_set_env("https://api.sbgenomics.com/v2/", token)
 #' sbg_get_env("SB_API_ENDPOINT")
 #' sbg_get_env("SB_AUTH_TOKEN")
 #' }
+#' @export
 sbg_set_env <- function(url = NULL, token = NULL,
                         sysenv_url_name = sbg_default_sysenv_url,
                         sysenv_token_name = sbg_default_sysenv_token) {
