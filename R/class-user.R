@@ -60,19 +60,19 @@ User <- R6::R6Class(
     #' @param ... Additional arguments.
     #'
     #' @return A new User object.
-    initialize = function(username = NULL,
-                          email = NULL,
-                          first_name = NULL,
-                          last_name = NULL,
-                          affiliation = NULL,
-                          phone = NULL,
-                          address = NULL,
-                          city = NULL,
-                          state = NULL,
-                          country = NULL,
-                          zip_code = NULL,
-                          role = NULL,
-                          tags = NULL, ...) {
+    initialize = function(username = NA,
+                          email = NA,
+                          first_name = NA,
+                          last_name = NA,
+                          affiliation = NA,
+                          phone = NA,
+                          address = NA,
+                          city = NA,
+                          state = NA,
+                          country = NA,
+                          zip_code = NA,
+                          role = NA,
+                          tags = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
