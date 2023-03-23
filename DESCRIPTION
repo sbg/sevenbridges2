@@ -17,7 +17,7 @@ LazyData: true
 VignetteBuilder: knitr
 URL: https://www.sevenbridges.com, https://gitlab.sbgenomics.com/r-stack/sevenbridges2
 Depends:
-    R (>= 4.2.2)
+    R (>= 4.2.0)
 RoxygenNote: 7.2.3
 Imports:
     httr,
