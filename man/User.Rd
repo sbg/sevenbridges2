@@ -59,19 +59,19 @@ with.}
 Create a new User object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{User$new(
-  username = NULL,
-  email = NULL,
-  first_name = NULL,
-  last_name = NULL,
-  affiliation = NULL,
-  phone = NULL,
-  address = NULL,
-  city = NULL,
-  state = NULL,
-  country = NULL,
-  zip_code = NULL,
-  role = NULL,
-  tags = NULL,
+  username = NA,
+  email = NA,
+  first_name = NA,
+  last_name = NA,
+  affiliation = NA,
+  phone = NA,
+  address = NA,
+  city = NA,
+  state = NA,
+  country = NA,
+  zip_code = NA,
+  role = NA,
+  tags = NA,
   ...
 )}\if{html}{\out{</div>}}
 }

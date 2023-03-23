@@ -85,19 +85,19 @@ permissions within the project.}
 Create a new Project object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Project$new(
-  id = NULL,
-  name = NULL,
-  billing_group = NULL,
-  description = NULL,
+  id = NA,
+  name = NA,
+  billing_group = NA,
+  description = NA,
   type = "v2",
-  tags = NULL,
-  settings = NULL,
-  root_folder = NULL,
-  created_by = NULL,
-  created_on = NULL,
-  modified_on = NULL,
-  permissions = NULL,
-  category = NULL,
+  tags = NA,
+  settings = NA,
+  root_folder = NA,
+  created_by = NA,
+  created_on = NA,
+  modified_on = NA,
+  permissions = NA,
+  category = NA,
   ...
 )}\if{html}{\out{</div>}}
 }

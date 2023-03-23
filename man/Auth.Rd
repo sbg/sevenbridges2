@@ -66,14 +66,14 @@ object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$new(
   from = c("direct", "env", "file"),
-  platform = NULL,
-  url = NULL,
-  token = NULL,
-  sysenv_url = NULL,
-  sysenv_token = NULL,
-  config_file = NULL,
-  profile_name = NULL,
-  fs = NULL,
+  platform = NA,
+  url = NA,
+  token = NA,
+  sysenv_url = NA,
+  sysenv_token = NA,
+  config_file = NA,
+  profile_name = NA,
+  fs = NA,
   authorization = FALSE,
   ...
 )}\if{html}{\out{</div>}}

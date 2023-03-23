@@ -35,7 +35,7 @@ User, Project, Task, etc.
 \subsection{Method \code{new()}}{
 Create a new Item object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Item$new(href = NULL, response = NULL, auth = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Item$new(href = NA, response = NA, auth = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

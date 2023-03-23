@@ -49,13 +49,13 @@ This is main object for Billing
 Create a new Billing object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Billing$new(
-  id = NULL,
-  owner = NULL,
-  name = NULL,
-  type = NULL,
+  id = NA,
+  owner = NA,
+  name = NA,
+  type = NA,
   pending = FALSE,
   disabled = FALSE,
-  balance = NULL,
+  balance = NA,
   ...
 )}\if{html}{\out{</div>}}
 }

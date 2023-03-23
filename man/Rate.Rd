@@ -51,11 +51,11 @@ available at the moment.
 Create a new rate limit object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Rate$new(
-  limit = NULL,
-  remaining = NULL,
-  reset = NULL,
-  instance_limit = NULL,
-  instance_remaining = NULL,
+  limit = NA,
+  remaining = NA,
+  reset = NA,
+  instance_limit = NA,
+  instance_remaining = NA,
   ...
 )}\if{html}{\out{</div>}}
 }

@@ -43,7 +43,7 @@ Create a new Member object.
   username = NA,
   email = NA,
   type = NA,
-  permissions = NULL,
+  permissions = NA,
   ...
 )}\if{html}{\out{</div>}}
 }

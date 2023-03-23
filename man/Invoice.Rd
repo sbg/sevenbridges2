@@ -47,13 +47,13 @@ including the costs for analysis and storage, and the invoice period.
 Create a new Invoice object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Invoice$new(
-  invoice_id = NULL,
-  pending = NULL,
-  approval_date = NULL,
-  invoice_period = NULL,
-  analysis_costs = NULL,
-  storage_costs = NULL,
-  total = NULL,
+  invoice_id = NA,
+  pending = NA,
+  approval_date = NA,
+  invoice_period = NA,
+  analysis_costs = NA,
+  storage_costs = NA,
+  total = NA,
   ...
 )}\if{html}{\out{</div>}}
 }
