@@ -39,7 +39,7 @@ test_that("Utility function sbg_parse_config works", {
   keys <- names(config_list)
 
   # Compare the two lists
-  expect_equal(config_list[keys], expected_config_list[keys])
+  testthat::expect_equal(config_list[keys], expected_config_list[keys])
 })
 
 
