@@ -423,7 +423,7 @@ Auth <- R6::R6Class(
 
         req <- status_check(req)
 
-        billing_list <- asBillingList(req, self$auth)
+        billing_list <- asBillingList(req, self)
         billing_list
       } else {
         req <- sevenbridges2::api(

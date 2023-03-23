@@ -116,7 +116,7 @@ Billing <- R6::R6Class(
                                   limit = getOption("sevenbridges2")$limit,
                                   offset = getOption("sevenbridges2")$offset) {
       req <- sevenbridges2::api(
-        path = paste0("billing/groups/", id, "/breakdown/analysis"),
+        path = paste0("billing/groups/", self$id, "/breakdown/analysis"),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -155,7 +155,7 @@ Billing <- R6::R6Class(
                                  limit = getOption("sevenbridges2")$limit,
                                  offset = getOption("sevenbridges2")$offset) {
       req <- sevenbridges2::api(
-        path = paste0("billing/groups/", id, "/breakdown/storage"),
+        path = paste0("billing/groups/", self$id, "/breakdown/storage"),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -191,7 +191,7 @@ Billing <- R6::R6Class(
                                 limit = getOption("sevenbridges2")$limit,
                                 offset = getOption("sevenbridges2")$offset) {
       req <- sevenbridges2::api(
-        path = paste0("billing/groups/", id, "/breakdown/egress"),
+        path = paste0("billing/groups/", self$id, "/breakdown/egress"),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
