@@ -41,13 +41,13 @@ Invoice <- R6::R6Class(
     #' @param storage_costs Storage costs.
     #' @param total Total costs.
     #' @param ... Other arguments passed to methods.
-    initialize = function(invoice_id = NULL,
-                          pending = NULL,
-                          approval_date = NULL,
-                          invoice_period = NULL,
-                          analysis_costs = NULL,
-                          storage_costs = NULL,
-                          total = NULL, ...) {
+    initialize = function(invoice_id = NA,
+                          pending = NA,
+                          approval_date = NA,
+                          invoice_period = NA,
+                          analysis_costs = NA,
+                          storage_costs = NA,
+                          total = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
