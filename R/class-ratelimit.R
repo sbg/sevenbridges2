@@ -46,11 +46,11 @@ Rate <- R6::R6Class(
     #' unlimited. This is indicated by a high remaining value. Correspondingly,
     #' the limit is set to a special value of -1.
     #' @param ... Other arguments passed to methods.
-    initialize = function(limit = NULL,
-                          remaining = NULL,
-                          reset = NULL,
-                          instance_limit = NULL,
-                          instance_remaining = NULL,
+    initialize = function(limit = NA,
+                          remaining = NA,
+                          reset = NA,
+                          instance_limit = NA,
+                          instance_remaining = NA,
                           ...) {
       # Initialize Item class
       super$initialize(...)
