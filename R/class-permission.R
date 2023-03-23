@@ -61,6 +61,7 @@ Permission <- R6::R6Class(
       x <- purrr::discard(x, .p = is.function)
       x <- purrr::discard(x, .p = is.environment)
       x <- purrr::discard(x, .p = is.null)
+      x <- purrr::discard(x, .p = is.na)
       x <- purrr::discard(x, .p = ~ .x == "")
       string <- glue::glue("{names(x)}: {x}")
       names(string) <- rep("*", times = length(string))

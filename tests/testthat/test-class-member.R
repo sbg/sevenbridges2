@@ -31,7 +31,8 @@ test_that("Project member initialization works", {
     execute = TRUE,
     copy = TRUE,
     read = TRUE,
-    write = TRUE
+    write = TRUE,
+    response = NA
   )
 
   keys <- names(permissions_list)
