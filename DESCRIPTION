@@ -24,13 +24,11 @@ Imports:
     R6,
     purrr,
     jsonlite,
-    yaml,
     cli,
     rlang,
     curl,
     glue,
     stringr,
-    remotes (>= 2.4.1),
     utils
 Suggests:
     knitr,
