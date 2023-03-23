@@ -263,7 +263,6 @@ Auth <- R6::R6Class(
         Sys.getenv("SB_AUTH_TOKEN")
       }
     },
-    #' API paths
     #' @description
     #' This method returns all API paths and pass arguments to core `api()`
     #'  function.
