@@ -9,7 +9,7 @@ sbg_baseurl <- list(
 )
 
 # default platform
-sbg_default_platform <- "cgc"
+sbg_default_platform <- "aws-us"
 
 # default user configuration file
 sbg_default_config_file <- "~/.sevenbridges/credentials"
