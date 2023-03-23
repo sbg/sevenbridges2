@@ -95,10 +95,10 @@ Auth <- R6::R6Class(
     #'
     #' @param ... Other arguments passed to methods.
     #' @return A new `Auth` object.
-    initialize = function(from = c("direct", "env", "file"), platform = NULL,
-                          url = NULL, token = NULL, sysenv_url = NULL,
-                          sysenv_token = NULL, config_file = NULL,
-                          profile_name = NULL, fs = NULL,
+    initialize = function(from = c("direct", "env", "file"), platform = NA,
+                          url = NA, token = NA, sysenv_url = NA,
+                          sysenv_token = NA, config_file = NA,
+                          profile_name = NA, fs = NA,
                           authorization = FALSE, ...) {
       self$fs <- fs
       self$from <- match.arg(from)
@@ -122,12 +122,12 @@ Auth <- R6::R6Class(
         # Four cases depending on `platform` and `url`
 
         # Case 1: platform and url are both provided
-        if (!is.null(platform) & !is.null(url)) {
+        if (!is.na(platform) & !is.na(url)) {
           rlang::abort("`platform` and `url` cannot be set simultaneously")
         }
 
         # Case 2: platform and url are both *not* provided
-        if (is.null(platform) & is.null(url)) {
+        if (is.na(platform) & is.na(url)) {
           rlang::warn(paste0(
             "`platform` and `url` are not set, will use the default platform: ",
             sbg_default_platform
@@ -137,7 +137,7 @@ Auth <- R6::R6Class(
         }
 
         # Case 3: platform is provided, url is not provided
-        if (!is.null(platform) & is.null(url)) {
+        if (!is.na(platform) & is.na(url)) {
           # platform name sanity check
           self$platform <- platform
           if (self$platform %in% names(sbg_baseurl)) {
@@ -150,13 +150,13 @@ Auth <- R6::R6Class(
         }
 
         # Case 4: platform is not provided, url is provided
-        if (is.null(platform) & !is.null(url)) {
+        if (is.na(platform) & !is.na(url)) {
           self$url <- normalize_url(url)
           # look up an accurate platform name
           self$platform <- sbg_platform_lookup(self$url)
         }
 
-        if (is.null(token)) {
+        if (is.na(token)) {
           rlang::abort('`token` must be set when `from = "direct"`')
         } else {
           sbg_set_env(url = self$url, token = token)
@@ -171,12 +171,12 @@ Auth <- R6::R6Class(
         self$profile_name <- NULL
 
         # get system environment variables
-        if (is.null(sysenv_url)) {
+        if (is.na(sysenv_url)) {
           self$sysenv_url <- sbg_default_sysenv_url
         } else {
           self$sysenv_url <- sysenv_url
         }
-        if (is.null(sysenv_token)) {
+        if (is.na(sysenv_token)) {
           self$sysenv_token <- sbg_default_sysenv_token
         } else {
           self$sysenv_token <- sysenv_token
@@ -208,7 +208,7 @@ Auth <- R6::R6Class(
         self$sysenv_token <- NULL
 
         # parse user config file
-        if (is.null(config_file)) {
+        if (is.na(config_file)) {
           self$config_file <- sbg_default_config_file
         } else {
           self$config_file <- config_file
@@ -220,7 +220,7 @@ Auth <- R6::R6Class(
         ))
 
         # locate user profile with url + token
-        if (is.null(profile_name)) {
+        if (is.na(profile_name)) {
           self$profile_name <- sbg_default_profile_name
         } else {
           self$profile_name <- profile_name
@@ -229,7 +229,7 @@ Auth <- R6::R6Class(
         self$url <-
           normalize_url(config_list[[self$profile_name]][["api_endpoint"]])
         .token <- config_list[[self$profile_name]][["auth_token"]]
-        if (is.null(self$url) || is.null(.token)) {
+        if (is.null(self$url) || is.na(.token)) {
           rlang::abort(
             "`The field api_endpoint` or `auth_token` is missing in profile:",
             self$profile_name
