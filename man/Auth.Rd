@@ -204,7 +204,10 @@ account information.}
 \if{html}{\out{<a id="method-Auth-rate_limit"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-rate_limit}{}}}
 \subsection{Method \code{rate_limit()}}{
-Get information about current rate limit
+Get information about current rate limit \cr \cr
+This call returns information about your current rate limit. This is the
+number of API calls you can make in one hour. This call also returns
+information about your current instance limit.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$rate_limit()}\if{html}{\out{</div>}}
 }
@@ -251,7 +254,15 @@ Get billing group information
 \if{html}{\out{<a id="method-Auth-invoice"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-invoice}{}}}
 \subsection{Method \code{invoice()}}{
-Get invoice information
+Get invoice information \cr \cr
+If no id provided, This call returns a list of invoices, with
+information about each, including whether or not the invoice is pending
+the billing period it covers. The call returns information about all
+your available invoices, unless you use the query parameter bg_id to
+specify the ID of a particular billing group, in which case it will
+return the invoice incurred by that billing group only. If id was
+provided, This call retrieves information about a selected invoice,
+including the costs for analysis and storage, and the invoice period.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$invoice(id = NULL, billing_group_id = NULL, ...)}\if{html}{\out{</div>}}
 }

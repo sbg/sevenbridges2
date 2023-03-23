@@ -282,9 +282,6 @@ Auth <- R6::R6Class(
     api = function(..., limit = getOption("sevenbridges2")$"limit",
                    offset = getOption("sevenbridges2")$"offset",
                    fields = NULL, complete = FALSE) {
-      "This call returns all API paths, and pass arguments to api() function
-      with input token and url automatically"
-
       req <- sevenbridges2::api(
         self$get_token(),
         base_url = self$url,
@@ -357,10 +354,11 @@ Auth <- R6::R6Class(
       asUser(req, self)
     },
     # rate limit --------------------------------------------------------------
-    #' @description Get information about current rate limit
+    #' @description Get information about current rate limit \cr \cr
+    #' This call returns information about your current rate limit. This is the
+    #' number of API calls you can make in one hour. This call also returns
+    #' information about your current instance limit.
     rate_limit = function() {
-      "This call returns information about your current rate limit. This is the
-      number of API calls you can make in one hour."
       req <- sevenbridges2::api(
         path = "rate_limit",
         method = "GET",
@@ -442,21 +440,21 @@ Auth <- R6::R6Class(
       }
     },
     # invoices ---------------------------------------------------------------
-    #' @description Get invoice information
+    #' @description Get invoice information \cr \cr
+    #' If no id provided, This call returns a list of invoices, with
+    #' information about each, including whether or not the invoice is pending
+    #' the billing period it covers. The call returns information about all
+    #' your available invoices, unless you use the query parameter bg_id to
+    #' specify the ID of a particular billing group, in which case it will
+    #' return the invoice incurred by that billing group only. If id was
+    #' provided, This call retrieves information about a selected invoice,
+    #' including the costs for analysis and storage, and the invoice period.
+    #'
     #' @param id Invoice identifier.
     #' @param billing_group_id ID of a particular billing group. If provided,
     #' the method will return the invoice incurred by that billing group only.
     #' @param ... Other arguments passed to methods.
     invoice = function(id = NULL, billing_group_id = NULL, ...) {
-      "If no id provided, This call returns a list of invoices, with
-      information about each, including whether or not the invoice is pending
-      and the billing period it covers. The call returns information about all
-      your available invoices, unless you use the query parameter bg_id to
-      specify the ID of a particular billing group, in which case it will
-      return the invoice incurred by that billing group only. If id was
-      provided, This call retrieves information about a selected invoice,
-      including the costs for analysis and storage, and the invoice period."
-
       if (is.null(id)) {
         if (is.null(billing_group_id)) {
           req <- sevenbridges2::api(
@@ -607,9 +605,6 @@ Auth <- R6::R6Class(
                              "duration" = 24
                            ),
                            ...) {
-      "Create new projects, required parameters: name, billing_group_id,
-      optional parameteres: tags, description, type, and settings."
-
       if (is.null(name)) {
         rlang::abort("You must provide at least a name for the project you want
                      to create.")
