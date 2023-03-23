@@ -545,7 +545,7 @@ Auth <- R6::R6Class(
     #' @return Project object.
     project_get = function(project_owner = suppressMessages(
                              self$user()$username
-                           ), project = NULL, ...) {
+                           ), project, ...) {
       res <- sevenbridges2::api(
         path = paste0("projects/", project_owner, "/", project),
         method = "GET",

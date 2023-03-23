@@ -316,7 +316,7 @@ of a specified project.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$project_get(
   project_owner = suppressMessages(self$user()$username),
-  project = NULL,
+  project,
   ...
 )}\if{html}{\out{</div>}}
 }
