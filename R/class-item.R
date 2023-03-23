@@ -25,7 +25,7 @@ Item <- R6::R6Class(
     #' @param href API request URL.
     #' @param response API response.
     #' @param auth Seven Bridges Auth object.
-    initialize = function(href = NULL, response = NULL, auth = NULL) {
+    initialize = function(href = NA, response = NA, auth = NA) {
       self$href <- href
       self$response <- response
       self$auth <- auth
