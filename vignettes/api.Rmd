@@ -470,7 +470,7 @@ The **new project** is created on the platform. Notice also that the variable p 
 # list first 50 projects
 a$project_query()
 # list all
-a$project_query(complete = TRUE) # PROVERITI ZASTO OVO NE RADI !!!
+a$project_query(complete = TRUE) # CHECK WHY THIS DOESN'T WORK!
 # return all named match "demo"
 a$project_query(name = "demo")
 # return all projects tagged with "test_tags"
