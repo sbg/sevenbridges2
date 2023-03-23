@@ -90,7 +90,6 @@ asMember <- function(x, auth = NULL) {
     email = x$email,
     type = x$type,
     permissions = asPermission(x$permissions, auth = auth),
-    # permissions = x$permissions,
     href = x$href,
     auth = auth,
     response = attr(x, "response")
