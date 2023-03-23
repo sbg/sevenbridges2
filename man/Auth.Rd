@@ -141,7 +141,6 @@ Returns the authentication token read from system environment variable.
 
 \subsection{Returns}{
 An API authentication token in form of a string.
-API paths
 }
 }
 \if{html}{\out{<hr>}}
