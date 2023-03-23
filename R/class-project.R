@@ -143,10 +143,6 @@ Project <- R6::R6Class(
       string <- glue::glue("{names(x)}: {x}")
       names(string) <- rep("*", times = length(string))
 
-      # string_settings <- glue::glue("{names(settings)}: {settings}")
-      # string_tags <- glue::glue("{names(tags)}: {tags}")
-      # string_permissions <- glue::glue("{names(permissions)}: {permissions}")
-
       cli::cli_h1("Project")
       cli::cli_li(string)
 
