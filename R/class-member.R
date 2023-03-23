@@ -29,7 +29,7 @@ Member <- R6::R6Class(
     #' Should be an object of class Permission.
     #' @param ... Other arguments.
     initialize = function(id = NA, username = NA, email = NA, type = NA,
-                          permissions = NULL, ...) {
+                          permissions = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
