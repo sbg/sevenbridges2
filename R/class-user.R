@@ -97,9 +97,8 @@ User <- R6::R6Class(
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end
     print = function() {
       x <- as.list(self)
-      if (!is.null(x$tags)) {
-        tags <- x$tags
-      }
+      tags <- x$tags
+
       x <- purrr::discard(x, .p = is.list)
       x <- purrr::discard(x, .p = is.function)
       x <- purrr::discard(x, .p = is.environment)
@@ -111,10 +110,9 @@ User <- R6::R6Class(
       cli::cli_h1("User")
       cli::cli_li(string)
 
-      if (!is.null(tags)) {
+      if (!is_missing(tags)) {
         tag_names <- sapply(tags, "[[", "tag")
         tag_expirations <- sapply(tags, "[[", "expires_at")
-
         tags_list <- as.list(as.character(parse_time(tag_expirations)))
         names(tags_list) <- tag_names
 
@@ -122,7 +120,7 @@ User <- R6::R6Class(
                                       {blue expires at:} {tags_list}")
       }
 
-      ifelse((!is.null(tags) && length(tags) != 0),
+      ifelse(!is_missing(tags),
         {
           cli::cli_li("tags")
           cli::cli_ul(string_tags)
