@@ -1,13 +1,10 @@
 #' Core HTTP logic for Seven Bridges API
 #'
-#' Core HTTP logic for Seven Bridges API
-#'
 #' Used for advanced users and the core method for higher level API
 #' in this package.
 #'
 #' @param token API auth token or \code{access_token} for
 #' Seven Bridges single sign-on.
-#' @param version API version number, default is \code{v2}.
 #' @param path path connected with \code{base_url}.
 #' @param method one of \code{"GET"}, \code{"POST"},
 #' \code{"PUT"}, \code{"DELETE"}, or \code{"PATCH"}.
@@ -40,7 +37,7 @@
 #' \url{https://docs.sevenbridges.com/docs/the-api#section-general-\n
 #' api-information}
 #'
-#' @param base_url default is \code{"https://api.sbgenomics.com/v2"}
+#' @param base_url platform URL, default is NULL.
 #' @param ... Other arguments passed to GET/POST/PUT/DELETE/PATCH call.
 #'
 #' @return returned request list of httr
@@ -60,7 +57,7 @@
 #' api(token = token, path = "projects", method = "GET")
 #' }
 #'
-api <- function(token = NULL, version = "v2", path = NULL,
+api <- function(token = NULL, path = NULL,
                 method = c("GET", "POST", "PUT", "DELETE", "PATCH"),
                 query = NULL, body = list(),
                 encode = c("json", "form", "multipart"),
@@ -69,12 +66,12 @@ api <- function(token = NULL, version = "v2", path = NULL,
                 advance_access = getOption("sevenbridges2")$advance_access,
                 authorization = FALSE,
                 fields = NULL,
-                # base_url = paste0("https://api.sbgenomics.com/",
-                # version, "/"),
                 base_url = NULL,
                 ...) {
   if (is.null(token)) stop("token must be provided")
+  if (is.null(base_url)) stop("API address from the preferred platform must be provided")
 
+  url <- paste0(base_url, path)
   method <- match.arg(method)
   encode <- match.arg(encode)
 
@@ -100,40 +97,39 @@ api <- function(token = NULL, version = "v2", path = NULL,
     query <- NULL
   }
 
+  # setup body
+  if (method %in% c("POST", "PATCH", "PUT")) {
+    stopifnot(is.list(body))
+    body <- jsonlite::toJSON(body, auto_unbox = TRUE, null = "null")
+  }
+
   switch(method,
     GET = {
-      GET2(paste0(base_url, path),
+      GET2(url,
         httr::add_headers(.headers = headers),
         query = query, ...
       )
     },
     POST = {
-      stopifnot(is.list(body))
-      body <- jsonlite::toJSON(body, auto_unbox = TRUE, null = "null")
-      POST2(paste0(base_url, path),
+      POST2(url,
         httr::add_headers(.headers = headers),
         query = query,
         body = body, encode = encode, ...
       )
     },
     PUT = {
-      stopifnot(is.list(body))
-      body <- jsonlite::toJSON(body, auto_unbox = TRUE, null = "null")
-      httr::PUT(paste0(base_url, path),
+      httr::PUT(url,
         httr::add_headers(.headers = headers),
         body = body, encode = encode, ...
       )
     },
     DELETE = {
-      httr::DELETE(
-        paste0(base_url, path),
+      httr::DELETE(url,
         httr::add_headers(.headers = headers), ...
       )
     },
     PATCH = {
-      stopifnot(is.list(body))
-      body <- jsonlite::toJSON(body, auto_unbox = TRUE, null = "null")
-      httr::PATCH(paste0(base_url, path),
+      httr::PATCH(url,
         httr::add_headers(.headers = headers),
         body = body,
         encode = encode, ...

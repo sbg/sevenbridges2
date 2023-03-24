@@ -137,3 +137,11 @@ sbg_platform_lookup <- function(baseurl) {
 sbg_get_response <- function(request) {
   return(attr(request, "response"))
 }
+
+is_missing <- function(input) {
+  isTRUE(
+    checkmate::test_scalar_na(input, null.ok = TRUE) ||
+      input == "" ||
+      length(input) == 0
+  )
+}
