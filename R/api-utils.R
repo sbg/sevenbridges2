@@ -109,6 +109,7 @@ status_check <- function(req, as = "parsed", ...) {
 
 parse_time <- function(reset_time_as_unix_epoch, origin = "1970-01-01",
                        time_zone = "") {
+  if (is_missing(reset_time_as_unix_epoch)) return("unknown")
   reset_time_as_posixlt <- as.POSIXlt(reset_time_as_unix_epoch,
                                       origin = "1970-01-01", tz = ""
   )
