@@ -1,4 +1,16 @@
 # nolint start
+#' Match results by criteria
+#'
+#' Get results by criteria
+#' @param x value(s) to find
+#' @param y data input to search through
+#' @param exact should it be an exact match or partial, default TRUE
+#' @param ignore.case should it ignore cases, or not, default TRUE
+#'
+#'
+#' @return index of the matched element from the data provided
+#'
+#' @keywords internal
 m.fun <- function(x, y, exact = TRUE, ignore.case = TRUE, ...) {
   if (exact) {
     res <- pmatch(x, y, ...)
@@ -12,8 +24,21 @@ m.fun <- function(x, y, exact = TRUE, ignore.case = TRUE, ...) {
   res
 }
 
-
-# match by id and name
+#' Match results by id and/or name
+#'
+#' Get results by id and/or name
+#' @param obj results list
+#' @param id id of the resource
+#' @param name name of the resource
+#' @param .id name of the 'id' argument, set to 'id'
+#' @param .name name of the 'name' argument, set to 'name'
+#' @param exact should it be an exact match or partial, default TRUE
+#' @param ignore.case should it ignore cases, or not, default TRUE
+#'
+#'
+#' @return subset of the result matching id or name
+#'
+#' @keywords internal
 m.match <- function(obj,
                     id = NULL, name = NULL,
                     .id = "id", .name = "name",
