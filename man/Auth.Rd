@@ -90,10 +90,10 @@ Default is \code{"direct"}.}
 
 \item{\code{platform}}{The platform to use.
 If \code{platform} and \code{url} are both not specified,
-the default is \code{"cgc"} (Cancer Genomics Cloud).
+the default is \code{"aws-us"} (Seven Bridges Platform - US).
 Other possible values include
-\code{"aws-us"} (Seven Bridges Platform - US),
 \code{"aws-eu"} (Seven Bridges Platform - EU),
+\code{"cgc"} (Cancer Genomics Cloud),
 \code{"ali-cn"} (Seven Bridges Platform - China),
 \code{"cavatica"} (Cavatica), and
 \code{"f4c"} (BioData Catalyst Powered by Seven Bridges).}

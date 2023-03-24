@@ -6,7 +6,6 @@
 \usage{
 api(
   token = NULL,
-  version = "v2",
   path = NULL,
   method = c("GET", "POST", "PUT", "DELETE", "PATCH"),
   query = NULL,
@@ -24,8 +23,6 @@ api(
 \arguments{
 \item{token}{API auth token or \code{access_token} for
 Seven Bridges single sign-on.}
-
-\item{version}{API version number, default is \code{v2}.}
 
 \item{path}{path connected with \code{base_url}.}
 
@@ -68,7 +65,7 @@ to return the fields id, name and size for files. More details please check
 \url{https://docs.sevenbridges.com/docs/the-api#section-general-\n
 api-information}}
 
-\item{base_url}{default is \code{"https://api.sbgenomics.com/v2"}}
+\item{base_url}{platform URL, default is NULL.}
 
 \item{...}{Other arguments passed to GET/POST/PUT/DELETE/PATCH call.}
 }
@@ -76,9 +73,6 @@ api-information}}
 returned request list of httr
 }
 \description{
-Core HTTP logic for Seven Bridges API
-}
-\details{
 Used for advanced users and the core method for higher level API
 in this package.
 }
