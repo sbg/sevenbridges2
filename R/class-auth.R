@@ -128,12 +128,7 @@ Auth <- R6::R6Class(
 
         # Case 2: platform and url are both *not* provided
         if (is_missing(platform) & is_missing(url)) {
-          rlang::warn(paste0(
-            "`platform` and `url` are not set, will use the default platform: ",
-            sbg_default_platform
-          ))
-          self$platform <- sbg_default_platform
-          self$url <- sbg_baseurl[[sbg_default_platform]]
+          rlang::abort("`platform` and `url` are not set, please, set one of them.")
         }
 
         # Case 3: platform is provided, url is not provided
