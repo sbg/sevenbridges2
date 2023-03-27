@@ -82,65 +82,6 @@ m.match <- function(obj,
   }
 }
 
-#' Check request status
-#'
-#' Check request status
-#' @param req API request
-#' @param as desired type output (contents of a request): raw, text or parsed
-#'
-#' @return request content or the message
-#' @importFrom httr status_code
-#'
-#' @noRd
-status_check <- function(req, as = "parsed", ...) {
-  if (httr::status_code(req) %in% c("200", "201", "202", "204")) {
-    # Check this !!!
-    if (!is.null(req$request$headers["X-SBG-Auth-Token"])) {
-      req$request$headers["X-SBG-Auth-Token"] <- "<your_auth_token>"
-    }
-    res <- httr::content(req, as = as, ...)
-    if (!is.null(res)) {
-      attr(res, "response") <- req
-    }
-    return(res)
-  } else if (httr::status_code(req) %in% c("401", "403", "404", "503")) {
-    msg <- httr::content(req, as = as, ...)$message
-    stop(paste0("HTTP Status ", httr::status_code(req), ": ", msg), call. = FALSE)
-  } else {
-    if ("message" %in% names(content(req, as = as, ...))) {
-      msg <- httr::content(req, as = as, ...)$message
-    } else {
-      msg <- NULL
-    }
-
-    if (is.null(msg)) {
-      if (httr::status_code(req) %in% names(codes)) {
-        msg <- codes[[httr::status_code(req)]]
-      }
-      if (is.null(msg)) {
-        print(content(req, as = as, ...))
-        stop(paste("Error of unknown type occured", httr::status_code(req)))
-      } else {
-        stop(paste0("HTTP Status ", httr::status_code(req), ": ", msg), call. = FALSE)
-      }
-    } else {
-      stop(paste0("HTTP Status ", httr::status_code(req), ": ", msg), call. = FALSE)
-    }
-  }
-}
-
-#' Check if input value is missing
-#'
-#' @param input value to check
-#' @noRd
-is_missing <- function(input) {
-  isTRUE(
-    checkmate::test_scalar_na(input, null.ok = TRUE) ||
-      input == "" ||
-      length(input) == 0
-  )
-}
-
 #' Parse time to POSIXlt for rate limit expiration datetime
 #'
 #' @param reset_time_as_unix_epoch time received from response

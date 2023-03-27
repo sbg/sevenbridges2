@@ -165,7 +165,7 @@ This method returns all API paths and pass arguments to core `api()`
 \item{\code{...}}{Other arguments passed to core api function.}
 
 \item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, `limit` is set to `100`.}
+request. By default, `limit` is set to `50`. Maximum is `100`.}
 
 \item{\code{offset}}{Defines where the retrieved items started.
 By default, `offset` is set to `0`.}

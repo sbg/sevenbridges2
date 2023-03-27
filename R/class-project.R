@@ -7,7 +7,6 @@
 #' @importFrom R6 R6Class
 #' @details
 #' This is main object for Projects
-#' @export
 Project <- R6::R6Class(
   # nolint end
   "Project",
