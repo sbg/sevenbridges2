@@ -13,6 +13,7 @@
 #' sbg_get_env("SB_API_ENDPOINT")
 #' sbg_get_env("SB_AUTH_TOKEN")
 #' }
+#' @noRd
 sbg_get_env <- function(x) {
   res <- Sys.getenv(x)
   if (res == "") {
@@ -29,12 +30,9 @@ sbg_get_env <- function(x) {
 #' @description Set authentication environment variables for Seven Bridges API.
 #'
 #' @param url Base URL for API.
-#'
 #' @param token Your authentication token.
-#'
 #' @param sysenv_url_name Name for the url environment variable.
 #' The default value is `r toString(sbg_default_sysenv_url)`.
-#'
 #' @param sysenv_token_name Name for the token environment variable.
 #' The default value is `r toString(sbg_default_sysenv_token)`.
 #'
@@ -46,7 +44,7 @@ sbg_get_env <- function(x) {
 #' sbg_get_env("SB_API_ENDPOINT")
 #' sbg_get_env("SB_AUTH_TOKEN")
 #' }
-#' @export
+#' @noRd
 sbg_set_env <- function(url = NULL, token = NULL,
                         sysenv_url_name = sbg_default_sysenv_url,
                         sysenv_token_name = sbg_default_sysenv_token) {
@@ -64,7 +62,9 @@ sbg_set_env <- function(url = NULL, token = NULL,
 
 #' Read ini format file
 #' @param file character string, path to ini file
+#'
 #' @return Nested list keeping the hierarchical structure of the ini file
+#'
 #' @importFrom stringr str_trim
 #' @noRd
 read_ini <- function(file) {
@@ -106,8 +106,12 @@ read_ini <- function(file) {
   cfg
 }
 
-
-# parse Seven Bridges user config file into a nested list
+#' Parse Seven Bridges user config file into a nested list
+#' @param file character string, path to config file
+#'
+#' @return Nested list keeping the hierarchical structure of the config file
+#'
+#' @noRd
 sbg_parse_config <- function(file) {
   f <- file.path(path.expand(file))
   if (file.exists(f)) {
@@ -120,28 +124,35 @@ sbg_parse_config <- function(file) {
     stop("User config file: ", f, " does not exist", call. = FALSE)
     res <- NULL
   }
-
   res
 }
 
-# add `/` to url ends
-normalize_url <- function(x) if (!grepl("/$", x)) paste0(x, "/") else x
+#' Normalise URL
+#'
+#' Add `/` to url ends
+#' @param x string; url
+#'
+#' @noRd
+normalize_url <- function(x) {
+  if (!grepl("/$", x))
+    paste0(x, "/")
+  else x
+}
 
-# platform name reverse lookup
+#' Platform name reverse lookup
+#'
+#' @param baseurl string; base url
+#'
+#' @noRd
 sbg_platform_lookup <- function(baseurl) {
   x <- which(unlist(sbg_baseurl) == normalize_url(baseurl))
   if (length(x) > 0L) names(x) else NULL
 }
 
-# extract response from httr request
+#' Extract response from httr request
+#'
+#' @param request request
+#' @noRd
 sbg_get_response <- function(request) {
   return(attr(request, "response"))
-}
-
-is_missing <- function(input) {
-  isTRUE(
-    checkmate::test_scalar_na(input, null.ok = TRUE) ||
-      input == "" ||
-      length(input) == 0
-  )
 }

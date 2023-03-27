@@ -7,10 +7,9 @@
 #' @param exact should it be an exact match or partial, default TRUE
 #' @param ignore.case should it ignore cases, or not, default TRUE
 #'
-#'
 #' @return index of the matched element from the data provided
 #'
-#' @keywords internal
+#' @noRd
 m.fun <- function(x, y, exact = TRUE, ignore.case = TRUE, ...) {
   if (exact) {
     res <- pmatch(x, y, ...)
@@ -35,10 +34,9 @@ m.fun <- function(x, y, exact = TRUE, ignore.case = TRUE, ...) {
 #' @param exact should it be an exact match or partial, default TRUE
 #' @param ignore.case should it ignore cases, or not, default TRUE
 #'
-#'
 #' @return subset of the result matching id or name
 #'
-#' @keywords internal
+#' @noRd
 m.match <- function(obj,
                     id = NULL, name = NULL,
                     .id = "id", .name = "name",
@@ -93,7 +91,7 @@ m.match <- function(obj,
 #' @return request content or the message
 #' @importFrom httr status_code
 #'
-#' @keywords internal
+#' @noRd
 status_check <- function(req, as = "parsed", ...) {
   if (httr::status_code(req) %in% c("200", "201", "202", "204")) {
     # Check this !!!
@@ -131,22 +129,46 @@ status_check <- function(req, as = "parsed", ...) {
   }
 }
 
+#' Check if input value is missing
+#'
+#' @param input value to check
+#' @noRd
+is_missing <- function(input) {
+  isTRUE(
+    checkmate::test_scalar_na(input, null.ok = TRUE) ||
+      input == "" ||
+      length(input) == 0
+  )
+}
 
+#' Parse time to POSIXlt for rate limit expiration datetime
+#'
+#' @param reset_time_as_unix_epoch time received from response
+#' @param origin origin time as reference, default to "1970-01-01"
+#' @param time_zone time_zone as reference
+#'
+#' @noRd
 parse_time <- function(reset_time_as_unix_epoch, origin = "1970-01-01",
                        time_zone = "") {
-  if (is_missing(reset_time_as_unix_epoch)) return("unknown")
+  if (is_missing(reset_time_as_unix_epoch)) {
+    return("unknown")
+  }
   reset_time_as_posixlt <- as.POSIXlt(reset_time_as_unix_epoch,
-                                      origin = "1970-01-01", tz = ""
+    origin = "1970-01-01", tz = ""
   )
   reset_date_time <- as.character(reset_time_as_posixlt)
   reset_time_zone <- reset_time_as_posixlt$zone
   return(paste0(reset_date_time, " ", reset_time_zone))
 }
 
-
-# customize underlying http logic
-# (handle_url2, build_url2, GET2, POST2)
+#' Customize underlying http logic for handle_url2
+#'
+#' @param handle handle
+#' @param url url
+#' @param ... additional arguments to pass
 #' @importFrom utils modifyList
+#'
+#' @noRd
 handle_url2 <- function(handle = NULL, url = NULL, ...) {
   if (is.null(url) && is.null(handle)) {
     stop("Must specify at least one of url or handle")
@@ -163,7 +185,11 @@ handle_url2 <- function(handle = NULL, url = NULL, ...) {
   list(handle = handle, url = url)
 }
 
-
+#' Customize underlying http logic for build_url2
+#'
+#' @param url url
+#'
+#' @noRd
 build_url2 <- function(url) {
   stopifnot(eval(parse(text = "httr:::is.url(url)")))
   scheme <- url$scheme
@@ -204,6 +230,14 @@ build_url2 <- function(url) {
   }, url$fragment)
 }
 
+#' Customize underlying http logic for GET2
+#'
+#' @param url url
+#' @param config config params
+#' @param handle how to handle url
+#' @param ... additional args to pass
+#'
+#' @noRd
 GET2 <- function(url = NULL, config = list(), ..., handle = NULL) {
   hu <- handle_url2(handle, url, ...)
   req <- eval(parse(text = 'httr:::request_build("GET", hu$url, config, ...)'))
@@ -211,6 +245,17 @@ GET2 <- function(url = NULL, config = list(), ..., handle = NULL) {
   return(eval(parse(text = "httr:::request_perform(req, hu$handle$handle)")))
 }
 
+#' Customize underlying http logic for POST2
+#'
+#' @param url url
+#' @param config config params
+#' @param handle how to handle url
+#' @param body request body
+#' @param encode encoding, can be one of: "json", "form", "multipart"
+#' @param multipart depricated - use encoding option "multipart"
+#' @param ... additional args to pass
+#'
+#' @noRd
 POST2 <- function(url = NULL, config = list(), ...,
                   body = NULL, encode = c("json", "form", "multipart"),
                   multipart = TRUE, handle = NULL) {
