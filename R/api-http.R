@@ -68,8 +68,10 @@ api <- function(token = NULL, path = NULL,
                 fields = NULL,
                 base_url = NULL,
                 ...) {
-  if (is.null(token)) stop("token must be provided")
-  if (is.null(base_url)) stop("API address from the preferred platform must be provided")
+  if (is_missing(token)) stop("token must be provided")
+  if (is_missing(base_url)) stop("API address from the preferred platform must be provided")
+  check_limit(limit)
+  check_offset(offset)
 
   url <- paste0(base_url, path)
   method <- match.arg(method)
@@ -89,7 +91,7 @@ api <- function(token = NULL, path = NULL,
   if (advance_access) headers <- c(headers, "X-SBG-advance-access" = "advance")
 
   # setup query
-  query <- c(query, list(limit = limit, offset = offset, fields = fields))
+  query <- c(query, list(limit = as.integer(limit), offset = as.integer(offset), fields = fields))
   idx <- !sapply(query, is.null)
   if (any(idx)) {
     query <- query[idx]

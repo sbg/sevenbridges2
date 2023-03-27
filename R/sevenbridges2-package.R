@@ -27,8 +27,8 @@ utils::globalVariables(c(
 # onLoad function sets initial params for future queries
 .onLoad <- function(libname, pkgname) {
   lst <- list(
-    offset = 0,
-    limit = 50,
+    offset = 0L,
+    limit = 50L,
     advance_access = FALSE,
     input_check = TRUE
   )
