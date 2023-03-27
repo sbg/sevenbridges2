@@ -6,7 +6,6 @@
 #' @importFrom R6 R6Class
 #' @details
 #' This is main object for Users.
-#' @export
 User <- R6::R6Class(
   "User",
   inherit = Item,

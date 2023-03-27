@@ -259,7 +259,6 @@ Project <- R6::R6Class(
         rlang::abort(glue::glue("HTTP Status {res$status_code} : {msg}"))
       }
     },
-    # project members
     #' @description Method for listing all the project members.
     #' @param pid ID of a project for which you want to get a list of members.
     #' @param ... Other arguments.

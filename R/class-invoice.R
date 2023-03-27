@@ -8,7 +8,6 @@
 #' This object contains information about a selected invoice,
 #' including the costs for analysis and storage, and the invoice period.
 #'
-#' @export
 Invoice <- R6::R6Class(
   "Invoice",
   inherit = Item,

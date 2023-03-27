@@ -4,7 +4,6 @@
 #' R6 Class representing a resource for managing project members.
 #'
 #' @importFrom R6 R6Class
-#' @export
 Member <- R6::R6Class(
   "Member",
   inherit = Item,

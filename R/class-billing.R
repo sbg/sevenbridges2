@@ -6,7 +6,6 @@
 #' @importFrom R6 R6Class
 #' @details
 #' This is main object for Billing
-#' @export
 # nolint start
 Billing <- R6::R6Class(
   # nolint end

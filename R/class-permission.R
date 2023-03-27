@@ -4,7 +4,6 @@
 #' R6 Class representing member's permissions.
 #'
 #' @importFrom R6 R6Class
-#' @export
 Permission <- R6::R6Class(
   "Permission",
   inherit = Item,

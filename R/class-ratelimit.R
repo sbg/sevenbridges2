@@ -6,7 +6,6 @@
 #' @importFrom R6 R6Class
 #' @details
 #' This is main object for Rate Limit.
-#' @export
 Rate <- R6::R6Class(
   "Rate",
   inherit = Item,
