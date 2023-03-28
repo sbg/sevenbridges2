@@ -63,11 +63,16 @@ is_missing <- function(input) {
 #' @param limit limit value
 #' @noRd
 check_limit <- function(limit) {
-  if (!is.integer(limit) || !is.integer(as.integer(limit))) {
-    rlang::abort("Limit must be integer number between 1 and 100.")
+  msg <- "Limit must be integer number between 1 and 100."
+  if (!is.numeric(limit)) {
+    rlang::abort(msg)
   }
-  if (limit > 100 || limit <= 0) {
-    rlang::abort("Limit must be integer number between 1 and 100.")
+  limit_cast <- suppressWarnings(as.integer(limit))
+  if (is_missing(limit_cast)) {
+    rlang::abort(msg)
+  }
+  if (limit_cast > 100 || limit_cast <= 0) {
+    rlang::abort(msg)
   }
 }
 
@@ -76,10 +81,15 @@ check_limit <- function(limit) {
 #' @param offset offset value
 #' @noRd
 check_offset <- function(offset) {
-  if (!is.integer(offset) || !is.integer(as.integer(offset))) {
-    rlang::abort("Offset must be integer number >= 0.")
+  msg <- "Offset must be integer number >= 0."
+  if (!is.numeric(offset)) {
+    rlang::abort(msg)
   }
-  if (offset < 0) {
-    rlang::abort("Offset must be integer number >= 0.")
+  offset_cast <- suppressWarnings(as.integer(offset))
+  if (is_missing(offset_cast)) {
+    rlang::abort(msg)
+  }
+  if (offset_cast < 0) {
+    rlang::abort(msg)
   }
 }
