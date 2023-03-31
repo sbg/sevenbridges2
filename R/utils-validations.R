@@ -22,7 +22,7 @@ status_check <- function(req, as = "parsed", ...) {
     return(res)
   } else if (httr::status_code(req) %in% c("401", "403", "404", "503")) {
     msg <- httr::content(req, as = as, ...)$message
-    stop(paste0("HTTP Status ", httr::status_code(req), ": ", msg), call. = FALSE)
+    rlang::abort(paste0("HTTP Status ", httr::status_code(req), ": ", msg))
   } else {
     if ("message" %in% names(content(req, as = as, ...))) {
       msg <- httr::content(req, as = as, ...)$message
@@ -36,12 +36,12 @@ status_check <- function(req, as = "parsed", ...) {
       }
       if (is.null(msg)) {
         print(content(req, as = as, ...))
-        stop(paste("Error of unknown type occured", httr::status_code(req)))
+        rlang::abort(paste("Error of unknown type occured", httr::status_code(req)))
       } else {
-        stop(paste0("HTTP Status ", httr::status_code(req), ": ", msg), call. = FALSE)
+        rlang::abort(paste0("HTTP Status ", httr::status_code(req), ": ", msg))
       }
     } else {
-      stop(paste0("HTTP Status ", httr::status_code(req), ": ", msg), call. = FALSE)
+      rlang::abort(paste0("HTTP Status ", httr::status_code(req), ": ", msg))
     }
   }
 }
@@ -79,6 +79,9 @@ check_limit <- function(limit) {
 #' Check offset parameter
 #'
 #' @param offset offset value
+#' @importFrom rlang abort
+#' @importFrom checkmate assert_logical assert_list assert_character assert_integer
+#' @importFrom glue glue
 #' @noRd
 check_offset <- function(offset) {
   msg <- "Offset must be integer number >= 0."
@@ -91,5 +94,70 @@ check_offset <- function(offset) {
   }
   if (offset_cast < 0) {
     rlang::abort(msg)
+  }
+}
+
+
+check_tags <- function(tags) {
+  if (!is.null(tags)) {
+    msg <- "Tags parameter must be an unnamed list of tags. For example: tags = list('my_tag_1', 'my_tag_2')"
+    if (!is.list(settings)) {
+      rlang::abort(msg)
+    }
+  }
+}
+
+check_settings <- function(settings) {
+  msg <- "Settings must be provided as a list."
+  if (!is.list(settings)) {
+    rlang::abort(msg)
+  }
+
+  valid_input_names <- c(
+    "locked", "controlled", "use_interruptible_instances",
+    "use_memoization", "allow_network_access",
+    "use_elastic_disk", "location", "intermediate_files"
+  )
+
+
+  invalid_element_names <- setdiff(names(settings), valid_input_names)
+
+  if (length(invalid_element_names) > 0) {
+    rlang::abort(glue::glue("Argument {invalid_element_names} is not a valid settings field."))
+  }
+
+  checkmate::assert_logical(settings$locked,
+    .var.name = "locked", null.ok = TRUE
+  )
+  checkmate::assert_logical(settings$controlled,
+    .var.name = "controlled", null.ok = TRUE
+  )
+  checkmate::assert_logical(settings$use_interruptible_instances,
+    .var.name = "use_interruptible_instances", null.ok = TRUE
+  )
+  checkmate::assert_logical(settings$use_memoization,
+    .var.name = "use_memoization", null.ok = TRUE
+  )
+  checkmate::assert_logical(settings$allow_network_access,
+    .var.name = "allow_network_access", null.ok = TRUE
+  )
+  checkmate::assert_logical(settings$use_elastic_disk,
+    .var.name = "use_elastic_disk", null.ok = TRUE
+  )
+
+  checkmate::assert_character(settings$location,
+    .var.name = "location", null.ok = TRUE
+  )
+
+  if ("intermediate_files" %in% names(settings)) {
+    checkmate::assert_list(settings$intermediate_files,
+      .var.name = "intermediate_files", null.ok = TRUE
+    )
+    checkmate::assert_integer(settings$intermediate_files$duration,
+      .var.name = "intermediate_files$duration", null.ok = TRUE
+    )
+    checkmate::assert_character(settings$intermediate_files$retention,
+      .var.name = "intermediate_files$retention", null.ok = TRUE
+    )
   }
 }
