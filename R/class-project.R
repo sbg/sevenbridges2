@@ -198,7 +198,7 @@ Project <- R6::R6Class(
                     billing_group = NULL,
                     settings = NULL,
                     tags = NULL, ...) {
-      if (self$permissions$write != TRUE) {
+      if (self$permissions$write) {
         rlang::abort("You do not have permission to modify this project.
                      Only users with write permissions in the project can
                      change the project description.")
