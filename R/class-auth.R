@@ -496,7 +496,7 @@ Auth <- R6::R6Class(
     #' @param owner The username of the owner whose projects you want to query.
     #' @param ... Other arguments that can be passed to this method.
     #' Such as query parameters.
-    project_query = function(id = NULL, name = NULL, owner = NULL, ...) {
+    projects = function(id = NULL, name = NULL, owner = NULL, ...) {
       if (is.null(owner)) {
         res <- sevenbridges2::api(
           path = "projects",
@@ -511,6 +511,7 @@ Auth <- R6::R6Class(
           method = "GET",
           token = self$get_token(),
           base_url = self$url,
+          query = list(name = name),
           ...
         )
       }
@@ -518,12 +519,6 @@ Auth <- R6::R6Class(
       res <- status_check(res)
 
       res <- asProjectList(res, auth = self)
-
-      res <- m.match(res,
-        id = id, name = name,
-        exact = FALSE,
-        ignore.case = TRUE
-      )
 
       res
     },
