@@ -51,7 +51,7 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \item \href{#method-Auth-billing}{\code{Auth$billing()}}
 \item \href{#method-Auth-billing_groups}{\code{Auth$billing_groups()}}
 \item \href{#method-Auth-invoice}{\code{Auth$invoice()}}
-\item \href{#method-Auth-project_query}{\code{Auth$project_query()}}
+\item \href{#method-Auth-projects}{\code{Auth$projects()}}
 \item \href{#method-Auth-project_get}{\code{Auth$project_get()}}
 \item \href{#method-Auth-project_new}{\code{Auth$project_new()}}
 \item \href{#method-Auth-clone}{\code{Auth$clone()}}
@@ -280,16 +280,16 @@ the method will return the invoice incurred by that billing group only.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Auth-project_query"></a>}}
-\if{latex}{\out{\hypertarget{method-Auth-project_query}{}}}
-\subsection{Method \code{project_query()}}{
+\if{html}{\out{<a id="method-Auth-projects"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-projects}{}}}
+\subsection{Method \code{projects()}}{
 A method to list all projects available to particular user.
 if the username is not provided, all projects available to the currently
 authenticated user will be listed. Otherwise, projects will be listed
 for the user whose username is provided. Please keep in mind that this
 way you will only be able to list projects you are a member of.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$project_query(id = NULL, name = NULL, owner = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Auth$projects(id = NULL, name = NULL, owner = NULL, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
