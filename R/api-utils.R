@@ -87,12 +87,17 @@ m.match <- function(obj,
 #' @param reset_time_as_unix_epoch time received from response
 #' @param origin origin time as reference, default to "1970-01-01"
 #' @param time_zone time_zone as reference
+#' @param use_milliseconds does unix timestamp contain information about
+#' milliseconds (default is FALSE)
 #'
 #' @noRd
 parse_time <- function(reset_time_as_unix_epoch, origin = "1970-01-01",
-                       time_zone = "") {
+                       time_zone = "", use_milliseconds = FALSE) {
   if (is_missing(reset_time_as_unix_epoch)) {
     return("unknown")
+  }
+  if (use_milliseconds) {
+    reset_time_as_unix_epoch <- reset_time_as_unix_epoch / 1000
   }
   reset_time_as_posixlt <- as.POSIXlt(reset_time_as_unix_epoch,
     origin = "1970-01-01", tz = ""
@@ -108,11 +113,12 @@ parse_time <- function(reset_time_as_unix_epoch, origin = "1970-01-01",
 #' @param url url
 #' @param ... additional arguments to pass
 #' @importFrom utils modifyList
+#' @importFrom rlang abort
 #'
 #' @noRd
 handle_url2 <- function(handle = NULL, url = NULL, ...) {
   if (is.null(url) && is.null(handle)) {
-    stop("Must specify at least one of url or handle")
+    rlang::abort("Must specify at least one of url or handle")
   }
   if (is.null(handle)) handle <- httr::handle_find(url)
   if (is.null(url)) url <- handle$url
@@ -159,7 +165,7 @@ build_url2 <- function(url) {
     query <- paste0("?", query)
   }
   if (is.null(url$username) && !is.null(url$password)) {
-    stop("Cannot set password without username")
+    rlang::abort("Cannot set password without username")
   }
 
   paste0(scheme, "://", url$username, if (!is.null(url$password)) {
@@ -212,5 +218,34 @@ POST2 <- function(url = NULL, config = list(), ...,
   req <- eval(parse(text = 'httr:::request_build("POST", hu$url, httr:::body_config(body, encode), config, ...)'))
 
   return(eval(parse(text = "httr:::request_perform(req, hu$handle$handle)")))
+}
+
+
+#' Flatten query parameters
+#'
+#' @description A httr query parameter can only have one value per name.
+#' This function takes any values that contain lenght > 1 vectors/lists
+#' and splits them up such that, for example, list(x=1:2, y="a") becomes
+#' list(x=1, x=2, y="a")
+#'
+#' @param x List of query parameters.
+#' @return Flattened query params list.
+#'
+#' @noRd
+flatten_query <- function(x) {
+  if (all(lengths(x) <= 1)) {
+    return(x)
+  }
+  do.call("c", mapply(function(name, val) {
+    if (length(val) == 1) {
+      x <- list(val)
+      names(x) <- name
+      x
+    } else {
+      x <- as.list(val)
+      names(x) <- rep(name, length(val))
+      x
+    }
+  }, names(x), x, USE.NAMES = FALSE, SIMPLIFY = FALSE))
 }
 # nolint end

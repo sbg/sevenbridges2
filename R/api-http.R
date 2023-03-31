@@ -48,6 +48,7 @@
 #' @importFrom  httr PUT DELETE PATCH status_code content handle_find
 #' add_headers
 #' @importFrom  curl curl_escape
+#' @importFrom rlang abort
 #'
 #' @export api
 #' @examples
@@ -68,8 +69,8 @@ api <- function(token = NULL, path = NULL,
                 fields = NULL,
                 base_url = NULL,
                 ...) {
-  if (is_missing(token)) stop("token must be provided")
-  if (is_missing(base_url)) stop("API address from the preferred platform must be provided")
+  if (is_missing(token)) rlang::abort("token must be provided")
+  if (is_missing(base_url)) rlang::abort("API address from the preferred platform must be provided")
   check_limit(limit)
   check_offset(offset)
 
@@ -91,7 +92,7 @@ api <- function(token = NULL, path = NULL,
   if (advance_access) headers <- c(headers, "X-SBG-advance-access" = "advance")
 
   # setup query
-  query <- c(query, list(limit = as.integer(limit), offset = as.integer(offset), fields = fields))
+  query <- c(query, flatten_query(list(limit = as.integer(limit), offset = as.integer(offset), fields = fields)))
   idx <- !sapply(query, is.null)
   if (any(idx)) {
     query <- query[idx]
@@ -126,7 +127,8 @@ api <- function(token = NULL, path = NULL,
       )
     },
     DELETE = {
-      httr::DELETE(url,
+      httr::DELETE(
+        url,
         httr::add_headers(.headers = headers), ...
       )
     },
