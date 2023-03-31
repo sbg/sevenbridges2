@@ -468,13 +468,13 @@ The **new project** is created on the platform. Notice also that the variable p 
 
 ```{r}
 # list first 50 projects
-a$project_query()
+a$projects()
 # list all
-a$project_query(complete = TRUE) # CHECK WHY THIS DOESN'T WORK!
+a$projects(complete = TRUE) # CHECK WHY THIS DOESN'T WORK!
 # return all named match "demo"
-a$project_query(name = "demo")
+a$projects(name = "demo")
 # return all projects tagged with "test_tags"
-a$project_query(query = list(tags = c("test_tags")))
+a$projects(query = list(tags = c("test_tags")))
 ```
 
 ## Get Details of a Specified Project
