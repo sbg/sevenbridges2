@@ -103,7 +103,7 @@ testthat::test_that("Utility function sbg_get_env returns proper message if env
 
   # Define expected message
   expected_message <- paste0(
-    "Error : Environment variable ", test_env_variable_name,
+    "Error in sbg_get_env(test_env_variable_name) : \n  Environment variable ", test_env_variable_name,
     " is blank, please check if it is set correctly"
   )
 

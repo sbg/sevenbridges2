@@ -112,7 +112,7 @@ test_that("Status check function works properly for unauthorized request", {
 
     testthat::expect_equal(
       error_message,
-      "Error : HTTP Status 401: Unauthorized"
+      "Error in status_check(resp) : HTTP Status 401: Unauthorized"
     )
   } else if (inherits(processed_response, "list")) {
     testthat::fail(message = "Failure has been forced - a valid response has
@@ -144,7 +144,7 @@ test_that("Status check function works properly for undefined resource
 
     testthat::expect_equal(
       error_message,
-      "Error : HTTP Status 404: /v2/wizards/ not found"
+      "Error in status_check(resp) : HTTP Status 404: /v2/wizards/ not found"
     )
   } else if (inherits(processed_response, "list")) {
     testthat::fail(message = "Failure has been forced - a valid response was
