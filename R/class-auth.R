@@ -567,7 +567,7 @@ Auth <- R6::R6Class(
     #' @param use_interruptible_instances Defines the use of spot instances.
     #' @param use_memoization Set to false by default. Set to true to enable
     #' memoization.
-    #' @param elastic_disk Set to true to enable Elastic disk.
+    #' @param use_elastic_disk Set to true to enable Elastic disk.
     #' @param intermediate_files A list defining the retention period for
     #' intermediate files. Expected elements:
     #' \itemize{
@@ -578,6 +578,8 @@ Auth <- R6::R6Class(
     #' is 24.
     #' }
     #' @param ... Other arguments.
+    #' @importFrom rlang inform
+    #' @importFrom glue glue
     project_new = function(name = NULL,
                            billing_group = NULL,
                            description = name,
@@ -588,7 +590,7 @@ Auth <- R6::R6Class(
                            location = NULL,
                            use_interruptible_instances = TRUE,
                            use_memoization = FALSE,
-                           elastic_disk = FALSE,
+                           use_elastic_disk = FALSE,
                            intermediate_files = list(
                              "retention" = "LIMITED",
                              "duration" = 24
@@ -613,10 +615,9 @@ Auth <- R6::R6Class(
           "controlled" = controlled,
           "location" = location,
           "use_interruptible_instances" = use_interruptible_instances,
-          "use_memoization" = use_memoization # ,
-          # "elastic_disk" = elastic_disk,
-          # "intermediate_files" = intermediate_files)
-        )
+          "use_memoization" = use_memoization,
+          "use_elastic_disk" = use_elastic_disk,
+          "intermediate_files" = intermediate_files)
       )
 
       res <- sevenbridges2::api(
@@ -630,6 +631,7 @@ Auth <- R6::R6Class(
 
       res <- status_check(res)
 
+      rlang::inform(glue::glue("New project has been created on the {self$platform} platform."))
       asProject(res, auth = self)
     }
   )

@@ -359,7 +359,7 @@ A method for creating a new project.
   location = NULL,
   use_interruptible_instances = TRUE,
   use_memoization = FALSE,
-  elastic_disk = FALSE,
+  use_elastic_disk = FALSE,
   intermediate_files = list(retention = "LIMITED", duration = 24),
   ...
 )}\if{html}{\out{</div>}}
@@ -394,7 +394,7 @@ aws:us-east-1 or aws:us-west-2}
 \item{\code{use_memoization}}{Set to false by default. Set to true to enable
 memoization.}
 
-\item{\code{elastic_disk}}{Set to true to enable Elastic disk.}
+\item{\code{use_elastic_disk}}{Set to true to enable Elastic disk.}
 
 \item{\code{intermediate_files}}{A list defining the retention period for
 intermediate files. Expected elements:
