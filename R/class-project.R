@@ -108,11 +108,22 @@ Project <- R6::R6Class(
       self$permissions <- permissions
       self$category <- category
     },
-    #' @description Print method for Project class.
+    #' @description  Basic print method for Project class.
+    #'
+    #' @importFrom glue glue_col
+    print = function() {
+      cat(glue::glue_col("{blue  Project name: } {self$name}"), "\n")
+      cat(glue::glue_col("{blue  Project id: } {self$id}"), "\n")
+    },
+    #' @description Detailed print method for Project class.
+    #'
+    #' @details This method allows users to print all the fields from the
+    #' Project object more descriptively.
+    #'
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end
-    print = function() {
+    detailed_print = function() {
       x <- as.list(self)
 
       if (!is.null(x$settings) && length(x$settings) != 0) {
@@ -181,6 +192,7 @@ Project <- R6::R6Class(
     #' @param settings Contains detailed project settings.
     #' @param tags The list of project tags.
     #' @param ... Additional parameters that can be passed to the method.
+    #' @importFrom utils modifyList
     edit = function(name = NULL,
                     description = NULL,
                     billing_group = NULL,
@@ -191,6 +203,10 @@ Project <- R6::R6Class(
                      Only users with write permissions in the project can
                      change the project description.")
       } else {
+
+        check_tags(tags)
+        check_settings(settings)
+
         body <- list(
           "name" = name,
           "description" = description,
@@ -198,13 +214,6 @@ Project <- R6::R6Class(
           "settings" = settings,
           "tags" = tags
         )
-
-        # Maybe we should add some validation for settings and tags parameter
-        # For example, if you type my_first_project$edit(tags = "test_tag")
-        # you will get an error saying: Error: HTTP Status 400: Invalid JSON
-        # input which is not quite informative.
-        # The same goes for settings - maybe we should check if provided
-        # parameters (these two) are actually lists.
 
         body <- body[!sapply(body, is.null)]
         if (length(body) == 0) {
@@ -215,10 +224,10 @@ Project <- R6::R6Class(
 
         # update project object itself
         for (nm in nms) {
-          self[[nm]] <- body[[nm]]
+          self[[nm]] <- utils::modifyList(self[[nm]], body[[nm]])
         }
 
-        req <- sevenbridges2::api(
+        res <- sevenbridges2::api(
           path = paste0("projects/", self$id),
           method = "PATCH",
           body = body,
@@ -226,9 +235,9 @@ Project <- R6::R6Class(
           base_url = self$auth$url,
           ...
         )
-        req <- status_check(req)
+        res <- status_check(res)
 
-        asProject(req)
+        asProject(res, self$auth)
       }
     },
     # delete project ---------------------------------------------------------

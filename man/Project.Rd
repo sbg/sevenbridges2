@@ -68,6 +68,7 @@ permissions within the project.}
 \itemize{
 \item \href{#method-Project-new}{\code{Project$new()}}
 \item \href{#method-Project-print}{\code{Project$print()}}
+\item \href{#method-Project-detailed_print}{\code{Project$detailed_print()}}
 \item \href{#method-Project-edit}{\code{Project$edit()}}
 \item \href{#method-Project-delete}{\code{Project$delete()}}
 \item \href{#method-Project-member_list}{\code{Project$member_list()}}
@@ -143,9 +144,24 @@ permissions within the project.}
 \if{html}{\out{<a id="method-Project-print"></a>}}
 \if{latex}{\out{\hypertarget{method-Project-print}{}}}
 \subsection{Method \code{print()}}{
-Print method for Project class.
+Basic print method for Project class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Project$print()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Project-detailed_print"></a>}}
+\if{latex}{\out{\hypertarget{method-Project-detailed_print}{}}}
+\subsection{Method \code{detailed_print()}}{
+Detailed print method for Project class.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Project$detailed_print()}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+This method allows users to print all the fields from the
+Project object more descriptively.
 }
 
 }
