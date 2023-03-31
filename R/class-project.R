@@ -36,7 +36,7 @@ Project <- R6::R6Class(
     #'    by default.
     #'   \item use_memoization (boolean) Set to false by default. Set to true
     #'    to enable memoization.
-    #'   \item elastic_disk (boolean) Set to true to enable Elastic disk.
+    #'   \item use_elastic_disk (boolean) Set to true to enable Elastic disk.
     #'   \item intermediate_files (list) Contains the following two sub fields:
     #'   retention - Specifies that intermediate files should be retained for a
     #'   limited amount of time. The value is always LIMITED.
