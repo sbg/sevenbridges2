@@ -9,5 +9,6 @@
 library(testthat)
 library(sevenbridges2)
 library(httr)
+library(checkmate)
 
 test_check("sevenbridges2")
