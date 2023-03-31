@@ -4,8 +4,10 @@
 #'
 #' @return A value of the environment variable.
 #'
-#' @examples
+#' @importFrom rlang abort
+#' @importFrom glue glue
 #'
+#' @examples
 #' \dontrun{
 #' # set and get two environment variables for aws-us platform
 #' token <- "your_token"
@@ -17,10 +19,7 @@
 sbg_get_env <- function(x) {
   res <- Sys.getenv(x)
   if (res == "") {
-    stop("Environment variable ", x,
-      " is blank, please check if it is set correctly",
-      call. = FALSE
-    )
+    rlang::abort(glue::glue("Environment variable {x} is blank, please check if it is set correctly"))
   }
   res
 }
@@ -35,6 +34,7 @@ sbg_get_env <- function(x) {
 #' The default value is `r toString(sbg_default_sysenv_url)`.
 #' @param sysenv_token_name Name for the token environment variable.
 #' The default value is `r toString(sbg_default_sysenv_token)`.
+#' @importFrom rlang abort
 #'
 #' @examples
 #' \dontrun{
@@ -49,7 +49,7 @@ sbg_set_env <- function(url = NULL, token = NULL,
                         sysenv_url_name = sbg_default_sysenv_url,
                         sysenv_token_name = sbg_default_sysenv_token) {
   if (is.null(url) || is.null(token)) {
-    stop("url and token must be both specified", call. = FALSE)
+    rlang::abort("url and token must be both specified")
   }
 
   args <- list(url, token)
@@ -109,6 +109,7 @@ read_ini <- function(file) {
 #' Parse Seven Bridges user config file into a nested list
 #' @param file character string, path to config file
 #'
+#' @importFrom rlang abort
 #' @return Nested list keeping the hierarchical structure of the config file
 #'
 #' @noRd
@@ -117,11 +118,11 @@ sbg_parse_config <- function(file) {
   if (file.exists(f)) {
     res <- try(read_ini(f), silent = TRUE)
     if (inherits(res, "try-error")) {
-      stop("User config file format is incorrect", call. = FALSE)
+      rlang::abort("User config file format is incorrect")
       res <- NULL
     }
   } else {
-    stop("User config file: ", f, " does not exist", call. = FALSE)
+    rlang::abort("User config file: ", f, " does not exist")
     res <- NULL
   }
   res
@@ -134,9 +135,11 @@ sbg_parse_config <- function(file) {
 #'
 #' @noRd
 normalize_url <- function(x) {
-  if (!grepl("/$", x))
+  if (!grepl("/$", x)) {
     paste0(x, "/")
-  else x
+  } else {
+    x
+  }
 }
 
 #' Platform name reverse lookup
