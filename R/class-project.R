@@ -247,10 +247,6 @@ Project <- R6::R6Class(
     #' Please be careful when using this method and note that calling it will
     #' permanently delete the project from the platform.
     delete = function() {
-      # user_input <- readline(glue::glue_col("Are you sure you want to delete
-      # {green {self$id}} project? (y/n) \n Selection: "))
-      # if(user_input != 'y') rlang::abort('Exiting since you did not press y.')
-
       res <- sevenbridges2::api(
         path = paste0("projects/", self$id),
         method = "DELETE",
