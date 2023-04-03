@@ -119,11 +119,9 @@ sbg_parse_config <- function(file) {
     res <- try(read_ini(f), silent = TRUE)
     if (inherits(res, "try-error")) {
       rlang::abort("User config file format is incorrect")
-      res <- NULL
     }
   } else {
-    rlang::abort("User config file: ", f, " does not exist")
-    res <- NULL
+    rlang::abort(paste0("User config file: ", f, " does not exist"))
   }
   res
 }
