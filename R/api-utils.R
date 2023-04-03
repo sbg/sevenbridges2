@@ -199,7 +199,6 @@ GET2 <- function(url = NULL, config = list(), ..., handle = NULL) {
 #' @param handle how to handle url
 #' @param body request body
 #' @param encode encoding, can be one of: "json", "form", "multipart"
-#' @param multipart depricated - use encoding option "multipart"
 #' @param ... additional args to pass
 #'
 #' @noRd
