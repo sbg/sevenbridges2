@@ -101,7 +101,7 @@ check_offset <- function(offset) {
 check_tags <- function(tags) {
   if (!is.null(tags)) {
     msg <- "Tags parameter must be an unnamed list of tags. For example: tags = list('my_tag_1', 'my_tag_2')"
-    if (!is.list(settings)) {
+    if (!is.list(tags)) {
       rlang::abort(msg)
     }
   }
