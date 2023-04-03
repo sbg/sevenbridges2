@@ -86,6 +86,7 @@ Rate <- R6::R6Class(
       x <- purrr::discard(x, .p = is.function)
       x <- purrr::discard(x, .p = is.environment)
       x <- purrr::discard(x, .p = is.null)
+      x <- purrr::discard(x, .p = is.na)
       x <- purrr::discard(x, .p = ~ .x == "")
 
       cli::cli_h1("Rate limit")
