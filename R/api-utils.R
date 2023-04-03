@@ -205,13 +205,7 @@ GET2 <- function(url = NULL, config = list(), ..., handle = NULL) {
 #' @noRd
 POST2 <- function(url = NULL, config = list(), ...,
                   body = NULL, encode = c("json", "form", "multipart"),
-                  multipart = TRUE, handle = NULL) {
-  if (!missing(multipart)) {
-    warning("multipart is deprecated, please use encode argument instead",
-      call. = FALSE
-    )
-    encode <- ifelse(multipart, "multipart", "form")
-  }
+                  handle = NULL) {
 
   encode <- match.arg(encode)
   hu <- handle_url2(handle, url, ...)
