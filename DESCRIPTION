@@ -29,11 +29,11 @@ Imports:
     curl,
     glue,
     stringr,
-    utils
+    utils,
+    checkmate
 Suggests:
     knitr,
     rmarkdown,
-    checkmate,
     testthat (>= 3.0.0),
     stringi
 Config/testthat/edition: 3
