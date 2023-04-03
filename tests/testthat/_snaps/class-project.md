@@ -2,6 +2,14 @@
 
     Code
       test_project$print()
+    Output
+      Project name:  nargles-project 
+      Project id:  luna_lovegood/nargles-project 
+
+# Project detailed_print method works
+
+    Code
+      test_project$detailed_print()
     Message <cliMessage>
       
       -- Project ---------------------------------------------------------------------
