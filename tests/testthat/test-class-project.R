@@ -89,3 +89,13 @@ test_that("Project print method works", {
   test_project <- readRDS(project_obj_file)
   testthat::expect_snapshot(test_project$print())
 })
+
+
+test_that("Project detailed_print method works", {
+  project_obj_file <- testthat::test_path(
+    "test_data",
+    "luna_lovegood_project_obj.RDS"
+  )
+  test_project <- readRDS(project_obj_file)
+  testthat::expect_snapshot(test_project$detailed_print())
+})
