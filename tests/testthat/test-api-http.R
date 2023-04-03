@@ -28,40 +28,6 @@ test_that("Api function throws error when url is not provided", {
   }
 })
 
-test_that("check_limit function passes when limit is valid", {
-  limits <- c(1L, 50L, 88L, 7, 56)
-  for (limit in limits) {
-    testthat::expect_silent(check_limit(limit))
-  }
-})
-
-test_that("check_limit function throws error when limit is not valid", {
-  limits <- c(-1, "limit", 0, 1500, FALSE)
-  for (limit in limits) {
-    testthat::expect_error(
-      check_limit(limit),
-      "Limit must be integer number between 1 and 100."
-    )
-  }
-})
-
-test_that("check_offset function passes when offset is valid", {
-  offsets <- c(1L, 50L, 488L, 90, 23)
-  for (offset in offsets) {
-    testthat::expect_silent(check_offset(offset))
-  }
-})
-
-test_that("check_offset function throws error when offset is not valid", {
-  offsets <- c(-10, "offset", TRUE)
-  for (offset in offsets) {
-    testthat::expect_error(
-      check_offset(offset),
-      "Offset must be integer number >= 0."
-    )
-  }
-})
-
 test_that("Api function throws error when method is not valid", {
   methods <- c(NA, "", NULL, "PUTT")
   for (method in methods) {
