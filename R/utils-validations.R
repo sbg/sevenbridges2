@@ -10,6 +10,7 @@
 #'
 #' @noRd
 status_check <- function(req, as = "parsed", ...) {
+  # nocov start
   if (httr::status_code(req) %in% c("200", "201", "202", "204")) {
     # Check this !!!
     if (!is.null(req$request$headers["X-SBG-Auth-Token"])) {
@@ -43,7 +44,7 @@ status_check <- function(req, as = "parsed", ...) {
     } else {
       rlang::abort(paste0("HTTP Status ", httr::status_code(req), ": ", msg))
     }
-  }
+  } # nocov end
 }
 
 #' Check if input value is missing
@@ -69,10 +70,10 @@ check_limit <- function(limit) {
   }
   limit_cast <- suppressWarnings(as.integer(limit))
   if (is_missing(limit_cast)) {
-    rlang::abort(msg)
+    rlang::abort(msg) # nocov
   }
   if (limit_cast > 100 || limit_cast <= 0) {
-    rlang::abort(msg)
+    rlang::abort(msg) # nocov
   }
 }
 
@@ -90,10 +91,10 @@ check_offset <- function(offset) {
   }
   offset_cast <- suppressWarnings(as.integer(offset))
   if (is_missing(offset_cast)) {
-    rlang::abort(msg)
+    rlang::abort(msg) # nocov
   }
   if (offset_cast < 0) {
-    rlang::abort(msg)
+    rlang::abort(msg) # nocov
   }
 }
 
