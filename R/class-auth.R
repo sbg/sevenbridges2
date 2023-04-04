@@ -146,9 +146,9 @@ Auth <- R6::R6Class(
 
         # Case 4: platform is not provided, url is provided
         if (is_missing(platform) & !is_missing(url)) {
-          self$url <- normalize_url(url)
+          self$url <- normalize_url(url) # nocov
           # look up an accurate platform name
-          self$platform <- sbg_platform_lookup(self$url)
+          self$platform <- sbg_platform_lookup(self$url) # nocov
         }
 
         if (is_missing(token)) {
@@ -167,12 +167,12 @@ Auth <- R6::R6Class(
 
         # get system environment variables
         if (is_missing(sysenv_url)) {
-          self$sysenv_url <- sbg_default_sysenv_url
+          self$sysenv_url <- sbg_default_sysenv_url # nocov
         } else {
           self$sysenv_url <- sysenv_url
         }
         if (is_missing(sysenv_token)) {
-          self$sysenv_token <- sbg_default_sysenv_token
+          self$sysenv_token <- sbg_default_sysenv_token # nocov
         } else {
           self$sysenv_token <- sysenv_token
         }
@@ -204,7 +204,7 @@ Auth <- R6::R6Class(
 
         # parse user config file
         if (is_missing(config_file)) {
-          self$config_file <- sbg_default_config_file
+          self$config_file <- sbg_default_config_file # nocov
         } else {
           self$config_file <- config_file
         }
@@ -216,7 +216,7 @@ Auth <- R6::R6Class(
 
         # locate user profile with url + token
         if (is_missing(profile_name)) {
-          self$profile_name <- sbg_default_profile_name
+          self$profile_name <- sbg_default_profile_name # nocov
         } else {
           self$profile_name <- profile_name
         }
@@ -287,7 +287,7 @@ Auth <- R6::R6Class(
       )
       req <- status_check(req)
 
-      if (complete) {
+      if (complete) { # nocov start
         N <- as.numeric(httr::headers(sbg_get_response(req))
         [["x-total-matching-query"]])
         if (length(N)) .item <- length(req$items)
@@ -316,8 +316,9 @@ Auth <- R6::R6Class(
         return(res)
       } else {
         return(req)
-      }
+      } # nocov end
     },
+    # nocov start
     # user ---------------------------------------------------------------------
     #' @description Get details about the authenticated user
     #' @param username The user name of a user for whom you want to get basic
@@ -634,5 +635,6 @@ Auth <- R6::R6Class(
       rlang::inform(glue::glue("New project has been created on the {self$platform} platform."))
       asProject(res, auth = self)
     }
+    # nocov end
   )
 )

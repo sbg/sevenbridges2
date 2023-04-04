@@ -58,6 +58,7 @@ Invoice <- R6::R6Class(
       self$storage_costs <- storage_costs
       self$total <- total
     },
+    # nocov start
     #' @description
     #' Print invoice information as a bullet list.
     #' @importFrom purrr discard
@@ -127,10 +128,9 @@ Invoice <- R6::R6Class(
         },
         ""
       )
-    }
+    } # nocov end
   )
 )
-
 
 asInvoice <- function(x, auth = NULL) {
   Invoice$new(

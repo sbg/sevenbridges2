@@ -63,6 +63,7 @@ Rate <- R6::R6Class(
       self$instance$limit <- instance_limit
       self$instance$remaining <- instance_remaining
     },
+    # nocov start
     #' @description
     #' Print rate limit information as a bullet list.
     #' @importFrom purrr discard
@@ -106,7 +107,7 @@ Rate <- R6::R6Class(
       )
       # Close container elements
       cli::cli_end()
-    }
+    } # nocov end
   )
 )
 

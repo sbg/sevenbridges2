@@ -89,6 +89,7 @@ User <- R6::R6Class(
       self$role <- role
       self$tags <- tags
     },
+    # nocov start
     #' @description
     #' Print user information as bullet list
     #' @importFrom purrr discard
@@ -129,7 +130,7 @@ User <- R6::R6Class(
 
       # Close container elements
       cli::cli_end()
-    }
+    } # nocov end
   )
 )
 

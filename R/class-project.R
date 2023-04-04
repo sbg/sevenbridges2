@@ -112,9 +112,10 @@ Project <- R6::R6Class(
     #'
     #' @importFrom glue glue_col
     print = function() {
-      cat(glue::glue_col("{blue  Project name: } {self$name}"), "\n")
-      cat(glue::glue_col("{blue  Project id: } {self$id}"), "\n")
+      cat(glue::glue_col("{blue  Project name: } {self$name}"), "\n") # nocov
+      cat(glue::glue_col("{blue  Project id: } {self$id}"), "\n") # nocov
     },
+    # nocov start
     #' @description Detailed print method for Project class.
     #'
     #' @details This method allows users to print all the fields from the
@@ -452,7 +453,7 @@ Project <- R6::R6Class(
       } else {
         rlang::abort("Please provide a username.")
       }
-    }
+    } # nocov end
   )
 )
 

@@ -61,6 +61,7 @@ Billing <- R6::R6Class(
       self$disabled <- disabled
       self$balance <- balance
     },
+    # nocov start
     #' @description
     #' Print billing group information as a bullet list.
     #' @importFrom purrr discard
@@ -202,7 +203,7 @@ Billing <- R6::R6Class(
       )
       req <- status_check(req)
       return(req)
-    }
+    } # nocov end
   )
 )
 

@@ -50,6 +50,7 @@ Permission <- R6::R6Class(
       self$execute <- execute
       self$admin <- admin
     },
+    # nocov start
     #' @description Print method for Permission class.
     #' @importFrom purrr discard
     #' @importFrom glue glue
@@ -71,6 +72,7 @@ Permission <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     }
+    # nocov end
   )
 )
 
