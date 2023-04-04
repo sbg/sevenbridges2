@@ -55,6 +55,20 @@ testthat::test_that("Function check_settings works", {
     err <- testthat::expect_error(check_settings(settings = input_list))
     expected_error <- glue::glue("Assertion on '{field}' failed: Must be of type '{settings_field_types[field]}' (or 'NULL'), not 'integer'.")
     testthat::expect_equal(err$message, expected_error)
+
+    if (field == "intermediate_files") {
+      # check error message if retention field is not valid (not character)
+      input_intermediate_files <- list(intermediate_files = list(retention = 15L))
+      err <- testthat::expect_error(check_settings(settings = input_intermediate_files))
+      expected_error <- glue::glue("Assertion on 'intermediate_files$retention' failed: Must be of type 'character' (or 'NULL'), not '{typeof(input_intermediate_files$intermediate_files$retention)}'.")
+      testthat::expect_equal(err$message, expected_error)
+
+      # check error message if duration field is not valid (not character)
+      input_intermediate_files <- list(intermediate_files = list(duration = "24"))
+      err <- testthat::expect_error(check_settings(settings = input_intermediate_files))
+      expected_error <- glue::glue("Assertion on 'intermediate_files$duration' failed: Must be of type 'integer' (or 'NULL'), not '{typeof(input_intermediate_files$intermediate_files$duration)}'.")
+      testthat::expect_equal(err$message, expected_error)
+    }
   }
 })
 
