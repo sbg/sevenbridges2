@@ -78,33 +78,18 @@ api <- function(token = NULL, path = NULL,
   method <- match.arg(method)
   encode <- match.arg(encode)
 
-  if (authorization) {
-    headers <- c("Authorization" = paste("Bearer", token, sep = " "))
-  } else {
-    headers <- c(
-      "X-SBG-Auth-Token" = token,
-      "Accept" = "application/json",
-      "Content-Type" = "application/json"
-    )
-  }
-
-  # add optional advance access flag
-  if (advance_access) headers <- c(headers, "X-SBG-advance-access" = "advance")
+  # set headers
+  headers <- set_headers(authorization = authorization, token = token)
 
   # setup query
-  query <- c(query, flatten_query(list(limit = as.integer(limit), offset = as.integer(offset), fields = fields)))
-  idx <- !sapply(query, is.null)
-  if (any(idx)) {
-    query <- query[idx]
-  } else {
-    query <- NULL
-  }
+  query <- setup_query(query = query,
+                       limit = getOption("sevenbridges2")$limit,
+                       offset = getOption("sevenbridges2")$offset ,
+                       fields = fields)
+
 
   # setup body
-  if (method %in% c("POST", "PATCH", "PUT")) {
-    stopifnot(is.list(body))
-    body <- jsonlite::toJSON(body, auto_unbox = TRUE, null = "null")
-  }
+  body <- setup_body(method = method, body = body)
 
   switch(method,
     GET = {
@@ -113,6 +98,7 @@ api <- function(token = NULL, path = NULL,
         query = query, ...
       )
     },
+    # nocov start
     POST = {
       POST2(url,
         httr::add_headers(.headers = headers),
@@ -139,5 +125,6 @@ api <- function(token = NULL, path = NULL,
         encode = encode, ...
       )
     }
+    # nocov end
   )
 }
