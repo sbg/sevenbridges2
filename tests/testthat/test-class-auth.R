@@ -32,6 +32,67 @@ testthat::test_that("Init authentication works", {
 
   # Clear env variable
   Sys.unsetenv("SB_AUTH_TOKEN")
+
+
+  # Check if the initialization function returns an error if both
+  # platform and url are provided
+  err <- testthat::expect_error(
+    suppressMessages(
+      sevenbridges2::Auth$new(
+        from = "direct",
+        platform = "aws-us",
+        token = test_token,
+        url = "https://api.sbgenomics.com/v2/"
+      )
+    )
+  )
+
+  expected_error <- "`platform` and `url` cannot be set simultaneously"
+  testthat::expect_equal(err$message, expected_error)
+
+  # Check of the initialization method throws an error if neither of
+  # those two (platform and url) are provided
+  err <- testthat::expect_error(
+    suppressMessages(
+      sevenbridges2::Auth$new(
+        from = "direct",
+        platform = NULL,
+        token = test_token,
+        url = NULL
+      )
+    )
+  )
+  expected_error <- "`platform` and `url` are not set, please, set one of them."
+  testthat::expect_equal(err$message, expected_error)
+
+  # Check error message when wrong platform name is provided
+  err <- testthat::expect_error(
+    suppressMessages(
+      sevenbridges2::Auth$new(
+        from = "direct",
+        platform = "Platform 9¾",
+        token = test_token,
+        url = NULL
+      )
+    )
+  )
+  expected_error <- "Platform does not exist, please check its spelling\n                         (case-sensitive)"
+  testthat::expect_equal(err$message, expected_error)
+
+  # Check error message when token is not provided
+  # Check error message when wrong platform name is provided
+  err <- testthat::expect_error(
+    suppressMessages(
+      sevenbridges2::Auth$new(
+        from = "direct",
+        platform = "aws-us",
+        token = NULL,
+        url = NULL
+      )
+    )
+  )
+  expected_error <- '`token` must be set when `from = "direct"`'
+  testthat::expect_equal(err$message, expected_error)
 })
 
 
