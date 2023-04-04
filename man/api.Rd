@@ -6,18 +6,17 @@
 \usage{
 api(
   token = NULL,
-  version = "v2",
   path = NULL,
   method = c("GET", "POST", "PUT", "DELETE", "PATCH"),
   query = NULL,
   body = list(),
   encode = c("json", "form", "multipart"),
-  limit = getOption("sevenbridges")$limit,
-  offset = getOption("sevenbridges")$offset,
-  advance_access = getOption("sevenbridges")$advance_access,
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
+  advance_access = getOption("sevenbridges2")$advance_access,
   authorization = FALSE,
   fields = NULL,
-  base_url = paste0("https://api.sbgenomics.com/", version, "/"),
+  base_url = NULL,
   ...
 )
 }
@@ -25,16 +24,14 @@ api(
 \item{token}{API auth token or \code{access_token} for
 Seven Bridges single sign-on.}
 
-\item{version}{API version number, default is \code{v2}.}
-
 \item{path}{path connected with \code{base_url}.}
 
 \item{method}{one of \code{"GET"}, \code{"POST"},
-\code{"PUT"}, or \code{"Delete"}.}
+\code{"PUT"}, \code{"DELETE"}, or \code{"PATCH"}.}
 
 \item{query}{Passed to httr package GET/POST call.}
 
-\item{body}{Passed to httr package GET/POST/PUT/DELETE call.}
+\item{body}{Passed to httr package GET/POST/PUT/DELETE/PATCH call.}
 
 \item{encode}{If the body is a named list, how should it be
 encoded? Can be one of \code{"json"} (application/json),
@@ -65,29 +62,28 @@ This parameter enables you to specify the fields you want to be returned
 when listing resources (e.g. all your projects) or getting details of a
 specific resource (e.g. a given project). For example, fields="id,name,size"
 to return the fields id, name and size for files. More details please check
-\url{https://docs.sevenbridges.com/docs/the-api#section-general-api-information}}
+\url{https://docs.sevenbridges.com/docs/the-api#section-general-\n
+api-information}}
 
-\item{base_url}{defeault is \code{"https://api.sbgenomics.com/v2"}}
+\item{base_url}{platform URL, default is NULL.}
 
-\item{...}{passed to GET/POST/PUT/DELETE/PATCH call.}
+\item{...}{Other arguments passed to GET/POST/PUT/DELETE/PATCH call.}
 }
 \value{
 returned request list of httr
 }
 \description{
-Core HTTP logic for Seven Bridges API
-}
-\details{
 Used for advanced users and the core method for higher level API
-in this package, please refer to the easy api vignette and
-additional vignettes pages for more convenient usage.
+in this package.
 }
 \examples{
 token <- "your_token"
 # list projects
 \dontrun{
-api(token = token, path = "projects", method = "GET")}
+api(token = token, path = "projects", method = "GET")
+}
+
 }
 \references{
-\url{https://docs.sevenbridges.com/v1.0/page/api}
+\url{https://docs.sevenbridges.com/page/api}
 }

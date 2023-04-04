@@ -15,19 +15,27 @@ License: Apache License 2.0 | file LICENSE
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
-URL: https://www.sevenbridges.com
+URL: https://www.sevenbridges.com, https://gitlab.sbgenomics.com/r-stack/sevenbridges2
 Depends:
-    R (>= 4.1.0)
-RoxygenNote: 7.2.1
+    R (>= 4.2.0)
+RoxygenNote: 7.2.3
 Imports:
     httr,
     R6,
     purrr,
     jsonlite,
-    yaml,
-    S4Vectors
+    cli,
+    rlang,
+    curl,
+    glue,
+    stringr,
+    utils,
+    checkmate
 Suggests:
     knitr,
     rmarkdown,
-    checkmate,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    stringi
+Config/testthat/edition: 3
+Remotes: 
+    r-lib/remotes
