@@ -43,6 +43,7 @@ utils::globalVariables(c(
 # Status codes from sevenbridges API v2 specification
 # https://docs.sevenbridges.com/reference#api-status-codes
 
+# nolint start
 codes <- list(
 
   # 0xxx: Platform maintenance errors
@@ -276,3 +277,4 @@ codes <- list(
   "90009" = "An error occurred during the decoding of the request content.",
   "90010" = "Not implemented, COPY and DELETE bulk operations are available."
 )
+# nolint end

@@ -42,12 +42,21 @@ test_that("Utility function sbg_parse_config works", {
   testthat::expect_equal(config_list[keys], expected_config_list[keys])
 
   # Check if the function throws an error if the config file doesn't exist
-  err <- testthat::expect_error(sbg_parse_config("test_data/non_existing_config_file"))
-  expected_error <- paste0("User config file: ", "test_data/non_existing_config_file", " does not exist")
+  err <- testthat::expect_error(
+    sbg_parse_config("test_data/non_existing_config_file")
+  )
+  expected_error <- paste0(
+    "User config file: ",
+    "test_data/non_existing_config_file",
+    " does not exist"
+  )
   testthat::expect_equal(err$message, expected_error)
 
   # Check if the function throws an error if the config file is invalid
-  invalid_config_file <- testthat::test_path("test_data", "invalid_credentials_test_file")
+  invalid_config_file <- testthat::test_path(
+    "test_data",
+    "invalid_credentials_test_file"
+  )
   err <- testthat::expect_error(sbg_parse_config(invalid_config_file))
   testthat::expect_equal(err$message, "User config file format is incorrect")
 })
@@ -131,7 +140,8 @@ testthat::test_that("Utility function sbg_get_env returns proper message if env
 
   # Define expected message
   expected_message <- paste0(
-    "Error in sbg_get_env(test_env_variable_name) : \n  Environment variable ", test_env_variable_name,
+    "Error in sbg_get_env(test_env_variable_name) : \n  Environment variable ",
+    test_env_variable_name,
     " is blank, please check if it is set correctly"
   )
 

@@ -37,7 +37,10 @@ status_check <- function(req, as = "parsed", ...) {
       }
       if (is.null(msg)) {
         print(content(req, as = as, ...))
-        rlang::abort(paste("Error of unknown type occured", httr::status_code(req)))
+        rlang::abort(paste(
+          "Error of unknown type occured",
+          httr::status_code(req)
+        ))
       } else {
         rlang::abort(paste0("HTTP Status ", httr::status_code(req), ": ", msg))
       }
@@ -81,7 +84,8 @@ check_limit <- function(limit) {
 #'
 #' @param offset offset value
 #' @importFrom rlang abort
-#' @importFrom checkmate assert_logical assert_list assert_character assert_integer
+#' @importFrom checkmate assert_logical assert_list
+#' assert_character assert_integer
 #' @importFrom glue glue
 #' @noRd
 check_offset <- function(offset) {
@@ -101,7 +105,8 @@ check_offset <- function(offset) {
 
 check_tags <- function(tags) {
   if (!is.null(tags)) {
-    msg <- "Tags parameter must be an unnamed list of tags. For example: tags = list('my_tag_1', 'my_tag_2')"
+    msg <- "Tags parameter must be an unnamed list of tags.
+    For example: tags = list('my_tag_1', 'my_tag_2')"
     if (!is.list(tags)) {
       rlang::abort(msg)
     }
@@ -124,7 +129,8 @@ check_settings <- function(settings) {
   invalid_element_names <- setdiff(names(settings), valid_input_names)
 
   if (length(invalid_element_names) > 0) {
-    rlang::abort(glue::glue("Argument {invalid_element_names} is not a valid settings field."))
+    rlang::abort(glue::glue("Argument {invalid_element_names} is not a valid
+                            settings field."))
   }
 
   checkmate::assert_logical(settings$locked,

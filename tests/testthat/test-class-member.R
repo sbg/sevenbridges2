@@ -38,7 +38,10 @@ test_that("Project member initialization works", {
   keys <- names(permissions_list)
 
   # Compare the two lists
-  testthat::expect_equal(permissions_list[keys], expected_permissions_list[keys])
+  testthat::expect_equal(
+    permissions_list[keys],
+    expected_permissions_list[keys]
+  )
 })
 
 test_that("Project print method works", {
@@ -97,6 +100,9 @@ test_that("Function asMemberList works", {
     keys <- names(permissions_list)
 
     # Compare the two lists
-    testthat::expect_equal(permissions_list[keys], expected_permissions_list[keys])
+    testthat::expect_equal(
+      permissions_list[keys],
+      expected_permissions_list[keys]
+    )
   }
 })

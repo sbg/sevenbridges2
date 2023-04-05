@@ -263,7 +263,6 @@ flatten_query <- function(x) {
 #' @return A named vector with headers for an API request.
 #' @noRd
 set_headers <- function(authorization = FALSE, token = NULL, advance_access = getOption("sevenbridges2")$advance_access) {
-
   if (is_missing(token)) {
     rlang::abort("Token is missing.")
   }
@@ -282,8 +281,6 @@ set_headers <- function(authorization = FALSE, token = NULL, advance_access = ge
   if (advance_access) headers <- c(headers, "X-SBG-advance-access" = "advance")
 
   return(headers)
-
-
 }
 
 
@@ -302,7 +299,7 @@ set_headers <- function(authorization = FALSE, token = NULL, advance_access = ge
 #'
 #' @return List of query parameters.
 #' @noRd
-setup_query <- function(query = NULL, limit = getOption("sevenbridges2")$limit, offset = getOption("sevenbridges2")$offset , fields = NULL) {
+setup_query <- function(query = NULL, limit = getOption("sevenbridges2")$limit, offset = getOption("sevenbridges2")$offset, fields = NULL) {
   # flatten and append query parameters
   query <- c(query, flatten_query(list(limit = as.integer(limit), offset = as.integer(offset), fields = fields)))
   idx <- !sapply(query, is.null)

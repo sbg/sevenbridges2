@@ -70,7 +70,8 @@ api <- function(token = NULL, path = NULL,
                 base_url = NULL,
                 ...) {
   if (is_missing(token)) rlang::abort("token must be provided")
-  if (is_missing(base_url)) rlang::abort("API address from the preferred platform must be provided")
+  if (is_missing(base_url)) rlang::abort("API address from the preferred
+                                         platform must be provided")
   check_limit(limit)
   check_offset(offset)
 
@@ -82,10 +83,12 @@ api <- function(token = NULL, path = NULL,
   headers <- set_headers(authorization = authorization, token = token)
 
   # setup query
-  query <- setup_query(query = query,
-                       limit = getOption("sevenbridges2")$limit,
-                       offset = getOption("sevenbridges2")$offset ,
-                       fields = fields)
+  query <- setup_query(
+    query = query,
+    limit = getOption("sevenbridges2")$limit,
+    offset = getOption("sevenbridges2")$offset,
+    fields = fields
+  )
 
 
   # setup body

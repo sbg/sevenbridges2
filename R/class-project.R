@@ -204,7 +204,6 @@ Project <- R6::R6Class(
                      Only users with write permissions in the project can
                      change the project description.")
       } else {
-
         check_tags(tags)
         check_settings(settings)
 

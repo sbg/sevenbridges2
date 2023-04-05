@@ -112,14 +112,19 @@ test_that("Function asProjectList works", {
   ))
 
   # Create a list with 2 copies of test_project_response
-  test_project_responses_list <- list(items = rep(list(test_project_response), 2))
+  test_project_responses_list <- list(
+    items = rep(list(test_project_response), 2)
+  )
 
   # Create a list of project objects using the asProjectList helper function
-  test_project_list <- asProjectList(x = test_project_responses_list, auth = test_auth_obj)
+  test_project_list <- asProjectList(
+    x = test_project_responses_list,
+    auth = test_auth_obj
+  )
 
   for (test_project in test_project_list) {
     testthat::expect_true(checkmate::test_class(test_project,
-                                                classes = c("Project", "Item", "R6")
+      classes = c("Project", "Item", "R6")
     ))
 
     # Check if all the expected fields are filled
@@ -188,4 +193,3 @@ test_that("Function asProjectList works", {
     )
   }
 })
-

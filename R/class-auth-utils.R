@@ -19,7 +19,8 @@
 sbg_get_env <- function(x) {
   res <- Sys.getenv(x)
   if (res == "") {
-    rlang::abort(glue::glue("Environment variable {x} is blank, please check if it is set correctly"))
+    rlang::abort(glue::glue("Environment variable {x} is blank, please check if
+                            it is set correctly"))
   }
   res
 }

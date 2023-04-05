@@ -113,7 +113,9 @@ User <- R6::R6Class(
       if (!is_missing(tags)) {
         tag_names <- sapply(tags, "[[", "tag")
         tag_expirations <- sapply(tags, "[[", "expires_at")
-        tags_list <- as.list(as.character(parse_time(tag_expirations, use_milliseconds = TRUE)))
+        tags_list <- as.list(as.character(parse_time(tag_expirations,
+          use_milliseconds = TRUE
+        )))
         names(tags_list) <- tag_names
 
         string_tags <- glue::glue_col("{blue  tag name:} {names(tags_list)};

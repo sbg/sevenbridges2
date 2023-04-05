@@ -128,7 +128,8 @@ Auth <- R6::R6Class(
 
         # Case 2: platform and url are both *not* provided
         if (is_missing(platform) & is_missing(url)) {
-          rlang::abort("`platform` and `url` are not set, please, set one of them.")
+          rlang::abort("`platform` and `url` are not set, please, set one of
+                       them.")
         }
 
         # Case 3: platform is provided, url is not provided
@@ -618,7 +619,8 @@ Auth <- R6::R6Class(
           "use_interruptible_instances" = use_interruptible_instances,
           "use_memoization" = use_memoization,
           "use_elastic_disk" = use_elastic_disk,
-          "intermediate_files" = intermediate_files)
+          "intermediate_files" = intermediate_files
+        )
       )
 
       res <- sevenbridges2::api(
@@ -632,7 +634,8 @@ Auth <- R6::R6Class(
 
       res <- status_check(res)
 
-      rlang::inform(glue::glue("New project has been created on the {self$platform} platform."))
+      rlang::inform(glue::glue("New project has been created on the
+                               {self$platform} platform."))
       asProject(res, auth = self)
     }
     # nocov end
