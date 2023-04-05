@@ -122,7 +122,7 @@ If you need to be logged into multiple accounts at the same time (which can also
 This is the most common method to construct the `Auth` object. For example:
 
 ```{r}
-(a <- Auth$new(platform = "cgc", token = "your_token"))
+(a <- Auth$new(platform = "aws-us", token = "your_token"))
 ```
 
 <a name="method2"/>**Method 2: Environment variables**
