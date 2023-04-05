@@ -359,9 +359,7 @@ Project <- R6::R6Class(
 
 
         if (req$status_code == 204) {
-          rlang::inform(message = glue::glue_col("User {green {username}} has
-                                                 been deleted from the
-                                                 {green {self$id}} project.",
+          rlang::inform(message = glue::glue_col("User {green {username}} has been deleted from the {green {self$id}} project.",
                                                  .literal = TRUE
           ))
         }
@@ -447,8 +445,7 @@ Project <- R6::R6Class(
 
 
         if (req$status_code == 200) {
-          rlang::inform(glue::glue_col("Permissions for {green {username}}
-                                       have been changed."))
+          rlang::inform(glue::glue_col("Permissions for {green {username}} have been changed."))
         } else {
           rlang::abort("Oops, something went wrong. ")
           res
