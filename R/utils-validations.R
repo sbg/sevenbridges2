@@ -109,56 +109,58 @@ check_tags <- function(tags) {
 }
 
 check_settings <- function(settings) {
-  msg <- "Settings must be provided as a list."
-  if (!is.list(settings)) {
-    rlang::abort(msg)
-  }
+  if (!is.null(settings)) {
+    msg <- "Settings must be provided as a list."
+    if (!is.list(settings)) {
+      rlang::abort(msg)
+    }
 
-  valid_input_names <- c(
-    "locked", "controlled", "use_interruptible_instances",
-    "use_memoization", "allow_network_access",
-    "use_elastic_disk", "location", "intermediate_files"
-  )
-
-
-  invalid_element_names <- setdiff(names(settings), valid_input_names)
-
-  if (length(invalid_element_names) > 0) {
-    rlang::abort(glue::glue("Argument {invalid_element_names} is not a valid settings field."))
-  }
-
-  checkmate::assert_logical(settings$locked,
-    .var.name = "locked", null.ok = TRUE
-  )
-  checkmate::assert_logical(settings$controlled,
-    .var.name = "controlled", null.ok = TRUE
-  )
-  checkmate::assert_logical(settings$use_interruptible_instances,
-    .var.name = "use_interruptible_instances", null.ok = TRUE
-  )
-  checkmate::assert_logical(settings$use_memoization,
-    .var.name = "use_memoization", null.ok = TRUE
-  )
-  checkmate::assert_logical(settings$allow_network_access,
-    .var.name = "allow_network_access", null.ok = TRUE
-  )
-  checkmate::assert_logical(settings$use_elastic_disk,
-    .var.name = "use_elastic_disk", null.ok = TRUE
-  )
-
-  checkmate::assert_character(settings$location,
-    .var.name = "location", null.ok = TRUE
-  )
-
-  if ("intermediate_files" %in% names(settings)) {
-    checkmate::assert_list(settings$intermediate_files,
-      .var.name = "intermediate_files", null.ok = TRUE
+    valid_input_names <- c(
+      "locked", "controlled", "use_interruptible_instances",
+      "use_memoization", "allow_network_access",
+      "use_elastic_disk", "location", "intermediate_files"
     )
-    checkmate::assert_integer(settings$intermediate_files$duration,
-      .var.name = "intermediate_files$duration", null.ok = TRUE
+
+
+    invalid_element_names <- setdiff(names(settings), valid_input_names)
+
+    if (length(invalid_element_names) > 0) {
+      rlang::abort(glue::glue("Argument {invalid_element_names} is not a valid settings field."))
+    }
+
+    checkmate::assert_logical(settings$locked,
+                              .var.name = "locked", null.ok = TRUE
     )
-    checkmate::assert_character(settings$intermediate_files$retention,
-      .var.name = "intermediate_files$retention", null.ok = TRUE
+    checkmate::assert_logical(settings$controlled,
+                              .var.name = "controlled", null.ok = TRUE
     )
+    checkmate::assert_logical(settings$use_interruptible_instances,
+                              .var.name = "use_interruptible_instances", null.ok = TRUE
+    )
+    checkmate::assert_logical(settings$use_memoization,
+                              .var.name = "use_memoization", null.ok = TRUE
+    )
+    checkmate::assert_logical(settings$allow_network_access,
+                              .var.name = "allow_network_access", null.ok = TRUE
+    )
+    checkmate::assert_logical(settings$use_elastic_disk,
+                              .var.name = "use_elastic_disk", null.ok = TRUE
+    )
+
+    checkmate::assert_character(settings$location,
+                                .var.name = "location", null.ok = TRUE
+    )
+
+    if ("intermediate_files" %in% names(settings)) {
+      checkmate::assert_list(settings$intermediate_files,
+                             .var.name = "intermediate_files", null.ok = TRUE
+      )
+      checkmate::assert_integer(settings$intermediate_files$duration,
+                                .var.name = "intermediate_files$duration", null.ok = TRUE
+      )
+      checkmate::assert_character(settings$intermediate_files$retention,
+                                  .var.name = "intermediate_files$retention", null.ok = TRUE
+      )
+    }
   }
 }

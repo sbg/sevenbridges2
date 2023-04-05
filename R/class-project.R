@@ -159,25 +159,25 @@ Project <- R6::R6Class(
 
 
       ifelse(exists("project_settings") && !is.null(project_settings),
-        {
-          cli::cli_li("settings")
-          cli::cli_ul(string_project_settings)
-        },
-        ""
+             {
+               cli::cli_li("settings")
+               cli::cli_ul(string_project_settings)
+             },
+             ""
       )
       ifelse(exists("project_tags") && !is.null(project_tags),
-        {
-          cli::cli_li("tags")
-          cli::cli_ul(string_project_tags)
-        },
-        ""
+             {
+               cli::cli_li("tags")
+               cli::cli_ul(string_project_tags)
+             },
+             ""
       )
       ifelse(exists("project_permissions") && !is.null(project_permissions),
-        {
-          cli::cli_li("permissions")
-          cli::cli_ul(string_project_permissions)
-        },
-        ""
+             {
+               cli::cli_li("permissions")
+               cli::cli_ul(string_project_permissions)
+             },
+             ""
       )
       # Close container elements
       cli::cli_end()
@@ -200,11 +200,6 @@ Project <- R6::R6Class(
                     settings = NULL,
                     tags = NULL, ...) {
       if (self$permissions$write) {
-        rlang::abort("You do not have permission to modify this project.
-                     Only users with write permissions in the project can
-                     change the project description.")
-      } else {
-
         check_tags(tags)
         check_settings(settings)
 
@@ -225,7 +220,11 @@ Project <- R6::R6Class(
 
         # update project object itself
         for (nm in nms) {
-          self[[nm]] <- utils::modifyList(self[[nm]], body[[nm]])
+          if (is.list(body[[nm]])) {
+            self[[nm]] <- utils::modifyList(self[[nm]], body[[nm]])
+          } else {
+            self[[nm]] <- body[[nm]]
+          }
         }
 
         res <- sevenbridges2::api(
@@ -239,6 +238,10 @@ Project <- R6::R6Class(
         res <- status_check(res)
 
         asProject(res, self$auth)
+      } else {
+        rlang::abort("You do not have permission to modify this project.
+                     Only users with write permissions in the project can
+                     change the project description.")
       }
     },
     # delete project ---------------------------------------------------------
@@ -356,10 +359,8 @@ Project <- R6::R6Class(
 
 
         if (req$status_code == 204) {
-          rlang::inform(message = glue::glue_col("User {green {username}} has
-                                                 been deleted from the
-                                                 {green {self$id}} project.",
-            .literal = TRUE
+          rlang::inform(message = glue::glue_col("User {green {username}} has been deleted from the {green {self$id}} project.",
+                                                 .literal = TRUE
           ))
         }
       } else {
@@ -444,8 +445,7 @@ Project <- R6::R6Class(
 
 
         if (req$status_code == 200) {
-          rlang::inform(glue::glue_col("Permissions for {green {username}}
-                                       have been changed."))
+          rlang::inform(glue::glue_col("Permissions for {green {username}} have been changed."))
         } else {
           rlang::abort("Oops, something went wrong. ")
           res
