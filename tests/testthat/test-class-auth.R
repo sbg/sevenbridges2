@@ -76,8 +76,9 @@ testthat::test_that("Init authentication works", {
       )
     )
   )
-  expected_error <- "Platform does not exist, please check its spelling\n
-  (case-sensitive)"
+  # nolint start
+  expected_error <- "Platform does not exist, please check its spelling (case-sensitive)"
+  # nolint end
   testthat::expect_equal(err$message, expected_error)
 
   # Check error message when token is not provided

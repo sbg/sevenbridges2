@@ -105,8 +105,9 @@ check_offset <- function(offset) {
 
 check_tags <- function(tags) {
   if (!is.null(tags)) {
-    msg <- "Tags parameter must be an unnamed list of tags.
-    For example: tags = list('my_tag_1', 'my_tag_2')"
+    # nolint start
+    msg <- "Tags parameter must be an unnamed list of tags. For example: tags = list('my_tag_1', 'my_tag_2')"
+    # nolint end
     if (!is.list(tags)) {
       rlang::abort(msg)
     }
@@ -129,8 +130,9 @@ check_settings <- function(settings) {
   invalid_element_names <- setdiff(names(settings), valid_input_names)
 
   if (length(invalid_element_names) > 0) {
-    rlang::abort(glue::glue("Argument {invalid_element_names} is not a valid
-                            settings field."))
+    # nolint start
+    rlang::abort(glue::glue("Argument {invalid_element_names} is not a valid settings field."))
+    # nolint end
   }
 
   checkmate::assert_logical(settings$locked,

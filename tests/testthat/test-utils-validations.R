@@ -1,9 +1,9 @@
 testthat::test_that("Function check_tags throws an error if the provided tags
                     argument is not a list", {
   err <- testthat::expect_error(check_tags(tags = "test_tag"))
-
-  testthat::expect_equal(err$message, "Tags parameter must be an unnamed list of
-                        tags. For example: tags = list('my_tag_1', 'my_tag_2')")
+  # nolint start
+  testthat::expect_equal(err$message, "Tags parameter must be an unnamed list of tags. For example: tags = list('my_tag_1', 'my_tag_2')")
+  # nolint end
 })
 
 
@@ -23,8 +23,9 @@ testthat::test_that("Function check_settings works", {
     width = 10L
   )))
 
-  testthat::expect_equal(err$message, "Argument width is not a valid settings
-                         field.")
+  # nolint start
+  testthat::expect_equal(err$message, "Argument width is not a valid settings field.")
+  # nolint end
 
 
 
@@ -54,9 +55,9 @@ testthat::test_that("Function check_settings works", {
     input_list[[field]] <- 10L
 
     err <- testthat::expect_error(check_settings(settings = input_list))
-    expected_error <- glue::glue("Assertion on '{field}' failed: Must be of type
-                                 '{settings_field_types[field]}' (or 'NULL'),
-                                 not 'integer'.")
+    # nolint start
+    expected_error <- glue::glue("Assertion on '{field}' failed: Must be of type '{settings_field_types[field]}' (or 'NULL'), not 'integer'.")
+    # nolint end
     testthat::expect_equal(err$message, expected_error)
 
     if (field == "intermediate_files") {

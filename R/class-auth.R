@@ -128,8 +128,9 @@ Auth <- R6::R6Class(
 
         # Case 2: platform and url are both *not* provided
         if (is_missing(platform) & is_missing(url)) {
-          rlang::abort("`platform` and `url` are not set, please, set one of
-                       them.")
+          # nolint start
+          rlang::abort("`platform` and `url` are not set, please, set one of them.")
+          # nolint end
         }
 
         # Case 3: platform is provided, url is not provided
@@ -139,8 +140,9 @@ Auth <- R6::R6Class(
           if (self$platform %in% names(sbg_baseurl)) {
             self$url <- sbg_baseurl[[self$platform]]
           } else {
-            rlang::abort("Platform does not exist, please check its spelling
-                         (case-sensitive)")
+            # nolint start
+            rlang::abort("Platform does not exist, please check its spelling (case-sensitive)")
+            # nolint end
           }
           message("Using platform: ", self$platform)
         }
@@ -332,8 +334,9 @@ Auth <- R6::R6Class(
           method = "GET",
           base_url = self$url,
         )
-        rlang::inform("username not provided, showing the currently
-                      authenticated user information")
+        # nolint start
+        rlang::inform("username not provided, showing the currently authenticated user information")
+        # nolint end
       } else {
         req <- sevenbridges2::api(
           token = self$get_token(),
