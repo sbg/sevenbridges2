@@ -34,7 +34,6 @@ test_that("Billing group initialization works", {
   testthat::expect_equal(test_billing_group$balance$currency, "Galleon [ʛ]")
   testthat::expect_equal(test_billing_group$balance$amount, 33333.3)
 
-
   # Check if superclass field auth is as expected
   testthat::expect_equal(test_billing_group$auth$platform, "aws-us")
   testthat::expect_equal(
@@ -42,12 +41,6 @@ test_that("Billing group initialization works", {
     "https://api.sbgenomics.com/v2/"
   )
 })
-
-
-
-
-
-
 
 test_that("Function asBillingList works", {
   # Load auth object
@@ -68,7 +61,6 @@ test_that("Function asBillingList works", {
     x = test_billing_group_resp_list,
     auth = test_auth_obj
   )
-
 
   for (test_billing_group in test_billing_group_list) {
     testthat::expect_true(
@@ -92,7 +84,6 @@ test_that("Function asBillingList works", {
     # nolint end
     testthat::expect_equal(test_billing_group$balance$currency, "Galleon [ʛ]")
     testthat::expect_equal(test_billing_group$balance$amount, 33333.3)
-
 
     # Check if superclass field auth is as expected
     testthat::expect_equal(test_billing_group$auth$platform, "aws-us")

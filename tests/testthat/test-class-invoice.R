@@ -50,7 +50,6 @@ test_that("Invoice initialization works", {
     test_invoice_object$analysis_costs$amount, "1244.1"
   )
 
-
   testthat::expect_true(checkmate::checkClass(
     test_invoice_object$storage_costs,
     classes = "list"
@@ -74,7 +73,6 @@ test_that("Invoice initialization works", {
     "https://api.sbgenomics.com/v2/"
   )
 })
-
 
 test_that("Function asInvoiceList works", {
   # Load auth object

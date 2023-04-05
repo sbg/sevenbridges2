@@ -12,7 +12,6 @@ testthat::test_that("Utility function parse_time works (seconds)", {
   )
 })
 
-
 testthat::test_that("Utility function parse_time works (milliseconds)", {
   # unix timestamp contains the information about milliseconds
   test_unix_timestamp <- 2555971200000
@@ -41,7 +40,6 @@ testthat::test_that("Utility function parse_time works (unknown)", {
   )
 })
 
-
 testthat::test_that("Utility function flatten_query works", {
   # Load predefined unflattened query params list
   unflattened_query_params_list <- readRDS(testthat::test_path(
@@ -69,7 +67,6 @@ testthat::test_that("Utility function flatten_query works", {
     expected_resulting_list[keys]
   )
 })
-
 
 testthat::test_that("Utility function handle_url2 works", {
   # Check call without url and handle
@@ -145,8 +142,6 @@ testthat::test_that("Utility function build_url2 works", {
   testthat::expect_equal(err$message, "Cannot set password without username")
 })
 
-
-
 testthat::test_that("Utility function set_headers works
                     when authorization = FALSE", {
   token <- stringi::stri_rand_strings(1, 32, pattern = "[a-z0-9]")
@@ -208,7 +203,6 @@ testthat::test_that("Utility function set_headers works when authorization =
   )
 })
 
-
 testthat::test_that("Utility function set_headers works when authorization =
                     TRUE", {
   token <- stringi::stri_rand_strings(1, 32, pattern = "[a-z0-9]")
@@ -229,7 +223,6 @@ testthat::test_that("Utility function set_headers works when authorization =
     label = "Headers element is not as-expected."
   )
 })
-
 
 testthat::test_that("Utility function set_headers throws an error if token is
                     not provided", {
@@ -264,7 +257,6 @@ testthat::test_that("Utility function setup_query works", {
   testthat::expect_equal(query[keys], expected_query_list[keys])
 })
 
-
 testthat::test_that("Utility function setup_body works", {
   method <- sample(c("POST", "PATCH", "PUT"), 1)
 
@@ -288,11 +280,6 @@ testthat::test_that("Utility function setup_body works", {
   ))
   testthat::expect_equal(body_param_json, expected_body_json)
 })
-
-
-
-
-
 
 testthat::test_that("Utility function m.fun works", {
   # test output when exact parameter is FALSE, and ignore.case is TRUE
@@ -349,7 +336,6 @@ testthat::test_that("Utility function m.fun works", {
   ) # named vector of match indexes
 })
 
-
 testthat::test_that("Utility function m.match works", {
   # Test output when exact parameter is FALSE,
   # ignore.case is TRUE (id = NULL and name != NULL)
@@ -400,8 +386,6 @@ testthat::test_that("Utility function m.match works", {
 
   # Compare the two lists
   testthat::expect_equal(matchings[keys], expected_matchings[keys])
-
-
 
   # Test output when exact parameter is FALSE, and ignore.case is FALSE
   # (no matchings)

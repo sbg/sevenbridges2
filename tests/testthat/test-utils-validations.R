@@ -6,14 +6,11 @@ testthat::test_that("Function check_tags throws an error if the provided tags
   # nolint end
 })
 
-
-
 testthat::test_that("Function check_settings works", {
   # Check if the function throws an error if settings argument is not a list
   err <- testthat::expect_error(check_settings(settings = "test_string"))
 
   testthat::expect_equal(err$message, "Settings must be provided as a list.")
-
 
   # Check if it throws an appropriate error if the provided settings list
   # contains an element with invalid name
@@ -27,8 +24,6 @@ testthat::test_that("Function check_settings works", {
   testthat::expect_equal(err$message, "Argument width is not a valid settings field.")
   # nolint end
 
-
-
   # Check if the function check_settings throws an error when settings list
   # elements have invalid types
   valid_input_names <- c(
@@ -36,7 +31,6 @@ testthat::test_that("Function check_settings works", {
     "use_memoization", "allow_network_access",
     "use_elastic_disk", "location", "intermediate_files"
   )
-
 
   settings_field_types <- list(
     locked = "logical",

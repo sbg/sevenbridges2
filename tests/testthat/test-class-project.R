@@ -52,7 +52,6 @@ test_that("Project initialization works", {
   # Compare the two lists
   expect_equal(settings_list[keys], expected_settings_list[keys])
 
-
   # Get permissions list from test project object
   permissions_list <- test_project$permissions
 

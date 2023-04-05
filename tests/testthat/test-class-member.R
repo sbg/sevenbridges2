@@ -53,9 +53,6 @@ test_that("Project print method works", {
   testthat::expect_snapshot(test_member$print())
 })
 
-
-
-
 test_that("Function asMemberList works", {
   # Load predefined response needed for creating a member object
   test_member_response <- readRDS(testthat::test_path(
