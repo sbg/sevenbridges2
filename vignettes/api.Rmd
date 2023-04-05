@@ -122,7 +122,7 @@ If you need to be logged into multiple accounts at the same time (which can also
 This is the most common method to construct the `Auth` object. For example:
 
 ```{r}
-(a <- Auth$new(platform = "aws-us", token = "your_token"))
+(a <- Auth$new(platform = "aws-us", token = "<your_token>"))
 ```
 
 <a name="method2"/>**Method 2: Environment variables**
@@ -159,7 +159,7 @@ sevenbridges2:::sbg_set_env(
 # Set environment variables for the second account
 sevenbridges2:::sbg_set_env(
   url = "https://api.sb.biodatacatalyst.nhlbi.nih.gov/v2/",
-  token = "<your_token>8",
+  token = "<your_token>",
   sysenv_url_name = "account_2_url",
   sysenv_token_name = "account_2_token"
 )
