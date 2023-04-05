@@ -85,6 +85,7 @@ asPermission <- function(x, auth = NULL) {
     execute = x$execute,
     admin = x$admin,
     href = x$href,
-    auth = auth
+    auth = auth,
+    response = attr(x, "response")
   )
 }
