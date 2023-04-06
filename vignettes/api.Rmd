@@ -45,7 +45,7 @@ There are two ways of constructing API calls. For instance, you can use low-leve
 
 ```{r}
 library("sevenbridges2")
-a <- Auth$new(token = "your_token", platform = "aws-us")
+a <- Auth$new(token = "<your token>", platform = "aws-us")
 a$api(path = "user", method = "GET")
 ```
 
@@ -109,8 +109,9 @@ library("sevenbridges2")
 
 You have three different ways to provide your token. Choose from one method below:
 
-1. [Direct authentication.](#method1) This explicitly and temporarily sets up your token and platform type (or alternatively, API base URL) in the function call arguments to `Auth()`.
-2. [Authentication via system environment variables.](#method2) By default this will read the credential information from two system environment variables: `SB_API_ENDPOINT` and `SB_AUTH_TOKEN`. Alternatively, you can specify the names of the system environment variables you want to be loaded using the `sysenv_token` and `sysenv_url` arguments.
+1. [Direct authentication.](#method1) Here you should provide your developer token and a base URL for the platform of interest (alternatively, you can provide the name of the platform - these are the available options `cgc`, `aws-us`, `aws-eu`, `ali-cn`, `cavatica`, `f4c` - the default platform is `aws-us`) as a function call arguments to `Auth()`. This will create the platform authentication object and temporarily set up your token and platform base URL as environment variables `SB_AUTH_TOKEN` and `SB_API_ENDPOINT`. This way, your token will not be directly stored in the Auth object, but you will still be able to access it by calling the `get_token()` method. Keep in mind that these environment variables are session-specific and are deleted when the session ends.
+
+2. [Authentication via system environment variables.](#method2) By default this will read the credential information from two existing system environment variables: `SB_API_ENDPOINT` and `SB_AUTH_TOKEN`. Of course, assuming that you have previously set these environment variables. Alternatively, you can specify the names of the system environment variables you want to be loaded using the `sysenv_token` and `sysenv_url` arguments.
 3. [Authentication via the user configuration file.](#method3) This file, by default `$HOME/.sevenbridges/credentials`, provides an organized way to collect and manage all your API authentication information for Seven Bridges platforms.
 
 
@@ -121,7 +122,7 @@ If you need to be logged into multiple accounts at the same time (which can also
 This is the most common method to construct the `Auth` object. For example:
 
 ```{r}
-(a <- Auth$new(platform = "cgc", token = "your_token"))
+(a <- Auth$new(platform = "aws-us", token = "<your_token>"))
 ```
 
 <a name="method2"/>**Method 2: Environment variables**
@@ -130,12 +131,10 @@ To set the two environment variables in your system, you could use
 the function `sbg_set_env()`. For example:
 
 ```{r}
-sbg_set_env(url = "https://cgc-api.sbgenomics.com/v2", token = "your_token")
+sbg_set_env(url = "https://api.sbgenomics.com/v2/", token = "<your_token>")
 ```
 
-Note that this change might be just temporary, please feel free to
-use the standard method to set persistent environment variables
-according to your operating system.
+Note that these environment variables are session-specific.
 
 Create an `Auth` object:
 
@@ -151,16 +150,16 @@ If you do not have pre-set environment variables, you can create them in the fol
 ```{r}
 # Set environment variables for the first account
 sevenbridges2:::sbg_set_env(
-  url = "https://cgc-api.sbgenomics.com/v2/",
-  token = "<your_token_for_the_1st_account>",
+  url = "https://api.sbgenomics.com/v2",
+  token = "<your_token>",
   sysenv_url_name = "account_1_url",
   sysenv_token_name = "account_1_token"
 )
 
 # Set environment variables for the second account
 sevenbridges2:::sbg_set_env(
-  url = "https://cgc-api.sbgenomics.com/v2/",
-  token = "<your_token_for_the_2nd_account>",
+  url = "https://api.sb.biodatacatalyst.nhlbi.nih.gov/v2/",
+  token = "<your_token>",
   sysenv_url_name = "account_2_url",
   sysenv_token_name = "account_2_token"
 )
@@ -469,12 +468,10 @@ The **new project** is created on the platform. Notice also that the variable p 
 ```{r}
 # list first 50 projects
 a$projects()
-# list all
-a$projects(complete = TRUE) # CHECK WHY THIS DOESN'T WORK!
-# return all named match "demo"
-a$projects(name = "demo")
-# return all projects tagged with "test_tags"
-a$projects(query = list(tags = c("test_tags")))
+# return all projects that contain the term "demo"
+a$projects(query = list(name = "demo"))
+# return all projects tagged with "test_1"
+a$projects(query = list(tags = c("test_1")))
 ```
 
 ## Get Details of a Specified Project
@@ -618,7 +615,7 @@ has admin permissions in the project.
 On the other hand, you can delete a member from the project in a similar way:
 
 ```{r}
-p$member_delete("<username_of_a_user_you_want_to_remove>")
+p$member_delete(username = "<username_of_a_user_you_want_to_remove>")
 ```
 
 
@@ -641,7 +638,7 @@ admin permissions to a project member:
 
 ```{r}
 p$member_permissions_modify(
-  username = "username_of_the_member_whose_permissions_you_are_editing",
+  username = "<username_of_the_member_whose_permissions_you_are_editing>",
   admin = TRUE
 )
 ```

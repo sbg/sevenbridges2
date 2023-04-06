@@ -332,7 +332,7 @@ Auth <- R6::R6Class(
           token = self$get_token(),
           path = "user/",
           method = "GET",
-          base_url = self$url,
+          base_url = self$url
         )
         # nolint start
         rlang::inform("username not provided, showing the currently authenticated user information")
@@ -342,7 +342,7 @@ Auth <- R6::R6Class(
           token = self$get_token(),
           path = paste0("users/", username),
           method = "GET",
-          base_url = self$url,
+          base_url = self$url
         )
       }
 
