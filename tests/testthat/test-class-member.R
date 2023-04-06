@@ -38,7 +38,10 @@ test_that("Project member initialization works", {
   keys <- names(permissions_list)
 
   # Compare the two lists
-  testthat::expect_equal(permissions_list[keys], expected_permissions_list[keys])
+  testthat::expect_equal(
+    permissions_list[keys],
+    expected_permissions_list[keys]
+  )
 })
 
 test_that("Project print method works", {
@@ -49,9 +52,6 @@ test_that("Project print method works", {
   test_member <- readRDS(member_obj_file)
   testthat::expect_snapshot(test_member$print())
 })
-
-
-
 
 test_that("Function asMemberList works", {
   # Load predefined response needed for creating a member object
@@ -97,6 +97,9 @@ test_that("Function asMemberList works", {
     keys <- names(permissions_list)
 
     # Compare the two lists
-    testthat::expect_equal(permissions_list[keys], expected_permissions_list[keys])
+    testthat::expect_equal(
+      permissions_list[keys],
+      expected_permissions_list[keys]
+    )
   }
 })

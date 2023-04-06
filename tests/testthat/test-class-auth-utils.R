@@ -21,8 +21,6 @@ testthat::test_that("Utility normalize_url function works properly", {
   }
 })
 
-
-
 test_that("Utility function sbg_parse_config works", {
   # Set config file path
   config_file <- testthat::test_path("test_data", "sbg_credentials_test_file")
@@ -42,17 +40,24 @@ test_that("Utility function sbg_parse_config works", {
   testthat::expect_equal(config_list[keys], expected_config_list[keys])
 
   # Check if the function throws an error if the config file doesn't exist
-  err <- testthat::expect_error(sbg_parse_config("test_data/non_existing_config_file"))
-  expected_error <- paste0("User config file: ", "test_data/non_existing_config_file", " does not exist")
+  err <- testthat::expect_error(
+    sbg_parse_config("test_data/non_existing_config_file")
+  )
+  expected_error <- paste0(
+    "User config file: ",
+    "test_data/non_existing_config_file",
+    " does not exist"
+  )
   testthat::expect_equal(err$message, expected_error)
 
   # Check if the function throws an error if the config file is invalid
-  invalid_config_file <- testthat::test_path("test_data", "invalid_credentials_test_file")
+  invalid_config_file <- testthat::test_path(
+    "test_data",
+    "invalid_credentials_test_file"
+  )
   err <- testthat::expect_error(sbg_parse_config(invalid_config_file))
   testthat::expect_equal(err$message, "User config file format is incorrect")
 })
-
-
 
 testthat::test_that("Utility function sbg_set_env works", {
   # Set env variables with sbg_set_env function
@@ -101,7 +106,6 @@ testthat::test_that("Utility function sbg_set_env works", {
   testthat::expect_equal(err$message, expected_error)
 })
 
-
 testthat::test_that("Utility function sbg_get_env works", {
   # Set test env variable
   Sys.setenv("ENV_VARIABLE_TEST" = "123454321")
@@ -112,7 +116,6 @@ testthat::test_that("Utility function sbg_get_env works", {
     to the expected value."
   )
 })
-
 
 testthat::test_that("Utility function sbg_get_env returns proper message if env
                     variable does not exist (is blank).", {
@@ -131,15 +134,15 @@ testthat::test_that("Utility function sbg_get_env returns proper message if env
 
   # Define expected message
   expected_message <- paste0(
-    "Error in sbg_get_env(test_env_variable_name) : \n  Environment variable ", test_env_variable_name,
-    " is blank, please check if it is set correctly"
+    "Error in sbg_get_env(test_env_variable_name) : \n  Environment variable ",
+    test_env_variable_name,
+    " is blank, please check if\nit is set correctly"
   )
 
   testthat::expect_equal(res, expected_message,
     label = "Test variable should be blank."
   )
 })
-
 
 testthat::test_that("Utility function sbg_platform_lookup works", {
   # go through all available platforms

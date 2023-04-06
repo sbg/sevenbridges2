@@ -1,20 +1,16 @@
-testthat::test_that("Function check_tags throws an error if the provided tags argument is not a list", {
-
+testthat::test_that("Function check_tags throws an error if the provided tags
+                    argument is not a list", {
   err <- testthat::expect_error(check_tags(tags = "test_tag"))
-
+  # nolint start
   testthat::expect_equal(err$message, "Tags parameter must be an unnamed list of tags. For example: tags = list('my_tag_1', 'my_tag_2')")
-
+  # nolint end
 })
 
-
-
 testthat::test_that("Function check_settings works", {
-
   # Check if the function throws an error if settings argument is not a list
   err <- testthat::expect_error(check_settings(settings = "test_string"))
 
   testthat::expect_equal(err$message, "Settings must be provided as a list.")
-
 
   # Check if it throws an appropriate error if the provided settings list
   # contains an element with invalid name
@@ -24,18 +20,17 @@ testthat::test_that("Function check_settings works", {
     width = 10L
   )))
 
+  # nolint start
   testthat::expect_equal(err$message, "Argument width is not a valid settings field.")
+  # nolint end
 
-
-
-  # Check if the function check_settings throws an error when settings list elements
-  # have invalid types
+  # Check if the function check_settings throws an error when settings list
+  # elements have invalid types
   valid_input_names <- c(
     "locked", "controlled", "use_interruptible_instances",
     "use_memoization", "allow_network_access",
     "use_elastic_disk", "location", "intermediate_files"
   )
-
 
   settings_field_types <- list(
     locked = "logical",
@@ -48,25 +43,42 @@ testthat::test_that("Function check_settings works", {
   )
 
   for (field in names(settings_field_types)) {
-    # provide settings as a list with a field containing some invalid value (for example, integer)
-    input_list <-  list()
+    # provide settings as a list with a field containing some invalid value
+    # (for example, integer)
+    input_list <- list()
     input_list[[field]] <- 10L
 
     err <- testthat::expect_error(check_settings(settings = input_list))
+    # nolint start
     expected_error <- glue::glue("Assertion on '{field}' failed: Must be of type '{settings_field_types[field]}' (or 'NULL'), not 'integer'.")
+    # nolint end
     testthat::expect_equal(err$message, expected_error)
 
     if (field == "intermediate_files") {
       # check error message if retention field is not valid (not character)
-      input_intermediate_files <- list(intermediate_files = list(retention = 15L))
-      err <- testthat::expect_error(check_settings(settings = input_intermediate_files))
+      input_intermediate_files <- list(
+        intermediate_files = list(retention = 15L)
+      )
+      err <- testthat::expect_error(
+        check_settings(settings = input_intermediate_files)
+      )
+      # nolint start
       expected_error <- glue::glue("Assertion on 'intermediate_files$retention' failed: Must be of type 'character' (or 'NULL'), not '{typeof(input_intermediate_files$intermediate_files$retention)}'.")
+      # nolint end
       testthat::expect_equal(err$message, expected_error)
 
       # check error message if duration field is not valid (not character)
-      input_intermediate_files <- list(intermediate_files = list(duration = "24"))
-      err <- testthat::expect_error(check_settings(settings = input_intermediate_files))
+      input_intermediate_files <- list(
+        intermediate_files =
+          list(duration = "24")
+      )
+      err <- testthat::expect_error(check_settings(
+        settings =
+          input_intermediate_files
+      ))
+      # nolint start
       expected_error <- glue::glue("Assertion on 'intermediate_files$duration' failed: Must be of type 'integer' (or 'NULL'), not '{typeof(input_intermediate_files$intermediate_files$duration)}'.")
+      # nolint end
       testthat::expect_equal(err$message, expected_error)
     }
   }

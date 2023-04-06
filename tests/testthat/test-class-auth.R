@@ -76,7 +76,9 @@ testthat::test_that("Init authentication works", {
       )
     )
   )
-  expected_error <- "Platform does not exist, please check its spelling\n                         (case-sensitive)"
+  # nolint start
+  expected_error <- "Platform does not exist, please check its spelling (case-sensitive)"
+  # nolint end
   testthat::expect_equal(err$message, expected_error)
 
   # Check error message when token is not provided
@@ -94,7 +96,6 @@ testthat::test_that("Init authentication works", {
   expected_error <- '`token` must be set when `from = "direct"`'
   testthat::expect_equal(err$message, expected_error)
 })
-
 
 testthat::test_that("Init authentication from env works", {
   # Set env variables with sbg_set_env function
@@ -144,8 +145,6 @@ testthat::test_that("Init authentication from env works", {
   Sys.unsetenv(test_sysenv_url_name)
   Sys.unsetenv(test_sysenv_token_name)
 })
-
-
 
 testthat::test_that("Init authentication from config file works", {
   # Create dummy authentication object
@@ -197,10 +196,6 @@ testthat::test_that("Init authentication from config file works", {
   Sys.unsetenv(paste0(auth$profile_name, "_token"))
   Sys.unsetenv(paste0(auth$profile_name, "_url"))
 })
-
-
-
-
 
 testthat::test_that("Calling the api method with no arguments returns a list of
                     all API paths", {

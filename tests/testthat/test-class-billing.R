@@ -34,7 +34,6 @@ test_that("Billing group initialization works", {
   testthat::expect_equal(test_billing_group$balance$currency, "Galleon [ʛ]")
   testthat::expect_equal(test_billing_group$balance$amount, 33333.3)
 
-
   # Check if superclass field auth is as expected
   testthat::expect_equal(test_billing_group$auth$platform, "aws-us")
   testthat::expect_equal(
@@ -43,14 +42,7 @@ test_that("Billing group initialization works", {
   )
 })
 
-
-
-
-
-
-
 test_that("Function asBillingList works", {
-
   # Load auth object
   test_auth_obj <- readRDS(testthat::test_path("test_data", "auth.RDS"))
 
@@ -59,16 +51,21 @@ test_that("Function asBillingList works", {
     readRDS(testthat::test_path("test_data", "ravenclaw_test_resp.RDS"))
 
   # Create a list with 2 copies of test_billing_group_response
-  test_billing_group_responses_list <- list(items = rep(list(test_billing_group_response), 2))
+  test_billing_group_resp_list <- list(
+    items = rep(list(test_billing_group_response), 2)
+  )
 
-  # Create a list of billing group objects using the asBillingList helper function
-  test_billing_group_list <- asBillingList(x = test_billing_group_responses_list, auth = test_auth_obj)
-
+  # Create a list of billing group objects using the asBillingList helper
+  # function
+  test_billing_group_list <- asBillingList(
+    x = test_billing_group_resp_list,
+    auth = test_auth_obj
+  )
 
   for (test_billing_group in test_billing_group_list) {
     testthat::expect_true(
       checkmate::test_class(test_billing_group,
-                            classes = c("Billing", "Item", "R6")
+        classes = c("Billing", "Item", "R6")
       )
     )
 
@@ -88,7 +85,6 @@ test_that("Function asBillingList works", {
     testthat::expect_equal(test_billing_group$balance$currency, "Galleon [ʛ]")
     testthat::expect_equal(test_billing_group$balance$amount, 33333.3)
 
-
     # Check if superclass field auth is as expected
     testthat::expect_equal(test_billing_group$auth$platform, "aws-us")
     testthat::expect_equal(
@@ -97,4 +93,3 @@ test_that("Function asBillingList works", {
     )
   }
 })
-

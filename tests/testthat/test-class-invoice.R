@@ -50,7 +50,6 @@ test_that("Invoice initialization works", {
     test_invoice_object$analysis_costs$amount, "1244.1"
   )
 
-
   testthat::expect_true(checkmate::checkClass(
     test_invoice_object$storage_costs,
     classes = "list"
@@ -75,7 +74,6 @@ test_that("Invoice initialization works", {
   )
 })
 
-
 test_that("Function asInvoiceList works", {
   # Load auth object
   test_auth_obj <- readRDS(testthat::test_path("test_data", "auth.RDS"))
@@ -85,10 +83,15 @@ test_that("Function asInvoiceList works", {
     readRDS(testthat::test_path("test_data", "single_invoice_response.RDS"))
 
   # Create a list with 2 copies of test_invoice_response
-  test_invoice_responses_list <- list(items = rep(list(test_invoice_response), 2))
+  test_invoice_responses_list <- list(
+    items = rep(list(test_invoice_response), 2)
+  )
 
   # Create a list of invoice objects using the asInvoiceList helper function
-  test_invoice_list <- asInvoiceList(x = test_invoice_responses_list, auth = test_auth_obj)
+  test_invoice_list <- asInvoiceList(
+    x = test_invoice_responses_list,
+    auth = test_auth_obj
+  )
 
   for (test_invoice_object in test_invoice_list) {
     testthat::expect_true(

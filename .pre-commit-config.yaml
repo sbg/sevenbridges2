@@ -21,8 +21,8 @@ repos:
         -    stringr
         -    remotes
         -    utils
-    # codemeta must be above use-tidy-description when both are used
-    # -   id: codemeta-description-updated
+        -    checkmate
+        -    withr
     -   id: use-tidy-description
     -   id: spell-check
         exclude: >
