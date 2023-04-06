@@ -127,16 +127,13 @@ check_settings <- function(settings) {
       "use_elastic_disk", "location", "intermediate_files"
     )
 
-  if (length(invalid_element_names) > 0) {
-    # nolint start
-    rlang::abort(glue::glue("Argument {invalid_element_names} is not a valid settings field."))
-    # nolint end
-  }
 
     invalid_element_names <- setdiff(names(settings), valid_input_names)
 
     if (length(invalid_element_names) > 0) {
+      # nolint start
       rlang::abort(glue::glue("Argument {invalid_element_names} is not a valid settings field."))
+      # nolint end
     }
 
     checkmate::assert_logical(settings$locked,
