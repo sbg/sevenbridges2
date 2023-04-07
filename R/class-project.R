@@ -107,6 +107,12 @@ Project <- R6::R6Class(
       self$modified_on <- modified_on
       self$permissions <- permissions
       self$category <- category
+
+      if (is.null(self$permissions)) {
+        user_info <- self$auth$user()
+        auth_project_member <- self$member_permissions_get(username = user_info$username)
+        self$permissions <- auth_project_member$permissions
+      }
     },
     #' @description  Basic print method for Project class.
     #'
