@@ -15,7 +15,7 @@ api(
   offset = getOption("sevenbridges2")$offset,
   advance_access = getOption("sevenbridges2")$advance_access,
   authorization = FALSE,
-  fields = NULL,
+  fields = "_all",
   base_url = NULL,
   ...
 )
@@ -61,7 +61,9 @@ Seven Bridges single sign-on (\code{TRUE})?}
 This parameter enables you to specify the fields you want to be returned
 when listing resources (e.g. all your projects) or getting details of a
 specific resource (e.g. a given project). For example, fields="id,name,size"
-to return the fields id, name and size for files. More details please check
+to return the fields id, name and size for files. Default value is set to
+'_all', so all fields are always returned for each resource.
+More details please check
 \url{https://docs.sevenbridges.com/docs/the-api#section-general-\n
 api-information}}
 

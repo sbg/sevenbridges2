@@ -33,7 +33,9 @@
 #' This parameter enables you to specify the fields you want to be returned
 #' when listing resources (e.g. all your projects) or getting details of a
 #' specific resource (e.g. a given project). For example, fields="id,name,size"
-#' to return the fields id, name and size for files. More details please check
+#' to return the fields id, name and size for files. Default value is set to
+#' '_all', so all fields are always returned for each resource.
+#' More details please check
 #' \url{https://docs.sevenbridges.com/docs/the-api#section-general-\n
 #' api-information}
 #'
@@ -66,7 +68,7 @@ api <- function(token = NULL, path = NULL,
                 offset = getOption("sevenbridges2")$offset,
                 advance_access = getOption("sevenbridges2")$advance_access,
                 authorization = FALSE,
-                fields = NULL,
+                fields = "_all",
                 base_url = NULL,
                 ...) {
   if (is_missing(token)) rlang::abort("token must be provided")
@@ -86,8 +88,8 @@ api <- function(token = NULL, path = NULL,
   # setup query
   query <- setup_query(
     query = query,
-    limit = getOption("sevenbridges2")$limit,
-    offset = getOption("sevenbridges2")$offset,
+    limit = limit,
+    offset = offset,
     fields = fields
   )
 
