@@ -289,14 +289,12 @@ authenticated user will be listed. Otherwise, projects will be listed
 for the user whose username is provided. Please keep in mind that this
 way you will only be able to list projects you are a member of.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$projects(id = NULL, name = NULL, owner = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Auth$projects(name = NULL, owner = NULL, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{Project's ID.}
-
 \item{\code{name}}{Project's name.}
 
 \item{\code{owner}}{The username of the owner whose projects you want to query.}

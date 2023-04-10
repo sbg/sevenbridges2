@@ -496,18 +496,18 @@ Auth <- R6::R6Class(
     #' authenticated user will be listed. Otherwise, projects will be listed
     #' for the user whose username is provided. Please keep in mind that this
     #' way you will only be able to list projects you are a member of.
-    #' @param id Project's ID.
     #' @param name Project's name.
     #' @param owner The username of the owner whose projects you want to query.
     #' @param ... Other arguments that can be passed to this method.
     #' Such as query parameters.
-    projects = function(id = NULL, name = NULL, owner = NULL, ...) {
+    projects = function(name = NULL, owner = NULL, ...) {
       if (is.null(owner)) {
         res <- sevenbridges2::api(
           path = "projects",
           method = "GET",
           token = self$get_token(),
           base_url = self$url,
+          query = list(name = name),
           ...
         )
       } else {
