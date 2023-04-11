@@ -117,3 +117,17 @@ test_that("check_offset function throws error when offset is not valid", {
     )
   }
 })
+
+test_that("check_folder_name function works", {
+  valid_names <- c("New_folder", "MyFolder", "Inputs")
+  for (name in valid_names) {
+    testthat::expect_silent(check_folder_name(name))
+  }
+})
+
+test_that("check_folder_name function throws error when expected", {
+  invalid_names <- c(NULL, "", c(), NA, "New folder", "__inputs", "Another new folder")
+  for (name in invalid_names) {
+    testthat::expect_error(check_folder_name(name))
+  }
+})
