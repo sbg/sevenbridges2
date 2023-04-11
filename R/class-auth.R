@@ -642,6 +642,91 @@ Auth <- R6::R6Class(
       rlang::inform(glue::glue("New project has been created on the
                                {self$platform} platform."))
       asProject(res, auth = self)
+    },
+    # list all files -------------------------------------------------------
+    #' @description This call returns a list of files and subdirectories in a
+    #' specified project or directory within a project, with specified
+    #' properties that you can access. The project or directory whose contents
+    #' you want to list is specified as a query parameter in the call. Further
+    #'  properties to filter by can also be specified as query parameters.
+    #' Note that this call lists both files and subdirectories in the specified
+    #' project or directory within a project, but not the contents of the
+    #' subdirectories. To list the contents of a subdirectory, make a new call
+    #' and specify the subdirectory ID as the parent parameter.
+    #' @param project Project object. Project should not be used together
+    #' with parent. If parent is used, the call will list the content of the
+    #' specified folder, within the project to which the folder belongs.
+    #' If project is used, the call will list the content at the root of the
+    #' project's files.
+    #' @param parent Parent folder object. Should not be used together with
+    #' project. If parent is used, the call will list the content of the
+    #' specified folder, within the project to which the folder belongs.
+    #' If project is used, the call will list the content at the root of the
+    #' project's files.
+    #' @param name Name of the file. List file with this name. Note that the
+    #' name must be an exact complete string for the results to match. Multiple
+    #' names can be represented as a vector.
+    #' @param metadata List file with this metadata field values. List only
+    #' files that have the specified value in metadata field. Different metadata
+    #' fields are represented as a named list. You can also define multiple
+    #' instances of the same metadata field.
+    #' @param origin Task object. List only files produced by task.
+    #' @param tag List files containing this tag. Note that the tag must be an
+    #'  exact complete string for the results to match. Multiple tags can be
+    #'  represented by vector of values.
+    #' @param ... Other arguments that can be passed to this method.
+    #' Such as query parameters.
+    files = function(project = NULL, parent = NULL, name = NULL,
+                     metadata = NULL, origin = NULL, tag = NULL, ...) {
+      # Check input parameters
+      checkmate::assert_r6(project, classes = "Project", null.ok = TRUE)
+      checkmate::assert_r6(parent, classes = "File", null.ok = TRUE)
+      checkmate::assert_vector(name, null.ok = TRUE)
+      checkmate::assert_list(metadata,
+        types = "string", names = TRUE,
+        null.ok = TRUE
+      )
+      checkmate::assert_r6(origin, classes = "Task", null.ok = TRUE)
+      checkmate::assert_vector(tag, null.ok = TRUE)
+
+      # Run API call based on project/parent parameters
+      if (!is.null(project)) {
+        res <- sevenbridges2::api(
+          path = "files",
+          method = "GET",
+          token = self$get_token(),
+          base_url = self$url,
+          query = list(
+            project = project$id,
+            name = name,
+            metadata = metadata,
+            origin = origin,
+            tag = tag
+          ),
+          ...
+        )
+      } else if (!is.null(parent)) {
+        res <- sevenbridges2::api(
+          path = "files",
+          method = "GET",
+          token = self$get_token(),
+          base_url = self$url,
+          query = list(
+            parent = parent$id,
+            name = name,
+            metadata = metadata,
+            origin = origin,
+            tag = tag
+          ),
+          ...
+        )
+      }
+
+      res <- status_check(res)
+
+      res <- asFileList(res, auth = self)
+
+      res
     }
     # nocov end
   )

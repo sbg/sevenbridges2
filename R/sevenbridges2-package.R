@@ -36,10 +36,6 @@ utils::globalVariables(c(
   options(sevenbridges2 = lst)
 }
 
-
-
-
-
 # Status codes from sevenbridges API v2 specification
 # https://docs.sevenbridges.com/reference#api-status-codes
 
