@@ -66,7 +66,7 @@ api <- function(token = NULL, path = NULL,
                 offset = getOption("sevenbridges2")$offset,
                 advance_access = getOption("sevenbridges2")$advance_access,
                 authorization = FALSE,
-                fields = NULL,
+                fields = "_all",
                 base_url = NULL,
                 ...) {
   if (is_missing(token)) rlang::abort("token must be provided")
@@ -86,8 +86,8 @@ api <- function(token = NULL, path = NULL,
   # setup query
   query <- setup_query(
     query = query,
-    limit = getOption("sevenbridges2")$limit,
-    offset = getOption("sevenbridges2")$offset,
+    limit = limit,
+    offset = offset,
     fields = fields
   )
 
