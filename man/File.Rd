@@ -47,7 +47,7 @@ it usually return the project id and stored with the object.}
 \item \href{#method-File-new}{\code{File$new()}}
 \item \href{#method-File-print}{\code{File$print()}}
 \item \href{#method-File-detailed_print}{\code{File$detailed_print()}}
-\item \href{#method-File-edit}{\code{File$edit()}}
+\item \href{#method-File-update_details}{\code{File$update_details()}}
 \item \href{#method-File-delete}{\code{File$delete()}}
 \item \href{#method-File-clone}{\code{File$clone()}}
 }
@@ -81,9 +81,9 @@ Create a new File object.
 \describe{
 \item{\code{id}}{Character used as file id.}
 
-\item{\code{name}}{Member's username - same as id.}
+\item{\code{name}}{File name.}
 
-\item{\code{size}}{Member's email.}
+\item{\code{size}}{File size.}
 
 \item{\code{project}}{Project project id if any, when returned by a API call,
 it usually return the project id and stored with the object.}
@@ -137,20 +137,13 @@ Field object more descriptively.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-File-edit"></a>}}
-\if{latex}{\out{\hypertarget{method-File-edit}{}}}
-\subsection{Method \code{edit()}}{
+\if{html}{\out{<a id="method-File-update_details"></a>}}
+\if{latex}{\out{\hypertarget{method-File-update_details}{}}}
+\subsection{Method \code{update_details()}}{
 This call updates the name, the full set metadata, and tags
  for a specified file.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{File$edit(
-  name = NULL,
-  description = NULL,
-  billing_group = NULL,
-  settings = NULL,
-  tags = NULL,
-  ...
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{File$update_details(name = NULL, metadata = NULL, tags = NULL, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -158,17 +151,14 @@ This call updates the name, the full set metadata, and tags
 \describe{
 \item{\code{name}}{The new name of the file.}
 
-\item{\code{billing_group}}{The ID of the billing group for the project.}
-
-\item{\code{settings}}{Contains detailed project settings.}
-
-\item{\code{tags}}{The list of project tags.}
-
-\item{\code{...}}{Additional parameters that can be passed to the method.}
-
 \item{\code{metadata}}{The metadata fields and their values that you want to
 update. This is a named list of key-value pairs. The keys and values are
- strings.}
+strings.}
+
+\item{\code{tags}}{The tags you want to update, represented as unnamed list of
+values to add as tags.}
+
+\item{\code{...}}{Additional parameters that can be passed to the method.}
 }
 \if{html}{\out{</div>}}
 }
