@@ -116,6 +116,7 @@ Project <- R6::R6Class(
       cat(glue::glue_col("{blue  Project id: } {self$id}"), "\n") # nocov
     },
     # nocov start
+
     #' @description Detailed print method for Project class.
     #'
     #' @details This method allows users to print all the fields from the
@@ -159,29 +160,30 @@ Project <- R6::R6Class(
 
 
       ifelse(exists("project_settings") && !is.null(project_settings),
-             {
-               cli::cli_li("settings")
-               cli::cli_ul(string_project_settings)
-             },
-             ""
+        {
+          cli::cli_li("settings")
+          cli::cli_ul(string_project_settings)
+        },
+        ""
       )
       ifelse(exists("project_tags") && !is.null(project_tags),
-             {
-               cli::cli_li("tags")
-               cli::cli_ul(string_project_tags)
-             },
-             ""
+        {
+          cli::cli_li("tags")
+          cli::cli_ul(string_project_tags)
+        },
+        ""
       )
       ifelse(exists("project_permissions") && !is.null(project_permissions),
-             {
-               cli::cli_li("permissions")
-               cli::cli_ul(string_project_permissions)
-             },
-             ""
+        {
+          cli::cli_li("permissions")
+          cli::cli_ul(string_project_permissions)
+        },
+        ""
       )
       # Close container elements
       cli::cli_end()
     },
+
     # edit project ---------------------------------------------------------
     #' @description Method that allows you to edit an already existing project.
     #' As a project Admin you can use it to change the name, settings,
@@ -216,17 +218,6 @@ Project <- R6::R6Class(
           rlang::abort("Please provide updated information.")
         }
 
-        nms <- names(body)
-
-        # update project object itself
-        for (nm in nms) {
-          if (is.list(body[[nm]])) {
-            self[[nm]] <- utils::modifyList(self[[nm]], body[[nm]])
-          } else {
-            self[[nm]] <- body[[nm]]
-          }
-        }
-
         res <- sevenbridges2::api(
           path = paste0("projects/", self$id),
           method = "PATCH",
@@ -235,6 +226,7 @@ Project <- R6::R6Class(
           base_url = self$auth$url,
           ...
         )
+
         res <- status_check(res)
 
         asProject(res, self$auth)
@@ -359,9 +351,11 @@ Project <- R6::R6Class(
 
 
         if (req$status_code == 204) {
+          # nolint start
           rlang::inform(message = glue::glue_col("User {green {username}} has been deleted from the {green {self$id}} project.",
-                                                 .literal = TRUE
+            .literal = TRUE
           ))
+          # nolint end
         }
       } else {
         rlang::abort("Please provide a username for the user you want to remove
@@ -445,7 +439,9 @@ Project <- R6::R6Class(
 
 
         if (req$status_code == 200) {
+          # nolint start
           rlang::inform(glue::glue_col("Permissions for {green {username}} have been changed."))
+          # nolint end
         } else {
           rlang::abort("Oops, something went wrong. ")
           res
