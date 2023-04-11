@@ -436,6 +436,49 @@ Project <- R6::R6Class(
         rlang::abort("Oops, something went wrong. ")
         res
       }
+    },
+    #' @description  List all project's files and folders.
+    #' @param ... Other arguments that can be passed like limit, offset, fields.
+    files = function(...) {
+      req <- sevenbridges2::api(
+        path = paste0("projects/", self$id, "/files"),
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(req)
+
+      # asFile(res, self$auth))
+      res
+    },
+    #' @description  Create a new folder under the project's root directory.
+    #'
+    #' @param name Folder name.
+    #' @param ... Other arguments that can be passed like limit, offset, fields.
+    create_folder = function(name, ...) {
+      check_folder_name(name)
+
+      body <- list(
+        "name" = name,
+        "project" = self$id,
+        "type" = "FOLDER"
+      )
+
+      req <- sevenbridges2::api(
+        path = "files",
+        method = "POST",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(req)
+
+      # asFile(res, self$auth))
+      res
     } # nocov end
   )
 )
