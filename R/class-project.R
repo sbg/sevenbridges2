@@ -192,7 +192,8 @@ Project <- R6::R6Class(
     #' @param billing_group The ID of the billing group for the project.
     #' @param settings Contains detailed project settings.
     #' @param tags The list of project tags.
-    #' @param ... Additional parameters that can be passed to the method.
+    #' @param ... Other arguments that can be passed to api() function
+    #' like 'limit', 'offset', 'fields', etc.
     #' @importFrom utils modifyList
     edit = function(name = NULL,
                     description = NULL,
@@ -292,7 +293,8 @@ Project <- R6::R6Class(
     #' @param copy Whether the user should have the copy permission.
     #' @param execute Whether the user should have the execute permission.
     #' @param admin Whether the user should have the admin permission.
-    #' @param ... Other arguments.
+    #' @param ... Other arguments that can be passed to api() function
+    #' like 'limit', 'offset', 'fields', etc.
     member_add = function(pid = self$id,
                           username = NULL,
                           email = NULL,
@@ -389,7 +391,8 @@ Project <- R6::R6Class(
     #' @param copy Whether the user should have the copy permission.
     #' @param execute Whether the user should have the execute permission.
     #' @param admin Whether the user should have the admin permission.
-    #' @param ... Other arguments.
+    #' @param ... Other arguments that can be passed to api() function
+    #' like 'limit', 'offset', 'fields', etc.
     member_permissions_modify = function(pid = self$id,
                                          username = NULL,
                                          write = TRUE,
@@ -438,7 +441,8 @@ Project <- R6::R6Class(
       }
     },
     #' @description  List all project's files and folders.
-    #' @param ... Other arguments that can be passed like limit, offset, fields.
+    #' @param ... Other arguments that can be passed to api() function
+    #' like 'limit', 'offset', 'fields', etc.
     files = function(...) {
       req <- sevenbridges2::api(
         path = paste0("projects/", self$id, "/files"),
@@ -456,7 +460,8 @@ Project <- R6::R6Class(
     #' @description  Create a new folder under the project's root directory.
     #'
     #' @param name Folder name.
-    #' @param ... Other arguments that can be passed like limit, offset, fields.
+    #' @param ... Other arguments that can be passed to api() function
+    #' like 'limit', 'offset', 'fields', etc.
     create_folder = function(name, ...) {
       check_folder_name(name)
 
@@ -468,6 +473,40 @@ Project <- R6::R6Class(
 
       req <- sevenbridges2::api(
         path = "files",
+        method = "POST",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(req)
+
+      # asFile(res, self$auth))
+      res
+    },
+    #' @description  Copy file/files to current project.
+    #'
+    #' @param files List of File class objects to copy.
+    #' @param destination_project Project ID in form of {project_owner}/{project-name}
+    #' where you want to copy files into.
+    #' @param ... Other arguments that can be passed to api() function
+    #' like 'limit', 'offset', 'fields', etc.
+    copy_files = function(files, destination_project, ...) {
+      if (!is.list(files)) rlang::abort("Files parameter must be a list of File objects.")
+      if (!all(lapply(files, function(x) inherits(x, "File")))) {
+        rlang::abort("Files list must contain objects of File class.")
+      }
+      browser()
+      file_ids <- lapply(files, "[[", id)
+
+      body <- list(
+        "project" = destination_project,
+        "file_ids" = file_ids
+      )
+
+      req <- sevenbridges2::api(
+        path = "action/files/copy",
         method = "POST",
         body = body,
         token = self$auth$get_token(),
