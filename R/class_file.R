@@ -41,8 +41,8 @@ File <- R6::R6Class(
 
     #' @description Create a new File object.
     #' @param id Character used as file id.
-    #' @param name Member's username - same as id.
-    #' @param size Member's email.
+    #' @param name File name.
+    #' @param size File size.
     #' @param project Project project id if any, when returned by a API call,
     #' it usually return the project id and stored with the object.
     #' @param parent Parent folder ID.
@@ -64,7 +64,7 @@ File <- R6::R6Class(
 
       self$id <- id
       self$name <- name
-      self$size <- utils::format.object_size(size, "auto")
+      self$size <- format(utils::object.size(size), units = "auto")
       self$project <- project
       self$parent <- parent
       self$type <- type
@@ -188,61 +188,42 @@ File <- R6::R6Class(
     #' @param name The new name of the file.
     #' @param metadata The metadata fields and their values that you want to
     #' update. This is a named list of key-value pairs. The keys and values are
-    #'  strings.
-    #' @param billing_group The ID of the billing group for the project.
-    #' @param settings Contains detailed project settings.
-    #' @param tags The list of project tags.
+    #' strings.
+    #' @param tags The tags you want to update, represented as unnamed list of
+    #' values to add as tags.
     #' @param ... Additional parameters that can be passed to the method.
     #' @importFrom utils modifyList
-    edit = function(name = NULL,
-                    description = NULL,
-                    billing_group = NULL,
-                    settings = NULL,
-                    tags = NULL, ...) {
-      if (self$permissions$write) {
-        check_tags(tags)
-        check_settings(settings)
+    #' @importFrom checkmate assert_string
+    update_details = function(name = NULL,
+                              metadata = NULL,
+                              tags = NULL, ...) {
+      checkmate::assert_string(name, null.ok = TRUE)
+      check_tags(tags)
+      check_metadata(metadata)
 
-        body <- list(
-          "name" = name,
-          "description" = description,
-          "billing_group" = billing_group,
-          "settings" = settings,
-          "tags" = tags
-        )
+      body <- list(
+        "name" = name,
+        "tags" = tags,
+        "metadata" = metadata
+      )
 
-        body <- body[!sapply(body, is.null)]
-        if (length(body) == 0) {
-          rlang::abort("Please provide updated information.")
-        }
-
-        nms <- names(body)
-
-        # update project object itself
-        for (nm in nms) {
-          if (is.list(body[[nm]])) {
-            self[[nm]] <- utils::modifyList(self[[nm]], body[[nm]])
-          } else {
-            self[[nm]] <- body[[nm]]
-          }
-        }
-
-        res <- sevenbridges2::api(
-          path = paste0("projects/", self$id),
-          method = "PATCH",
-          body = body,
-          token = self$auth$get_token(),
-          base_url = self$auth$url,
-          ...
-        )
-        res <- status_check(res)
-
-        asProject(res, self$auth)
-      } else {
-        rlang::abort("You do not have permission to modify this project.
-                     Only users with write permissions in the project can
-                     change the project description.")
+      body <- body[!sapply(body, is.null)]
+      if (length(body) == 0) {
+        rlang::abort("Please provide updated information.")
       }
+
+      res <- sevenbridges2::api(
+        path = paste0("files/", self$id),
+        method = "PATCH",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(res)
+
+      asFile(res, self$auth)
     },
 
     #' @description Delete method for File class.
