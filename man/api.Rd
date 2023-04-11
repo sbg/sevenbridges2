@@ -15,7 +15,7 @@ api(
   offset = getOption("sevenbridges2")$offset,
   advance_access = getOption("sevenbridges2")$advance_access,
   authorization = FALSE,
-  fields = NULL,
+  fields = "_all",
   base_url = NULL,
   ...
 )
