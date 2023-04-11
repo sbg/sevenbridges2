@@ -78,7 +78,6 @@ permissions within the project.}
 \item \href{#method-Project-member_permissions_modify}{\code{Project$member_permissions_modify()}}
 \item \href{#method-Project-files}{\code{Project$files()}}
 \item \href{#method-Project-create_folder}{\code{Project$create_folder()}}
-\item \href{#method-Project-copy_files}{\code{Project$copy_files()}}
 \item \href{#method-Project-clone}{\code{Project$clone()}}
 }
 }
@@ -405,29 +404,6 @@ Create a new folder under the project's root directory.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{name}}{Folder name.}
-
-\item{\code{...}}{Other arguments that can be passed to api() function
-like 'limit', 'offset', 'fields', etc.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Project-copy_files"></a>}}
-\if{latex}{\out{\hypertarget{method-Project-copy_files}{}}}
-\subsection{Method \code{copy_files()}}{
-Copy file/files to current project.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$copy_files(files, destination_project, ...)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{files}}{List of File class objects to copy.}
-
-\item{\code{destination_project}}{Project ID in form of {project_owner}/{project-name}
-where you want to copy files into.}
 
 \item{\code{...}}{Other arguments that can be passed to api() function
 like 'limit', 'offset', 'fields', etc.}

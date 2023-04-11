@@ -454,8 +454,7 @@ Project <- R6::R6Class(
 
       res <- status_check(req)
 
-      # asFile(res, self$auth))
-      res
+      asFileList(res, self$auth)
     },
     #' @description  Create a new folder under the project's root directory.
     #'
@@ -482,42 +481,7 @@ Project <- R6::R6Class(
 
       res <- status_check(req)
 
-      # asFile(res, self$auth))
-      res
-    },
-    #' @description  Copy file/files to current project.
-    #'
-    #' @param files List of File class objects to copy.
-    #' @param destination_project Project ID in form of {project_owner}/{project-name}
-    #' where you want to copy files into.
-    #' @param ... Other arguments that can be passed to api() function
-    #' like 'limit', 'offset', 'fields', etc.
-    copy_files = function(files, destination_project, ...) {
-      if (!is.list(files)) rlang::abort("Files parameter must be a list of File objects.")
-      if (!all(lapply(files, function(x) inherits(x, "File")))) {
-        rlang::abort("Files list must contain objects of File class.")
-      }
-      browser()
-      file_ids <- lapply(files, "[[", id)
-
-      body <- list(
-        "project" = destination_project,
-        "file_ids" = file_ids
-      )
-
-      req <- sevenbridges2::api(
-        path = "action/files/copy",
-        method = "POST",
-        body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
-        ...
-      )
-
-      res <- status_check(req)
-
-      # asFile(res, self$auth))
-      res
+      asFile(res, self$auth)
     } # nocov end
   )
 )

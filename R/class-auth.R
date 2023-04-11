@@ -727,6 +727,34 @@ Auth <- R6::R6Class(
       res <- asFileList(res, auth = self)
 
       res
+    },
+    #' @description  Copy file/files to the specified project.
+    #'
+    #' @param files List of File class objects to copy.
+    #' @param destination_project Project ID in form of {project_owner}/{project-name}
+    #' where you want to copy files into.
+    copy_files = function(files, destination_project) {
+      checkmate::assert_list(files, types = "File")
+      checkmate::assert_r6(destination_project, classes = "Project")
+
+      file_ids <- lapply(files, "[[", "id")
+      file_names <- sapply(files, "[[", "name")
+
+      body <- list(
+        "project" = destination_project$id,
+        "file_ids" = file_ids
+      )
+
+      req <- sevenbridges2::api(
+        path = "action/files/copy",
+        method = "POST",
+        body = body,
+        token = self$get_token(),
+        base_url = self$url
+      )
+
+      res <- status_check(req)
+      self$files(project = destination_project, name = file_names)
     }
     # nocov end
   )

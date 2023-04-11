@@ -55,6 +55,7 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \item \href{#method-Auth-project_get}{\code{Auth$project_get()}}
 \item \href{#method-Auth-project_new}{\code{Auth$project_new()}}
 \item \href{#method-Auth-files}{\code{Auth$files()}}
+\item \href{#method-Auth-copy_files}{\code{Auth$copy_files()}}
 \item \href{#method-Auth-clone}{\code{Auth$clone()}}
 }
 }
@@ -469,6 +470,26 @@ represented by vector of values.}
 
 \item{\code{...}}{Other arguments that can be passed to this method.
 Such as query parameters.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-copy_files"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-copy_files}{}}}
+\subsection{Method \code{copy_files()}}{
+Copy file/files to the specified project.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$copy_files(files, destination_project)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{files}}{List of File class objects to copy.}
+
+\item{\code{destination_project}}{Project ID in form of {project_owner}/{project-name}
+where you want to copy files into.}
 }
 \if{html}{\out{</div>}}
 }

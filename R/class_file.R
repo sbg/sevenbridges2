@@ -40,6 +40,8 @@ File <- R6::R6Class(
     type = NULL,
 
     #' @description Create a new File object.
+    #' @importFrom utils object.size
+    #'
     #' @param id Character used as file id.
     #' @param name Member's username - same as id.
     #' @param size Member's email.
@@ -64,7 +66,7 @@ File <- R6::R6Class(
 
       self$id <- id
       self$name <- name
-      self$size <- utils::format.object_size(size, "auto")
+      self$size <- format(utils::object.size(size), "auto")
       self$project <- project
       self$parent <- parent
       self$type <- type
