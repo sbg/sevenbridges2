@@ -481,12 +481,16 @@ Project <- R6::R6Class(
 
       res <- status_check(req)
 
+      if (attr(res, "response")$status_code == 201) {
+        # nolint start
+        rlang::inform(glue::glue_col("New folder {green {name}} has been created."))
+        # nolint end
+      }
       asFile(res, self$auth)
     },
     #' @description  Get project's root folder object
-    #'
     get_root_folder = function() {
-      # self$auth$files(id = self$root_folder)
+      self$auth$get_file(id = self$root_folder)
     }
     # nocov end
   )

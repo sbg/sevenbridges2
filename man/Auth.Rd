@@ -55,6 +55,7 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \item \href{#method-Auth-project_get}{\code{Auth$project_get()}}
 \item \href{#method-Auth-project_new}{\code{Auth$project_new()}}
 \item \href{#method-Auth-files}{\code{Auth$files()}}
+\item \href{#method-Auth-get_file}{\code{Auth$get_file()}}
 \item \href{#method-Auth-copy_files}{\code{Auth$copy_files()}}
 \item \href{#method-Auth-clone}{\code{Auth$clone()}}
 }
@@ -475,6 +476,26 @@ Such as query parameters.}
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-get_file"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-get_file}{}}}
+\subsection{Method \code{get_file()}}{
+This call returns a single file object with
+specified id.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$get_file(id, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{id}}{File id.}
+
+\item{\code{...}}{Other arguments that can be passed to this method.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Auth-copy_files"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-copy_files}{}}}
 \subsection{Method \code{copy_files()}}{
@@ -488,8 +509,8 @@ Copy file/files to the specified project.
 \describe{
 \item{\code{files}}{List of File class objects to copy.}
 
-\item{\code{destination_project}}{Project ID in form of {project_owner}/{project-name}
-where you want to copy files into.}
+\item{\code{destination_project}}{Project object or project ID in form of
+<project_owner>/<project-name> where you want to copy files into}
 }
 \if{html}{\out{</div>}}
 }

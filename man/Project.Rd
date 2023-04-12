@@ -78,6 +78,7 @@ permissions within the project.}
 \item \href{#method-Project-member_permissions_modify}{\code{Project$member_permissions_modify()}}
 \item \href{#method-Project-files}{\code{Project$files()}}
 \item \href{#method-Project-create_folder}{\code{Project$create_folder()}}
+\item \href{#method-Project-get_root_folder}{\code{Project$get_root_folder()}}
 \item \href{#method-Project-clone}{\code{Project$clone()}}
 }
 }
@@ -410,6 +411,16 @@ like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Project-get_root_folder"></a>}}
+\if{latex}{\out{\hypertarget{method-Project-get_root_folder}{}}}
+\subsection{Method \code{get_root_folder()}}{
+Get project's root folder object
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Project$get_root_folder()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-clone"></a>}}
