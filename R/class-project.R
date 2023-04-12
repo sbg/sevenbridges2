@@ -482,7 +482,13 @@ Project <- R6::R6Class(
       res <- status_check(req)
 
       asFile(res, self$auth)
-    } # nocov end
+    },
+    #' @description  Get project's root folder object
+    #'
+    get_root_folder = function() {
+      # self$auth$files(id = self$root_folder)
+    }
+    # nocov end
   )
 )
 
