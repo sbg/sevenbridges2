@@ -317,6 +317,9 @@ File <- R6::R6Class(
     #' @param name The new name the file will have in the target project.
     #' If its name will not change, omit this key.
     #' @param ... Additional parameters that can be passed to the method.
+    #'
+    #' @importFrom checkmate assert_r6 assert_string
+    #'
     #' @return `File` or `Folder`
     copy_to = function(project = NULL, name = NULL, ...) {
       checkmate::assert_r6(project, classes = "Project", null.ok = FALSE)
@@ -364,6 +367,8 @@ File <- R6::R6Class(
     #' @description
     #' This call returns the metadata values for the specified file.
     #' @param ... Additional parameters that can be passed to the method.
+    #'
+    #' @importFrom DescTools StripAttr
     get_metadata = function(...) {
       res <- sevenbridges2::api(
         path = paste0("files/", self$id, "/metadata"),
@@ -389,6 +394,8 @@ File <- R6::R6Class(
     #' @param overwrite Set to TRUE if you want to ovewrite existing tags.
     #' Default: FALSE.
     #' @param ... Additional parameters that can be passed to the method.
+    #'
+    #' @importFrom DescTools StripAttr
     set_metadata = function(metadata_fields = NULL, overwrite = FALSE, ...) {
       check_metadata(metadata_fields)
 
@@ -437,6 +444,9 @@ File <- R6::R6Class(
     #' @param name Specifies a new name for a file in case you want to rename it
     #' . If you want to use the same name, omit this key.
     #' @param ... Additional parameters that can be passed to the method.
+    #'
+    #' @importFrom checkmate assert_r6 assert_string
+    #' @importFrom rlang abort
     move_to_folder = function(parent = NULL, name = NULL, ...) {
       checkmate::assert_r6(parent, classes = "File", null.ok = FALSE)
       if (parent$type == "file") {
@@ -488,6 +498,8 @@ File <- R6::R6Class(
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end cli_bullets
+    #' @importFrom rlang inform abort
+    #' @importFrom glue glue
     delete = function() {
       res <- sevenbridges2::api(
         path = paste0("files/", self$id),
