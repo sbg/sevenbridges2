@@ -5,20 +5,21 @@
 #' R6 Class representing a resource for managing files.
 #'
 #' @importFrom R6 R6Class
+#' @export
 File <- R6::R6Class(
   # nolint end
   "File",
   inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field id Character used as file id
+    #' @field id Character used as file ID.
     id = NULL,
     #' @field name String used as file name
     name = NULL,
     #' @field size File size
     size = NULL,
-    #' @field project Project project id if any, when returned by a API call,
-    #' it usually return the project id and stored with the object.
+    #' @field project Project project ID if any, when returned by a API call,
+    #' it usually return the project ID and stored with the object.
     project = NULL,
     #' @field created_on Date created on
     created_on = NULL,
@@ -36,17 +37,17 @@ File <- R6::R6Class(
     url = NULL,
     #' @field parent Parent folder ID
     parent = NULL,
-    #' @field type \code{"FILE"} or \code{"FOLDER"}
+    #' @field type This can be of type `File` or `Folder`
     type = NULL,
 
     #' @description Create a new File object.
-    #' @param id Character used as file id.
+    #' @param id Character used as file ID.
     #' @param name File name.
     #' @param size File size.
-    #' @param project Project project id if any, when returned by a API call,
-    #' it usually return the project id and stored with the object.
+    #' @param project Project project ID if any, when returned by a API call,
+    #' it usually return the project ID and stored with the object.
     #' @param parent Parent folder ID.
-    #' @param type \code{"FILE"} or \code{"FOLDER"}
+    #' @param type `"FILE"` or `"FOLDER"`
     #' @param created_on Date created on.
     #' @param modified_on Date modified on.
     #' @param storage List as storage type.
@@ -101,9 +102,24 @@ File <- R6::R6Class(
 
     #' @description Detailed print method for File class.
     #'
-    #' @details This method allows users to print all the fields from the
-    #' Field object more descriptively.
+    #' @details  The call returns the file's name, its tags, and all of its
+    #' metadata. Apart from regular file fields there are some additional
+    #' fields:
+    #' \itemize{
+    #'   \item **`storage`** field denotes the type of storage for the file
+    #'   which can be either PLATFORM or VOLUME depending on where the file is
+    #'   stored.
+    #'   \item `origin` field denotes the task that produced the file, if it
+    #'   was created by a task on the Seven Bridges Platform.
+    #'   \item `metadata` field lists the metadata fields and values for the
+    #'   file.
+    #'   \item `tags` field lists the tags for the file. Learn more about
+    #'   [tagging your files](https://docs.sevenbridges.com/docs/tag-your-files)
+    #'    on the Platform.
+    # nocov end
+    #' }
     #'
+    #' @return [File()]
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end
@@ -182,9 +198,11 @@ File <- R6::R6Class(
       cli::cli_end()
     },
 
-    # update file  details ----------------------------------------------------
-    #' @description This call updates the name, the full set metadata, and tags
-    #'  for a specified file.
+
+    #' @description
+    #' Updates the name, the full set metadata, and tags
+    #' for a specified file.
+    #' .
     #' @param name The new name of the file.
     #' @param metadata The metadata fields and their values that you want to
     #' update. This is a named list of key-value pairs. The keys and values are
@@ -192,8 +210,9 @@ File <- R6::R6Class(
     #' @param tags The tags you want to update, represented as unnamed list of
     #' values to add as tags.
     #' @param ... Additional parameters that can be passed to the method.
-    #' @importFrom utils modifyList
+    #' @return `File` or `Folder`
     #' @importFrom checkmate assert_string
+    #' @importFrom rlang abort
     update_details = function(name = NULL,
                               metadata = NULL,
                               tags = NULL, ...) {
@@ -223,8 +242,247 @@ File <- R6::R6Class(
 
       res <- status_check(res)
 
-      asFile(res, self$auth)
+      # Reload object to set new tags
+      self$initialize(
+        href = res$href,
+        id = res$id,
+        name = res$name,
+        size = res$size,
+        project = res$project,
+        parent = res$parent,
+        type = res$type,
+        created_on = res$created_on,
+        modified_on = res$modified_on,
+        storage = res$storage,
+        origin = res$origin,
+        metadata = res$metadata,
+        tags = res$tags,
+        auth = auth,
+        response = attr(res, "response")
+      )
     },
+
+    #' @description
+    #' This method allows you to tag files on the Platform. You can tag your
+    #' files on the Platform with keywords to make it easier to identify and
+    #' organize files you’ve imported from public datasets or copied between
+    #' projects.
+    #' .
+    #' @param tags The tags you want to update, represented as unnamed list of
+    #' values to add as tags.
+    #' @param overwrite Set to TRUE if you want to ovewrite existing tags.
+    #' Default: FALSE.
+    #' @param ... Additional parameters that can be passed to the method.
+    add_tag = function(tags = NULL, overwrite = FALSE, ...) {
+      check_tags(tags)
+
+      if (overwrite == TRUE) {
+        body <- tags
+      } else {
+        body <- unique(c(self$tags, tags))
+      }
+
+      res <- sevenbridges2::api(
+        path = paste0("files/", self$id, "/tags"),
+        method = "PUT",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(res)
+
+      # Add tags to object
+      if (overwrite == TRUE) {
+        self$tags <- tags
+      } else {
+        self$tags <- unique(c(self$tags, tags))
+      }
+    },
+
+    #' @description
+    #' This call copies the specified file to a new project. Files retain their
+    #' metadata when copied, but may be assigned new names in their target
+    #' project. To make this call, you should have
+    #' [copy permission](https://docs.sevenbridges.com/docs/set-permissions)
+    #' within the project you are copying from. If you want to copy multiple
+    #' files, the recommended way is to do it in bulk considering the API rate
+    #' limit
+    #' ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).
+    #' .
+    #' @param project The name of the project you want to copy the file to.
+    #' Project name should be specified in the <username>/<project-name> format,
+    #'  e.g. rfranklin/my-project.
+    #' @param name The new name the file will have in the target project.
+    #' If its name will not change, omit this key.
+    #' @param ... Additional parameters that can be passed to the method.
+    #' @return `File` or `Folder`
+    copy_to = function(project = NULL, name = NULL, ...) {
+      checkmate::assert_r6(project, classes = "Project", null.ok = FALSE)
+      checkmate::assert_string(name, null.ok = TRUE)
+
+      body <- list(
+        project = project$id,
+        name = name
+      )
+
+      res <- sevenbridges2::api(
+        path = paste0("files/", self$id, "/actions/copy"),
+        method = "POST",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(res)
+
+      # Return newly created file
+      asFile(res, auth = self$auth)
+    },
+
+    #' @description
+    #' This method returns a URL that you can use to download the specified
+    #' file.
+    #' @param ... Additional parameters that can be passed to the method.
+    get_download_url = function(...) {
+      res <- sevenbridges2::api(
+        path = paste0("files/", self$id, "/download_info"),
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(res)
+
+      # Set url field
+      self$url <- res$url
+    },
+
+    #' @description
+    #' This call returns the metadata values for the specified file.
+    #' @param ... Additional parameters that can be passed to the method.
+    get_metadata = function(...) {
+      res <- sevenbridges2::api(
+        path = paste0("files/", self$id, "/metadata"),
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(res)
+
+      # Set url field
+      self$metadata <- DescTools::StripAttr(res, attr_names = "response")
+
+      return(self$metadata)
+    },
+
+    #' @description
+    #' This call changes the metadata values for the specified file.
+    #'
+    #' @param metadata_fields Enter a list of key-value pairs of metadata fields
+    #' and metadata values
+    #' @param overwrite Set to TRUE if you want to ovewrite existing tags.
+    #' Default: FALSE.
+    #' @param ... Additional parameters that can be passed to the method.
+    set_metadata = function(metadata_fields = NULL, overwrite = FALSE, ...) {
+      check_metadata(metadata_fields)
+
+      body <- metadata_fields
+
+      if (overwrite == TRUE) {
+        res <- sevenbridges2::api(
+          path = paste0("files/", self$id, "/metadata"),
+          method = "PUT",
+          body = body,
+          token = self$auth$get_token(),
+          base_url = self$auth$url,
+          ...
+        )
+
+        res <- status_check(res)
+
+        # Set new metadata fields
+        self$metadata <- DescTools::StripAttr(res, attr_names = "response")
+        self$metadata
+      } else {
+        res <- sevenbridges2::api(
+          path = paste0("files/", self$id, "/metadata"),
+          method = "PATCH",
+          body = body,
+          token = self$auth$get_token(),
+          base_url = self$auth$url,
+          ...
+        )
+
+        res <- status_check(res)
+
+        # Add new metadata fields
+        self$metadata <- DescTools::StripAttr(res, attr_names = "response")
+      }
+
+      return(self$metadata)
+    },
+
+    #' @description
+    #' This call moves a file from one folder to another. Moving of files is
+    #' only allowed within the same project.
+    #'
+    #' @param parent Specifies the target folder by using its ID. To find out
+    #' the folder ID, use the list folder contents call for its parent folder.
+    #' @param name Specifies a new name for a file in case you want to rename it
+    #' . If you want to use the same name, omit this key.
+    #' @param ... Additional parameters that can be passed to the method.
+    move_to_folder = function(parent = NULL, name = NULL, ...) {
+      checkmate::assert_r6(parent, classes = "File", null.ok = FALSE)
+      if (parent$type == "file") {
+        rlang::abort("Parent must be a folder, not a file!")
+      }
+      checkmate::assert_string(name, null.ok = TRUE)
+
+      body <- list(
+        parent = parent$id,
+        name = name
+      )
+
+      res <- sevenbridges2::api(
+        path = paste0("files/", self$id, "/actions/move"),
+        method = "POST",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(res)
+
+      # Return newly created file
+      asFile(res, auth = self$auth)
+    },
+
+    #' @description
+    #' List folder contents.
+    #'
+    #' @param ... Additional parameters that can be passed to the method.
+    list_contents = function(...) {
+      res <- sevenbridges2::api(
+        path = paste0("files/", self$id, "/list"),
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(res)
+
+      # Return folder contents
+      asFileList(res, auth = self)
+    },
+
 
     #' @description Delete method for File class.
     #' @importFrom purrr discard

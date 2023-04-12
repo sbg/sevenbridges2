@@ -39,7 +39,7 @@ encoded? Can be one of \code{"json"} (application/json),
 or \code{"multipart"} (multipart/form-data).
 Default is \code{"json"}.
 For \code{"multipart"}, list elements can be strings
-or objects created by \code{\link[httr]{upload_file}}.
+or objects created by \code{\link[httr:upload_file]{httr::upload_file()}}.
 For "form", elements are coerced to strings and escaped,
 use \code{I()} to prevent double-escaping.
 For \code{"json"}, parameters are automatically "unboxed"
@@ -62,8 +62,7 @@ This parameter enables you to specify the fields you want to be returned
 when listing resources (e.g. all your projects) or getting details of a
 specific resource (e.g. a given project). For example, fields="id,name,size"
 to return the fields id, name and size for files. More details please check
-\url{https://docs.sevenbridges.com/docs/the-api#section-general-\n
-api-information}}
+\url{https://docs.sevenbridges.com/docs/the-api#section-general-api-information}}
 
 \item{base_url}{platform URL, default is NULL.}
 

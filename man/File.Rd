@@ -12,14 +12,14 @@ R6 Class representing a resource for managing files.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{id}}{Character used as file id}
+\item{\code{id}}{Character used as file ID.}
 
 \item{\code{name}}{String used as file name}
 
 \item{\code{size}}{File size}
 
-\item{\code{project}}{Project project id if any, when returned by a API call,
-it usually return the project id and stored with the object.}
+\item{\code{project}}{Project project ID if any, when returned by a API call,
+it usually return the project ID and stored with the object.}
 
 \item{\code{created_on}}{Date created on}
 
@@ -37,7 +37,7 @@ it usually return the project id and stored with the object.}
 
 \item{\code{parent}}{Parent folder ID}
 
-\item{\code{type}}{\code{"FILE"} or \code{"FOLDER"}}
+\item{\code{type}}{This can be of type \code{File} or \code{Folder}}
 }
 \if{html}{\out{</div>}}
 }
@@ -48,6 +48,13 @@ it usually return the project id and stored with the object.}
 \item \href{#method-File-print}{\code{File$print()}}
 \item \href{#method-File-detailed_print}{\code{File$detailed_print()}}
 \item \href{#method-File-update_details}{\code{File$update_details()}}
+\item \href{#method-File-add_tag}{\code{File$add_tag()}}
+\item \href{#method-File-copy_to}{\code{File$copy_to()}}
+\item \href{#method-File-get_download_url}{\code{File$get_download_url()}}
+\item \href{#method-File-get_metadata}{\code{File$get_metadata()}}
+\item \href{#method-File-set_metadata}{\code{File$set_metadata()}}
+\item \href{#method-File-move_to_folder}{\code{File$move_to_folder()}}
+\item \href{#method-File-list_contents}{\code{File$list_contents()}}
 \item \href{#method-File-delete}{\code{File$delete()}}
 \item \href{#method-File-clone}{\code{File$clone()}}
 }
@@ -79,14 +86,14 @@ Create a new File object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{Character used as file id.}
+\item{\code{id}}{Character used as file ID.}
 
 \item{\code{name}}{File name.}
 
 \item{\code{size}}{File size.}
 
-\item{\code{project}}{Project project id if any, when returned by a API call,
-it usually return the project id and stored with the object.}
+\item{\code{project}}{Project project ID if any, when returned by a API call,
+it usually return the project ID and stored with the object.}
 
 \item{\code{parent}}{Parent folder ID.}
 
@@ -131,17 +138,34 @@ Detailed print method for File class.
 }
 
 \subsection{Details}{
-This method allows users to print all the fields from the
-Field object more descriptively.
+The call returns the file's name, its tags, and all of its
+metadata. Apart from regular file fields there are some additional
+fields:
+\itemize{
+\item \strong{\code{storage}} field denotes the type of storage for the file
+which can be either PLATFORM or VOLUME depending on where the file is
+stored.
+\item \code{origin} field denotes the task that produced the file, if it
+was created by a task on the Seven Bridges Platform.
+\item \code{metadata} field lists the metadata fields and values for the
+file.
+\item \code{tags} field lists the tags for the file. Learn more about
+\href{https://docs.sevenbridges.com/docs/tag-your-files}{tagging your files}
+on the Platform.
+}
 }
 
+\subsection{Returns}{
+\code{\link[=File]{File()}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-update_details"></a>}}
 \if{latex}{\out{\hypertarget{method-File-update_details}{}}}
 \subsection{Method \code{update_details()}}{
-This call updates the name, the full set metadata, and tags
- for a specified file.
+Updates the name, the full set metadata, and tags
+for a specified file.
+.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{File$update_details(name = NULL, metadata = NULL, tags = NULL, ...)}\if{html}{\out{</div>}}
 }
@@ -158,6 +182,170 @@ strings.}
 \item{\code{tags}}{The tags you want to update, represented as unnamed list of
 values to add as tags.}
 
+\item{\code{...}}{Additional parameters that can be passed to the method.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{File} or \code{Folder}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-File-add_tag"></a>}}
+\if{latex}{\out{\hypertarget{method-File-add_tag}{}}}
+\subsection{Method \code{add_tag()}}{
+This method allows you to tag files on the Platform. You can tag your
+files on the Platform with keywords to make it easier to identify and
+organize files you’ve imported from public datasets or copied between
+projects.
+.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{File$add_tag(tags = NULL, overwrite = FALSE, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{tags}}{The tags you want to update, represented as unnamed list of
+values to add as tags.}
+
+\item{\code{overwrite}}{Set to TRUE if you want to ovewrite existing tags.
+Default: FALSE.}
+
+\item{\code{...}}{Additional parameters that can be passed to the method.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-File-copy_to"></a>}}
+\if{latex}{\out{\hypertarget{method-File-copy_to}{}}}
+\subsection{Method \code{copy_to()}}{
+This call copies the specified file to a new project. Files retain their
+metadata when copied, but may be assigned new names in their target
+project. To make this call, you should have
+\href{https://docs.sevenbridges.com/docs/set-permissions}{copy permission}
+within the project you are copying from. If you want to copy multiple
+files, the recommended way is to do it in bulk considering the API rate
+limit
+(\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).
+.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{File$copy_to(project = NULL, name = NULL, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{project}}{The name of the project you want to copy the file to.
+Project name should be specified in the \if{html}{\out{<username>}}/\if{html}{\out{<project-name>}} format,
+e.g. rfranklin/my-project.}
+
+\item{\code{name}}{The new name the file will have in the target project.
+If its name will not change, omit this key.}
+
+\item{\code{...}}{Additional parameters that can be passed to the method.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{File} or \code{Folder}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-File-get_download_url"></a>}}
+\if{latex}{\out{\hypertarget{method-File-get_download_url}{}}}
+\subsection{Method \code{get_download_url()}}{
+This method returns a URL that you can use to download the specified
+file.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{File$get_download_url(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional parameters that can be passed to the method.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-File-get_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-File-get_metadata}{}}}
+\subsection{Method \code{get_metadata()}}{
+This call returns the metadata values for the specified file.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{File$get_metadata(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional parameters that can be passed to the method.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-File-set_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-File-set_metadata}{}}}
+\subsection{Method \code{set_metadata()}}{
+This call changes the metadata values for the specified file.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{File$set_metadata(metadata_fields = NULL, overwrite = FALSE, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{metadata_fields}}{Enter a list of key-value pairs of metadata fields
+and metadata values}
+
+\item{\code{overwrite}}{Set to TRUE if you want to ovewrite existing tags.
+Default: FALSE.}
+
+\item{\code{...}}{Additional parameters that can be passed to the method.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-File-move_to_folder"></a>}}
+\if{latex}{\out{\hypertarget{method-File-move_to_folder}{}}}
+\subsection{Method \code{move_to_folder()}}{
+This call moves a file from one folder to another. Moving of files is
+only allowed within the same project.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{File$move_to_folder(parent = NULL, name = NULL, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{parent}}{Specifies the target folder by using its ID. To find out
+the folder ID, use the list folder contents call for its parent folder.}
+
+\item{\code{name}}{Specifies a new name for a file in case you want to rename it
+. If you want to use the same name, omit this key.}
+
+\item{\code{...}}{Additional parameters that can be passed to the method.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-File-list_contents"></a>}}
+\if{latex}{\out{\hypertarget{method-File-list_contents}{}}}
+\subsection{Method \code{list_contents()}}{
+List folder contents.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{File$list_contents(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
 \item{\code{...}}{Additional parameters that can be passed to the method.}
 }
 \if{html}{\out{</div>}}

@@ -128,7 +128,7 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new `Auth` object.
+A new \code{Auth} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -148,8 +148,8 @@ An API authentication token in form of a string.
 \if{html}{\out{<a id="method-Auth-api"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-api}{}}}
 \subsection{Method \code{api()}}{
-This method returns all API paths and pass arguments to core `api()`
- function.
+This method returns all API paths and pass arguments to core \code{api()}
+function.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$api(
   ...,
@@ -166,10 +166,10 @@ This method returns all API paths and pass arguments to core `api()`
 \item{\code{...}}{Other arguments passed to core api function.}
 
 \item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, `limit` is set to `50`. Maximum is `100`.}
+request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
 
 \item{\code{offset}}{Defines where the retrieved items started.
-By default, `offset` is set to `0`.}
+By default, \code{offset} is set to \code{0}.}
 
 \item{\code{fields}}{All API calls take the optional query parameter fields.
 This parameter enables you to specify the fields you want to be returned
@@ -177,7 +177,7 @@ when listing resources (e.g., all your projects) or getting details of a
 specific resource (e.g., a given project).}
 
 \item{\code{complete}}{Parameter for API request that allows you to search and
-list all items. By default, it is set to `FALSE`.}
+list all items. By default, it is set to \code{FALSE}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -420,7 +420,7 @@ This call returns a list of files and subdirectories in a
 specified project or directory within a project, with specified
 properties that you can access. The project or directory whose contents
 you want to list is specified as a query parameter in the call. Further
- properties to filter by can also be specified as query parameters.
+properties to filter by can also be specified as query parameters.
 Note that this call lists both files and subdirectories in the specified
 project or directory within a project, but not the contents of the
 subdirectories. To list the contents of a subdirectory, make a new call

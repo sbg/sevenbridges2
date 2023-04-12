@@ -13,6 +13,7 @@ Config
 cph
 cre
 CWL
+DescTools
 enquiring
 fnd
 FS
@@ -33,12 +34,14 @@ Marko
 members's
 memoization
 Obucina
+ovewrite
 pre
 purrr
 Quickstart
 rfranklin
 rlang
 rmarkdown
+Roxygen
 RoxygenNote
 sbgenomics
 sevenbridges

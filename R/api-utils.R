@@ -252,13 +252,13 @@ flatten_query <- function(x) {
 #' Set headers for API request
 #' @description This function returns headers for API request,
 #' depending on the value of the authorization parameter.
-#' @param authorization Logical. Is the \code{token} an API
-#' auth token (\code{FALSE}) or an access token from the
-#' Seven Bridges single sign-on (\code{TRUE})?
-#' @param token API auth token or \code{access_token} for
+#' @param authorization Logical. Is the `token` an API
+#' auth token (`FALSE`) or an access token from the
+#' Seven Bridges single sign-on (`TRUE`)?
+#' @param token API auth token or `access_token` for
 #' Seven Bridges single sign-on.
 #' @param advance_access Enable advance access features?
-#' Default is \code{FALSE}.
+#' Default is `FALSE`.
 #'
 #' @return A named vector with headers for an API request.
 #' @noRd
@@ -294,8 +294,7 @@ set_headers <- function(authorization = FALSE, token = NULL, advance_access = ge
 #' when listing resources (e.g. all your projects) or getting details of a
 #' specific resource (e.g. a given project). For example, fields="id,name,size"
 #' to return the fields id, name and size for files. More details please check
-#' \url{https://docs.sevenbridges.com/docs/the-api#section-general-\n
-#' api-information}
+#' <https://docs.sevenbridges.com/docs/the-api#section-general-api-information>
 #'
 #' @return List of query parameters.
 #' @noRd

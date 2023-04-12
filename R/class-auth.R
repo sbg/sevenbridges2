@@ -4,7 +4,7 @@
 #' @description Authentication object with methods to access API endpoints.
 #' Every object could be requested from this Auth object and any action
 #' could start from this object using cascading style. Please check
-#' \code{vignette("api")} for more information.
+#' `vignette("api")` for more information.
 #'
 #' @importFrom R6 R6Class
 #' @importFrom  rlang abort warn inform
@@ -44,54 +44,54 @@ Auth <- R6::R6Class(
     #' @field fs FS object, for mount and unmount file system.
     fs = NULL,
 
-    #' @field authorization Logical. Is the \code{token} an API
-    #' auth token (\code{FALSE}) or an access token from the
-    #' Seven Bridges single sign-on (\code{TRUE})?
+    #' @field authorization Logical. Is the `token` an API
+    #' auth token (`FALSE`) or an access token from the
+    #' Seven Bridges single sign-on (`TRUE`)?
     authorization = NULL,
 
     #' @description
     #' Create a new Auth object. All methods can be accessed through this
     #' object.
     #'
-    #' @param from Authentication method. Could be \code{"direct"}
+    #' @param from Authentication method. Could be `"direct"`
     #' (pass the credential information to the arguments directly),
-    #' \code{"env"} (read from pre-set system environment variables),
-    #' or \code{"file"} (read configurations from a credentials file).
-    #' Default is \code{"direct"}.
+    #' `"env"` (read from pre-set system environment variables),
+    #' or `"file"` (read configurations from a credentials file).
+    #' Default is `"direct"`.
     #'
     #' @param platform The platform to use.
-    #' If \code{platform} and \code{url} are both not specified,
-    #' the default is \code{"aws-us"} (Seven Bridges Platform - US).
+    #' If `platform` and `url` are both not specified,
+    #' the default is `"aws-us"` (Seven Bridges Platform - US).
     #' Other possible values include
-    #' \code{"aws-eu"} (Seven Bridges Platform - EU),
-    #' \code{"cgc"} (Cancer Genomics Cloud),
-    #' \code{"ali-cn"} (Seven Bridges Platform - China),
-    #' \code{"cavatica"} (Cavatica), and
-    #' \code{"f4c"} (BioData Catalyst Powered by Seven Bridges).
+    #' `"aws-eu"` (Seven Bridges Platform - EU),
+    #' `"cgc"` (Cancer Genomics Cloud),
+    #' `"ali-cn"` (Seven Bridges Platform - China),
+    #' `"cavatica"` (Cavatica), and
+    #' `"f4c"` (BioData Catalyst Powered by Seven Bridges).
     #'
     #' @param url Base URL for API. Please only use this when you
-    #' want to specify a platform that is not in the \code{platform} list
-    #' above, and also leaving \code{platform} unspecified.
+    #' want to specify a platform that is not in the `platform` list
+    #' above, and also leaving `platform` unspecified.
     #'
     #' @param token Your authentication token.
     #'
     #' @param sysenv_url Name of the system environment variable storing
-    #' the API base URL. By default: \code{"SB_API_ENDPOINT"}.
+    #' the API base URL. By default: `"SB_API_ENDPOINT"`.
     #'
     #' @param sysenv_token Name of the system environment variable storing
-    #' the auth token. By default: \code{"SB_AUTH_TOKEN"}.
+    #' the auth token. By default: `"SB_AUTH_TOKEN"`.
     #'
     #' @param config_file Location of the user configuration file.
-    #' By default: \code{"~/.sevenbridges/credentials"}.
+    #' By default: `"~/.sevenbridges/credentials"`.
     #'
     #' @param profile_name Profile name in the user configuration file.
-    #' The default value is \code{"default"}.
+    #' The default value is `"default"`.
     #'
     #' @param fs FS object, for mount and unmount file system.
     #'
-    #' @param authorization Logical. Is the \code{token} an API
-    #' auth token (\code{FALSE}) or an access token from the
-    #' Seven Bridges single sign-on (\code{TRUE})?
+    #' @param authorization Logical. Is the `token` an API
+    #' auth token (`FALSE`) or an access token from the
+    #' Seven Bridges single sign-on (`TRUE`)?
     #'
     #' @param ... Other arguments passed to methods.
     #' @return A new `Auth` object.

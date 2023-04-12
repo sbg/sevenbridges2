@@ -3,39 +3,38 @@
 #' Used for advanced users and the core method for higher level API
 #' in this package.
 #'
-#' @param token API auth token or \code{access_token} for
+#' @param token API auth token or `access_token` for
 #' Seven Bridges single sign-on.
-#' @param path path connected with \code{base_url}.
-#' @param method one of \code{"GET"}, \code{"POST"},
-#' \code{"PUT"}, \code{"DELETE"}, or \code{"PATCH"}.
+#' @param path path connected with `base_url`.
+#' @param method one of `"GET"`, `"POST"`,
+#' `"PUT"`, `"DELETE"`, or `"PATCH"`.
 #' @param query Passed to httr package GET/POST call.
 #' @param body Passed to httr package GET/POST/PUT/DELETE/PATCH call.
 #' @param encode If the body is a named list, how should it be
-#' encoded? Can be one of \code{"json"} (application/json),
-#' \code{"form"} (application/x-www-form-urlencoded),
-#' or \code{"multipart"} (multipart/form-data).
-#' Default is \code{"json"}.
-#' For \code{"multipart"}, list elements can be strings
-#' or objects created by \code{\link[httr]{upload_file}}.
+#' encoded? Can be one of `"json"` (application/json),
+#' `"form"` (application/x-www-form-urlencoded),
+#' or `"multipart"` (multipart/form-data).
+#' Default is `"json"`.
+#' For `"multipart"`, list elements can be strings
+#' or objects created by [httr::upload_file()].
 #' For "form", elements are coerced to strings and escaped,
-#' use \code{I()} to prevent double-escaping.
-#' For \code{"json"}, parameters are automatically "unboxed"
+#' use `I()` to prevent double-escaping.
+#' For `"json"`, parameters are automatically "unboxed"
 #' (i.e. length 1 vectors are converted to scalars). To preserve
-#' a length 1 vector as a vector, wrap in \code{I()}.
+#' a length 1 vector as a vector, wrap in `I()`.
 #' @param limit How many results to return
 #' @param offset The point at which to start displaying them
 #' @param advance_access Enable advance access features?
-#' Default is \code{FALSE}.
-#' @param authorization Logical. Is the \code{token} an API
-#' auth token (\code{FALSE}) or an access token from the
-#' Seven Bridges single sign-on (\code{TRUE})?
+#' Default is `FALSE`.
+#' @param authorization Logical. Is the `token` an API
+#' auth token (`FALSE`) or an access token from the
+#' Seven Bridges single sign-on (`TRUE`)?
 #' @param fields All API calls take the optional query parameter fields.
 #' This parameter enables you to specify the fields you want to be returned
 #' when listing resources (e.g. all your projects) or getting details of a
 #' specific resource (e.g. a given project). For example, fields="id,name,size"
 #' to return the fields id, name and size for files. More details please check
-#' \url{https://docs.sevenbridges.com/docs/the-api#section-general-\n
-#' api-information}
+#' <https://docs.sevenbridges.com/docs/the-api#section-general-api-information>
 #'
 #' @param base_url platform URL, default is NULL.
 #' @param ... Other arguments passed to GET/POST/PUT/DELETE/PATCH call.
@@ -43,7 +42,7 @@
 #' @return returned request list of httr
 #'
 #' @references
-#' \url{https://docs.sevenbridges.com/page/api}
+#' <https://docs.sevenbridges.com/page/api>
 #'
 #' @importFrom  httr PUT DELETE PATCH status_code content handle_find
 #' add_headers
