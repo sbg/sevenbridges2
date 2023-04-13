@@ -14,30 +14,30 @@ File <- R6::R6Class(
   public = list(
     #' @field id Character used as file ID.
     id = NULL,
-    #' @field name String used as file name
+    #' @field name String used as file name.
     name = NULL,
-    #' @field size File size
+    #' @field size File size.
     size = NULL,
     #' @field project Project project ID if any, when returned by a API call,
     #' it usually return the project ID and stored with the object.
     project = NULL,
-    #' @field created_on Date created on
+    #' @field created_on Date created on.
     created_on = NULL,
-    #' @field modified_on Date modified on
+    #' @field modified_on Date modified on.
     modified_on = NULL,
-    #' @field storage List as storage type
+    #' @field storage List as storage type.
     storage = NULL,
-    #' @field origin List as origin
+    #' @field origin List as origin.
     origin = NULL,
-    #' @field tags List as tags
+    #' @field tags List as tags.
     tags = NULL,
-    #' @field metadata List for metadata associated with the file
+    #' @field metadata List for metadata associated with the file.
     metadata = NULL,
-    #' @field url File download url
+    #' @field url File download url.
     url = NULL,
-    #' @field parent Parent folder ID
+    #' @field parent Parent folder ID.
     parent = NULL,
-    #' @field type This can be of type `File` or `Folder`
+    #' @field type This can be of type `File` or `Folder`.
     type = NULL,
 
     #' @description Create a new File object.
@@ -47,7 +47,7 @@ File <- R6::R6Class(
     #' @param project Project project ID if any, when returned by a API call,
     #' it usually return the project ID and stored with the object.
     #' @param parent Parent folder ID.
-    #' @param type `"FILE"` or `"FOLDER"`
+    #' @param type `File` or `"Folder"`.
     #' @param created_on Date created on.
     #' @param modified_on Date modified on.
     #' @param storage List as storage type.
@@ -119,7 +119,6 @@ File <- R6::R6Class(
     # nocov end
     #' }
     #'
-    #' @return [File()]
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end
@@ -159,7 +158,7 @@ File <- R6::R6Class(
       x <- purrr::discard(x, .p = is.environment)
       x <- purrr::discard(x, .p = is.null)
       x <- purrr::discard(x, .p = is.list)
-      # x <- purrr::discard(x, .p = ~ .x == "")
+
       string <- glue::glue("{names(x)}: {x}")
       names(string) <- rep("*", times = length(string))
 
@@ -312,8 +311,8 @@ File <- R6::R6Class(
     #' ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).
     #' .
     #' @param project The name of the project you want to copy the file to.
-    #' Project name should be specified in the <username>/<project-name> format,
-    #'  e.g. rfranklin/my-project.
+    #' Project name should be specified in the `<username>/<project-name>`
+    #' format, e.g. `rfranklin/my-project`.
     #' @param name The new name the file will have in the target project.
     #' If its name will not change, omit this key.
     #' @param ... Additional parameters that can be passed to the method.

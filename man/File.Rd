@@ -14,30 +14,30 @@ R6 Class representing a resource for managing files.
 \describe{
 \item{\code{id}}{Character used as file ID.}
 
-\item{\code{name}}{String used as file name}
+\item{\code{name}}{String used as file name.}
 
-\item{\code{size}}{File size}
+\item{\code{size}}{File size.}
 
 \item{\code{project}}{Project project ID if any, when returned by a API call,
 it usually return the project ID and stored with the object.}
 
-\item{\code{created_on}}{Date created on}
+\item{\code{created_on}}{Date created on.}
 
-\item{\code{modified_on}}{Date modified on}
+\item{\code{modified_on}}{Date modified on.}
 
-\item{\code{storage}}{List as storage type}
+\item{\code{storage}}{List as storage type.}
 
-\item{\code{origin}}{List as origin}
+\item{\code{origin}}{List as origin.}
 
-\item{\code{tags}}{List as tags}
+\item{\code{tags}}{List as tags.}
 
-\item{\code{metadata}}{List for metadata associated with the file}
+\item{\code{metadata}}{List for metadata associated with the file.}
 
-\item{\code{url}}{File download url}
+\item{\code{url}}{File download url.}
 
-\item{\code{parent}}{Parent folder ID}
+\item{\code{parent}}{Parent folder ID.}
 
-\item{\code{type}}{This can be of type \code{File} or \code{Folder}}
+\item{\code{type}}{This can be of type \code{File} or \code{Folder}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -97,7 +97,7 @@ it usually return the project ID and stored with the object.}
 
 \item{\code{parent}}{Parent folder ID.}
 
-\item{\code{type}}{\code{"FILE"} or \code{"FOLDER"}}
+\item{\code{type}}{\code{File} or \code{"Folder"}.}
 
 \item{\code{created_on}}{Date created on.}
 
@@ -155,9 +155,6 @@ on the Platform.
 }
 }
 
-\subsection{Returns}{
-\code{\link[=File]{File()}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-update_details"></a>}}
@@ -238,8 +235,8 @@ limit
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{project}}{The name of the project you want to copy the file to.
-Project name should be specified in the \if{html}{\out{<username>}}/\if{html}{\out{<project-name>}} format,
-e.g. rfranklin/my-project.}
+Project name should be specified in the \verb{<username>/<project-name>} format,
+e.g. \code{rfranklin/my-project}.}
 
 \item{\code{name}}{The new name the file will have in the target project.
 If its name will not change, omit this key.}
