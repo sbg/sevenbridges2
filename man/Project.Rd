@@ -397,6 +397,10 @@ like 'limit', 'offset', 'fields', etc.}
 \if{latex}{\out{\hypertarget{method-Project-create_folder}{}}}
 \subsection{Method \code{create_folder()}}{
 Create a new folder under the project's root directory.
+Every project on the Seven Bridges Platform is represented
+by a root folder which contains all the files associated
+with a particular project. You can create first level folders
+within this root folder by using this function.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Project$create_folder(name, ...)}\if{html}{\out{</div>}}
 }

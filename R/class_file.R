@@ -188,6 +188,7 @@ File <- R6::R6Class(
     #' @description This call updates the name, the full set metadata, and tags
     #'  for a specified file.
     #' @param name The new name of the file.
+    #' @param description The new description of the file.
     #' @param metadata The metadata fields and their values that you want to
     #' update. This is a named list of key-value pairs. The keys and values are
     #'  strings.

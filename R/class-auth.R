@@ -729,8 +729,11 @@ Auth <- R6::R6Class(
       res
     },
     # Get single file -------------------------------------------------------
-    #' @description This call returns a single file object with
-    #' specified id.
+    #' @description This call returns a single file object with its details
+    #' The call returns the file's name, its tags, and all of its metadata.
+    #' Files are specified by their IDs, which you can obtain by making
+    #' the API call to list all files in a project.
+    #'
     #' @param id File id.
     #' @param ... Other arguments that can be passed to this method.
     get_file = function(id, ...) {
@@ -749,10 +752,14 @@ Auth <- R6::R6Class(
       asFile(res)
     },
     #' @description  Copy file/files to the specified project.
+    #' This call allows you to copy files between projects.
+    #' Unlike the call to copy a file between projects,
+    #' this call lets you batch the copy operation and
+    #' copy a list of files at a time.
     #'
-    #' @param files List of File class objects to copy.
+    #' @param files List of files in form of File class objects to copy.
     #' @param destination_project Project object or project ID in form of
-    #' <project_owner>/<project-name> where you want to copy files into
+    #' <project_owner>/<project-name> where you want to copy files into.
     copy_files = function(files, destination_project) {
       checkmate::assert_list(files, types = "File")
       if (is.atomic(destination_project) && !is_missing(destination_project)) {

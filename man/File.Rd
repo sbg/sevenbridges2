@@ -158,6 +158,8 @@ This call updates the name, the full set metadata, and tags
 \describe{
 \item{\code{name}}{The new name of the file.}
 
+\item{\code{description}}{The new description of the file.}
+
 \item{\code{billing_group}}{The ID of the billing group for the project.}
 
 \item{\code{settings}}{Contains detailed project settings.}

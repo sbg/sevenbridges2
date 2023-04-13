@@ -461,6 +461,10 @@ Project <- R6::R6Class(
       asFileList(res, self$auth)
     },
     #' @description  Create a new folder under the project's root directory.
+    #' Every project on the Seven Bridges Platform is represented
+    #' by a root folder which contains all the files associated
+    #' with a particular project. You can create first level folders
+    #' within this root folder by using this function.
     #'
     #' @param name Folder name.
     #' @param ... Other arguments that can be passed to api() function

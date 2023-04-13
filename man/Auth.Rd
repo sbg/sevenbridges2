@@ -480,8 +480,10 @@ Such as query parameters.}
 \if{html}{\out{<a id="method-Auth-get_file"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-get_file}{}}}
 \subsection{Method \code{get_file()}}{
-This call returns a single file object with
-specified id.
+This call returns a single file object with its details
+The call returns the file's name, its tags, and all of its metadata.
+Files are specified by their IDs, which you can obtain by making
+the API call to list all files in a project.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$get_file(id, ...)}\if{html}{\out{</div>}}
 }
@@ -501,6 +503,10 @@ specified id.
 \if{latex}{\out{\hypertarget{method-Auth-copy_files}{}}}
 \subsection{Method \code{copy_files()}}{
 Copy file/files to the specified project.
+This call allows you to copy files between projects.
+Unlike the call to copy a file between projects,
+this call lets you batch the copy operation and
+copy a list of files at a time.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$copy_files(files, destination_project)}\if{html}{\out{</div>}}
 }
@@ -508,10 +514,10 @@ Copy file/files to the specified project.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{files}}{List of File class objects to copy.}
+\item{\code{files}}{List of files in form of File class objects to copy.}
 
 \item{\code{destination_project}}{Project object or project ID in form of
-<project_owner>/<project-name> where you want to copy files into}
+<project_owner>/<project-name> where you want to copy files into.}
 }
 \if{html}{\out{</div>}}
 }
