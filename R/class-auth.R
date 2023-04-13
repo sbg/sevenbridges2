@@ -779,13 +779,20 @@ Auth <- R6::R6Class(
       )
 
       res <- status_check(req)
+      result <- list()
       for (i in 1:length(res)) {
+        element <- list(
+          "Copied_file_id" = res[[i]]$new_file_id,
+          "Copied_file_name" = res[[i]]$new_file_name
+          )
+        element <- setNames(list(element), names(res[i]))
+        result <- append(result, element)
         cat(glue::glue_col("{blue  Original file id: } {names(res[i])}"), "\n")
         cat(glue::glue_col("{blue  Copied file id: } {res[[i]]$new_file_id}"), "\n")
         cat(glue::glue_col("{blue  Copied file name: } {res[[i]]$new_file_name}"), "\n")
         cat("\n")
       }
-      res
+      result
     } # nocov end
   )
 )
