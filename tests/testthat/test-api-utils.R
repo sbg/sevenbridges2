@@ -68,7 +68,11 @@ testthat::test_that("Utility function flatten_query works", {
   )
 
   # check with length 1 lists
-  unflattened_query_params_list <- list(limit = 50, offset = 0, tags = list("api"))
+  unflattened_query_params_list <- list(
+    limit = 50,
+    offset = 0,
+    tags = list("api")
+  )
   # Use the flatten_query function
   flattened_query_params_list <- flatten_query(unflattened_query_params_list)
 
