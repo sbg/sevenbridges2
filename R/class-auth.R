@@ -814,17 +814,17 @@ Auth <- R6::R6Class(
     create_folder = function(name, parent = NULL, project = NULL) {
       check_folder_name(name)
 
-      if (is.null(parent) && is.null(project)) {
+      if (is_missing(parent) && is_missing(project)) {
         # nolint start
         rlang::abort("Both the project name and parent folder ID are missing. You need to provide one of them.")
         # nolint end
-      } else if (!is.null(parent) && !is.null(project)) {
+      } else if (!is_missing(parent) && !is_missing(project)) {
         # nolint start
         rlang::abort("You should specify a project name or a parent folder ID, not both.")
         # nolint end
       }
 
-      if (!is.null(parent)) {
+      if (!is_missing(parent)) {
         if (checkmate::test_r6(parent, classes = "File")) {
           if (parent$type == "folder") {
             parent <- parent$id
@@ -843,7 +843,7 @@ Auth <- R6::R6Class(
           "parent" = parent,
           "type" = "FOLDER"
         )
-      } else if (!is.null(project)) {
+      } else if (!is_missing(project)) {
         if (checkmate::test_r6(project, classes = "Project")) {
           project <- project$id
         } else if (checkmate::test_class(project, classes = "character")) {
