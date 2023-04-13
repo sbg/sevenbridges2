@@ -796,6 +796,87 @@ Auth <- R6::R6Class(
         cat("\n")
       }
       result
-    } # nocov end
+    },
+    # create new folder
+    #' @description A method for creating a new folder. It allows you to create
+    #' a new folder on the Platform within the root folder of a specified
+    #' project or the provided parent folder. Remember that you should provide
+    #' either the destination project (as the `project` parameter) or the
+    #' destination folder (as the `parent` parameter), not both.
+    #'
+    #' @param name The name of the folder you are about to create.
+    #' @param parent The ID of the parent destination folder or a File object
+    #' (which must be of type `FOLDER`).
+    #' @param project The ID of the destination project, or a Project object.
+    #' @importFrom rlang abort inform
+    #' @importFrom glue glue_col
+    #' @importFrom checkmate test_r6 test_class
+    create_folder = function(name, parent = NULL, project = NULL) {
+      check_folder_name(name)
+
+      if (is.null(parent) && is.null(project)) {
+        # nolint start
+        rlang::abort("Both the project name and parent folder ID are missing. You need to provide one of them.")
+        # nolint end
+      } else if (!is.null(parent) && !is.null(project)) {
+        # nolint start
+        rlang::abort("You should specify a project name or a parent folder ID, not both.")
+        # nolint end
+      }
+
+      if (!is.null(parent)) {
+        if (checkmate::test_r6(parent, classes = "File")) {
+          if (parent$type == "folder") {
+            parent <- parent$id
+          } else {
+            rlang::abort("The provided parent object is not a folder.")
+          }
+        } else if (checkmate::test_class(parent, classes = "character")) {
+          parent <- parent
+        } else {
+          # nolint start
+          rlang::abort("The provided `parent` argument is neither a File object nor an ID of a folder.")
+          # nolint end
+        }
+        body <- list(
+          "name" = name,
+          "parent" = parent,
+          "type" = "FOLDER"
+        )
+      } else if (!is.null(project)) {
+        if (checkmate::test_r6(project, classes = "Project")) {
+          project <- project$id
+        } else if (checkmate::test_class(project, classes = "character")) {
+          project <- project
+        } else {
+          # nolint start
+          rlang::abort("The provided `project` argument is neither a Project object nor an ID of a project.")
+          # nolint end
+        }
+        body <- list(
+          "name" = name,
+          "project" = project,
+          "type" = "FOLDER"
+        )
+      }
+
+      res <- sevenbridges2::api(
+        path = "files",
+        token = self$get_token(),
+        body = body,
+        method = "POST",
+        base_url = self$url
+      )
+
+      res <- status_check(res)
+
+      if (attr(res, "response")$status_code == 201) {
+        # nolint start
+        rlang::inform(glue::glue_col("New folder {green {name}} has been created."))
+        # nolint end
+        asFile(res, self$auth)
+      }
+    }
+    # nocov end
   )
 )

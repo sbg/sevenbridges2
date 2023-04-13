@@ -57,6 +57,7 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \item \href{#method-Auth-files}{\code{Auth$files()}}
 \item \href{#method-Auth-get_file}{\code{Auth$get_file()}}
 \item \href{#method-Auth-copy_files}{\code{Auth$copy_files()}}
+\item \href{#method-Auth-create_folder}{\code{Auth$create_folder()}}
 \item \href{#method-Auth-clone}{\code{Auth$clone()}}
 }
 }
@@ -511,6 +512,32 @@ Copy file/files to the specified project.
 
 \item{\code{destination_project}}{Project object or project ID in form of
 <project_owner>/<project-name> where you want to copy files into}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-create_folder"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-create_folder}{}}}
+\subsection{Method \code{create_folder()}}{
+A method for creating a new folder. It allows you to create
+a new folder on the Platform within the root folder of a specified
+project or the provided parent folder. Remember that you should provide
+either the destination project (as the `project` parameter) or the
+destination folder (as the `parent` parameter), not both.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$create_folder(name, parent = NULL, project = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{name}}{The name of the folder you are about to create.}
+
+\item{\code{parent}}{The ID of the parent destination folder or a File object
+(which must be of type `FOLDER`).}
+
+\item{\code{project}}{The ID of the destination project, or a Project object.}
 }
 \if{html}{\out{</div>}}
 }
