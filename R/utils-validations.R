@@ -84,8 +84,6 @@ check_limit <- function(limit) {
 #'
 #' @param offset offset value
 #' @importFrom rlang abort
-#' @importFrom checkmate assert_logical assert_list
-#' assert_character assert_integer
 #' @importFrom glue glue
 #' @noRd
 check_offset <- function(offset) {
@@ -102,9 +100,15 @@ check_offset <- function(offset) {
   }
 }
 
-
+#' Check tag parameters
+#'
+#' @param tags tag values
+#' @importFrom checkmate test_list assert_logical assert_character assert_list
+#' @importFrom rlang abort
+#'
+#' @noRd
 check_tags <- function(tags) {
-  if (!test_list(tags,
+  if (!checkmate::test_list(tags,
     types = "character",
     null.ok = TRUE,
     names = "unnamed"
@@ -115,6 +119,13 @@ check_tags <- function(tags) {
   }
 }
 
+#' Check project settings
+#'
+#' @param settings settings named list
+#' @importFrom checkmate assert_logical assert_list
+#' assert_character assert_integer
+#' @importFrom rlang abort
+#' @noRd
 check_settings <- function(settings) {
   if (!is.null(settings)) {
     msg <- "Settings must be provided as a list."
@@ -174,8 +185,14 @@ check_settings <- function(settings) {
   }
 }
 
+#' Check metadata
+#'
+#' @param metadata settings named list
+#' @importFrom checkmate test_list
+#' @importFrom rlang abort
+#' @noRd
 check_metadata <- function(metadata) {
-  if (!test_list(metadata,
+  if (!checkmate::test_list(metadata,
     types = "character",
     null.ok = TRUE,
     names = "named",
