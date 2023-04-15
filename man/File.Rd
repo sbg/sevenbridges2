@@ -235,8 +235,8 @@ limit
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{project}}{The name of the project you want to copy the file to.
-Project name should be specified in the \verb{<username>/<project-name>} format,
-e.g. \code{rfranklin/my-project}.}
+Project name should be specified in the \verb{<username>/<project-name>}
+format, e.g. \code{rfranklin/my-project}.}
 
 \item{\code{name}}{The new name the file will have in the target project.
 If its name will not change, omit this key.}

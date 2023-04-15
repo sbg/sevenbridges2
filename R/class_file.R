@@ -12,14 +12,13 @@ File <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field id Character used as file ID.
+    #' @field id Character used as a file ID.
     id = NULL,
-    #' @field name String used as file name.
+    #' @field name String used as a file name.
     name = NULL,
     #' @field size File size.
     size = NULL,
-    #' @field project Project project ID if any, when returned by a API call,
-    #' it usually return the project ID and stored with the object.
+    #' @field project Project ID if any, when returned by an API call.
     project = NULL,
     #' @field created_on Date created on.
     created_on = NULL,
@@ -42,10 +41,9 @@ File <- R6::R6Class(
 
     #' @description Create a new File object.
     #' @param id Character used as file ID.
-    #' @param name File name.
+    #' @param name String used as file name.
     #' @param size File size.
-    #' @param project Project project ID if any, when returned by a API call,
-    #' it usually return the project ID and stored with the object.
+    #' @param project Project ID if any, when returned by an API call.
     #' @param parent Parent folder ID.
     #' @param type `File` or `"Folder"`.
     #' @param created_on Date created on.
@@ -361,6 +359,9 @@ File <- R6::R6Class(
 
       # Set url field
       self$url <- res$url
+
+      # Return download url
+      return(self$url)
     },
 
     #' @description
