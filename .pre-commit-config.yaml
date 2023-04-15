@@ -23,6 +23,7 @@ repos:
         -    utils
         -    checkmate
         -    withr
+        -    DescTools
     -   id: use-tidy-description
     -   id: spell-check
         exclude: >
