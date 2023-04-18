@@ -532,7 +532,7 @@ project or the provided parent folder. Remember that you should provide
 either the destination project (as the `project` parameter) or the
 destination folder (as the `parent` parameter), not both.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$create_folder(name, parent = NULL, project = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Auth$create_folder(name = NULL, parent = NULL, project = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

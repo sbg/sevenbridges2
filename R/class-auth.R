@@ -825,7 +825,7 @@ Auth <- R6::R6Class(
     #' @importFrom rlang abort inform
     #' @importFrom glue glue_col
     #' @importFrom checkmate test_r6 test_class
-    create_folder = function(name, parent = NULL, project = NULL) {
+    create_folder = function(name = NULL, parent = NULL, project = NULL) {
       check_folder_name(name)
 
       if (is_missing(parent) && is_missing(project)) {
