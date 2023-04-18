@@ -2,7 +2,7 @@ testthat::test_that("Function check_tags throws an error if the provided tags
                     argument is not a list", {
   err <- testthat::expect_error(check_tags(tags = "test_tag"))
   # nolint start
-  testthat::expect_equal(err$message, "Tags parameter must be an unnamed list of tags. For example: tags = list('my_tag_1', 'my_tag_2')")
+  testthat::expect_equal(err$message, "Tags parameter must be an unnamed list of tags. For example: tags <- list('my_tag_1', 'my_tag_2')")
   # nolint end
 })
 

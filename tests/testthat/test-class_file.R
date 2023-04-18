@@ -28,7 +28,6 @@ test_that("File update_details method works", {
   testthat::expect_error(test_file$update_details(name = 1))
   testthat::expect_error(test_file$update_details(name = NULL))
   testthat::expect_error(test_file$update_details(name = TRUE))
-  testthat::expect_error(test_file$update_details(name = c("test")))
   testthat::expect_error(test_file$update_details(name = list(a = "tet")))
 
   # Negative test use cases for metadata parameter
@@ -79,12 +78,15 @@ test_that("File copy_to method works", {
 
   # Negative test use cases for metadata parameter
   # nolint start
-  testthat::expect_error(file$copy_to(), "Project parameter is missing. You need to provide one.")
+  testthat::expect_error(test_file$copy_to(), "Project parameter is missing. You need to provide one.")
   # nolint end
-  testthat::expect_error(file$copy_to(project = project_obj, name = 1))
-  testthat::expect_error(file$copy_to(project = project_obj, name = TRUE))
-  testthat::expect_error(file$copy_to(project = project_obj, name = c("test")))
-  testthat::expect_error(file$copy_to(
+  testthat::expect_error(test_file$copy_to(project = project_obj, name = 1))
+  testthat::expect_error(test_file$copy_to(project = project_obj, name = TRUE))
+  testthat::expect_error(test_file$copy_to(
+    project = project_obj,
+    name = c("test")
+  ))
+  testthat::expect_error(test_file$copy_to(
     project = project_obj,
     name = list("test")
   ))
@@ -105,6 +107,22 @@ test_that("File move_to_folder method works", {
 
   # Negative test use cases for metadata parameter
   # nolint start
-  testthat::expect_error(file$move_to_folder(), "Parent folder is missing. You need to provide one.")
+  testthat::expect_error(test_file$move_to_folder(), "Parent folder is missing. You need to provide one.")
   # nolint end
+  testthat::expect_error(test_file$move_to_folder(
+    project = project_obj,
+    name = 1
+  ))
+  testthat::expect_error(test_file$move_to_folder(
+    project = project_obj,
+    name = TRUE
+  ))
+  testthat::expect_error(test_file$move_to_folder(
+    project = project_obj,
+    name = c("test")
+  ))
+  testthat::expect_error(test_file$move_to_folder(
+    project = project_obj,
+    name = list("test")
+  ))
 })

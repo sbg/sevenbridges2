@@ -273,7 +273,7 @@ File <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_logical
     add_tag = function(tags = NULL, overwrite = FALSE, ...) {
-      if (is_missing(tags)) {
+      if (missing(tags)) {
         # nolint start
         rlang::abort("Tags parameter is missing. You need to provide at least one.")
         # nolint end
@@ -329,7 +329,7 @@ File <- R6::R6Class(
     #'
     #' @return `File` or `Folder`
     copy_to = function(project = NULL, name = NULL, ...) {
-      if (is_missing(project)) {
+      if (missing(project)) {
         # nolint start
         rlang::abort("Project parameter is missing. You need to provide one.")
         # nolint end
@@ -413,7 +413,7 @@ File <- R6::R6Class(
     #' @importFrom DescTools StripAttr
     #' @importFrom checkmate assert_logical
     set_metadata = function(metadata_fields = NULL, overwrite = FALSE, ...) {
-      if (is_missing(metadata_fields)) {
+      if (missing(metadata_fields)) {
         # nolint start
         rlang::abort("Metadata fields are missing. You need to provide at least one.")
         # nolint end
@@ -462,8 +462,7 @@ File <- R6::R6Class(
     #' This call moves a file from one folder to another. Moving of files is
     #' only allowed within the same project.
     #'
-    #' @param parent Specifies the target folder by using its ID. To find out
-    #' the folder ID, use the list folder contents call for its parent folder.
+    #' @param parent Specifies the target folder.
     #' @param name Specifies a new name for a file in case you want to rename it
     #' . If you want to use the same name, omit this key.
     #' @param ... Additional parameters that can be passed to the method.
@@ -471,7 +470,7 @@ File <- R6::R6Class(
     #' @importFrom checkmate assert_r6 assert_string
     #' @importFrom rlang abort
     move_to_folder = function(parent = NULL, name = NULL, ...) {
-      if (is_missing(parent)) {
+      if (missing(parent)) {
         # nolint start
         rlang::abort("Parent folder is missing. You need to provide one.")
         # nolint end
