@@ -23,6 +23,8 @@ repos:
         -    utils
         -    checkmate
         -    withr
+        -    DescTools
+        -    remotes
     -   id: use-tidy-description
     -   id: spell-check
         exclude: >

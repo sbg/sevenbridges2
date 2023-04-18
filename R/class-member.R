@@ -23,7 +23,7 @@ Member <- R6::R6Class(
     #' @param id Member's id - same as username.
     #' @param username Member's username - same as id.
     #' @param email Member's email.
-    #' @param type Type of membership. Default value is \code{USER}.
+    #' @param type Type of membership. Default value is `USER`.
     #' @param permissions Member's permissions within a project.
     #' Should be an object of class Permission.
     #' @param ... Other arguments.

@@ -54,6 +54,7 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \item \href{#method-Auth-projects}{\code{Auth$projects()}}
 \item \href{#method-Auth-project_get}{\code{Auth$project_get()}}
 \item \href{#method-Auth-project_new}{\code{Auth$project_new()}}
+\item \href{#method-Auth-files}{\code{Auth$files()}}
 \item \href{#method-Auth-clone}{\code{Auth$clone()}}
 }
 }
@@ -127,7 +128,7 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new `Auth` object.
+A new \code{Auth} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -147,8 +148,8 @@ An API authentication token in form of a string.
 \if{html}{\out{<a id="method-Auth-api"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-api}{}}}
 \subsection{Method \code{api()}}{
-This method returns all API paths and pass arguments to core `api()`
- function.
+This method returns all API paths and pass arguments to core \code{api()}
+function.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$api(
   ...,
@@ -165,10 +166,10 @@ This method returns all API paths and pass arguments to core `api()`
 \item{\code{...}}{Other arguments passed to core api function.}
 
 \item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, `limit` is set to `50`. Maximum is `100`.}
+request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
 
 \item{\code{offset}}{Defines where the retrieved items started.
-By default, `offset` is set to `0`.}
+By default, \code{offset} is set to \code{0}.}
 
 \item{\code{fields}}{All API calls take the optional query parameter fields.
 This parameter enables you to specify the fields you want to be returned
@@ -176,7 +177,7 @@ when listing resources (e.g., all your projects) or getting details of a
 specific resource (e.g., a given project).}
 
 \item{\code{complete}}{Parameter for API request that allows you to search and
-list all items. By default, it is set to `FALSE`.}
+list all items. By default, it is set to \code{FALSE}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -407,6 +408,67 @@ is 24.
 }}
 
 \item{\code{...}}{Other arguments.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-files"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-files}{}}}
+\subsection{Method \code{files()}}{
+This call returns a list of files and subdirectories in a
+specified project or directory within a project, with specified
+properties that you can access. The project or directory whose contents
+you want to list is specified as a query parameter in the call. Further
+properties to filter by can also be specified as query parameters.
+Note that this call lists both files and subdirectories in the specified
+project or directory within a project, but not the contents of the
+subdirectories. To list the contents of a subdirectory, make a new call
+and specify the subdirectory ID as the parent parameter.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$files(
+  project = NULL,
+  parent = NULL,
+  name = NULL,
+  metadata = NULL,
+  origin = NULL,
+  tag = NULL,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{project}}{Project object. Project should not be used together
+with parent. If parent is used, the call will list the content of the
+specified folder, within the project to which the folder belongs.
+If project is used, the call will list the content at the root of the
+project's files.}
+
+\item{\code{parent}}{Parent folder object. Should not be used together with
+project. If parent is used, the call will list the content of the
+specified folder, within the project to which the folder belongs.
+If project is used, the call will list the content at the root of the
+project's files.}
+
+\item{\code{name}}{Name of the file. List file with this name. Note that the
+name must be an exact complete string for the results to match. Multiple
+names can be represented as a vector.}
+
+\item{\code{metadata}}{List file with this metadata field values. List only
+files that have the specified value in metadata field. Different metadata
+fields are represented as a named list. You can also define multiple
+instances of the same metadata field.}
+
+\item{\code{origin}}{Task object. List only files produced by task.}
+
+\item{\code{tag}}{List files containing this tag. Note that the tag must be an
+exact complete string for the results to match. Multiple tags can be
+represented by vector of values.}
+
+\item{\code{...}}{Other arguments that can be passed to this method.
+Such as query parameters.}
 }
 \if{html}{\out{</div>}}
 }

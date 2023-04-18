@@ -30,21 +30,21 @@ This is main object for Projects
 \item{\code{settings}}{A list which contains detailed project settings.
 The following fields are part of the settings object:
 \itemize{
-  \item locked (boolean) Set this field to true to lock down a project.
-   Locking down a project prevents any Seven Bridges team member from
-   viewing any information about the task.
-  \item use_interruptible_instances (boolean) Defines the use of spot
-   instances. If not included in the request, spot instances are enabled
-   by default.
-  \item use_memoization (boolean) Set to false by default. Set to true
-   to enable memoization.
-  \item use_elastic_disk (boolean) Set to true to enable Elastic disk.
-  \item intermediate_files (list) Contains the following two sub fields:
-  retention - Specifies that intermediate files should be retained for a
-  limited amount of time. The value is always LIMITED.
-  duration - Specifies intermediate files retention period in hours.
-  The minimum value is 1. The maximum value is 120 and the default value
-  is 24.
+\item locked (boolean) Set this field to true to lock down a project.
+Locking down a project prevents any Seven Bridges team member from
+viewing any information about the task.
+\item use_interruptible_instances (boolean) Defines the use of spot
+instances. If not included in the request, spot instances are enabled
+by default.
+\item use_memoization (boolean) Set to false by default. Set to true
+to enable memoization.
+\item use_elastic_disk (boolean) Set to true to enable Elastic disk.
+\item intermediate_files (list) Contains the following two sub fields:
+retention - Specifies that intermediate files should be retained for a
+limited amount of time. The value is always LIMITED.
+duration - Specifies intermediate files retention period in hours.
+The minimum value is 1. The maximum value is 120 and the default value
+is 24.
 }}
 
 \item{\code{root_folder}}{ID for of the project's root folder.}

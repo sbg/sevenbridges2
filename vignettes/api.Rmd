@@ -45,7 +45,7 @@ There are two ways of constructing API calls. For instance, you can use low-leve
 
 ```{r}
 library("sevenbridges2")
-a <- Auth$new(token = "<your token>", platform = "aws-us")
+a <- Auth$new(token = "<your_token>", platform = "aws-us")
 a$api(path = "user", method = "GET")
 ```
 
@@ -642,3 +642,270 @@ p$member_permissions_modify(
   admin = TRUE
 )
 ```
+
+## List files
+
+List of `files` and `subdirectories` in a specified **project** or **directory** 
+within a project, with specified properties that you can access. The project or 
+directory whose contents you want to list is specified as a parameter in 
+the call. Further properties to filter by can also be specified as query 
+parameters.
+
+Both `files` and `subdirectories` are of class `File`. The difference between
+them is in the `type` parameter which is:
+
+- `File` for `files`
+- `Folder` for `subdirectories`
+
+Note that this call lists both `files` and `subdirectories` in the 
+specified project or directory within a project, 
+but **not the contents of the subdirectories**. To list the contents of a 
+subdirectory, make a new call and specify the subdirectory as the parent 
+parameter.
+
+```{r}
+# List files in project root directory
+a$files(project = "<project_object>")
+```
+```
+[[1]]
+
+── File ────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 61f3f9c6e6aad8667516bf30
+• url: NA
+• modified_on: 2023-04-15T08:54:32Z
+• created_on: 2023-04-11T10:04:50Z
+• project: vladimir_obucina/api-debug
+• size: 56 bytes
+• name: Drop-seq_small_example.bam
+• id: 643530c286c9522d97313d17
+• href: https://api.sbgenomics.com/v2/files/643530c286c9522d97313d17
+
+[[2]]
+
+── File ────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 61f3f9c6e6aad8667516bf30
+• url: NA
+• modified_on: 2023-04-11T10:29:13Z
+• created_on: 2023-04-11T10:29:13Z
+• project: vladimir_obucina/api-debug
+• size: 56 bytes
+• name: G20479.HCC1143.2_1Mreads.tar.gz
+• id: 6435367997d9446ecb66cfb2
+• href: https://api.sbgenomics.com/v2/files/6435367997d9446ecb66cfb2
+
+```
+``` {r}
+# List files in subdirectory
+a$files(parent = "<parent_directory_object>")
+```
+
+You can also try and find file with certain:
+
+1. **Name** - List file with this name. (Note that the name must be an exact\
+complete string for the results to match.)
+2. **Metadata** - List only files that have the specified value in metadata\
+field.
+3. **Tag** - List files containing this tag. (Note that the tag must be an\
+exact complete string for the results to match.)
+4. **Origin task** - List only files produced by task specified by ID in\
+this field.
+
+```{r}
+# List file with this name
+a$files(project = "<project_object", name = "<file_name>")
+
+# List file with metadata field value
+a$files(
+  project = "<project_object",
+  metadata = list("<metadata_field>" = "<metadata_field_value>")
+)
+
+# List file with this tag
+a$files(project = "<project_object", tag = c("<tag_value>"))
+
+# List file from this task
+a$files(project = "<project_object", task = "<task_object>")
+```
+
+Also there is an option to get certain file using it's ID
+```{r}
+a$get_file(file_id = "6435367997d9446ecb66cfb2")
+```
+```
+── File ────────────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 61f3f9c6e6aad8667516bf30
+• url: NA
+• modified_on: 2023-04-11T10:29:13Z
+• created_on: 2023-04-11T10:29:13Z
+• project: vladimir_obucina/api-debug
+• size: 56 bytes
+• name: G20479.HCC1143.2_1Mreads.tar.gz
+• id: 6435367997d9446ecb66cfb2
+• href: https://api.sbgenomics.com/v2/files/6435367997d9446ecb66cfb2
+```
+## File print
+
+File has a regular `print()` method which gives you most important information
+about the file:
+```{r}
+# Regular file print
+file$print()
+```
+
+```
+── File ────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 61f3f9c6e6aad8667516bf30
+• url: NA
+• modified_on: 2023-04-15T08:54:32Z
+• created_on: 2023-04-11T10:04:50Z
+• project: vladimir_obucina/api-debug
+• size: 56 bytes
+• name: Drop-seq_small_example.bam
+• id: 643530c286c9522d97313d17
+• href: https://api.sbgenomics.com/v2/files/643530c286c9522d97313d17
+```
+
+But if you want to see all the details about the file in specific format,
+you can use `detailed_print()` method:
+
+```{r}
+# Pretty print
+file$detailed_print()
+```
+```
+── File ────────────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 61f3f9c6e6aad8667516bf30
+• url: NA
+• modified_on: 2023-04-15T08:54:32Z
+• created_on: 2023-04-11T10:04:50Z
+• project: vladimir_obucina/api-debug
+• size: 56 bytes
+• name: Drop-seq_small_example.bam
+• id: 643530c286c9522d97313d17
+• href: https://api.sbgenomics.com/v2/files/643530c286c9522d97313d17
+• tags
+  • tag_1: TEST
+  • tag_2: bla
+• metadata
+  • reference_genome: GSM1629193_hg19_ERCC
+  • investigation: GSM1629193
+  • md5_sum: 6294fee8200b29e03d3dc464f9c46a9c
+  • sbg_public_files_category: test
+• storage
+  • type: PLATFORM
+  • hosted_on_locations: list("aws:us-east-1", "aws:us-west-2")
+```
+
+## Update file details
+
+User can also update the name, the full set metadata, and tags for a specified
+file using `update_details()` method.
+
+``` {r}
+# Update file name
+file$update_details(name = "<new_name>")
+
+# Update file metadata
+file$update_details(
+  metadata = list("<metadata_field>" = "<metadata_field_value")
+)
+
+# Update file tags
+file$update_details(tags = list("<tag_value>"))
+```
+
+## Add tags to a file
+
+You can tag your files on the Platform with keywords to make it easier to 
+identify and organize files you’ve imported from public datasets or copied 
+between projects using `add_tag()` method. This method will automatically just 
+add new tag to a list of already existing ones, but you also have an option to 
+set `overwrite` parameter, which will erase old ones and set the new one.
+
+```{r}
+# Add new tag to a file
+file$add_tag(tags = list("new_tag"))
+
+# Add new tag to a file and overwrite old ones
+file$add_tag(tags = list("new_tag"), overwrite = TRUE)
+```
+
+## Copy a file between projects
+
+This call copies the specified file to a new project. Files retain their 
+metadata when copied, but may be assigned new names in their target project.
+If you don't specify new name the file will retain it's old name in new project.
+To make this call, you should have 
+[copy permission](https://docs.sevenbridges.com/docs/set-permissions) 
+within the project you are copying from. This call returns `File` object of 
+newly copied file.
+
+```{r}
+# Copy file to a new project and set a new name
+file$copy_to(project = "<destination_project_object>", name = "<new_name>")
+```
+
+## Get downloadable URL for a file
+
+To get URL that you can use to download the specified file, you can use
+`get_download_url()` method. This will set `url` parameter of a file and can 
+later be used to download file.
+
+```{r}
+# Get downloadable URL for a file
+file$get_download_url()
+```
+
+
+## Get a file's metadata
+`File` object has `get_metadata()` method which returns the metadata values for 
+the specified file. This will pull and reload file's metadata from the platform.
+
+```{r}
+# Get file metadata
+file$get_metadata()
+```
+
+## Modify a file's metadata
+
+User is also able to modify a file's metadata using `set_metadata()` method.
+Here you can also use `overwrite` parameter if you want to erase previous
+metadata fields and add new one (by default it's set to `FALSE`).
+
+```{r}
+# Set file metadata
+file$set_metadata(
+  metadata_fields = list("<metadata_field>" = "metadata_field_value"),
+  overwrite = TRUE
+)
+```
+
+## List folder contents
+
+Directory can have multiple `files`/`subdirectories` inside. You can see them
+using `list_contents()` method.
+
+```{r}
+# List folder contents
+folder$list_contents()
+```
+
+## Delete a file/folder
+
+User can delete files and folders using `delete()` method. The only thing you
+need to be aware of is that `folder` can only be deleted if it's empty.
+
+```{r}
+# Delete a file
+file$delete()
+
+# Delete a folder
+folder$delete()
+```
+# Seven Bridges API Reference

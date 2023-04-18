@@ -84,8 +84,6 @@ check_limit <- function(limit) {
 #'
 #' @param offset offset value
 #' @importFrom rlang abort
-#' @importFrom checkmate assert_logical assert_list
-#' assert_character assert_integer
 #' @importFrom glue glue
 #' @noRd
 check_offset <- function(offset) {
@@ -102,18 +100,32 @@ check_offset <- function(offset) {
   }
 }
 
-
+#' Check tag parameters
+#'
+#' @param tags tag values
+#' @importFrom checkmate test_list assert_logical assert_character assert_list
+#' @importFrom rlang abort
+#'
+#' @noRd
 check_tags <- function(tags) {
-  if (!is.null(tags)) {
+  if (!checkmate::test_list(tags,
+    types = "character",
+    null.ok = TRUE,
+    names = "unnamed"
+  )) {
     # nolint start
-    msg <- "Tags parameter must be an unnamed list of tags. For example: tags = list('my_tag_1', 'my_tag_2')"
+    rlang::abort("Tags parameter must be an unnamed list of tags. For example: tags <- list('my_tag_1', 'my_tag_2')")
     # nolint end
-    if (!is.list(tags)) {
-      rlang::abort(msg)
-    }
   }
 }
 
+#' Check project settings
+#'
+#' @param settings settings named list
+#' @importFrom checkmate assert_logical assert_list
+#' assert_character assert_integer
+#' @importFrom rlang abort
+#' @noRd
 check_settings <- function(settings) {
   if (!is.null(settings)) {
     msg <- "Settings must be provided as a list."
@@ -137,38 +149,57 @@ check_settings <- function(settings) {
     }
 
     checkmate::assert_logical(settings$locked,
-                              .var.name = "locked", null.ok = TRUE
+      .var.name = "locked", null.ok = TRUE
     )
     checkmate::assert_logical(settings$controlled,
-                              .var.name = "controlled", null.ok = TRUE
+      .var.name = "controlled", null.ok = TRUE
     )
     checkmate::assert_logical(settings$use_interruptible_instances,
-                              .var.name = "use_interruptible_instances", null.ok = TRUE
+      .var.name = "use_interruptible_instances", null.ok = TRUE
     )
     checkmate::assert_logical(settings$use_memoization,
-                              .var.name = "use_memoization", null.ok = TRUE
+      .var.name = "use_memoization", null.ok = TRUE
     )
     checkmate::assert_logical(settings$allow_network_access,
-                              .var.name = "allow_network_access", null.ok = TRUE
+      .var.name = "allow_network_access", null.ok = TRUE
     )
     checkmate::assert_logical(settings$use_elastic_disk,
-                              .var.name = "use_elastic_disk", null.ok = TRUE
+      .var.name = "use_elastic_disk", null.ok = TRUE
     )
 
     checkmate::assert_character(settings$location,
-                                .var.name = "location", null.ok = TRUE
+      .var.name = "location", null.ok = TRUE
     )
 
     if ("intermediate_files" %in% names(settings)) {
       checkmate::assert_list(settings$intermediate_files,
-                             .var.name = "intermediate_files", null.ok = TRUE
+        .var.name = "intermediate_files", null.ok = TRUE
       )
       checkmate::assert_integer(settings$intermediate_files$duration,
-                                .var.name = "intermediate_files$duration", null.ok = TRUE
+        .var.name = "intermediate_files$duration", null.ok = TRUE
       )
       checkmate::assert_character(settings$intermediate_files$retention,
-                                  .var.name = "intermediate_files$retention", null.ok = TRUE
+        .var.name = "intermediate_files$retention", null.ok = TRUE
       )
     }
+  }
+}
+
+#' Check metadata
+#'
+#' @param metadata settings named list
+#' @importFrom checkmate test_list
+#' @importFrom rlang abort
+#' @noRd
+check_metadata <- function(metadata) {
+  if (!checkmate::test_list(metadata,
+    types = "character",
+    null.ok = TRUE,
+    names = "named",
+    max.len = 1000
+  )) {
+    # nolint start
+    rlang::abort("Metadata parameter must be a named list of key-value pairs. For example: metadata <- list(metadata_key_1 = 'metadata_value_1', metadata_key_2 = 'metadata_value_2')")
+    # nolint end
   }
 }

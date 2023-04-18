@@ -4,7 +4,7 @@
 #' @description Authentication object with methods to access API endpoints.
 #' Every object could be requested from this Auth object and any action
 #' could start from this object using cascading style. Please check
-#' \code{vignette("api")} for more information.
+#' `vignette("api")` for more information.
 #'
 #' @importFrom R6 R6Class
 #' @importFrom  rlang abort warn inform
@@ -44,54 +44,54 @@ Auth <- R6::R6Class(
     #' @field fs FS object, for mount and unmount file system.
     fs = NULL,
 
-    #' @field authorization Logical. Is the \code{token} an API
-    #' auth token (\code{FALSE}) or an access token from the
-    #' Seven Bridges single sign-on (\code{TRUE})?
+    #' @field authorization Logical. Is the `token` an API
+    #' auth token (`FALSE`) or an access token from the
+    #' Seven Bridges single sign-on (`TRUE`)?
     authorization = NULL,
 
     #' @description
     #' Create a new Auth object. All methods can be accessed through this
     #' object.
     #'
-    #' @param from Authentication method. Could be \code{"direct"}
+    #' @param from Authentication method. Could be `"direct"`
     #' (pass the credential information to the arguments directly),
-    #' \code{"env"} (read from pre-set system environment variables),
-    #' or \code{"file"} (read configurations from a credentials file).
-    #' Default is \code{"direct"}.
+    #' `"env"` (read from pre-set system environment variables),
+    #' or `"file"` (read configurations from a credentials file).
+    #' Default is `"direct"`.
     #'
     #' @param platform The platform to use.
-    #' If \code{platform} and \code{url} are both not specified,
-    #' the default is \code{"aws-us"} (Seven Bridges Platform - US).
+    #' If `platform` and `url` are both not specified,
+    #' the default is `"aws-us"` (Seven Bridges Platform - US).
     #' Other possible values include
-    #' \code{"aws-eu"} (Seven Bridges Platform - EU),
-    #' \code{"cgc"} (Cancer Genomics Cloud),
-    #' \code{"ali-cn"} (Seven Bridges Platform - China),
-    #' \code{"cavatica"} (Cavatica), and
-    #' \code{"f4c"} (BioData Catalyst Powered by Seven Bridges).
+    #' `"aws-eu"` (Seven Bridges Platform - EU),
+    #' `"cgc"` (Cancer Genomics Cloud),
+    #' `"ali-cn"` (Seven Bridges Platform - China),
+    #' `"cavatica"` (Cavatica), and
+    #' `"f4c"` (BioData Catalyst Powered by Seven Bridges).
     #'
     #' @param url Base URL for API. Please only use this when you
-    #' want to specify a platform that is not in the \code{platform} list
-    #' above, and also leaving \code{platform} unspecified.
+    #' want to specify a platform that is not in the `platform` list
+    #' above, and also leaving `platform` unspecified.
     #'
     #' @param token Your authentication token.
     #'
     #' @param sysenv_url Name of the system environment variable storing
-    #' the API base URL. By default: \code{"SB_API_ENDPOINT"}.
+    #' the API base URL. By default: `"SB_API_ENDPOINT"`.
     #'
     #' @param sysenv_token Name of the system environment variable storing
-    #' the auth token. By default: \code{"SB_AUTH_TOKEN"}.
+    #' the auth token. By default: `"SB_AUTH_TOKEN"`.
     #'
     #' @param config_file Location of the user configuration file.
-    #' By default: \code{"~/.sevenbridges/credentials"}.
+    #' By default: `"~/.sevenbridges/credentials"`.
     #'
     #' @param profile_name Profile name in the user configuration file.
-    #' The default value is \code{"default"}.
+    #' The default value is `"default"`.
     #'
     #' @param fs FS object, for mount and unmount file system.
     #'
-    #' @param authorization Logical. Is the \code{token} an API
-    #' auth token (\code{FALSE}) or an access token from the
-    #' Seven Bridges single sign-on (\code{TRUE})?
+    #' @param authorization Logical. Is the `token` an API
+    #' auth token (`FALSE`) or an access token from the
+    #' Seven Bridges single sign-on (`TRUE`)?
     #'
     #' @param ... Other arguments passed to methods.
     #' @return A new `Auth` object.
@@ -640,6 +640,95 @@ Auth <- R6::R6Class(
       rlang::inform(glue::glue("New project has been created on the
                                {self$platform} platform."))
       asProject(res, auth = self)
+    },
+    # list all files -------------------------------------------------------
+    #' @description This call returns a list of files and subdirectories in a
+    #' specified project or directory within a project, with specified
+    #' properties that you can access. The project or directory whose contents
+    #' you want to list is specified as a query parameter in the call. Further
+    #'  properties to filter by can also be specified as query parameters.
+    #' Note that this call lists both files and subdirectories in the specified
+    #' project or directory within a project, but not the contents of the
+    #' subdirectories. To list the contents of a subdirectory, make a new call
+    #' and specify the subdirectory ID as the parent parameter.
+    #' @param project Project object. Project should not be used together
+    #' with parent. If parent is used, the call will list the content of the
+    #' specified folder, within the project to which the folder belongs.
+    #' If project is used, the call will list the content at the root of the
+    #' project's files.
+    #' @param parent Parent folder object. Should not be used together with
+    #' project. If parent is used, the call will list the content of the
+    #' specified folder, within the project to which the folder belongs.
+    #' If project is used, the call will list the content at the root of the
+    #' project's files.
+    #' @param name Name of the file. List file with this name. Note that the
+    #' name must be an exact complete string for the results to match. Multiple
+    #' names can be represented as a vector.
+    #' @param metadata List file with this metadata field values. List only
+    #' files that have the specified value in metadata field. Different metadata
+    #' fields are represented as a named list. You can also define multiple
+    #' instances of the same metadata field.
+    #' @param origin Task object. List only files produced by task.
+    #' @param tag List files containing this tag. Note that the tag must be an
+    #'  exact complete string for the results to match. Multiple tags can be
+    #'  represented by vector of values.
+    #' @param ... Other arguments that can be passed to this method.
+    #' Such as query parameters.
+    files = function(project = NULL, parent = NULL, name = NULL,
+                     metadata = NULL, origin = NULL, tag = NULL, ...) {
+      # Check input parameters
+      checkmate::assert_r6(project, classes = "Project", null.ok = TRUE)
+      checkmate::assert_r6(parent, classes = "File", null.ok = TRUE)
+      checkmate::assert_character(name, null.ok = TRUE)
+      checkmate::assert_list(metadata,
+        types = "string", names = TRUE,
+        null.ok = TRUE
+      )
+      checkmate::assert_r6(origin, classes = "Task", null.ok = TRUE)
+      checkmate::assert_vector(tag, null.ok = TRUE)
+
+      # Run API call based on project/parent parameters
+      if (!is.null(project)) {
+        res <- sevenbridges2::api(
+          path = "files",
+          method = "GET",
+          token = self$get_token(),
+          base_url = self$url,
+          query = list(
+            project = project$id,
+            name = name,
+            metadata = metadata,
+            origin = origin,
+            tag = tag
+          ),
+          ...
+        )
+      } else if (!is.null(parent)) {
+        res <- sevenbridges2::api(
+          path = "files",
+          method = "GET",
+          token = self$get_token(),
+          base_url = self$url,
+          query = list(
+            parent = parent$id,
+            name = name,
+            metadata = metadata,
+            origin = origin,
+            tag = tag
+          ),
+          ...
+        )
+      } else {
+        # nolint start
+        rlang::abort("No project or parent directory was defined. You must provide one of the two!")
+        # nolint end
+      }
+
+      res <- status_check(res)
+
+      res <- asFileList(res, auth = self)
+
+      res
     }
     # nocov end
   )
