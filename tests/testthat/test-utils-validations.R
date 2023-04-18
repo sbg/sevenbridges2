@@ -117,3 +117,12 @@ test_that("check_offset function throws error when offset is not valid", {
     )
   }
 })
+
+test_that("check_metadata function throws error when metadata is not valid", {
+  metadata_values <- c("test", 1, NULL, TRUE, c("test"))
+  for (metadata in metadata_values) {
+    testthat::expect_error(
+      check_metadata(metadata)
+    )
+  }
+})
