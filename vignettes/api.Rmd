@@ -730,6 +730,23 @@ a$files(project = "<project_object", tag = c("<tag_value>"))
 a$files(project = "<project_object", task = "<task_object>")
 ```
 
+Also there is an option to get certain file using it's ID
+```{r}
+a$get_file(file_id = "6435367997d9446ecb66cfb2")
+```
+```
+── File ────────────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 61f3f9c6e6aad8667516bf30
+• url: NA
+• modified_on: 2023-04-11T10:29:13Z
+• created_on: 2023-04-11T10:29:13Z
+• project: vladimir_obucina/api-debug
+• size: 56 bytes
+• name: G20479.HCC1143.2_1Mreads.tar.gz
+• id: 6435367997d9446ecb66cfb2
+• href: https://api.sbgenomics.com/v2/files/6435367997d9446ecb66cfb2
+```
 ## File print
 
 File has a regular `print()` method which gives you most important information

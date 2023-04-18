@@ -1,194 +1,110 @@
-test_that("Project initialization works", {
-  # Load auth object
-  test_auth_obj <- readRDS(testthat::test_path("test_data", "auth.RDS"))
-
-  # Load predefined response needed for creating a project object
-  test_project_response <- readRDS(testthat::test_path(
+test_that("File print method works", {
+  file_obj <- testthat::test_path(
     "test_data",
-    "get_project_response.RDS"
-  ))
-
-  # Create project object using the asProject helper function
-  test_project <- asProject(x = test_project_response, auth = test_auth_obj)
-
-  testthat::expect_true(checkmate::test_class(test_project,
-    classes = c("Project", "Item", "R6")
-  ))
-
-  # Check if all the expected fields are filled
-  testthat::expect_equal(test_project$category, "PRIVATE")
-  testthat::expect_equal(test_project$modified_on, "2022-12-20T16:09:20Z")
-  testthat::expect_equal(test_project$created_on, "2022-12-20T16:09:20Z")
-  testthat::expect_equal(test_project$created_by, "luna_lovegood")
-  testthat::expect_equal(test_project$root_folder, "12a1ab12345a12345a12345a")
-  testthat::expect_equal(test_project$type, "v2")
-  testthat::expect_equal(
-    test_project$billing_group,
-    "ab12345a-123a-1234-1234-a1ab12a12ab1"
+    "file_object.RDS"
   )
-  testthat::expect_equal(test_project$name, "nargles-project")
-  testthat::expect_equal(test_project$id, "luna_lovegood/nargles-project")
+  test_file <- readRDS(file_obj)
+  testthat::expect_snapshot(test_file$print())
+})
+
+
+test_that("File detailed_print method works", {
+  file_obj <- testthat::test_path(
+    "test_data",
+    "file_object.RDS"
+  )
+  test_file <- readRDS(file_obj)
+  testthat::expect_snapshot(test_file$detailed_print())
+})
+
+test_that("File update_details method works", {
+  file_obj <- testthat::test_path(
+    "test_data",
+    "file_object.RDS"
+  )
+  test_file <- readRDS(file_obj)
+
+  # Negative test use cases for name parameter
+  testthat::expect_error(test_file$update_details(name = 1))
+  testthat::expect_error(test_file$update_details(name = NULL))
+  testthat::expect_error(test_file$update_details(name = TRUE))
+  testthat::expect_error(test_file$update_details(name = c("test")))
+  testthat::expect_error(test_file$update_details(name = list(a = "tet")))
+
+  # Negative test use cases for metadata parameter
+  testthat::expect_error(test_file$update_details(metadata = "test"))
+  testthat::expect_error(test_file$update_details(metadata = 1))
+  testthat::expect_error(test_file$update_details(metadata = NULL))
+  testthat::expect_error(test_file$update_details(metadata = TRUE))
+  testthat::expect_error(test_file$update_details(metadata = c("test")))
+
+  # Negative test use cases for tags parameter
+  testthat::expect_error(test_file$update_details(tags = "test"))
+  testthat::expect_error(test_file$update_details(tags = 1))
+  testthat::expect_error(test_file$update_details(tags = NULL))
+  testthat::expect_error(test_file$update_details(tags = TRUE))
+  testthat::expect_error(test_file$update_details(tags = list(a = "test")))
+})
+
+test_that("File set_metadata method works", {
+  file_obj <- testthat::test_path(
+    "test_data",
+    "file_object.RDS"
+  )
+  test_file <- readRDS(file_obj)
+
+  # Negative test use cases for metadata parameter
   # nolint start
-  testthat::expect_equal(test_project$href, "https://api.sbgenomics.com/v2/projects/luna_lovegood/nargles-project")
+  testthat::expect_error(test_file$set_metadata(), "Metadata fields are missing. You need to provide at least one.")
   # nolint end
-
-  # Get settings list from test_project object
-  settings_list <- test_project$settings
-
-  # Set expected settings list
-  expected_settings_list <- list(
-    locked = FALSE,
-    controlled = FALSE,
-    location = "aws:us-east-1",
-    use_interruptible_instances = TRUE,
-    use_memoization = FALSE,
-    intermediate_files = list(duration = 24, retention = "LIMITED"),
-    allow_network_access = FALSE,
-    use_elastic_disk = FALSE
-  )
-
-  keys <- names(settings_list)
-
-  # Compare the two lists
-  expect_equal(settings_list[keys], expected_settings_list[keys])
-
-  # Get permissions list from test project object
-  permissions_list <- test_project$permissions
-
-  # # Set expected permissions list
-  expected_permissions_list <- list(
-    write = TRUE,
-    read = TRUE,
-    copy = TRUE,
-    execute = TRUE,
-    admin = TRUE
-  )
-
-  permissions_keys <- names(permissions_list)
-
-  # Compare the two lists
-  expect_equal(
-    permissions_list[permissions_keys],
-    expected_permissions_list[permissions_keys]
-  )
-
-  # Check if superclass field auth is as expected
-  testthat::expect_equal(test_project$auth$platform, "aws-us")
-  testthat::expect_equal(
-    test_project$auth$url,
-    "https://api.sbgenomics.com/v2/"
-  )
+  testthat::expect_error(test_file$set_metadata(metadata = "test"))
+  testthat::expect_error(test_file$set_metadata(metadata = 1))
+  testthat::expect_error(test_file$set_metadata(metadata = NULL))
+  testthat::expect_error(test_file$set_metadata(metadata = TRUE))
+  testthat::expect_error(test_file$set_metadata(metadata = c("test")))
 })
 
-test_that("Project print method works", {
-  project_obj_file <- testthat::test_path(
+test_that("File copy_to method works", {
+  file_obj <- testthat::test_path(
+    "test_data",
+    "file_object.RDS"
+  )
+  test_file <- readRDS(file_obj)
+
+  project_obj <- testthat::test_path(
     "test_data",
     "luna_lovegood_project_obj.RDS"
   )
-  test_project <- readRDS(project_obj_file)
-  testthat::expect_snapshot(test_project$print())
-})
+  test_project <- readRDS(project_obj)
 
-
-test_that("Project detailed_print method works", {
-  project_obj_file <- testthat::test_path(
-    "test_data",
-    "luna_lovegood_project_obj.RDS"
-  )
-  test_project <- readRDS(project_obj_file)
-  testthat::expect_snapshot(test_project$detailed_print())
-})
-
-
-test_that("Function asProjectList works", {
-  # Load auth object
-  test_auth_obj <- readRDS(testthat::test_path("test_data", "auth.RDS"))
-
-  # Load predefined response needed for creating a project object
-  test_project_response <- readRDS(testthat::test_path(
-    "test_data",
-    "get_project_response.RDS"
+  # Negative test use cases for metadata parameter
+  # nolint start
+  testthat::expect_error(file$copy_to(), "Project parameter is missing. You need to provide one.")
+  # nolint end
+  testthat::expect_error(file$copy_to(project = project_obj, name = 1))
+  testthat::expect_error(file$copy_to(project = project_obj, name = TRUE))
+  testthat::expect_error(file$copy_to(project = project_obj, name = c("test")))
+  testthat::expect_error(file$copy_to(
+    project = project_obj,
+    name = list("test")
   ))
+})
 
-  # Create a list with 2 copies of test_project_response
-  test_project_responses_list <- list(
-    items = rep(list(test_project_response), 2)
+test_that("File move_to_folder method works", {
+  file_obj <- testthat::test_path(
+    "test_data",
+    "file_object.RDS"
   )
+  test_file <- readRDS(file_obj)
 
-  # Create a list of project objects using the asProjectList helper function
-  test_project_list <- asProjectList(
-    x = test_project_responses_list,
-    auth = test_auth_obj
+  folder_obj <- testthat::test_path(
+    "test_data",
+    "folder_object.RDS"
   )
+  test_folder <- readRDS(folder_obj)
 
-  for (test_project in test_project_list) {
-    testthat::expect_true(checkmate::test_class(test_project,
-      classes = c("Project", "Item", "R6")
-    ))
-
-    # Check if all the expected fields are filled
-    testthat::expect_equal(test_project$category, "PRIVATE")
-    testthat::expect_equal(test_project$modified_on, "2022-12-20T16:09:20Z")
-    testthat::expect_equal(test_project$created_on, "2022-12-20T16:09:20Z")
-    testthat::expect_equal(test_project$created_by, "luna_lovegood")
-    testthat::expect_equal(test_project$root_folder, "12a1ab12345a12345a12345a")
-    testthat::expect_equal(test_project$type, "v2")
-    testthat::expect_equal(
-      test_project$billing_group,
-      "ab12345a-123a-1234-1234-a1ab12a12ab1"
-    )
-    testthat::expect_equal(test_project$name, "nargles-project")
-    testthat::expect_equal(test_project$id, "luna_lovegood/nargles-project")
-    # nolint start
-    testthat::expect_equal(test_project$href, "https://api.sbgenomics.com/v2/projects/luna_lovegood/nargles-project")
-    # nolint end
-
-    # Get settings list from test_project object
-    settings_list <- test_project$settings
-
-    # Set expected settings list
-    expected_settings_list <- list(
-      locked = FALSE,
-      controlled = FALSE,
-      location = "aws:us-east-1",
-      use_interruptible_instances = TRUE,
-      use_memoization = FALSE,
-      intermediate_files = list(duration = 24, retention = "LIMITED"),
-      allow_network_access = FALSE,
-      use_elastic_disk = FALSE
-    )
-
-    keys <- names(settings_list)
-
-    # Compare the two lists
-    expect_equal(settings_list[keys], expected_settings_list[keys])
-
-
-    # Get permissions list from test project object
-    permissions_list <- test_project$permissions
-
-    # # Set expected permissions list
-    expected_permissions_list <- list(
-      write = TRUE,
-      read = TRUE,
-      copy = TRUE,
-      execute = TRUE,
-      admin = TRUE
-    )
-
-    permissions_keys <- names(permissions_list)
-
-    # Compare the two lists
-    expect_equal(
-      permissions_list[permissions_keys],
-      expected_permissions_list[permissions_keys]
-    )
-
-    # Check if superclass field auth is as expected
-    testthat::expect_equal(test_project$auth$platform, "aws-us")
-    testthat::expect_equal(
-      test_project$auth$url,
-      "https://api.sbgenomics.com/v2/"
-    )
-  }
+  # Negative test use cases for metadata parameter
+  # nolint start
+  testthat::expect_error(file$move_to_folder(), "Parent folder is missing. You need to provide one.")
+  # nolint end
 })

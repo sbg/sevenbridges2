@@ -223,8 +223,8 @@ project. To make this call, you should have
 within the project you are copying from. Note: If you want to copy
 multiple files, the recommended way is to do it in bulk considering the
 API rate limit
-(\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).
-.
+(\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).You can
+do that using \code{Auth$copy_files()} operation.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{File$copy_to(project = NULL, name = NULL, ...)}\if{html}{\out{</div>}}
 }

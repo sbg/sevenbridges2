@@ -679,7 +679,7 @@ Auth <- R6::R6Class(
       # Check input parameters
       checkmate::assert_r6(project, classes = "Project", null.ok = TRUE)
       checkmate::assert_r6(parent, classes = "File", null.ok = TRUE)
-      checkmate::assert_vector(name, null.ok = TRUE)
+      checkmate::assert_character(name, null.ok = TRUE)
       checkmate::assert_list(metadata,
         types = "string", names = TRUE,
         null.ok = TRUE
@@ -727,6 +727,32 @@ Auth <- R6::R6Class(
       res <- status_check(res)
 
       res <- asFileList(res, auth = self)
+
+      res
+    },
+    # Get file details  -------------------------------------------------------
+    #' @description This call returns a file based on it's ID.
+    #' @param file_id The ID of the file whose details you want to get
+    #' @param ... Other arguments that can be passed to this method.
+    #' Such as query parameters.
+    get_file = function(file_id = NULL, ...) {
+      if (is_missing(file_id)) {
+        rlang::abort("file_id field is missing. You need to provide one.")
+      }
+      # Check input parameters
+      checkmate::assert_character(file_id)
+
+      res <- sevenbridges2::api(
+        path = paste0("files/", file_id),
+        method = "GET",
+        token = self$get_token(),
+        base_url = self$url,
+        ...
+      )
+
+      res <- status_check(res)
+
+      res <- asFile(res, auth = self)
 
       res
     }
