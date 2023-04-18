@@ -278,7 +278,7 @@ File <- R6::R6Class(
       }
       check_tags(tags)
 
-      if (overwrite == TRUE) {
+      if (overwrite) {
         body <- tags
       } else {
         body <- unique(c(self$tags, tags))
@@ -296,7 +296,7 @@ File <- R6::R6Class(
       res <- status_check(res)
 
       # Add tags to object
-      if (overwrite == TRUE) {
+      if (overwrite) {
         self$tags <- tags
       } else {
         self$tags <- unique(c(self$tags, tags))
@@ -311,8 +311,9 @@ File <- R6::R6Class(
     #' within the project you are copying from. Note: If you want to copy
     #' multiple files, the recommended way is to do it in bulk considering the
     #' API rate limit
-    #' ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).
-    #' .
+    #' ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).You can
+    #' do that using `Auth$copy_files()` operation.
+    #'
     #' @param project The name of the project you want to copy the file to.
     #' Project name should be specified in the `<username>/<project-name>`
     #' format, e.g. `rfranklin/my-project`.
@@ -416,7 +417,7 @@ File <- R6::R6Class(
 
       body <- metadata_fields
 
-      if (overwrite == TRUE) {
+      if (overwrite) {
         res <- sevenbridges2::api(
           path = paste0("files/", self$id, "/metadata"),
           method = "PUT",

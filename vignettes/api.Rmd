@@ -862,7 +862,7 @@ Here you can also use `overwrite` parameter if you want to erase previous
 metadata fields and add new one (by default it's set to `FALSE`).
 
 ```{r}
-# Get file metadata
+# Set file metadata
 file$set_metadata(
   metadata_fields = list("<metadata_field>" = "metadata_field_value"),
   overwrite = TRUE
