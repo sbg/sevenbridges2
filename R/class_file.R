@@ -303,9 +303,9 @@ File <- R6::R6Class(
     #' metadata when copied, but may be assigned new names in their target
     #' project. To make this call, you should have
     #' [copy permission](https://docs.sevenbridges.com/docs/set-permissions)
-    #' within the project you are copying from. If you want to copy multiple
-    #' files, the recommended way is to do it in bulk considering the API rate
-    #' limit
+    #' within the project you are copying from. Note: If you want to copy
+    #' multiple files, the recommended way is to do it in bulk considering the
+    #' API rate limit
     #' ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).
     #' .
     #' @param project The name of the project you want to copy the file to.

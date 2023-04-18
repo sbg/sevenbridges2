@@ -12,14 +12,13 @@ R6 Class representing a resource for managing files.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{id}}{Character used as file ID.}
+\item{\code{id}}{Character used as a file ID.}
 
-\item{\code{name}}{String used as file name.}
+\item{\code{name}}{String used as a file name.}
 
 \item{\code{size}}{File size.}
 
-\item{\code{project}}{Project project ID if any, when returned by a API call,
-it usually return the project ID and stored with the object.}
+\item{\code{project}}{Project ID if any, when returned by an API call.}
 
 \item{\code{created_on}}{Date created on.}
 
@@ -88,12 +87,11 @@ Create a new File object.
 \describe{
 \item{\code{id}}{Character used as file ID.}
 
-\item{\code{name}}{File name.}
+\item{\code{name}}{String used as file name.}
 
 \item{\code{size}}{File size.}
 
-\item{\code{project}}{Project project ID if any, when returned by a API call,
-it usually return the project ID and stored with the object.}
+\item{\code{project}}{Project ID if any, when returned by an API call.}
 
 \item{\code{parent}}{Parent folder ID.}
 
@@ -222,9 +220,9 @@ This call copies the specified file to a new project. Files retain their
 metadata when copied, but may be assigned new names in their target
 project. To make this call, you should have
 \href{https://docs.sevenbridges.com/docs/set-permissions}{copy permission}
-within the project you are copying from. If you want to copy multiple
-files, the recommended way is to do it in bulk considering the API rate
-limit
+within the project you are copying from. Note: If you want to copy
+multiple files, the recommended way is to do it in bulk considering the
+API rate limit
 (\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).
 .
 \subsection{Usage}{
