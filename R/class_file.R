@@ -270,13 +270,17 @@ File <- R6::R6Class(
     #' @param overwrite Set to TRUE if you want to ovewrite existing tags.
     #' Default: FALSE.
     #' @param ... Additional parameters that can be passed to the method.
+    #'
+    #' @importFrom checkmate assert_logical
     add_tag = function(tags = NULL, overwrite = FALSE, ...) {
       if (is_missing(tags)) {
         # nolint start
         rlang::abort("Tags parameter is missing. You need to provide at least one.")
         # nolint end
       }
+
       check_tags(tags)
+      checkmate::assert_logical(overwrite)
 
       if (overwrite) {
         body <- tags
@@ -407,13 +411,16 @@ File <- R6::R6Class(
     #' @param ... Additional parameters that can be passed to the method.
     #'
     #' @importFrom DescTools StripAttr
+    #' @importFrom checkmate assert_logical
     set_metadata = function(metadata_fields = NULL, overwrite = FALSE, ...) {
       if (is_missing(metadata_fields)) {
         # nolint start
         rlang::abort("Metadata fields are missing. You need to provide at least one.")
         # nolint end
       }
+
       check_metadata(metadata_fields)
+      checkmate::assert_logical(overwrite)
 
       body <- metadata_fields
 
