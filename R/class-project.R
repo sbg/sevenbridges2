@@ -469,6 +469,7 @@ Project <- R6::R6Class(
     #' @param name Folder name.
     #' @param ... Other arguments that can be passed to api() function
     #' like 'limit', 'offset', 'fields', etc.
+    #' @importFrom glue glue_col
     create_folder = function(name, ...) {
       check_folder_name(name)
 

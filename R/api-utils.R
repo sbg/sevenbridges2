@@ -228,9 +228,11 @@ POST2 <- function(url = NULL, config = list(), ...,
 #' @param x List of query parameters.
 #' @return Flattened query params list.
 #'
+#' @importFrom checkmate test_atomic
+#'
 #' @noRd
 flatten_query <- function(x) {
-  if (all(sapply(x, is.atomic)) && all(lengths(x) <= 1)) {
+  if (all(sapply(x, checkmate::test_atomic)) && all(lengths(x) <= 1)) {
     return(x)
   }
   do.call("c", mapply(function(name, val) {

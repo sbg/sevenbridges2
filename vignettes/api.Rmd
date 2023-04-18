@@ -122,7 +122,7 @@ If you need to be logged into multiple accounts at the same time (which can also
 This is the most common method to construct the `Auth` object. For example:
 
 ```{r}
-(a <- Auth$new(platform = "aws-us", token = "<your_token>"))
+(a <- Auth$new(platform = "aws-us", token = "<your-token>"))
 ```
 
 <a name="method2"/>**Method 2: Environment variables**
@@ -642,3 +642,54 @@ p$member_permissions_modify(
   admin = TRUE
 )
 ```
+
+
+## List project files
+
+In order to list all files and folders (special type of files) within 
+specified project object, you can use the Project's `files()` method. 
+
+```{r}
+p$files()
+```
+
+## Create folder within project's Files
+
+You are also able to create a folder within project's root Files directory
+using the method `create_folder()`. You would have to specify the folder name
+which should not start with '__' or contain spaces. 
+
+```{r}
+p$create_folder(name = "My_new_folder")
+```
+
+## Get project's root folder object
+
+Lastly, the project's root directory with all your files is a folder itself,
+therefore you are able to get this folder as File object too using
+`get_root_folder()`.
+
+```{r}
+p$get_root_folder()
+```
+
+## Get single file by its id
+
+Within the authentication object, there is also a function for fetching a single
+File object by its id, which is suitable if you know the id of a file of interest.
+You can see the file's id on the Platform, when navigating to that file and
+looking into the url. The url should be in form: 
+`<platform_url>/u/<username>/<project_name>/files/<file_id>/`
+and you can see it end with file's id you can use in the API.  
+
+```{r}
+a$get_file(id = "file_id")
+```
+
+## Copy files
+
+This method allows you to copy multiple files into some project's root directory.
+```{r}
+a$copy_files(files = list())
+```
+

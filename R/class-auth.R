@@ -736,6 +736,7 @@ Auth <- R6::R6Class(
     #'
     #' @param id File id.
     #' @param ... Other arguments that can be passed to this method.
+    #' @importFrom checkmate assert_character
     get_file = function(id, ...) {
       checkmate::assert_character(id)
       if (is_missing(id)) rlang::abort("File id must be non-empty string.")
@@ -748,7 +749,9 @@ Auth <- R6::R6Class(
         base_url = self$url,
         ...
       )
+
       res <- status_check(res)
+
       asFile(res)
     },
     #' @description  Copy file/files to the specified project.
@@ -760,9 +763,12 @@ Auth <- R6::R6Class(
     #' @param files List of files in form of File class objects to copy.
     #' @param destination_project Project object or project ID in form of
     #' <project_owner>/<project-name> where you want to copy files into.
+    #' @importFrom checkmate assert_list test_atomic assert_character assert_r6
+    #' @importFrom glue glue_col
     copy_files = function(files, destination_project) {
       checkmate::assert_list(files, types = "File")
-      if (is.atomic(destination_project) && !is_missing(destination_project)) {
+      if (checkmate::test_atomic(destination_project) &&
+        !is_missing(destination_project)) {
         checkmate::assert_character(destination_project)
         project_id <- destination_project
       } else {
@@ -786,6 +792,7 @@ Auth <- R6::R6Class(
       )
 
       res <- status_check(req)
+
       result <- list()
       for (i in seq_len(length(res))) {
         element <- list(

@@ -1,6 +1,9 @@
 testthat::test_that("Getting file by id fails when needed", {
   # Load auth object
-  test_auth_obj <- readRDS(testthat::test_path("test_data", "auth_obj_files.RDS"))
+  test_auth_obj <- readRDS(testthat::test_path(
+    "test_data",
+    "auth_obj_files.RDS"
+  ))
 
   invalid_ids <- c("", NULL, 34323223424)
   for (id in invalid_ids) {
@@ -58,7 +61,6 @@ testthat::test_that("Create folder fails when needed", {
 
   # Setting invalid project param
   invalid_project_obj <- c("", NULL, list(), 232424, NA, example_file_obj)
-  example_file_obj <- File$new(id = "file-id", name = "file-name", type = "file")
   for (id in invalid_project_obj) {
     testthat::expect_error(test_auth_obj$create_folder("my-new-folder", project = id))
   }
