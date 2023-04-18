@@ -39,7 +39,7 @@ encoded? Can be one of \code{"json"} (application/json),
 or \code{"multipart"} (multipart/form-data).
 Default is \code{"json"}.
 For \code{"multipart"}, list elements can be strings
-or objects created by \code{\link[httr]{upload_file}}.
+or objects created by \code{\link[httr:upload_file]{httr::upload_file()}}.
 For "form", elements are coerced to strings and escaped,
 use \code{I()} to prevent double-escaping.
 For \code{"json"}, parameters are automatically "unboxed"

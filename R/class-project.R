@@ -116,6 +116,7 @@ Project <- R6::R6Class(
       cat(glue::glue_col("{blue  Project id: } {self$id}"), "\n") # nocov
     },
     # nocov start
+
     #' @description Detailed print method for Project class.
     #'
     #' @details This method allows users to print all the fields from the
@@ -182,6 +183,7 @@ Project <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+
     # edit project ---------------------------------------------------------
     #' @description Method that allows you to edit an already existing project.
     #' As a project Admin you can use it to change the name, settings,
@@ -194,7 +196,6 @@ Project <- R6::R6Class(
     #' @param tags The list of project tags.
     #' @param ... Other arguments that can be passed to api() function
     #' like 'limit', 'offset', 'fields', etc.
-    #' @importFrom utils modifyList
     edit = function(name = NULL,
                     description = NULL,
                     billing_group = NULL,
@@ -216,17 +217,6 @@ Project <- R6::R6Class(
         rlang::abort("Please provide updated information.")
       }
 
-      nms <- names(body)
-
-      # update project object itself
-      for (nm in nms) {
-        if (is.list(body[[nm]])) {
-          self[[nm]] <- utils::modifyList(self[[nm]], body[[nm]])
-        } else {
-          self[[nm]] <- body[[nm]]
-        }
-      }
-
       res <- sevenbridges2::api(
         path = paste0("projects/", self$id),
         method = "PATCH",
@@ -235,6 +225,7 @@ Project <- R6::R6Class(
         base_url = self$auth$url,
         ...
       )
+
       res <- status_check(res)
 
       asProject(res, self$auth)

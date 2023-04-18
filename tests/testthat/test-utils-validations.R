@@ -2,7 +2,7 @@ testthat::test_that("Function check_tags throws an error if the provided tags
                     argument is not a list", {
   err <- testthat::expect_error(check_tags(tags = "test_tag"))
   # nolint start
-  testthat::expect_equal(err$message, "Tags parameter must be an unnamed list of tags. For example: tags = list('my_tag_1', 'my_tag_2')")
+  testthat::expect_equal(err$message, "Tags parameter must be an unnamed list of tags. For example: tags <- list('my_tag_1', 'my_tag_2')")
   # nolint end
 })
 
@@ -134,3 +134,13 @@ test_that("check_folder_name function throws error when expected", {
     testthat::expect_error(check_folder_name(name))
   }
 })
+
+test_that("check_metadata function throws error when metadata is not valid", {
+  metadata_values <- c("test", 1, NULL, TRUE, c("test"))
+  for (metadata in metadata_values) {
+    testthat::expect_error(
+      check_metadata(metadata)
+    )
+  }
+})
+

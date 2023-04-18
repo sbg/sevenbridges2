@@ -14,19 +14,19 @@ Rate <- R6::R6Class(
     #' @field rate A list containing the information about user's current rate
     #' limit. It consists of the following fields:
     #' \itemize{
-    #' \item \code{limit} Indicates how many requests can be made in five
+    #' \item `limit` Indicates how many requests can be made in five
     #' minutes.
-    #' \item \code{remaining} Indicates how many requests remain.
-    #' \item \code{reset} Indicates the time when the request rate limit will
+    #' \item `remaining` Indicates how many requests remain.
+    #' \item `reset` Indicates the time when the request rate limit will
     #' be reset.
     #' }
     rate = NULL,
     #' @field instance A list containing the information about user's current
     #' instance limit. It consists of the following fields:
     #' \itemize{
-    #' \item \code{limit} Indicates the total number of instances available
+    #' \item `limit` Indicates the total number of instances available
     #' to the user.
-    #' \item \code{remaining} Indicates the number of the instances that are
+    #' \item `remaining` Indicates the number of the instances that are
     #' available at the moment.
     #' }
     instance = NULL,

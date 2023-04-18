@@ -21,22 +21,22 @@ Permission <- R6::R6Class(
     admin = NULL,
     #' @description Create a new Permission object.
     #' @param write User can add, modify, and remove files and workflows in a
-    #' project. Set value to \code{TRUE} to assign the user write permission.
-    #' Set to \code{FALSE} to remove write permission.
+    #' project. Set value to `TRUE` to assign the user write permission.
+    #' Set to `FALSE` to remove write permission.
     #' @param read User can view file names, metadata, and workflows.
     #' They cannot view file contents. All members of a project have read
     #' permissions by default. Even if you try setting read permissions to
-    #' \code{FALSE}, they will still default to \code{TRUE}
+    #' `FALSE`, they will still default to `TRUE`
     #' @param copy User can view file content, copy, and download files from a
-    #' project. Set value to \code{TRUE} to assign the user copy permission.
-    #' Set to \code{FALSE} to remove copy permission.
+    #' project. Set value to `TRUE` to assign the user copy permission.
+    #' Set to `FALSE` to remove copy permission.
     #' @param execute User can execute workflows and abort tasks in a project.
-    #' Set value to \code{TRUE} to assign the user execute permission.
-    #' Set to \code{FALSE} to remove execute permission.
+    #' Set value to `TRUE` to assign the user execute permission.
+    #' Set to `FALSE` to remove execute permission.
     #' @param admin User can modify another user's permissions on a project,
     #' add or remove people from the project and manage funding sources.
-    #' They also have all of the above permissions. Set value to \code{TRUE} to
-    #' assign the user admin permission. Set to \code{FALSE} to remove admin
+    #' They also have all of the above permissions. Set value to `TRUE` to
+    #' assign the user admin permission. Set to `FALSE` to remove admin
     #' permission.
     #' @param ... Other arguments.
     initialize = function(write = TRUE, read = TRUE, copy = TRUE,
