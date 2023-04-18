@@ -55,7 +55,6 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \item \href{#method-Auth-project_get}{\code{Auth$project_get()}}
 \item \href{#method-Auth-project_new}{\code{Auth$project_new()}}
 \item \href{#method-Auth-files}{\code{Auth$files()}}
-\item \href{#method-Auth-get_file}{\code{Auth$get_file()}}
 \item \href{#method-Auth-clone}{\code{Auth$clone()}}
 }
 }
@@ -467,26 +466,6 @@ instances of the same metadata field.}
 \item{\code{tag}}{List files containing this tag. Note that the tag must be an
 exact complete string for the results to match. Multiple tags can be
 represented by vector of values.}
-
-\item{\code{...}}{Other arguments that can be passed to this method.
-Such as query parameters.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Auth-get_file"></a>}}
-\if{latex}{\out{\hypertarget{method-Auth-get_file}{}}}
-\subsection{Method \code{get_file()}}{
-This call returns a file based on it's ID.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$get_file(file_id = NULL, ...)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{file_id}}{The ID of the file whose details you want to get}
 
 \item{\code{...}}{Other arguments that can be passed to this method.
 Such as query parameters.}
