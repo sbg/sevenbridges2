@@ -139,7 +139,6 @@ check_settings <- function(settings) {
       "use_elastic_disk", "location", "intermediate_files"
     )
 
-
     invalid_element_names <- setdiff(names(settings), valid_input_names)
 
     if (length(invalid_element_names) > 0) {
@@ -185,6 +184,17 @@ check_settings <- function(settings) {
   }
 }
 
+check_folder_name <- function(name) {
+  if (is_missing(name)) {
+    rlang::abort("Please, provide the folder's name.")
+  }
+  if (substr(name, 1, 2) == "__") {
+    rlang::abort("The folder name cannot start with \"__\"")
+  }
+  if (grepl("\\s", name)) {
+    rlang::abort("The folder name cannot contain spaces in the name.")
+  }
+}
 #' Check metadata
 #'
 #' @param metadata settings named list

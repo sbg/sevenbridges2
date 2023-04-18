@@ -496,18 +496,20 @@ Auth <- R6::R6Class(
     #' authenticated user will be listed. Otherwise, projects will be listed
     #' for the user whose username is provided. Please keep in mind that this
     #' way you will only be able to list projects you are a member of.
-    #' @param id Project's ID.
     #' @param name Project's name.
     #' @param owner The username of the owner whose projects you want to query.
+    #' @param tags The list of project tags.
     #' @param ... Other arguments that can be passed to this method.
     #' Such as query parameters.
-    projects = function(id = NULL, name = NULL, owner = NULL, ...) {
+    projects = function(name = NULL, owner = NULL, tags = NULL, ...) {
+      check_tags(tags)
       if (is.null(owner)) {
         res <- sevenbridges2::api(
           path = "projects",
           method = "GET",
           token = self$get_token(),
           base_url = self$url,
+          query = list(name = name, tags = tags),
           ...
         )
       } else {
@@ -516,7 +518,7 @@ Auth <- R6::R6Class(
           method = "GET",
           token = self$get_token(),
           base_url = self$url,
-          query = list(name = name),
+          query = list(name = name, tags = tags),
           ...
         )
       }
@@ -729,6 +731,169 @@ Auth <- R6::R6Class(
       res <- asFileList(res, auth = self)
 
       res
+    },
+    # Get single file -------------------------------------------------------
+    #' @description This call returns a single file object with its details
+    #' The call returns the file's name, its tags, and all of its metadata.
+    #' Files are specified by their IDs, which you can obtain by making
+    #' the API call to list all files in a project.
+    #'
+    #' @param id File id.
+    #' @param ... Other arguments that can be passed to this method.
+    #' @importFrom checkmate assert_character
+    get_file = function(id, ...) {
+      checkmate::assert_character(id)
+      if (is_missing(id)) rlang::abort("File id must be non-empty string.")
+
+      # Run API call based on id parameter
+      res <- sevenbridges2::api(
+        path = paste0("files/", id),
+        method = "GET",
+        token = self$get_token(),
+        base_url = self$url,
+        ...
+      )
+
+      res <- status_check(res)
+
+      asFile(res)
+    },
+    #' @description  Copy file/files to the specified project.
+    #' This call allows you to copy files between projects.
+    #' Unlike the call to copy a file between projects,
+    #' this call lets you batch the copy operation and
+    #' copy a list of files at a time.
+    #'
+    #' @param files List of files in form of File class objects to copy.
+    #' @param destination_project Project object or project ID in form of
+    #' <project_owner>/<project-name> where you want to copy files into.
+    #' @importFrom checkmate assert_list test_atomic assert_character assert_r6
+    #' @importFrom glue glue_col
+    copy_files = function(files, destination_project) {
+      checkmate::assert_list(files, types = "File")
+      if (checkmate::test_atomic(destination_project) &&
+        !is_missing(destination_project)) {
+        checkmate::assert_character(destination_project)
+        project_id <- destination_project
+      } else {
+        checkmate::assert_r6(destination_project, classes = "Project")
+        project_id <- destination_project$id
+      }
+
+      file_ids <- lapply(files, "[[", "id")
+
+      body <- list(
+        "project" = project_id,
+        "file_ids" = file_ids
+      )
+
+      req <- sevenbridges2::api(
+        path = "action/files/copy",
+        method = "POST",
+        body = body,
+        token = self$get_token(),
+        base_url = self$url
+      )
+
+      res <- status_check(req)
+
+      result <- list()
+      for (i in seq_len(length(res))) {
+        element <- list(
+          "Copied_file_id" = res[[i]]$new_file_id,
+          "Copied_file_name" = res[[i]]$new_file_name
+        )
+        element <- setNames(list(element), names(res[i]))
+        result <- append(result, element)
+        cat(glue::glue_col("{blue  Original file id: }
+                           {names(res[i])}"), "\n")
+        cat(glue::glue_col("{blue  Copied file id: }
+                           {res[[i]]$new_file_id}"), "\n")
+        cat(glue::glue_col("{blue  Copied file name: }
+                           {res[[i]]$new_file_name}"), "\n")
+        cat("\n")
+      }
+      result
+    },
+    # create new folder
+    #' @description A method for creating a new folder. It allows you to create
+    #' a new folder on the Platform within the root folder of a specified
+    #' project or the provided parent folder. Remember that you should provide
+    #' either the destination project (as the `project` parameter) or the
+    #' destination folder (as the `parent` parameter), not both.
+    #'
+    #' @param name The name of the folder you are about to create.
+    #' @param parent The ID of the parent destination folder or a File object
+    #' (which must be of type `FOLDER`).
+    #' @param project The ID of the destination project, or a Project object.
+    #' @importFrom rlang abort inform
+    #' @importFrom glue glue_col
+    #' @importFrom checkmate test_r6 test_class
+    create_folder = function(name = NULL, parent = NULL, project = NULL) {
+      check_folder_name(name)
+
+      if (is_missing(parent) && is_missing(project)) {
+        # nolint start
+        rlang::abort("Both the project name and parent folder ID are missing. You need to provide one of them.")
+        # nolint end
+      } else if (!is_missing(parent) && !is_missing(project)) {
+        # nolint start
+        rlang::abort("You should specify a project name or a parent folder ID, not both.")
+        # nolint end
+      }
+
+      if (!is_missing(parent)) {
+        if (checkmate::test_r6(parent, classes = "File")) {
+          if (parent$type == "folder") {
+            parent <- parent$id
+          } else {
+            rlang::abort("The provided parent object is not a folder.")
+          }
+        } else if (checkmate::test_class(parent, classes = "character")) {
+          parent <- parent
+        } else {
+          # nolint start
+          rlang::abort("The provided `parent` argument is neither a File object nor an ID of a folder.")
+          # nolint end
+        }
+        body <- list(
+          "name" = name,
+          "parent" = parent,
+          "type" = "FOLDER"
+        )
+      } else if (!is_missing(project)) {
+        if (checkmate::test_r6(project, classes = "Project")) {
+          project <- project$id
+        } else if (checkmate::test_class(project, classes = "character")) {
+          project <- project
+        } else {
+          # nolint start
+          rlang::abort("The provided `project` argument is neither a Project object nor an ID of a project.")
+          # nolint end
+        }
+        body <- list(
+          "name" = name,
+          "project" = project,
+          "type" = "FOLDER"
+        )
+      }
+
+      res <- sevenbridges2::api(
+        path = "files",
+        token = self$get_token(),
+        body = body,
+        method = "POST",
+        base_url = self$url
+      )
+
+      res <- status_check(res)
+
+      if (attr(res, "response")$status_code == 201) {
+        # nolint start
+        rlang::inform(glue::glue_col("New folder {green {name}} has been created."))
+        # nolint end
+        asFile(res, self$auth)
+      }
     }
     # nocov end
   )

@@ -55,6 +55,9 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \item \href{#method-Auth-project_get}{\code{Auth$project_get()}}
 \item \href{#method-Auth-project_new}{\code{Auth$project_new()}}
 \item \href{#method-Auth-files}{\code{Auth$files()}}
+\item \href{#method-Auth-get_file}{\code{Auth$get_file()}}
+\item \href{#method-Auth-copy_files}{\code{Auth$copy_files()}}
+\item \href{#method-Auth-create_folder}{\code{Auth$create_folder()}}
 \item \href{#method-Auth-clone}{\code{Auth$clone()}}
 }
 }
@@ -290,17 +293,17 @@ authenticated user will be listed. Otherwise, projects will be listed
 for the user whose username is provided. Please keep in mind that this
 way you will only be able to list projects you are a member of.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$projects(id = NULL, name = NULL, owner = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Auth$projects(name = NULL, owner = NULL, tags = NULL, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{Project's ID.}
-
 \item{\code{name}}{Project's name.}
 
 \item{\code{owner}}{The username of the owner whose projects you want to query.}
+
+\item{\code{tags}}{The list of project tags.}
 
 \item{\code{...}}{Other arguments that can be passed to this method.
 Such as query parameters.}
@@ -469,6 +472,78 @@ represented by vector of values.}
 
 \item{\code{...}}{Other arguments that can be passed to this method.
 Such as query parameters.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-get_file"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-get_file}{}}}
+\subsection{Method \code{get_file()}}{
+This call returns a single file object with its details
+The call returns the file's name, its tags, and all of its metadata.
+Files are specified by their IDs, which you can obtain by making
+the API call to list all files in a project.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$get_file(id, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{id}}{File id.}
+
+\item{\code{...}}{Other arguments that can be passed to this method.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-copy_files"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-copy_files}{}}}
+\subsection{Method \code{copy_files()}}{
+Copy file/files to the specified project.
+This call allows you to copy files between projects.
+Unlike the call to copy a file between projects,
+this call lets you batch the copy operation and
+copy a list of files at a time.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$copy_files(files, destination_project)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{files}}{List of files in form of File class objects to copy.}
+
+\item{\code{destination_project}}{Project object or project ID in form of
+<project_owner>/\if{html}{\out{<project-name>}} where you want to copy files into.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-create_folder"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-create_folder}{}}}
+\subsection{Method \code{create_folder()}}{
+A method for creating a new folder. It allows you to create
+a new folder on the Platform within the root folder of a specified
+project or the provided parent folder. Remember that you should provide
+either the destination project (as the \code{project} parameter) or the
+destination folder (as the \code{parent} parameter), not both.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$create_folder(name = NULL, parent = NULL, project = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{name}}{The name of the folder you are about to create.}
+
+\item{\code{parent}}{The ID of the parent destination folder or a File object
+(which must be of type \code{FOLDER}).}
+
+\item{\code{project}}{The ID of the destination project, or a Project object.}
 }
 \if{html}{\out{</div>}}
 }

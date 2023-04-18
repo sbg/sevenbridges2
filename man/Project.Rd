@@ -76,6 +76,9 @@ permissions within the project.}
 \item \href{#method-Project-member_delete}{\code{Project$member_delete()}}
 \item \href{#method-Project-member_permissions_get}{\code{Project$member_permissions_get()}}
 \item \href{#method-Project-member_permissions_modify}{\code{Project$member_permissions_modify()}}
+\item \href{#method-Project-files}{\code{Project$files()}}
+\item \href{#method-Project-create_folder}{\code{Project$create_folder()}}
+\item \href{#method-Project-get_root_folder}{\code{Project$get_root_folder()}}
 \item \href{#method-Project-clone}{\code{Project$clone()}}
 }
 }
@@ -197,7 +200,8 @@ the project can change the project description.
 
 \item{\code{tags}}{The list of project tags.}
 
-\item{\code{...}}{Additional parameters that can be passed to the method.}
+\item{\code{...}}{Other arguments that can be passed to api() function
+like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -278,7 +282,8 @@ registering for an account on the Seven Bridges Platform.}
 
 \item{\code{admin}}{Whether the user should have the admin permission.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other arguments that can be passed to api() function
+like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -363,10 +368,63 @@ specified  project.
 
 \item{\code{admin}}{Whether the user should have the admin permission.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other arguments that can be passed to api() function
+like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Project-files"></a>}}
+\if{latex}{\out{\hypertarget{method-Project-files}{}}}
+\subsection{Method \code{files()}}{
+List all project's files and folders.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Project$files(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other arguments that can be passed to api() function
+like 'limit', 'offset', 'fields', etc.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Project-create_folder"></a>}}
+\if{latex}{\out{\hypertarget{method-Project-create_folder}{}}}
+\subsection{Method \code{create_folder()}}{
+Create a new folder under the project's root directory.
+Every project on the Seven Bridges Platform is represented
+by a root folder which contains all the files associated
+with a particular project. You can create first level folders
+within this root folder by using this function.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Project$create_folder(name, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{name}}{Folder name.}
+
+\item{\code{...}}{Other arguments that can be passed to api() function
+like 'limit', 'offset', 'fields', etc.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Project-get_root_folder"></a>}}
+\if{latex}{\out{\hypertarget{method-Project-get_root_folder}{}}}
+\subsection{Method \code{get_root_folder()}}{
+Get project's root folder object
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Project$get_root_folder()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-clone"></a>}}

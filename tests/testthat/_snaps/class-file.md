@@ -48,3 +48,4 @@
       * storage
         * type: PLATFORM
         * hosted_on_locations: list("aws:us-east-1")
+

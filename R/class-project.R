@@ -194,47 +194,41 @@ Project <- R6::R6Class(
     #' @param billing_group The ID of the billing group for the project.
     #' @param settings Contains detailed project settings.
     #' @param tags The list of project tags.
-    #' @param ... Additional parameters that can be passed to the method.
-    #' @importFrom utils modifyList
+    #' @param ... Other arguments that can be passed to api() function
+    #' like 'limit', 'offset', 'fields', etc.
     edit = function(name = NULL,
                     description = NULL,
                     billing_group = NULL,
                     settings = NULL,
                     tags = NULL, ...) {
-      if (self$permissions$write) {
-        check_tags(tags)
-        check_settings(settings)
+      check_tags(tags)
+      check_settings(settings)
 
-        body <- list(
-          "name" = name,
-          "description" = description,
-          "billing_group" = billing_group,
-          "settings" = settings,
-          "tags" = tags
-        )
+      body <- list(
+        "name" = name,
+        "description" = description,
+        "billing_group" = billing_group,
+        "settings" = settings,
+        "tags" = tags
+      )
 
-        body <- body[!sapply(body, is.null)]
-        if (length(body) == 0) {
-          rlang::abort("Please provide updated information.")
-        }
-
-        res <- sevenbridges2::api(
-          path = paste0("projects/", self$id),
-          method = "PATCH",
-          body = body,
-          token = self$auth$get_token(),
-          base_url = self$auth$url,
-          ...
-        )
-
-        res <- status_check(res)
-
-        asProject(res, self$auth)
-      } else {
-        rlang::abort("You do not have permission to modify this project.
-                     Only users with write permissions in the project can
-                     change the project description.")
+      body <- body[!sapply(body, is.null)]
+      if (length(body) == 0) {
+        rlang::abort("Please provide updated information.")
       }
+
+      res <- sevenbridges2::api(
+        path = paste0("projects/", self$id),
+        method = "PATCH",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(res)
+
+      asProject(res, self$auth)
     },
     # delete project ---------------------------------------------------------
     #' @description Method that allows you to delete project from a platform.
@@ -290,7 +284,8 @@ Project <- R6::R6Class(
     #' @param copy Whether the user should have the copy permission.
     #' @param execute Whether the user should have the execute permission.
     #' @param admin Whether the user should have the admin permission.
-    #' @param ... Other arguments.
+    #' @param ... Other arguments that can be passed to api() function
+    #' like 'limit', 'offset', 'fields', etc.
     member_add = function(pid = self$id,
                           username = NULL,
                           email = NULL,
@@ -300,39 +295,36 @@ Project <- R6::R6Class(
                           execute = TRUE,
                           admin = FALSE,
                           ...) {
-      if (!is.null(username) || !is.null(email)) {
-        body <- list(
-          "username" = username,
-          "email" = email,
-          "permissions" = list(
-            "write" = write,
-            "read" = read,
-            "copy" = copy,
-            "execute" = execute,
-            "admin" = admin
-          )
-        )
-
-        req <- sevenbridges2::api(
-          path = paste0("projects/", pid, "/members"),
-          method = "POST",
-          token = self$auth$get_token(),
-          body = body,
-          authorization = self$auth$authorization,
-          base_url = self$auth$url,
-          ...
-        )
-
-        res <- status_check(req)
-
-        asMember(res)
-      } else {
-        (
-          rlang::abort("Neither username nor email are provided. You must
+      if (is_missing(username) && is_missing(email)) {
+        rlang::abort("Neither username nor email are provided. You must
                        provide at least one of these parameters before you can
                        add a user to a project.")
-        )
       }
+      body <- list(
+        "username" = username,
+        "email" = email,
+        "permissions" = list(
+          "write" = write,
+          "read" = read,
+          "copy" = copy,
+          "execute" = execute,
+          "admin" = admin
+        )
+      )
+
+      req <- sevenbridges2::api(
+        path = paste0("projects/", pid, "/members"),
+        method = "POST",
+        token = self$auth$get_token(),
+        body = body,
+        authorization = self$auth$authorization,
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(req)
+
+      asMember(res)
     },
     #' @description A method for deleting members from the project. It can only
     #' be successfully run by a user who has admin privileges in the project.
@@ -340,26 +332,25 @@ Project <- R6::R6Class(
     #' @param username The Seven Bridges Platform username of the user you
     #' are about to remove.
     member_delete = function(pid = self$id, username = NULL) {
-      if (!is.null(username)) {
-        req <- sevenbridges2::api(
-          path = paste0("projects/", pid, "/members", "/", username),
-          method = "DELETE",
-          token = self$auth$get_token(),
-          authorization = self$auth$authorization,
-          base_url = self$auth$url
-        )
-
-
-        if (req$status_code == 204) {
-          # nolint start
-          rlang::inform(message = glue::glue_col("User {green {username}} has been deleted from the {green {self$id}} project.",
-            .literal = TRUE
-          ))
-          # nolint end
-        }
-      } else {
+      if (is_missing(username)) {
         rlang::abort("Please provide a username for the user you want to remove
                      from the project.")
+      }
+      req <- sevenbridges2::api(
+        path = paste0("projects/", pid, "/members", "/", username),
+        method = "DELETE",
+        token = self$auth$get_token(),
+        authorization = self$auth$authorization,
+        base_url = self$auth$url
+      )
+
+
+      if (req$status_code == 204) {
+        rlang::inform(message = glue::glue_col(
+          "User {green {username}} has been deleted
+          from the {green {self$id}} project.",
+          .literal = TRUE
+        ))
       }
     },
     #' @description This method returns the permissions of a specified user
@@ -369,21 +360,20 @@ Project <- R6::R6Class(
     #' enquiring about.
     #' @param ... Other arguments.
     member_permissions_get = function(pid = self$id, username = NULL, ...) {
-      if (!is.null(username)) {
-        req <- sevenbridges2::api(
-          path = paste0("projects/", pid, "/members", "/", username),
-          method = "GET",
-          token = self$auth$get_token(),
-          base_url = self$auth$url,
-          ...
-        )
-
-        res <- status_check(req)
-
-        asMember(res, self$auth)
-      } else {
+      if (is_missing(username)) {
         rlang::abort("Please provide a username.")
       }
+      req <- sevenbridges2::api(
+        path = paste0("projects/", pid, "/members", "/", username),
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(req)
+
+      asMember(res, self$auth)
     },
     #' @description This method can be used to edit a user's permissions in a
     #' specified  project.
@@ -394,7 +384,8 @@ Project <- R6::R6Class(
     #' @param copy Whether the user should have the copy permission.
     #' @param execute Whether the user should have the execute permission.
     #' @param admin Whether the user should have the admin permission.
-    #' @param ... Other arguments.
+    #' @param ... Other arguments that can be passed to api() function
+    #' like 'limit', 'offset', 'fields', etc.
     member_permissions_modify = function(pid = self$id,
                                          username = NULL,
                                          write = TRUE,
@@ -402,54 +393,106 @@ Project <- R6::R6Class(
                                          copy = TRUE,
                                          execute = TRUE,
                                          admin = FALSE, ...) {
-      if (!is.null(username)) {
-        body <- list(
-          "write" = write, "copy" = copy, "execute" = execute,
-          "read" = read, "admin" = admin
-        )
-
-        body <- list(
-          "write" = write,
-          "read" = read,
-          "copy" = copy,
-          "execute" = execute,
-          "admin" = admin
-        )
-
-        body <- body[!sapply(body, is.null)]
-
-        if (length(body) == 0) {
-          rlang::abort("Please provide updated information.")
-        }
-
-        req <- sevenbridges2::api(
-          path = paste0(
-            "projects/", pid, "/members", "/", username,
-            "/permissions"
-          ),
-          method = "PATCH",
-          token = self$auth$get_token(),
-          body = body,
-          authorization = self$auth$authorization,
-          base_url = self$auth$url,
-          ...
-        )
-
-        res <- status_check(req)
-
-
-        if (req$status_code == 200) {
-          # nolint start
-          rlang::inform(glue::glue_col("Permissions for {green {username}} have been changed."))
-          # nolint end
-        } else {
-          rlang::abort("Oops, something went wrong. ")
-          res
-        }
-      } else {
+      if (is_missing(username)) {
         rlang::abort("Please provide a username.")
       }
-    } # nocov end
+      body <- list(
+        "write" = write,
+        "read" = read,
+        "copy" = copy,
+        "execute" = execute,
+        "admin" = admin
+      )
+
+      body <- body[!sapply(body, is.null)]
+
+      if (length(body) == 0) {
+        rlang::abort("Please provide updated information.")
+      }
+
+      req <- sevenbridges2::api(
+        path = paste0(
+          "projects/", pid, "/members", "/", username,
+          "/permissions"
+        ),
+        method = "PATCH",
+        token = self$auth$get_token(),
+        body = body,
+        authorization = self$auth$authorization,
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(req)
+
+
+      if (req$status_code == 200) {
+        rlang::inform(glue::glue_col(
+          "Permissions for {green {username}} have been changed."
+        ))
+      } else {
+        rlang::abort("Oops, something went wrong. ")
+        res
+      }
+    },
+    #' @description  List all project's files and folders.
+    #' @param ... Other arguments that can be passed to api() function
+    #' like 'limit', 'offset', 'fields', etc.
+    files = function(...) {
+      req <- sevenbridges2::api(
+        path = paste0("projects/", self$id, "/files"),
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(req)
+
+      asFileList(res, self$auth)
+    },
+    #' @description  Create a new folder under the project's root directory.
+    #' Every project on the Seven Bridges Platform is represented
+    #' by a root folder which contains all the files associated
+    #' with a particular project. You can create first level folders
+    #' within this root folder by using this function.
+    #'
+    #' @param name Folder name.
+    #' @param ... Other arguments that can be passed to api() function
+    #' like 'limit', 'offset', 'fields', etc.
+    #' @importFrom glue glue_col
+    create_folder = function(name, ...) {
+      check_folder_name(name)
+
+      body <- list(
+        "name" = name,
+        "project" = self$id,
+        "type" = "FOLDER"
+      )
+
+      req <- sevenbridges2::api(
+        path = "files",
+        method = "POST",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(req)
+
+      if (attr(res, "response")$status_code == 201) {
+        # nolint start
+        rlang::inform(glue::glue_col("New folder {green {name}} has been created."))
+        # nolint end
+      }
+      asFile(res, self$auth)
+    },
+    #' @description  Get project's root folder object
+    get_root_folder = function() {
+      self$auth$get_file(id = self$root_folder)
+    }
+    # nocov end
   )
 )
 

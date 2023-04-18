@@ -228,21 +228,17 @@ POST2 <- function(url = NULL, config = list(), ...,
 #' @param x List of query parameters.
 #' @return Flattened query params list.
 #'
+#' @importFrom checkmate test_atomic
+#'
 #' @noRd
 flatten_query <- function(x) {
-  if (all(lengths(x) <= 1)) {
+  if (all(sapply(x, checkmate::test_atomic)) && all(lengths(x) <= 1)) {
     return(x)
   }
   do.call("c", mapply(function(name, val) {
-    if (length(val) == 1) {
-      x <- list(val)
-      names(x) <- name
-      x
-    } else {
-      x <- as.list(val)
-      names(x) <- rep(name, length(val))
-      x
-    }
+    x <- as.list(val)
+    names(x) <- rep(name, length(val))
+    x
   }, names(x), x, USE.NAMES = FALSE, SIMPLIFY = FALSE))
 }
 
@@ -300,7 +296,8 @@ set_headers <- function(authorization = FALSE, token = NULL, advance_access = ge
 #' @noRd
 setup_query <- function(query = NULL, limit = getOption("sevenbridges2")$limit, offset = getOption("sevenbridges2")$offset, fields = NULL) {
   # flatten and append query parameters
-  query <- c(query, flatten_query(list(limit = as.integer(limit), offset = as.integer(offset), fields = fields)))
+  query <- c(flatten_query(query), limit = as.integer(limit), offset = as.integer(offset), flatten_query(list(fields = fields)))
+
   idx <- !sapply(query, is.null)
   if (any(idx)) {
     query <- query[idx]

@@ -66,6 +66,30 @@ testthat::test_that("Utility function flatten_query works", {
     flattened_query_params_list[keys],
     expected_resulting_list[keys]
   )
+
+  # check with length 1 lists
+  unflattened_query_params_list <- list(
+    limit = 50,
+    offset = 0,
+    tags = list("api")
+  )
+  # Use the flatten_query function
+  flattened_query_params_list <- flatten_query(unflattened_query_params_list)
+
+  # Define the expected output
+  expected_resulting_list <- list(
+    limit = 50,
+    offset = 0,
+    tags = "api"
+  )
+
+  keys <- names(flattened_query_params_list)
+
+  # Compare two lists
+  testthat::expect_equal(
+    flattened_query_params_list[keys],
+    expected_resulting_list[keys]
+  )
 })
 
 testthat::test_that("Utility function handle_url2 works", {

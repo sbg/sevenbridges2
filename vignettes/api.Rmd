@@ -122,7 +122,7 @@ If you need to be logged into multiple accounts at the same time (which can also
 This is the most common method to construct the `Auth` object. For example:
 
 ```{r}
-(a <- Auth$new(platform = "aws-us", token = "<your_token>"))
+(a <- Auth$new(platform = "aws-us", token = "<your-token>"))
 ```
 
 <a name="method2"/>**Method 2: Environment variables**
@@ -643,6 +643,36 @@ p$member_permissions_modify(
 )
 ```
 
+## List project files
+
+In order to list all files and folders (special type of files) within 
+specified project object, you can use the Project's `files()` method. 
+
+```{r}
+p$files()
+```
+
+## Create folder within project's Files
+
+You are also able to create a folder within project's root Files directory
+using the method `create_folder()`. You would have to specify the folder name
+which should not start with '__' or contain spaces. 
+
+```{r}
+p$create_folder(name = "My_new_folder")
+```
+
+## Get project's root folder object
+
+Lastly, the project's root directory with all your files is a folder itself,
+therefore you are able to get this folder as File object too using
+`get_root_folder()`.
+
+```{r}
+p$get_root_folder()
+```
+
+
 ## List files
 
 List of `files` and `subdirectories` in a specified **project** or **directory** 
@@ -747,6 +777,59 @@ a$get_file(file_id = "6435367997d9446ecb66cfb2")
 • id: 6435367997d9446ecb66cfb2
 • href: https://api.sbgenomics.com/v2/files/6435367997d9446ecb66cfb2
 ```
+
+## Copy files
+
+This method allows you to copy files between projects. 
+Unlike the call to copy a file between projects, 
+this call lets you batch the copy operation and copy a list of files at a time.
+```{r}
+file1 <- a$get_file(file_id = "6435367997d9446ecb66cfb2")
+file2 <- a$get_file(file_id = "6435367997d9446ecb66cgr2")
+
+a$copy_files(files = list(file1, file2), destination_project = "<short-name-of-the-project>")
+```
+
+## Create a folder within the destination project or parent folder
+
+To create a new folder on the Platform, use the authentication object's \code{
+create_folder} method. It allows you to create a new folder on the Platform
+within the root folder of a specified destination project or the provided
+parent folder. Remember that you should provide either the destination project
+(as the `project` parameter) or the
+destination folder (as the `parent` parameter), not both.
+
+The `project` parameter can be provided either as a Project object or as an ID
+of a destination project. 
+
+```{r}
+# Option 1 - Using the project parameter
+
+# Option 1.a (providing a Project object as project parameter)
+my_project <- a$project_get(project = "<short-name-of-the-project>")
+a$create_folder(name = "my_new_folder", project = my_project)
+
+# Option 1.b (providing a project's ID as project parameter)
+a$create_folder(name = "my_new_folder", project = "<project_id>")
+```
+
+
+Alternatively, you can provide the `parent` parameter to specify the
+destination where the new folder is going to be created. The `parent`
+parameter can be either a File object (must be of type `folder`) or
+an ID of the parent destination folder.
+
+```{r}
+# Option 2 - Using the parent parameter
+
+# Option 2.a (providing a File (must be a folder) object as parent parameter)
+my_parent_folder <- a$get_file(id = "<folder_id>")
+a$create_folder(name = "my_new_folder", parent = my_parent_folder)
+
+# Option 2.b (providing a file's (folder's) ID as project parameter)
+a$create_folder(name = "my_new_folder", parent = "<folder_id>")
+```
+
 ## File print
 
 File has a regular `print()` method which gives you most important information
@@ -908,4 +991,4 @@ file$delete()
 # Delete a folder
 folder$delete()
 ```
-# Seven Bridges API Reference
+
