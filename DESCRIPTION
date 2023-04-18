@@ -37,7 +37,8 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     stringi,
-    withr
+    withr,
+    remotes
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Remotes: 
