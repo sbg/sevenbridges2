@@ -271,6 +271,11 @@ File <- R6::R6Class(
     #' Default: FALSE.
     #' @param ... Additional parameters that can be passed to the method.
     add_tag = function(tags = NULL, overwrite = FALSE, ...) {
+      if (is_missing(tags)) {
+        # nolint start
+        rlang::abort("Tags parameter is missing. You need to provide at least one.")
+        # nolint end
+      }
       check_tags(tags)
 
       if (overwrite == TRUE) {
@@ -319,6 +324,11 @@ File <- R6::R6Class(
     #'
     #' @return `File` or `Folder`
     copy_to = function(project = NULL, name = NULL, ...) {
+      if (is_missing(project)) {
+        # nolint start
+        rlang::abort("Project parameter is missing. You need to provide one.")
+        # nolint end
+      }
       checkmate::assert_r6(project, classes = "Project", null.ok = FALSE)
       checkmate::assert_string(name, null.ok = TRUE)
 
@@ -397,6 +407,11 @@ File <- R6::R6Class(
     #'
     #' @importFrom DescTools StripAttr
     set_metadata = function(metadata_fields = NULL, overwrite = FALSE, ...) {
+      if (is_missing(metadata_fields)) {
+        # nolint start
+        rlang::abort("Metadata fields are missing. You need to provide at least one.")
+        # nolint end
+      }
       check_metadata(metadata_fields)
 
       body <- metadata_fields
@@ -448,6 +463,11 @@ File <- R6::R6Class(
     #' @importFrom checkmate assert_r6 assert_string
     #' @importFrom rlang abort
     move_to_folder = function(parent = NULL, name = NULL, ...) {
+      if (is_missing(parent)) {
+        # nolint start
+        rlang::abort("Parent folder is missing. You need to provide one.")
+        # nolint end
+      }
       checkmate::assert_r6(parent, classes = "File", null.ok = FALSE)
       if (parent$type == "file") {
         rlang::abort("Parent must be a folder, not a file!")
