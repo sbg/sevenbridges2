@@ -143,4 +143,3 @@ test_that("check_metadata function throws error when metadata is not valid", {
     )
   }
 })
-
