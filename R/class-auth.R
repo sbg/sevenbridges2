@@ -718,6 +718,10 @@ Auth <- R6::R6Class(
           ),
           ...
         )
+      } else {
+        # nolint start
+        rlang::abort("No project or parent directory was defined. You must provide one of the two!")
+        # nolint end
       }
 
       res <- status_check(res)
