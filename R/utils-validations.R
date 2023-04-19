@@ -52,14 +52,26 @@ status_check <- function(req, as = "parsed", ...) {
 
 #' Check if input value is missing
 #'
+#' @description This function checks whether the input
+#' value is a vector of minimum length 1, with no empty
+#' value and no all missing values.
+#' If the input value is not a vector, it checks only if
+#' the value is set at all (original meaning of 'missing' function)
+#' in order to be able to use it with other object types.
+#'
 #' @param input value to check
 #' @noRd
 is_missing <- function(input) {
-  isTRUE(
-    checkmate::test_scalar_na(input, null.ok = TRUE) ||
-      input == "" ||
-      length(input) == 0
-  )
+  if (checkmate::test_vector(input, null.ok = TRUE)) {
+    isTRUE(
+      !checkmate::test_vector(input,
+                             min.len = 1,
+                             all.missing = FALSE) ||
+        isTRUE(input == "")
+    )
+  } else {
+    missing(input)
+  }
 }
 
 #' Check limit parameter
