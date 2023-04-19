@@ -67,8 +67,7 @@ is_missing <- function(input) {
       !checkmate::test_vector(input,
         min.len = 1,
         all.missing = FALSE
-      ) ||
-        isTRUE(input == "")
+      ) || isTRUE(input == "")
     )
   } else {
     missing(input)
