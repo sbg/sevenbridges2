@@ -756,7 +756,7 @@ Auth <- R6::R6Class(
 
       res <- status_check(res)
 
-      asFile(res)
+      asFile(res, auth = self)
     },
     #' @description  Copy file/files to the specified project.
     #' This call allows you to copy files between projects.
