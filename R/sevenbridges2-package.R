@@ -24,6 +24,17 @@ utils::globalVariables(c(
   "sbg_default_config_file", "sbg_default_profile_name",
   "sbg_default_sysenv_url", "sbg_default_sysenv_token"
 ))
+
+KB <- 1024
+MB <- 1024 * KB
+GB <- 1024 * MB
+TB <- 1024 * GB
+RECOMMENDED_PART_SIZE <- 32 * MB
+MINIMUM_PART_SIZE <- 5 * MB
+MAXIMUM_PART_SIZE <- 5 * GB
+MAXIMUM_OBJECT_SIZE <- 5 * TB
+MAXIMUM_TOTAL_PARTS <- 10000
+
 # onLoad function sets initial params for future queries
 .onLoad <- function(libname, pkgname) {
   lst <- list(

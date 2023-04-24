@@ -2,6 +2,8 @@
 
 export(Auth)
 export(File)
+export(Part)
+export(Upload)
 export(api)
 importFrom(DescTools,StripAttr)
 importFrom(R6,R6Class)

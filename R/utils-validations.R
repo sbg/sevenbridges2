@@ -225,3 +225,32 @@ check_metadata <- function(metadata) {
     # nolint end
   }
 }
+
+#' Check size, part_size and part_length params for uploads
+#'
+#' @param size File size
+#' @param part_size Part size
+#' @param part_length Part length
+#' @importFrom rlang abort
+#' @noRd
+# nolint start
+check_upload_params <- function(size, part_size = RECOMMENDED_PART_SIZE, part_length = NULL) {
+  # nolint end
+  if (!(size >= 0 && size <= MAXIMUM_OBJECT_SIZE)) {
+    # nolint start
+    rlang::abort("File size must be between 0 - 5497558138880 (5TB), inclusive")
+    # nolint end
+  }
+  if (!(part_size <= 5 * GB && part_size >= 5 * MB)) {
+    # nolint start
+    rlang::abort("Parameter part_size must be 5 MB to 5 GB, last part can be < 5 MB")
+    # nolint end
+  }
+  part_length <- as.integer(ceiling(size / part_size))
+
+  if (!(part_length <= 1 && part_length >= 10000)) {
+    # nolint start
+    rlang::abort("Total number of parts must be from 1 to 10,000 (inclusive). Please, modify part_size.")
+    # nolint end
+  }
+}
