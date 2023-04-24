@@ -57,13 +57,16 @@ Upload <- R6::R6Class(
       self$project <- project
       self$parent <- parent
 
-      # if (grepl("\\s", file_name) || grepl("\\/", file_name)) {
-      #   # nolint start
-      #   rlang::abort("The file name cannot contain spaces or backslashes.")
-      #   # nolint end
-      # }
-      self$file_name <- ifelse(overwrite, file_name, basename(path))
+      if (is_missing(file_name)) {
+        file_name <- basename(path)
+      }
+      if (grepl("\\s", file_name) || grepl("\\/", file_name)) {
+        # nolint start
+        rlang::abort("The file name cannot contain spaces or backslashes.")
+        # nolint end
+      }
 
+      self$file_name <- file_name
       self$overwrite <- overwrite
       self$base_part_size <- part_size
       self$file_size <- file_size
@@ -106,11 +109,34 @@ Upload <- R6::R6Class(
       self$part_length <- as.integer(
         ceiling(self$file_size / self$base_part_size)
       )
-      invisible(res)
 
       # nolint start
       rlang::inform(glue::glue("New upload job is initialized with upload_id: {self$upload_id}."))
       # nolint end
+      return(self)
+    },
+    #' @description Get the details of an active multipart upload.
+    #' @param list_parts If TRUE, also return a list of parts
+    #' that have been reported as completed for this multipart upload.
+    #' @param ... Other arguments.
+    #' @importFrom checkmate assert_logical
+    upload_info = function(list_parts = TRUE, ...) {
+      if (is.null(upload_id)) {
+        rlang::abort("Upload is not initialized yet.")
+      }
+      checkmate::assert_logical(list_parts)
+
+      res <- sevenbridges2::api(
+        path = paste0("upload/multipart/", self$upload_id),
+        method = "GET",
+        query = list(list_parts = list_parts),
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(res)
+      res # prettier print TODO
     }
   )
 )

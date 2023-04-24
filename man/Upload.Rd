@@ -39,6 +39,7 @@ Should not be used together with 'project'.}
 \itemize{
 \item \href{#method-Upload-new}{\code{Upload$new()}}
 \item \href{#method-Upload-upload_init}{\code{Upload$upload_init()}}
+\item \href{#method-Upload-upload_info}{\code{Upload$upload_info()}}
 \item \href{#method-Upload-clone}{\code{Upload$clone()}}
 }
 }
@@ -97,6 +98,26 @@ Initialize new upload job.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{...}}{Other arguments.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Upload-upload_info"></a>}}
+\if{latex}{\out{\hypertarget{method-Upload-upload_info}{}}}
+\subsection{Method \code{upload_info()}}{
+Get the details of an active multipart upload.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Upload$upload_info(list_parts = TRUE, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{list_parts}}{If TRUE, also return a list of parts
+that have been reported as completed for this multipart upload.}
+
 \item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
