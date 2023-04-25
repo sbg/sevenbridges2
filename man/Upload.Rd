@@ -9,7 +9,7 @@ R6 Class representing a resource for managing files' uploads.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{upload_id}}{Upload ID received after upload initialisation.}
+\item{\code{upload_id}}{Upload ID received after upload initialization.}
 
 \item{\code{path}}{Relative or absolute path to the file on the local disc.}
 
@@ -24,11 +24,13 @@ Should not be used together with 'project'.}
 
 \item{\code{file_size}}{File size.}
 
-\item{\code{base_part_size}}{Size of part in bytes.}
+\item{\code{part_size}}{Size of part in bytes.}
 
 \item{\code{part_length}}{Number of parts to upload.}
 
 \item{\code{parts}}{List of parts to be uploaded (class Part).}
+
+\item{\code{initialized}}{If TRUE, upload has been initialized.}
 
 \item{\code{auth}}{Authentication object.}
 }
@@ -38,6 +40,7 @@ Should not be used together with 'project'.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-Upload-new}{\code{Upload$new()}}
+\item \href{#method-Upload-print}{\code{Upload$print()}}
 \item \href{#method-Upload-upload_init}{\code{Upload$upload_init()}}
 \item \href{#method-Upload-upload_info}{\code{Upload$upload_info()}}
 \item \href{#method-Upload-clone}{\code{Upload$clone()}}
@@ -57,6 +60,7 @@ Create a new Upload object.
   overwrite = NA,
   file_size = NA,
   part_size = NA,
+  initialized = FALSE,
   auth = NA,
   ...
 )}\if{html}{\out{</div>}}
@@ -79,12 +83,24 @@ Create a new Upload object.
 
 \item{\code{part_size}}{Size of a single part in bytes.}
 
+\item{\code{initialized}}{If TRUE, upload has been initialized.}
+
 \item{\code{auth}}{Authentication object.}
 
 \item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Upload-print"></a>}}
+\if{latex}{\out{\hypertarget{method-Upload-print}{}}}
+\subsection{Method \code{print()}}{
+Print method for Upload class.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Upload$print()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Upload-upload_init"></a>}}

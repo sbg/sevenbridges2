@@ -6,9 +6,6 @@
 \description{
 R6 Class representing a resource for managing parts of the files' uploads.
 }
-\section{Super class}{
-\code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{Part}
-}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -34,6 +31,10 @@ passing the information collected from the report object.}
 \item{\code{report}}{Report object.}
 
 \item{\code{etag}}{ETag received after starting a part upload.}
+
+\item{\code{auth}}{Authentication object.}
+
+\item{\code{response}}{Response object.}
 }
 \if{html}{\out{</div>}}
 }
@@ -41,6 +42,8 @@ passing the information collected from the report object.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-Part-new}{\code{Part$new()}}
+\item \href{#method-Part-print}{\code{Part$print()}}
+\item \href{#method-Part-upload_info_part}{\code{Part$upload_info_part()}}
 \item \href{#method-Part-clone}{\code{Part$clone()}}
 }
 }
@@ -59,6 +62,7 @@ Create a new Part object.
   success_codes = NA,
   report = NA,
   etag = NA,
+  auth = NA,
   ...
 )}\if{html}{\out{</div>}}
 }
@@ -84,6 +88,37 @@ the HTTP part upload request that should be recognized as success.}
 \item{\code{report}}{Report object.}
 
 \item{\code{etag}}{ETag received after starting a part upload.}
+
+\item{\code{auth}}{Authentication object.}
+
+\item{\code{...}}{Other arguments.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Part-print"></a>}}
+\if{latex}{\out{\hypertarget{method-Part-print}{}}}
+\subsection{Method \code{print()}}{
+Print method for Part class.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Part$print()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Part-upload_info_part"></a>}}
+\if{latex}{\out{\hypertarget{method-Part-upload_info_part}{}}}
+\subsection{Method \code{upload_info_part()}}{
+Get upload part info
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Part$upload_info_part(upload_id, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{upload_id}}{Upload object's ID part belongs to.}
 
 \item{\code{...}}{Other arguments.}
 }
