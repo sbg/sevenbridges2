@@ -9,7 +9,6 @@
 Upload <- R6::R6Class(
   # nolint end
   "Upload",
-  # inherit = Item,
   portable = FALSE,
   public = list(
     #' @field upload_id Upload ID received after upload initialization.
@@ -21,8 +20,9 @@ Upload <- R6::R6Class(
     #' @field parent The ID of the folder to which the item is being uploaded.
     #' Should not be used together with 'project'.
     parent = NULL,
-    #' @field file_name New file name. Optional.
-    file_name = NULL,
+    #' @field filename File name. By default it will be the same as the name of
+    #' the file you want to upload. However, it can be changed to new name.
+    filename = NULL,
     #' @field overwrite If true will overwrite file on the server.
     overwrite = NULL,
     #' @field file_size File size.
@@ -42,35 +42,30 @@ Upload <- R6::R6Class(
     #' @param path Path to the file on the local disc.
     #' @param project Project's identifier (character).
     #' @param parent The ID of the folder to which the item is being uploaded.
-    #' @param file_name New file name. Optional.
+    #' @param filename New file name. Optional.
     #' @param overwrite If true will overwrite file on the server.
     #' @param file_size File size.
     #' @param part_size Size of a single part in bytes.
     #' @param initialized If TRUE, upload has been initialized.
     #' @param auth Authentication object.
-    #' @param ... Other arguments.
     initialize = function(path = NA, project = NA, parent = NA,
-                          file_name = NA, overwrite = NA, file_size = NA,
-                          part_size = NA, initialized = FALSE, auth = NA,
-                          ...) {
-      # Initialize Item class
-      # super$initialize(...)
-
+                          filename = NA, overwrite = FALSE, file_size = NA,
+                          part_size = NA, initialized = FALSE, auth = NA) {
       self$upload_id <- NULL
       self$path <- normalizePath(path)
       self$project <- project
       self$parent <- parent
 
-      if (is_missing(file_name)) {
-        file_name <- basename(path)
+      if (is_missing(filename)) {
+        filename <- basename(path)
       }
-      if (grepl("\\s", file_name) || grepl("\\/", file_name)) {
+      if (grepl("\\s", filename) || grepl("\\/", filename)) {
         # nolint start
         rlang::abort("The file name cannot contain spaces or backslashes.")
         # nolint end
       }
 
-      self$file_name <- file_name
+      self$filename <- filename
       self$overwrite <- overwrite
       self$part_size <- part_size
       self$file_size <- file_size
@@ -82,9 +77,7 @@ Upload <- R6::R6Class(
 
       self$initialized <- initialized
       self$auth <- auth
-      self$parts <- private$generate_parts(
-        self$file_size, self$part_size, self$part_length, self$auth
-      )
+      self$parts <- private$generate_parts()
     },
     # nocov start
     #' @description Print method for Upload class.
@@ -102,17 +95,15 @@ Upload <- R6::R6Class(
       string <- glue::glue("{names(x)}: {x}")
 
       cli::cli_h1("Upload")
-
       cli::cli_li(string)
-
       # Close container elements
       cli::cli_end()
     }, # nocov end
-    #' @description Initialize new upload job.
-    #' @param ... Other arguments.
-    upload_init = function(...) {
+
+    #' @description Initialize new multipart file upload.
+    upload_init = function() {
       body <- list(
-        "name" = self$file_name,
+        "name" = self$filename,
         "size" = self$file_size,
         "part_size" = self$part_size
       )
@@ -128,8 +119,7 @@ Upload <- R6::R6Class(
         query = list(overwrite = self$overwrite),
         body = body,
         token = self$auth$get_token(),
-        base_url = self$auth$url,
-        ...
+        base_url = self$auth$url
       )
 
       res <- status_check(res)
@@ -152,11 +142,10 @@ Upload <- R6::R6Class(
     #' @description Get the details of an active multipart upload.
     #' @param list_parts If TRUE, also return a list of parts
     #' that have been reported as completed for this multipart upload.
-    #' @param ... Other arguments.
     #' @importFrom checkmate assert_logical
-    upload_info = function(list_parts = TRUE, ...) {
+    upload_info = function(list_parts = TRUE) {
       if (is.null(upload_id)) {
-        rlang::abort("Upload is not initialized yet.")
+        rlang::abort("Upload has not been initialized yet.")
       }
       checkmate::assert_logical(list_parts)
 
@@ -165,8 +154,7 @@ Upload <- R6::R6Class(
         method = "GET",
         query = list(list_parts = list_parts),
         token = self$auth$get_token(),
-        base_url = self$auth$url,
-        ...
+        base_url = self$auth$url
       )
       res <- status_check(res)
 
@@ -182,9 +170,9 @@ Upload <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+
     #' @description Start the file upload
-    #' @param ... Other arguments.
-    start_file_upload = function(...) {
+    start_file_upload = function() {
       if (!self$initialized) {
         rlang::abort("Upload has not been initialized yet.")
       }
@@ -214,7 +202,7 @@ Upload <- R6::R6Class(
 
       res <- self$upload_complete_all()
       close(con)
-      # res <- status_check(res)
+
       .end <- Sys.time()
       .diff <- .end - .start
       rlang::inform(
@@ -234,10 +222,10 @@ Upload <- R6::R6Class(
       # Return newly uploaded file
       asFile(res, auth = self$auth)
     },
+
     #' @description Complete a multipart upload
     #' This call must be issued to report the completion of a file upload.
-    #' @param ... Other arguments.
-    upload_complete_all = function(...) {
+    upload_complete_all = function() {
       all_parts <- lapply(self$parts, function(part) {
         list(
           part_number = part$part_number,
@@ -254,12 +242,12 @@ Upload <- R6::R6Class(
         method = "POST",
         body = body,
         token = self$auth$get_token(),
-        base_url = self$auth$url,
-        ...
+        base_url = self$auth$url
       )
       res <- status_check(res)
       res
     },
+
     #' @description Abort the multipart upload
     #' This call aborts an ongoing upload.
     upload_delete = function() {
@@ -279,26 +267,24 @@ Upload <- R6::R6Class(
   ),
   private = list(
     # Helper method that returns list of objects of class Part
-    generate_parts = function(file_size, part_size, part_length, auth) {
-      checkmate::assert_numeric(file_size, null.ok = FALSE)
-      checkmate::assert_numeric(part_size, null.ok = FALSE)
-      checkmate::assert_numeric(part_length, null.ok = FALSE)
-
-      if (part_length > 1) {
-        last_part_size <- file_size - part_size * (part_length - 1)
+    generate_parts = function() {
+      if (self$part_length > 1) {
+        # nolint start
+        last_part_size <- self$file_size - self$part_size * (self$part_length - 1)
+        # nolint end
         vector_of_part_sizes <- c(
-          rep(part_size, (part_length - 1)),
+          rep(self$part_size, (self$part_length - 1)),
           last_part_size
         )
       } else {
-        vector_of_part_sizes <- part_size
+        vector_of_part_sizes <- self$part_size
       }
-      part_numbers <- seq_len(part_length)
+      part_numbers <- seq_len(self$part_length)
       parts <- lapply(part_numbers, function(idx) {
         Part$new(
           part_number = idx,
           part_size = vector_of_part_sizes[idx],
-          auth = auth
+          auth = self$auth
         )
       })
       return(parts)
@@ -318,7 +304,6 @@ Upload <- R6::R6Class(
 Part <- R6::R6Class(
   # nolint end
   "Part",
-  # inherit = Item,
   portable = FALSE,
   public = list(
     #' @field part_number Part number.
@@ -362,14 +347,10 @@ Part <- R6::R6Class(
     #' @param report Report object.
     #' @param etag ETag received after starting a part upload.
     #' @param auth Authentication object.
-    #' @param ... Other arguments.
     initialize = function(part_number = NA, part_size = NA,
                           url = NA, expires = NA, headers = NA,
                           success_codes = NA, report = NA,
-                          etag = NA, auth = NA, ...) {
-      # Initialize Item class
-      # super$initialize(...)
-
+                          etag = NA, auth = NA) {
       self$part_number <- part_number
       self$part_size <- part_size
       self$url <- url
@@ -396,18 +377,14 @@ Part <- R6::R6Class(
       string <- glue::glue("{names(x)}: {x}")
 
       cli::cli_h1("Part")
-
       cli::cli_li(string)
-
       # Close container elements
       cli::cli_end()
     }, # nocov end
+
     #' @description Get upload part info
     #' @param upload_id Upload object's ID part belongs to.
-    #' @param ... Other arguments.
-    upload_info_part = function(upload_id, ...) {
-      checkmate::assert_character(upload_id, null.ok = FALSE)
-
+    upload_info_part = function(upload_id) {
       res <- sevenbridges2::api(
         path = paste0(
           "upload/multipart/",
@@ -417,8 +394,7 @@ Part <- R6::R6Class(
         ),
         method = "GET",
         token = self$auth$get_token(),
-        base_url = self$auth$url,
-        ...
+        base_url = self$auth$url
       )
 
       res <- status_check(res)
@@ -434,10 +410,7 @@ Part <- R6::R6Class(
     },
     #' @description Report an uploaded part
     #' @param upload_id Upload object's ID part belongs to.
-    #' @param ... Other arguments.
-    upload_complete_part = function(upload_id, ...) {
-      checkmate::assert_character(upload_id, null.ok = FALSE)
-
+    upload_complete_part = function(upload_id) {
       body <- list(
         part_number = self$part_number,
         response = list(headers = list(ETag = self$etag))
@@ -452,8 +425,7 @@ Part <- R6::R6Class(
         method = "POST",
         body = body,
         token = self$auth$get_token(),
-        base_url = self$auth$url,
-        ...
+        base_url = self$auth$url
       )
 
       res <- status_check(res)

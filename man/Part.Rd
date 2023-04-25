@@ -63,8 +63,7 @@ Create a new Part object.
   success_codes = NA,
   report = NA,
   etag = NA,
-  auth = NA,
-  ...
+  auth = NA
 )}\if{html}{\out{</div>}}
 }
 
@@ -91,8 +90,6 @@ the HTTP part upload request that should be recognized as success.}
 \item{\code{etag}}{ETag received after starting a part upload.}
 
 \item{\code{auth}}{Authentication object.}
-
-\item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -113,15 +110,13 @@ Print method for Part class.
 \subsection{Method \code{upload_info_part()}}{
 Get upload part info
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Part$upload_info_part(upload_id, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Part$upload_info_part(upload_id)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{upload_id}}{Upload object's ID part belongs to.}
-
-\item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -132,15 +127,13 @@ Get upload part info
 \subsection{Method \code{upload_complete_part()}}{
 Report an uploaded part
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Part$upload_complete_part(upload_id, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Part$upload_complete_part(upload_id)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{upload_id}}{Upload object's ID part belongs to.}
-
-\item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
 }

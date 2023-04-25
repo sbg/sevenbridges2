@@ -18,7 +18,8 @@ R6 Class representing a resource for managing files' uploads.
 \item{\code{parent}}{The ID of the folder to which the item is being uploaded.
 Should not be used together with 'project'.}
 
-\item{\code{file_name}}{New file name. Optional.}
+\item{\code{filename}}{File name. By default it will be the same as the name of
+the file you want to upload. However, it can be changed to new name.}
 
 \item{\code{overwrite}}{If true will overwrite file on the server.}
 
@@ -59,13 +60,12 @@ Create a new Upload object.
   path = NA,
   project = NA,
   parent = NA,
-  file_name = NA,
-  overwrite = NA,
+  filename = NA,
+  overwrite = FALSE,
   file_size = NA,
   part_size = NA,
   initialized = FALSE,
-  auth = NA,
-  ...
+  auth = NA
 )}\if{html}{\out{</div>}}
 }
 
@@ -78,7 +78,7 @@ Create a new Upload object.
 
 \item{\code{parent}}{The ID of the folder to which the item is being uploaded.}
 
-\item{\code{file_name}}{New file name. Optional.}
+\item{\code{filename}}{New file name. Optional.}
 
 \item{\code{overwrite}}{If true will overwrite file on the server.}
 
@@ -89,8 +89,6 @@ Create a new Upload object.
 \item{\code{initialized}}{If TRUE, upload has been initialized.}
 
 \item{\code{auth}}{Authentication object.}
-
-\item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -109,18 +107,11 @@ Print method for Upload class.
 \if{html}{\out{<a id="method-Upload-upload_init"></a>}}
 \if{latex}{\out{\hypertarget{method-Upload-upload_init}{}}}
 \subsection{Method \code{upload_init()}}{
-Initialize new upload job.
+Initialize new multipart file upload.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Upload$upload_init(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Upload$upload_init()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{Other arguments.}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Upload-upload_info"></a>}}
@@ -128,7 +119,7 @@ Initialize new upload job.
 \subsection{Method \code{upload_info()}}{
 Get the details of an active multipart upload.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Upload$upload_info(list_parts = TRUE, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Upload$upload_info(list_parts = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -136,8 +127,6 @@ Get the details of an active multipart upload.
 \describe{
 \item{\code{list_parts}}{If TRUE, also return a list of parts
 that have been reported as completed for this multipart upload.}
-
-\item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -148,16 +137,9 @@ that have been reported as completed for this multipart upload.}
 \subsection{Method \code{start_file_upload()}}{
 Start the file upload
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Upload$start_file_upload(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Upload$start_file_upload()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{Other arguments.}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Upload-upload_complete_all"></a>}}
@@ -166,16 +148,9 @@ Start the file upload
 Complete a multipart upload
 This call must be issued to report the completion of a file upload.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Upload$upload_complete_all(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Upload$upload_complete_all()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{Other arguments.}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Upload-upload_delete"></a>}}
