@@ -43,6 +43,9 @@ Should not be used together with 'project'.}
 \item \href{#method-Upload-print}{\code{Upload$print()}}
 \item \href{#method-Upload-upload_init}{\code{Upload$upload_init()}}
 \item \href{#method-Upload-upload_info}{\code{Upload$upload_info()}}
+\item \href{#method-Upload-start_file_upload}{\code{Upload$start_file_upload()}}
+\item \href{#method-Upload-upload_complete_all}{\code{Upload$upload_complete_all()}}
+\item \href{#method-Upload-upload_delete}{\code{Upload$upload_delete()}}
 \item \href{#method-Upload-clone}{\code{Upload$clone()}}
 }
 }
@@ -138,6 +141,52 @@ that have been reported as completed for this multipart upload.}
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Upload-start_file_upload"></a>}}
+\if{latex}{\out{\hypertarget{method-Upload-start_file_upload}{}}}
+\subsection{Method \code{start_file_upload()}}{
+Start the file upload
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Upload$start_file_upload(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other arguments.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Upload-upload_complete_all"></a>}}
+\if{latex}{\out{\hypertarget{method-Upload-upload_complete_all}{}}}
+\subsection{Method \code{upload_complete_all()}}{
+Complete a multipart upload
+This call must be issued to report the completion of a file upload.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Upload$upload_complete_all(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other arguments.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Upload-upload_delete"></a>}}
+\if{latex}{\out{\hypertarget{method-Upload-upload_delete}{}}}
+\subsection{Method \code{upload_delete()}}{
+Abort the multipart upload
+This call aborts an ongoing upload.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Upload$upload_delete()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Upload-clone"></a>}}

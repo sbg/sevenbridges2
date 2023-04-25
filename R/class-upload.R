@@ -137,8 +137,10 @@ Upload <- R6::R6Class(
       self$upload_id <- res$upload_id
 
       self$part_size <- as.integer(res$part_size)
-      self$part_length <- as.integer(
-        ceiling(self$file_size / self$part_size)
+      self$part_length <- ifelse(self$file_size == 0, 1,
+        as.integer(
+          ceiling(self$file_size / self$part_size)
+        )
       )
       self$initialized <- TRUE
 
@@ -166,8 +168,8 @@ Upload <- R6::R6Class(
         base_url = self$auth$url,
         ...
       )
-
       res <- status_check(res)
+
       fields_to_show <- c(
         "upload_id", "project", "parent",
         "name", "initiated", "part_size",
@@ -176,11 +178,103 @@ Upload <- R6::R6Class(
       string <- glue::glue("{fields_to_show}: {res[fields_to_show]}")
 
       cli::cli_h1("Upload info")
-
       cli::cli_li(string)
-
       # Close container elements
       cli::cli_end()
+    },
+    #' @description Start the file upload
+    #' @param ... Other arguments.
+    start_file_upload = function(...) {
+      if (!self$initialized) {
+        rlang::abort("Upload has not been initialized yet.")
+      }
+      N <- self$part_length
+      pb <- txtProgressBar(min = 0, max = N, style = 3)
+
+
+      .start <- Sys.time()
+      con <- file(self$path, "rb")
+
+      for (i in 1:N) {
+        current_part <- self$parts[[i]]
+        current_part <- current_part$upload_info_part(self$upload_id)
+        url <- current_part$url
+
+        res <- httr::PUT(
+          url = url,
+          body = readBin(con, "raw", current_part$part_size)
+        )
+        current_part$etag <- headers(res)$etag
+
+        current_part$upload_complete_part(self$upload_id)
+        self$parts[[i]] <- current_part
+        setTxtProgressBar(pb, i)
+      }
+      close(pb)
+
+      res <- self$upload_complete_all()
+      close(con)
+      # res <- status_check(res)
+      .end <- Sys.time()
+      .diff <- .end - .start
+      rlang::inform(
+        paste0(
+          "File uploading complete in: ",
+          ceiling(as.numeric(.diff)), " ", attr(.diff, "unit")
+        )
+      )
+      rlang::inform(
+        paste0(
+          "Estimated uploading speed: ",
+          ceiling(self$file_size / 1024 / 1024 / as.numeric(.diff)),
+          " Mb/", attr(.diff, "unit")
+        )
+      )
+
+      # Return newly uploaded file
+      asFile(res, auth = self$auth)
+    },
+    #' @description Complete a multipart upload
+    #' This call must be issued to report the completion of a file upload.
+    #' @param ... Other arguments.
+    upload_complete_all = function(...) {
+      all_parts <- lapply(self$parts, function(part) {
+        list(
+          part_number = part$part_number,
+          response = list(headers = list(ETag = part$etag))
+        )
+      })
+      body <- list(parts = all_parts)
+      res <- sevenbridges2::api(
+        path = paste0(
+          "upload/multipart/",
+          self$upload_id,
+          "/complete"
+        ),
+        method = "POST",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+      res <- status_check(res)
+      res
+    },
+    #' @description Abort the multipart upload
+    #' This call aborts an ongoing upload.
+    upload_delete = function() {
+      res <- sevenbridges2::api(
+        path = paste0("/upload/multipart/", self$upload_id),
+        method = "DELETE",
+        token = self$auth$get_token(),
+        base_url = self$auth$url
+      )
+      res <- status_check(res)
+      rlang::inform(
+        # nolint start
+        glue::glue("The upload with id {self$upload_id} has been aborted.")
+        # nolint end
+      )
     }
   ),
   private = list(
@@ -337,6 +431,32 @@ Part <- R6::R6Class(
       self$report <- res$report
       self$response <- response(res)
       self
+    },
+    #' @description Report an uploaded part
+    #' @param upload_id Upload object's ID part belongs to.
+    #' @param ... Other arguments.
+    upload_complete_part = function(upload_id, ...) {
+      checkmate::assert_character(upload_id, null.ok = FALSE)
+
+      body <- list(
+        part_number = self$part_number,
+        response = list(headers = list(ETag = self$etag))
+      )
+
+      res <- sevenbridges2::api(
+        path = paste0(
+          "upload/multipart/",
+          upload_id,
+          "/part/"
+        ),
+        method = "POST",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(res)
     }
   )
 )

@@ -44,6 +44,7 @@ passing the information collected from the report object.}
 \item \href{#method-Part-new}{\code{Part$new()}}
 \item \href{#method-Part-print}{\code{Part$print()}}
 \item \href{#method-Part-upload_info_part}{\code{Part$upload_info_part()}}
+\item \href{#method-Part-upload_complete_part}{\code{Part$upload_complete_part()}}
 \item \href{#method-Part-clone}{\code{Part$clone()}}
 }
 }
@@ -113,6 +114,25 @@ Print method for Part class.
 Get upload part info
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Part$upload_info_part(upload_id, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{upload_id}}{Upload object's ID part belongs to.}
+
+\item{\code{...}}{Other arguments.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Part-upload_complete_part"></a>}}
+\if{latex}{\out{\hypertarget{method-Part-upload_complete_part}{}}}
+\subsection{Method \code{upload_complete_part()}}{
+Report an uploaded part
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Part$upload_complete_part(upload_id, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
