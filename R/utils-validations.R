@@ -225,3 +225,63 @@ check_metadata <- function(metadata) {
     # nolint end
   }
 }
+
+
+#' Check file download destination
+#'
+#' @param directory_path directory path string
+#' @param filename file name (base name)
+#' @noRd
+check_download_path <- function(directory_path, filename) {
+  if (dir.exists(directory_path)) {
+    if (is_missing(filename)) {
+      rlang::abort("The filename parameter is missing.")
+    } else if (!is.character(filename) || length(filename) > 1) {
+      rlang::abort("The filename parameter should be a length-one string.")
+    }
+  } else {
+    rlang::abort(glue::glue_col("Destination directory {directory_path} does not exist.")) # nolint
+  }
+}
+
+
+#' Check retry_count parameter
+#'
+#' @description This function validates `retry_count` parameter
+#' used within the `download()` method of a `File` object.
+#' @param retry_count retry_count value
+#' @noRd
+check_retry_count <- function(retry_count) {
+  msg <- "retry_count parameter must be a positive integer number."
+  if (!is.numeric(retry_count)) {
+    rlang::abort(msg) # nocov
+  }
+  retry_count_cast <- suppressWarnings(as.integer(retry_count))
+  if (is_missing(retry_count_cast)) {
+    rlang::abort(msg) # nocov
+  }
+  if (retry_count_cast <= 0) {
+    rlang::abort(msg) # nocov
+  }
+}
+
+
+#' Check retry_timeout parameter
+#'
+#' @description This function validates retry_timeout parameter
+#' used within the `download()` method of a `File`object.
+#' @param retry_count retry_timeout value
+#' @noRd
+check_retry_timeout <- function(retry_timeout) {
+  msg <- "retry_timeout parameter must be a positive integer number."
+  if (!is.numeric(retry_timeout)) {
+    rlang::abort(msg) # nocov
+  }
+  retry_timeout_cast <- suppressWarnings(as.integer(retry_timeout))
+  if (is_missing(retry_timeout_cast)) {
+    rlang::abort(msg) # nocov
+  }
+  if (retry_timeout_cast <= 0) {
+    rlang::abort(msg) # nocov
+  }
+}
