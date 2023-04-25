@@ -18,6 +18,7 @@ CONST
 cph
 cre
 CWL
+DESCRIPTON
 DescTools
 eastus
 enquiring
@@ -40,6 +41,8 @@ json
 jsonlite
 knitr
 LazyData
+mageddon
+maggedon
 Marija
 marko
 Marko
@@ -58,6 +61,7 @@ rmarkdown
 Roxygen
 RoxygenNote
 sbgenomics
+sbgstaff
 setenv
 sevenbridges
 stringi
@@ -69,6 +73,7 @@ trifunovic
 Trifunovic
 unmount
 urlencoded
+vayu
 VignetteBuilder
 withr
 www

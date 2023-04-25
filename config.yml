@@ -1,0 +1,48 @@
+default:
+  USERNAME: "<username>"
+  TOKEN: "<user_token>"
+  TAGS: "<user_tags>"
+  API_URL: "<api_url>"
+  DESCRIPTON: "<user_description>"
+
+sbgstaff:
+  USERNAME: "sbgstaff"
+  TOKEN: "<user_token>"
+  TAGS: ""
+  API_URL: "https://r-mageddon-vayu.sbgenomics.com:27445/v2"
+  DESCRIPTON: "Staff user on r-maggedon vayu."
+
+user1:
+  USERNAME: "user_free_1"
+  TOKEN: "<user_token>"
+  TAGS: ""
+  API_URL: "https://r-mageddon-vayu.sbgenomics.com:27445/v2"
+  DESCRIPTON: "Generic user 1."
+
+user2:
+  USERNAME: "user_free_2"
+  TOKEN: "<user_token>"
+  TAGS: ""
+  API_URL: "https://r-mageddon-vayu.sbgenomics.com:27445/v2"
+  DESCRIPTON: "Generic user 2."
+
+user3:
+  USERNAME: "user_free_3"
+  TOKEN: "<user_token>"
+  TAGS: ""
+  API_URL: "https://r-mageddon-vayu.sbgenomics.com:27445/v2"
+  DESCRIPTON: "Generic user 3."
+
+user4:
+  USERNAME: "user_free_4"
+  TOKEN: "<user_token>"
+  TAGS: ""
+  API_URL: "https://r-mageddon-vayu.sbgenomics.com:27445/v2"
+  DESCRIPTON: "Generic user 4."
+
+user5:
+  USERNAME: "user_free_5"
+  TOKEN: "<user_token>"
+  TAGS: ""
+  API_URL: "https://r-mageddon-vayu.sbgenomics.com:27445/v2"
+  DESCRIPTON: "Generic user 5."
