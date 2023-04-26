@@ -42,11 +42,10 @@ the file you want to upload. However, it can be changed to new name.}
 \itemize{
 \item \href{#method-Upload-new}{\code{Upload$new()}}
 \item \href{#method-Upload-print}{\code{Upload$print()}}
-\item \href{#method-Upload-upload_init}{\code{Upload$upload_init()}}
-\item \href{#method-Upload-upload_info}{\code{Upload$upload_info()}}
-\item \href{#method-Upload-start_file_upload}{\code{Upload$start_file_upload()}}
-\item \href{#method-Upload-upload_complete_all}{\code{Upload$upload_complete_all()}}
-\item \href{#method-Upload-upload_delete}{\code{Upload$upload_delete()}}
+\item \href{#method-Upload-init}{\code{Upload$init()}}
+\item \href{#method-Upload-info}{\code{Upload$info()}}
+\item \href{#method-Upload-start}{\code{Upload$start()}}
+\item \href{#method-Upload-abort}{\code{Upload$abort()}}
 \item \href{#method-Upload-clone}{\code{Upload$clone()}}
 }
 }
@@ -104,22 +103,22 @@ Print method for Upload class.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Upload-upload_init"></a>}}
-\if{latex}{\out{\hypertarget{method-Upload-upload_init}{}}}
-\subsection{Method \code{upload_init()}}{
+\if{html}{\out{<a id="method-Upload-init"></a>}}
+\if{latex}{\out{\hypertarget{method-Upload-init}{}}}
+\subsection{Method \code{init()}}{
 Initialize new multipart file upload.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Upload$upload_init()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Upload$init()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Upload-upload_info"></a>}}
-\if{latex}{\out{\hypertarget{method-Upload-upload_info}{}}}
-\subsection{Method \code{upload_info()}}{
+\if{html}{\out{<a id="method-Upload-info"></a>}}
+\if{latex}{\out{\hypertarget{method-Upload-info}{}}}
+\subsection{Method \code{info()}}{
 Get the details of an active multipart upload.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Upload$upload_info(list_parts = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Upload$info(list_parts = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -132,34 +131,23 @@ that have been reported as completed for this multipart upload.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Upload-start_file_upload"></a>}}
-\if{latex}{\out{\hypertarget{method-Upload-start_file_upload}{}}}
-\subsection{Method \code{start_file_upload()}}{
+\if{html}{\out{<a id="method-Upload-start"></a>}}
+\if{latex}{\out{\hypertarget{method-Upload-start}{}}}
+\subsection{Method \code{start()}}{
 Start the file upload
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Upload$start_file_upload()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Upload$start()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Upload-upload_complete_all"></a>}}
-\if{latex}{\out{\hypertarget{method-Upload-upload_complete_all}{}}}
-\subsection{Method \code{upload_complete_all()}}{
-Complete a multipart upload
-This call must be issued to report the completion of a file upload.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Upload$upload_complete_all()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Upload-upload_delete"></a>}}
-\if{latex}{\out{\hypertarget{method-Upload-upload_delete}{}}}
-\subsection{Method \code{upload_delete()}}{
+\if{html}{\out{<a id="method-Upload-abort"></a>}}
+\if{latex}{\out{\hypertarget{method-Upload-abort}{}}}
+\subsection{Method \code{abort()}}{
 Abort the multipart upload
 This call aborts an ongoing upload.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Upload$upload_delete()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Upload$abort()}\if{html}{\out{</div>}}
 }
 
 }

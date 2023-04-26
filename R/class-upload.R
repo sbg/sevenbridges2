@@ -101,7 +101,7 @@ Upload <- R6::R6Class(
     }, # nocov end
 
     #' @description Initialize new multipart file upload.
-    upload_init = function() {
+    init = function() {
       body <- list(
         "name" = self$filename,
         "size" = self$file_size,
@@ -143,7 +143,7 @@ Upload <- R6::R6Class(
     #' @param list_parts If TRUE, also return a list of parts
     #' that have been reported as completed for this multipart upload.
     #' @importFrom checkmate assert_logical
-    upload_info = function(list_parts = TRUE) {
+    info = function(list_parts = TRUE) {
       if (is.null(upload_id)) {
         rlang::abort("Upload has not been initialized yet.")
       }
@@ -172,7 +172,7 @@ Upload <- R6::R6Class(
     },
 
     #' @description Start the file upload
-    start_file_upload = function() {
+    start = function() {
       if (!self$initialized) {
         rlang::abort("Upload has not been initialized yet.")
       }
@@ -200,7 +200,7 @@ Upload <- R6::R6Class(
       }
       close(pb)
 
-      res <- self$upload_complete_all()
+      res <- private$upload_complete_all()
       close(con)
 
       .end <- Sys.time()
@@ -223,34 +223,9 @@ Upload <- R6::R6Class(
       asFile(res, auth = self$auth)
     },
 
-    #' @description Complete a multipart upload
-    #' This call must be issued to report the completion of a file upload.
-    upload_complete_all = function() {
-      all_parts <- lapply(self$parts, function(part) {
-        list(
-          part_number = part$part_number,
-          response = list(headers = list(ETag = part$etag))
-        )
-      })
-      body <- list(parts = all_parts)
-      res <- sevenbridges2::api(
-        path = paste0(
-          "upload/multipart/",
-          self$upload_id,
-          "/complete"
-        ),
-        method = "POST",
-        body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url
-      )
-      res <- status_check(res)
-      res
-    },
-
     #' @description Abort the multipart upload
     #' This call aborts an ongoing upload.
-    upload_delete = function() {
+    abort = function() {
       res <- sevenbridges2::api(
         path = paste0("/upload/multipart/", self$upload_id),
         method = "DELETE",
@@ -288,6 +263,30 @@ Upload <- R6::R6Class(
         )
       })
       return(parts)
+    },
+    # Complete a multipart upload
+    # This call must be issued to report the completion of a file upload.
+    upload_complete_all = function() {
+      all_parts <- lapply(self$parts, function(part) {
+        list(
+          part_number = part$part_number,
+          response = list(headers = list(ETag = part$etag))
+        )
+      })
+      body <- list(parts = all_parts)
+      res <- sevenbridges2::api(
+        path = paste0(
+          "upload/multipart/",
+          self$upload_id,
+          "/complete"
+        ),
+        method = "POST",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url
+      )
+      res <- status_check(res)
+      res
     }
   )
 )

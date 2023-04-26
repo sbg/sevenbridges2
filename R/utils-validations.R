@@ -241,7 +241,8 @@ check_upload_params <- function(size, part_size = getOption("sevenbridges2")$REC
     rlang::abort("File size must be between 0 - 5497558138880 (5TB), inclusive")
     # nolint end
   }
-  if (!(part_size <= 5 * GB && part_size >= 5 * MB)) {
+  if (!(part_size <= getOption("sevenbridges2")$MAXIMUM_PART_SIZE &&
+    part_size >= getOption("sevenbridges2")$MINIMUM_PART_SIZE)) {
     # nolint start
     rlang::abort("Parameter part_size must be 5 MB to 5 GB, last part can be < 5 MB")
     # nolint end
