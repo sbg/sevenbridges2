@@ -101,6 +101,7 @@ Upload <- R6::R6Class(
     }, # nocov end
 
     #' @description Initialize new multipart file upload.
+    #' @importFrom glue glue_col
     init = function() {
       body <- list(
         "name" = self$filename,
@@ -134,9 +135,7 @@ Upload <- R6::R6Class(
       )
       self$initialized <- TRUE
 
-      # nolint start
-      rlang::inform(glue::glue("New upload job is initialized with upload_id: {self$upload_id}."))
-      # nolint end
+      rlang::inform(glue::glue_col("New upload job is initialized with upload_id:\n {green {self$upload_id}}.")) # nolint
       return(self)
     },
     #' @description Get the details of an active multipart upload.
@@ -225,18 +224,19 @@ Upload <- R6::R6Class(
 
     #' @description Abort the multipart upload
     #' This call aborts an ongoing upload.
+    #' @importFrom glue glue_col
     abort = function() {
       res <- sevenbridges2::api(
-        path = paste0("/upload/multipart/", self$upload_id),
+        path = paste0("upload/multipart/", self$upload_id),
         method = "DELETE",
         token = self$auth$get_token(),
         base_url = self$auth$url
       )
-      res <- status_check(res)
+
+      status_check(res)
+
       rlang::inform(
-        # nolint start
-        glue::glue("The upload with id {self$upload_id} has been aborted.")
-        # nolint end
+        glue::glue_col("The upload process with the following ID {green {upload_id}} has been aborted.") # nolint
       )
     }
   ),
