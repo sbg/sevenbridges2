@@ -143,7 +143,7 @@ Upload <- R6::R6Class(
     #' that have been reported as completed for this multipart upload.
     #' @importFrom checkmate assert_logical
     info = function(list_parts = TRUE) {
-      if (is.null(upload_id)) {
+      if (!self$initialized) {
         rlang::abort("Upload has not been initialized yet.")
       }
       checkmate::assert_logical(list_parts)
@@ -226,6 +226,10 @@ Upload <- R6::R6Class(
     #' This call aborts an ongoing upload.
     #' @importFrom glue glue_col
     abort = function() {
+      if (!self$initialized) {
+        rlang::abort("Upload has not been initialized yet.")
+      }
+
       res <- sevenbridges2::api(
         path = paste0("upload/multipart/", self$upload_id),
         method = "DELETE",
@@ -238,6 +242,12 @@ Upload <- R6::R6Class(
       rlang::inform(
         glue::glue_col("The upload process with the following ID {green {upload_id}} has been aborted.") # nolint
       )
+
+      # Reset fields that will enable
+      # the user to initialize the upload again
+      self$upload_id <- NULL
+      self$parts <- private$generate_parts()
+      self$initialized <- FALSE
     }
   ),
   private = list(
