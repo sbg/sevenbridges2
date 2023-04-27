@@ -114,9 +114,9 @@ Upload <- R6::R6Class(
         "part_size" = self$part_size
       )
       if (!is_missing(self$project)) {
-        body[["project"]] <- self$project$id
+        body[["project"]] <- self$project
       } else if (!is_missing(self$parent)) {
-        body[["parent"]] <- self$parent$id
+        body[["parent"]] <- self$parent
       }
 
       res <- sevenbridges2::api(
