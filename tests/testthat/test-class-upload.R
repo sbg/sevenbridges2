@@ -6,6 +6,7 @@ test_that("Upload and Part objects initialization works", {
   # Test with upload object that has 8 parts
   upload_obj <- Upload$new(
     path = path,
+    filename = "new_name.txt",
     overwrite = TRUE,
     parent = "parent-id",
     file_size = 50 * 1024^2,
@@ -14,7 +15,7 @@ test_that("Upload and Part objects initialization works", {
   )
 
   testthat::expect_equal(upload_obj$upload_id, NULL)
-  testthat::expect_equal(upload_obj$filename, basename(path))
+  testthat::expect_equal(upload_obj$filename, "new_name.txt")
   testthat::expect_false(upload_obj$initialized)
   testthat::expect_equal(upload_obj$part_length, 8)
   testthat::expect_length(upload_obj$parts, 8)
@@ -45,6 +46,7 @@ test_that("Upload and Part objects initialization works", {
   # Test with upload object that has 1 part
   upload_obj <- Upload$new(
     path = path,
+    filename = "new_name.txt",
     overwrite = TRUE,
     parent = "parent-id",
     file_size = 50 * 1024^2,
@@ -53,7 +55,7 @@ test_that("Upload and Part objects initialization works", {
   )
 
   testthat::expect_equal(upload_obj$upload_id, NULL)
-  testthat::expect_equal(upload_obj$filename, basename(path))
+  testthat::expect_equal(upload_obj$filename, "new_name.txt")
   testthat::expect_false(upload_obj$initialized)
   testthat::expect_equal(upload_obj$part_length, 1)
   testthat::expect_length(upload_obj$parts, 1)

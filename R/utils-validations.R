@@ -60,6 +60,7 @@ status_check <- function(req, as = "parsed", ...) {
 #' in order to be able to use it with other object types.
 #'
 #' @param input value to check
+#' @importFrom checkmate test_vector
 #' @noRd
 is_missing <- function(input) {
   if (checkmate::test_vector(input, null.ok = TRUE)) {
@@ -231,10 +232,18 @@ check_metadata <- function(metadata) {
 #' @param size File size
 #' @param part_size Part size
 #' @importFrom rlang abort
+#' @importFrom checkmate assert_numeric
 #' @noRd
-# nolint start
 check_upload_params <- function(size, part_size) {
-  # nolint end
+  checkmate::assert_numeric(size,
+    lower = 0, len = 1,
+    any.missing = FALSE, null.ok = FALSE
+  )
+  checkmate::assert_numeric(part_size,
+    lower = 0, len = 1,
+    any.missing = FALSE, null.ok = FALSE
+  )
+
   if (!(size >= 0 && size <= getOption("sevenbridges2")$MAXIMUM_OBJECT_SIZE)) {
     # nolint start
     rlang::abort("File size must be between 0 - 5497558138880 (5TB), inclusive")

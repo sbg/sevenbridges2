@@ -99,7 +99,7 @@ Upload <- R6::R6Class(
       if (self$initialized) {
         rlang::abort("Upload has already been initialized.")
       }
-
+      # nocov start
       body <- list(
         "name" = self$filename,
         "size" = self$file_size,
@@ -140,7 +140,7 @@ Upload <- R6::R6Class(
 
       rlang::inform(glue::glue_col("New upload job is initialized with upload_id:\n {green {self$upload_id}}.")) # nolint
       return(self)
-    },
+    }, # nocov end
     #' @description Get the details of an active multipart upload.
     #' @param list_parts If TRUE, also return a list of parts
     #' that have been reported as completed for this multipart upload.
@@ -153,6 +153,7 @@ Upload <- R6::R6Class(
       }
       checkmate::assert_logical(list_parts)
 
+      # nocov start
       res <- sevenbridges2::api(
         path = paste0("upload/multipart/", self$upload_id),
         method = "GET",
@@ -177,13 +178,14 @@ Upload <- R6::R6Class(
       } else {
         to_print
       }
-    },
+    }, # nocov end
 
     #' @description Start the file upload
     start = function() {
       if (!self$initialized) {
         rlang::abort("Upload has not been initialized yet.")
       }
+      # nocov start
       N <- self$part_length
       pb <- txtProgressBar(min = 0, max = N, style = 3)
 
@@ -229,7 +231,7 @@ Upload <- R6::R6Class(
 
       # Return newly uploaded file
       asFile(res, auth = self$auth)
-    },
+    }, # nocov end
 
     #' @description Abort the multipart upload
     #' This call aborts an ongoing upload.
@@ -238,7 +240,7 @@ Upload <- R6::R6Class(
       if (!self$initialized) {
         rlang::abort("Upload has not been initialized yet.")
       }
-
+      # nocov start
       res <- sevenbridges2::api(
         path = paste0("upload/multipart/", self$upload_id),
         method = "DELETE",
@@ -257,7 +259,7 @@ Upload <- R6::R6Class(
       self$upload_id <- NULL
       self$parts <- private$generate_parts()
       self$initialized <- FALSE
-    }
+    } # nocov end
   ),
   private = list(
     # Helper method that returns list of objects of class Part
@@ -283,6 +285,7 @@ Upload <- R6::R6Class(
       })
       return(parts)
     },
+    # nocov start
     # Complete a multipart upload
     # This call must be issued to report the completion of a file upload.
     upload_complete_all = function() {
@@ -306,7 +309,7 @@ Upload <- R6::R6Class(
       )
       res <- status_check(res)
       res
-    }
+    } # nocov end
   )
 )
 
@@ -405,6 +408,7 @@ Part <- R6::R6Class(
     #' @importFrom checkmate assert_character
     upload_info_part = function(upload_id) {
       checkmate::assert_character(upload_id, null.ok = FALSE)
+      # nocov start
       res <- sevenbridges2::api(
         path = paste0(
           "upload/multipart/",
@@ -427,12 +431,13 @@ Part <- R6::R6Class(
       self$report <- res$report
       self$response <- attr(res, "response")
       self
-    },
+    }, # nocov end
     #' @description Report an uploaded part
     #' @param upload_id Upload object's ID part belongs to.
     #' @importFrom checkmate assert_character
     upload_complete_part = function(upload_id) {
       checkmate::assert_character(upload_id, null.ok = FALSE)
+      # nocov start
       body <- list(
         part_number = self$part_number,
         response = list(headers = list(ETag = self$etag))
@@ -451,6 +456,6 @@ Part <- R6::R6Class(
       )
 
       res <- status_check(res)
-    }
+    } # nocov end
   )
 )

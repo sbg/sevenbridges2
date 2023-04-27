@@ -96,7 +96,7 @@ File <- R6::R6Class(
 
       # Close container elements
       cli::cli_end()
-    }, # nocov end
+    },
 
     #' @description Detailed print method for File class.
     #'
@@ -114,7 +114,6 @@ File <- R6::R6Class(
     #'   \item `tags` field lists the tags for the file. Learn more about
     #'   [tagging your files](https://docs.sevenbridges.com/docs/tag-your-files)
     #'    on the Platform.
-    # nocov end
     #' }
     #'
     #' @importFrom purrr discard
@@ -193,8 +192,7 @@ File <- R6::R6Class(
       )
       # Close container elements
       cli::cli_end()
-    },
-
+    }, # nocov end
 
     #' @description
     #' Updates the name, the full set metadata, and tags

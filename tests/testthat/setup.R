@@ -18,4 +18,4 @@ bad_encodings <- c(NA, "", NULL, "something else")
 
 
 # Close session at the end of tests
-withr::defer(session$close(), teardown_env())
+# withr::defer(session$close(), teardown_env())
