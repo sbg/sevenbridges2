@@ -56,14 +56,6 @@ Upload <- R6::R6Class(
       self$path <- normalizePath(path)
       self$project <- project
       self$parent <- parent
-
-      if (is_missing(filename)) {
-        filename <- basename(path)
-      }
-      if (grepl("\\s", filename) || grepl("\\/", filename)) {
-        rlang::abort("The file name cannot contain spaces or backslashes.") # nolint
-      }
-
       self$filename <- filename
       self$overwrite <- overwrite
 
