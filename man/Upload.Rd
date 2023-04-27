@@ -118,14 +118,16 @@ Initialize new multipart file upload.
 \subsection{Method \code{info()}}{
 Get the details of an active multipart upload.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Upload$info(list_parts = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Upload$info(list_parts = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{list_parts}}{If TRUE, also return a list of parts
-that have been reported as completed for this multipart upload.}
+that have been reported as completed for this multipart upload.
+Please, bear in mind that the output could be heavy for printing if
+there are lot of parts.}
 }
 \if{html}{\out{</div>}}
 }

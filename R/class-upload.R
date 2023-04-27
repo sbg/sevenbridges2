@@ -103,14 +103,18 @@ Upload <- R6::R6Class(
     #' @description Initialize new multipart file upload.
     #' @importFrom glue glue_col
     init = function() {
+      if (self$initialized) {
+        rlang::abort("Upload has already been initialized.")
+      }
+
       body <- list(
         "name" = self$filename,
         "size" = self$file_size,
         "part_size" = self$part_size
       )
-      if (!is.null(self$project)) {
+      if (!is_missing(self$project)) {
         body[["project"]] <- self$project$id
-      } else if (!is.null(self$parent)) {
+      } else if (!is_missing(self$parent)) {
         body[["parent"]] <- self$parent$id
       }
 
@@ -127,7 +131,12 @@ Upload <- R6::R6Class(
 
       self$upload_id <- res$upload_id
 
+      if (self$part_size != res$part_size) {
+        rlang::inform(glue::glue_col("Part size has been set to {blue {res$part_size}} bytes.")) # nolint
+      }
       self$part_size <- as.integer(res$part_size)
+
+      check_upload_params(size = self$file_size, part_size = self$part_size)
       self$part_length <- ifelse(self$file_size == 0, 1,
         as.integer(
           ceiling(self$file_size / self$part_size)
@@ -141,8 +150,10 @@ Upload <- R6::R6Class(
     #' @description Get the details of an active multipart upload.
     #' @param list_parts If TRUE, also return a list of parts
     #' that have been reported as completed for this multipart upload.
+    #' Please, bear in mind that the output could be heavy for printing if
+    #' there are lot of parts.
     #' @importFrom checkmate assert_logical
-    info = function(list_parts = TRUE) {
+    info = function(list_parts = FALSE) {
       if (!self$initialized) {
         rlang::abort("Upload has not been initialized yet.")
       }
@@ -160,14 +171,18 @@ Upload <- R6::R6Class(
       fields_to_show <- c(
         "upload_id", "project", "parent",
         "name", "initiated", "part_size",
-        "parallel_uploads", "uploaded_parts_count"
+        "uploaded_parts_count"
       )
-      string <- glue::glue("{fields_to_show}: {res[fields_to_show]}")
+      to_print <- c(
+        res[fields_to_show],
+        "total_number_of_parts" = self$part_length
+      )
 
-      cli::cli_h1("Upload info")
-      cli::cli_li(string)
-      # Close container elements
-      cli::cli_end()
+      if (list_parts) {
+        c(to_print, "parts" = res[["parts"]])
+      } else {
+        to_print
+      }
     },
 
     #' @description Start the file upload
@@ -393,7 +408,9 @@ Part <- R6::R6Class(
 
     #' @description Get upload part info
     #' @param upload_id Upload object's ID part belongs to.
+    #' @importFrom checkmate assert_character
     upload_info_part = function(upload_id) {
+      checkmate::assert_character(upload_id, null.ok = FALSE)
       res <- sevenbridges2::api(
         path = paste0(
           "upload/multipart/",
@@ -414,12 +431,14 @@ Part <- R6::R6Class(
       self$success_codes <- res$success_codes
       self$headers <- res$headers
       self$report <- res$report
-      self$response <- response(res)
+      self$response <- attr(res, "response")
       self
     },
     #' @description Report an uploaded part
     #' @param upload_id Upload object's ID part belongs to.
+    #' @importFrom checkmate assert_character
     upload_complete_part = function(upload_id) {
+      checkmate::assert_character(upload_id, null.ok = FALSE)
       body <- list(
         part_number = self$part_number,
         response = list(headers = list(ETag = self$etag))
