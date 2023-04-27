@@ -62,7 +62,7 @@ Create a new Upload object.
   filename = NA,
   overwrite = FALSE,
   file_size = NA,
-  part_size = NA,
+  part_size = getOption("sevenbridges2")$RECOMMENDED_PART_SIZE,
   initialized = FALSE,
   auth = NA
 )}\if{html}{\out{</div>}}

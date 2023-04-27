@@ -233,7 +233,7 @@ check_metadata <- function(metadata) {
 #' @importFrom rlang abort
 #' @noRd
 # nolint start
-check_upload_params <- function(size, part_size = getOption("sevenbridges2")$RECOMMENDED_PART_SIZE) {
+check_upload_params <- function(size, part_size) {
   # nolint end
   if (!(size >= 0 && size <= getOption("sevenbridges2")$MAXIMUM_OBJECT_SIZE)) {
     # nolint start
@@ -251,7 +251,7 @@ check_upload_params <- function(size, part_size = getOption("sevenbridges2")$REC
       ceiling(size / part_size)
     )
   )
-  if (part_length <= 1 ||
+  if (part_length < 1 ||
     part_length >= getOption("sevenbridges2")$MAXIMUM_TOTAL_PARTS) {
     # nolint start
     rlang::abort("Total number of parts must be from 1 to 10,000 (inclusive). Please, modify part_size.")

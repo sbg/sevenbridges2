@@ -50,7 +50,8 @@ Upload <- R6::R6Class(
     #' @param auth Authentication object.
     initialize = function(path = NA, project = NA, parent = NA,
                           filename = NA, overwrite = FALSE, file_size = NA,
-                          part_size = NA, initialized = FALSE, auth = NA) {
+                          part_size = getOption("sevenbridges2")$RECOMMENDED_PART_SIZE, # nolint
+                          initialized = FALSE, auth = NA) {
       self$upload_id <- NULL
       self$path <- normalizePath(path)
       self$project <- project
@@ -60,13 +61,13 @@ Upload <- R6::R6Class(
         filename <- basename(path)
       }
       if (grepl("\\s", filename) || grepl("\\/", filename)) {
-        # nolint start
-        rlang::abort("The file name cannot contain spaces or backslashes.")
-        # nolint end
+        rlang::abort("The file name cannot contain spaces or backslashes.") # nolint
       }
 
       self$filename <- filename
       self$overwrite <- overwrite
+
+      check_upload_params(size = file_size, part_size = part_size)
       self$part_size <- part_size
       self$file_size <- file_size
       self$part_length <- ifelse(self$file_size == 0, 1,
@@ -134,14 +135,15 @@ Upload <- R6::R6Class(
       if (self$part_size != res$part_size) {
         rlang::inform(glue::glue_col("Part size has been set to {blue {res$part_size}} bytes.")) # nolint
       }
-      self$part_size <- as.integer(res$part_size)
-
+      self$part_size <- res$part_size
       check_upload_params(size = self$file_size, part_size = self$part_size)
+
       self$part_length <- ifelse(self$file_size == 0, 1,
         as.integer(
           ceiling(self$file_size / self$part_size)
         )
       )
+      self$parts <- private$generate_parts()
       self$initialized <- TRUE
 
       rlang::inform(glue::glue_col("New upload job is initialized with upload_id:\n {green {self$upload_id}}.")) # nolint
