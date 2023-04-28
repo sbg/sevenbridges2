@@ -24,6 +24,7 @@ utils::globalVariables(c(
   "sbg_default_config_file", "sbg_default_profile_name",
   "sbg_default_sysenv_url", "sbg_default_sysenv_token"
 ))
+
 # onLoad function sets initial params for future queries
 .onLoad <- function(libname, pkgname) {
   lst <- list(
@@ -32,7 +33,12 @@ utils::globalVariables(c(
     advance_access = FALSE,
     input_check = TRUE,
     default_retry_count = 5,
-    default_retry_timeout = 5
+    default_retry_timeout = 5,
+    RECOMMENDED_PART_SIZE = 32 * 1024^2,
+    MINIMUM_PART_SIZE = 5 * 1024^2,
+    MAXIMUM_PART_SIZE = 5 * 1024^3,
+    MAXIMUM_OBJECT_SIZE = 5 * 1024^4,
+    MAXIMUM_TOTAL_PARTS = 10000
   )
 
   options(sevenbridges2 = lst)

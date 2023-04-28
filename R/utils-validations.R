@@ -60,6 +60,7 @@ status_check <- function(req, as = "parsed", ...) {
 #' in order to be able to use it with other object types.
 #'
 #' @param input value to check
+#' @importFrom checkmate test_vector
 #' @noRd
 is_missing <- function(input) {
   if (checkmate::test_vector(input, null.ok = TRUE)) {
@@ -231,6 +232,7 @@ check_metadata <- function(metadata) {
   }
 }
 
+
 #' Check file download destination
 #'
 #' @param directory_path directory path string
@@ -271,5 +273,46 @@ check_retry_params <- function(input, parameter_to_validate) {
   }
   if (retry_param_cast <= 0) {
     rlang::abort(msg) # nocov
+  }
+}
+
+#' Check size, part_size and part_length params for uploads
+#'
+#' @param size File size
+#' @param part_size Part size
+#' @importFrom rlang abort
+#' @importFrom checkmate assert_numeric
+#' @noRd
+check_upload_params <- function(size, part_size) {
+  checkmate::assert_numeric(size,
+    lower = 0, len = 1,
+    any.missing = FALSE, null.ok = FALSE
+  )
+  checkmate::assert_numeric(part_size,
+    lower = 0, len = 1,
+    any.missing = FALSE, null.ok = FALSE
+  )
+
+  if (!(size >= 0 && size <= getOption("sevenbridges2")$MAXIMUM_OBJECT_SIZE)) {
+    # nolint start
+    rlang::abort("File size must be between 0 - 5497558138880 (5TB), inclusive")
+    # nolint end
+  }
+  if (!(part_size <= getOption("sevenbridges2")$MAXIMUM_PART_SIZE &&
+    part_size >= getOption("sevenbridges2")$MINIMUM_PART_SIZE)) {
+    # nolint start
+    rlang::abort("Parameter part_size must be 5 MB to 5 GB, last part can be < 5 MB")
+    # nolint end
+  }
+  part_length <- ifelse(size == 0, 1,
+    as.integer(
+      ceiling(size / part_size)
+    )
+  )
+  if (part_length < 1 ||
+    part_length >= getOption("sevenbridges2")$MAXIMUM_TOTAL_PARTS) {
+    # nolint start
+    rlang::abort("Total number of parts must be from 1 to 10,000 (inclusive). Please, modify part_size.")
+    # nolint end
   }
 }

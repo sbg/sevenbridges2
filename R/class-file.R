@@ -75,6 +75,7 @@ File <- R6::R6Class(
       self$metadata <- metadata
       self$url <- url
     },
+
     # nocov start
     #' @description Print method for File class.
     #' @importFrom purrr discard
@@ -192,7 +193,7 @@ File <- R6::R6Class(
       )
       # Close container elements
       cli::cli_end()
-    }, # nocov end
+    },
 
     #' @description
     #' Updates the name, the full set metadata, and tags
@@ -640,3 +641,5 @@ asFileList <- function(x, auth) {
   obj <- lapply(x$items, asFile, auth = auth)
   obj
 }
+
+# nocov end

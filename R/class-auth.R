@@ -228,10 +228,12 @@ Auth <- R6::R6Class(
           normalize_url(config_list[[self$profile_name]][["api_endpoint"]])
         .token <- config_list[[self$profile_name]][["auth_token"]]
         if (is_missing(self$url) || is_missing(.token)) {
+          # nocov start
           rlang::abort(
             "`The field api_endpoint` or `auth_token` is missing in profile:",
             self$profile_name
           )
+          # nocov end
         } else {
           sbg_set_env(
             url = self$url,
@@ -319,9 +321,8 @@ Auth <- R6::R6Class(
         return(res)
       } else {
         return(req)
-      } # nocov end
+      }
     },
-    # nocov start
     # user ---------------------------------------------------------------------
     #' @description Get details about the authenticated user
     #' @param username The user name of a user for whom you want to get basic
@@ -838,7 +839,7 @@ Auth <- R6::R6Class(
         # nolint end
       } else if (!is_missing(parent) && !is_missing(project)) {
         # nolint start
-        rlang::abort("You should specify a project name or a parent folder ID, not both.")
+        rlang::abort("You should specify a project or a parent folder, not both.")
         # nolint end
       }
 
@@ -853,7 +854,7 @@ Auth <- R6::R6Class(
           parent <- parent
         } else {
           # nolint start
-          rlang::abort("The provided `parent` argument is neither a File object nor an ID of a folder.")
+          rlang::abort("The provided parent argument is neither a File object nor an ID of a folder.")
           # nolint end
         }
         body <- list(
@@ -894,6 +895,177 @@ Auth <- R6::R6Class(
         # nolint end
         asFile(res, self$auth)
       }
+    },
+    # upload a single file
+    #' @description This method allows you to upload a single file from your
+    #' local computer to the Platform.
+    #' @param path File path on local disk.
+    #' @param project Project object or its ID. Project should not be used
+    #' together with parent. If parent is used, the call will upload the file
+    #' to the specified Platform folder, within the project to which the folder
+    #' belongs. If project is used, the call will upload the file to the root
+    #' of the project's files.
+    #' @param parent Parent folder object or its ID. Should not be used
+    #' together with project. If parent is used, the call will upload the file
+    #' to the specified Platform folder, within the project to which the folder
+    #' belongs. If project is used, the call will upload the file to the root
+    #' of the project's files.
+    #' @param filename Optional new file name. By default the uploaded file
+    #' will have the same name as the original file provided with the `path`
+    #' parameter. If its name will not change, omit this key.
+    #' @param overwrite In case there is already a file with the same name in
+    #' the selected platform project/folder, this option allows you to control
+    #' whether that file will be overwritten or not. If overwrite is set to
+    #' `TRUE` and a file already exists under the name specified in the
+    #' request, the existing file will be deleted and a new one created in its
+    #' place.
+    #' @param part_size The preferred size for upload parts in bytes. If
+    #' omitted or set to a value that is incompatible with the cloud storage
+    #' provider, a default value will be used.
+    #' @param init If `TRUE`, the method will initialize and return the Upload
+    #' object and stop. If `FALSE`, the method will return the Upload object
+    #' and start the upload process immediately.
+    #' @importFrom checkmate test_r6 test_class assert_logical
+    #' @importFrom rlang abort
+    upload = function(path,
+                      project = NULL,
+                      parent = NULL,
+                      filename = NULL,
+                      overwrite = FALSE,
+                      part_size = getOption("sevenbridges2")$RECOMMENDED_PART_SIZE, # nolint
+                      init = FALSE) {
+      # Check if the provided path is valid, i.e. if the file exists
+      # and get its size.
+      if (file.exists(path)) {
+        file_size <- file.size(path)
+      } else {
+        rlang::abort("There is no file at the specified path.")
+      }
+
+      # Check project and parent parameters
+      if (is_missing(parent) && is_missing(project)) {
+        rlang::abort("Both the project name and parent folder ID are missing. You need to provide one of them.") # nolint
+      } else if (!is_missing(parent) && !is_missing(project)) {
+        rlang::abort("You should specify a project or a parent folder, not both.") # nolint
+      }
+
+      if (!is_missing(parent)) {
+        if (checkmate::test_r6(parent, classes = "File")) {
+          if (parent$type == "folder") {
+            parent <- parent$id
+          } else {
+            rlang::abort("The provided parent object is not a folder.")
+          }
+        } else if (checkmate::test_class(parent, classes = "character")) {
+          parent <- parent
+        } else {
+          rlang::abort("The provided parent argument is neither a File object nor an ID of a folder.") # nolint
+        }
+      } else if (!is_missing(project)) {
+        if (checkmate::test_r6(project, classes = "Project")) {
+          project <- project$id
+        } else if (checkmate::test_class(project, classes = "character")) {
+          project <- project
+        } else {
+          rlang::abort("The provided project argument is neither a Project object nor an ID of a project.") # nolint
+        }
+      }
+
+      # Check filename
+      if (is_missing(filename)) {
+        filename <- basename(path)
+      }
+
+      if (grepl("\\s", filename) || grepl("\\/", filename)) {
+        rlang::abort("The file name cannot contain spaces or backslashes.") # nolint
+      }
+
+      # Check size and part_size params
+      check_upload_params(size = file_size, part_size = part_size)
+
+      # Check init param
+      checkmate::assert_logical(init)
+
+      # Check overwrite param
+      checkmate::assert_logical(overwrite)
+
+      # Check init param
+      checkmate::assert_logical(init)
+
+      # Create Upload object
+      u <- Upload$new(
+        path = path,
+        project = project,
+        parent = parent,
+        filename = filename,
+        overwrite = overwrite,
+        file_size = file_size,
+        part_size = part_size,
+        initialized = FALSE,
+        auth = self
+      )
+
+      if (init) {
+        # Initialize multipart upload only
+        u$init()
+      } else {
+        # Initialize and start multipart upload
+        u$init()$start()
+      }
+    },
+    # list all ongoing uploads
+    #' @description This method returns the list of all ongoing uploads.
+    #' @importFrom cli cli_h1 cli_li cli_end
+    #' @importFrom glue glue
+    list_ongoing_uploads = function() {
+      # Run API call based on id parameter
+      res <- sevenbridges2::api(
+        path = paste0("upload/multipart"),
+        method = "GET",
+        token = self$get_token(),
+        base_url = self$url
+      )
+
+      res <- status_check(res)
+
+      # Print information about ongoing uploads
+      cli::cli_h1("Ongoing uploads")
+      for (item in res$items) {
+        fields_to_show <- c(
+          "href", "project", "parent", "name",
+          "initiated", "upload_id"
+        )
+        string <- glue::glue("{fields_to_show}: {item[fields_to_show]}")
+
+        cli::cli_h1("Upload info")
+        cli::cli_li(string)
+      }
+      # Close container elements
+      cli::cli_end()
+
+      invisible(res)
+    },
+    # abort multipart upload
+    #' @description This call aborts an ongoing multipart upload.
+    #' @param upload_id ID of the upload process that you want to abort.
+    #' @importFrom rlang abort inform
+    #' @importFrom checkmate assert_character
+    #' @importFrom glue glue_col
+    upload_abort = function(upload_id) {
+      checkmate::assert_character(upload_id, n.chars = 64L)
+
+      res <- sevenbridges2::api(
+        path = paste0("upload/multipart/", upload_id),
+        method = "DELETE",
+        token = self$get_token(),
+        base_url = self$url
+      )
+
+      status_check(res)
+
+      rlang::inform(
+        glue::glue_col("The upload process with the following ID {green {upload_id}} has been aborted.") # nolint
+      )
     }
     # nocov end
   )
