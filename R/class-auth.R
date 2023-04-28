@@ -228,10 +228,12 @@ Auth <- R6::R6Class(
           normalize_url(config_list[[self$profile_name]][["api_endpoint"]])
         .token <- config_list[[self$profile_name]][["auth_token"]]
         if (is_missing(self$url) || is_missing(.token)) {
+          # nocov start
           rlang::abort(
             "`The field api_endpoint` or `auth_token` is missing in profile:",
             self$profile_name
           )
+          # nocov end
         } else {
           sbg_set_env(
             url = self$url,
@@ -952,7 +954,7 @@ Auth <- R6::R6Class(
           if (parent$type == "folder") {
             parent <- parent$id
           } else {
-            rlang::abort("The provided `parent object is not a folder.")
+            rlang::abort("The provided parent object is not a folder.")
           }
         } else if (checkmate::test_class(parent, classes = "character")) {
           parent <- parent
@@ -986,6 +988,9 @@ Auth <- R6::R6Class(
 
       # Check overwrite param
       checkmate::assert_logical(overwrite)
+
+      # Check init param
+      checkmate::assert_logical(init)
 
       # Create Upload object
       u <- Upload$new(
@@ -1047,10 +1052,6 @@ Auth <- R6::R6Class(
     #' @importFrom checkmate assert_character
     #' @importFrom glue glue_col
     upload_abort = function(upload_id) {
-      if (is_missing(upload_id)) {
-        rlang::abort("Please provide the upload_id parameter.")
-      }
-
       checkmate::assert_character(upload_id, n.chars = 64L)
 
       res <- sevenbridges2::api(
