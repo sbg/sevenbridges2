@@ -196,6 +196,11 @@ check_settings <- function(settings) {
   }
 }
 
+#' Check folder name
+#'
+#' @description This function checks if the provided folder name is valid.
+#' @param name Name of the folder.
+#' @noRd
 check_folder_name <- function(name) {
   if (is_missing(name)) {
     rlang::abort("Please, provide the folder's name.")
@@ -226,7 +231,6 @@ check_metadata <- function(metadata) {
   }
 }
 
-
 #' Check file download destination
 #'
 #' @param directory_path directory path string
@@ -236,7 +240,7 @@ check_download_path <- function(directory_path, filename) {
   if (dir.exists(directory_path)) {
     if (is_missing(filename)) {
       rlang::abort("The filename parameter is missing.")
-    } else if (!is.character(filename) || length(filename) > 1) {
+    } else if (!checkmate::test_character(filename, len = 1L)) {
       rlang::abort("The filename parameter should be a length-one string.")
     }
   } else {
@@ -244,44 +248,28 @@ check_download_path <- function(directory_path, filename) {
   }
 }
 
-
-#' Check retry_count parameter
+#' Check retry parameters
 #'
-#' @description This function validates `retry_count` parameter
-#' used within the `download()` method of a `File` object.
-#' @param retry_count retry_count value
-#' @noRd
-check_retry_count <- function(retry_count) {
-  msg <- "retry_count parameter must be a positive integer number."
-  if (!is.numeric(retry_count)) {
-    rlang::abort(msg) # nocov
-  }
-  retry_count_cast <- suppressWarnings(as.integer(retry_count))
-  if (is_missing(retry_count_cast)) {
-    rlang::abort(msg) # nocov
-  }
-  if (retry_count_cast <= 0) {
-    rlang::abort(msg) # nocov
-  }
-}
-
-
-#' Check retry_timeout parameter
-#'
-#' @description This function validates retry_timeout parameter
+#' @description This function validates provided retry parameter
 #' used within the `download()` method of a `File`object.
-#' @param retry_count retry_timeout value
+#' @param input Value to check.
+#' @param parameter_to_validate Retry parameter to be validated.
 #' @noRd
-check_retry_timeout <- function(retry_timeout) {
-  msg <- "retry_timeout parameter must be a positive integer number."
-  if (!is.numeric(retry_timeout)) {
+check_retry_params <- function(input, parameter_to_validate) {
+  if (parameter_to_validate == "count") {
+    msg <- "retry_count parameter must be a positive integer number."
+  } else if (parameter_to_validate == "timeout") {
+    msg <- "retry_timeout parameter must be a positive integer number."
+  }
+
+  if (!is.numeric(input)) {
     rlang::abort(msg) # nocov
   }
-  retry_timeout_cast <- suppressWarnings(as.integer(retry_timeout))
-  if (is_missing(retry_timeout_cast)) {
+  retry_param_cast <- suppressWarnings(as.integer(input))
+  if (is_missing(retry_param_cast)) {
     rlang::abort(msg) # nocov
   }
-  if (retry_timeout_cast <= 0) {
+  if (retry_param_cast <= 0) {
     rlang::abort(msg) # nocov
   }
 }

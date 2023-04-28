@@ -96,7 +96,7 @@ File <- R6::R6Class(
 
       # Close container elements
       cli::cli_end()
-    }, # nocov end
+    },
 
     #' @description Detailed print method for File class.
     #'
@@ -114,7 +114,6 @@ File <- R6::R6Class(
     #'   \item `tags` field lists the tags for the file. Learn more about
     #'   [tagging your files](https://docs.sevenbridges.com/docs/tag-your-files)
     #'    on the Platform.
-    # nocov end
     #' }
     #'
     #' @importFrom purrr discard
@@ -193,8 +192,7 @@ File <- R6::R6Class(
       )
       # Close container elements
       cli::cli_end()
-    },
-
+    }, # nocov end
 
     #' @description
     #' Updates the name, the full set metadata, and tags
@@ -565,16 +563,16 @@ File <- R6::R6Class(
 
 
       # get download url for the file if it was not generated previously
-      if (is.na(self$url)) {
+      if (is_missing(self$url)) {
         self$url <- self$get_download_url()
       }
 
       # check if directory exists
       check_download_path(directory_path, filename)
 
-      # check retry arguments
-      check_retry_count(retry_count)
-      check_retry_timeout(retry_timeout)
+      # check retry parameters
+      check_retry_params(retry_count, parameter_to_validate = "count")
+      check_retry_params(retry_timeout, parameter_to_validate = "timeout")
 
       # create full destination path for download
       destfile <- file.path(directory_path, filename)
@@ -607,7 +605,7 @@ File <- R6::R6Class(
               Sys.sleep(1)
             }
 
-            # Print a blank line to clear the countdown message
+            # print a blank line to clear the countdown message
             cat("\r", "                              ", "\r")
           }
         )

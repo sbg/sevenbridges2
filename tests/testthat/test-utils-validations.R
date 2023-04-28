@@ -144,7 +144,6 @@ test_that("check_metadata function throws error when metadata is not valid", {
   }
 })
 
-
 test_that("check_download_path function throws error when parameters are not valid", { # nolint
   # Negative test use case for directory_path parameter
   testthat::expect_error(
@@ -177,23 +176,29 @@ test_that("check_download_path function throws error when parameters are not val
   }
 })
 
-test_that("check_retry_count function throws error when retry_count is invalid", { # nolint
-  # Negative test use cases for retry_count parameter
+test_that("check_retry_count function throws error when count is invalid", { # nolint
+  # Negative test use cases for count parameter
   invalid_retry_count <- c(-1, "retry", 0, FALSE)
   for (retry_count in invalid_retry_count) {
     testthat::expect_error(
-      check_retry_count(retry_count),
+      check_retry_params(
+        input = retry_count,
+        parameter_to_validate = "count"
+      ),
       "retry_count parameter must be a positive integer number."
     )
   }
 })
 
-test_that("check_retry_timeout function throws error when retry_timeout is not valid", { # nolint
-  # Negative test use cases for retry_count parameter
+test_that("check_retry_params function throws error when timeout is not valid", { # nolint
+  # Negative test use cases for timeout parameter
   invalid_retry_timeout <- c(-1, "retry", 0, FALSE)
   for (retry_timeout in invalid_retry_timeout) {
     testthat::expect_error(
-      check_retry_timeout(retry_timeout),
+      check_retry_params(
+        input = retry_timeout,
+        parameter_to_validate = "timeout"
+      ),
       "retry_timeout parameter must be a positive integer number."
     )
   }
