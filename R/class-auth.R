@@ -926,7 +926,6 @@ Auth <- R6::R6Class(
     #' and start the upload process immediately.
     #' @importFrom checkmate test_r6 test_class assert_logical
     #' @importFrom rlang abort
-    #' @export
     upload = function(path,
                       project = NULL,
                       parent = NULL,
@@ -971,6 +970,15 @@ Auth <- R6::R6Class(
         }
       }
 
+      # Check filename
+      if (is_missing(filename)) {
+        filename <- basename(path)
+      }
+
+      if (grepl("\\s", filename) || grepl("\\/", filename)) {
+        rlang::abort("The file name cannot contain spaces or backslashes.") # nolint
+      }
+
       # Check size and part_size params
       check_upload_params(size = file_size, part_size = part_size)
 
@@ -1005,7 +1013,6 @@ Auth <- R6::R6Class(
     #' @description This method returns the list of all ongoing uploads.
     #' @importFrom cli cli_h1 cli_li cli_end
     #' @importFrom glue glue
-    #' @export
     list_ongoing_uploads = function() {
       # Run API call based on id parameter
       res <- sevenbridges2::api(
@@ -1039,7 +1046,6 @@ Auth <- R6::R6Class(
     #' @param upload_id ID of the upload process that you want to abort.
     #' @importFrom rlang inform
     #' @importFrom glue glue_col
-    #' @export
     upload_abort = function(upload_id) {
       checkmate::assert_character(upload_id, n.chars = 64L)
 
