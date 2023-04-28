@@ -67,19 +67,19 @@ testthat::test_that("Create folder fails when needed", {
   for (id in invalid_parent_param) {
     testthat::expect_error(
       test_auth_obj$create_folder("my-new-folder", parent = id)
-      )
+    )
   }
   example_file_obj <- File$new(
     id = "file-id",
     name = "file-name",
     type = "file"
-    )
+  )
 
   testthat::expect_error(
     test_auth_obj$create_folder(
       name = "my-new-folder",
       parent = example_file_obj
-      ),
+    ),
     "The provided parent object is not a folder."
   )
 
@@ -89,7 +89,8 @@ testthat::test_that("Create folder fails when needed", {
     testthat::expect_error(
       test_auth_obj$create_folder(
         name = "my-new-folder",
-        project = id)
+        project = id
       )
+    )
   }
 })

@@ -319,9 +319,8 @@ Auth <- R6::R6Class(
         return(res)
       } else {
         return(req)
-      } # nocov end
+      }
     },
-    # nocov start
     # user ---------------------------------------------------------------------
     #' @description Get details about the authenticated user
     #' @param username The user name of a user for whom you want to get basic
