@@ -992,3 +992,111 @@ file$delete()
 folder$delete()
 ```
 
+
+## Upload single file
+
+You can upload files from your local computer to the Platform using the 
+`upload()` method on your `Auth` object. The method allows you to upload only
+a single file. 
+
+To upload a file you should provide its full path on your local computer
+as the `path` parameter.
+
+To specify upload destination for your file you can use either `project` or
+`parent` parameter. These two parameters should not be used together.
+
+* **project** - `Project` object or project ID.
+* **parent** - `File` object (of type `Folder`) or its ID.
+
+#### Upload a single file
+
+```{r}
+a <- Auth$new(platform = "aws-us", token = "<your-token>")
+
+
+# Option 1 - Using the project parameter
+# Option 1.a (providing a Project object as project parameter)
+destination_project <- a$project_get(project = "<short-name-of-the-project>")
+
+up <- a$upload(
+  path = "/path/to/your/file.txt",
+  project = destination_project,
+  overwrite = TRUE,
+  init = TRUE
+)
+# Call start() method do start upload process
+up$start()
+
+# Option 1.b (providing a project's ID as project parameter)
+up <- a$upload(
+  path = "/path/to/your/file.txt",
+  project = "<project_id>",
+  overwrite = TRUE,
+  init = TRUE
+)
+# Call start() method do start upload process
+up$start()
+
+
+# Option 2 - Using the parent parameter
+# Option 2.a (providing a File (must be a folder) object as parent parameter)
+destination_folder <- a$get_file(id = "<folder_id>")
+
+up <- a$upload(
+  path = "/path/to/your/file.txt",
+  parent = destination_folder,
+  overwrite = TRUE,
+  init = TRUE
+)
+# Call start() method do start upload process
+up$start()
+
+# Option 2.b (providing a file's (folder's) ID as project parameter)
+up <- a$upload(
+  path = "/path/to/your/file.txt",
+  parent = "<destination_folder_id>",
+  overwrite = TRUE,
+  init = TRUE
+)
+# Call start() method do start upload process
+up$start()
+```
+
+If you want to skip the step where you need to call the `start()` method
+to start the actual upload process, you can use the `init` parameter
+when calling the `upload()` method. If `init` parameter is set to `FALSE`
+the upload process will start right away.
+
+```{r}
+a <- Auth$new(platform = "aws-us", token = "<your-token>")
+
+destination_project <- a$project_get(project = "<short-name-of-the-project>")
+
+up <- a$upload(
+  path = "/path/to/your/file.txt",
+  project = destination_project,
+  overwrite = TRUE,
+  init = FALSE
+)
+```
+
+#### List all ongoing uploads
+
+The method `list_ongoing_uploads()` allows you to see the list of all
+ongoing upload processes.
+
+```{r}
+# List ongoing uploads
+a$list_ongoing_uploads()
+```
+
+#### Abort upload process
+
+You can abort any uploading process using the `upload_abort()` method.
+To do so, you need to provide the ID of a process within the `upload_id`
+parameter.
+
+```{r}
+# Abort upload
+a$abort_upload(upload_id = "<id_of_the_upload_process>")
+```
