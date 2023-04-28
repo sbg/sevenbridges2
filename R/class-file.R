@@ -581,7 +581,7 @@ File <- R6::R6Class(
       for (i in 1:retry_count) {
         tryCatch(
           {
-            download.file(self$url, destfile, method = "curl")
+            download.file(self$url, destfile, method = method)
             # successful download
             # nolint start
             rlang::inform(glue::glue_col("File {green {filename}} has been downloaded to the {green {directory_path}} directory."))
