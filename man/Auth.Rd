@@ -58,6 +58,9 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \item \href{#method-Auth-get_file}{\code{Auth$get_file()}}
 \item \href{#method-Auth-copy_files}{\code{Auth$copy_files()}}
 \item \href{#method-Auth-create_folder}{\code{Auth$create_folder()}}
+\item \href{#method-Auth-upload}{\code{Auth$upload()}}
+\item \href{#method-Auth-list_ongoing_uploads}{\code{Auth$list_ongoing_uploads()}}
+\item \href{#method-Auth-upload_abort}{\code{Auth$upload_abort()}}
 \item \href{#method-Auth-clone}{\code{Auth$clone()}}
 }
 }
@@ -544,6 +547,90 @@ destination folder (as the \code{parent} parameter), not both.
 (which must be of type \code{FOLDER}).}
 
 \item{\code{project}}{The ID of the destination project, or a Project object.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-upload"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-upload}{}}}
+\subsection{Method \code{upload()}}{
+This method allows you to upload a single file from your
+local computer to the Platform.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$upload(
+  path,
+  project = NULL,
+  parent = NULL,
+  filename = NULL,
+  overwrite = FALSE,
+  part_size = getOption("sevenbridges2")$RECOMMENDED_PART_SIZE,
+  init = FALSE
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path}}{File path on local disk.}
+
+\item{\code{project}}{Project object or its ID. Project should not be used
+together with parent. If parent is used, the call will upload the file
+to the specified Platform folder, within the project to which the folder
+belongs. If project is used, the call will upload the file to the root
+of the project's files.}
+
+\item{\code{parent}}{Parent folder object or its ID. Should not be used
+together with project. If parent is used, the call will upload the file
+to the specified Platform folder, within the project to which the folder
+belongs. If project is used, the call will upload the file to the root
+of the project's files.}
+
+\item{\code{filename}}{Optional new file name. By default the uploaded file
+will have the same name as the original file provided with the \code{path}
+parameter. If its name will not change, omit this key.}
+
+\item{\code{overwrite}}{In case there is already a file with the same name in
+the selected platform project/folder, this option allows you to control
+whether that file will be overwritten or not. If overwrite is set to
+\code{TRUE} and a file already exists under the name specified in the
+request, the existing file will be deleted and a new one created in its
+place.}
+
+\item{\code{part_size}}{The preferred size for upload parts in bytes. If
+omitted or set to a value that is incompatible with the cloud storage
+provider, a default value will be used.}
+
+\item{\code{init}}{If \code{TRUE}, the method will initialize and return the Upload
+object and stop. If \code{FALSE}, the method will return the Upload object
+and start the upload process immediately.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-list_ongoing_uploads"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-list_ongoing_uploads}{}}}
+\subsection{Method \code{list_ongoing_uploads()}}{
+This method returns the list of all ongoing uploads.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$list_ongoing_uploads()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-upload_abort"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-upload_abort}{}}}
+\subsection{Method \code{upload_abort()}}{
+This call aborts an ongoing multipart upload.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$upload_abort(upload_id)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{upload_id}}{ID of the upload process that you want to abort.}
 }
 \if{html}{\out{</div>}}
 }
