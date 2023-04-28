@@ -931,7 +931,7 @@ Auth <- R6::R6Class(
                       filename = NULL,
                       overwrite = FALSE,
                       part_size = getOption("sevenbridges2")$RECOMMENDED_PART_SIZE, # nolint
-                      init = TRUE) {
+                      init = FALSE) {
       # Check if the provided path is valid, i.e. if the file exists
       # and get its size.
       if (file.exists(path)) {
@@ -1043,9 +1043,14 @@ Auth <- R6::R6Class(
     # abort multipart upload
     #' @description This call aborts an ongoing multipart upload.
     #' @param upload_id ID of the upload process that you want to abort.
-    #' @importFrom rlang inform
+    #' @importFrom rlang abort inform
+    #' @importFrom checkmate assert_character
     #' @importFrom glue glue_col
     upload_abort = function(upload_id) {
+      if (is_missing(upload_id)) {
+        rlang::abort("Please provide the upload_id parameter.")
+      }
+
       checkmate::assert_character(upload_id, n.chars = 64L)
 
       res <- sevenbridges2::api(

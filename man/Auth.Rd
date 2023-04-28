@@ -565,7 +565,7 @@ local computer to the Platform.
   filename = NULL,
   overwrite = FALSE,
   part_size = getOption("sevenbridges2")$RECOMMENDED_PART_SIZE,
-  init = TRUE
+  init = FALSE
 )}\if{html}{\out{</div>}}
 }
 

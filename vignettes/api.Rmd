@@ -1021,8 +1021,7 @@ destination_project <- a$project_get(project = "<short-name-of-the-project>")
 up <- a$upload(
   path = "/path/to/your/file.txt",
   project = destination_project,
-  overwrite = TRUE,
-  init = TRUE
+  overwrite = TRUE
 )
 # Call start() method do start upload process
 up$start()
@@ -1031,8 +1030,7 @@ up$start()
 up <- a$upload(
   path = "/path/to/your/file.txt",
   project = "<project_id>",
-  overwrite = TRUE,
-  init = TRUE
+  overwrite = TRUE
 )
 # Call start() method do start upload process
 up$start()
@@ -1045,8 +1043,7 @@ destination_folder <- a$get_file(id = "<folder_id>")
 up <- a$upload(
   path = "/path/to/your/file.txt",
   parent = destination_folder,
-  overwrite = TRUE,
-  init = TRUE
+  overwrite = TRUE
 )
 # Call start() method do start upload process
 up$start()
@@ -1055,8 +1052,7 @@ up$start()
 up <- a$upload(
   path = "/path/to/your/file.txt",
   parent = "<destination_folder_id>",
-  overwrite = TRUE,
-  init = TRUE
+  overwrite = TRUE
 )
 # Call start() method do start upload process
 up$start()
