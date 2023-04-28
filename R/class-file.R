@@ -542,6 +542,75 @@ File <- R6::R6Class(
         msg <- httr::content(res, as = "parsed")$message
         rlang::abort(glue::glue("HTTP Status {res$status_code} : {msg}"))
       }
+    },
+    #' @description Download method for File class. It allows download a
+    #' platform file to your local computer. To specify the destination for
+    #' your download, you should provide the path to the destination directory
+    #' as `directory_path` parameter.
+    #' @param directory_path Path to the destination directory of a new file.
+    #' @param filename Full name for the new file, including its extension. By
+    #' default, the name field of File object will be used.
+    #' @param method Method to be used for downloading files. By default, this
+    #' parameter is set to `curl`.
+    #' @param retry_count Number of retries if error occurs during download.
+    #' @param retry_timeout Number of seconds between two retries.
+    #' @importFrom rlang inform warn abort
+    #' @importFrom glue glue_col
+    download = function(directory_path = getwd(),
+                        filename = self$name,
+                        method = "curl",
+                        retry_count = getOption("sevenbridges2")$default_retry_count, # nolint
+                        retry_timeout = getOption("sevenbridges2")$default_retry_timeout) { # nolint
+
+
+      # get download url for the file if it was not generated previously
+      if (is_missing(self$url)) {
+        self$url <- self$get_download_url()
+      }
+
+      # check if directory exists
+      check_download_path(directory_path, filename)
+
+      # check retry parameters
+      check_retry_params(retry_count, parameter_to_validate = "count")
+      check_retry_params(retry_timeout, parameter_to_validate = "timeout")
+
+      # create full destination path for download
+      destfile <- file.path(directory_path, filename)
+
+      # Retry mechanism
+      for (i in 1:retry_count) {
+        tryCatch(
+          {
+            download.file(self$url, destfile, method = method)
+            # successful download
+            # nolint start
+            rlang::inform(glue::glue_col("File {green {filename}} has been downloaded to the {green {directory_path}} directory."))
+            # nolint end
+            break
+          },
+          error = function(e) {
+            # failed download
+            # nolint start
+            rlang::warn(glue::glue_col("Download attempt {green {i}} failed. Error message: {red {e$message}}"))
+            # nolint end
+            # failed download after last attempt
+            if (i == retry_count) {
+              # nolint start
+              rlang::abort(glue::glue_col("Download failed after maximum allowed number of attempts ({red {retry_count}})."))
+              # nolint end
+            }
+            # wait for 5 seconds before new attemt - print the countdown message
+            for (seconds_left in retry_timeout:1) {
+              cat(glue::glue_col("Retrying in {green {seconds_left}} seconds...", "\r")) # nolint
+              Sys.sleep(1)
+            }
+
+            # print a blank line to clear the countdown message
+            cat("\r", "                              ", "\r")
+          }
+        )
+      }
     }
   )
 )

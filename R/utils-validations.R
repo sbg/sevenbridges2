@@ -197,6 +197,11 @@ check_settings <- function(settings) {
   }
 }
 
+#' Check folder name
+#'
+#' @description This function checks if the provided folder name is valid.
+#' @param name Name of the folder.
+#' @noRd
 check_folder_name <- function(name) {
   if (is_missing(name)) {
     rlang::abort("Please, provide the folder's name.")
@@ -224,6 +229,50 @@ check_metadata <- function(metadata) {
     # nolint start
     rlang::abort("Metadata parameter must be a named list of key-value pairs. For example: metadata <- list(metadata_key_1 = 'metadata_value_1', metadata_key_2 = 'metadata_value_2')")
     # nolint end
+  }
+}
+
+
+#' Check file download destination
+#'
+#' @param directory_path directory path string
+#' @param filename file name (base name)
+#' @noRd
+check_download_path <- function(directory_path, filename) {
+  if (dir.exists(directory_path)) {
+    if (is_missing(filename)) {
+      rlang::abort("The filename parameter is missing.")
+    } else if (!checkmate::test_character(filename, len = 1L)) {
+      rlang::abort("The filename parameter should be a length-one string.")
+    }
+  } else {
+    rlang::abort(glue::glue_col("Destination directory {directory_path} does not exist.")) # nolint
+  }
+}
+
+#' Check retry parameters
+#'
+#' @description This function validates provided retry parameter
+#' used within the `download()` method of a `File`object.
+#' @param input Value to check.
+#' @param parameter_to_validate Retry parameter to be validated.
+#' @noRd
+check_retry_params <- function(input, parameter_to_validate) {
+  if (parameter_to_validate == "count") {
+    msg <- "retry_count parameter must be a positive integer number."
+  } else if (parameter_to_validate == "timeout") {
+    msg <- "retry_timeout parameter must be a positive integer number."
+  }
+
+  if (!is.numeric(input)) {
+    rlang::abort(msg) # nocov
+  }
+  retry_param_cast <- suppressWarnings(as.integer(input))
+  if (is_missing(retry_param_cast)) {
+    rlang::abort(msg) # nocov
+  }
+  if (retry_param_cast <= 0) {
+    rlang::abort(msg) # nocov
   }
 }
 

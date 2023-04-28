@@ -55,6 +55,7 @@ R6 Class representing a resource for managing files.
 \item \href{#method-File-move_to_folder}{\code{File$move_to_folder()}}
 \item \href{#method-File-list_contents}{\code{File$list_contents()}}
 \item \href{#method-File-delete}{\code{File$delete()}}
+\item \href{#method-File-download}{\code{File$download()}}
 \item \href{#method-File-clone}{\code{File$clone()}}
 }
 }
@@ -354,6 +355,42 @@ Delete method for File class.
 \if{html}{\out{<div class="r">}}\preformatted{File$delete()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-File-download"></a>}}
+\if{latex}{\out{\hypertarget{method-File-download}{}}}
+\subsection{Method \code{download()}}{
+Download method for File class. It allows download a
+platform file to your local computer. To specify the destination for
+your download, you should provide the path to the destination directory
+as \code{directory_path} parameter.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{File$download(
+  directory_path = getwd(),
+  filename = self$name,
+  method = "curl",
+  retry_count = getOption("sevenbridges2")$default_retry_count,
+  retry_timeout = getOption("sevenbridges2")$default_retry_timeout
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{directory_path}}{Path to the destination directory of a new file.}
+
+\item{\code{filename}}{Full name for the new file, including its extension. By
+default, the name field of File object will be used.}
+
+\item{\code{method}}{Method to be used for downloading files. By default, this
+parameter is set to \code{curl}.}
+
+\item{\code{retry_count}}{Number of retries if error occurs during download.}
+
+\item{\code{retry_timeout}}{Number of seconds between two retries.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-clone"></a>}}

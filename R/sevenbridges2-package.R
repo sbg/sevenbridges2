@@ -32,6 +32,8 @@ utils::globalVariables(c(
     limit = 50L,
     advance_access = FALSE,
     input_check = TRUE,
+    default_retry_count = 5,
+    default_retry_timeout = 5,
     RECOMMENDED_PART_SIZE = 32 * 1024^2,
     MINIMUM_PART_SIZE = 5 * 1024^2,
     MAXIMUM_PART_SIZE = 5 * 1024^3,

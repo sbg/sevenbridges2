@@ -993,6 +993,21 @@ folder$delete()
 ```
 
 
+## Download a file
+
+`File` object has a `download()` method, which allows you to download that file
+to your local computer. You should provide the `directory_path` parameter, 
+which specifies the destination directory to which your file will be 
+downloaded. By default, this parameter is set to your current working
+directory. You can also set the new name for your resulting (downloaded)
+file by providing the `filename` parameter. Otherwise, the default name 
+(the one stored in the `name` field of your `File` object) will be used.
+
+```{r}
+# Download a file
+file$download(directory_path = "/path/to/your/destination/folder")
+```
+
 ## Upload single file
 
 You can upload files from your local computer to the Platform using the 

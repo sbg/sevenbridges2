@@ -143,3 +143,63 @@ test_that("check_metadata function throws error when metadata is not valid", {
     )
   }
 })
+
+test_that("check_download_path function throws error when parameters are not valid", { # nolint
+  # Negative test use case for directory_path parameter
+  testthat::expect_error(
+    check_download_path(
+      directory_path = "non-existent-directory"
+    ),
+    "Destination directory non-existent-directory does not exist."
+  )
+
+  # Negative test use cases for filename parameter
+  # 1) is_missing returns TRUE
+  filename_invalid_values <- c(NA, NULL)
+  for (filename in filename_invalid_values) {
+    testthat::expect_error(
+      check_download_path(directory_path = getwd(), filename = filename),
+      "The filename parameter is missing."
+    )
+  }
+  # 2) is_missing returns FALSE, but the filename parameter value is not valid
+  filename_invalid_values <- list(
+    15L,
+    c("test_file_1.txt", "test_file_2.txt"),
+    list("test_file.txt")
+  )
+  for (filename in filename_invalid_values) {
+    testthat::expect_error(
+      check_download_path(directory_path = getwd(), filename = filename),
+      "The filename parameter should be a length-one string."
+    )
+  }
+})
+
+test_that("check_retry_count function throws error when count is invalid", { # nolint
+  # Negative test use cases for count parameter
+  invalid_retry_count <- c(-1, "retry", 0, FALSE)
+  for (retry_count in invalid_retry_count) {
+    testthat::expect_error(
+      check_retry_params(
+        input = retry_count,
+        parameter_to_validate = "count"
+      ),
+      "retry_count parameter must be a positive integer number."
+    )
+  }
+})
+
+test_that("check_retry_params function throws error when timeout is not valid", { # nolint
+  # Negative test use cases for timeout parameter
+  invalid_retry_timeout <- c(-1, "retry", 0, FALSE)
+  for (retry_timeout in invalid_retry_timeout) {
+    testthat::expect_error(
+      check_retry_params(
+        input = retry_timeout,
+        parameter_to_validate = "timeout"
+      ),
+      "retry_timeout parameter must be a positive integer number."
+    )
+  }
+})
