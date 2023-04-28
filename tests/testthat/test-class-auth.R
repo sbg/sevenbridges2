@@ -322,3 +322,103 @@ testthat::test_that("Method files is working", {
   testthat::expect_error(auth$files(file_id = c("test")))
   testthat::expect_error(auth$files(file_id = NULL))
 })
+
+
+
+testthat::test_that("Method upload throws error when needed", {
+  # Generate dummy token
+  dummy_token <-
+    stringi::stri_rand_strings(1, 32, pattern = "[a-z0-9]") # fake token
+
+  # Create dummy authentication object
+  auth <- suppressMessages(
+    sevenbridges2::Auth$new(
+      from = "direct",
+      platform = "aws-us",
+      token = dummy_token
+    )
+  )
+
+  # Negative cases for various parameters
+
+  # Invalid path
+  testthat::expect_error(
+    auth$upload(path = "non-existing-path/file.txt"),
+    "There is no file at the specified path."
+  )
+
+  test_upload_file_path <- testthat::test_path(
+    "test_data",
+    "file_object.RDS"
+  )
+
+  # project and parent both missing
+  # nolint start
+  testthat::expect_error(
+    auth$upload(path = test_upload_file_path),
+    "Both the project name and parent folder ID are missing. You need to provide one of them."
+  )
+  # nolint end
+
+  # project and parent both provided
+  # nolint start
+  testthat::expect_error(
+    auth$upload(
+      path = test_upload_file_path,
+      project = "luna_lovegood/nargles-project",
+      parent = "parent_folder_id"
+    ),
+    "You should specify a project or a parent folder, not both."
+  )
+  # nolint end
+
+  # Invalid parent param
+  invalid_parent_param <- c("", NULL, list(), 232424, NA)
+  for (id in invalid_parent_param) {
+    testthat::expect_error(
+      auth$upload(path = test_path, parent = id)
+    )
+  }
+
+  # Invalid parent param - File object (type File instead of Folder)
+  example_file_obj <- File$new(
+    id = "file-id",
+    name = "file-name",
+    type = "file"
+  )
+
+  testthat::expect_error(
+    auth$upload(
+      path = test_upload_file_path,
+      parent = example_file_obj
+    ),
+    "The provided parent object is not a folder."
+  )
+
+  # Invalid project param
+  invalid_project_obj <- c("", NULL, list(), 232424, NA, example_file_obj)
+  for (id in invalid_project_obj) {
+    testthat::expect_error(
+      auth$upload(
+        path = test_upload_file_path,
+        project = id
+      )
+    )
+  }
+
+  # Invalid filename param
+  invalid_filenames <- list("test file.txt", "test\file.txt")
+
+  # nolint start
+  for (filename in invalid_filenames) {
+    testthat::expect_error(
+      auth$upload(
+        path = test_upload_file_path,
+        project = "luna_lovegood/nargles-project",
+        filename = filename
+      ),
+      "The file name cannot contain spaces or backslashes."
+    )
+  }
+  # nolint end
+})
