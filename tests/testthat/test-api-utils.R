@@ -422,3 +422,86 @@ testthat::test_that("Utility function m.match works", {
 
   # Test output when exact parameter is FALSE, and ignore.case is TRUE
 })
+
+testthat::test_that("Utility function check_and_transform_id works", {
+  ## Project class -----
+  # Check if function extract ID of instance
+  project_obj <- testthat::test_path(
+    "test_data",
+    "luna_lovegood_project_obj.RDS"
+  )
+  test_project <- readRDS(project_obj)
+
+  test_project_id <- check_and_transform_id(test_project, "Project")
+  # Is returned id a character vector
+  testthat::expect_vector(test_project_id, ptype = character())
+  # Project id parts are always separated by slash
+  testthat::expect_match(test_project_id, "./.")
+  # throws an error if Project instance tried to treat as File
+  testthat::expect_error(
+    check_and_transform_id(test_project, "File"),
+    "Must inherit from class 'File', but has classes 'Project','Item','R6"
+    )
+
+  # Check if function keeps unchanged directly specified ID
+  directly_with_id <- "luna_lovegood/nargles-project"
+  # Is returned id a character vector
+  testthat::expect_vector(directly_with_id, ptype = character())
+  # Project id parts are always separated by slash
+  testthat::expect_match(directly_with_id, "/")
+  # Test if extracted are the same to supplied?
+  testthat::expect_equal(test_project_id, directly_with_id)
+  # With directly entered id class parameter not affect return
+  testthat::expect_no_error(
+    check_and_transform_id(directly_with_id, "File")
+  )
+
+  ## File class -----
+  # Check if function extract ID of instance
+  file_obj <- testthat::test_path(
+    "test_data",
+    "file_object.RDS"
+  )
+  test_file <- readRDS(file_obj)
+
+  test_file_id <- check_and_transform_id(test_file, "File")
+  # Is returned id a character vector
+  testthat::expect_vector(test_file_id, ptype = character())
+  # Check if id contains lower case letters and digits only
+  testthat::expect_equal(grepl("^[a-z0-9]+$", test_file_id), TRUE)
+  # throws an error if File instance tried to treat as a wrong class
+  testthat::expect_error(
+    check_and_transform_id(test_file, "Project"),
+    "Must inherit from class 'Project', but has classes 'File','Item','R6"
+  )
+
+  # Check if function keeps unchanged directly specified ID
+  directly_with_id <- "643536f886c9522d97347edd"
+  # Is returned id a character vector
+  testthat::expect_vector(directly_with_id, ptype = character())
+  # Check if id contains lower case letters and digits only
+  testthat::expect_equal(grepl("^[a-z0-9]+$", directly_with_id), TRUE)
+  # Test if extracted are the same to supplied?
+  testthat::expect_equal(test_file_id, directly_with_id)
+  # With directly entered id class parameter not affect return
+  testthat::expect_no_error(
+    check_and_transform_id(directly_with_id, "File")
+  )
+  ## Upload class -----
+  # Check if function extract ID of instance
+  # Load auth object
+  test_auth_obj <- readRDS(testthat::test_path("test_data", "auth.RDS"))
+  path <- testthat::test_path("test_data", "auth.RDS")
+  upload_obj <- Upload$new(
+    path = path,
+    overwrite = TRUE,
+    parent = "parent-id",
+    file_size = 50 * 1024^2,
+    auth = test_auth_obj,
+    upload_id = "KZ1PV8fxZsNGbCcoP1nssvmu1knBHPgYP5XPUdRz9Rf8pJH3dW367h1sXev6zEMi"
+
+  )
+  upload_obj$upload_id
+
+
+})
