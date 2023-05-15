@@ -326,3 +326,27 @@ setup_body <- function(method, body = list()) {
   return(body)
 }
 # nolint end
+
+#' Check and transform id.
+#'
+#' Generic way to check if the supplied argument is an instance of a given class
+#' or ID is directly specified as a string. In the first case, ID is extracted
+#' from specified field of object and returned as string.
+#'
+#' @param x String with id or an instance of specified class.
+#' @param class_name Expected class of instance from which ID will be extracted.
+#' @param field_name Field name of to extract ID from. Default is "id".
+#' @return String with id.
+#'
+#' @importFrom checkmate assert_r6 assert_character
+#' @noRd
+check_and_transform_id <- function(x, class_name, field_name = "id") {
+  if (inherits(x, "R6")) {
+    checkmate::assert_r6(x, classes = class_name, null.ok = TRUE)
+    id <- x[[field_name]]
+  } else {
+    checkmate::assert_character(x, null.ok = TRUE)
+    id <- x
+  }
+  return(id)
+}
