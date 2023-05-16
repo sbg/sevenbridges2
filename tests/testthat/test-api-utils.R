@@ -422,8 +422,9 @@ testthat::test_that("Utility function m.match works", {
 
   # Test output when exact parameter is FALSE, and ignore.case is TRUE
 })
-
-testthat::test_that("Utility function check_and_transform_id works", {
+# nolint start
+testthat::test_that("Utility function check_and_transform_id from objects works", {
+  # nolint end
   ## Project class -----
   # Check if function extract ID of instance
   project_obj <- testthat::test_path(
@@ -441,19 +442,6 @@ testthat::test_that("Utility function check_and_transform_id works", {
     "Must inherit from class 'File', but has classes 'Project','Item','R6'."
   )
 
-  # Check if function keeps unchanged directly specified ID
-  directly_with_id <- check_and_transform_id("luna_lovegood/nargles-project")
-  # Is returned id a character vector
-  testthat::expect_vector(directly_with_id, ptype = character())
-  # Test if extracted are the same to the directly supplied?
-  testthat::expect_equal(test_project_id, directly_with_id)
-  # ID have to be character string
-  testthat::expect_snapshot(check_and_transform_id(TRUE),
-                            error = TRUE
-  )
-  testthat::expect_snapshot(check_and_transform_id(123),
-                            error = TRUE
-  )
   ## File class -----
   # Check if function extract ID of instance
   file_obj <- testthat::test_path(
@@ -495,5 +483,25 @@ testthat::test_that("Utility function check_and_transform_id works", {
     check_and_transform_id(test_billing_group, "Project"),
     "Must inherit from class 'Project', but has classes 'Billing','Item','R6'."
   )
-
+})
+# nolint start
+testthat::test_that("Utility function check_and_transform_id with ID as string works", {
+  # nolint end
+  valid_id <- c(
+    "luna_lovegood/nargles-project",
+    "643536f886c9522d97347edd",
+    "asdfg123-1234-1234-ab12-7e7e7e777abc"
+  )
+  for (id in valid_id) {
+    testthat::expect_vector(id, ptype = character())
+  }
+})
+# nolint start
+test_that("Utility function check_and_transform_id throws error when ID is not valid", {
+  # nolint end
+  # ID have to be character string
+  invalid_id <- c(TRUE, 123)
+  for (id in invalid_id) {
+    testthat::expect_error(check_and_transform_id(id))
+  }
 })
