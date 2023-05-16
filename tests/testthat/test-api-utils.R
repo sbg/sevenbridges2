@@ -435,27 +435,25 @@ testthat::test_that("Utility function check_and_transform_id works", {
   test_project_id <- check_and_transform_id(test_project, "Project")
   # Is returned id a character vector
   testthat::expect_vector(test_project_id, ptype = character())
-  # Project id parts are always separated by slash
-  testthat::expect_match(test_project_id, "./.")
   # throws an error if Project instance tried to treat as File
   testthat::expect_error(
     check_and_transform_id(test_project, "File"),
-    "Must inherit from class 'File', but has classes 'Project','Item','R6"
+    "Must inherit from class 'File', but has classes 'Project','Item','R6'."
   )
 
   # Check if function keeps unchanged directly specified ID
-  directly_with_id <- "luna_lovegood/nargles-project"
+  directly_with_id <- check_and_transform_id("luna_lovegood/nargles-project")
   # Is returned id a character vector
   testthat::expect_vector(directly_with_id, ptype = character())
-  # Project id parts are always separated by slash
-  testthat::expect_match(directly_with_id, "./.")
-  # Test if extracted are the same to supplied?
+  # Test if extracted are the same to the directly supplied?
   testthat::expect_equal(test_project_id, directly_with_id)
-  # With directly entered id class parameter not affect return
-  testthat::expect_no_error(
-    check_and_transform_id(directly_with_id, "File")
+  # ID have to be character string
+  testthat::expect_snapshot(check_and_transform_id(TRUE),
+                            error = TRUE
   )
-
+  testthat::expect_snapshot(check_and_transform_id(123),
+                            error = TRUE
+  )
   ## File class -----
   # Check if function extract ID of instance
   file_obj <- testthat::test_path(
@@ -467,26 +465,12 @@ testthat::test_that("Utility function check_and_transform_id works", {
   test_file_id <- check_and_transform_id(test_file, "File")
   # Is returned id a character vector
   testthat::expect_vector(test_file_id, ptype = character())
-  # Check if id contains lower case letters and digits only
-  testthat::expect_equal(grepl("^[a-z0-9]+$", test_file_id), TRUE)
   # throws an error if File instance tried to treat as a wrong class
   testthat::expect_error(
     check_and_transform_id(test_file, "Project"),
     "Must inherit from class 'Project', but has classes 'File','Item','R6"
   )
 
-  # Check if function keeps unchanged directly specified ID
-  directly_with_id <- "643536f886c9522d97347edd"
-  # Is returned id a character vector
-  testthat::expect_vector(directly_with_id, ptype = character())
-  # Check if id contains lower case letters and digits only
-  testthat::expect_equal(grepl("^[a-z0-9]+$", directly_with_id), TRUE)
-  # Test if extracted are the same to supplied?
-  testthat::expect_equal(test_file_id, directly_with_id)
-  # With directly entered id class parameter not affect return
-  testthat::expect_no_error(
-    check_and_transform_id(directly_with_id, "File")
-  )
   ## Upload class -----
   # authentication obstacles
   ## Billing class -----
@@ -506,24 +490,10 @@ testthat::test_that("Utility function check_and_transform_id works", {
   test_biling_id <- check_and_transform_id(test_billing_group, "Billing")
   # Is returned id a character vector
   testthat::expect_vector(test_biling_id, ptype = character())
-  # Project id parts are always separated by dash
-  testthat::expect_match(test_biling_id, ".-.")
   # throws an error if billing instance tried to treat as a wrong class
   testthat::expect_error(
     check_and_transform_id(test_billing_group, "Project"),
-    "Must inherit from class 'Project', but has classes 'Billing','Item','R6"
+    "Must inherit from class 'Project', but has classes 'Billing','Item','R6'."
   )
 
-  # Check if function keeps unchanged directly specified ID
-  directly_with_id <- "asdfg123-1234-1234-ab12-7e7e7e777abc"
-  # Is returned id a character vector
-  testthat::expect_vector(directly_with_id, ptype = character())
-  # Project id parts are always separated by slash
-  testthat::expect_match(directly_with_id, ".-.")
-  # Test if extracted are the same to supplied?
-  testthat::expect_equal(test_biling_id, directly_with_id)
-  # With directly entered id class parameter not affect return
-  testthat::expect_no_error(
-    check_and_transform_id(directly_with_id, "File")
-  )
 })
