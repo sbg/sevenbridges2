@@ -422,3 +422,86 @@ testthat::test_that("Utility function m.match works", {
 
   # Test output when exact parameter is FALSE, and ignore.case is TRUE
 })
+# nolint start
+testthat::test_that("Utility function check_and_transform_id from objects works", {
+  # nolint end
+  ## Project class -----
+  # Check if function extract ID of instance
+  project_obj <- testthat::test_path(
+    "test_data",
+    "luna_lovegood_project_obj.RDS"
+  )
+  test_project <- readRDS(project_obj)
+
+  test_project_id <- check_and_transform_id(test_project, "Project")
+  # Is returned id a character vector
+  testthat::expect_vector(test_project_id, ptype = character())
+  # throws an error if Project instance tried to treat as File
+  testthat::expect_error(
+    check_and_transform_id(test_project, "File"),
+    "Must inherit from class 'File', but has classes 'Project','Item','R6'."
+  )
+
+  ## File class -----
+  # Check if function extract ID of instance
+  file_obj <- testthat::test_path(
+    "test_data",
+    "file_object.RDS"
+  )
+  test_file <- readRDS(file_obj)
+
+  test_file_id <- check_and_transform_id(test_file, "File")
+  # Is returned id a character vector
+  testthat::expect_vector(test_file_id, ptype = character())
+  # throws an error if File instance tried to treat as a wrong class
+  testthat::expect_error(
+    check_and_transform_id(test_file, "Project"),
+    "Must inherit from class 'Project', but has classes 'File','Item','R6"
+  )
+
+  ## Upload class -----
+  # authentication obstacles
+  ## Billing class -----
+  # Load auth object
+  test_auth_obj <- readRDS(testthat::test_path("test_data", "auth.RDS"))
+
+  # Load predefined response needed for creating a billing group object
+  test_billing_group_response <-
+    readRDS(testthat::test_path("test_data", "ravenclaw_test_resp.RDS"))
+
+  # Create billing group object
+  test_billing_group <- asBilling(
+    x = test_billing_group_response,
+    auth = test_auth_obj
+  )
+
+  test_biling_id <- check_and_transform_id(test_billing_group, "Billing")
+  # Is returned id a character vector
+  testthat::expect_vector(test_biling_id, ptype = character())
+  # throws an error if billing instance tried to treat as a wrong class
+  testthat::expect_error(
+    check_and_transform_id(test_billing_group, "Project"),
+    "Must inherit from class 'Project', but has classes 'Billing','Item','R6'."
+  )
+})
+# nolint start
+testthat::test_that("Utility function check_and_transform_id with ID as string works", {
+  # nolint end
+  valid_id <- c(
+    "luna_lovegood/nargles-project",
+    "643536f886c9522d97347edd",
+    "asdfg123-1234-1234-ab12-7e7e7e777abc"
+  )
+  for (id in valid_id) {
+    testthat::expect_vector(check_and_transform(id), ptype = character())
+  }
+})
+# nolint start
+test_that("Utility function check_and_transform_id throws error when ID is not valid", {
+  # nolint end
+  # ID have to be character string
+  invalid_id <- c(TRUE, 123)
+  for (id in invalid_id) {
+    testthat::expect_error(check_and_transform_id(id))
+  }
+})
