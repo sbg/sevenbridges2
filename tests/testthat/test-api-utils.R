@@ -448,7 +448,7 @@ testthat::test_that("Utility function check_and_transform_id works", {
   # Is returned id a character vector
   testthat::expect_vector(directly_with_id, ptype = character())
   # Project id parts are always separated by slash
-  testthat::expect_match(directly_with_id, "/")
+  testthat::expect_match(directly_with_id, "./.")
   # Test if extracted are the same to supplied?
   testthat::expect_equal(test_project_id, directly_with_id)
   # With directly entered id class parameter not affect return
@@ -488,20 +488,42 @@ testthat::test_that("Utility function check_and_transform_id works", {
     check_and_transform_id(directly_with_id, "File")
   )
   ## Upload class -----
-  # Check if function extract ID of instance
+  # authentication obstacle
+  ## Billing class -----
   # Load auth object
   test_auth_obj <- readRDS(testthat::test_path("test_data", "auth.RDS"))
-  path <- testthat::test_path("test_data", "auth.RDS")
-  upload_obj <- Upload$new(
-    path = path,
-    overwrite = TRUE,
-    parent = "parent-id",
-    file_size = 50 * 1024^2,
-    auth = test_auth_obj,
-    upload_id = "KZ1PV8fxZsNGbCcoP1nssvmu1knBHPgYP5XPUdRz9Rf8pJH3dW367h1sXev6zEMi"
 
+  # Load predefined response needed for creating a billing group object
+  test_billing_group_response <-
+    readRDS(testthat::test_path("test_data", "ravenclaw_test_resp.RDS"))
+
+  # Create billing group object
+  test_billing_group <- asBilling(
+    x = test_billing_group_response,
+    auth = test_auth_obj
   )
-  upload_obj$upload_id
 
+  test_biling_id <- check_and_transform_id(test_billing_group, "Billing")
+  # Is returned id a character vector
+  testthat::expect_vector(test_biling_id, ptype = character())
+  # Project id parts are always separated by dot
+  testthat::expect_match(test_project_id, ".-.")
+  # throws an error if billing instance tried to treat as a wrong class
+  testthat::expect_error(
+    check_and_transform_id(test_billing_group, "Project"),
+    "Must inherit from class 'Project', but has classes 'Billing','Item','R6"
+  )
 
+  # Check if function keeps unchanged directly specified ID
+  directly_with_id <- "asdfg123-1234-1234-ab12-7e7e7e777abc"
+  # Is returned id a character vector
+  testthat::expect_vector(directly_with_id, ptype = character())
+  # Project id parts are always separated by slash
+  testthat::expect_match(directly_with_id, ".-.")
+  # Test if extracted are the same to supplied?
+  testthat::expect_equal(test_biling_id, directly_with_id)
+  # With directly entered id class parameter not affect return
+  testthat::expect_no_error(
+    check_and_transform_id(directly_with_id, "File")
+  )
 })
