@@ -441,7 +441,7 @@ testthat::test_that("Utility function check_and_transform_id works", {
   testthat::expect_error(
     check_and_transform_id(test_project, "File"),
     "Must inherit from class 'File', but has classes 'Project','Item','R6"
-    )
+  )
 
   # Check if function keeps unchanged directly specified ID
   directly_with_id <- "luna_lovegood/nargles-project"
@@ -488,7 +488,7 @@ testthat::test_that("Utility function check_and_transform_id works", {
     check_and_transform_id(directly_with_id, "File")
   )
   ## Upload class -----
-  # authentication obstacle
+  # authentication obstacles
   ## Billing class -----
   # Load auth object
   test_auth_obj <- readRDS(testthat::test_path("test_data", "auth.RDS"))
@@ -506,8 +506,8 @@ testthat::test_that("Utility function check_and_transform_id works", {
   test_biling_id <- check_and_transform_id(test_billing_group, "Billing")
   # Is returned id a character vector
   testthat::expect_vector(test_biling_id, ptype = character())
-  # Project id parts are always separated by dot
-  testthat::expect_match(test_project_id, ".-.")
+  # Project id parts are always separated by dash
+  testthat::expect_match(test_biling_id, ".-.")
   # throws an error if billing instance tried to treat as a wrong class
   testthat::expect_error(
     check_and_transform_id(test_billing_group, "Project"),
