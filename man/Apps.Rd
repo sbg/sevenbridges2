@@ -13,8 +13,6 @@ R6 Class representing apps resource endpoint
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{URL}}{URL endpoint fields}
-
-\item{\code{CONTENT_TYPE}}{Content types.}
 }
 \if{html}{\out{</div>}}
 }
@@ -56,10 +54,7 @@ R6 Class representing apps resource endpoint
 \if{html}{\out{<a id="method-NA-query"></a>}}
 \if{latex}{\out{\hypertarget{method-NA-query}{}}}
 \subsection{Method \code{query()}}{
-This call returns information about the specified app.
-The app should be one in a project that you can access; this could be an
-app that has been uploaded to the Seven Bridges Platform by a project
-member, or a publicly available app that has been copied to the project.
+This call lists all the apps available to you.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Apps$query(
   project,

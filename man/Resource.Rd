@@ -4,8 +4,7 @@
 \alias{Resource}
 \title{R6 Class Representing a Resource}
 \description{
-Base class for describing a resource on the platform:
-Projects, Tasks, Pipelines, Filess, Apps etc.
+Base class for describing a resource.
 }
 \details{
 This is a base class for describing a resource on the platform:

@@ -1,8 +1,7 @@
 #' @title R6 Class Representing a Resource
 #'
 #' @description
-#' Base class for describing a resource on the platform:
-#' Projects, Tasks, Pipelines, Filess, Apps etc.
+#' Base class for describing a resource.
 #'
 #' @details
 #' This is a base class for describing a resource on the platform:
@@ -30,8 +29,17 @@ Resource <- R6::R6Class(
       args <- list(...)
 
       # Get auth, url and path from args and remove them from query parameters
+      if (is_missing(args$auth)) {
+        rlang::abort("Please provide auth parameter!")
+      }
       auth <- args$auth
+
+      if (is_missing(args$path)) {
+        rlang::abort("Please provide path parameter!")
+      }
       path <- args$path
+
+      # Remove auth and path, they are not needed for query parameters
       args[["auth"]] <- NULL
       args[["path"]] <- NULL
 
@@ -39,7 +47,6 @@ Resource <- R6::R6Class(
       if (!args$limit | args$limit <= 0) {
         args$limit <- getOption("sevenbridges2")$limit
       }
-
 
       res <- sevenbridges2::api(
         path = path,
@@ -61,7 +68,18 @@ Resource <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom glue glue
     get = function(cls, id) {
+      if (is_missing(cls)) {
+        rlang::abort("Please provide cls parameter!")
+      }
+      if (is_missing(id)) {
+        rlang::abort("Please provide id parameter!")
+      }
+
+      if (is.null(cls[["auth"]])) {
+        rlang::abort("Your cls parameter doesn't have field auth!")
+      }
       auth <- cls$auth
+
       if (is.null(cls$URL[["get"]])) {
         rlang::abort("Unable to retrieve resource!")
       }
@@ -88,7 +106,17 @@ Resource <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom glue glue
     delete = function(cls, id) {
-      auth <- cls$auth
+      if (is_missing(cls)) {
+        rlang::abort("Please provide cls parameter!")
+      }
+      if (is_missing(id)) {
+        rlang::abort("Please provide id parameter!")
+      }
+
+      if (is.null(cls[["auth"]])) {
+        rlang::abort("Your cls parameter doesn't have field auth!")
+      }
+
       if (!cls$url[["delete"]]) {
         rlang::abort("Resource can not be deleted!")
       }
@@ -107,6 +135,5 @@ Resource <- R6::R6Class(
 
       res
     }
-  ),
-  private = list()
+  )
 )

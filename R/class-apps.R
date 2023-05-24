@@ -20,22 +20,15 @@ Apps <- R6::R6Class(
       "sync" = "apps/{id}/actions/sync",
       "raw" = "apps/{id}/raw"
     ),
-    #' @field CONTENT_TYPE Content types.
-    CONTENT_TYPE = list(
-      "JSON" = "application/json",
-      "YAML" = "application/yaml"
-    ),
+
     #' @param ... Other arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
 
-    # Get single file -------------------------------------------------------
-    #' @description This call returns information about the specified app.
-    #' The app should be one in a project that you can access; this could be an
-    #' app that has been uploaded to the Seven Bridges Platform by a project
-    #' member, or a publicly available app that has been copied to the project.
+    # List all apps available to you ------------------------------------------
+    #' @description This call lists all the apps available to you.
     #'
     #' @param project The name of the project in which the app is located.
     #' @param visibility Set this to public to see all public apps on the Seven
@@ -66,6 +59,7 @@ Apps <- R6::R6Class(
         types = c("character"),
         null.ok = TRUE
       )
+
       checkmate::test_list(id, types = c("character"), null.ok = TRUE)
 
       res <- super$query(
@@ -100,7 +94,7 @@ Apps <- R6::R6Class(
         rlang::abort("App ID must be provided!")
       }
 
-      checkmate::test_int(revision, null.ok = TRUE)
+      checkmate::test_int(revision, null.ok = TRUE, lower = 0)
 
       id <- paste0(id, revision, collapse = "/")
       res <- super$get(
@@ -146,8 +140,10 @@ Apps <- R6::R6Class(
       }
 
       id <- check_and_transform_id(app, class_name = "App")
+
       project_id <-
         check_and_transform_id(project, class_name = "Project")
+
       strategy <- match.arg(strategy)
 
       checkmate::test_string(name, null.ok = TRUE)
@@ -186,6 +182,7 @@ Apps <- R6::R6Class(
     #' @param name A short name for the app (without any non-alphanumeric
     #' characters or spaces)
     #' @param raw_format The type of format used (JSON or YAML).
+
     #' @importFrom checkmate assert_character
     #' @importFrom jsonlite validate fromJSON
     #' @importFrom rlang abort
@@ -199,6 +196,9 @@ Apps <- R6::R6Class(
       if (is_missing(project)) {
         rlang::abort("Project parameter must be provided!")
       }
+      if (is_missing(name)) {
+        rlang::abort("Name must be provided!")
+      }
 
       raw_format <- match.arg(raw_format)
       if (raw_format == "JSON") {
@@ -207,15 +207,14 @@ Apps <- R6::R6Class(
       }
 
       if (raw_format == "YAML") {
-        # How to validate yaml
+        # How to validate yaml?
         body <- yaml::yaml.load(raw)
       }
-      content_type <- self$CONTENT_TYPE[[raw_format]]
 
       project_id <-
         check_and_transform_id(project, class_name = "Project")
 
-      checkmate::test_string(name, null.ok = TRUE)
+      checkmate::test_string(name, null.ok = FALSE)
 
       id <- paste(project_id, name, sep = "/")
       path <- glue::glue(self$URL[["raw"]])
