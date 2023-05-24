@@ -37,6 +37,8 @@ the auth token.}
 \item{\code{authorization}}{Logical. Is the \code{token} an API
 auth token (\code{FALSE}) or an access token from the
 Seven Bridges single sign-on (\code{TRUE})?}
+
+\item{\code{app}}{Apps object, for accessing apps resources on the platform.}
 }
 \if{html}{\out{</div>}}
 }
