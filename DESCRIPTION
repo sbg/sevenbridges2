@@ -31,7 +31,8 @@ Imports:
     stringr,
     utils,
     checkmate,
-    DescTools
+    DescTools,
+    yaml
 Suggests:
     knitr,
     rmarkdown,

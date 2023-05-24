@@ -493,7 +493,7 @@ testthat::test_that("Utility function check_and_transform_id with ID as string w
     "asdfg123-1234-1234-ab12-7e7e7e777abc"
   )
   for (id in valid_id) {
-    testthat::expect_vector(check_and_transform(id), ptype = character())
+    testthat::expect_vector(check_and_transform_id(id), ptype = character())
   }
 })
 # nolint start

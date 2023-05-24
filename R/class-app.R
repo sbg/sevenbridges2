@@ -1,0 +1,346 @@
+# nolint start
+#' @title R6 Class representing an app
+#'
+#' @description
+#' R6 Class representing a resource for managing apps.
+#'
+#' @importFrom R6 R6Class
+#' @export
+App <- R6::R6Class(
+  # nolint end
+  "App",
+  inherit = Item,
+  portable = FALSE,
+  public = list(
+    #' @field raw App's raw CWL (JSON or YAML).
+    raw = NULL,
+    #' @description Create a new App object.
+    #' @param id Character used as an app ID.
+    #' @param project Project ID if any, when returned by an API call.
+    #' @param name String used as a file name.
+    #' @param revision Integer representing app's revision.
+    #' @param raw App's raw CWL (JSON or YAML).
+    #' @param copy_of The original application of which this is a copy.
+    #' @param ... Other arguments.
+    initialize = function(id = NA, project = NA, name = NA, revision = NA,
+                          raw = NA, copy_of = NA, ...) {
+      # Initialize Item class
+      super$initialize(...)
+
+      private$id <- id
+      private$project <- project
+      private$name <- name
+      private$revision <- revision
+      private$copy_of <- copy_of
+
+      self$raw <- raw
+    },
+    # nocov start
+    #' @description Print method for App class.
+    #'
+    #' @importFrom purrr discard
+    #' @importFrom glue glue_col
+    #' @importFrom cli cli_h1 cli_li cli_end
+    print = function() {
+      x <- as.list(self)
+
+      # Extract only private fields for printing
+      x <- x$private
+      x <- as.list(x$private)
+
+
+      # Remove copy_of field if it's empty (NA)
+      x <- purrr::discard(x, .p = is.na)
+
+      string <- glue::glue_col("{green {names(x)}}: {x}")
+
+      cli::cli_h1("App")
+
+      cli::cli_li(string)
+
+      # Close container elements
+      cli::cli_end()
+    },
+    #' @description A method that copies the current app.
+    #'
+    #' @details
+    #' The method copies the current app to the specified project.
+    #'
+    #' @param project Project object or project ID. If you opt for the latter,
+    #' remember that the project ID should be specified in
+    #' `<username>/<project-name>` format, e.g. `rfranklin/my-project`.
+    #' @param name The new name the app will have in the target project.
+    #' If its name will not change, omit this key.
+    #' @param strategy The method for copying the app. Supported strategies:
+    #' \itemize{
+    #'    \item `clone` - copy all revisions; get updates from the same app as
+    #'    the copied app (default)
+    #'    \item `direct`: copy latest revision; get updates from the copied app
+    #'    \item `clone_direct`: copy all revisions; get updates from the copied
+    #'    app
+    #'    \item `transient`: copy latest revision; get updates from the same
+    #'    app as the copied app
+    #' }
+    #' @param use_revision Parameter specifying which app's revision should be
+    #' copied. If set to `FALSE` (default), the latest revision of the app will
+    #' be copied.
+    #' @param ... Other arguments such as `fields` which can be used to specify
+    #' a subset of fields to include in the response.
+    #' @importFrom rlang abort
+    #' @importFrom checkmate assert_string assert_logical
+    copy = function(project = NULL, name = private$name, strategy = "clone", use_revision = FALSE, ...) { # nolint
+      if (is_missing(project)) {
+        rlang::abort("You need to specify the destination project.")
+      }
+
+      # Check (and transform) project argument
+      project <- check_and_transform_id(project,
+        class_name = "Project",
+        field_name = "id"
+      )
+
+      # Check name argument
+      checkmate::assert_string(name, null.ok = TRUE)
+
+      # Check strategy argument
+      check_app_copy_strategy(strategy)
+
+      # Check use_revision argument
+      checkmate::assert_logical(use_revision, len = 1)
+
+      # Create body
+      body <- list(
+        project = project,
+        name = name,
+        strategy = strategy
+      )
+
+      # Use full app ID (with revision number) or omit revision number (copy
+      # the latest version of the app)
+      app_id <- ifelse(use_revision, private$id, sub("/[^/]*$", "", private$id))
+
+      res <- sevenbridges2::api(
+        path = paste0("apps/", app_id, "/", "actions/copy"),
+        method = "POST",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(res)
+
+      rlang::inform(glue::glue_col("App {green {private$name}} has been copied to {green {project}} project.")) # nolint
+
+      # Return newly created app
+      asApp(res, auth = self$auth)
+    },
+    #' @description Get app's revision
+    #'
+    #' @details
+    #' This call allows you to obtain a particular revision of an
+    #' app, which is not necessarily the most recent version.
+    #'
+    #' @param revision Integer denoting the revision of the app.
+    #' @param ... Other arguments such as `fields` which can be used to specify
+    #' a subset of fields to include in the response.
+    #' @importFrom checkmate assert_numeric
+    get_revision = function(revision = private$revision, ...) {
+      # Check if revision is positive number and convert it to integer
+      checkmate::assert_numeric(revision, lower = 0, len = 1)
+      revision <- as.integer(revision)
+
+      # Remove revision from app's ID
+      reduced_app_id <- sub("/[^/]*$", "", private$id)
+
+      res <- sevenbridges2::api(
+        path = paste0("apps/", reduced_app_id, "/", revision),
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(res)
+
+      # Reload object
+      self$initialize(
+        href = res$href,
+        id = res$id,
+        project = res$project,
+        name = res$name,
+        revision = res$revision,
+        raw = res$raw,
+        copy_of = ifelse(!is.null(res$raw$`sbg:copyOf`), res$raw$`sbg:copyOf`, NA), # nolint
+        auth = auth,
+        response = attr(res, "response")
+      )
+
+      # Return new object
+      return(asApp(res, self$auth))
+    },
+    #' @description Create a new app revision.
+    #'
+    #' @details
+    #' This call creates a new revision for an existing app. It adds a new CWL
+    #' app description, and stores it as the named revision for the specified
+    #' app. The revision number must not already exist and should follow the
+    #' sequence of previously created revisions.
+    #' @param raw A list containing a raw CWL for the app revision you are
+    #' about to create. To generate such a list, you might want to load some
+    #' existing JSON / YAML file. In case that your CWL file is in JSON format,
+    #' please use the `fromJSON` function from the `jsonlite` package to
+    #' minimize potential problems with parsing the JSON file. If you want to
+    #' load a CWL file in YAML format, it is highly recommended to use the
+    #' `read_yaml` function from the `yaml` package. Keep in mind that this
+    #' parameter should not be used together with the `file_path` parameter.
+    #' @param file_path A path to a file containing the raw CWL for the app
+    #' (JSON or YAML). This parameter should not be used together with the
+    #' `raw` parameter.
+    #' @param raw_format The type of format used (JSON or YAML).
+    #' @param ... Other arguments such as `fields` which can be used to specify
+    #' a subset of fields to include in the response.
+    #' @importFrom rlang abort
+    #' @importFrom glue glue_col
+    #' @importFrom checkmate assert_list assert_character
+    #' @importFrom stringr str_extract
+    #' @importFrom tools file_ext
+    #' @importFrom jsonlite fromJSON
+    #' @importFrom yaml read_yaml
+    create_revision = function(raw = NULL, file_path = NULL, raw_format = c("JSON", "YAML"), ...) { # nolint
+
+      if (is_missing(raw) && is_missing(file_path)) {
+        rlang::abort(glue::glue_col("Both parameters {magenta raw} and {magenta file_path} are missing. Please provide one of them.")) # nolint
+      }
+
+      if (!is_missing(raw) && !is_missing(file_path)) {
+        rlang::abort(glue::glue_col("Both parameters {magenta raw} and {magenta file_path} are provided. Please use only one of them.")) # nolint
+      }
+
+      raw_format <- match.arg(raw_format)
+
+      if (!is_missing(raw)) {
+        # Check if raw parameter is a list
+        checkmate::assert_list(raw)
+        raw_cwl <- raw
+      }
+
+      if (!is_missing(file_path)) {
+        # Check if the provided file path is a string
+        checkmate::assert_character(file_path, len = 1)
+
+        # Check if the file with the provided path really exists on local disk
+        check_file_path(file_path)
+
+        # Check raw_format and read the file with the appropriate function
+        if (raw_format == "JSON") {
+          raw_cwl <- jsonlite::fromJSON(file_path)
+        }
+
+        if (raw_format == "YAML") {
+          raw_cwl <- yaml::read_yaml(file_path)
+        }
+      }
+
+
+      # Remove revision_number from app's ID
+      reduced_app_id <- sub("/[^/]*$", "", private$id)
+
+      res <- sevenbridges2::api(
+        path = paste0("apps/", reduced_app_id, "/", private$revision + 1, "/raw"), # nolint
+        method = "POST",
+        body = raw_cwl,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(res)
+
+      # Update fields
+      private$revision <- private$revision + 1
+
+      # Update app's details since res object doesn't contain all the
+      # information
+      self <- self$get_revision(revision = private$revision)
+      # ------------------- CHECK THIS ----------------------
+      # ALTERNATIVELY we can manually update all fields
+      # to avoid making one more API call
+      # -----------------------------------------------------
+
+      # Print new object
+      return(self)
+    },
+    #' @description Synchronize a copied app with its parent app
+    #'
+    #' @details
+    #' This call synchronizes a copied app with the source app from which it
+    #' has been copied.
+    #' @param ... Other arguments such as `fields` which can be used to specify
+    #' a subset of fields to include in the response.
+    sync = function(...) {
+      # Remove revision_number from app's ID
+      reduced_app_id <- sub("/[^/]*$", "", private$id)
+
+      res <- sevenbridges2::api(
+        path = paste0("apps/", reduced_app_id, "/actions/sync"),
+        method = "POST",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(res)
+
+      # Reload object
+      self$initialize(
+        href = res$href,
+        id = res$id,
+        project = res$project,
+        name = res$name,
+        revision = res$revision,
+        raw = res$raw,
+        copy_of = ifelse(!is.null(res$raw$`sbg:copyOf`), res$raw$`sbg:copyOf`, NA), # nolint
+        auth = auth,
+        response = attr(res, "response")
+      )
+
+      rlang::inform(glue::glue_col("App {green private$name} has been updated.")) # nolint
+
+      return(asApp(res, self$auth))
+    }
+  ),
+  private = list(
+    # Character used as an app ID.
+    id = NULL,
+    # Project ID if any, when returned by an API call.
+    project = NULL,
+    # String used as an app name.
+    name = NULL,
+    # Integer representing app's revision.
+    revision = NULL,
+    # The original application of which this is a copy.
+    copy_of = NULL
+  )
+)
+
+# Helper function for creating App objects
+asApp <- function(x, auth = NULL) {
+  App$new(
+    href = x$href,
+    id = x$id,
+    project = x$project,
+    name = x$name,
+    revision = x$revision,
+    raw = x$raw,
+    copy_of = ifelse(!is.null(x$raw$`sbg:copyOf`), x$raw$`sbg:copyOf`, NA),
+    auth = auth,
+    response = attr(x, "response")
+  )
+}
+
+# Helper function for creating a list of App objects
+asAppList <- function(x, auth) {
+  obj <- lapply(x$items, asApp, auth = auth)
+  obj
+}
