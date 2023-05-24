@@ -55,7 +55,6 @@ repos:
           (.*/|)WORDLIST|
           \.github/workflows/.*|
           data/.*|
-          tests/testthat/_snaps/class-app.md|
           )$
     -   id: lintr
     -   id: readme-rmd-rendered
