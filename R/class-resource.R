@@ -28,19 +28,12 @@ Resource <- R6::R6Class(
     query = function(...) {
       args <- list(...)
 
-      # Get auth, url and path from args and remove them from query parameters
-      if (is_missing(args$auth)) {
-        rlang::abort("Please provide auth parameter!")
-      }
-      auth <- args$auth
-
       if (is_missing(args$path)) {
         rlang::abort("Please provide path parameter!")
       }
       path <- args$path
 
-      # Remove auth and path, they are not needed for query parameters
-      args[["auth"]] <- NULL
+      # Remove path, they are not needed for query parameters
       args[["path"]] <- NULL
 
       # Check for valid limit value
@@ -51,8 +44,8 @@ Resource <- R6::R6Class(
       res <- sevenbridges2::api(
         path = path,
         method = "GET",
-        token = auth$get_token(),
-        base_url = auth$url,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
         query = args
       )
 

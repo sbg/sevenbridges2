@@ -69,8 +69,7 @@ Apps <- R6::R6Class(
         q = query_terms,
         id = id,
         offset = offset,
-        limit = limit,
-        auth = self$auth
+        limit = limit
       )
 
       return(res)
