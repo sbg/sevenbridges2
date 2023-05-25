@@ -113,8 +113,8 @@ Apps <- R6::R6Class(
     #'
     #' @param app App object or the short name of the app you are copying.
     #' Optionally, to copy a specific revision of the app, use the
-    #' {app_short_name}/{revision_number} format, for example
-    #' rfranklin/my-project/bamtools-index-2-4-0/1
+    #' `{app_short_name}/{revision_number}` format, for example
+    #' `rfranklin/my-project/bamtools-index-2-4-0/1`
     #' @param project The project or project ID you want to copy the app to.
     #' @param name The new name the app will have in the target project.
     #' If its name will not change, omit this key.
@@ -131,6 +131,7 @@ Apps <- R6::R6Class(
                     project,
                     name = NULL,
                     strategy = c("clone", "direct", "clone_direct", "transient")) { # nolint
+      # nolint
       if (is_missing(app)) {
         rlang::abort("App parameter must be provided!")
       }
@@ -173,41 +174,65 @@ Apps <- R6::R6Class(
     #' @description This call allows you to add an app using raw CWL.
     #'
     #' @param raw The body of the request should be a CWL app description saved
-    #'  as a JSON or YAML file. For a template of this description, try making
-    #'  the call to get raw CWL for an app about an app already in one of your
-    #'  projects.
+    #'  as a `JSON` or `YAML` file. For a template of this description, try
+    #'  making the call to get raw CWL for an app about an app already in one of
+    #'   your projects. Shouldn't be used together with `from_path` parameter.
+    #' @param from_path File containing CWL app description. Shouldn't be used
+    #' together with raw parameter.
     #' @param project The name of the project in which you want to store the
     #' app.
     #' @param name A short name for the app (without any non-alphanumeric
     #' characters or spaces)
-    #' @param raw_format The type of format used (JSON or YAML).
+    #' @param raw_format The type of format used (`JSON` or `YAML`).
 
     #' @importFrom checkmate assert_character
     #' @importFrom jsonlite validate fromJSON
     #' @importFrom rlang abort
-    create = function(raw,
+    #' @importFrom readr read_file
+    create = function(raw = NULL,
+                      from_path = NULL,
                       project,
                       name,
                       raw_format = c("JSON", "YAML")) {
-      if (is_missing(raw)) {
-        rlang::abort("App raw body must be provided!")
+      if (is_missing(raw) & is_missing(from_path)) {
+        rlang::abort("App raw body OR file path must be provided!")
       }
+
+      if (!is.null(raw) & !is.null(from_path)) {
+        rlang::abort("Either raw body OR file path should be provided!")
+      }
+
       if (is_missing(project)) {
         rlang::abort("Project parameter must be provided!")
       }
+
       if (is_missing(name)) {
         rlang::abort("Name must be provided!")
       }
 
       raw_format <- match.arg(raw_format)
-      if (raw_format == "JSON") {
-        jsonlite::validate(raw)
-        body <- jsonlite::fromJSON(raw)
+
+      if (!is.null(from_path)) {
+        if (!file.exists(from_path)) {
+          rlang::abort("Provided file does not exist!")
+        }
+        raw_body <- readr::read_file(file = from_path)
       }
 
-      if (raw_format == "YAML") {
-        # How to validate yaml?
-        body <- yaml::yaml.load(raw)
+      if (is.list(raw)) {
+        raw_body <- raw
+      }
+
+      if (is.character(raw)) {
+        if (raw_format == "JSON") {
+          jsonlite::validate(raw_body)
+          body <- jsonlite::fromJSON(raw_body)
+        }
+
+        if (raw_format == "YAML") {
+          # How to validate yaml?
+          body <- yaml::yaml.load(raw_body)
+        }
       }
 
       project_id <-

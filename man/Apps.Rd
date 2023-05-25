@@ -135,8 +135,8 @@ member, or a publicly available app that has been copied to the project.
 \describe{
 \item{\code{app}}{App object or the short name of the app you are copying.
 Optionally, to copy a specific revision of the app, use the
-{app_short_name}/{revision_number} format, for example
-rfranklin/my-project/bamtools-index-2-4-0/1}
+\code{{app_short_name}/{revision_number}} format, for example
+\code{rfranklin/my-project/bamtools-index-2-4-0/1}}
 
 \item{\code{project}}{The project or project ID you want to copy the app to.}
 
@@ -159,16 +159,25 @@ copied app}
 \subsection{Method \code{create()}}{
 This call allows you to add an app using raw CWL.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Apps$create(raw, project, name, raw_format = c("JSON", "YAML"))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Apps$create(
+  raw = NULL,
+  from_path = NULL,
+  project,
+  name,
+  raw_format = c("JSON", "YAML")
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{raw}}{The body of the request should be a CWL app description saved
-as a JSON or YAML file. For a template of this description, try making
-the call to get raw CWL for an app about an app already in one of your
-projects.}
+as a \code{JSON} or \code{YAML} file. For a template of this description, try
+making the call to get raw CWL for an app about an app already in one of
+your projects. Shouldn't be used together with \code{from_path} parameter.}
+
+\item{\code{from_path}}{File containing CWL app description. Shouldn't be used
+together with raw parameter.}
 
 \item{\code{project}}{The name of the project in which you want to store the
 app.}
@@ -176,7 +185,7 @@ app.}
 \item{\code{name}}{A short name for the app (without any non-alphanumeric
 characters or spaces)}
 
-\item{\code{raw_format}}{The type of format used (JSON or YAML).}
+\item{\code{raw_format}}{The type of format used (\code{JSON} or \code{YAML}).}
 }
 \if{html}{\out{</div>}}
 }
