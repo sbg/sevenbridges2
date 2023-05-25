@@ -36,11 +36,6 @@ Resource <- R6::R6Class(
       # Remove path, they are not needed for query parameters
       args[["path"]] <- NULL
 
-      # Check for valid limit value
-      if (!args$limit | args$limit <= 0) {
-        args$limit <- getOption("sevenbridges2")$limit
-      }
-
       res <- sevenbridges2::api(
         path = path,
         method = "GET",
@@ -110,7 +105,7 @@ Resource <- R6::R6Class(
         rlang::abort("Your cls parameter doesn't have field auth!")
       }
 
-      if (!cls$url[["delete"]]) {
+      if (is.null(cls$url[["delete"]])) {
         rlang::abort("Resource can not be deleted!")
       }
 
