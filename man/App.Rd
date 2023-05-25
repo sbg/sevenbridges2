@@ -12,6 +12,16 @@ R6 Class representing a resource for managing apps.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
+\item{\code{id}}{Character used as an app ID.}
+
+\item{\code{project}}{Project ID if any, when returned by an API call.}
+
+\item{\code{name}}{String used as an app name.}
+
+\item{\code{revision}}{Integer representing app's revision.}
+
+\item{\code{copy_of}}{The original application of which this is a copy.}
+
 \item{\code{raw}}{App's raw CWL (JSON or YAML).}
 }
 \if{html}{\out{</div>}}
@@ -81,13 +91,7 @@ Print method for App class.
 \subsection{Method \code{copy()}}{
 A method that copies the current app.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{App$copy(
-  project = NULL,
-  name = private$name,
-  strategy = "clone",
-  use_revision = FALSE,
-  ...
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{App$copy(project, name = NULL, strategy = "clone", use_revision = FALSE, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -98,7 +102,7 @@ remember that the project ID should be specified in
 \verb{<username>/<project-name>} format, e.g. \code{rfranklin/my-project}.}
 
 \item{\code{name}}{The new name the app will have in the target project.
-If its name will not change, omit this key.}
+Optional.}
 
 \item{\code{strategy}}{The method for copying the app. Supported strategies:
 \itemize{
@@ -131,13 +135,16 @@ The method copies the current app to the specified project.
 \subsection{Method \code{get_revision()}}{
 Get app's revision
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{App$get_revision(revision = private$revision, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{App$get_revision(revision = self$revision, in_place = FALSE, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{revision}}{Integer denoting the revision of the app.}
+
+\item{\code{in_place}}{If TRUE, replace current app object with new for
+specified app revision.}
 
 \item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
 a subset of fields to include in the response.}

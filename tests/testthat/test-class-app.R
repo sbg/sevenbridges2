@@ -43,7 +43,7 @@ test_that("App copy method works", {
   testthat::expect_error(test_app$copy(project = "luna_lovegood/nargles-project", strategy = NULL), "Please provide the copy strategy.")
   invalid_strategy_params <- list(1, TRUE, list(a = "test"), test_file, "test_strategy")
   for (invalid_param in invalid_strategy_params) {
-    testthat::expect_error(test_app$copy(project = "luna_lovegood/nargles-project", name = invalid_param))
+    testthat::expect_error(test_app$copy(project = "luna_lovegood/nargles-project", strategy = invalid_param))
   }
   # nolint end
 

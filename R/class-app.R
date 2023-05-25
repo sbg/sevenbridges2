@@ -12,6 +12,16 @@ App <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
+    #' @field id Character used as an app ID.
+    id = NULL,
+    #' @field project Project ID if any, when returned by an API call.
+    project = NULL,
+    #' @field name String used as an app name.
+    name = NULL,
+    #' @field revision Integer representing app's revision.
+    revision = NULL,
+    #' @field copy_of The original application of which this is a copy.
+    copy_of = NULL,
     #' @field raw App's raw CWL (JSON or YAML).
     raw = NULL,
     #' @description Create a new App object.
@@ -27,12 +37,11 @@ App <- R6::R6Class(
       # Initialize Item class
       super$initialize(...)
 
-      private$id <- id
-      private$project <- project
-      private$name <- name
-      private$revision <- revision
-      private$copy_of <- copy_of
-
+      self$id <- id
+      self$project <- project
+      self$name <- name
+      self$revision <- revision
+      self$copy_of <- copy_of
       self$raw <- raw
     },
     # nocov start
@@ -44,10 +53,13 @@ App <- R6::R6Class(
     print = function() {
       x <- as.list(self)
 
-      # Extract only private fields for printing
-      x <- x$private
-      x <- as.list(x$private)
+      # Extract all except 'raw'
+      x$raw <- NULL
 
+      x <- purrr::discard(x, .p = is.function)
+      x <- purrr::discard(x, .p = is.environment)
+      x <- purrr::discard(x, .p = is.null)
+      x <- purrr::discard(x, .p = is.list)
 
       # Remove copy_of field if it's empty (NA)
       x <- purrr::discard(x, .p = is.na)
@@ -70,7 +82,7 @@ App <- R6::R6Class(
     #' remember that the project ID should be specified in
     #' `<username>/<project-name>` format, e.g. `rfranklin/my-project`.
     #' @param name The new name the app will have in the target project.
-    #' If its name will not change, omit this key.
+    #' Optional.
     #' @param strategy The method for copying the app. Supported strategies:
     #' \itemize{
     #'    \item `clone` - copy all revisions; get updates from the same app as
@@ -88,11 +100,10 @@ App <- R6::R6Class(
     #' a subset of fields to include in the response.
     #' @importFrom rlang abort
     #' @importFrom checkmate assert_string assert_logical
-    copy = function(project = NULL, name = private$name, strategy = "clone", use_revision = FALSE, ...) { # nolint
+    copy = function(project, name = NULL, strategy = "clone", use_revision = FALSE, ...) { # nolint
       if (is_missing(project)) {
         rlang::abort("You need to specify the destination project.")
       }
-
       # Check (and transform) project argument
       project <- check_and_transform_id(project,
         class_name = "Project",
@@ -117,7 +128,10 @@ App <- R6::R6Class(
 
       # Use full app ID (with revision number) or omit revision number (copy
       # the latest version of the app)
-      app_id <- ifelse(use_revision, private$id, sub("/[^/]*$", "", private$id))
+      app_id <- ifelse(use_revision,
+        paste0(self$id, self$revision, collapse = "/"),
+        self$id
+      )
 
       res <- sevenbridges2::api(
         path = paste0("apps/", app_id, "/", "actions/copy"),
@@ -130,7 +144,7 @@ App <- R6::R6Class(
 
       res <- status_check(res)
 
-      rlang::inform(glue::glue_col("App {green {private$name}} has been copied to {green {project}} project.")) # nolint
+      rlang::inform(glue::glue_col("App {green {self$name}} has been copied to {green {project}} project.")) # nolint
 
       # Return newly created app
       asApp(res, auth = self$auth)
@@ -142,19 +156,21 @@ App <- R6::R6Class(
     #' app, which is not necessarily the most recent version.
     #'
     #' @param revision Integer denoting the revision of the app.
+    #' @param in_place If TRUE, replace current app object with new for
+    #' specified app revision.
     #' @param ... Other arguments such as `fields` which can be used to specify
     #' a subset of fields to include in the response.
     #' @importFrom checkmate assert_numeric
-    get_revision = function(revision = private$revision, ...) {
+    get_revision = function(revision = self$revision, in_place = FALSE, ...) {
       # Check if revision is positive number and convert it to integer
       checkmate::assert_numeric(revision, lower = 0, len = 1)
       revision <- as.integer(revision)
 
-      # Remove revision from app's ID
-      reduced_app_id <- sub("/[^/]*$", "", private$id)
+      # Check in_place parameter to be logical
+      checkmate::assert_logical(in_place, len = 1)
 
       res <- sevenbridges2::api(
-        path = paste0("apps/", reduced_app_id, "/", revision),
+        path = paste0(c("apps", self$id, revision), collapse = "/"),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -163,21 +179,22 @@ App <- R6::R6Class(
 
       res <- status_check(res)
 
-      # Reload object
-      self$initialize(
-        href = res$href,
-        id = res$id,
-        project = res$project,
-        name = res$name,
-        revision = res$revision,
-        raw = res$raw,
-        copy_of = ifelse(!is.null(res$raw$`sbg:copyOf`), res$raw$`sbg:copyOf`, NA), # nolint
-        auth = auth,
-        response = attr(res, "response")
-      )
-
-      # Return new object
-      return(asApp(res, self$auth))
+      if (in_place) {
+        self$initialize(
+          href = res$href,
+          id = res$id,
+          project = res$project,
+          name = res$name,
+          revision = res$revision + 1,
+          raw = res$raw,
+          copy_of = ifelse(!is.null(res$raw$`sbg:copyOf`), res$raw$`sbg:copyOf`, NA), # nolint
+          auth = auth,
+          response = attr(res, "response")
+        )
+      } else {
+        # Return new object
+        return(asApp(res, self$auth))
+      }
     },
     #' @description Create a new app revision.
     #'
@@ -309,18 +326,6 @@ App <- R6::R6Class(
 
       return(asApp(res, self$auth))
     }
-  ),
-  private = list(
-    # Character used as an app ID.
-    id = NULL,
-    # Project ID if any, when returned by an API call.
-    project = NULL,
-    # String used as an app name.
-    name = NULL,
-    # Integer representing app's revision.
-    revision = NULL,
-    # The original application of which this is a copy.
-    copy_of = NULL
   )
 )
 
@@ -328,7 +333,7 @@ App <- R6::R6Class(
 asApp <- function(x, auth = NULL) {
   App$new(
     href = x$href,
-    id = x$id,
+    id = sub("/[^/]*$", "", x$id),
     project = x$project,
     name = x$name,
     revision = x$revision,
