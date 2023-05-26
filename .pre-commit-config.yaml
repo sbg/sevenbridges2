@@ -39,6 +39,7 @@ repos:
           .*\.RData|
           .*\.rds|
           .*\.Rds|
+          .*\.RDS|
           .*\.Rproj|
           .*\.sh|
           (.*/|)\.gitignore|

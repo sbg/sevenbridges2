@@ -171,7 +171,11 @@ App <- R6::R6Class(
       revision <- as.integer(revision)
 
       # Check in_place parameter to be logical
-      checkmate::assert_logical(in_place, len = 1)
+      if (is_missing(in_place)) {
+        rlang::abort("You need to specify the in_place parameter.")
+      } else {
+        checkmate::assert_logical(in_place, len = 1, any.missing = FALSE, null.ok = FALSE) # nolint
+      }
 
       res <- sevenbridges2::api(
         path = paste0(c("apps", self$id, revision), collapse = "/"),
@@ -242,6 +246,13 @@ App <- R6::R6Class(
       }
 
       raw_format <- match.arg(raw_format)
+
+      # Check in_place parameter to be logical
+      if (is_missing(in_place)) {
+        rlang::abort("You need to specify the in_place parameter.")
+      } else {
+        checkmate::assert_logical(in_place, len = 1, any.missing = FALSE, null.ok = FALSE) # nolint
+      }
 
       if (!is_missing(raw)) {
         # Check if raw parameter is a list
