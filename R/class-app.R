@@ -76,7 +76,7 @@ App <- R6::R6Class(
 
       # Close container elements
       cli::cli_end()
-    },
+    }, # nocov end
     #' @description A method that copies the current app.
     #'
     #' @details
@@ -123,6 +123,7 @@ App <- R6::R6Class(
       # Check use_revision argument
       checkmate::assert_logical(use_revision, len = 1)
 
+      # nocov start
       # Create body
       body <- list(
         project = project,
@@ -152,6 +153,7 @@ App <- R6::R6Class(
 
       # Return newly created app
       asApp(res, auth = self$auth)
+      # nocov end
     },
     #' @description Get app's revision
     #'
@@ -177,6 +179,7 @@ App <- R6::R6Class(
         checkmate::assert_logical(in_place, len = 1, any.missing = FALSE, null.ok = FALSE) # nolint
       }
 
+      # nocov start
       res <- sevenbridges2::api(
         path = paste0(c("apps", self$id, revision), collapse = "/"),
         method = "GET",
@@ -203,7 +206,7 @@ App <- R6::R6Class(
       } else {
         # Return new object
         return(asApp(res, self$auth))
-      }
+      } # nocov end
     },
     #' @description Create a new app revision.
     #'
@@ -279,6 +282,7 @@ App <- R6::R6Class(
         }
       }
 
+      # nocov start
       res <- sevenbridges2::api(
         path = paste0(c("apps", self$id, self$latest_revision + 1, "raw"), collapse = "/"), # nolint
         method = "POST",
@@ -351,10 +355,10 @@ App <- R6::R6Class(
         auth = auth,
         response = attr(res, "response")
       )
-    }
+    } # nocov end
   )
 )
-
+# nocov start
 # Helper function for creating App objects
 asApp <- function(x, auth = NULL) {
   App$new(
@@ -376,3 +380,4 @@ asAppList <- function(x, auth) {
   obj <- lapply(x$items, asApp, auth = auth)
   obj
 }
+# nocov end

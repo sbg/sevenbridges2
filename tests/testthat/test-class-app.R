@@ -64,7 +64,7 @@ test_that("App create_revision method works", {
 
   # Negative test use cases for from_path parameter
   # nolint start
-  invalid_from_path_params <- list(1, 3.14, list(a = "test"), TRUE, c(1, 2, 3))
+  invalid_from_path_params <- list(1, 3.14, list(a = "test"), TRUE, c(1, 2, 3), "invalid/path/to/file")
   for (invalid_param in invalid_from_path_params) {
     testthat::expect_error(setup_app_obj$create_revision(from_path = invalid_param)) # nolint
   }
