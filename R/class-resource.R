@@ -36,6 +36,7 @@ Resource <- R6::R6Class(
       # Remove path, they are not needed for query parameters
       args[["path"]] <- NULL
 
+      # nocov start
       res <- sevenbridges2::api(
         path = path,
         method = "GET",
@@ -47,6 +48,7 @@ Resource <- R6::R6Class(
       res <- status_check(res)
 
       return(res)
+      # nocov end
     },
 
     #' @description
@@ -75,6 +77,7 @@ Resource <- R6::R6Class(
       url <- cls$URL$get
       path <- glue::glue(url)
 
+      # nocov start
       res <- sevenbridges2::api(
         path = path,
         method = "GET",
@@ -84,7 +87,8 @@ Resource <- R6::R6Class(
 
       res <- status_check(res)
 
-      res
+      return(res)
+      # nocov end
     },
 
     #' @description
@@ -112,6 +116,7 @@ Resource <- R6::R6Class(
       url <- cls$url[["delete"]]
       path <- glue::glue("{url}/{id}")
 
+      # nocov start
       res <- sevenbridges2::api(
         path = path,
         method = "DELETE",
@@ -121,7 +126,8 @@ Resource <- R6::R6Class(
 
       res <- status_check(res)
 
-      res
+      return(res)
+      # nocov end
     }
   )
 )

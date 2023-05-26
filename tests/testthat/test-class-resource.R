@@ -13,7 +13,8 @@ test_that("Resource initialization works", {
 test_that("Resource query works", {
   # Query fails when no path is provided
   testthat::expect_error(setup_resource_obj$query(path = NULL),
-    label = "Please provide path parameter!"
+    regexp = "Please provide path parameter!",
+    fixed = TRUE
   )
 })
 

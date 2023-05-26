@@ -1,3 +1,4 @@
+# nolint start
 #' @title R6 Class representing apps endpoint
 #'
 #' @description
@@ -6,6 +7,7 @@
 #' @importFrom R6 R6Class
 #' @export
 Apps <- R6::R6Class(
+  "Apps",
   # nolint end
   inherit = Resource,
   portable = FALSE,
@@ -42,31 +44,37 @@ Apps <- R6::R6Class(
     #' the first item to return. The default value is 0. This is a
     #' pagination-specific attribute.
     #'
-    #' @importFrom checkmate test_list
+    #' @importFrom checkmate assert_list
     query = function(project,
                      visibility = c("private", "public"),
                      query_terms = NULL,
                      id = NULL,
                      limit = 50,
                      offset = 0) {
-      visibility <- match.arg(visibility)
       if (!is_missing(project)) {
         project_id <-
           check_and_transform_id(project, class_name = "Project")
       }
 
-      checkmate::test_list(query_terms,
+      visibility <- match.arg(visibility)
+
+      checkmate::assert_list(query_terms,
         types = c("character"),
         null.ok = TRUE
       )
 
-      checkmate::test_list(id, types = c("character"), null.ok = TRUE)
+      checkmate::assert_string(id, null.ok = TRUE)
+
+      # Collapse query terms to a string with space between values
+      if (!is.null(query_terms)) {
+        q <- paste(query_terms, collapse = " ")
+      }
 
       res <- super$query(
         path = self$URL[["query"]],
         project = project_id,
         visibility = visibility,
-        q = query_terms,
+        q = q,
         id = id,
         offset = offset,
         limit = limit
@@ -86,14 +94,15 @@ Apps <- R6::R6Class(
     #' path for this API call is known as App ID. You can also get the App ID
     #' for an app by making the call to list all apps available to you.
     #' @param revision The number of the app revision you want to get.
-    #' @importFrom checkmate test_int
+    #' @importFrom checkmate assert_int
     #' @importFrom rlang abort
     get = function(id, revision = NULL) {
       if (is_missing(id)) {
         rlang::abort("App ID must be provided!")
       }
 
-      checkmate::test_int(revision, null.ok = TRUE, lower = 0)
+      checkmate::assert_string(id)
+      checkmate::assert_int(revision, null.ok = TRUE, lower = 0)
 
       id <- paste0(id, revision, collapse = "/")
       res <- super$get(
@@ -124,17 +133,17 @@ Apps <- R6::R6Class(
     #' `clone_direct`: copy all revisions; get updates from the copied app
     #' `transient`: copy latest revision; get updates from the same app as the
     #' copied app
-    #' @importFrom checkmate test_string
+    #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #' @importFrom glue glue
     copy = function(app,
                     project,
                     name = NULL,
                     strategy = c("clone", "direct", "clone_direct", "transient")) { # nolint
-      # nolint
       if (is_missing(app)) {
         rlang::abort("App parameter must be provided!")
       }
+
       if (is_missing(project)) {
         rlang::abort("Project parameter must be provided!")
       }
@@ -146,7 +155,7 @@ Apps <- R6::R6Class(
 
       strategy <- match.arg(strategy)
 
-      checkmate::test_string(name, null.ok = TRUE)
+      checkmate::assert_string(name, null.ok = TRUE)
 
       body <- list(
         project = project_id,
@@ -185,7 +194,7 @@ Apps <- R6::R6Class(
     #' characters or spaces)
     #' @param raw_format The type of format used (`JSON` or `YAML`).
 
-    #' @importFrom checkmate assert_character
+    #' @importFrom checkmate assert_string
     #' @importFrom jsonlite validate fromJSON
     #' @importFrom rlang abort
     #' @importFrom readr read_file
@@ -207,7 +216,7 @@ Apps <- R6::R6Class(
       }
 
       if (is_missing(name)) {
-        rlang::abort("Name must be provided!")
+        rlang::abort("Name parameter must be provided!")
       }
 
       raw_format <- match.arg(raw_format)
@@ -219,6 +228,10 @@ Apps <- R6::R6Class(
         raw_body <- readr::read_file(file = from_path)
       }
 
+      if (!is.list(raw) | !is.character(raw)) {
+        rlang::abort("CWL app should be either in JSON or YAML format!")
+      }
+
       if (is.list(raw)) {
         raw_body <- raw
       }
@@ -226,11 +239,11 @@ Apps <- R6::R6Class(
       if (is.character(raw)) {
         if (raw_format == "JSON") {
           jsonlite::validate(raw_body)
-          body <- jsonlite::fromJSON(raw_body)
+          body <-
+            jsonlite::fromJSON(raw_body, simplifyDataFrame = FALSE)
         }
 
         if (raw_format == "YAML") {
-          # How to validate yaml?
           body <- yaml::yaml.load(raw_body)
         }
       }
@@ -238,7 +251,7 @@ Apps <- R6::R6Class(
       project_id <-
         check_and_transform_id(project, class_name = "Project")
 
-      checkmate::test_string(name, null.ok = FALSE)
+      checkmate::assert_string(name, null.ok = FALSE)
 
       id <- paste(project_id, name, sep = "/")
       path <- glue::glue(self$URL[["raw"]])
