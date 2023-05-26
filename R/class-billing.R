@@ -102,9 +102,9 @@ Billing <- R6::R6Class(
     #' transactions analysis in the following format: mm-dd-yyyy.
     #' @param date_to A string representing the ending date for retrieving
     #' transactions analysis in the following format: mm-dd-yyyy.
-    #' @param invoice_id A string representing invoice ID to show a breakdown
-    #' for the specific invoice. If omitted, the current spending breakdown is
-    #' returned.
+    #' @param invoice_id A string representing invoice ID or Invoice object to
+    #'   show a breakdown for the specific invoice. If omitted, the current
+    #'   spending breakdown is returned.
     #' @param limit An integer representing the maximum number of collection
     #' items to return for a single request. The default value is 50, while
     #' maximum is 100.
@@ -116,6 +116,8 @@ Billing <- R6::R6Class(
                                   fields = NULL,
                                   limit = getOption("sevenbridges2")$limit,
                                   offset = getOption("sevenbridges2")$offset) {
+      invoice_id <- check_and_transform_id(invoice_id, "Invoice")
+
       req <- sevenbridges2::api(
         path = paste0("billing/groups/", self$id, "/breakdown/analysis"),
         method = "GET",
@@ -141,9 +143,9 @@ Billing <- R6::R6Class(
     #' storage analysis in the following format: mm-dd-yyyy.
     #' @param date_to A string representing the ending date for retrieving
     #' storage analysis in the following format: mm-dd-yyyy.
-    #' @param invoice_id A string representing invoice ID to show a breakdown
-    #' for the specific invoice. If omitted, the current spending breakdown is
-    #' returned.
+    #' @param invoice_id A string representing invoice ID or Invoice object to
+    #'   show a breakdown for the specific invoice. If omitted, the current
+    #'   spending breakdown is returned.
     #' @param limit An integer representing the maximum number of collection
     #' items to return for a single request. The default value is 50, while
     #' maximum is 100.
@@ -155,6 +157,8 @@ Billing <- R6::R6Class(
                                  fields = NULL,
                                  limit = getOption("sevenbridges2")$limit,
                                  offset = getOption("sevenbridges2")$offset) {
+      invoice_id <- check_and_transform_id(invoice_id, "Invoice")
+
       req <- sevenbridges2::api(
         path = paste0("billing/groups/", self$id, "/breakdown/storage"),
         method = "GET",
@@ -177,9 +181,9 @@ Billing <- R6::R6Class(
     #' egress analysis in the following format: mm-dd-yyyy.
     #' @param date_to A string representing the ending date for retrieving
     #' egress analysis in the following format: mm-dd-yyyy.
-    #' @param invoice_id A string representing invoice ID to show a breakdown
-    #' for the specific invoice. If omitted, the current spending breakdown is
-    #' returned.
+    #' @param invoice_id A string representing invoice ID or Invoice object to
+    #'   show a breakdown for the specific invoice. If omitted, the current
+    #'   spending breakdown is returned.
     #' @param limit An integer representing the maximum number of collection
     #' items to return for a single request. The default value is 50, while
     #' maximum is 100.
@@ -191,6 +195,8 @@ Billing <- R6::R6Class(
                                 fields = NULL,
                                 limit = getOption("sevenbridges2")$limit,
                                 offset = getOption("sevenbridges2")$offset) {
+      invoice_id <- check_and_transform_id(invoice_id, "Invoice")
+
       req <- sevenbridges2::api(
         path = paste0("billing/groups/", self$id, "/breakdown/egress"),
         method = "GET",

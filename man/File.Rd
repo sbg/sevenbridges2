@@ -233,9 +233,9 @@ do that using \code{Auth$copy_files()} operation.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{project}}{The name of the project you want to copy the file to.
-Project name should be specified in the \verb{<username>/<project-name>}
-format, e.g. \code{rfranklin/my-project}.}
+\item{\code{project}}{The ID of the project or a Project object where you want
+to copy the file to. Project name should be specified in the
+\verb{<username>/<project-name>} format, e.g. \code{rfranklin/my-project}.}
 
 \item{\code{name}}{The new name the file will have in the target project.
 If its name will not change, omit this key.}
@@ -319,7 +319,8 @@ only allowed within the same project.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{parent}}{Specifies the target folder.}
+\item{\code{parent}}{The ID string of target folder or a File object which must
+be of type \code{FOLDER}.}
 
 \item{\code{name}}{Specifies a new name for a file in case you want to rename it
 . If you want to use the same name, omit this key.}

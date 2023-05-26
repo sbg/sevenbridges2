@@ -483,6 +483,7 @@ Auth <- R6::R6Class(
         }
       } else {
         id <- check_and_transform_id(id, "Invoice")
+
         req <- sevenbridges2::api(
           path = paste0("billing/invoices/", id),
           method = "GET",
@@ -686,8 +687,6 @@ Auth <- R6::R6Class(
     files = function(project = NULL, parent = NULL, name = NULL,
                      metadata = NULL, origin = NULL, tag = NULL, ...) {
       # Check input parameters
-      # checkmate::assert_r6(project, classes = "Project", null.ok = TRUE)
-      # checkmate::assert_r6(parent, classes = "File", null.ok = TRUE)
       checkmate::assert_character(name, null.ok = TRUE)
       checkmate::assert_list(metadata,
         types = "string", names = TRUE,
@@ -843,9 +842,9 @@ Auth <- R6::R6Class(
       }
 
       if (!is_missing(parent)) {
-          if (inherits(parent, "File") && parent$type != "folder") {
-            rlang::abort("The provided parent object is not a folder.")
-          }
+        if (inherits(parent, "File") && parent$type != "folder") {
+          rlang::abort("The provided parent object is not a folder.")
+        }
         parent_id <- check_and_transform_id(parent, "File")
         body <- list(
           "name" = name,

@@ -122,9 +122,9 @@ transactions analysis in the following format: mm-dd-yyyy.}
 \item{\code{date_to}}{A string representing the ending date for retrieving
 transactions analysis in the following format: mm-dd-yyyy.}
 
-\item{\code{invoice_id}}{A string representing invoice ID to show a breakdown
-for the specific invoice. If omitted, the current spending breakdown is
-returned.}
+\item{\code{invoice_id}}{A string representing invoice ID or Invoice object to
+show a breakdown for the specific invoice. If omitted, the current
+spending breakdown is returned.}
 
 \item{\code{fields}}{Selector specifying a subset of fields to include in the
 response.}
@@ -164,9 +164,9 @@ storage analysis in the following format: mm-dd-yyyy.}
 \item{\code{date_to}}{A string representing the ending date for retrieving
 storage analysis in the following format: mm-dd-yyyy.}
 
-\item{\code{invoice_id}}{A string representing invoice ID to show a breakdown
-for the specific invoice. If omitted, the current spending breakdown is
-returned.}
+\item{\code{invoice_id}}{A string representing invoice ID or Invoice object to
+show a breakdown for the specific invoice. If omitted, the current
+spending breakdown is returned.}
 
 \item{\code{fields}}{Selector specifying a subset of fields to include in the
 response.}
@@ -206,9 +206,9 @@ egress analysis in the following format: mm-dd-yyyy.}
 \item{\code{date_to}}{A string representing the ending date for retrieving
 egress analysis in the following format: mm-dd-yyyy.}
 
-\item{\code{invoice_id}}{A string representing invoice ID to show a breakdown
-for the specific invoice. If omitted, the current spending breakdown is
-returned.}
+\item{\code{invoice_id}}{A string representing invoice ID or Invoice object to
+show a breakdown for the specific invoice. If omitted, the current
+spending breakdown is returned.}
 
 \item{\code{fields}}{Selector specifying a subset of fields to include in the
 response.}
