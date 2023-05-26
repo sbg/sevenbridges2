@@ -22,6 +22,8 @@ App <- R6::R6Class(
     revision = NULL,
     #' @field copy_of The original application of which this is a copy.
     copy_of = NULL,
+    #' @field latest_revision Integer representing app's latest revision.
+    latest_revision = NULL,
     #' @field raw App's raw CWL (JSON or YAML).
     raw = NULL,
     #' @description Create a new App object.
@@ -31,9 +33,10 @@ App <- R6::R6Class(
     #' @param revision Integer representing app's revision.
     #' @param raw App's raw CWL (JSON or YAML).
     #' @param copy_of The original application of which this is a copy.
+    #' @param latest_revision Integer representing app's latest revision.
     #' @param ... Other arguments.
     initialize = function(id = NA, project = NA, name = NA, revision = NA,
-                          raw = NA, copy_of = NA, ...) {
+                          raw = NA, copy_of = NA, latest_revision = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
@@ -42,6 +45,7 @@ App <- R6::R6Class(
       self$name <- name
       self$revision <- revision
       self$copy_of <- copy_of
+      self$latest_revision <- latest_revision
       self$raw <- raw
     },
     # nocov start
@@ -185,9 +189,10 @@ App <- R6::R6Class(
           id = res$id,
           project = res$project,
           name = res$name,
-          revision = res$revision + 1,
+          revision = res$revision,
           raw = res$raw,
           copy_of = ifelse(!is.null(res$raw$`sbg:copyOf`), res$raw$`sbg:copyOf`, NA), # nolint
+          latest_revision = ifelse(!is.null(res$raw$`sbg:latestRevision`), res$raw$`sbg:latestRevision`, NA), # nolint
           auth = auth,
           response = attr(res, "response")
         )
@@ -211,10 +216,12 @@ App <- R6::R6Class(
     #' load a CWL file in YAML format, it is highly recommended to use the
     #' `read_yaml` function from the `yaml` package. Keep in mind that this
     #' parameter should not be used together with the `file_path` parameter.
-    #' @param file_path A path to a file containing the raw CWL for the app
+    #' @param from_path A path to a file containing the raw CWL for the app
     #' (JSON or YAML). This parameter should not be used together with the
     #' `raw` parameter.
     #' @param raw_format The type of format used (JSON or YAML).
+    #' @param in_place If TRUE, replace current app object with
+    #' newly created revision.
     #' @param ... Other arguments such as `fields` which can be used to specify
     #' a subset of fields to include in the response.
     #' @importFrom rlang abort
@@ -223,15 +230,15 @@ App <- R6::R6Class(
     #' @importFrom stringr str_extract
     #' @importFrom tools file_ext
     #' @importFrom jsonlite fromJSON
-    #' @importFrom yaml read_yaml
-    create_revision = function(raw = NULL, file_path = NULL, raw_format = c("JSON", "YAML"), ...) { # nolint
-
-      if (is_missing(raw) && is_missing(file_path)) {
-        rlang::abort(glue::glue_col("Both parameters {magenta raw} and {magenta file_path} are missing. Please provide one of them.")) # nolint
+    #' @importFrom yaml yaml.load
+    #' @importFrom readr read_file
+    create_revision = function(raw = NULL, from_path = NULL, raw_format = c("JSON", "YAML"), in_place = FALSE, ...) { # nolint
+      if (is_missing(raw) && is_missing(from_path)) {
+        rlang::abort(glue::glue_col("Both parameters {magenta raw} and {magenta from_path} are missing. Please provide one of them.")) # nolint
       }
 
-      if (!is_missing(raw) && !is_missing(file_path)) {
-        rlang::abort(glue::glue_col("Both parameters {magenta raw} and {magenta file_path} are provided. Please use only one of them.")) # nolint
+      if (!is_missing(raw) && !is_missing(from_path)) {
+        rlang::abort(glue::glue_col("Both parameters {magenta raw} and {magenta from_path} are provided. Please use only one of them.")) # nolint
       }
 
       raw_format <- match.arg(raw_format)
@@ -242,29 +249,27 @@ App <- R6::R6Class(
         raw_cwl <- raw
       }
 
-      if (!is_missing(file_path)) {
+      if (!is_missing(from_path)) {
         # Check if the provided file path is a string
-        checkmate::assert_character(file_path, len = 1)
+        checkmate::assert_character(from_path, len = 1)
 
         # Check if the file with the provided path really exists on local disk
-        check_file_path(file_path)
+        check_file_path(from_path)
+
+        raw_body <- readr::read_file(file = from_path)
 
         # Check raw_format and read the file with the appropriate function
         if (raw_format == "JSON") {
-          raw_cwl <- jsonlite::fromJSON(file_path)
+          raw_cwl <- jsonlite::fromJSON(raw_body, simplifyDataFrame = FALSE)
         }
 
         if (raw_format == "YAML") {
-          raw_cwl <- yaml::read_yaml(file_path)
+          raw_cwl <- yaml::yaml.load(raw_body)
         }
       }
 
-
-      # Remove revision_number from app's ID
-      reduced_app_id <- sub("/[^/]*$", "", private$id)
-
       res <- sevenbridges2::api(
-        path = paste0("apps/", reduced_app_id, "/", private$revision + 1, "/raw"), # nolint
+        path = paste0(c("apps", self$id, self$latest_revision + 1, "raw"), collapse = "/"), # nolint
         method = "POST",
         body = raw_cwl,
         token = self$auth$get_token(),
@@ -274,19 +279,33 @@ App <- R6::R6Class(
 
       res <- status_check(res)
 
-      # Update fields
-      private$revision <- private$revision + 1
+      rlang::inform(glue::glue_col("New {green {self$name}} app revision with number {green {self$latest_revision + 1}} has been created.")) # nolint
+
+      # Return new or reload current object with newly created revision
+      return(self$get_revision(revision = self$latest_revision + 1, in_place = in_place)) # nolint
+
+      # Update current object's latest_revision
+      # self$latest_revision <- res$`sbg:latestRevision`
+      #
+      # if (in_place) {
+      #   # Update the rest of the current object's fields
+      #   self$revision <- res$`sbg:latestRevision`
+      #   self$raw <- res
+      #   return(self)
+      # } else {
+      #   return(self$get_revision(revision = self$latest_revision, in_place = FALSE)) # nolint
+      # }
 
       # Update app's details since res object doesn't contain all the
       # information
-      self <- self$get_revision(revision = private$revision)
+      # self <- self$get_revision(revision = self$revision)
       # ------------------- CHECK THIS ----------------------
       # ALTERNATIVELY we can manually update all fields
       # to avoid making one more API call
       # -----------------------------------------------------
 
       # Print new object
-      return(self)
+      # return(self)
     },
     #' @description Synchronize a copied app with its parent app
     #'
@@ -296,11 +315,8 @@ App <- R6::R6Class(
     #' @param ... Other arguments such as `fields` which can be used to specify
     #' a subset of fields to include in the response.
     sync = function(...) {
-      # Remove revision_number from app's ID
-      reduced_app_id <- sub("/[^/]*$", "", private$id)
-
       res <- sevenbridges2::api(
-        path = paste0("apps/", reduced_app_id, "/actions/sync"),
+        path = paste0("apps/", self$id, "/actions/sync"),
         method = "POST",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -308,6 +324,8 @@ App <- R6::R6Class(
       )
 
       res <- status_check(res)
+
+      rlang::inform(glue::glue_col("App {green {self$name}} has been updated.")) # nolint
 
       # Reload object
       self$initialize(
@@ -318,13 +336,10 @@ App <- R6::R6Class(
         revision = res$revision,
         raw = res$raw,
         copy_of = ifelse(!is.null(res$raw$`sbg:copyOf`), res$raw$`sbg:copyOf`, NA), # nolint
+        latest_revision = ifelse(!is.null(res$raw$`sbg:latestRevision`), res$raw$`sbg:latestRevision`, NA), # nolint
         auth = auth,
         response = attr(res, "response")
       )
-
-      rlang::inform(glue::glue_col("App {green private$name} has been updated.")) # nolint
-
-      return(asApp(res, self$auth))
     }
   )
 )
@@ -339,6 +354,7 @@ asApp <- function(x, auth = NULL) {
     revision = x$revision,
     raw = x$raw,
     copy_of = ifelse(!is.null(x$raw$`sbg:copyOf`), x$raw$`sbg:copyOf`, NA),
+    latest_revision = ifelse(!is.null(x$raw$`sbg:latestRevision`), x$raw$`sbg:latestRevision`, NA), # nolint
     auth = auth,
     response = attr(x, "response")
   )

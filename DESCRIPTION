@@ -32,7 +32,8 @@ Imports:
     utils,
     checkmate,
     DescTools,
-    yaml
+    yaml,
+    readr
 Suggests:
     knitr,
     rmarkdown,

@@ -22,6 +22,8 @@ R6 Class representing a resource for managing apps.
 
 \item{\code{copy_of}}{The original application of which this is a copy.}
 
+\item{\code{latest_revision}}{Integer representing app's latest revision.}
+
 \item{\code{raw}}{App's raw CWL (JSON or YAML).}
 }
 \if{html}{\out{</div>}}
@@ -51,6 +53,7 @@ Create a new App object.
   revision = NA,
   raw = NA,
   copy_of = NA,
+  latest_revision = NA,
   ...
 )}\if{html}{\out{</div>}}
 }
@@ -69,6 +72,8 @@ Create a new App object.
 \item{\code{raw}}{App's raw CWL (JSON or YAML).}
 
 \item{\code{copy_of}}{The original application of which this is a copy.}
+
+\item{\code{latest_revision}}{Integer representing app's latest revision.}
 
 \item{\code{...}}{Other arguments.}
 }
@@ -165,8 +170,9 @@ Create a new app revision.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App$create_revision(
   raw = NULL,
-  file_path = NULL,
+  from_path = NULL,
   raw_format = c("JSON", "YAML"),
+  in_place = FALSE,
   ...
 )}\if{html}{\out{</div>}}
 }
@@ -183,11 +189,14 @@ load a CWL file in YAML format, it is highly recommended to use the
 \code{read_yaml} function from the \code{yaml} package. Keep in mind that this
 parameter should not be used together with the \code{file_path} parameter.}
 
-\item{\code{file_path}}{A path to a file containing the raw CWL for the app
+\item{\code{from_path}}{A path to a file containing the raw CWL for the app
 (JSON or YAML). This parameter should not be used together with the
 \code{raw} parameter.}
 
 \item{\code{raw_format}}{The type of format used (JSON or YAML).}
+
+\item{\code{in_place}}{If TRUE, replace current app object with
+newly created revision.}
 
 \item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
 a subset of fields to include in the response.}

@@ -25,6 +25,7 @@ repos:
         -    withr
         -    DescTools
         -    remotes
+        -    readr
     -   id: use-tidy-description
     -   id: spell-check
         exclude: >
