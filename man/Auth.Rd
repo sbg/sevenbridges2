@@ -249,7 +249,7 @@ Get billing group information
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{Billing group identifier.}
+\item{\code{id}}{Billing group identifier as ID string or Billing object.}
 
 \item{\code{...}}{Other arguments passed to methods.}
 }
@@ -276,10 +276,11 @@ including the costs for analysis and storage, and the invoice period.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{Invoice identifier.}
+\item{\code{id}}{Invoice identifier as ID string or Invoice object.}
 
-\item{\code{billing_group_id}}{ID of a particular billing group. If provided,
-the method will return the invoice incurred by that billing group only.}
+\item{\code{billing_group_id}}{Billing object or ID of a particular billing
+group. If provided, the method will return the invoice incurred by that
+billing group only.}
 
 \item{\code{...}}{Other arguments passed to methods.}
 }
@@ -377,7 +378,8 @@ A method for creating a new project.
 \describe{
 \item{\code{name}}{The name of the project you are creating.}
 
-\item{\code{billing_group}}{The ID of the billing group for the project.}
+\item{\code{billing_group}}{The Billing object or ID of the billing group for
+the project.}
 
 \item{\code{description}}{Description of the project.}
 
@@ -426,8 +428,8 @@ This call returns a list of files and subdirectories in a
 specified project or directory within a project, with specified
 properties that you can access. The project or directory whose contents
 you want to list is specified as a query parameter in the call. Further
-properties to filter by can also be specified as query parameters.
-Note that this call lists both files and subdirectories in the specified
+properties to filter by can also be specified as query parameters. Note
+that this call lists both files and subdirectories in the specified
 project or directory within a project, but not the contents of the
 subdirectories. To list the contents of a subdirectory, make a new call
 and specify the subdirectory ID as the parent parameter.
@@ -446,26 +448,26 @@ and specify the subdirectory ID as the parent parameter.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{project}}{Project object. Project should not be used together
-with parent. If parent is used, the call will list the content of the
-specified folder, within the project to which the folder belongs.
-If project is used, the call will list the content at the root of the
-project's files.}
+\item{\code{project}}{The ID string of project or a Project object. Project
+should not be used together with parent. If parent is used, the call
+will list the content of the specified folder, within the project to
+which the folder belongs. If project is used, the call will list the
+content at the root of the project's files.}
 
-\item{\code{parent}}{Parent folder object. Should not be used together with
-project. If parent is used, the call will list the content of the
-specified folder, within the project to which the folder belongs.
-If project is used, the call will list the content at the root of the
-project's files.}
+\item{\code{parent}}{The ID string of parent folder or a File object which must
+be of type \code{FOLDER}. Should not be used together with project. If
+parent is used, the call will list the content of the specified folder,
+within the project to which the folder belongs. If project is used, the
+call will list the content at the root of the project's files.}
 
 \item{\code{name}}{Name of the file. List file with this name. Note that the
-name must be an exact complete string for the results to match. Multiple
-names can be represented as a vector.}
+name must be an exact complete string for the results to match.
+Multiple names can be represented as a vector.}
 
 \item{\code{metadata}}{List file with this metadata field values. List only
-files that have the specified value in metadata field. Different metadata
-fields are represented as a named list. You can also define multiple
-instances of the same metadata field.}
+files that have the specified value in metadata field. Different
+metadata fields are represented as a named list. You can also define
+multiple instances of the same metadata field.}
 
 \item{\code{origin}}{Task object. List only files produced by task.}
 
@@ -473,8 +475,8 @@ instances of the same metadata field.}
 exact complete string for the results to match. Multiple tags can be
 represented by vector of values.}
 
-\item{\code{...}}{Other arguments that can be passed to this method.
-Such as query parameters.}
+\item{\code{...}}{Other arguments that can be passed to this method. Such as
+query parameters.}
 }
 \if{html}{\out{</div>}}
 }
@@ -494,7 +496,7 @@ the API call to list all files in a project.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{File id.}
+\item{\code{id}}{The ID string of file or a File object.}
 
 \item{\code{...}}{Other arguments that can be passed to this method.}
 }
@@ -505,11 +507,10 @@ the API call to list all files in a project.
 \if{html}{\out{<a id="method-Auth-copy_files"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-copy_files}{}}}
 \subsection{Method \code{copy_files()}}{
-Copy file/files to the specified project.
-This call allows you to copy files between projects.
-Unlike the call to copy a file between projects,
-this call lets you batch the copy operation and
-copy a list of files at a time.
+Copy file/files to the specified project. This call allows
+you to copy files between projects. Unlike the call to copy a file
+between projects, this call lets you batch the copy operation and copy
+a list of files at a time.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$copy_files(files, destination_project)}\if{html}{\out{</div>}}
 }
@@ -517,9 +518,9 @@ copy a list of files at a time.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{files}}{List of files in form of File class objects to copy.}
+\item{\code{files}}{The list of files IDs or list of File object to copy.}
 
-\item{\code{destination_project}}{Project object or project ID in form of
+\item{\code{destination_project}}{Project object or project ID string in form of
 <project_owner>/\if{html}{\out{<project-name>}} where you want to copy files into.}
 }
 \if{html}{\out{</div>}}
@@ -543,8 +544,8 @@ destination folder (as the \code{parent} parameter), not both.
 \describe{
 \item{\code{name}}{The name of the folder you are about to create.}
 
-\item{\code{parent}}{The ID of the parent destination folder or a File object
-(which must be of type \code{FOLDER}).}
+\item{\code{parent}}{The ID string of the parent destination folder or a File
+object which must be of type \code{FOLDER}.}
 
 \item{\code{project}}{The ID of the destination project, or a Project object.}
 }
@@ -576,18 +577,18 @@ local computer to the Platform.
 
 \item{\code{project}}{Project object or its ID. Project should not be used
 together with parent. If parent is used, the call will upload the file
-to the specified Platform folder, within the project to which the folder
+to the specified Platform folder, within the project to which the
+folder belongs. If project is used, the call will upload the file to
+the root of the project's files.}
+
+\item{\code{parent}}{Parent folder object or its ID. Should not be used together
+with project. If parent is used, the call will upload the file to the
+specified Platform folder, within the project to which the folder
 belongs. If project is used, the call will upload the file to the root
 of the project's files.}
 
-\item{\code{parent}}{Parent folder object or its ID. Should not be used
-together with project. If parent is used, the call will upload the file
-to the specified Platform folder, within the project to which the folder
-belongs. If project is used, the call will upload the file to the root
-of the project's files.}
-
-\item{\code{filename}}{Optional new file name. By default the uploaded file
-will have the same name as the original file provided with the \code{path}
+\item{\code{filename}}{Optional new file name. By default the uploaded file will
+have the same name as the original file provided with the \code{path}
 parameter. If its name will not change, omit this key.}
 
 \item{\code{overwrite}}{In case there is already a file with the same name in
@@ -597,9 +598,9 @@ whether that file will be overwritten or not. If overwrite is set to
 request, the existing file will be deleted and a new one created in its
 place.}
 
-\item{\code{part_size}}{The preferred size for upload parts in bytes. If
-omitted or set to a value that is incompatible with the cloud storage
-provider, a default value will be used.}
+\item{\code{part_size}}{The preferred size for upload parts in bytes. If omitted
+or set to a value that is incompatible with the cloud storage provider,
+a default value will be used.}
 
 \item{\code{init}}{If \code{TRUE}, the method will initialize and return the Upload
 object and stop. If \code{FALSE}, the method will return the Upload object
@@ -630,7 +631,8 @@ This call aborts an ongoing multipart upload.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{upload_id}}{ID of the upload process that you want to abort.}
+\item{\code{upload_id}}{Upload object or ID of the upload process that you want
+to abort.}
 }
 \if{html}{\out{</div>}}
 }

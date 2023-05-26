@@ -408,7 +408,7 @@ Auth <- R6::R6Class(
     },
     # billing groups ----------------------------------------------------------
     #' @description Get billing group information
-    #' @param id Billing group identifier.
+    #' @param id Billing group identifier as ID string or Billing object.
     #' @param ... Other arguments passed to methods.
     billing_groups = function(id = NULL, ...) {
       if (is.null(id)) {
@@ -426,6 +426,7 @@ Auth <- R6::R6Class(
         billing_list <- asBillingList(req, self)
         billing_list
       } else {
+        id <- check_and_transform_id(id, "Billing")
         req <- sevenbridges2::api(
           path = paste0("billing/groups/", id),
           method = "GET",
@@ -450,9 +451,10 @@ Auth <- R6::R6Class(
     #' provided, This call retrieves information about a selected invoice,
     #' including the costs for analysis and storage, and the invoice period.
     #'
-    #' @param id Invoice identifier.
-    #' @param billing_group_id ID of a particular billing group. If provided,
-    #' the method will return the invoice incurred by that billing group only.
+    #' @param id Invoice identifier as ID string or Invoice object.
+    #' @param billing_group_id Billing object or ID of a particular billing
+    #'   group. If provided, the method will return the invoice incurred by that
+    #'   billing group only.
     #' @param ... Other arguments passed to methods.
     invoice = function(id = NULL, billing_group_id = NULL, ...) {
       if (is.null(id)) {
@@ -467,6 +469,7 @@ Auth <- R6::R6Class(
           req <- status_check(req)
           req
         } else {
+          billing_group_id <- check_and_transform_id(billing_group_id, "Billing") # nolint
           req <- sevenbridges2::api(
             path = "billing/invoices",
             method = "GET",
@@ -479,6 +482,7 @@ Auth <- R6::R6Class(
           req
         }
       } else {
+        id <- check_and_transform_id(id, "Invoice")
         req <- sevenbridges2::api(
           path = paste0("billing/invoices/", id),
           method = "GET",
@@ -560,7 +564,8 @@ Auth <- R6::R6Class(
     #' @description A method for creating a new project.
     #'
     #' @param name The name of the project you are creating.
-    #' @param billing_group The ID of the billing group for the project.
+    #' @param billing_group The Billing object or ID of the billing group for
+    #'   the project.
     #' @param description Description of the project.
     #' @param tags The list of project tags.
     #' @param type Project's type. All projects have type v2.
@@ -611,6 +616,7 @@ Auth <- R6::R6Class(
 
       # check tags
       if (!is.null(tags) && is.character(tags)) tags <- as.list(tags)
+      billing_group <- check_and_transform_id(billing_group, "Billing")
 
       body <- list(
         "name" = name,
@@ -646,42 +652,42 @@ Auth <- R6::R6Class(
     },
     # list all files -------------------------------------------------------
     #' @description This call returns a list of files and subdirectories in a
-    #' specified project or directory within a project, with specified
-    #' properties that you can access. The project or directory whose contents
-    #' you want to list is specified as a query parameter in the call. Further
-    #'  properties to filter by can also be specified as query parameters.
-    #' Note that this call lists both files and subdirectories in the specified
-    #' project or directory within a project, but not the contents of the
-    #' subdirectories. To list the contents of a subdirectory, make a new call
-    #' and specify the subdirectory ID as the parent parameter.
-    #' @param project Project object. Project should not be used together
-    #' with parent. If parent is used, the call will list the content of the
-    #' specified folder, within the project to which the folder belongs.
-    #' If project is used, the call will list the content at the root of the
-    #' project's files.
-    #' @param parent Parent folder object. Should not be used together with
-    #' project. If parent is used, the call will list the content of the
-    #' specified folder, within the project to which the folder belongs.
-    #' If project is used, the call will list the content at the root of the
-    #' project's files.
+    #'   specified project or directory within a project, with specified
+    #'   properties that you can access. The project or directory whose contents
+    #'   you want to list is specified as a query parameter in the call. Further
+    #'   properties to filter by can also be specified as query parameters. Note
+    #'   that this call lists both files and subdirectories in the specified
+    #'   project or directory within a project, but not the contents of the
+    #'   subdirectories. To list the contents of a subdirectory, make a new call
+    #'   and specify the subdirectory ID as the parent parameter.
+    #' @param project The ID string of project or a Project object. Project
+    #'   should not be used together with parent. If parent is used, the call
+    #'   will list the content of the specified folder, within the project to
+    #'   which the folder belongs. If project is used, the call will list the
+    #'   content at the root of the project's files.
+    #' @param parent The ID string of parent folder or a File object which must
+    #'   be of type `FOLDER`. Should not be used together with project. If
+    #'   parent is used, the call will list the content of the specified folder,
+    #'   within the project to which the folder belongs. If project is used, the
+    #'   call will list the content at the root of the project's files.
     #' @param name Name of the file. List file with this name. Note that the
-    #' name must be an exact complete string for the results to match. Multiple
-    #' names can be represented as a vector.
+    #'   name must be an exact complete string for the results to match.
+    #'   Multiple names can be represented as a vector.
     #' @param metadata List file with this metadata field values. List only
-    #' files that have the specified value in metadata field. Different metadata
-    #' fields are represented as a named list. You can also define multiple
-    #' instances of the same metadata field.
+    #'   files that have the specified value in metadata field. Different
+    #'   metadata fields are represented as a named list. You can also define
+    #'   multiple instances of the same metadata field.
     #' @param origin Task object. List only files produced by task.
     #' @param tag List files containing this tag. Note that the tag must be an
-    #'  exact complete string for the results to match. Multiple tags can be
-    #'  represented by vector of values.
-    #' @param ... Other arguments that can be passed to this method.
-    #' Such as query parameters.
+    #'   exact complete string for the results to match. Multiple tags can be
+    #'   represented by vector of values.
+    #' @param ... Other arguments that can be passed to this method. Such as
+    #'   query parameters.
     files = function(project = NULL, parent = NULL, name = NULL,
                      metadata = NULL, origin = NULL, tag = NULL, ...) {
       # Check input parameters
-      checkmate::assert_r6(project, classes = "Project", null.ok = TRUE)
-      checkmate::assert_r6(parent, classes = "File", null.ok = TRUE)
+      # checkmate::assert_r6(project, classes = "Project", null.ok = TRUE)
+      # checkmate::assert_r6(parent, classes = "File", null.ok = TRUE)
       checkmate::assert_character(name, null.ok = TRUE)
       checkmate::assert_list(metadata,
         types = "string", names = TRUE,
@@ -692,13 +698,14 @@ Auth <- R6::R6Class(
 
       # Run API call based on project/parent parameters
       if (!is.null(project)) {
+        id <- check_and_transform_id(project, "Project")
         res <- sevenbridges2::api(
           path = "files",
           method = "GET",
           token = self$get_token(),
           base_url = self$url,
           query = list(
-            project = project$id,
+            project = id,
             name = name,
             metadata = metadata,
             origin = origin,
@@ -707,13 +714,14 @@ Auth <- R6::R6Class(
           ...
         )
       } else if (!is.null(parent)) {
+        id <- check_and_transform_id(parent, "File")
         res <- sevenbridges2::api(
           path = "files",
           method = "GET",
           token = self$get_token(),
           base_url = self$url,
           query = list(
-            parent = parent$id,
+            parent = id,
             name = name,
             metadata = metadata,
             origin = origin,
@@ -739,12 +747,12 @@ Auth <- R6::R6Class(
     #' Files are specified by their IDs, which you can obtain by making
     #' the API call to list all files in a project.
     #'
-    #' @param id File id.
+    #' @param id The ID string of file or a File object.
     #' @param ... Other arguments that can be passed to this method.
     #' @importFrom checkmate assert_character
     get_file = function(id, ...) {
-      checkmate::assert_character(id)
       if (is_missing(id)) rlang::abort("File id must be non-empty string.")
+      id <- check_and_transform_id(id, "File")
 
       # Run API call based on id parameter
       res <- sevenbridges2::api(
@@ -759,29 +767,20 @@ Auth <- R6::R6Class(
 
       asFile(res, auth = self)
     },
-    #' @description  Copy file/files to the specified project.
-    #' This call allows you to copy files between projects.
-    #' Unlike the call to copy a file between projects,
-    #' this call lets you batch the copy operation and
-    #' copy a list of files at a time.
+    #' @description  Copy file/files to the specified project. This call allows
+    #'   you to copy files between projects. Unlike the call to copy a file
+    #'   between projects, this call lets you batch the copy operation and copy
+    #'   a list of files at a time.
     #'
-    #' @param files List of files in form of File class objects to copy.
-    #' @param destination_project Project object or project ID in form of
-    #' <project_owner>/<project-name> where you want to copy files into.
+    #' @param files The list of files IDs or list of File object to copy.
+    #' @param destination_project Project object or project ID string in form of
+    #'   <project_owner>/<project-name> where you want to copy files into.
     #' @importFrom checkmate assert_list test_atomic assert_character assert_r6
     #' @importFrom glue glue_col
     copy_files = function(files, destination_project) {
       checkmate::assert_list(files, types = "File")
-      if (checkmate::test_atomic(destination_project) &&
-        !is_missing(destination_project)) {
-        checkmate::assert_character(destination_project)
-        project_id <- destination_project
-      } else {
-        checkmate::assert_r6(destination_project, classes = "Project")
-        project_id <- destination_project$id
-      }
-
-      file_ids <- lapply(files, "[[", "id")
+      project_id <- check_and_transform_id(destination_project, "Project")
+      file_ids <- lapply(files, check_and_transform_id, "File")
 
       body <- list(
         "project" = project_id,
@@ -814,18 +813,18 @@ Auth <- R6::R6Class(
                            {res[[i]]$new_file_name}"), "\n")
         cat("\n")
       }
-      result
+      invisible(result)
     },
     # create new folder
     #' @description A method for creating a new folder. It allows you to create
-    #' a new folder on the Platform within the root folder of a specified
-    #' project or the provided parent folder. Remember that you should provide
-    #' either the destination project (as the `project` parameter) or the
-    #' destination folder (as the `parent` parameter), not both.
+    #'   a new folder on the Platform within the root folder of a specified
+    #'   project or the provided parent folder. Remember that you should provide
+    #'   either the destination project (as the `project` parameter) or the
+    #'   destination folder (as the `parent` parameter), not both.
     #'
     #' @param name The name of the folder you are about to create.
-    #' @param parent The ID of the parent destination folder or a File object
-    #' (which must be of type `FOLDER`).
+    #' @param parent The ID string of the parent destination folder or a File
+    #'   object which must be of type `FOLDER`.
     #' @param project The ID of the destination project, or a Project object.
     #' @importFrom rlang abort inform
     #' @importFrom glue glue_col
@@ -844,37 +843,20 @@ Auth <- R6::R6Class(
       }
 
       if (!is_missing(parent)) {
-        if (checkmate::test_r6(parent, classes = "File")) {
-          if (parent$type == "folder") {
-            parent <- parent$id
-          } else {
+          if (inherits(parent, "File") && parent$type != "folder") {
             rlang::abort("The provided parent object is not a folder.")
           }
-        } else if (checkmate::test_class(parent, classes = "character")) {
-          parent <- parent
-        } else {
-          # nolint start
-          rlang::abort("The provided parent argument is neither a File object nor an ID of a folder.")
-          # nolint end
-        }
+        parent_id <- check_and_transform_id(parent, "File")
         body <- list(
           "name" = name,
-          "parent" = parent,
+          "parent" = parent_id,
           "type" = "FOLDER"
         )
       } else if (!is_missing(project)) {
-        if (checkmate::test_r6(project, classes = "Project")) {
-          project <- project$id
-        } else if (checkmate::test_class(project, classes = "character")) {
-          project <- project
-        } else {
-          # nolint start
-          rlang::abort("The provided `project` argument is neither a Project object nor an ID of a project.")
-          # nolint end
-        }
+        project_id <- check_and_transform_id(project, "Project")
         body <- list(
           "name" = name,
-          "project" = project,
+          "project" = project_id,
           "type" = "FOLDER"
         )
       }
@@ -898,33 +880,33 @@ Auth <- R6::R6Class(
     },
     # upload a single file
     #' @description This method allows you to upload a single file from your
-    #' local computer to the Platform.
+    #'   local computer to the Platform.
     #' @param path File path on local disk.
     #' @param project Project object or its ID. Project should not be used
-    #' together with parent. If parent is used, the call will upload the file
-    #' to the specified Platform folder, within the project to which the folder
-    #' belongs. If project is used, the call will upload the file to the root
-    #' of the project's files.
-    #' @param parent Parent folder object or its ID. Should not be used
-    #' together with project. If parent is used, the call will upload the file
-    #' to the specified Platform folder, within the project to which the folder
-    #' belongs. If project is used, the call will upload the file to the root
-    #' of the project's files.
-    #' @param filename Optional new file name. By default the uploaded file
-    #' will have the same name as the original file provided with the `path`
-    #' parameter. If its name will not change, omit this key.
+    #'   together with parent. If parent is used, the call will upload the file
+    #'   to the specified Platform folder, within the project to which the
+    #'   folder belongs. If project is used, the call will upload the file to
+    #'   the root of the project's files.
+    #' @param parent Parent folder object or its ID. Should not be used together
+    #'   with project. If parent is used, the call will upload the file to the
+    #'   specified Platform folder, within the project to which the folder
+    #'   belongs. If project is used, the call will upload the file to the root
+    #'   of the project's files.
+    #' @param filename Optional new file name. By default the uploaded file will
+    #'   have the same name as the original file provided with the `path`
+    #'   parameter. If its name will not change, omit this key.
     #' @param overwrite In case there is already a file with the same name in
-    #' the selected platform project/folder, this option allows you to control
-    #' whether that file will be overwritten or not. If overwrite is set to
-    #' `TRUE` and a file already exists under the name specified in the
-    #' request, the existing file will be deleted and a new one created in its
-    #' place.
-    #' @param part_size The preferred size for upload parts in bytes. If
-    #' omitted or set to a value that is incompatible with the cloud storage
-    #' provider, a default value will be used.
+    #'   the selected platform project/folder, this option allows you to control
+    #'   whether that file will be overwritten or not. If overwrite is set to
+    #'   `TRUE` and a file already exists under the name specified in the
+    #'   request, the existing file will be deleted and a new one created in its
+    #'   place.
+    #' @param part_size The preferred size for upload parts in bytes. If omitted
+    #'   or set to a value that is incompatible with the cloud storage provider,
+    #'   a default value will be used.
     #' @param init If `TRUE`, the method will initialize and return the Upload
-    #' object and stop. If `FALSE`, the method will return the Upload object
-    #' and start the upload process immediately.
+    #'   object and stop. If `FALSE`, the method will return the Upload object
+    #'   and start the upload process immediately.
     #' @importFrom checkmate test_r6 test_class assert_logical
     #' @importFrom rlang abort
     upload = function(path,
@@ -950,26 +932,14 @@ Auth <- R6::R6Class(
       }
 
       if (!is_missing(parent)) {
-        if (checkmate::test_r6(parent, classes = "File")) {
-          if (parent$type == "folder") {
-            parent <- parent$id
-          } else {
-            rlang::abort("The provided parent object is not a folder.")
-          }
-        } else if (checkmate::test_class(parent, classes = "character")) {
-          parent <- parent
-        } else {
-          rlang::abort("The provided parent argument is neither a File object nor an ID of a folder.") # nolint
+        if (inherits(parent, "File") && parent$type != "folder") {
+          rlang::abort("The provided parent object is not a folder.")
         }
+        parent <- check_and_transform_id(parent, "File")
       } else if (!is_missing(project)) {
-        if (checkmate::test_r6(project, classes = "Project")) {
-          project <- project$id
-        } else if (checkmate::test_class(project, classes = "character")) {
-          project <- project
-        } else {
-          rlang::abort("The provided project argument is neither a Project object nor an ID of a project.") # nolint
-        }
+        project <- check_and_transform_id(project, "Project")
       }
+
 
       # Check filename
       if (is_missing(filename)) {
@@ -1047,12 +1017,13 @@ Auth <- R6::R6Class(
     },
     # abort multipart upload
     #' @description This call aborts an ongoing multipart upload.
-    #' @param upload_id ID of the upload process that you want to abort.
+    #' @param upload_id Upload object or ID of the upload process that you want
+    #'   to abort.
     #' @importFrom rlang abort inform
     #' @importFrom checkmate assert_character
     #' @importFrom glue glue_col
     upload_abort = function(upload_id) {
-      checkmate::assert_character(upload_id, n.chars = 64L)
+      upload_id <- check_and_transform_id(upload_id, "Upload")
 
       res <- sevenbridges2::api(
         path = paste0("upload/multipart/", upload_id),

@@ -92,6 +92,7 @@ Billing <- R6::R6Class(
         },
         ""
       )
+      cli::cli_end()
     },
     #' @description Method for getting a analysis breakdown for a billing group.
     #'
