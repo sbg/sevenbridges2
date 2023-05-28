@@ -170,6 +170,5 @@ test_that("part$upload_info_part and part$upload_complete_part functions
     part$upload_complete_part(upload_id = 123),
     regexp = "Assertion on 'x' failed: Must be of type 'character' (or 'NULL'), not 'double'.", # nolint
     fixed = TRUE
-
   )
 })
