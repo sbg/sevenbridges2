@@ -256,11 +256,10 @@ Project <- R6::R6Class(
       }
     },
     #' @description Method for listing all the project members.
-    #' @param pid ID of a project for which you want to get a list of members.
     #' @param ... Other arguments.
-    member_list = function(pid = self$id, ...) {
+    member_list = function(...) {
       res <- sevenbridges2::api(
-        path = paste0("projects/", pid, "/members"),
+        path = paste0("projects/", self$id, "/members"),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -275,7 +274,6 @@ Project <- R6::R6Class(
     #' @description Method for adding new members to a specified project.
     #' The call can only be successfully made by a user who has admin
     #' permissions in the project.
-    #' @param pid ID of a project (project id = project_owner + project).
     #' @param username The Seven Bridges Platform username of the person
     #' you want to add to the project.
     #' @param email The email address of the person you want to add to the
@@ -288,8 +286,7 @@ Project <- R6::R6Class(
     #' @param admin Whether the user should have the admin permission.
     #' @param ... Other arguments that can be passed to api() function
     #' like 'limit', 'offset', 'fields', etc.
-    member_add = function(pid = self$id,
-                          username = NULL,
+    member_add = function(username = NULL,
                           email = NULL,
                           write = TRUE,
                           read = TRUE,
@@ -315,7 +312,7 @@ Project <- R6::R6Class(
       )
 
       req <- sevenbridges2::api(
-        path = paste0("projects/", pid, "/members"),
+        path = paste0("projects/", self$id, "/members"),
         method = "POST",
         token = self$auth$get_token(),
         body = body,
@@ -330,16 +327,15 @@ Project <- R6::R6Class(
     },
     #' @description A method for deleting members from the project. It can only
     #' be successfully run by a user who has admin privileges in the project.
-    #' @param pid ID of a project (project id = project_owner + project).
     #' @param username The Seven Bridges Platform username of the user you
     #' are about to remove.
-    member_delete = function(pid = self$id, username = NULL) {
+    member_delete = function(username = NULL) {
       if (is_missing(username)) {
         rlang::abort("Please provide a username for the user you want to remove
                      from the project.")
       }
       req <- sevenbridges2::api(
-        path = paste0("projects/", pid, "/members", "/", username),
+        path = paste0("projects/", self$id, "/members", "/", username),
         method = "DELETE",
         token = self$auth$get_token(),
         authorization = self$auth$authorization,
@@ -357,16 +353,15 @@ Project <- R6::R6Class(
     },
     #' @description This method returns the permissions of a specified user
     #' within a specified project.
-    #' @param pid ID of a project (project id = project_owner + project).
     #' @param username Username of the user whose permissions you are
     #' enquiring about.
     #' @param ... Other arguments.
-    member_permissions_get = function(pid = self$id, username = NULL, ...) {
+    member_permissions_get = function(username = NULL, ...) {
       if (is_missing(username)) {
         rlang::abort("Please provide a username.")
       }
       req <- sevenbridges2::api(
-        path = paste0("projects/", pid, "/members", "/", username),
+        path = paste0("projects/", self$id, "/members", "/", username),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -379,7 +374,6 @@ Project <- R6::R6Class(
     },
     #' @description This method can be used to edit a user's permissions in a
     #' specified  project.
-    #' @param pid ID of a project (project id = project_owner + project).
     #' @param username The project member whose permissions you are editing.
     #' @param write Whether the user should have the write permission.
     #' @param read Whether the user should have the read permission.
@@ -388,8 +382,7 @@ Project <- R6::R6Class(
     #' @param admin Whether the user should have the admin permission.
     #' @param ... Other arguments that can be passed to api() function
     #' like 'limit', 'offset', 'fields', etc.
-    member_permissions_modify = function(pid = self$id,
-                                         username = NULL,
+    member_permissions_modify = function(username = NULL,
                                          write = TRUE,
                                          read = TRUE,
                                          copy = TRUE,
@@ -414,7 +407,7 @@ Project <- R6::R6Class(
 
       req <- sevenbridges2::api(
         path = paste0(
-          "projects/", pid, "/members", "/", username,
+          "projects/", self$id, "/members", "/", username,
           "/permissions"
         ),
         method = "PATCH",
