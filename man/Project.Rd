@@ -227,14 +227,12 @@ permanently delete the project from the platform.
 \subsection{Method \code{member_list()}}{
 Method for listing all the project members.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$member_list(pid = self$id, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Project$member_list(...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{pid}}{ID of a project for which you want to get a list of members.}
-
 \item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
@@ -249,7 +247,6 @@ The call can only be successfully made by a user who has admin
 permissions in the project.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Project$member_add(
-  pid = self$id,
   username = NULL,
   email = NULL,
   write = TRUE,
@@ -264,8 +261,6 @@ permissions in the project.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{pid}}{ID of a project (project id = project_owner + project).}
-
 \item{\code{username}}{The Seven Bridges Platform username of the person
 you want to add to the project.}
 
@@ -296,14 +291,12 @@ like 'limit', 'offset', 'fields', etc.}
 A method for deleting members from the project. It can only
 be successfully run by a user who has admin privileges in the project.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$member_delete(pid = self$id, username = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Project$member_delete(username = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{pid}}{ID of a project (project id = project_owner + project).}
-
 \item{\code{username}}{The Seven Bridges Platform username of the user you
 are about to remove.}
 }
@@ -317,14 +310,12 @@ are about to remove.}
 This method returns the permissions of a specified user
 within a specified project.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$member_permissions_get(pid = self$id, username = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Project$member_permissions_get(username = NULL, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{pid}}{ID of a project (project id = project_owner + project).}
-
 \item{\code{username}}{Username of the user whose permissions you are
 enquiring about.}
 
@@ -341,7 +332,6 @@ This method can be used to edit a user's permissions in a
 specified  project.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Project$member_permissions_modify(
-  pid = self$id,
   username = NULL,
   write = TRUE,
   read = TRUE,
@@ -355,8 +345,6 @@ specified  project.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{pid}}{ID of a project (project id = project_owner + project).}
-
 \item{\code{username}}{The project member whose permissions you are editing.}
 
 \item{\code{write}}{Whether the user should have the write permission.}
