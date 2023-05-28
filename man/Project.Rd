@@ -194,7 +194,8 @@ the project can change the project description.
 
 \item{\code{description}}{Description of the project.}
 
-\item{\code{billing_group}}{The ID of the billing group for the project.}
+\item{\code{billing_group}}{Billing object or ID of a particular billing
+group for the project.}
 
 \item{\code{settings}}{Contains detailed project settings.}
 

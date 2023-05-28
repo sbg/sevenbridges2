@@ -191,7 +191,8 @@ Project <- R6::R6Class(
     #' the project can change the project description.
     #' @param name The name of the project you are creating.
     #' @param description Description of the project.
-    #' @param billing_group The ID of the billing group for the project.
+    #' @param billing_group Billing object or ID of a particular billing
+    #'   group for the project.
     #' @param settings Contains detailed project settings.
     #' @param tags The list of project tags.
     #' @param ... Other arguments that can be passed to api() function
@@ -203,6 +204,7 @@ Project <- R6::R6Class(
                     tags = NULL, ...) {
       check_tags(tags)
       check_settings(settings)
+      billing_group <- check_and_transform_id(billing_group, "Billing")
 
       body <- list(
         "name" = name,

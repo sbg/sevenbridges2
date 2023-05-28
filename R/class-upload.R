@@ -404,10 +404,11 @@ Part <- R6::R6Class(
     }, # nocov end
 
     #' @description Get upload part info
-    #' @param upload_id Upload object's ID part belongs to.
+    #' @param upload_id Upload object or ID of the upload process that part
+    #'   belongs to.
     #' @importFrom checkmate assert_character
     upload_info_part = function(upload_id) {
-      checkmate::assert_character(upload_id, null.ok = FALSE)
+      upload_id <- check_and_transform_id(upload_id, "Upload")
       # nocov start
       res <- sevenbridges2::api(
         path = paste0(
@@ -433,10 +434,11 @@ Part <- R6::R6Class(
       self
     }, # nocov end
     #' @description Report an uploaded part
-    #' @param upload_id Upload object's ID part belongs to.
+    #' @param upload_id Upload object or ID of the upload process that part
+    #'   belongs to.
     #' @importFrom checkmate assert_character
     upload_complete_part = function(upload_id) {
-      checkmate::assert_character(upload_id, null.ok = FALSE)
+      upload_id <- check_and_transform_id(upload_id, "Upload")
       # nocov start
       body <- list(
         part_number = self$part_number,

@@ -162,11 +162,14 @@ test_that("part$upload_info_part and part$upload_complete_part functions
   part <- upload_obj$parts[[1]]
   testthat::expect_error(
     part$upload_info_part(upload_id = 123),
-    "Assertion on 'upload_id' failed: Must be of type 'character', not 'double'." # nolint
+    regexp = "Assertion on 'x' failed: Must be of type 'character' (or 'NULL'), not 'double'.", # nolint
+    fixed = TRUE
   )
 
   testthat::expect_error(
     part$upload_complete_part(upload_id = 123),
-    "Assertion on 'upload_id' failed: Must be of type 'character', not 'double'." # nolint
+    regexp = "Assertion on 'x' failed: Must be of type 'character' (or 'NULL'), not 'double'.", # nolint
+    fixed = TRUE
+
   )
 })
