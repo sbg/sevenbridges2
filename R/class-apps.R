@@ -45,7 +45,7 @@ Apps <- R6::R6Class(
     #' pagination-specific attribute.
     #'
     #' @importFrom checkmate assert_list
-    query = function(project,
+    query = function(project = NULL,
                      visibility = c("private", "public"),
                      query_terms = NULL,
                      id = NULL,
@@ -104,7 +104,7 @@ Apps <- R6::R6Class(
       checkmate::assert_string(id)
       checkmate::assert_int(revision, null.ok = TRUE, lower = 0)
 
-      id <- paste0(id, revision, collapse = "/")
+      id <- glue::glue("{id}/{revision}", .null = NULL)
       res <- super$get(
         cls = self,
         id = id
@@ -229,7 +229,8 @@ Apps <- R6::R6Class(
       }
 
       if (!is.list(raw) | !is.character(raw)) {
-        rlang::abort("CWL app should be either in JSON or YAML format!")
+        rlang::abort("CWL app should be either a list or raw character in JSON
+                     or YAML format!")
       }
 
       if (is.list(raw)) {

@@ -7,7 +7,7 @@
 R6 Class representing apps resource endpoint
 }
 \section{Super class}{
-\code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}}
+\code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Apps}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -19,12 +19,12 @@ R6 Class representing apps resource endpoint
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-NA-new}{\code{Apps$new()}}
-\item \href{#method-NA-query}{\code{Apps$query()}}
-\item \href{#method-NA-get}{\code{Apps$get()}}
-\item \href{#method-NA-copy}{\code{Apps$copy()}}
-\item \href{#method-NA-create}{\code{Apps$create()}}
-\item \href{#method-unknown-clone}{\code{Apps$clone()}}
+\item \href{#method-Apps-new}{\code{Apps$new()}}
+\item \href{#method-Apps-query}{\code{Apps$query()}}
+\item \href{#method-Apps-get}{\code{Apps$get()}}
+\item \href{#method-Apps-copy}{\code{Apps$copy()}}
+\item \href{#method-Apps-create}{\code{Apps$create()}}
+\item \href{#method-Apps-clone}{\code{Apps$clone()}}
 }
 }
 \if{html}{\out{
@@ -35,8 +35,8 @@ R6 Class representing apps resource endpoint
 </details>
 }}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-new"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-new}{}}}
+\if{html}{\out{<a id="method-Apps-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Apps-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Apps$new(...)}\if{html}{\out{</div>}}
@@ -51,13 +51,13 @@ R6 Class representing apps resource endpoint
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-query"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-query}{}}}
+\if{html}{\out{<a id="method-Apps-query"></a>}}
+\if{latex}{\out{\hypertarget{method-Apps-query}{}}}
 \subsection{Method \code{query()}}{
 This call lists all the apps available to you.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Apps$query(
-  project,
+  project = NULL,
   visibility = c("private", "public"),
   query_terms = NULL,
   id = NULL,
@@ -90,8 +90,8 @@ pagination-specific attribute.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-get"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-get}{}}}
+\if{html}{\out{<a id="method-Apps-get"></a>}}
+\if{latex}{\out{\hypertarget{method-Apps-get}{}}}
 \subsection{Method \code{get()}}{
 This call returns information about the specified app.
 The app should be one in a project that you can access; this could be an
@@ -114,8 +114,8 @@ for an app by making the call to list all apps available to you.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-copy"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-copy}{}}}
+\if{html}{\out{<a id="method-Apps-copy"></a>}}
+\if{latex}{\out{\hypertarget{method-Apps-copy}{}}}
 \subsection{Method \code{copy()}}{
 This call copies the specified app to the specified project.
 The app should be one in a project that you can access; this could be an
@@ -154,8 +154,8 @@ copied app}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-create"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-create}{}}}
+\if{html}{\out{<a id="method-Apps-create"></a>}}
+\if{latex}{\out{\hypertarget{method-Apps-create}{}}}
 \subsection{Method \code{create()}}{
 This call allows you to add an app using raw CWL.
 \subsection{Usage}{
@@ -191,8 +191,8 @@ characters or spaces)}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-unknown-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-unknown-clone}{}}}
+\if{html}{\out{<a id="method-Apps-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Apps-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

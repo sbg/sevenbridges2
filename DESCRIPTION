@@ -33,8 +33,7 @@ Imports:
     checkmate,
     DescTools,
     yaml,
-    readr,
-    devtools
+    readr
 Suggests:
     knitr,
     rmarkdown,

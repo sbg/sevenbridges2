@@ -1,5 +1,5 @@
 ### Script for setting testing variables
-devtools::load_all()
+# devtools::load_all()
 
 # Dummy token
 dummy_token <-
