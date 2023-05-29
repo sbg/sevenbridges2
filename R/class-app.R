@@ -248,7 +248,7 @@ App <- R6::R6Class(
     #' @importFrom checkmate assert_list assert_character
     #' @importFrom stringr str_extract
     #' @importFrom tools file_ext
-    #' @importFrom jsonlite fromJSON
+    #' @importFrom jsonlite validate fromJSON
     #' @importFrom yaml yaml.load
     #' @importFrom readr read_file
     create_revision = function(raw = NULL, from_path = NULL, raw_format = c("JSON", "YAML"), in_place = FALSE, ...) { # nolint
@@ -282,6 +282,7 @@ App <- R6::R6Class(
 
         # Check raw_format and read the file with the appropriate function
         if (raw_format == "JSON") {
+          jsonlite::validate(raw_body)
           raw_cwl <- jsonlite::fromJSON(raw_body, simplifyDataFrame = FALSE)
         }
 
