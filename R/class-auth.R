@@ -452,7 +452,7 @@ Auth <- R6::R6Class(
     #' including the costs for analysis and storage, and the invoice period.
     #'
     #' @param id Invoice identifier as ID string or Invoice object.
-    #' @param billing_group_id Billing object or ID of a particular billing
+    #' @param billing_group Billing object or ID of a particular billing
     #'   group. If provided, the method will return the invoice incurred by that
     #'   billing group only.
     #' @param ... Other arguments passed to methods.
@@ -778,6 +778,13 @@ Auth <- R6::R6Class(
     #' @importFrom glue glue_col
     copy_files = function(files, destination_project) {
       checkmate::assert_list(files, types = "File")
+
+      if (is_missing(files) && is_missing(destination_project)) {
+        # nolint start
+        rlang::abort("Both the files and destination_project are missing. You need to provide both of them.")
+        # nolint end
+      }
+
       project_id <- check_and_transform_id(destination_project, "Project")
       file_ids <- lapply(files, check_and_transform_id, "File")
 
