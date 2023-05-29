@@ -12,6 +12,13 @@ App <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
+    #' @field URL URL endpoint fields
+    URL = list(
+      "get_revision" = "apps/{id}/{revision}",
+      "create_revision" = "apps/{id}/{revision}/raw",
+      "copy" = "apps/{id}/actions/copy",
+      "sync" = "apps/{id}/actions/sync"
+    ),
     #' @field id Character used as an app ID.
     id = NULL,
     #' @field project Project ID if any, when returned by an API call.
@@ -104,9 +111,10 @@ App <- R6::R6Class(
     #' a subset of fields to include in the response.
     #' @importFrom rlang abort
     #' @importFrom checkmate assert_string assert_logical
+    #' @importFrom glue glue
     copy = function(project, name = NULL, strategy = "clone", use_revision = FALSE, ...) { # nolint
       if (is_missing(project)) {
-        rlang::abort("You need to specify the destination project.")
+        rlang::abort("Project parameter must be provided!")
       }
       # Check (and transform) project argument
       project <- check_and_transform_id(project,
@@ -133,13 +141,15 @@ App <- R6::R6Class(
 
       # Use full app ID (with revision number) or omit revision number (copy
       # the latest version of the app)
-      app_id <- ifelse(use_revision,
+      id <- ifelse(use_revision,
         paste0(self$id, self$revision, collapse = "/"),
         self$id
       )
 
+      path <- glue::glue(self$URL[["copy"]])
+
       res <- sevenbridges2::api(
-        path = paste0("apps/", app_id, "/", "actions/copy"),
+        path = path,
         method = "POST",
         body = body,
         token = self$auth$get_token(),
@@ -166,7 +176,8 @@ App <- R6::R6Class(
     #' specified app revision.
     #' @param ... Other arguments such as `fields` which can be used to specify
     #' a subset of fields to include in the response.
-    #' @importFrom checkmate assert_numeric
+    #' @importFrom checkmate assert_numeric assert_logical
+    #' @importFrom glue glue
     get_revision = function(revision = self$revision, in_place = FALSE, ...) {
       # Check if revision is positive number and convert it to integer
       checkmate::assert_numeric(revision, lower = 0, len = 1)
@@ -175,9 +186,13 @@ App <- R6::R6Class(
       # Check in_place parameter to be logical
       checkmate::assert_logical(in_place, len = 1, any.missing = FALSE, null.ok = FALSE) # nolint
 
+
+      id <- self$id
+      path <- glue::glue(self$URL[["get_revision"]])
+
       # nocov start
       res <- sevenbridges2::api(
-        path = paste0(c("apps", self$id, revision), collapse = "/"),
+        path = path,
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -199,6 +214,7 @@ App <- R6::R6Class(
           auth = auth,
           response = attr(res, "response")
         )
+        return(self)
       } else {
         # Return new object
         return(asApp(res, self$auth))
@@ -228,7 +244,7 @@ App <- R6::R6Class(
     #' @param ... Other arguments such as `fields` which can be used to specify
     #' a subset of fields to include in the response.
     #' @importFrom rlang abort
-    #' @importFrom glue glue_col
+    #' @importFrom glue glue glue_col
     #' @importFrom checkmate assert_list assert_character
     #' @importFrom stringr str_extract
     #' @importFrom tools file_ext
@@ -275,8 +291,12 @@ App <- R6::R6Class(
       }
 
       # nocov start
+      id <- self$id
+      revision <- self$latest_revision + 1
+      path <- glue::glue(self$URL[["create_revision"]])
+
       res <- sevenbridges2::api(
-        path = paste0(c("apps", self$id, self$latest_revision + 1, "raw"), collapse = "/"), # nolint
+        path = path, # nolint
         method = "POST",
         body = raw_cwl,
         token = self$auth$get_token(),
@@ -321,9 +341,13 @@ App <- R6::R6Class(
     #' has been copied.
     #' @param ... Other arguments such as `fields` which can be used to specify
     #' a subset of fields to include in the response.
+    #' @importFrom glue glue
     sync = function(...) {
+      id <- self$id
+      path <- glue::glue(self$URL[["sync"]])
+
       res <- sevenbridges2::api(
-        path = paste0("apps/", self$id, "/actions/sync"),
+        path = path,
         method = "POST",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -347,6 +371,8 @@ App <- R6::R6Class(
         auth = auth,
         response = attr(res, "response")
       )
+
+      return(self)
     } # nocov end
   )
 )

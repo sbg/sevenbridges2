@@ -12,6 +12,8 @@ R6 Class representing a resource for managing apps.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
+\item{\code{URL}}{URL endpoint fields}
+
 \item{\code{id}}{Character used as an app ID.}
 
 \item{\code{project}}{Project ID if any, when returned by an API call.}
