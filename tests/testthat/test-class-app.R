@@ -1,97 +1,132 @@
+test_that("App initialization works", {
+  # Resource object creation works
+  testthat::expect_no_error(App$new(auth = setup_auth_object))
+
+  # Resource object class and methods are set
+  checkmate::assert_r6(
+    setup_app_obj,
+    classes = c("Item", "App"),
+    public = c("URL", "id", "project", "name", "revision", "copy_of", "latest_revision", "raw") # nolint
+  )
+})
+
 test_that("App print method works", {
   testthat::expect_snapshot(setup_app_obj$print())
 })
 
 test_that("App copy method works", {
-  # Negative test use cases for project parameter
-  testthat::expect_error(setup_app_obj$copy(project = NULL))
-  invalid_project_params <- list(1, TRUE, list(a = "test"), setup_file_obj)
-  for (invalid_param in invalid_project_params) {
-    testthat::expect_error(setup_app_obj$copy(project = invalid_param))
-  }
+  # Setup test parameters for test
+  test_no_project <- list(project = NULL)
+  test_bad_project <- list(project = 1)
+  test_bad_name <- list(
+    project = setup_project_obj,
+    name = 1
+  )
+  test_bad_strategy <- list(
+    project = setup_project_obj,
+    strategy = "bad_str"
+  )
+  test_bad_use_revision <- list(
+    project = setup_project_obj,
+    use_revision = "bar"
+  )
 
-  # Negative test use cases for name parameter
-  # nolint start
-  invalid_name_params <- list(1, TRUE, list(a = "test"), setup_file_obj)
-  for (invalid_param in invalid_name_params) {
-    testthat::expect_error(setup_app_obj$copy(project = setup_project_obj, name = invalid_param))
-  }
-  # nolint end
+  # Copy fails when no app is provided
+  testthat::expect_error(do.call(setup_app_obj$copy, test_no_project),
+    regexp = "Project parameter must be provided!",
+    fixed = TRUE
+  )
 
-  # Negative test use cases for strategy parameter
-  # nolint start
-  testthat::expect_error(setup_app_obj$copy(project = setup_project_obj, strategy = NULL), "Please provide the copy strategy.")
-  invalid_strategy_params <- list(1, TRUE, list(a = "test"), setup_file_obj, "test_strategy")
-  for (invalid_param in invalid_strategy_params) {
-    testthat::expect_error(setup_app_obj$copy(project = setup_project_obj, strategy = invalid_param))
-  }
-  # nolint end
+  # Copy fails when bad project is provided
+  testthat::expect_error(do.call(setup_app_obj$copy, test_bad_project))
 
-  # Negative test use cases for use_revision parameter
-  # nolint start
-  testthat::expect_error(setup_app_obj$copy(project = setup_project_obj, use_revision = NULL))
-  invalid_use_revision_params <- list(1, list(a = "test"), c(TRUE, FALSE), "test_revision")
-  for (invalid_param in invalid_use_revision_params) {
-    testthat::expect_error(setup_app_obj$copy(project = setup_project_obj, use_revision = invalid_param))
-  }
-  # nolint end
+  # Copy fails when bad name is provided
+  testthat::expect_error(do.call(setup_app_obj$copy, test_bad_name))
+
+  # Copy fails when bad strategy is provided
+  testthat::expect_error(do.call(setup_app_obj$copy, test_bad_strategy))
+
+  # Copy fails when bad use_revision is provided
+  testthat::expect_error(do.call(setup_app_obj$copy, test_bad_use_revision))
 })
 
 
-
 test_that("App get_revision method works", {
-  # Negative test use cases for revision parameter
-  testthat::expect_error(setup_app_obj$get_revision(revision = NULL))
-  invalid_revision_number_params <- list("test_revision", TRUE, list(a = "test"), c(1, 2, 3)) # nolint
-  for (invalid_param in invalid_revision_number_params) {
-    testthat::expect_error(setup_app_obj$get_revision(revision = invalid_param)) # nolint
-  }
+  # Setup test parameters for test
+  test_bad_revision <- list(
+    revision = "bar"
+  )
+  test_bad_in_place <- list(
+    in_place = "bar"
+  )
 
-  # Negative test use cases for in_place parameter
-  invalid_in_place_params <- c(NULL, NA, c(TRUE, FALSE), 1, "text", setup_file_obj) # nolint
-  for (invalid_param in invalid_in_place_params) {
-    testthat::expect_error(setup_app_obj$get_revision(revision = 2, in_place = invalid_param)) # nolint
-  }
+  # Get revision fails when bad revision is provided
+  testthat::expect_error(do.call(setup_app_obj$get_revision, test_bad_revision)) # nolint
+
+  # Get revision fails when bad in_place is provided
+  testthat::expect_error(do.call(setup_app_obj$get_revision, test_bad_in_place)) # nolint
 })
 
 
 test_that("App create_revision method works", {
-  # Negative test use cases for raw parameter
-  invalid_raw_params <- list(1, "test_raw", TRUE, c(1, 2, 3))
-  for (invalid_param in invalid_raw_params) {
-    testthat::expect_error(setup_app_obj$create_revision(raw = invalid_param)) # nolint
-  }
+  # Setup test parameters for test
+  test_no_raw_no_path <- list(raw = NULL, from_path = NULL)
+  test_both_raw_and_path <-
+    list(raw = "cwl_string", from_path = "cwl_path")
+  test_bad_raw <- list(
+    raw = 1
+  )
+  test_bad_file_path <- list(
+    from_path = 1
+  )
+  test_nonexisting_file_path <- list(
+    from_path = "invalid/path/to/file"
+  )
+  test_bad_raw_format <- list(
+    raw_format = "BED"
+  )
+  test_bad_in_place <- list(
+    in_place = "bar"
+  )
 
-  # Negative test use cases for from_path parameter
+  # Create revision fails when no raw cwl or no cwl path are provided
   # nolint start
-  invalid_from_path_params <- list(1, 3.14, list(a = "test"), TRUE, c(1, 2, 3), "invalid/path/to/file")
-  for (invalid_param in invalid_from_path_params) {
-    testthat::expect_error(setup_app_obj$create_revision(from_path = invalid_param)) # nolint
-  }
+  testthat::expect_error(
+    do.call(setup_app_obj$create_revision, test_no_raw_no_path),
+    regexp = "Both parameters raw and from_path are missing. Please provide one of them.",
+    fixed = TRUE
+  )
   # nolint end
 
-  # Negative test use case for both params (raw, from_path) missing
+  # Create revision fails when both raw cwl and cwl path are provided
   # nolint start
-  testthat::expect_error(setup_app_obj$create_revision(raw = NULL, from_path = NULL))
-  # "Both parameters raw and from_path are missing. Please provide one of them.", fixed = TRUE)
-
+  testthat::expect_error(
+    do.call(setup_app_obj$create_revision, test_both_raw_and_path),
+    regexp = "Both parameters raw and from_path are provided. Please use only one of them.",
+    fixed = TRUE
+  )
   # nolint end
 
-  # Negative test use case for both params (raw, from_path) provided
-  # nolint start
-  testthat::expect_error(setup_app_obj$create_revision(raw = setup_raw_cwl, from_path = setup_app_path))
-  # "Both parameters raw and from_path are provided. Please use only one of them.", fixed = TRUE)
-  # nolint end
+  # Create revision fails when bad raw parameter is provided
+  testthat::expect_error(do.call(setup_app_obj$create_revision, test_bad_raw)) # nolint
 
-  # Negative test use cases for raw_format parameter
-  invalid_raw_format_params <- c(NULL, NA, c(TRUE, FALSE), 1, "text", setup_file_obj) # nolint
-  for (invalid_param in invalid_raw_format_params) {
-    testthat::expect_error(setup_app_obj$create_revision(raw = setup_raw_cwl, raw_format = invalid_param)) # nolint
-  }
+  # Create revision fails when bad file_path is provided
+  testthat::expect_error(do.call(setup_app_obj$create_revision, test_bad_file_path)) # nolint
 
-  # Negative test use cases for in_place parameter
-  invalid_in_place_params <- c(NULL, NA, c(TRUE, FALSE), 1, "text", setup_file_obj) # nolint
-  for (invalid_param in invalid_in_place_params) {
-    testthat::expect_error(setup_app_obj$create_revision(raw = setup_raw_cwl, in_place = invalid_param)) # nolint
-  }
+
+  # Create revision fails when non-existing file_path is provided
+  testthat::expect_error(
+    do.call(setup_app_obj$create_revision, test_nonexisting_file_path),
+    regexp = "File invalid/path/to/file does not exist.",
+    fixed = TRUE
+  )
+
+  # Create revision fails when bad raw_format is provided
+  testthat::expect_error(do.call(setup_app_obj$create_revision, test_bad_raw_format)) # nolint
+
+  # Create revision fails when bad raw_format is provided
+  testthat::expect_error(do.call(setup_app_obj$create_revision, test_bad_raw_format)) # nolint
+
+  # Create revision fails when bad in_place is provided
+  testthat::expect_error(do.call(setup_app_obj$get_revision, test_bad_in_place)) # nolint
 })
