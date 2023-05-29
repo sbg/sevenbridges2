@@ -173,11 +173,7 @@ App <- R6::R6Class(
       revision <- as.integer(revision)
 
       # Check in_place parameter to be logical
-      if (is_missing(in_place)) {
-        rlang::abort("You need to specify the in_place parameter.")
-      } else {
-        checkmate::assert_logical(in_place, len = 1, any.missing = FALSE, null.ok = FALSE) # nolint
-      }
+      checkmate::assert_logical(in_place, len = 1, any.missing = FALSE, null.ok = FALSE) # nolint
 
       # nocov start
       res <- sevenbridges2::api(
@@ -251,11 +247,7 @@ App <- R6::R6Class(
       raw_format <- match.arg(raw_format)
 
       # Check in_place parameter to be logical
-      if (is_missing(in_place)) {
-        rlang::abort("You need to specify the in_place parameter.")
-      } else {
-        checkmate::assert_logical(in_place, len = 1, any.missing = FALSE, null.ok = FALSE) # nolint
-      }
+      checkmate::assert_logical(in_place, len = 1, any.missing = FALSE, null.ok = FALSE) # nolint
 
       if (!is_missing(raw)) {
         # Check if raw parameter is a list
