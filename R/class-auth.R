@@ -456,7 +456,7 @@ Auth <- R6::R6Class(
     #'   group. If provided, the method will return the invoice incurred by that
     #'   billing group only.
     #' @param ... Other arguments passed to methods.
-    invoice = function(id = NULL, billing_group_id = NULL, ...) {
+    invoice = function(id = NULL, billing_group = NULL, ...) {
       if (is.null(id)) {
         if (is.null(billing_group_id)) {
           req <- sevenbridges2::api(

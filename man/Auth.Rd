@@ -270,7 +270,7 @@ return the invoice incurred by that billing group only. If id was
 provided, This call retrieves information about a selected invoice,
 including the costs for analysis and storage, and the invoice period.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$invoice(id = NULL, billing_group_id = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Auth$invoice(id = NULL, billing_group = NULL, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -278,7 +278,7 @@ including the costs for analysis and storage, and the invoice period.
 \describe{
 \item{\code{id}}{Invoice identifier as ID string or Invoice object.}
 
-\item{\code{billing_group_id}}{Billing object or ID of a particular billing
+\item{\code{billing_group}}{Billing object or ID of a particular billing
 group. If provided, the method will return the invoice incurred by that
 billing group only.}
 
