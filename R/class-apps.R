@@ -67,14 +67,14 @@ Apps <- R6::R6Class(
 
       # Collapse query terms to a string with space between values
       if (!is.null(query_terms)) {
-        q <- paste(query_terms, collapse = " ")
+        query_terms <- paste(query_terms, collapse = " ")
       }
 
       res <- super$query(
         path = self$URL[["query"]],
         project = project_id,
         visibility = visibility,
-        q = q,
+        q = query_terms,
         id = id,
         offset = offset,
         limit = limit
@@ -203,11 +203,11 @@ Apps <- R6::R6Class(
                       project,
                       name,
                       raw_format = c("JSON", "YAML")) {
-      if (is_missing(raw) & is_missing(from_path)) {
+      if (is_missing(raw) && is_missing(from_path)) {
         rlang::abort("App raw body OR file path must be provided!")
       }
 
-      if (!is.null(raw) & !is.null(from_path)) {
+      if (!is.null(raw) && !is.null(from_path)) {
         rlang::abort("Either raw body OR file path should be provided!")
       }
 
@@ -221,23 +221,18 @@ Apps <- R6::R6Class(
 
       raw_format <- match.arg(raw_format)
 
-      if (!is.null(from_path)) {
-        if (!file.exists(from_path)) {
-          rlang::abort("Provided file does not exist!")
-        }
+      checkmate::assert_string(name, null.ok = FALSE)
+
+      if (!is_missing(raw)) {
+        # Check if raw parameter is a list
+        checkmate::assert_list(raw)
+        body <- raw
+      }
+
+      if (!is_missing(from_path)) {
+        checkmate::assert_file_exists(x = from_path, .var.name = "from_path")
         raw_body <- readr::read_file(file = from_path)
-      }
 
-      if (!is.list(raw) | !is.character(raw)) {
-        rlang::abort("CWL app should be either a list or raw character in JSON
-                     or YAML format!")
-      }
-
-      if (is.list(raw)) {
-        raw_body <- raw
-      }
-
-      if (is.character(raw)) {
         if (raw_format == "JSON") {
           jsonlite::validate(raw_body)
           body <-
@@ -252,9 +247,7 @@ Apps <- R6::R6Class(
       project_id <-
         check_and_transform_id(project, class_name = "Project")
 
-      checkmate::assert_string(name, null.ok = FALSE)
-
-      id <- paste(project_id, name, sep = "/")
+      id <- glue::glue("{project_id}/{name}")
       path <- glue::glue(self$URL[["raw"]])
 
       req <- sevenbridges2::api(

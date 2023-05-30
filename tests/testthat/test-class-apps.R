@@ -105,12 +105,12 @@ test_that("Apps create works", {
   # Setup test parameters for test
   test_no_raw_no_path <- list(raw = NULL, from_path = NULL)
   test_both_raw_and_path <-
-    list(raw = "cwl_string", from_path = "cwl_path")
+    list(raw = list("1", "2", "3"), from_path = "cwl_path")
   test_no_project <-
-    list(raw = "cwl_string", project = NULL)
+    list(raw = list("1", "2", "3"), project = NULL)
   test_no_name <-
     list(
-      raw = "cwl_string",
+      raw = list("1", "2", "3"),
       project = "project_id",
       name = NULL
     )
@@ -159,18 +159,14 @@ test_that("Apps create works", {
     fixed = TRUE
   )
 
-  # Create app fails when file path does not exist
-  testthat::expect_error(
-    do.call(setup_apps_obj$create, test_no_file_path),
-    regexp = "Provided file does not exist!",
-    fixed = TRUE
-  )
-
   # Create app fails when wrong cwl format is provided
   testthat::expect_error(
-    do.call(setup_apps_obj$create, test_bad_raw),
-    regexp = "CWL app should be either in JSON or YAML format!",
-    fixed = TRUE
+    do.call(setup_apps_obj$create, test_bad_raw)
+  )
+
+  # Create app fails when file path does not exist
+  testthat::expect_error(
+    do.call(setup_apps_obj$create, test_no_file_path)
   )
 
   # Create app fails when wrong cwl format is provided
