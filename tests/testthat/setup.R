@@ -53,12 +53,6 @@ setup_project_obj <-
     category = "PRIVATE"
   )
 
-# Resource_obj
-setup_resource_obj <- Resource$new(auth = setup_auth_object)
-
-# Apps obj
-setup_apps_obj <- Apps$new(auth = setup_auth_object)
-
 setup_file_obj <-
   File$new(
     id = "file_id",
@@ -88,6 +82,12 @@ setup_app_obj <- App$new(
   latest_revision = 0,
   auth = setup_auth_object
 )
+
+# Resource_obj
+setup_resource_obj <- Resource$new(auth = setup_auth_object)
+
+# Apps obj
+setup_apps_obj <- Apps$new(auth = setup_auth_object)
 
 # Close session at the end of tests
 withr::defer(teardown_env())

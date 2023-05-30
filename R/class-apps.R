@@ -80,8 +80,7 @@ Apps <- R6::R6Class(
         limit = limit
       )
 
-      return(res)
-      # return(asApp(res, auth = self))
+      return(asAppList(res, auth = self))
     },
 
     # Get single app -------------------------------------------------------
@@ -110,8 +109,7 @@ Apps <- R6::R6Class(
         id = id
       )
 
-      return(res)
-      # return(asAppList(res, auth = self))
+      return(asApp(res, auth = self))
     },
 
     # Copy single app -------------------------------------------------------
@@ -175,8 +173,7 @@ Apps <- R6::R6Class(
 
       res <- status_check(req)
 
-      return(res)
-      # return(asApp(res, auth = self))
+      return(asApp(res, auth = self))
     },
 
     # Create app -------------------------------------------------------
@@ -260,8 +257,7 @@ Apps <- R6::R6Class(
 
       res <- status_check(req)
 
-      return(res)
-      # return(asApp(res, auth = self))
+      return(asApp(res, auth = self))
     }
   )
 )
