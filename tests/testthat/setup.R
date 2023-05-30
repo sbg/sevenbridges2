@@ -65,12 +65,6 @@ setup_file_obj <-
     modified_on = Sys.time() - 2000
   )
 
-# Resource_obj
-# setup_resource_obj <- Resource$new(auth = setup_auth_object)
-
-# Apps obj
-# setup_apps_obj <- Apps$new(auth = setup_auth_object)
-
 # Load raw cwl app
 setup_app_path <- testthat::test_path(
   "test_data",
@@ -88,6 +82,12 @@ setup_app_obj <- App$new(
   latest_revision = 0,
   auth = setup_auth_object
 )
+
+# Resource_obj
+setup_resource_obj <- Resource$new(auth = setup_auth_object)
+
+# Apps obj
+setup_apps_obj <- Apps$new(auth = setup_auth_object)
 
 # Close session at the end of tests
 withr::defer(teardown_env())

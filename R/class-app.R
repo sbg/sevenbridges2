@@ -187,7 +187,7 @@ App <- R6::R6Class(
       checkmate::assert_logical(in_place, len = 1, any.missing = FALSE, null.ok = FALSE) # nolint
 
 
-      id <- self$id
+      id <- sub("/\\d+$", "", self$id)
       path <- glue::glue(self$URL[["get_revision"]])
 
       # nocov start
@@ -292,7 +292,7 @@ App <- R6::R6Class(
       }
 
       # nocov start
-      id <- self$id
+      id <- sub("/\\d+$", "", self$id)
       revision <- self$latest_revision + 1
       path <- glue::glue(self$URL[["create_revision"]])
 
