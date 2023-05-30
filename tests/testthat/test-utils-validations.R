@@ -203,3 +203,43 @@ test_that("check_retry_params function throws error when timeout is not valid", 
     )
   }
 })
+
+
+test_that("check_app_copy_strategy function throws error when strategy missing", { # nolint
+  # Negative test use cases for missing strategy parameter
+  testthat::expect_error(
+    check_app_copy_strategy(
+      strategy = NULL
+    ),
+    "Please provide the copy strategy"
+  )
+})
+
+
+test_that("check_app_copy_strategy function throws error when provided strategy is invalid", { # nolint
+  # Negative test use case for invalid strategy parameter
+  # Valid values: clone, direct_clone, direct, transient
+  supported_app_copy_strategies <- getOption("sevenbridges2")$APP_COPY_STRATEGIES # nolint
+
+  invalid_strategy_param <- "test_strategy"
+
+  testthat::expect_error(
+    check_app_copy_strategy(
+      strategy = invalid_strategy_param
+    ),
+    label = "The provided copy strategy (test_strategy) is not supported. Please use one of the following strategies: clone, direct, clone_direct, transient" # nolint
+  )
+})
+
+
+test_that("check_file_path function throws error when provided file_path parameter is not valid", { # nolint
+  # Negative test use case for invalid file_path parameter
+  invalid_file_path <- "/path/to/nonexisting-file.cwl"
+
+  testthat::expect_error(
+    check_file_path(
+      file_path = invalid_file_path
+    ),
+    label = "File {magenta /path/to/nonexisting-file.cwl} does not exist."
+  )
+})

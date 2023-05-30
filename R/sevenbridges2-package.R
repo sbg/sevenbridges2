@@ -38,7 +38,8 @@ utils::globalVariables(c(
     MINIMUM_PART_SIZE = 5 * 1024^2,
     MAXIMUM_PART_SIZE = 5 * 1024^3,
     MAXIMUM_OBJECT_SIZE = 5 * 1024^4,
-    MAXIMUM_TOTAL_PARTS = 10000
+    MAXIMUM_TOTAL_PARTS = 10000,
+    APP_COPY_STRATEGIES = c("clone", "direct", "clone_direct", "transient")
   )
 
   options(sevenbridges2 = lst)

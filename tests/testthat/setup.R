@@ -59,5 +59,35 @@ setup_resource_obj <- Resource$new(auth = setup_auth_object)
 # Apps obj
 setup_apps_obj <- Apps$new(auth = setup_auth_object)
 
+setup_file_obj <-
+  File$new(
+    id = "file_id",
+    name = "File name",
+    size = "100 KB",
+    project = "user1/project_id",
+    parent = "parent-id",
+    type = "file",
+    created_on = Sys.time(),
+    modified_on = Sys.time() - 2000
+  )
+
+# Load raw cwl app
+setup_app_path <- testthat::test_path(
+  "test_data",
+  "raw_app_list.RDS"
+)
+setup_raw_cwl <- readRDS(setup_app_path)
+
+setup_app_obj <- App$new(
+  id = "user_free_1/user-free-1-s-demo-project/fastqc-analysis", # nolint
+  project = "user_free_1/user-free-1-s-demo-project",
+  name = "FastQC Analysis",
+  revision = 0,
+  raw = setup_raw_cwl,
+  copy_of = NA,
+  latest_revision = 0,
+  auth = setup_auth_object
+)
+
 # Close session at the end of tests
 withr::defer(teardown_env())
