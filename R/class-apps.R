@@ -52,7 +52,7 @@ Apps <- R6::R6Class(
                      limit = 50,
                      offset = 0) {
       if (!is_missing(project)) {
-        project_id <-
+        project <-
           check_and_transform_id(project, class_name = "Project")
       }
 
@@ -72,7 +72,7 @@ Apps <- R6::R6Class(
 
       res <- super$query(
         path = self$URL[["query"]],
-        project = project_id,
+        project = project,
         visibility = visibility,
         q = query_terms,
         id = id,
