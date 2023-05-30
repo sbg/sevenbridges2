@@ -316,3 +316,40 @@ check_upload_params <- function(size, part_size) {
     # nolint end
   }
 }
+
+
+#' Check app copy strategy
+#'
+#' @description This function checks if the provided strategy for app copy is
+#' valid.
+#' @param strategy Strategy for app copy.
+#' @importFrom rlang abort
+#' @importFrom glue glue_col
+#' @noRd
+check_app_copy_strategy <- function(strategy) {
+  if (is_missing(strategy)) {
+    rlang::abort("Please provide the copy strategy.")
+  }
+  # nolint start
+  supported_app_copy_strategies <- getOption("sevenbridges2")$APP_COPY_STRATEGIES
+  if (!(strategy %in% supported_app_copy_strategies)) {
+    rlang::abort(
+      glue::glue_col("The provided copy strategy ({magenta {strategy}}) is not supported. Please use one of the following strategies: ", "{green {paste(supported_app_copy_strategies, collapse = ', ')}}")
+    )
+  }
+  # nolint end
+}
+
+#' Check file path
+#'
+#' @description This function checks if the file with the provided path exists
+#' on the local disk.
+#' @param file_path File path on the local disk.
+#' @importFrom rlang abort
+#' @importFrom glue glue_col
+#' @noRd
+check_file_path <- function(file_path) {
+  if (!file.exists(file_path)) {
+    rlang::abort(glue::glue_col("File {magenta {file_path}} does not exist."))
+  }
+}

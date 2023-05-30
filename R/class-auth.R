@@ -49,6 +49,9 @@ Auth <- R6::R6Class(
     #' Seven Bridges single sign-on (`TRUE`)?
     authorization = NULL,
 
+    #' @field app Apps object, for accessing apps resources on the platform.
+    app = NULL,
+
     #' @description
     #' Create a new Auth object. All methods can be accessed through this
     #' object.
@@ -197,7 +200,6 @@ Auth <- R6::R6Class(
         self$platform <- sbg_platform_lookup(self$url)
       }
 
-
       if (self$from == "file") {
         # In this case, `sysenv_url`, `sysenv_token`,
         # should be `NULL` even if they
@@ -252,6 +254,9 @@ Auth <- R6::R6Class(
         # look up an accurate platform name instead of simply `NULL`
         self$platform <- sbg_platform_lookup(self$url)
       }
+
+      # Apps resource
+      self$app <- Apps$new(self)
     },
     #' @description
     #' Returns the authentication token read from system environment variable.
@@ -1044,6 +1049,7 @@ Auth <- R6::R6Class(
         glue::glue_col("The upload process with the following ID {green {upload_id}} has been aborted.") # nolint
       )
     }
+
     # nocov end
   )
 )
