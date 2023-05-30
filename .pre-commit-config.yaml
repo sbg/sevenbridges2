@@ -25,6 +25,7 @@ repos:
         -    withr
         -    DescTools
         -    remotes
+        -    readr
     -   id: use-tidy-description
     -   id: spell-check
         exclude: >
@@ -38,6 +39,7 @@ repos:
           .*\.RData|
           .*\.rds|
           .*\.Rds|
+          .*\.RDS|
           .*\.Rproj|
           .*\.sh|
           (.*/|)\.gitignore|
