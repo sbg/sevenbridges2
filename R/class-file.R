@@ -317,9 +317,9 @@ File <- R6::R6Class(
     #' ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).You can
     #' do that using `Auth$copy_files()` operation.
     #'
-    #' @param project The name of the project you want to copy the file to.
-    #' Project name should be specified in the `<username>/<project-name>`
-    #' format, e.g. `rfranklin/my-project`.
+    #' @param project The ID of the project or a Project object where you want
+    #'   to copy the file to. Project name should be specified in the
+    #'   `<username>/<project-name>` format, e.g. `rfranklin/my-project`.
     #' @param name The new name the file will have in the target project.
     #' If its name will not change, omit this key.
     #' @param ... Additional parameters that can be passed to the method.
@@ -333,11 +333,11 @@ File <- R6::R6Class(
         rlang::abort("Project parameter is missing. You need to provide one.")
         # nolint end
       }
-      checkmate::assert_r6(project, classes = "Project", null.ok = FALSE)
+      project_id <- check_and_transform_id(project, "Project")
       checkmate::assert_string(name, null.ok = TRUE)
 
       body <- list(
-        project = project$id,
+        project = project_id,
         name = name
       )
 
@@ -461,7 +461,8 @@ File <- R6::R6Class(
     #' This call moves a file from one folder to another. Moving of files is
     #' only allowed within the same project.
     #'
-    #' @param parent Specifies the target folder.
+    #' @param parent The ID string of target folder or a File object which must
+    #'   be of type `FOLDER`.
     #' @param name Specifies a new name for a file in case you want to rename it
     #' . If you want to use the same name, omit this key.
     #' @param ... Additional parameters that can be passed to the method.
@@ -474,14 +475,15 @@ File <- R6::R6Class(
         rlang::abort("Parent folder is missing. You need to provide one.")
         # nolint end
       }
-      checkmate::assert_r6(parent, classes = "File", null.ok = FALSE)
-      if (parent$type == "file") {
+      if (inherits(parent, "File") && parent$type != "folder") {
         rlang::abort("Parent must be a folder, not a file!")
       }
+      parent_id <- check_and_transform_id(parent, "File")
+
       checkmate::assert_string(name, null.ok = TRUE)
 
       body <- list(
-        parent = parent$id,
+        parent = parent_id,
         name = name
       )
 

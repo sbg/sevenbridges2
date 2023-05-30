@@ -116,7 +116,8 @@ Get upload part info
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{upload_id}}{Upload object's ID part belongs to.}
+\item{\code{upload_id}}{Upload object or ID of the upload process that part
+belongs to.}
 }
 \if{html}{\out{</div>}}
 }
@@ -133,7 +134,8 @@ Report an uploaded part
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{upload_id}}{Upload object's ID part belongs to.}
+\item{\code{upload_id}}{Upload object or ID of the upload process that part
+belongs to.}
 }
 \if{html}{\out{</div>}}
 }

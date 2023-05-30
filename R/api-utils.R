@@ -342,10 +342,17 @@ setup_body <- function(method, body = list()) {
 #' @noRd
 check_and_transform_id <- function(x, class_name, field_name = "id") {
   if (inherits(x, "R6")) {
-    checkmate::assert_r6(x, classes = class_name, null.ok = TRUE)
+    checkmate::assert_r6(x,
+      classes = class_name,
+      null.ok = TRUE,
+      .var.name = checkmate::vname(x)
+    )
     id <- x[[field_name]]
   } else {
-    checkmate::assert_character(x, null.ok = TRUE)
+    checkmate::assert_character(x,
+      null.ok = FALSE,
+      .var.name = checkmate::vname(x)
+    )
     id <- x
   }
   return(id)
