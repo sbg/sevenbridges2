@@ -80,7 +80,7 @@ Apps <- R6::R6Class(
         limit = limit
       )
 
-      return(asAppList(res, auth = self))
+      return(asAppList(res, auth = self$auth))
     },
 
     # Get single app -------------------------------------------------------
@@ -103,13 +103,13 @@ Apps <- R6::R6Class(
       checkmate::assert_string(id)
       checkmate::assert_int(revision, null.ok = TRUE, lower = 0)
 
-      id <- glue::glue("{id}/{revision}", .null = NULL)
+      id <- paste(c(id, revision), collapse = "/")
       res <- super$get(
         cls = self,
         id = id
       )
 
-      return(asApp(res, auth = self))
+      return(asApp(res, auth = self$auth))
     },
 
     # Copy single app -------------------------------------------------------
@@ -173,7 +173,7 @@ Apps <- R6::R6Class(
 
       res <- status_check(req)
 
-      return(asApp(res, auth = self))
+      return(asApp(res, auth = self$auth))
     },
 
     # Create app -------------------------------------------------------
@@ -257,7 +257,9 @@ Apps <- R6::R6Class(
 
       res <- status_check(req)
 
-      return(asApp(res, auth = self))
+      app <- self$get(res$`sbg:id`)
+
+      return(app)
     }
   )
 )
