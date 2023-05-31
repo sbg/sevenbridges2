@@ -49,8 +49,8 @@ Auth <- R6::R6Class(
     #' Seven Bridges single sign-on (`TRUE`)?
     authorization = NULL,
 
-    #' @field app Apps object, for accessing apps resources on the platform.
-    app = NULL,
+    #' @field apps Apps object, for accessing apps resources on the platform.
+    apps = NULL,
 
     #' @description
     #' Create a new Auth object. All methods can be accessed through this
@@ -256,7 +256,7 @@ Auth <- R6::R6Class(
       }
 
       # Apps resource
-      self$app <- Apps$new(self)
+      self$apps <- Apps$new(self)
     },
     #' @description
     #' Returns the authentication token read from system environment variable.

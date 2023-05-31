@@ -1127,7 +1127,7 @@ public apps in our documentation.
 
 ```{r}
 # Query public apps - set visibility parameter to "public"
-a$app$query(visibility = "public", limit = 10)
+a$apps$query(visibility = "public", limit = 10)
 ```
 
 The same can be done for private apps. The following call will return all the
@@ -1135,7 +1135,7 @@ apps available to you, i.e. all the apps that you have in your projects:
 
 ```{r}
 # Query private apps - set limit to 10
-a$app$query(limit = 10)
+a$apps$query(limit = 10)
 ```
 
 Keep in mind that not all of the available apps are going to be returned,
@@ -1147,7 +1147,7 @@ Project object, or a project ID (string).
 
 ```{r}
 # Query apps within your project - set limit to 10
-a$app$query(project = "<project_object_or_its_ID>", limit = 10)
+a$apps$query(project = "<project_object_or_its_ID>", limit = 10)
 ```
 
 
@@ -1168,7 +1168,7 @@ the mentioned app's details, you can make a call similar to this:
 
 ```{r}
 # List public apps containing the term "VCFtools" in app's details
-a$app$query(visibility = "public", query_terms = list("VCFtools"), limit = 10)
+a$apps$query(visibility = "public", query_terms = list("VCFtools"), limit = 10)
 ```
 
 For the query to return results, each term must match at least one of the
@@ -1183,7 +1183,7 @@ illustrates how this can be done for public apps:
 
 ```{r}
 # List files in project root directory
-a$app$query(visibility = "public", id = "admin/sbg-public-data/vcftools-convert")
+a$apps$query(visibility = "public", id = "admin/sbg-public-data/vcftools-convert")
 ```
 
 
@@ -1198,7 +1198,7 @@ revision is specified, the latest one will be used.
 
 ```{r}
 # Get a public App object and assign it to an object
-bcftools_app <- a$app$get(id = "admin/sbg-public-data/bcftools-call-1-15-1")
+bcftools_app <- a$apps$get(id = "admin/sbg-public-data/bcftools-call-1-15-1")
 ```
 
 
@@ -1236,7 +1236,7 @@ The following example demonstrates how can you copy the previosuly created
 
 ```{r}
 # Copy app to a project
-app_copy <- a$app$copy(bcftools_app,
+app_copy <- a$apps$copy(bcftools_app,
                        project = "<project_object_or_its_ID>",
                        name = "new_app_name")
 ```
@@ -1266,7 +1266,7 @@ raw CWL file (`JSON` / `YAML`). By default, this parameter is set to `JSON`.
 file_json <- jsonlite::read_json("/path/to/your/raw_cwl_in_json_format.cwl")
 
 # Create app from raw CWL (JSON)
-new_app_json <- a$app$create(
+new_app_json <- a$apps$create(
   project = "<destination_project_object_or_its_ID>",
   raw = file_json,
   name = "new_app_json",
@@ -1280,7 +1280,7 @@ file containing the raw CWL for the app (`JSON` or `YAML`).
 
 ```{r}
 # Create app from raw CWL (YAML)
-new_app_yaml <- a$app$create(
+new_app_yaml <- a$apps$create(
   project = dest_proj,
   from_path = "/path/to/your/raw_cwl_in_yaml_format.cwl",
   name = "new_app_yaml",
