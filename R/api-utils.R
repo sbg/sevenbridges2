@@ -256,12 +256,15 @@ flatten_query <- function(x) {
 #' @param advance_access Enable advance access features?
 #' Default is `FALSE`.
 #'
+#' @importFrom checkmate assert_logical
 #' @return A named vector with headers for an API request.
 #' @noRd
 set_headers <- function(authorization = FALSE, token = NULL, advance_access = getOption("sevenbridges2")$advance_access) {
   if (is_missing(token)) {
     rlang::abort("Token is missing.")
   }
+  checkmate::assert_logical(authorization, len = 1, null.ok = FALSE)
+  checkmate::assert_logical(advance_access, len = 1, null.ok = FALSE)
 
   if (authorization) {
     headers <- c("Authorization" = paste("Bearer", token, sep = " ")) # nocov

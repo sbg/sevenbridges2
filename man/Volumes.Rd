@@ -22,16 +22,10 @@ R6 Class representing volumes resource endpoint
 \item \href{#method-Volumes-new}{\code{Volumes$new()}}
 \item \href{#method-Volumes-query}{\code{Volumes$query()}}
 \item \href{#method-Volumes-get}{\code{Volumes$get()}}
+\item \href{#method-Volumes-delete}{\code{Volumes$delete()}}
 \item \href{#method-Volumes-clone}{\code{Volumes$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Resource" data-id="delete"><a href='../../sevenbridges2/html/Resource.html#method-Resource-delete'><code>sevenbridges2::Resource$delete()</code></a></span></li>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volumes-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Volumes-new}{}}}
@@ -80,12 +74,24 @@ making the call to list all the volumes you've registered.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{The Volume ID consists of volume owner's name and volume name
-in form {volume_owner}/{volume_name} You can also get the Volume ID
+\item{\code{id}}{The Volume ID consists of volume owner's name (for enterprise
+users) and volume name in form {volume_owner}/{volume_name},
+or division name (if user belongs to some division) and volume
+name in form {division}/{volume_name}. You can also get the Volume ID
 for a volume by making the call to list all volumes you've registered.}
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volumes-delete"></a>}}
+\if{latex}{\out{\hypertarget{method-Volumes-delete}{}}}
+\subsection{Method \code{delete()}}{
+Please, use delete() operation on the exact Volume object.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volumes$delete()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volumes-clone"></a>}}
