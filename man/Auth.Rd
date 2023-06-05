@@ -39,6 +39,9 @@ auth token (\code{FALSE}) or an access token from the
 Seven Bridges single sign-on (\code{TRUE})?}
 
 \item{\code{apps}}{Apps object, for accessing apps resources on the platform.}
+
+\item{\code{volumes}}{Volumes object, for accessing volumes resources on the
+platform.}
 }
 \if{html}{\out{</div>}}
 }
