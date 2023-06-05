@@ -1,3 +1,7 @@
+ACL
+ACLs
+AES
+amazonaws
 api
 arg
 asApp
@@ -48,6 +52,7 @@ HCC
 href
 https
 httr
+IAM
 ifelse
 importFrom
 initialisation
@@ -55,6 +60,8 @@ interruptible
 Jovanovic
 json
 jsonlite
+kms
+KMS
 knitr
 LazyData
 len
@@ -84,13 +91,16 @@ req
 rfranklin
 rlang
 rmarkdown
+RO
 Roxygen
 RoxygenNote
+RW
 sbg
 sbgenomics
 sbgstaff
 setenv
 sevenbridges
+sse
 starttransfer
 str
 stringi

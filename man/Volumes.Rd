@@ -23,6 +23,7 @@ R6 Class representing volumes resource endpoint
 \item \href{#method-Volumes-query}{\code{Volumes$query()}}
 \item \href{#method-Volumes-get}{\code{Volumes$get()}}
 \item \href{#method-Volumes-delete}{\code{Volumes$delete()}}
+\item \href{#method-Volumes-create_s3_using_iam_user}{\code{Volumes$create_s3_using_iam_user()}}
 \item \href{#method-Volumes-clone}{\code{Volumes$clone()}}
 }
 }
@@ -92,6 +93,90 @@ Please, use delete() operation on the exact Volume object.
 \if{html}{\out{<div class="r">}}\preformatted{Volumes$delete()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volumes-create_s3_using_iam_user"></a>}}
+\if{latex}{\out{\hypertarget{method-Volumes-create_s3_using_iam_user}{}}}
+\subsection{Method \code{create_s3_using_iam_user()}}{
+Create new volume to connect to your s3 bucket on AWS cloud.
+Volumes authorize the Platform to access and query objects on a
+specified cloud storage (Amazon Web Services or Google Cloud Storage) on
+your behalf. This function uses IAM User credentials to connect with
+your s3 bucket.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volumes$create_s3_using_iam_user(
+  name = NULL,
+  bucket = NULL,
+  prefix = NULL,
+  access_key_id = NULL,
+  secret_access_key = NULL,
+  access_mode = c("RW", "RO"),
+  description = NULL,
+  properties = list(sse_algorithm = "AES256."),
+  endpoint = "s3.amazonaws.com",
+  from_path = NULL
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{name}}{The name of the volume. It must be unique from all
+other volumes for this user. Required if from_path parameter
+is not provided.}
+
+\item{\code{bucket}}{The name of the AWS S3 bucket you wish to register
+as a volume. Required if from_path parameter is not provided.}
+
+\item{\code{prefix}}{A service-specific prefix to append to all objects created
+in this volume. If the service supports folders, and this prefix
+includes them, the API will attempt to create any missing folders
+when it outputs a file.}
+
+\item{\code{access_key_id}}{Credentials required for IAM User authentication
+type. Required if from_path parameter is not provided.}
+
+\item{\code{secret_access_key}}{Credentials required for IAM User authentication
+type. Required if from_path parameter is not provided.}
+
+\item{\code{access_mode}}{Signifies whether this volume should be used
+for read-write (RW) or read-only (RO) operations. The access mode is
+consulted independently of the credentials granted to Seven Bridges
+when the volume was created, so it is possible to use a read-write
+credentials to register both read-write and read-only volumes using it.
+Default: \code{"RW"}.}
+
+\item{\code{description}}{An optional description of this volume.}
+
+\item{\code{properties}}{Named list containing the properties of a specific
+service. These values set the defaults for operations performed with this
+volume. Individual operations can override these defaults by providing a
+custom properties object. For AWS S3, there are:
+#' \itemize{
+\item \code{sse_algorithm} - String. S3 server-side encryption to use when
+exporting to this bucket. Supported values:
+AES256 (SSE-S3 encryption), aws:kms, null (no server-side encryption).
+Default: AES256.
+\item \code{sse_aws_kms_key_Id}: String. Applies to type: s3.
+If AWS KMS encryption is used, this should be set to the required KMS
+key. If not set and aws:kms is set as sse_algorithm, default KMS key
+is used.
+\item \code{aws_canned_acl}: String. S3 canned ACL to apply on the object
+on during export. Supported values: any one of S3 canned ACLs;
+null (do not apply canned ACLs). Default: null.
+}}
+
+\item{\code{endpoint}}{AWS API endpoint to use when accessing this bucket.
+Default: s3.amazonaws.com}
+
+\item{\code{from_path}}{JSON configuration file containing all required
+information for registering a volume. Example schema can be found \if{html}{\out{<here>}}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Volume object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volumes-clone"></a>}}
