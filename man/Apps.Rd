@@ -22,18 +22,12 @@ R6 Class representing apps resource endpoint
 \item \href{#method-Apps-new}{\code{Apps$new()}}
 \item \href{#method-Apps-query}{\code{Apps$query()}}
 \item \href{#method-Apps-get}{\code{Apps$get()}}
+\item \href{#method-Apps-delete}{\code{Apps$delete()}}
 \item \href{#method-Apps-copy}{\code{Apps$copy()}}
 \item \href{#method-Apps-create}{\code{Apps$create()}}
 \item \href{#method-Apps-clone}{\code{Apps$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Resource" data-id="delete"><a href='../../sevenbridges2/html/Resource.html#method-Resource-delete'><code>sevenbridges2::Resource$delete()</code></a></span></li>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Apps-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Apps-new}{}}}
@@ -112,6 +106,16 @@ for an app by making the call to list all apps available to you.}
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Apps-delete"></a>}}
+\if{latex}{\out{\hypertarget{method-Apps-delete}{}}}
+\subsection{Method \code{delete()}}{
+Delete app.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Apps$delete()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Apps-copy"></a>}}

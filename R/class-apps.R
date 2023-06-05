@@ -111,6 +111,12 @@ Apps <- R6::R6Class(
 
       return(asApp(res, auth = self$auth))
     },
+    # Delete app -------------------------------------------------------
+    #' @description Delete app.
+    #' @importFrom rlang inform
+    delete = function() {
+      rlang::inform("App resource cannot be deleted.") # nolint
+    },
 
     # Copy single app -------------------------------------------------------
     #' @description This call copies the specified app to the specified project.
