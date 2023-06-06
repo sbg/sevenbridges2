@@ -79,26 +79,28 @@ Volumes <- R6::R6Class(
     #' Azure or Ali cloud) on your behalf. This function uses
     #' IAM User credentials to connect to your s3 bucket.
     #'
-    #' @param name The name of the volume. It must be unique from all
+    #' @param name String. The name of the volume. It must be unique from all
     #' other volumes for this user. Required if from_path parameter
     #' is not provided.
-    #' @param bucket The name of the AWS S3 bucket you wish to register
+    #' @param bucket String. The name of the AWS S3 bucket you wish to register
     #' as a volume. Required if from_path parameter is not provided.
-    #' @param prefix A service-specific prefix to append to all objects created
-    #' in this volume. If the service supports folders, and this prefix
+    #' @param prefix String. A service-specific prefix to append to all objects
+    #' created in this volume. If the service supports folders, and this prefix
     #' includes them, the API will attempt to create any missing folders
     #' when it outputs a file.
-    #' @param access_key_id Credentials required for IAM User authentication
-    #' type. Required if from_path parameter is not provided.
-    #' @param secret_access_key Credentials required for IAM User authentication
-    #' type. Required if from_path parameter is not provided.
-    #' @param access_mode Signifies whether this volume should be used
+    #' @param access_key_id String. AWS access key ID of the IAM user shared
+    #' with Seven Bridges to access this bucket. Required if from_path parameter
+    #'  is not provided.
+    #' @param secret_access_key String. AWS secret access key of the IAM user
+    #' shared with Seven Bridges to access this bucket. Required if from_path
+    #' parameter is not provided.
+    #' @param access_mode String. Signifies whether this volume should be used
     #' for read-write (RW) or read-only (RO) operations. The access mode is
     #' consulted independently of the credentials granted to Seven Bridges
     #' when the volume was created, so it is possible to use a read-write
     #' credentials to register both read-write and read-only volumes using it.
     #' Default: `"RW"`.
-    #' @param description An optional description of this volume.
+    #' @param description String. An optional description of this volume.
     #' @param properties Named list containing the properties of a specific
     #' service. These values set the defaults for operations performed with this
     #' volume. Individual operations can override these defaults by providing a
@@ -116,11 +118,10 @@ Volumes <- R6::R6Class(
     #'    on during export. Supported values: any one of S3 canned ACLs;
     #'    null (do not apply canned ACLs). Default: null.
     #' }
-    #' @param endpoint AWS API endpoint to use when accessing this bucket.
-    #' Default: s3.amazonaws.com
-    #' @param from_path JSON configuration file containing all required
-    #' information for registering a volume. Example schema can be found <here>.
-    #'
+    #' @param endpoint String. AWS API endpoint to use when accessing this
+    #' bucket. Default: s3.amazonaws.com
+    #' @param from_path String. Path to JSON configuration file containing all
+    #' required information for registering a volume.
     #' @return Volume object.
     create_s3_using_iam_user = function(name = NULL, bucket = NULL,
                                         prefix = NULL, access_key_id = NULL,
@@ -194,28 +195,29 @@ Volumes <- R6::R6Class(
     #' In order to use these credentials, user must have specific user tag
     #' enabled by Support team.
     #'
-    #' @param name The name of the volume. It must be unique from all
+    #' @param name String. The name of the volume. It must be unique from all
     #' other volumes for this user. Required if from_path parameter
     #' is not provided.
-    #' @param bucket The name of the AWS S3 bucket you wish to register
+    #' @param bucket String. The name of the AWS S3 bucket you wish to register
     #' as a volume. Required if from_path parameter is not provided.
-    #' @param prefix A service-specific prefix to append to all objects created
-    #' in this volume. If the service supports folders, and this prefix
+    #' @param prefix String. A service-specific prefix to append to all objects
+    #' created in this volume. If the service supports folders, and this prefix
     #' includes them, the API will attempt to create any missing folders
     #' when it outputs a file.
-    #' @param role_arn The ARN (Amazon Resource Name) of your role that is
-    #' used to connect your S3 bucket.
+    #' @param role_arn String. The ARN (Amazon Resource Name) of your role that
+    #' is used to connect your S3 bucket.
     #' Required if from_path parameter is not provided.
-    #' @param external_id Optional information that you can use in an
+    #' @param external_id String. Optional information that you can use in an
     #' IAM role trust policy to designate who can assume the role.
     #' Must be provided if it is configured in your role trust policy on AWS.
-    #' @param access_mode Signifies whether this volume should be used
+    #' Required if from_path parameter is not provided.
+    #' @param access_mode String. Signifies whether this volume should be used
     #' for read-write (RW) or read-only (RO) operations. The access mode is
     #' consulted independently of the credentials granted to Seven Bridges
     #' when the volume was created, so it is possible to use a read-write
     #' credentials to register both read-write and read-only volumes using it.
     #' Default: `"RW"`.
-    #' @param description An optional description of this volume.
+    #' @param description String. An optional description of this volume.
     #' @param properties Named list containing the properties of a specific
     #' service. These values set the defaults for operations performed with this
     #' volume. Individual operations can override these defaults by providing a
@@ -233,10 +235,10 @@ Volumes <- R6::R6Class(
     #'    on during export. Supported values: any one of S3 canned ACLs;
     #'    null (do not apply canned ACLs). Default: null.
     #' }
-    #' @param endpoint AWS API endpoint to use when accessing this bucket.
-    #' Default: s3.amazonaws.com
-    #' @param from_path JSON configuration file containing all required
-    #' information for registering a volume.
+    #' @param endpoint String. AWS API endpoint to use when accessing this
+    #' bucket. Default: s3.amazonaws.com
+    #' @param from_path String. Path to JSON configuration file containing all
+    #' required information for registering a volume.
     #' @return Volume object.
     create_s3_using_iam_role = function(name = NULL, bucket = NULL,
                                         prefix = NULL, role_arn = NULL,
@@ -250,7 +252,10 @@ Volumes <- R6::R6Class(
                                         from_path = NULL) {
       if (is_missing(from_path)) {
         args <- as.list(environment())
-        args[["credentials"]] <- list(role_arn, external_id)
+        args[["credentials"]] <- list(
+          role_arn = role_arn,
+          external_id = external_id
+        )
       } else {
         checkmate::assert_character(from_path, len = 1)
         args <- jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
@@ -306,30 +311,32 @@ Volumes <- R6::R6Class(
     #' Azure or Ali cloud) on your behalf. This function uses
     #' IAM User credentials to connect with your s3 bucket.
     #'
-    #' @param name The name of the volume. It must be unique from all
+    #' @param name String. The name of the volume. It must be unique from all
     #' other volumes for this user. Required if from_path parameter
     #' is not provided.
-    #' @param bucket The name of the GCS bucket you wish to register
+    #' @param bucket String. The name of the GCS bucket you wish to register
     #' as a volume. Required if from_path parameter is not provided.
-    #' @param prefix A service-specific prefix to append to all objects created
-    #' in this volume. If the service supports folders, and this prefix
+    #' @param prefix String. A service-specific prefix to append to all objects
+    #' created in this volume. If the service supports folders, and this prefix
     #' includes them, the API will attempt to create any missing folders
     #' when it outputs a file.
-    #' @param access_key_id Credentials required for IAM User authentication
-    #' type. Required if from_path parameter is not provided.
-    #' @param secret_access_key Credentials required for IAM User authentication
-    #' type. Required if from_path parameter is not provided.
-    #' @param access_mode Signifies whether this volume should be used
+    #' @param client_email String. The client email address for the Google Cloud
+    #' service account to use for operations on this bucket. This can be found
+    #' in the JSON containing your service account credentials.
+    #' Required if from_path parameter is not provided.
+    #' @param private_key String. Google Cloud Platform private key.
+    #' Required if from_path parameter is not provided.
+    #' @param access_mode String. Signifies whether this volume should be used
     #' for read-write (RW) or read-only (RO) operations. The access mode is
     #' consulted independently of the credentials granted to Seven Bridges
     #' when the volume was created, so it is possible to use a read-write
     #' credentials to register both read-write and read-only volumes using it.
     #' Default: `"RW"`.
-    #' @param description An optional description of this volume.
+    #' @param description String. An optional description of this volume.
     #' @param properties Named list containing the properties of a specific
     #' service. These values set the defaults for operations performed with this
     #' volume. Individual operations can override these defaults by providing a
-    #' custom properties object. For AWS S3, there are:
+    #' custom properties object. There are:
     #' #' \itemize{
     #'    \item `sse_algorithm` - String. S3 server-side encryption to use when
     #'    exporting to this bucket. Supported values:
@@ -343,43 +350,54 @@ Volumes <- R6::R6Class(
     #'    on during export. Supported values: any one of S3 canned ACLs;
     #'    null (do not apply canned ACLs). Default: null.
     #' }
-    #' @param endpoint AWS API endpoint to use when accessing this bucket.
-    #' Default: s3.amazonaws.com
-    #' @param from_path JSON configuration file containing all required
-    #' information for registering a volume. Example schema can be found <here>.
-    #'
+    #' @param root_url String. Google Cloud Storage API endpoint for accessing
+    #' this bucket. Default: https://www.googleapis.com.
+    #' @param from_path String. Path to JSON configuration file containing all
+    #' required information for registering a volume.
     #' @return Volume object.
     create_google_using_iam_user = function(name = NULL, bucket = NULL,
-                                            prefix = NULL, access_key_id = NULL,
-                                            secret_access_key = NULL,
+                                            prefix = NULL, client_email = NULL,
+                                            private_key = NULL,
                                             access_mode = "RW",
                                             description = NULL,
                                             properties = list(
                                               "sse_algorithm" = "AES256"
-                                            ), endpoint = "s3.amazonaws.com",
+                                            ), root_url = "https://www.googleapis.com", # nolint
                                             from_path = NULL) {
       if (is_missing(from_path)) {
         args <- as.list(environment())
+        args[["credentials"]] <- list(
+          client_email = client_email,
+          private_key = private_key
+        )
       } else {
         checkmate::assert_character(from_path, len = 1)
         args <- jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
+        args <- purrr::list_flatten(args, name_spec = "{inner}")
       }
 
-      check_volumes_params(args)
+      check_volume_params(args)
+
+      # Check credentials
+      checkmate::assert_character(args[["credentials"]][["client_email"]],
+        len = 1, null.ok = FALSE,
+        typed.missing = TRUE
+      )
+      checkmate::assert_character(args[["credentials"]][["private_key"]],
+        len = 1, null.ok = FALSE,
+        typed.missing = TRUE
+      )
 
       body <- list(
         name = args[["name"]],
         description = args[["description"]],
         access_mode = args[["access_mode"]],
         service = list(
-          type = "s3",
+          type = "gcs",
           bucket = args[["bucket"]],
           prefix = args[["prefix"]],
           endpoint = args[["endpoint"]],
-          credentials = list(
-            access_key_id = args[["access_key_id"]],
-            secret_access_key = args[["secret_access_key"]]
-          ),
+          credentials = args[["credentials"]],
           properties = args[["properties"]]
         )
       )

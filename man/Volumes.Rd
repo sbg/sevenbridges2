@@ -124,32 +124,34 @@ IAM User credentials to connect to your s3 bucket.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{The name of the volume. It must be unique from all
+\item{\code{name}}{String. The name of the volume. It must be unique from all
 other volumes for this user. Required if from_path parameter
 is not provided.}
 
-\item{\code{bucket}}{The name of the AWS S3 bucket you wish to register
+\item{\code{bucket}}{String. The name of the AWS S3 bucket you wish to register
 as a volume. Required if from_path parameter is not provided.}
 
-\item{\code{prefix}}{A service-specific prefix to append to all objects created
-in this volume. If the service supports folders, and this prefix
+\item{\code{prefix}}{String. A service-specific prefix to append to all objects
+created in this volume. If the service supports folders, and this prefix
 includes them, the API will attempt to create any missing folders
 when it outputs a file.}
 
-\item{\code{access_key_id}}{Credentials required for IAM User authentication
-type. Required if from_path parameter is not provided.}
+\item{\code{access_key_id}}{String. AWS access key ID of the IAM user shared
+with Seven Bridges to access this bucket. Required if from_path parameter
+is not provided.}
 
-\item{\code{secret_access_key}}{Credentials required for IAM User authentication
-type. Required if from_path parameter is not provided.}
+\item{\code{secret_access_key}}{String. AWS secret access key of the IAM user
+shared with Seven Bridges to access this bucket. Required if from_path
+parameter is not provided.}
 
-\item{\code{access_mode}}{Signifies whether this volume should be used
+\item{\code{access_mode}}{String. Signifies whether this volume should be used
 for read-write (RW) or read-only (RO) operations. The access mode is
 consulted independently of the credentials granted to Seven Bridges
 when the volume was created, so it is possible to use a read-write
 credentials to register both read-write and read-only volumes using it.
 Default: \code{"RW"}.}
 
-\item{\code{description}}{An optional description of this volume.}
+\item{\code{description}}{String. An optional description of this volume.}
 
 \item{\code{properties}}{Named list containing the properties of a specific
 service. These values set the defaults for operations performed with this
@@ -169,11 +171,11 @@ on during export. Supported values: any one of S3 canned ACLs;
 null (do not apply canned ACLs). Default: null.
 }}
 
-\item{\code{endpoint}}{AWS API endpoint to use when accessing this bucket.
-Default: s3.amazonaws.com}
+\item{\code{endpoint}}{String. AWS API endpoint to use when accessing this
+bucket. Default: s3.amazonaws.com}
 
-\item{\code{from_path}}{JSON configuration file containing all required
-information for registering a volume. Example schema can be found \if{html}{\out{<here>}}.}
+\item{\code{from_path}}{String. Path to JSON configuration file containing all
+required information for registering a volume.}
 }
 \if{html}{\out{</div>}}
 }
@@ -210,34 +212,35 @@ enabled by Support team.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{The name of the volume. It must be unique from all
+\item{\code{name}}{String. The name of the volume. It must be unique from all
 other volumes for this user. Required if from_path parameter
 is not provided.}
 
-\item{\code{bucket}}{The name of the AWS S3 bucket you wish to register
+\item{\code{bucket}}{String. The name of the AWS S3 bucket you wish to register
 as a volume. Required if from_path parameter is not provided.}
 
-\item{\code{prefix}}{A service-specific prefix to append to all objects created
-in this volume. If the service supports folders, and this prefix
+\item{\code{prefix}}{String. A service-specific prefix to append to all objects
+created in this volume. If the service supports folders, and this prefix
 includes them, the API will attempt to create any missing folders
 when it outputs a file.}
 
-\item{\code{role_arn}}{The ARN (Amazon Resource Name) of your role that is
-used to connect your S3 bucket.
+\item{\code{role_arn}}{String. The ARN (Amazon Resource Name) of your role that
+is used to connect your S3 bucket.
 Required if from_path parameter is not provided.}
 
-\item{\code{external_id}}{Optional information that you can use in an
+\item{\code{external_id}}{String. Optional information that you can use in an
 IAM role trust policy to designate who can assume the role.
-Must be provided if it is configured in your role trust policy on AWS.}
+Must be provided if it is configured in your role trust policy on AWS.
+Required if from_path parameter is not provided.}
 
-\item{\code{access_mode}}{Signifies whether this volume should be used
+\item{\code{access_mode}}{String. Signifies whether this volume should be used
 for read-write (RW) or read-only (RO) operations. The access mode is
 consulted independently of the credentials granted to Seven Bridges
 when the volume was created, so it is possible to use a read-write
 credentials to register both read-write and read-only volumes using it.
 Default: \code{"RW"}.}
 
-\item{\code{description}}{An optional description of this volume.}
+\item{\code{description}}{String. An optional description of this volume.}
 
 \item{\code{properties}}{Named list containing the properties of a specific
 service. These values set the defaults for operations performed with this
@@ -257,11 +260,11 @@ on during export. Supported values: any one of S3 canned ACLs;
 null (do not apply canned ACLs). Default: null.
 }}
 
-\item{\code{endpoint}}{AWS API endpoint to use when accessing this bucket.
-Default: s3.amazonaws.com}
+\item{\code{endpoint}}{String. AWS API endpoint to use when accessing this
+bucket. Default: s3.amazonaws.com}
 
-\item{\code{from_path}}{JSON configuration file containing all required
-information for registering a volume.}
+\item{\code{from_path}}{String. Path to JSON configuration file containing all
+required information for registering a volume.}
 }
 \if{html}{\out{</div>}}
 }
@@ -283,12 +286,12 @@ IAM User credentials to connect with your s3 bucket.
   name = NULL,
   bucket = NULL,
   prefix = NULL,
-  access_key_id = NULL,
-  secret_access_key = NULL,
+  client_email = NULL,
+  private_key = NULL,
   access_mode = "RW",
   description = NULL,
   properties = list(sse_algorithm = "AES256"),
-  endpoint = "s3.amazonaws.com",
+  root_url = "https://www.googleapis.com",
   from_path = NULL
 )}\if{html}{\out{</div>}}
 }
@@ -296,37 +299,39 @@ IAM User credentials to connect with your s3 bucket.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{The name of the volume. It must be unique from all
+\item{\code{name}}{String. The name of the volume. It must be unique from all
 other volumes for this user. Required if from_path parameter
 is not provided.}
 
-\item{\code{bucket}}{The name of the GCS bucket you wish to register
+\item{\code{bucket}}{String. The name of the GCS bucket you wish to register
 as a volume. Required if from_path parameter is not provided.}
 
-\item{\code{prefix}}{A service-specific prefix to append to all objects created
-in this volume. If the service supports folders, and this prefix
+\item{\code{prefix}}{String. A service-specific prefix to append to all objects
+created in this volume. If the service supports folders, and this prefix
 includes them, the API will attempt to create any missing folders
 when it outputs a file.}
 
-\item{\code{access_key_id}}{Credentials required for IAM User authentication
-type. Required if from_path parameter is not provided.}
+\item{\code{client_email}}{String. The client email address for the Google Cloud
+service account to use for operations on this bucket. This can be found
+in the JSON containing your service account credentials.
+Required if from_path parameter is not provided.}
 
-\item{\code{secret_access_key}}{Credentials required for IAM User authentication
-type. Required if from_path parameter is not provided.}
+\item{\code{private_key}}{String. Google Cloud Platform private key.
+Required if from_path parameter is not provided.}
 
-\item{\code{access_mode}}{Signifies whether this volume should be used
+\item{\code{access_mode}}{String. Signifies whether this volume should be used
 for read-write (RW) or read-only (RO) operations. The access mode is
 consulted independently of the credentials granted to Seven Bridges
 when the volume was created, so it is possible to use a read-write
 credentials to register both read-write and read-only volumes using it.
 Default: \code{"RW"}.}
 
-\item{\code{description}}{An optional description of this volume.}
+\item{\code{description}}{String. An optional description of this volume.}
 
 \item{\code{properties}}{Named list containing the properties of a specific
 service. These values set the defaults for operations performed with this
 volume. Individual operations can override these defaults by providing a
-custom properties object. For AWS S3, there are:
+custom properties object. There are:
 #' \itemize{
 \item \code{sse_algorithm} - String. S3 server-side encryption to use when
 exporting to this bucket. Supported values:
@@ -341,11 +346,11 @@ on during export. Supported values: any one of S3 canned ACLs;
 null (do not apply canned ACLs). Default: null.
 }}
 
-\item{\code{endpoint}}{AWS API endpoint to use when accessing this bucket.
-Default: s3.amazonaws.com}
+\item{\code{root_url}}{String. Google Cloud Storage API endpoint for accessing
+this bucket. Default: https://www.googleapis.com.}
 
-\item{\code{from_path}}{JSON configuration file containing all required
-information for registering a volume. Example schema can be found \if{html}{\out{<here>}}.}
+\item{\code{from_path}}{String. Path to JSON configuration file containing all
+required information for registering a volume.}
 }
 \if{html}{\out{</div>}}
 }
