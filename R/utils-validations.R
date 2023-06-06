@@ -353,3 +353,53 @@ check_file_path <- function(file_path) {
     rlang::abort(glue::glue_col("File {magenta {file_path}} does not exist."))
   }
 }
+
+#' Check all volume params when creating a volume
+#'
+#' @description This function checks parameters needed for value creation/update
+#' @param args Input parameters to check
+#' @param volume_type Storage type, can be one of: s3, gcs, azure, oss
+#' @param auth_method Authentication method for s3 and gc volumes only, can be:
+#' iam_user or iam_role.
+#'
+#' @importFrom checkmate assert_list
+#' @importFrom checkmate assert_character
+#' @importFrom rlang abort
+#' @importFrom glue glue_col
+#' @noRd
+check_volume_params <- function(args,
+                                volume_type = c("s3", "gcs", "azure", "ali"),
+                                auth_method = NULL) {
+  checkmate::assert_list(args, null.ok = FALSE)
+  volume_type <- match.arg(volume_type)
+  checkmate::assert_character(auth_method, null.ok = TRUE)
+
+  checkmate::assert_character(args[["name"]],
+    len = 1, null.ok = FALSE,
+    typed.missing = TRUE
+  )
+  checkmate::assert_character(args[["bucket"]],
+    len = 1, null.ok = FALSE,
+    typed.missing = TRUE
+  )
+  checkmate::assert_character(args[["prefix"]],
+    len = 1,
+    typed.missing = TRUE,
+    null.ok = TRUE
+  )
+  checkmate::assert_character(args[["access_mode"]], len = 1, null.ok = TRUE)
+  # if (!(args[["access_mode"]] %in% c("RW", "RO"))) {
+  #   rlang::abort("Access mode must be RW or RO.")
+  # }
+  checkmate::assert_character(args[["description"]],
+    len = 1,
+    typed.missing = TRUE,
+    null.ok = TRUE
+  )
+  checkmate::assert_list(args[["properties"]], null.ok = TRUE)
+  checkmate::assert_character(args[["endpoint"]],
+    len = 1,
+    typed.missing = TRUE,
+    null.ok = TRUE
+  )
+}

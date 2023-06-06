@@ -46,6 +46,7 @@ fixedNewlines
 fnd
 fromJSON
 FS
+GCS
 getenv
 GitLab
 gitlab
