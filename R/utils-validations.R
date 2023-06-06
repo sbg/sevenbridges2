@@ -430,7 +430,7 @@ check_volume_params <- function(args,
 transform_configuration_param <- function(configuration) {
   if (checkmate::test_list(configuration, min.len = 1, null.ok = FALSE)) {
     config_json_string <- as.character(
-      jsonlite::toJSON(configuration, auto_unbox = TRUE)
+      jsonlite::toJSON(configuration, auto_unbox = TRUE, pretty = TRUE)
     )
   } else if (checkmate::test_character(configuration, len = 1, null.ok = FALSE, typed.missing = FALSE)) { # nolint
     config_json_string <- readr::read_file(configuration)

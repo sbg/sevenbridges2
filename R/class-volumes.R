@@ -121,7 +121,8 @@ Volumes <- R6::R6Class(
     #' @param endpoint String. AWS API endpoint to use when accessing this
     #' bucket. Default: s3.amazonaws.com
     #' @param from_path String. Path to JSON configuration file containing all
-    #' required information for registering a volume.
+    #' required information for registering a volume. If provided, it will
+    #' overwrite all previous parameters set.
     #' @return Volume object.
     create_s3_using_iam_user = function(name = NULL, bucket = NULL,
                                         prefix = NULL, access_key_id = NULL,
@@ -238,7 +239,8 @@ Volumes <- R6::R6Class(
     #' @param endpoint String. AWS API endpoint to use when accessing this
     #' bucket. Default: s3.amazonaws.com
     #' @param from_path String. Path to JSON configuration file containing all
-    #' required information for registering a volume.
+    #' required information for registering a volume. If provided, it will
+    #' overwrite all previous parameters set.
     #' @return Volume object.
     create_s3_using_iam_role = function(name = NULL, bucket = NULL,
                                         prefix = NULL, role_arn = NULL,
@@ -340,7 +342,8 @@ Volumes <- R6::R6Class(
     #' @param root_url String. Google Cloud Storage API endpoint for accessing
     #' this bucket. Default: https://www.googleapis.com.
     #' @param from_path String. Path to JSON configuration file containing all
-    #' required information for registering a volume.
+    #' required information for registering a volume. If provided, it will
+    #' overwrite all previous parameters set.
     #' @return Volume object.
     create_google_using_iam_user = function(name = NULL, bucket = NULL,
                                             prefix = NULL, client_email = NULL,
@@ -440,7 +443,8 @@ Volumes <- R6::R6Class(
     #' @param root_url String. Google Cloud Storage API endpoint for accessing
     #' this bucket. Default: https://www.googleapis.com.
     #' @param from_path String. Path to JSON configuration file containing all
-    #' required information for registering a volume.
+    #' required information for registering a volume. If provided, it will
+    #' overwrite all previous parameters set.
     #' @return Volume object.
     create_google_using_iam_role = function(name = NULL, bucket = NULL,
                                             prefix = NULL,

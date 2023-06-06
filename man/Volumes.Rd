@@ -175,7 +175,8 @@ null (do not apply canned ACLs). Default: null.
 bucket. Default: s3.amazonaws.com}
 
 \item{\code{from_path}}{String. Path to JSON configuration file containing all
-required information for registering a volume.}
+required information for registering a volume. If provided, it will
+overwrite all previous parameters set.}
 }
 \if{html}{\out{</div>}}
 }
@@ -264,7 +265,8 @@ null (do not apply canned ACLs). Default: null.
 bucket. Default: s3.amazonaws.com}
 
 \item{\code{from_path}}{String. Path to JSON configuration file containing all
-required information for registering a volume.}
+required information for registering a volume. If provided, it will
+overwrite all previous parameters set.}
 }
 \if{html}{\out{</div>}}
 }
@@ -337,7 +339,8 @@ custom properties object. Check out our API documentation.}
 this bucket. Default: https://www.googleapis.com.}
 
 \item{\code{from_path}}{String. Path to JSON configuration file containing all
-required information for registering a volume.}
+required information for registering a volume. If provided, it will
+overwrite all previous parameters set.}
 }
 \if{html}{\out{</div>}}
 }
@@ -408,7 +411,8 @@ custom properties object. Check out our API documentation.}
 this bucket. Default: https://www.googleapis.com.}
 
 \item{\code{from_path}}{String. Path to JSON configuration file containing all
-required information for registering a volume.}
+required information for registering a volume. If provided, it will
+overwrite all previous parameters set.}
 }
 \if{html}{\out{</div>}}
 }
