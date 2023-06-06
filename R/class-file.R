@@ -63,7 +63,7 @@ File <- R6::R6Class(
 
       self$id <- id
       self$name <- name
-      self$size <- format(utils::object.size(size), units = "auto")
+      self$size <- size
       self$project <- project
       self$parent <- parent
       self$type <- type
@@ -89,7 +89,7 @@ File <- R6::R6Class(
       x <- purrr::discard(x, .p = is.null)
       x <- purrr::discard(x, .p = is.list)
 
-      string <- glue::glue("{names(x)}: {x}")
+      string <- glue::glue("{names(x)}: {ifelse(names(x) == 'size', paste0(x, ' bytes'), x)}") # nolint
 
       cli::cli_h1("File")
 
@@ -157,7 +157,7 @@ File <- R6::R6Class(
       x <- purrr::discard(x, .p = is.null)
       x <- purrr::discard(x, .p = is.list)
 
-      string <- glue::glue("{names(x)}: {x}")
+      string <- glue::glue("{names(x)}: {ifelse(names(x) == 'size', paste0(x, ' bytes'), x)}") # nolint
       names(string) <- rep("*", times = length(string))
 
       cli::cli_h1("File")
