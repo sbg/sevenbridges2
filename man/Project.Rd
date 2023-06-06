@@ -79,6 +79,8 @@ permissions within the project.}
 \item \href{#method-Project-files}{\code{Project$files()}}
 \item \href{#method-Project-create_folder}{\code{Project$create_folder()}}
 \item \href{#method-Project-get_root_folder}{\code{Project$get_root_folder()}}
+\item \href{#method-Project-list_apps}{\code{Project$list_apps()}}
+\item \href{#method-Project-create_app}{\code{Project$create_app()}}
 \item \href{#method-Project-clone}{\code{Project$clone()}}
 }
 }
@@ -414,6 +416,67 @@ Get project's root folder object
 \if{html}{\out{<div class="r">}}\preformatted{Project$get_root_folder()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Project-list_apps"></a>}}
+\if{latex}{\out{\hypertarget{method-Project-list_apps}{}}}
+\subsection{Method \code{list_apps()}}{
+This call lists all the apps in project.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Project$list_apps(query_terms = NULL, id = NULL, limit = 50, offset = 0)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{query_terms}}{Enter one or more search terms to query Project's
+apps.}
+
+\item{\code{id}}{Use this parameter to query  Project's apps based on their ID.}
+
+\item{\code{limit}}{The maximum number of collection items to return for a
+single request. Minimum value is 1. The maximum value is 100 and the
+default value is 50. This is a pagination-specific attribute.}
+
+\item{\code{offset}}{The zero-based starting index in the entire collection of
+the first item to return. The default value is 0. This is a
+pagination-specific attribute.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Project-create_app"></a>}}
+\if{latex}{\out{\hypertarget{method-Project-create_app}{}}}
+\subsection{Method \code{create_app()}}{
+This call lists create app in project.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Project$create_app(
+  raw = NULL,
+  from_path = NULL,
+  name,
+  raw_format = c("JSON", "YAML")
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{raw}}{The body of the request should be a CWL app description saved
+as a \code{JSON} or \code{YAML} file. For a template of this description, try
+making the call to get raw CWL for an app about an app already in one of
+your projects. Shouldn't be used together with \code{from_path} parameter.}
+
+\item{\code{from_path}}{File containing CWL app description. Shouldn't be used
+together with raw parameter.}
+
+\item{\code{name}}{A short name for the app (without any non-alphanumeric
+characters or spaces)}
+
+\item{\code{raw_format}}{The type of format used (\code{JSON} or \code{YAML}).}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-clone"></a>}}
