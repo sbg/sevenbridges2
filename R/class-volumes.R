@@ -336,20 +336,7 @@ Volumes <- R6::R6Class(
     #' @param properties Named list containing the properties of a specific
     #' service. These values set the defaults for operations performed with this
     #' volume. Individual operations can override these defaults by providing a
-    #' custom properties object. There are:
-    #' #' \itemize{
-    #'    \item `sse_algorithm` - String. S3 server-side encryption to use when
-    #'    exporting to this bucket. Supported values:
-    #'    AES256 (SSE-S3 encryption), aws:kms, null (no server-side encryption).
-    #'    Default: AES256.
-    #'    \item `sse_aws_kms_key_Id`: String. Applies to type: s3.
-    #'    If AWS KMS encryption is used, this should be set to the required KMS
-    #'    key. If not set and aws:kms is set as sse_algorithm, default KMS key
-    #'    is used.
-    #'    \item `aws_canned_acl`: String. S3 canned ACL to apply on the object
-    #'    on during export. Supported values: any one of S3 canned ACLs;
-    #'    null (do not apply canned ACLs). Default: null.
-    #' }
+    #' custom properties object. Check out our API documentation.
     #' @param root_url String. Google Cloud Storage API endpoint for accessing
     #' this bucket. Default: https://www.googleapis.com.
     #' @param from_path String. Path to JSON configuration file containing all
@@ -360,9 +347,8 @@ Volumes <- R6::R6Class(
                                             private_key = NULL,
                                             access_mode = "RW",
                                             description = NULL,
-                                            properties = list(
-                                              "sse_algorithm" = "AES256"
-                                            ), root_url = "https://www.googleapis.com", # nolint
+                                            properties = NULL,
+                                            root_url = "https://www.googleapis.com", # nolint
                                             from_path = NULL) {
       if (is_missing(from_path)) {
         args <- as.list(environment())
@@ -396,7 +382,7 @@ Volumes <- R6::R6Class(
           type = "gcs",
           bucket = args[["bucket"]],
           prefix = args[["prefix"]],
-          endpoint = args[["endpoint"]],
+          root_url = args[["root_url"]],
           credentials = args[["credentials"]],
           properties = args[["properties"]]
         )
@@ -423,86 +409,83 @@ Volumes <- R6::R6Class(
     #' Volumes authorize the Platform to access and query objects on a
     #' specified cloud storage (Amazon Web Services, Google Cloud Storage,
     #' Azure or Ali cloud) on your behalf. This function uses
-    #' IAM Role credentials to connect to your s3 bucket.
+    #' IAM Role credentials to connect to your GCS bucket.
     #' In order to use these credentials, user must have specific user tag
     #' enabled by Support team.
     #'
-    #' @param name The name of the volume. It must be unique from all
+    #' @param name String. The name of the volume. It must be unique from all
     #' other volumes for this user. Required if from_path parameter
     #' is not provided.
-    #' @param bucket The name of the AWS S3 bucket you wish to register
+    #' @param bucket String. The name of the GCS bucket you wish to register
     #' as a volume. Required if from_path parameter is not provided.
-    #' @param prefix A service-specific prefix to append to all objects created
-    #' in this volume. If the service supports folders, and this prefix
+    #' @param prefix String. A service-specific prefix to append to all objects
+    #' created in this volume. If the service supports folders, and this prefix
     #' includes them, the API will attempt to create any missing folders
     #' when it outputs a file.
-    #' @param role_arn The ARN (Amazon Resource Name) of your role that is
-    #' used to connect your S3 bucket.
-    #' Required if from_path parameter is not provided.
-    #' @param external_id Optional information that you can use in an
-    #' IAM role trust policy to designate who can assume the role.
-    #' Must be provided if it is configured in your role trust policy on AWS.
-    #' @param access_mode Signifies whether this volume should be used
+    #' @param configuration Connection configuration parameters in JSON format
+    #' downloaded from the Google Cloud Console once prerequisites have been
+    #' set up. Could be provided as a named list, or as path to the downloaded
+    #' JSON file.
+    #' @param access_mode String. Signifies whether this volume should be used
     #' for read-write (RW) or read-only (RO) operations. The access mode is
     #' consulted independently of the credentials granted to Seven Bridges
     #' when the volume was created, so it is possible to use a read-write
     #' credentials to register both read-write and read-only volumes using it.
     #' Default: `"RW"`.
-    #' @param description An optional description of this volume.
+    #' @param description String. An optional description of this volume.
     #' @param properties Named list containing the properties of a specific
     #' service. These values set the defaults for operations performed with this
     #' volume. Individual operations can override these defaults by providing a
-    #' custom properties object. For AWS S3, there are:
-    #' #' \itemize{
-    #'    \item `sse_algorithm` - String. S3 server-side encryption to use when
-    #'    exporting to this bucket. Supported values:
-    #'    AES256 (SSE-S3 encryption), aws:kms, null (no server-side encryption).
-    #'    Default: AES256.
-    #'    \item `sse_aws_kms_key_Id`: String. Applies to type: s3.
-    #'    If AWS KMS encryption is used, this should be set to the required KMS
-    #'    key. If not set and aws:kms is set as sse_algorithm, default KMS key
-    #'    is used.
-    #'    \item `aws_canned_acl`: String. S3 canned ACL to apply on the object
-    #'    on during export. Supported values: any one of S3 canned ACLs;
-    #'    null (do not apply canned ACLs). Default: null.
-    #' }
-    #' @param endpoint AWS API endpoint to use when accessing this bucket.
-    #' Default: s3.amazonaws.com
-    #' @param from_path JSON configuration file containing all required
-    #' information for registering a volume.
+    #' custom properties object. Check out our API documentation.
+    #' @param root_url String. Google Cloud Storage API endpoint for accessing
+    #' this bucket. Default: https://www.googleapis.com.
+    #' @param from_path String. Path to JSON configuration file containing all
+    #' required information for registering a volume.
     #' @return Volume object.
     create_google_using_iam_role = function(name = NULL, bucket = NULL,
-                                            prefix = NULL, role_arn = NULL,
-                                            external_id = NULL,
+                                            prefix = NULL,
+                                            configuration = NULL,
                                             access_mode = "RW",
                                             description = NULL,
-                                            properties = list(
-                                              "sse_algorithm" = "AES256"
-                                            ),
-                                            endpoint = "s3.amazonaws.com",
+                                            properties = NULL,
+                                            root_url = "https://www.googleapis.com", # nolint
                                             from_path = NULL) {
       if (is_missing(from_path)) {
         args <- as.list(environment())
+        args[["credentials"]] <- list(
+          configuration = transform_configuration_param(configuration)
+        )
       } else {
         checkmate::assert_character(from_path, len = 1)
         args <- jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
+        args <- purrr::list_flatten(args, name_spec = "{inner}")
+        if (!is_missing(args[["credentials"]])) {
+          config_params <- args[["credentials"]][["configuration"]]
+          configuration <- transform_configuration_param(config_params)
+          args[["credentials"]][["configuration"]] <- configuration
+        } else {
+          rlang::abort("Configuration parameter within credentials is mandatory. \n Please, provide a path to JSON configuration file or a named list containing all configuration values.") # nolint
+        }
       }
 
-      check_volumes_params(args)
+      check_volume_params(args)
+
+      # Check credentials
+      checkmate::assert_character(args[["credentials"]][["configuration"]],
+        len = 1, null.ok = FALSE,
+        typed.missing = TRUE
+      )
 
       body <- list(
         name = args[["name"]],
         description = args[["description"]],
         access_mode = args[["access_mode"]],
         service = list(
-          type = "s3",
+          type = "gcs",
           bucket = args[["bucket"]],
           prefix = args[["prefix"]],
-          endpoint = args[["endpoint"]],
-          credentials = list(
-            role_arn = args[["role_arn"]],
-            external_id = args[["external_id"]]
-          ),
+          root_url = args[["root_url"]],
+          credentials = args[["credentials"]],
           properties = args[["properties"]]
         )
       )
