@@ -50,7 +50,8 @@ setup_project_obj <-
     created_on = Sys.time(),
     modified_on = Sys.time(),
     permissions = setup_permission_obj,
-    category = "PRIVATE"
+    category = "PRIVATE",
+    auth = setup_auth_object
   )
 
 setup_file_obj <-

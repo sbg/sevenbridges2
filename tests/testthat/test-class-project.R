@@ -100,6 +100,44 @@ test_that("Project detailed_print method works", {
 })
 
 
+test_that("Project list_apps method works", {
+  # Query fails when term is bad
+  testthat::expect_error(
+    setup_project_obj$list_apps(query_term = list(1, 2, 3)),
+    regexp = "Assertion on 'query_terms' failed: May only contain the following types: {character}, but element 1 has type 'numeric'.", # nolint
+    fixed = TRUE
+  )
+  # Query fails when bad id is provided
+  testthat::expect_error(
+    setup_project_obj$list_apps(id = 1, limit = 10, offset = 3),
+    regexp = "Assertion on 'id' failed: Must be of type 'string' (or 'NULL'), not 'double'.", # nolint
+    fixed = TRUE
+  )
+})
+
+
+test_that("Project create_app method works", {
+  # Create app fails when no raw cwl or no cwl path are provided
+  testthat::expect_error(
+    setup_project_obj$create_app(raw = NULL, from_path = NULL),
+    regexp = "App raw body OR file path must be provided!",
+    fixed = TRUE
+  )
+  # Create app fails when both raw cwl and cwl path are provided
+  testthat::expect_error(
+    setup_project_obj$create_app(raw = list("1", "2", "3"), from_path = "cwl_path"), # nolint
+    regexp = "Either raw body OR file path should be provided!",
+    fixed = TRUE
+  )
+  # Create app fails when no app name is provided
+  testthat::expect_error(
+    setup_project_obj$create_app(raw = list("1", "2", "3"), name = NULL),
+    regexp = "Name parameter must be provided!",
+    fixed = TRUE
+  )
+})
+
+
 test_that("Function asProjectList works", {
   # Load auth object
   test_auth_obj <- readRDS(testthat::test_path("test_data", "auth.RDS"))

@@ -1237,8 +1237,9 @@ The following example demonstrates how can you copy the previosuly created
 ```{r}
 # Copy app to a project
 app_copy <- a$apps$copy(bcftools_app,
-                       project = "<project_object_or_its_ID>",
-                       name = "new_app_name")
+  project = "<project_object_or_its_ID>",
+  name = "new_app_name"
+)
 ```
 
 
@@ -1416,8 +1417,10 @@ platform:
 Learn more about copy strategies in our PUBLIC API documentation.
 
 ```{r}
-copied_app <- my_app$copy(project = "<destination_project_object_or_its_ID>",
-                          name = "new_app_name")
+copied_app <- my_app$copy(
+  project = "<destination_project_object_or_its_ID>",
+  name = "new_app_name"
+)
 ```
 
 
