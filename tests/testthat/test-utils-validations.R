@@ -362,5 +362,59 @@ test_that("check_volume_params works", {
 })
 
 test_that("transform_configuration_param works", {
+  # Provide configuration as valid list
+  config_list <- list(
+    "field1" = "value1",
+    "field2" = 123,
+    "field3" = list(
+      "subfield" = "subfield-value"
+    ),
+    "field4" = "something"
+  )
+  transformed_str <- transform_configuration_param(configuration = config_list)
+  testthat::expect_type(transformed_str, "character")
+  testthat::expect_true(startsWith(transformed_str, prefix = "{\n"))
 
+  # Provide configuration as path to JSON file
+  config_json_path <- testthat::test_path(
+    "test_data",
+    "volumes_configuration_params.json"
+  )
+  transformed_str <- transform_configuration_param(configuration = config_json_path) # nolint
+  testthat::expect_type(transformed_str, "character")
+  testthat::expect_true(startsWith(transformed_str, prefix = "{\n"))
+})
+
+test_that("transform_configuration_param throws error when needed", {
+  # Provide configuration as NULL
+  testthat::expect_error(
+    transform_configuration_param(configuration = NULL),
+    regexp = "Invalid configuration format! \n Please, provide a string path to the JSON file or a named list.", # nolint
+    fixed = TRUE
+  )
+
+  # Provide configuration as empty list
+  testthat::expect_error(
+    transform_configuration_param(configuration = list()),
+    regexp = "Invalid configuration format! \n Please, provide a string path to the JSON file or a named list.", # nolint
+    fixed = TRUE
+  )
+
+  # Provide configuration as unnamed list
+  testthat::expect_error(
+    transform_configuration_param(configuration = list("unnamed list")),
+    regexp = "Invalid configuration format! \n Please, provide a string path to the JSON file or a named list.", # nolint
+    fixed = TRUE
+  )
+
+  # Provide configuration as invalid json path
+  config_path <- file.path("unnoun", "path", "to", "file.json")
+  testthat::expect_error(
+    transform_configuration_param(configuration = config_path)
+  )
+
+  # Provide configuration as non-string type
+  testthat::expect_error(
+    transform_configuration_param(configuration = c("field1", "field2"))
+  )
 })

@@ -14,7 +14,7 @@ test_that("Volumes initialization works", {
   )
 })
 
-test_that("Volumes get works", {
+test_that("Volumes get() throws error when needed", {
   # Setup test parameters for test
   test_no_id <- list(id = NULL)
   test_bad_id <- list(id = 1)
@@ -24,4 +24,8 @@ test_that("Volumes get works", {
 
   # Get fails when bad id is provided
   testthat::expect_error(do.call(setup_volumes_obj$get, test_bad_id))
+})
+
+test_that("Create AWS volumes with IAM User type throws error when needed", {
+
 })
