@@ -49,8 +49,8 @@ Apps <- R6::R6Class(
                      visibility = c("private", "public"),
                      query_terms = NULL,
                      id = NULL,
-                     limit = 50,
-                     offset = 0) {
+                     limit = getOption("sevenbridges2")$limit,
+                     offset = getOption("sevenbridges2")$offset) {
       if (!is_missing(project)) {
         project <-
           check_and_transform_id(project, class_name = "Project")
