@@ -507,10 +507,10 @@ Project <- R6::R6Class(
       self$auth$apps$query(
         project = self$id,
         visibility = "private",
-        query_terms,
-        id,
-        limit,
-        offset
+        query_terms = query_terms,
+        id = id,
+        limit = limit,
+        offset = offset
       )
     },
     #' @description This call lists create app in project.
@@ -528,11 +528,12 @@ Project <- R6::R6Class(
                           from_path = NULL,
                           name,
                           raw_format = c("JSON", "YAML")) {
-      self$auth$apps$create(raw,
-        from_path,
+      self$auth$apps$create(
+        raw = raw,
+        from_path = from_path,
         project = self$id,
-        name,
-        raw_format
+        name = name,
+        raw_format = raw_format
       )
     }
   )
