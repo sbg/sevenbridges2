@@ -243,3 +243,124 @@ test_that("check_file_path function throws error when provided file_path paramet
     label = "File {magenta /path/to/nonexisting-file.cwl} does not exist."
   )
 })
+
+test_that("check_volume_params works", {
+  # Pass invalid args, volume_type
+  testthat::expect_error(check_volume_params(args = NULL))
+  testthat::expect_error(check_volume_params(
+    args = list("arg1" = "arg1"),
+    volume_type = "some-other-type"
+  ))
+
+  # Test with valid params
+  valid_args <- list(
+    name = "volume_name",
+    bucket = "bucket_name",
+    prefix = "",
+    access_mode = "RW",
+    description = NULL,
+    properties = list("some-property" = "value"),
+    endpoint = "some-endpoint",
+    root_url = "some-url",
+    credentials = list("key" = "just-string")
+  )
+  testthat::expect_no_error(check_volume_params(args = valid_args))
+
+  # Create invalid params list
+  invalid_args <- list(
+    name = 123,
+    bucket = list("some-name"),
+    prefix = NA,
+    access_mode = "some-other",
+    description = FALSE,
+    properties = c("some-property" = "value"),
+    endpoint = list("some-endpoint"),
+    root_url = TRUE,
+    credentials = "just-string"
+  )
+
+  # Pass invalid name
+  testthat::expect_error(check_volume_params(args = invalid_args["name"]))
+  # Pass invalid bucket
+  testthat::expect_error(
+    check_volume_params(args = c(valid_args["name"], invalid_args["bucket"]))
+  )
+  # Pass invalid prefix
+  testthat::expect_error(
+    check_volume_params(args = c(
+      valid_args["name"], valid_args["bucket"],
+      invalid_args["prefix"]
+    ))
+  )
+  # Pass invalid access_mode
+  testthat::expect_error(
+    check_volume_params(args = c(
+      valid_args["name"],
+      valid_args["bucket"],
+      valid_args["prefix"],
+      invalid_args["access_mode"]
+    ))
+  )
+  # Pass invalid description
+  testthat::expect_error(
+    check_volume_params(args = c(
+      valid_args["name"],
+      valid_args["bucket"],
+      valid_args["prefix"],
+      valid_args["access_mode"],
+      invalid_args["description"]
+    ))
+  )
+  # Pass invalid properties
+  testthat::expect_error(
+    check_volume_params(args = c(
+      valid_args["name"],
+      valid_args["bucket"],
+      valid_args["prefix"],
+      valid_args["access_mode"],
+      valid_args["description"],
+      invalid_args["properties"]
+    ))
+  )
+  # Pass invalid endpoint
+  testthat::expect_error(
+    check_volume_params(args = c(
+      valid_args["name"],
+      valid_args["bucket"],
+      valid_args["prefix"],
+      valid_args["access_mode"],
+      valid_args["description"],
+      valid_args["properties"],
+      invalid_args["endpoint"]
+    ))
+  )
+  # Pass invalid root_url
+  testthat::expect_error(
+    check_volume_params(args = c(
+      valid_args["name"],
+      valid_args["bucket"],
+      valid_args["prefix"],
+      valid_args["access_mode"],
+      valid_args["description"],
+      valid_args["properties"],
+      invalid_args["root_url"]
+    ))
+  )
+  # Pass invalid credentials
+  testthat::expect_error(
+    check_volume_params(args = c(
+      valid_args["name"],
+      valid_args["bucket"],
+      valid_args["prefix"],
+      valid_args["access_mode"],
+      valid_args["description"],
+      valid_args["properties"],
+      valid_args["root_url"],
+      invalid_args["credentials"]
+    ))
+  )
+})
+
+test_that("transform_configuration_param works", {
+
+})

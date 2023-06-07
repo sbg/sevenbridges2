@@ -465,9 +465,34 @@ check_volume_params <- function(args,
       null.ok = TRUE
     )
   }
-
   checkmate::assert_list(args[["credentials"]],
     null.ok = FALSE,
     types = "character", all.missing = FALSE
   )
+}
+
+#' Transform configuration parameter in GC (IAM Role) volume creation
+#'
+#' @description This function checks whether provided configuration parameter
+#' is a named list or a file path to the configuration JSON file.
+#' @param configuration Path to JSON file or named list containing configuration
+#' parameters values for creating GC volume using IAM Role.
+#'
+#' @importFrom rlang abort
+#' @importFrom checkmate test_list
+#' @importFrom checkmate test_character
+#' @importFrom jsonlite toJSON
+#' @importFrom readr read_file
+#' @noRd
+transform_configuration_param <- function(configuration) {
+  if (checkmate::test_list(configuration, min.len = 1, null.ok = FALSE)) {
+    config_json_string <- as.character(
+      jsonlite::toJSON(configuration, auto_unbox = TRUE, pretty = TRUE)
+    )
+  } else if (checkmate::test_character(configuration, len = 1, null.ok = FALSE, typed.missing = FALSE)) { # nolint
+    config_json_string <- readr::read_file(configuration)
+  } else {
+    rlang::abort("Invalid configuration format! \n Please, provide a string path to the JSON file or a named list.") # nolint
+  }
+  return(config_json_string)
 }

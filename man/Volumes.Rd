@@ -177,7 +177,8 @@ null (do not apply canned ACLs). Default: null.
 bucket. Default: s3.amazonaws.com}
 
 \item{\code{from_path}}{String. Path to JSON configuration file containing all
-required information for registering a volume.}
+required information for registering a volume. If provided, it will
+overwrite all previous parameters set.}
 }
 \if{html}{\out{</div>}}
 }
@@ -266,7 +267,8 @@ null (do not apply canned ACLs). Default: null.
 bucket. Default: s3.amazonaws.com}
 
 \item{\code{from_path}}{String. Path to JSON configuration file containing all
-required information for registering a volume.}
+required information for registering a volume. If provided, it will
+overwrite all previous parameters set.}
 }
 \if{html}{\out{</div>}}
 }
@@ -292,7 +294,7 @@ IAM User credentials to connect with your s3 bucket.
   private_key = NULL,
   access_mode = "RW",
   description = NULL,
-  properties = list(sse_algorithm = "AES256"),
+  properties = NULL,
   root_url = "https://www.googleapis.com",
   from_path = NULL
 )}\if{html}{\out{</div>}}
@@ -333,26 +335,14 @@ Default: \code{"RW"}.}
 \item{\code{properties}}{Named list containing the properties of a specific
 service. These values set the defaults for operations performed with this
 volume. Individual operations can override these defaults by providing a
-custom properties object. There are:
-#' \itemize{
-\item \code{sse_algorithm} - String. S3 server-side encryption to use when
-exporting to this bucket. Supported values:
-AES256 (SSE-S3 encryption), aws:kms, null (no server-side encryption).
-Default: AES256.
-\item \code{sse_aws_kms_key_Id}: String. Applies to type: s3.
-If AWS KMS encryption is used, this should be set to the required KMS
-key. If not set and aws:kms is set as sse_algorithm, default KMS key
-is used.
-\item \code{aws_canned_acl}: String. S3 canned ACL to apply on the object
-on during export. Supported values: any one of S3 canned ACLs;
-null (do not apply canned ACLs). Default: null.
-}}
+custom properties object. Check out our API documentation.}
 
 \item{\code{root_url}}{String. Google Cloud Storage API endpoint for accessing
 this bucket. Default: https://www.googleapis.com.}
 
 \item{\code{from_path}}{String. Path to JSON configuration file containing all
-required information for registering a volume.}
+required information for registering a volume. If provided, it will
+overwrite all previous parameters set.}
 }
 \if{html}{\out{</div>}}
 }
@@ -368,7 +358,7 @@ Create new volume to connect to your bucket on GCS.
 Volumes authorize the Platform to access and query objects on a
 specified cloud storage (Amazon Web Services, Google Cloud Storage,
 Azure or Ali cloud) on your behalf. This function uses
-IAM Role credentials to connect to your s3 bucket.
+IAM Role credentials to connect to your GCS bucket.
 In order to use these credentials, user must have specific user tag
 enabled by Support team.
 \subsection{Usage}{
@@ -376,11 +366,11 @@ enabled by Support team.
   name = NULL,
   bucket = NULL,
   prefix = NULL,
-  external_id = NULL,
+  configuration = NULL,
   access_mode = "RW",
   description = NULL,
-  properties = list(sse_algorithm = "AES256"),
-  endpoint = "s3.amazonaws.com",
+  properties = NULL,
+  root_url = "https://www.googleapis.com",
   from_path = NULL
 )}\if{html}{\out{</div>}}
 }
@@ -388,54 +378,43 @@ enabled by Support team.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{The name of the volume. It must be unique from all
+\item{\code{name}}{String. The name of the volume. It must be unique from all
 other volumes for this user. Required if from_path parameter
 is not provided.}
 
-\item{\code{bucket}}{The name of the AWS S3 bucket you wish to register
+\item{\code{bucket}}{String. The name of the GCS bucket you wish to register
 as a volume. Required if from_path parameter is not provided.}
 
-\item{\code{prefix}}{A service-specific prefix to append to all objects created
-in this volume. If the service supports folders, and this prefix
+\item{\code{prefix}}{String. A service-specific prefix to append to all objects
+created in this volume. If the service supports folders, and this prefix
 includes them, the API will attempt to create any missing folders
 when it outputs a file.}
 
-\item{\code{external_id}}{Optional information that you can use in an
-IAM role trust policy to designate who can assume the role.
-Must be provided if it is configured in your role trust policy on AWS.}
+\item{\code{configuration}}{Connection configuration parameters in JSON format
+downloaded from the Google Cloud Console once prerequisites have been
+set up. Could be provided as a named list, or as path to the downloaded
+JSON file.}
 
-\item{\code{access_mode}}{Signifies whether this volume should be used
+\item{\code{access_mode}}{String. Signifies whether this volume should be used
 for read-write (RW) or read-only (RO) operations. The access mode is
 consulted independently of the credentials granted to Seven Bridges
 when the volume was created, so it is possible to use a read-write
 credentials to register both read-write and read-only volumes using it.
 Default: \code{"RW"}.}
 
-\item{\code{description}}{An optional description of this volume.}
+\item{\code{description}}{String. An optional description of this volume.}
 
 \item{\code{properties}}{Named list containing the properties of a specific
 service. These values set the defaults for operations performed with this
 volume. Individual operations can override these defaults by providing a
-custom properties object. For AWS S3, there are:
-#' \itemize{
-\item \code{sse_algorithm} - String. S3 server-side encryption to use when
-exporting to this bucket. Supported values:
-AES256 (SSE-S3 encryption), aws:kms, null (no server-side encryption).
-Default: AES256.
-\item \code{sse_aws_kms_key_Id}: String. Applies to type: s3.
-If AWS KMS encryption is used, this should be set to the required KMS
-key. If not set and aws:kms is set as sse_algorithm, default KMS key
-is used.
-\item \code{aws_canned_acl}: String. S3 canned ACL to apply on the object
-on during export. Supported values: any one of S3 canned ACLs;
-null (do not apply canned ACLs). Default: null.
-}}
+custom properties object. Check out our API documentation.}
 
-\item{\code{endpoint}}{AWS API endpoint to use when accessing this bucket.
-Default: s3.amazonaws.com}
+\item{\code{root_url}}{String. Google Cloud Storage API endpoint for accessing
+this bucket. Default: https://www.googleapis.com.}
 
-\item{\code{from_path}}{JSON configuration file containing all required
-information for registering a volume.}
+\item{\code{from_path}}{String. Path to JSON configuration file containing all
+required information for registering a volume. If provided, it will
+overwrite all previous parameters set.}
 }
 \if{html}{\out{</div>}}
 }
