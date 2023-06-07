@@ -123,14 +123,15 @@ Volumes <- R6::R6Class(
     #' @param from_path String. Path to JSON configuration file containing all
     #' required information for registering a volume.
     #' @return Volume object.
-    create_s3_using_iam_user = function(name = NULL, bucket = NULL,
-                                        prefix = NULL, access_key_id = NULL,
+    create_s3_using_iam_user = function(name = NULL,
+                                        bucket = NULL,
+                                        prefix = NULL,
+                                        access_key_id = NULL,
                                         secret_access_key = NULL,
                                         access_mode = "RW",
                                         description = NULL,
-                                        properties = list(
-                                          "sse_algorithm" = "AES256"
-                                        ), endpoint = "s3.amazonaws.com",
+                                        properties = list("sse_algorithm" = "AES256"), # nolint
+                                        endpoint = "s3.amazonaws.com",
                                         from_path = NULL) {
       if (is_missing(from_path)) {
         args <- as.list(environment())
@@ -140,7 +141,8 @@ Volumes <- R6::R6Class(
         )
       } else {
         checkmate::assert_character(from_path, len = 1)
-        args <- jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
+        args <-
+          jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
         args <- purrr::list_flatten(args, name_spec = "{inner}")
       }
 
@@ -148,11 +150,13 @@ Volumes <- R6::R6Class(
 
       # Check credentials
       checkmate::assert_character(args[["credentials"]][["access_key_id"]],
-        len = 1, null.ok = FALSE,
+        len = 1,
+        null.ok = FALSE,
         typed.missing = TRUE
       )
       checkmate::assert_character(args[["credentials"]][["secret_access_key"]],
-        len = 1, null.ok = FALSE,
+        len = 1,
+        null.ok = FALSE,
         typed.missing = TRUE
       )
 
@@ -240,14 +244,14 @@ Volumes <- R6::R6Class(
     #' @param from_path String. Path to JSON configuration file containing all
     #' required information for registering a volume.
     #' @return Volume object.
-    create_s3_using_iam_role = function(name = NULL, bucket = NULL,
-                                        prefix = NULL, role_arn = NULL,
+    create_s3_using_iam_role = function(name = NULL,
+                                        bucket = NULL,
+                                        prefix = NULL,
+                                        role_arn = NULL,
                                         external_id = NULL,
                                         access_mode = "RW",
                                         description = NULL,
-                                        properties = list(
-                                          "sse_algorithm" = "AES256"
-                                        ),
+                                        properties = list("sse_algorithm" = "AES256"), # nolint
                                         endpoint = "s3.amazonaws.com",
                                         from_path = NULL) {
       if (is_missing(from_path)) {
@@ -258,7 +262,8 @@ Volumes <- R6::R6Class(
         )
       } else {
         checkmate::assert_character(from_path, len = 1)
-        args <- jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
+        args <-
+          jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
         args <- purrr::list_flatten(args, name_spec = "{inner}")
       }
 
@@ -266,11 +271,13 @@ Volumes <- R6::R6Class(
 
       # Check credentials
       checkmate::assert_character(args[["credentials"]][["role_arn"]],
-        len = 1, null.ok = FALSE,
+        len = 1,
+        null.ok = FALSE,
         typed.missing = TRUE
       )
       checkmate::assert_character(args[["credentials"]][["external_id"]],
-        len = 1, null.ok = FALSE,
+        len = 1,
+        null.ok = FALSE,
         typed.missing = TRUE
       )
 
@@ -355,14 +362,17 @@ Volumes <- R6::R6Class(
     #' @param from_path String. Path to JSON configuration file containing all
     #' required information for registering a volume.
     #' @return Volume object.
-    create_google_using_iam_user = function(name = NULL, bucket = NULL,
-                                            prefix = NULL, client_email = NULL,
+    create_google_using_iam_user = function(name = NULL,
+                                            bucket = NULL,
+                                            prefix = NULL,
+                                            client_email = NULL,
                                             private_key = NULL,
                                             access_mode = "RW",
                                             description = NULL,
-                                            properties = list(
-                                              "sse_algorithm" = "AES256"
-                                            ), root_url = "https://www.googleapis.com", # nolint
+                                            # nolint start
+                                            properties = list("sse_algorithm" = "AES256"),
+                                            root_url = "https://www.googleapis.com",
+                                            # nolint end
                                             from_path = NULL) {
       if (is_missing(from_path)) {
         args <- as.list(environment())
@@ -372,7 +382,8 @@ Volumes <- R6::R6Class(
         )
       } else {
         checkmate::assert_character(from_path, len = 1)
-        args <- jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
+        args <-
+          jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
         args <- purrr::list_flatten(args, name_spec = "{inner}")
       }
 
@@ -380,11 +391,13 @@ Volumes <- R6::R6Class(
 
       # Check credentials
       checkmate::assert_character(args[["credentials"]][["client_email"]],
-        len = 1, null.ok = FALSE,
+        len = 1,
+        null.ok = FALSE,
         typed.missing = TRUE
       )
       checkmate::assert_character(args[["credentials"]][["private_key"]],
-        len = 1, null.ok = FALSE,
+        len = 1,
+        null.ok = FALSE,
         typed.missing = TRUE
       )
 
@@ -436,9 +449,6 @@ Volumes <- R6::R6Class(
     #' in this volume. If the service supports folders, and this prefix
     #' includes them, the API will attempt to create any missing folders
     #' when it outputs a file.
-    #' @param role_arn The ARN (Amazon Resource Name) of your role that is
-    #' used to connect your S3 bucket.
-    #' Required if from_path parameter is not provided.
     #' @param external_id Optional information that you can use in an
     #' IAM role trust policy to designate who can assume the role.
     #' Must be provided if it is configured in your role trust policy on AWS.
@@ -471,21 +481,21 @@ Volumes <- R6::R6Class(
     #' @param from_path JSON configuration file containing all required
     #' information for registering a volume.
     #' @return Volume object.
-    create_google_using_iam_role = function(name = NULL, bucket = NULL,
-                                            prefix = NULL, role_arn = NULL,
+    create_google_using_iam_role = function(name = NULL,
+                                            bucket = NULL,
+                                            prefix = NULL,
                                             external_id = NULL,
                                             access_mode = "RW",
                                             description = NULL,
-                                            properties = list(
-                                              "sse_algorithm" = "AES256"
-                                            ),
+                                            properties = list("sse_algorithm" = "AES256"), # nolint
                                             endpoint = "s3.amazonaws.com",
                                             from_path = NULL) {
       if (is_missing(from_path)) {
         args <- as.list(environment())
       } else {
         checkmate::assert_character(from_path, len = 1)
-        args <- jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
+        args <-
+          jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
       }
 
       check_volumes_params(args)
@@ -504,6 +514,207 @@ Volumes <- R6::R6Class(
             external_id = args[["external_id"]]
           ),
           properties = args[["properties"]]
+        )
+      )
+
+      path <- glue::glue(self$URL[["create"]])
+
+      res <- sevenbridges2::api(
+        path = path,
+        method = "POST",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE
+      )
+
+      res <- status_check(res)
+
+      return(res)
+      # return(asVolume(res, auth))
+    },
+
+
+    # Create new AZURE Volume  -------------------------------------------------
+    #' @description This call creates a new volume by attaching a Microsoft
+    #' Azure storage container to the Platform.
+    #' @param name String. The name of the volume. It must be unique from all
+    #' other volumes for this user. Required if from_path parameter
+    #' is not provided.
+    #' @param description String. An optional description of this volume.
+    #' @param endpoint String. Specify a Microsoft Azure endpoint, only if you
+    #' are using an endpoint that is different from the default one
+    #' https://(serviceaccount).blob.core.windows.net. To make a non-default
+    #' endpoint work with the Platform, please first make sure it is supported
+    #' by Seven Bridges.
+    #' @param storage_account String. The name of the storage account that
+    #' holds the container you want to attach as a volume.
+    #' @param container String. The name of the container that you want to
+    #' attach as a Volume.
+    #' @param prefix String. A service-specific prefix to append to all objects
+    #' created in this volume. If the service supports folders, and this prefix
+    #' includes them, the API will attempt to create any missing folders
+    #' when it outputs a file.
+    #' @param tenant_id String. Directory (tenant) ID of the
+    #' [application you created on the Azure Portal](https://docs.sevenbridges.com/page/microsoft-azure-volumes#register-a-new-application) # nolint
+    #' for the purpose of attaching your storage container.
+    #' @param client_id String. Application (client) ID of the [application you created on the Azure Portal] (https://docs.sevenbridges.com/page/microsoft-azure-volumes#register-a-new-application) # nolint
+    #' for the purpose of attaching your storage container.
+    #' @param client_secret Value of the [client secret you created on the Azure Portal] (https://docs.sevenbridges.com/page/microsoft-azure-volumes#create-a-new-client-secret) # nolint
+    #'  for the purpose of attaching your storage container.
+    #' @param resource_id Resource ID of the Azure storage account. To get it,
+    #' go to the [Azure Portal](https://portal.azure.com/), open the storage
+    #' account's Overview page and click JSON View.
+    #' @param from_path JSON configuration file containing all required
+    #' information for registering a volume.
+    #' @return Volume object.
+    create_azure = function(name = NULL,
+                            description = NULL,
+                            endpoint = NULL,
+                            storage_account = NULL,
+                            container = NULL,
+                            prefix = NULL,
+                            tenant_id = NULL,
+                            client_id = NULL,
+                            client_secret = NULL,
+                            resource_id = NULL,
+                            from_path = NULL) {
+      if (is_missing(from_path)) {
+        args <- as.list(environment())
+        args[["credentials"]] <- list(
+          tenant_id = tenant_id,
+          client_id = client_id,
+          client_secret = client_secret
+        )
+        args[["properties"]] <- list(resource_id = resource_id)
+      } else {
+        checkmate::assert_character(from_path, len = 1)
+        args <-
+          jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
+        args <- purrr::list_flatten(args, name_spec = "{inner}")
+      }
+
+      # Azure volumes only have Read Only privileges
+      args[["access_mode"]] <- "RO"
+      check_volume_params(args, volume_type = "azure")
+
+      # Check credentials
+      checkmate::assert_character(args[["credentials"]][["tenant_id"]],
+        len = 1,
+        null.ok = FALSE,
+        typed.missing = TRUE
+      )
+      checkmate::assert_character(args[["credentials"]][["client_id"]],
+        len = 1,
+        null.ok = FALSE,
+        typed.missing = TRUE
+      )
+      checkmate::assert_character(args[["credentials"]][["client_secret"]],
+        len = 1,
+        null.ok = FALSE,
+        typed.missing = TRUE
+      )
+      checkmate::assert_character(args[["properties"]][["resource_id"]],
+        len = 1,
+        null.ok = FALSE,
+        typed.missing = TRUE
+      )
+
+      body <- list(
+        name = args[["name"]],
+        description = args[["description"]],
+        access_mode = args[["access_mode"]],
+        service = list(
+          type = "azure",
+          endpoint = args[["endpoint"]],
+          storage_account = args[["storage_account"]],
+          container = args[["container"]],
+          prefix = args[["prefix"]],
+          credentials = list(
+            tenant_id = args[["credentials"]][["tenant_id"]],
+            client_id = args[["credentials"]][["client_id"]],
+            client_secret = args[["credentials"]][["client_secret"]]
+          ),
+          properties = list(
+            resource_id = args[["properties"]][["resource_id"]]
+          )
+        )
+      )
+
+      path <- glue::glue(self$URL[["create"]])
+
+      res <- sevenbridges2::api(
+        path = path,
+        method = "POST",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE
+      )
+
+      res <- status_check(res)
+
+      return(res)
+      # return(asVolume(res, auth))
+    },
+
+    # Create new ALI (OSS) Volume  ---------------------------------------------
+    #' @description Create new volume to connect to your bucket on ALI (OSS)
+    #' platform
+    #' @param name The name of the volume. It must be unique from all
+    #' other volumes for this user. Required if from_path parameter
+    #' is not provided.
+    #' @param description An optional description of this volume.
+    #' @param endpoint String. Specify an Ali Cloud endpoint.
+    #' @param bucket The name of the ALI(OSS) bucket you wish to register
+    #' as a volume. Required if from_path parameter is not provided.
+    #' @param prefix A service-specific prefix to append to all objects created
+    #' in this volume. If the service supports folders, and this prefix
+    #' includes them, the API will attempt to create any missing folders
+    #' when it outputs a file.
+    #' @param access_key_id String. ALI(OSS) access key ID of the user shared
+    #' with Seven Bridges to access this bucket. Required if from_path parameter
+    #'  is not provided.
+    #' @param secret_access_key String. ALI(OSS) secret access key of the user
+    #' shared with Seven Bridges to access this bucket. Required if from_path
+    #' parameter is not provided.
+    #' @param from_path JSON configuration file containing all required
+    #' information for registering a volume.
+    #' @return Volume object.
+    create_ali_oss = function(name = NULL,
+                              description = NULL,
+                              endpoint = NULL,
+                              bucket = NULL,
+                              prefix = NULL,
+                              access_key_id = NULL,
+                              secret_access_key = NULL,
+                              from_path = NULL) {
+      if (is_missing(from_path)) {
+        args <- as.list(environment())
+        args[["credentials"]] <- list(
+          access_key_id = access_key_id,
+          secret_access_key = secret_access_key
+        )
+      } else {
+        checkmate::assert_character(from_path, len = 1)
+        args <-
+          jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
+        args <- purrr::list_flatten(args, name_spec = "{inner}")
+      }
+
+      # Ali(OSS) volumes only have Read Only privileges
+      args[["access_mode"]] <- "RO"
+      check_volume_params(args)
+
+      body <- list(
+        name = args[["name"]],
+        description = args[["description"]],
+        access_mode = args[["access_mode"]],
+        service = list(
+          type = "OSS",
+          bucket = args[["bucket"]],
+          endpoint = args[["endpoint"]],
+          credentials = args[["credentials"]]
         )
       )
 

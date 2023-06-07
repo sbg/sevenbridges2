@@ -27,6 +27,8 @@ R6 Class representing volumes resource endpoint
 \item \href{#method-Volumes-create_s3_using_iam_role}{\code{Volumes$create_s3_using_iam_role()}}
 \item \href{#method-Volumes-create_google_using_iam_user}{\code{Volumes$create_google_using_iam_user()}}
 \item \href{#method-Volumes-create_google_using_iam_role}{\code{Volumes$create_google_using_iam_role()}}
+\item \href{#method-Volumes-create_azure}{\code{Volumes$create_azure()}}
+\item \href{#method-Volumes-create_ali_oss}{\code{Volumes$create_ali_oss()}}
 \item \href{#method-Volumes-clone}{\code{Volumes$clone()}}
 }
 }
@@ -374,7 +376,6 @@ enabled by Support team.
   name = NULL,
   bucket = NULL,
   prefix = NULL,
-  role_arn = NULL,
   external_id = NULL,
   access_mode = "RW",
   description = NULL,
@@ -398,10 +399,6 @@ as a volume. Required if from_path parameter is not provided.}
 in this volume. If the service supports folders, and this prefix
 includes them, the API will attempt to create any missing folders
 when it outputs a file.}
-
-\item{\code{role_arn}}{The ARN (Amazon Resource Name) of your role that is
-used to connect your S3 bucket.
-Required if from_path parameter is not provided.}
 
 \item{\code{external_id}}{Optional information that you can use in an
 IAM role trust policy to designate who can assume the role.
@@ -436,6 +433,132 @@ null (do not apply canned ACLs). Default: null.
 
 \item{\code{endpoint}}{AWS API endpoint to use when accessing this bucket.
 Default: s3.amazonaws.com}
+
+\item{\code{from_path}}{JSON configuration file containing all required
+information for registering a volume.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Volume object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volumes-create_azure"></a>}}
+\if{latex}{\out{\hypertarget{method-Volumes-create_azure}{}}}
+\subsection{Method \code{create_azure()}}{
+This call creates a new volume by attaching a Microsoft
+Azure storage container to the Platform.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volumes$create_azure(
+  name = NULL,
+  description = NULL,
+  endpoint = NULL,
+  storage_account = NULL,
+  container = NULL,
+  prefix = NULL,
+  tenant_id = NULL,
+  client_id = NULL,
+  client_secret = NULL,
+  resource_id = NULL,
+  from_path = NULL
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{name}}{String. The name of the volume. It must be unique from all
+other volumes for this user. Required if from_path parameter
+is not provided.}
+
+\item{\code{description}}{String. An optional description of this volume.}
+
+\item{\code{endpoint}}{String. Specify a Microsoft Azure endpoint, only if you
+are using an endpoint that is different from the default one
+https://(serviceaccount).blob.core.windows.net. To make a non-default
+endpoint work with the Platform, please first make sure it is supported
+by Seven Bridges.}
+
+\item{\code{storage_account}}{String. The name of the storage account that
+holds the container you want to attach as a volume.}
+
+\item{\code{container}}{String. The name of the container that you want to
+attach as a Volume.}
+
+\item{\code{prefix}}{String. A service-specific prefix to append to all objects
+created in this volume. If the service supports folders, and this prefix
+includes them, the API will attempt to create any missing folders
+when it outputs a file.}
+
+\item{\code{tenant_id}}{String. Directory (tenant) ID of the
+\href{https://docs.sevenbridges.com/page/microsoft-azure-volumes#register-a-new-application}{application you created on the Azure Portal} # nolint
+for the purpose of attaching your storage container.}
+
+\item{\code{client_id}}{String. Application (client) ID of the \link{application you created on the Azure Portal} (https://docs.sevenbridges.com/page/microsoft-azure-volumes#register-a-new-application) # nolint
+for the purpose of attaching your storage container.}
+
+\item{\code{client_secret}}{Value of the \link{client secret you created on the Azure Portal} (https://docs.sevenbridges.com/page/microsoft-azure-volumes#create-a-new-client-secret) # nolint
+for the purpose of attaching your storage container.}
+
+\item{\code{resource_id}}{Resource ID of the Azure storage account. To get it,
+go to the \href{https://portal.azure.com/}{Azure Portal}, open the storage
+account's Overview page and click JSON View.}
+
+\item{\code{from_path}}{JSON configuration file containing all required
+information for registering a volume.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Volume object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volumes-create_ali_oss"></a>}}
+\if{latex}{\out{\hypertarget{method-Volumes-create_ali_oss}{}}}
+\subsection{Method \code{create_ali_oss()}}{
+Create new volume to connect to your bucket on ALI (OSS)
+platform
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volumes$create_ali_oss(
+  name = NULL,
+  description = NULL,
+  endpoint = NULL,
+  bucket = NULL,
+  prefix = NULL,
+  access_key_id = NULL,
+  secret_access_key = NULL,
+  from_path = NULL
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{name}}{The name of the volume. It must be unique from all
+other volumes for this user. Required if from_path parameter
+is not provided.}
+
+\item{\code{description}}{An optional description of this volume.}
+
+\item{\code{endpoint}}{String. Specify an Ali Cloud endpoint.}
+
+\item{\code{bucket}}{The name of the ALI(OSS) bucket you wish to register
+as a volume. Required if from_path parameter is not provided.}
+
+\item{\code{prefix}}{A service-specific prefix to append to all objects created
+in this volume. If the service supports folders, and this prefix
+includes them, the API will attempt to create any missing folders
+when it outputs a file.}
+
+\item{\code{access_key_id}}{String. ALI(OSS) access key ID of the user shared
+with Seven Bridges to access this bucket. Required if from_path parameter
+is not provided.}
+
+\item{\code{secret_access_key}}{String. ALI(OSS) secret access key of the user
+shared with Seven Bridges to access this bucket. Required if from_path
+parameter is not provided.}
 
 \item{\code{from_path}}{JSON configuration file containing all required
 information for registering a volume.}
