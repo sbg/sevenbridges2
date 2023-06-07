@@ -489,21 +489,21 @@ Project <- R6::R6Class(
     },
     # nocov end
     # Project apps ---------------------------------------------------------
-    #' @description This call lists all the apps in project.
+    #' @description This call lists all apps in project.
     #'
     #' @param query_terms Enter one or more search terms to query Project's
     #'   apps.
-    #' @param id Use this parameter to query  Project's apps based on their ID.
+    #' @param id Use this parameter to query Project's apps based on their ID.
     #' @param limit The maximum number of collection items to return for a
-    #' single request. Minimum value is 1. The maximum value is 100 and the
-    #' default value is 50. This is a pagination-specific attribute.
+    #'   single request. Minimum value is 1. The maximum value is 100 and the
+    #'   default value is 50. This is a pagination-specific attribute.
     #' @param offset The zero-based starting index in the entire collection of
-    #' the first item to return. The default value is 0. This is a
-    #' pagination-specific attribute.
+    #'   the first item to return. The default value is 0. This is a
+    #'   pagination-specific attribute.
     list_apps = function(query_terms = NULL,
                          id = NULL,
-                         limit = 50,
-                         offset = 0) {
+                         limit = getOption("sevenbridges2")$limit,
+                         offset = getOption("sevenbridges2")$offset) {
       self$auth$apps$query(
         project = self$id,
         visibility = "private",
@@ -513,16 +513,17 @@ Project <- R6::R6Class(
         offset = offset
       )
     },
-    #' @description This call lists create app in project.
+    #' @description This call creates app in project.
     #'
     #' @param raw The body of the request should be a CWL app description saved
-    #'  as a `JSON` or `YAML` file. For a template of this description, try
-    #'  making the call to get raw CWL for an app about an app already in one of
-    #'   your projects. Shouldn't be used together with `from_path` parameter.
+    #'   as a `JSON` or `YAML` file. For a template of this description, try
+    #'   making the call to get raw CWL for an app about an app already in one
+    #'   of your projects. Shouldn't be used together with `from_path`
+    #'   parameter.
     #' @param from_path File containing CWL app description. Shouldn't be used
-    #' together with raw parameter.
+    #'   together with raw parameter.
     #' @param name A short name for the app (without any non-alphanumeric
-    #' characters or spaces)
+    #'   characters or spaces).
     #' @param raw_format The type of format used (`JSON` or `YAML`).
     create_app = function(raw = NULL,
                           from_path = NULL,
