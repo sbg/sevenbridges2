@@ -412,6 +412,10 @@ check_volume_params <- function(args,
       null.ok = TRUE
     )
   }
+  checkmate::assert_list(args[["credentials"]],
+    null.ok = FALSE,
+    types = "character", all.missing = FALSE
+  )
 }
 
 #' Transform configuration parameter in GC (IAM Role) volume creation
