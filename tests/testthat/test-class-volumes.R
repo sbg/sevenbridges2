@@ -6,7 +6,11 @@ test_that("Volumes initialization works", {
   checkmate::assert_r6(
     setup_volumes_obj,
     classes = c("Resource", "Volumes"),
-    public = c("URL", "query", "get")
+    public = c(
+      "URL", "query", "get",
+      "create_s3_using_iam_user", "create_s3_using_iam_role",
+      "create_google_using_iam_user", "create_google_using_iam_role"
+    )
   )
 })
 
