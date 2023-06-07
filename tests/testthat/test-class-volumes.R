@@ -27,5 +27,188 @@ test_that("Volumes get() throws error when needed", {
 })
 
 test_that("Create AWS volumes with IAM User type throws error when needed", {
+  # Pass no args
+  testthat::expect_error(setup_volumes_obj$create_s3_using_iam_user())
 
+  # Pass args as regular function params, but don't pass credentials
+  main_args <- list(
+    name = "volume_name",
+    bucket = "bucket_name",
+    prefix = "",
+    access_mode = "RW",
+    description = NULL,
+    properties = list("some-property" = "value"),
+    endpoint = "some-endpoint"
+  )
+  testthat::expect_error(do.call(
+    setup_volumes_obj$create_s3_using_iam_user,
+    main_args
+  ))
+  # Pass args as regular function params, but don't pass access_key_id
+  testthat::expect_error(do.call(
+    setup_volumes_obj$create_s3_using_iam_user,
+    append(
+      main_args,
+      list(secret_access_key = "secret-key")
+    )
+  )) # nolint
+  # Pass args as regular function params, but don't pass secret_access_key
+  testthat::expect_error(do.call(
+    setup_volumes_obj$create_s3_using_iam_user,
+    append(
+      main_args,
+      list(access_key_id = "some-key")
+    )
+  ))
+
+  # Pass from_path as non-string type
+  test_bad_path <- 123
+
+  # create_s3_using_iam_user fails when path is provided, but not string type
+  testthat::expect_error(
+    setup_volumes_obj$create_s3_using_iam_user(from_path = test_bad_path)
+  )
+
+  # Pass from_path as path to json that doesn't contain credentials parameters
+  no_creds_json <- testthat::test_path(
+    "test_data",
+    "aws_iam_user_test_no_creds.json"
+  )
+  testthat::expect_error(
+    setup_volumes_obj$create_s3_using_iam_user(from_path = no_creds_json)
+  )
+
+  # Pass from_path as path to json that doesn't contain one of creds parameters
+  not_all_creds_json <- testthat::test_path(
+    "test_data",
+    "aws_iam_user_test_not_all_creds.json"
+  )
+  testthat::expect_error(
+    setup_volumes_obj$create_s3_using_iam_user(from_path = not_all_creds_json)
+  )
+})
+
+test_that("Create AWS volumes with IAM Role type throws error when needed", {
+  # Pass no args
+  testthat::expect_error(setup_volumes_obj$create_s3_using_iam_role())
+
+  # Pass args as regular function params, but don't pass credentials
+  main_args <- list(
+    name = "volume_name",
+    bucket = "bucket_name",
+    prefix = "",
+    access_mode = "RW",
+    description = NULL,
+    properties = list("some-property" = "value"),
+    endpoint = "some-endpoint"
+  )
+  testthat::expect_error(do.call(
+    setup_volumes_obj$create_s3_using_iam_role,
+    main_args
+  ))
+  # Pass args as regular function params, but don't pass role_arn
+  testthat::expect_error(do.call(
+    setup_volumes_obj$create_s3_using_iam_role,
+    append(
+      main_args,
+      list(external_id = "external_id-key")
+    )
+  )) # nolint
+  # Pass args as regular function params, but don't pass external_id
+  testthat::expect_error(do.call(
+    setup_volumes_obj$create_s3_using_iam_role,
+    append(
+      main_args,
+      list(role_arn = "role_arn-key")
+    )
+  ))
+
+  # Pass from_path as non-string type
+  test_bad_path <- 123
+
+  # create_s3_using_iam_role fails when path is provided, but not string type
+  testthat::expect_error(
+    setup_volumes_obj$create_s3_using_iam_role(from_path = test_bad_path)
+  )
+
+  # Pass from_path as path to json that doesn't contain credentials parameters
+  no_creds_json <- testthat::test_path(
+    "test_data",
+    "aws_iam_role_test_no_creds.json"
+  )
+  testthat::expect_error(
+    setup_volumes_obj$create_s3_using_iam_role(from_path = no_creds_json)
+  )
+
+  # Pass from_path as path to json that doesn't contain one of creds parameters
+  not_all_creds_json <- testthat::test_path(
+    "test_data",
+    "aws_iam_role_test_not_all_creds.json"
+  )
+  testthat::expect_error(
+    setup_volumes_obj$create_s3_using_iam_role(from_path = not_all_creds_json)
+  )
+})
+
+test_that("Create GC volumes with IAM User type throws error when needed", {
+  # Pass no args
+  testthat::expect_error(setup_volumes_obj$create_google_using_iam_user())
+
+  # Pass args as regular function params, but don't pass credentials
+  main_args <- list(
+    name = "volume_name",
+    bucket = "bucket_name",
+    prefix = "",
+    access_mode = "RW",
+    description = NULL,
+    properties = list("some-property" = "value"),
+    root_url = "some-endpoint"
+  )
+  testthat::expect_error(do.call(
+    setup_volumes_obj$create_google_using_iam_user, # nolint
+    main_args
+  ))
+  # Pass args as regular function params, but don't pass private_key
+  testthat::expect_error(do.call(
+    setup_volumes_obj$create_google_using_iam_user,
+    append(
+      main_args,
+      list(client_email = "client_email")
+    )
+  )) # nolint
+  # Pass args as regular function params, but don't pass client_email
+  testthat::expect_error(do.call(
+    setup_volumes_obj$create_google_using_iam_user,
+    append(
+      main_args,
+      list(private_key = "some-private_key")
+    )
+  ))
+
+  # Pass from_path as non-string type
+  test_bad_path <- 123
+
+  # create_google_using_iam_user fails when path is provided,
+  # but not string type
+  testthat::expect_error(
+    setup_volumes_obj$create_google_using_iam_user(from_path = test_bad_path)
+  )
+
+  # Pass from_path as path to json that doesn't contain credentials parameters
+  no_creds_json <- testthat::test_path(
+    "test_data",
+    "gc_iam_user_test_no_creds.json"
+  )
+  testthat::expect_error(
+    setup_volumes_obj$create_google_using_iam_user(from_path = no_creds_json)
+  )
+
+  # Pass from_path as path to json that doesn't contain one of creds parameters
+  not_all_creds_json <- testthat::test_path(
+    "test_data",
+    "gc_iam_user_test_not_all_creds.json"
+  )
+  testthat::expect_error(
+    setup_volumes_obj$create_google_using_iam_user(from_path = not_all_creds_json) # nolint
+  )
 })

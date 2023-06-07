@@ -346,19 +346,6 @@ test_that("check_volume_params works", {
       invalid_args["root_url"]
     ))
   )
-  # Pass invalid credentials
-  testthat::expect_error(
-    check_volume_params(args = c(
-      valid_args["name"],
-      valid_args["bucket"],
-      valid_args["prefix"],
-      valid_args["access_mode"],
-      valid_args["description"],
-      valid_args["properties"],
-      valid_args["root_url"],
-      invalid_args["credentials"]
-    ))
-  )
 })
 
 test_that("transform_configuration_param works", {
