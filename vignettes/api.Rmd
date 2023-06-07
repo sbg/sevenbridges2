@@ -1186,6 +1186,17 @@ illustrates how this can be done for public apps:
 a$apps$query(visibility = "public", id = "admin/sbg-public-data/vcftools-convert")
 ```
 
+### List project apps
+
+All available apps in a specific project can also be listed by calling the
+`list_apps()` method directly on the Project object. This method has redefined
+the `project` and `visibility` arguments, while all other parameters are
+identical to those presented for `apps$query()`.
+
+```{r}
+# List all apps in specified project
+p$list_apps(limit = 10)
+```
 
 ## Get app information
 
@@ -1237,8 +1248,9 @@ The following example demonstrates how can you copy the previosuly created
 ```{r}
 # Copy app to a project
 app_copy <- a$apps$copy(bcftools_app,
-                       project = "<project_object_or_its_ID>",
-                       name = "new_app_name")
+  project = "<project_object_or_its_ID>",
+  name = "new_app_name"
+)
 ```
 
 
@@ -1288,7 +1300,19 @@ new_app_yaml <- a$apps$create(
 )
 ```
 
+### Create app in project
 
+The app can also be directly created on a Project object by invoking
+`create_app()`. Except it has the predefined `project` parameter, the
+`create_app()` has the same other parameters as `apps$create()`.
+
+```{r}
+# Create app from raw CWL (JSON) in specified project
+p$create_app(  
+  raw = file_json,
+  name = "new_app_json",
+  raw_format = "JSON")
+```
 ## App object
 
 Once you have an App object, you'll see that it also has various useful methods
@@ -1416,8 +1440,10 @@ platform:
 Learn more about copy strategies in our PUBLIC API documentation.
 
 ```{r}
-copied_app <- my_app$copy(project = "<destination_project_object_or_its_ID>",
-                          name = "new_app_name")
+copied_app <- my_app$copy(
+  project = "<destination_project_object_or_its_ID>",
+  name = "new_app_name"
+)
 ```
 
 
