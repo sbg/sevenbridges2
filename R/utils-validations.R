@@ -489,7 +489,7 @@ transform_configuration_param <- function(configuration) {
   } else if (checkmate::test_character(configuration, len = 1, null.ok = FALSE, typed.missing = FALSE)) { # nolint
     config_json_string <- readr::read_file(configuration)
   } else {
-    rlang::abort("Invalid configuration format! \n Please, provide a string path to the JSON file or a named list.") # nolint
+    rlang::abort("Invalid configuration parameter! \n Please, provide a string path to the JSON file or a named list.") # nolint
   }
   return(config_json_string)
 }

@@ -142,8 +142,10 @@ Volumes <- R6::R6Class(
         )
       } else {
         checkmate::assert_character(from_path, len = 1)
-        args <-
-          jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
+        if (!file.exists(from_path)) {
+          rlang::abort("File on provided path doesn't exist.")
+        }
+        args <- jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
         args <- purrr::list_flatten(args, name_spec = "{inner}")
       }
 
@@ -264,8 +266,10 @@ Volumes <- R6::R6Class(
         )
       } else {
         checkmate::assert_character(from_path, len = 1)
-        args <-
-          jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
+        if (!file.exists(from_path)) {
+          rlang::abort("File on provided path doesn't exist.")
+        }
+        args <- jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
         args <- purrr::list_flatten(args, name_spec = "{inner}")
       }
 
@@ -370,8 +374,10 @@ Volumes <- R6::R6Class(
         )
       } else {
         checkmate::assert_character(from_path, len = 1)
-        args <-
-          jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
+        if (!file.exists(from_path)) {
+          rlang::abort("File on provided path doesn't exist.")
+        }
+        args <- jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
         args <- purrr::list_flatten(args, name_spec = "{inner}")
       }
 
@@ -473,6 +479,10 @@ Volumes <- R6::R6Class(
         )
       } else {
         checkmate::assert_character(from_path, len = 1)
+        if (!file.exists(from_path)) {
+          rlang::abort("File on provided path doesn't exist.")
+        }
+
         args <- jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
         args <- purrr::list_flatten(args, name_spec = "{inner}")
         if (!is_missing(args[["credentials"]])) {
@@ -522,8 +532,6 @@ Volumes <- R6::R6Class(
       return(res)
       # return(asVolume(res, auth))
     },
-
-
     # Create new AZURE Volume  -------------------------------------------------
     #' @description This call creates a new volume by attaching a Microsoft
     #' Azure storage container to the Platform.

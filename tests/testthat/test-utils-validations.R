@@ -376,21 +376,21 @@ test_that("transform_configuration_param throws error when needed", {
   # Provide configuration as NULL
   testthat::expect_error(
     transform_configuration_param(configuration = NULL),
-    regexp = "Invalid configuration format! \n Please, provide a string path to the JSON file or a named list.", # nolint
+    regexp = "Invalid configuration parameter! \n Please, provide a string path to the JSON file or a named list.", # nolint
     fixed = TRUE
   )
 
   # Provide configuration as empty list
   testthat::expect_error(
     transform_configuration_param(configuration = list()),
-    regexp = "Invalid configuration format! \n Please, provide a string path to the JSON file or a named list.", # nolint
+    regexp = "Invalid configuration parameter! \n Please, provide a string path to the JSON file or a named list.", # nolint
     fixed = TRUE
   )
 
   # Provide configuration as unnamed list
   testthat::expect_error(
     transform_configuration_param(configuration = list("unnamed list")),
-    regexp = "Invalid configuration format! \n Please, provide a string path to the JSON file or a named list.", # nolint
+    regexp = "Invalid configuration parameter! \n Please, provide a string path to the JSON file or a named list.", # nolint
     fixed = TRUE
   )
 
