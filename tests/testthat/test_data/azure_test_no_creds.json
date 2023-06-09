@@ -1,0 +1,13 @@
+{
+    "name": "{{volume-name}}",
+    "access_mode": "RO",
+    "service": {
+        "type": "azure",
+        "endpoint": "{{provided-endpoint}}",
+        "storage_account": "{{provided-storage-account}}",
+        "container": "{{provided-container}}",
+        "properties": {
+      "resource_id": "{{provided-resource-id}}"
+    }
+    }
+}

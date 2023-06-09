@@ -586,8 +586,10 @@ Volumes <- R6::R6Class(
         args[["properties"]] <- list(resource_id = resource_id)
       } else {
         checkmate::assert_character(from_path, len = 1)
-        args <-
-          jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
+        if (!file.exists(from_path)) {
+          rlang::abort("File on provided path doesn't exist.")
+        }
+        args <- jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
         args <- purrr::list_flatten(args, name_spec = "{inner}")
       }
 
@@ -627,14 +629,8 @@ Volumes <- R6::R6Class(
           storage_account = args[["storage_account"]],
           container = args[["container"]],
           prefix = args[["prefix"]],
-          credentials = list(
-            tenant_id = args[["credentials"]][["tenant_id"]],
-            client_id = args[["credentials"]][["client_id"]],
-            client_secret = args[["credentials"]][["client_secret"]]
-          ),
-          properties = list(
-            resource_id = args[["properties"]][["resource_id"]]
-          )
+          credentials = args[["credentials"]],
+          properties = args[["properties"]]
         )
       )
 
@@ -675,6 +671,10 @@ Volumes <- R6::R6Class(
     #' @param secret_access_key String. ALI(OSS) secret access key of the user
     #' shared with Seven Bridges to access this bucket. Required if from_path
     #' parameter is not provided.
+    #' @param properties Named list containing the properties of a specific
+    #' service. These values set the defaults for operations performed with this
+    #' volume. Individual operations can override these defaults by providing a
+    #' custom properties object. Check out our API documentation.
     #' @param from_path JSON configuration file containing all required
     #' information for registering a volume.
     #' @return Volume object.
@@ -685,6 +685,7 @@ Volumes <- R6::R6Class(
                               prefix = NULL,
                               access_key_id = NULL,
                               secret_access_key = NULL,
+                              properties = NULL,
                               from_path = NULL) {
       if (is_missing(from_path)) {
         args <- as.list(environment())
@@ -694,14 +695,28 @@ Volumes <- R6::R6Class(
         )
       } else {
         checkmate::assert_character(from_path, len = 1)
-        args <-
-          jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
+        if (!file.exists(from_path)) {
+          rlang::abort("File on provided path doesn't exist.")
+        }
+        args <- jsonlite::fromJSON(from_path, simplifyDataFrame = FALSE)
         args <- purrr::list_flatten(args, name_spec = "{inner}")
       }
 
       # Ali(OSS) volumes only have Read Only privileges
       args[["access_mode"]] <- "RO"
       check_volume_params(args)
+
+      # Check credentials
+      checkmate::assert_character(args[["credentials"]][["access_key_id"]],
+        len = 1,
+        null.ok = FALSE,
+        typed.missing = TRUE
+      )
+      checkmate::assert_character(args[["credentials"]][["secret_access_key"]],
+        len = 1,
+        null.ok = FALSE,
+        typed.missing = TRUE
+      )
 
       body <- list(
         name = args[["name"]],
@@ -711,7 +726,9 @@ Volumes <- R6::R6Class(
           type = "OSS",
           bucket = args[["bucket"]],
           endpoint = args[["endpoint"]],
-          credentials = args[["credentials"]]
+          prefix = args[["prefix"]],
+          credentials = args[["credentials"]],
+          properties = args[["properties"]]
         )
       )
 

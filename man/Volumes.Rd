@@ -508,6 +508,7 @@ platform
   prefix = NULL,
   access_key_id = NULL,
   secret_access_key = NULL,
+  properties = NULL,
   from_path = NULL
 )}\if{html}{\out{</div>}}
 }
@@ -538,6 +539,11 @@ is not provided.}
 \item{\code{secret_access_key}}{String. ALI(OSS) secret access key of the user
 shared with Seven Bridges to access this bucket. Required if from_path
 parameter is not provided.}
+
+\item{\code{properties}}{Named list containing the properties of a specific
+service. These values set the defaults for operations performed with this
+volume. Individual operations can override these defaults by providing a
+custom properties object. Check out our API documentation.}
 
 \item{\code{from_path}}{JSON configuration file containing all required
 information for registering a volume.}
