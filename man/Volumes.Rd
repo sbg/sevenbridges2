@@ -162,7 +162,7 @@ parameter is not provided.}
 service. These values set the defaults for operations performed with this
 volume. Individual operations can override these defaults by providing a
 custom properties object. For AWS S3, there are:
-#' \itemize{
+\itemize{
 \item \code{sse_algorithm} - String. S3 server-side encryption to use when
 exporting to this bucket. Supported values:
 AES256 (SSE-S3 encryption), aws:kms, null (no server-side encryption).
@@ -252,7 +252,7 @@ Required if from_path parameter is not provided.}
 service. These values set the defaults for operations performed with this
 volume. Individual operations can override these defaults by providing a
 custom properties object. For AWS S3, there are:
-#' \itemize{
+\itemize{
 \item \code{sse_algorithm} - String. S3 server-side encryption to use when
 exporting to this bucket. Supported values:
 AES256 (SSE-S3 encryption), aws:kms, null (no server-side encryption).
@@ -471,14 +471,15 @@ includes them, the API will attempt to create any missing folders
 when it outputs a file.}
 
 \item{\code{tenant_id}}{String. Directory (tenant) ID of the
-\href{https://docs.sevenbridges.com/page/microsoft-azure-volumes#register-a-new-application}{application you created on the Azure Portal} # nolint
-for the purpose of attaching your storage container.}
+application you created on the Azure Portal for the purpose of attaching
+your storage container.}
 
-\item{\code{client_id}}{String. Application (client) ID of the \link{application you created on the Azure Portal} (https://docs.sevenbridges.com/page/microsoft-azure-volumes#register-a-new-application) # nolint
-for the purpose of attaching your storage container.}
+\item{\code{client_id}}{String. Application (client) ID of the application you
+created on the Azure Portal for the purpose of attaching your storage
+container.}
 
-\item{\code{client_secret}}{Value of the \link{client secret you created on the Azure Portal} (https://docs.sevenbridges.com/page/microsoft-azure-volumes#create-a-new-client-secret) # nolint
-for the purpose of attaching your storage container.}
+\item{\code{client_secret}}{Value of the client secret you created on the Azure
+Portal for the purpose of attaching your storage container.}
 
 \item{\code{resource_id}}{Resource ID of the Azure storage account. To get it,
 go to the \href{https://portal.azure.com/}{Azure Portal}, open the storage

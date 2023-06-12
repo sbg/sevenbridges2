@@ -107,7 +107,7 @@ Volumes <- R6::R6Class(
     #' service. These values set the defaults for operations performed with this
     #' volume. Individual operations can override these defaults by providing a
     #' custom properties object. For AWS S3, there are:
-    #' #' \itemize{
+    #' \itemize{
     #'    \item `sse_algorithm` - String. S3 server-side encryption to use when
     #'    exporting to this bucket. Supported values:
     #'    AES256 (SSE-S3 encryption), aws:kms, null (no server-side encryption).
@@ -231,7 +231,7 @@ Volumes <- R6::R6Class(
     #' service. These values set the defaults for operations performed with this
     #' volume. Individual operations can override these defaults by providing a
     #' custom properties object. For AWS S3, there are:
-    #' #' \itemize{
+    #' \itemize{
     #'    \item `sse_algorithm` - String. S3 server-side encryption to use when
     #'    exporting to this bucket. Supported values:
     #'    AES256 (SSE-S3 encryption), aws:kms, null (no server-side encryption).
@@ -554,12 +554,13 @@ Volumes <- R6::R6Class(
     #' includes them, the API will attempt to create any missing folders
     #' when it outputs a file.
     #' @param tenant_id String. Directory (tenant) ID of the
-    #' [application you created on the Azure Portal](https://docs.sevenbridges.com/page/microsoft-azure-volumes#register-a-new-application) # nolint
-    #' for the purpose of attaching your storage container.
-    #' @param client_id String. Application (client) ID of the [application you created on the Azure Portal] (https://docs.sevenbridges.com/page/microsoft-azure-volumes#register-a-new-application) # nolint
-    #' for the purpose of attaching your storage container.
-    #' @param client_secret Value of the [client secret you created on the Azure Portal] (https://docs.sevenbridges.com/page/microsoft-azure-volumes#create-a-new-client-secret) # nolint
-    #'  for the purpose of attaching your storage container.
+    #' application you created on the Azure Portal for the purpose of attaching
+    #' your storage container.
+    #' @param client_id String. Application (client) ID of the application you
+    #' created on the Azure Portal for the purpose of attaching your storage
+    #' container.
+    #' @param client_secret Value of the client secret you created on the Azure
+    #' Portal for the purpose of attaching your storage container.
     #' @param resource_id Resource ID of the Azure storage account. To get it,
     #' go to the [Azure Portal](https://portal.azure.com/), open the storage
     #' account's Overview page and click JSON View.
@@ -668,7 +669,7 @@ Volumes <- R6::R6Class(
     #' when it outputs a file.
     #' @param access_key_id String. ALI(OSS) access key ID of the user shared
     #' with Seven Bridges to access this bucket. Required if from_path parameter
-    #'  is not provided.
+    #' is not provided.
     #' @param secret_access_key String. ALI(OSS) secret access key of the user
     #' shared with Seven Bridges to access this bucket. Required if from_path
     #' parameter is not provided.
