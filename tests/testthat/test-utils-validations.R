@@ -243,3 +243,165 @@ test_that("check_file_path function throws error when provided file_path paramet
     label = "File {magenta /path/to/nonexisting-file.cwl} does not exist."
   )
 })
+
+test_that("check_volume_params works", {
+  # Pass invalid args, volume_type
+  testthat::expect_error(check_volume_params(args = NULL))
+  testthat::expect_error(check_volume_params(
+    args = list("arg1" = "arg1"),
+    volume_type = "some-other-type"
+  ))
+
+  # Test with valid params
+  valid_args <- list(
+    name = "volume_name",
+    bucket = "bucket_name",
+    prefix = "",
+    access_mode = "RW",
+    description = NULL,
+    properties = list("some-property" = "value"),
+    endpoint = "some-endpoint",
+    root_url = "some-url",
+    credentials = list("key" = "just-string")
+  )
+  testthat::expect_no_error(check_volume_params(args = valid_args))
+
+  # Create invalid params list
+  invalid_args <- list(
+    name = 123,
+    bucket = list("some-name"),
+    prefix = NA,
+    access_mode = "some-other",
+    description = FALSE,
+    properties = c("some-property" = "value"),
+    endpoint = list("some-endpoint"),
+    root_url = TRUE,
+    credentials = "just-string"
+  )
+
+  # Pass invalid name
+  testthat::expect_error(check_volume_params(args = invalid_args["name"]))
+  # Pass invalid bucket
+  testthat::expect_error(
+    check_volume_params(args = c(valid_args["name"], invalid_args["bucket"]))
+  )
+  # Pass invalid prefix
+  testthat::expect_error(
+    check_volume_params(args = c(
+      valid_args["name"], valid_args["bucket"],
+      invalid_args["prefix"]
+    ))
+  )
+  # Pass invalid access_mode
+  testthat::expect_error(
+    check_volume_params(args = c(
+      valid_args["name"],
+      valid_args["bucket"],
+      valid_args["prefix"],
+      invalid_args["access_mode"]
+    ))
+  )
+  # Pass invalid description
+  testthat::expect_error(
+    check_volume_params(args = c(
+      valid_args["name"],
+      valid_args["bucket"],
+      valid_args["prefix"],
+      valid_args["access_mode"],
+      invalid_args["description"]
+    ))
+  )
+  # Pass invalid properties
+  testthat::expect_error(
+    check_volume_params(args = c(
+      valid_args["name"],
+      valid_args["bucket"],
+      valid_args["prefix"],
+      valid_args["access_mode"],
+      valid_args["description"],
+      invalid_args["properties"]
+    ))
+  )
+  # Pass invalid endpoint
+  testthat::expect_error(
+    check_volume_params(args = c(
+      valid_args["name"],
+      valid_args["bucket"],
+      valid_args["prefix"],
+      valid_args["access_mode"],
+      valid_args["description"],
+      valid_args["properties"],
+      invalid_args["endpoint"]
+    ))
+  )
+  # Pass invalid root_url
+  testthat::expect_error(
+    check_volume_params(args = c(
+      valid_args["name"],
+      valid_args["bucket"],
+      valid_args["prefix"],
+      valid_args["access_mode"],
+      valid_args["description"],
+      valid_args["properties"],
+      invalid_args["root_url"]
+    ))
+  )
+})
+
+test_that("transform_configuration_param works", {
+  # Provide configuration as valid list
+  config_list <- list(
+    "field1" = "value1",
+    "field2" = 123,
+    "field3" = list(
+      "subfield" = "subfield-value"
+    ),
+    "field4" = "something"
+  )
+  transformed_str <- transform_configuration_param(configuration = config_list)
+  testthat::expect_type(transformed_str, "character")
+  testthat::expect_true(startsWith(transformed_str, prefix = "{\n"))
+
+  # Provide configuration as path to JSON file
+  config_json_path <- testthat::test_path(
+    "test_data",
+    "volumes_configuration_params.json"
+  )
+  transformed_str <- transform_configuration_param(configuration = config_json_path) # nolint
+  testthat::expect_type(transformed_str, "character")
+  testthat::expect_true(startsWith(transformed_str, prefix = "{\n"))
+})
+
+test_that("transform_configuration_param throws error when needed", {
+  # Provide configuration as NULL
+  testthat::expect_error(
+    transform_configuration_param(configuration = NULL),
+    regexp = "Invalid configuration parameter! \n Please, provide a string path to the JSON file or a named list.", # nolint
+    fixed = TRUE
+  )
+
+  # Provide configuration as empty list
+  testthat::expect_error(
+    transform_configuration_param(configuration = list()),
+    regexp = "Invalid configuration parameter! \n Please, provide a string path to the JSON file or a named list.", # nolint
+    fixed = TRUE
+  )
+
+  # Provide configuration as unnamed list
+  testthat::expect_error(
+    transform_configuration_param(configuration = list("unnamed list")),
+    regexp = "Invalid configuration parameter! \n Please, provide a string path to the JSON file or a named list.", # nolint
+    fixed = TRUE
+  )
+
+  # Provide configuration as invalid json path
+  config_path <- file.path("unnoun", "path", "to", "file.json")
+  testthat::expect_error(
+    transform_configuration_param(configuration = config_path)
+  )
+
+  # Provide configuration as non-string type
+  testthat::expect_error(
+    transform_configuration_param(configuration = c("field1", "field2"))
+  )
+})

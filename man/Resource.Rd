@@ -67,7 +67,7 @@ Generic query implementation that is used by the resources.
 \subsection{Method \code{get()}}{
 Generic query implementation that fetches the resource from the server.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Resource$get(cls, id)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Resource$get(cls, id, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -76,6 +76,9 @@ Generic query implementation that fetches the resource from the server.
 \item{\code{cls}}{Resource Class object.}
 
 \item{\code{id}}{Object id}
+
+\item{\code{...}}{Additional parameters for api(), like fields,
+advance_access etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -86,7 +89,7 @@ Generic query implementation that fetches the resource from the server.
 \subsection{Method \code{delete()}}{
 Generic query implementation that deletes the resource from the server.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Resource$delete(cls, id)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Resource$delete(cls, id, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -95,6 +98,9 @@ Generic query implementation that deletes the resource from the server.
 \item{\code{cls}}{Resource Class object.}
 
 \item{\code{id}}{Object id}
+
+\item{\code{...}}{Additional parameters for api(), like fields,
+advance_access etc.}
 }
 \if{html}{\out{</div>}}
 }

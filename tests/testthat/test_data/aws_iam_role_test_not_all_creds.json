@@ -1,0 +1,11 @@
+{
+   "name":"volume-name",
+   "service":{
+      "type":"s3",
+      "bucket":"bucket-name",
+      "prefix":"",
+      "credentials":{
+         "role_arn":"some-arn"
+      }
+   }
+}

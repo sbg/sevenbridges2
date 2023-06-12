@@ -1,0 +1,9 @@
+{
+   "name": "ali_volume",
+   "description": "Ali volume",
+   "access_mode": "RO",
+   "service": {
+       "type": "OSS",
+       "bucket": "{{bucket-name}}2"
+   }
+}

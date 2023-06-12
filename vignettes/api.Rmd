@@ -1112,12 +1112,13 @@ parameter.
 a$abort_upload(upload_id = "<id_of_the_upload_process>")
 ```
 
+# Apps
 
 ## List apps
 
 You can list all apps available to by calling the `apps$query()` method from
 the authentication object. The method has several parameters that allow you to
-search for apps in various places and by specified search terms. 
+search for apps in various places and by specified search terms.
 
 Note that you can see all of the publicly available apps on the Seven Bridges
 Platform by setting the the `visibility` parameter to `public`. If you omit this
@@ -1133,13 +1134,13 @@ a$apps$query(visibility = "public", limit = 10)
 The same can be done for private apps. The following call will return all the
 apps available to you, i.e. all the apps that you have in your projects:
 
-```{r}
+  ```{r}
 # Query private apps - set limit to 10
 a$apps$query(limit = 10)
 ```
 
 Keep in mind that not all of the available apps are going to be returned,
-because the `limit` parameter is set to 10. 
+because the `limit` parameter is set to 10.
 
 Alternatively, you can query all the apps in a specific project by providing
 the project of interest using the `project` parameter. You can either use the
@@ -1155,7 +1156,7 @@ You can also use one or more search terms via the `query_terms` parameter to
 query all apps that are available to you. Search terms should relate to the
 following app details:
 
-* name
+  * name
 * label
 * toolkit
 * toolkit version
@@ -1178,7 +1179,7 @@ the search fails to match app details, the call will return an empty list.
 
 
 Another useful option is to query apps by id. You can do so either for public
-apps, or for private apps (apps available to you). The following example 
+apps, or for private apps (apps available to you). The following example
 illustrates how this can be done for public apps:
 
 ```{r}
@@ -1206,15 +1207,15 @@ bcftools_app <- a$apps$get(id = "admin/sbg-public-data/bcftools-call-1-15-1")
 ## Copy an app
 
 
-To copy an app to a specified destination project, you can use the 
-`apps$copy()` method. 
+To copy an app to a specified destination project, you can use the
+`apps$copy()` method.
 
 Keep in mind that the app should be one in a project that
 you can access. This could be an app that has been uploaded to the Seven
 Bridges Platform by a project member, or a publicly available app.
 
 Destination project (`project` parameter) should be provided either as an
-object of `Project` class, or as an ID of the targer project of interest.
+object of `Project` class, or as an ID of the target project of interest.
 
 You might want to set the new name that the app will have in the target
 project. To so so, use the `name` parameter. If app's name will not change,
@@ -1231,14 +1232,15 @@ platform:
 Learn more about copy strategies in our PUBLIC API documentation.
 
 
-The following example demonstrates how can you copy the previosuly created
+The following example demonstrates how can you copy the previously created
 `bcftools_app` to some project:
 
 ```{r}
 # Copy app to a project
 app_copy <- a$apps$copy(bcftools_app,
-                       project = "<project_object_or_its_ID>",
-                       name = "new_app_name")
+  project = "<project_object_or_its_ID>",
+  name = "new_app_name"
+)
 ```
 
 
@@ -1256,7 +1258,7 @@ such a list, you might want to load some existing `JSON` / `YAML` file. In case
 that your CWL file is in JSON format, please use the `fromJSON` function from
 the `jsonlite` package to minimize potential problems with parsing the JSON
 file. If you want to load a CWL file in YAML format, it is highly recommended
-to use the `read_yaml` function from the `yaml` package. 
+to use the `read_yaml` function from the `yaml` package.
 
 Make sure to set the `raw_format` parameter to match the type of the provide
 raw CWL file (`JSON` / `YAML`). By default, this parameter is set to `JSON`.
@@ -1325,7 +1327,7 @@ new_app_json$print()
 ## Get app's revision
 
 To obtain a particular revision of an app, use the `get_revision()` method. If
-you need a specific revision of an app, use the `revision` parameter. 
+you need a specific revision of an app, use the `revision` parameter.
 
 Keep in mind that there is another important parameter that can be set for this
 method. If the `in_place` parameter is set to `TRUE`, the current app object
@@ -1374,7 +1376,7 @@ such a list, you might want to load some existing `JSON` / `YAML` file. In case
 that your CWL file is in JSON format, please use the `fromJSON` function from
 the `jsonlite` package to minimize potential problems with parsing the JSON
 file. If you want to load a CWL file in YAML format, it is highly recommended
-to use the `read_yaml` function from the `yaml` package. 
+to use the `read_yaml` function from the `yaml` package.
 
 Make sure to set the `raw_format` parameter to match the type of the provide
 raw CWL file (`JSON` / `YAML`). By default, this parameter is set to `JSON`.
@@ -1399,7 +1401,7 @@ An app can be copied to a specified destination project directly from an
 app's object, by calling its `copy()`method.
 
 Destination project (`project` parameter) should be provided either as an
-object of `Project` class, or as an ID of the targer project of interest.
+object of `Project` class, or as an ID of the target project of interest.
 
 You might want to set the new name that the app will have in the target
 project. To so so, use the `name` parameter. If app's name will not change,
@@ -1416,8 +1418,10 @@ platform:
 Learn more about copy strategies in our PUBLIC API documentation.
 
 ```{r}
-copied_app <- my_app$copy(project = "<destination_project_object_or_its_ID>",
-                          name = "new_app_name")
+copied_app <- my_app$copy(
+  project = "<destination_project_object_or_its_ID>",
+  name = "new_app_name"
+)
 ```
 
 
@@ -1429,4 +1433,160 @@ you can use the `sync()` method.
 ```{r}
 # Sync copied app to the latest revision created
 copied_app$sync()
+```
+
+#### Volumes
+
+## List volumes
+
+You can list all volumes you've registered by calling the `volumes$query()` 
+method from the authentication object. The method doesn't have any additional 
+query parameters that could allow you to search for volumes by specific 
+criteria, except to control the number of results returned using limit and 
+offset parameters.
+
+```{r}
+# Query volumes
+a$volumes$query()
+```
+
+## Get single volume information
+
+In order to retrieve information about a single volume of interest, you can get 
+it using the `volumes$get()` method using its id as parameter.
+Volume ID is usually presented in form '<division_name>/<volume_name>' for 
+enterprise users, while for others it can be in form 
+'<volume_owner>/<volume_name>'.
+
+```{r}
+# Get volume
+a$volumes$get(id = "<division_name>/<volume_name>")
+```
+
+## Create volumes - AWS (s3) using IAM User authentication type
+
+For creating volumes we have exposed several functions for different cloud 
+providers and authentication types:
+* `create_s3_using_iam_user` : creates s3 volume using IAM User authentication type
+* `create_s3_using_iam_role`: creates s3 volume using IAM Role authentication type
+* `create_google_using_iam_user` : creates GC volume using IAM User authentication type
+* `create_google_using_iam_role`: creates GC volume using IAM Role authentication type
+* `create_azure` : creates Azure volume (only RO privileges allowed)
+* `create_ali_oss`: creates Ali cloud volume (only RO privileges allowed)
+
+For each of the functions it is possible to provide parameters via path 
+(`from_path`) to some JSON file where all required fields should be listed.
+
+The examples of usages are listed below:
+
+```{r}
+# Create AWS volume using IAM User authentication type
+aws_iam_user_volume <- a$volumes$create_s3_using_iam_user(
+  name = "my_new_aws_user_volume",
+  bucket = "<bucket-name>",
+  description = "AWS IAM User volume",
+  access_key_id = "<access-key>",
+  secret_access_key = "<secret-access-key>"
+)
+
+aws_iam_user_volume_from_path <- a$volumes$create_s3_using_iam_user(
+  from_path = "path/to/my/json/file.json"
+)
+
+
+# Create AWS volume using IAM Role authentication type
+aws_iam_role_volume <- a$volumes$create_s3_using_iam_role(
+  name = "my_new_aws_role_volume",
+  bucket = "<bucket-name>",
+  description = "AWS IAM Role volume",
+  role_arn = "<role-arn-key>",
+  external_id = "<external-id>"
+)
+
+aws_iam_role_volume_from_path <- a$volumes$create_s3_using_iam_role(
+  from_path = "path/to/my/json/file.json"
+)
+
+# Create Google cloud volume using IAM User authentication type
+gc_iam_user_volume <- a$volumes$create_google_using_iam_user(
+  name = "my_new_gc_user_volume",
+  access_mode = "RW",
+  bucket = "<bucket-name>",
+  description = "GC IAM User volume",
+  client_email = "<client_email>",
+  private_key = "<private_key-string>"
+)
+
+gc_iam_user_volume_from_path <- a$volumes$create_google_using_iam_user(
+  from_path = "path/to/my/json/file.json"
+)
+
+# Create Google cloud volume using IAM Role authentication type
+# by passing configuration parameter as named list
+gc_iam_role_volume <- a$volumes$create_google_using_iam_role(
+  name = "my_new_gc_role_volume",
+  access_mode = "RO",
+  bucket = "<bucket-name>",
+  description = "GC IAM Role volume",
+  configuration = list(
+    type = "<type-name>",
+    audience = "<audience-link>",
+    subject_token_type = "<subject_token_type>",
+    service_account_impersonation_url = "<service_account_impersonation_url>",
+    token_url = "<token_url>",
+    credential_source = list(
+      environment_id = "<environment_id>",
+      region_url = "<region_url>",
+      url = "<url>",
+      regional_cred_verification_url = "<regional_cred_verification_url>"
+    )
+  )
+)
+
+# Create Google cloud volume using IAM Role authentication type
+# by passing configuration parameter as string path to configuration file
+gc_iam_role_volume_config_file <- a$volumes$create_google_using_iam_role(
+  name = "my_new_gc_role_volume_cnf_file",
+  access_mode = "RO",
+  bucket = "<bucket-name>",
+  description = "GC IAM Role volume - using config file",
+  configuration = "path/to/config/file.json"
+)
+
+# Create Google cloud volume using IAM Role authentication type
+# using from_path parameter
+gc_iam_role_volume_from_path <- a$volumes$create_google_using_iam_role(
+  from_path = "path/to/full/config/file.json"
+)
+
+# Create Azure volume
+azure_volume <- a$volumes$create_azure(
+  name = "my_new_azure_volume",
+  description = "Azure volume",
+  endpoint = "<endpoint>",
+  container = "<bucket-name",
+  storage_account = "<storage_account-name>",
+  tenant_id = "<tenant_id>",
+  client_id = "<client_id>",
+  client_secret = "<client_secret>",
+  resource_id = "<resource_id>"
+)
+
+azure_volume_from_path <- a$volumes$create_azure(
+  from_path = "path/to/my/json/file.json"
+)
+
+# Create Ali cloud volume
+ali_volume <- a$volumes$create_ali_oss(
+  name = "my_new_azure_volume",
+  description = "Ali volume",
+  endpoint = "<endpoint>",
+  bucket = "<bucket-name",
+  access_key_id = "<access_key_id>",
+  secret_access_key = "<secret_access_key>"
+)
+
+ali_volume_from_path <- a$volumes$create_ali_oss(
+  from_path = "path/to/my/json/file.json"
+)
 ```

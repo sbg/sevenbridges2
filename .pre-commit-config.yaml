@@ -42,6 +42,7 @@ repos:
           .*\.RDS|
           .*\.Rproj|
           .*\.sh|
+          .*\.json|
           (.*/|)\.gitignore|
           (.*/|)\.gitlab-ci\.yml|
           (.*/|)\.lintr|

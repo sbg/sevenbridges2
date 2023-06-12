@@ -52,6 +52,10 @@ Auth <- R6::R6Class(
     #' @field apps Apps object, for accessing apps resources on the platform.
     apps = NULL,
 
+    #' @field volumes Volumes object, for accessing volumes resources on the
+    #' platform.
+    volumes = NULL,
+
     #' @description
     #' Create a new Auth object. All methods can be accessed through this
     #' object.
@@ -257,6 +261,9 @@ Auth <- R6::R6Class(
 
       # Apps resource
       self$apps <- Apps$new(self)
+
+      # Volumes resource
+      self$volumes <- Volumes$new(self)
     },
     #' @description
     #' Returns the authentication token read from system environment variable.
