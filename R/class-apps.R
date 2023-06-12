@@ -69,7 +69,7 @@ Apps <- R6::R6Class(
       if (!is.null(query_terms)) {
         query_terms <- paste(query_terms, collapse = " ")
       }
-
+      # nocov start
       res <- super$query(
         path = self$URL[["query"]],
         project = project,
@@ -80,7 +80,7 @@ Apps <- R6::R6Class(
         limit = limit
       )
 
-      return(asAppList(res, auth = self$auth))
+      return(asAppList(res, auth = self$auth)) # nocov end
     },
 
     # Get single app -------------------------------------------------------
@@ -102,14 +102,14 @@ Apps <- R6::R6Class(
 
       checkmate::assert_string(id)
       checkmate::assert_int(revision, null.ok = TRUE, lower = 0)
-
+      # nocov start
       id <- paste(c(id, revision), collapse = "/")
       res <- super$get(
         cls = self,
         id = id
       )
 
-      return(asApp(res, auth = self$auth))
+      return(asApp(res, auth = self$auth)) # nocov end
     },
 
     # Copy single app -------------------------------------------------------
@@ -154,7 +154,7 @@ Apps <- R6::R6Class(
       strategy <- match.arg(strategy)
 
       checkmate::assert_string(name, null.ok = TRUE)
-
+      # nocov start
       body <- list(
         project = project_id,
         name = name,
@@ -173,7 +173,7 @@ Apps <- R6::R6Class(
 
       res <- status_check(req)
 
-      return(asApp(res, auth = self$auth))
+      return(asApp(res, auth = self$auth)) # nocov end
     },
 
     # Create app -------------------------------------------------------
@@ -243,7 +243,7 @@ Apps <- R6::R6Class(
 
       project_id <-
         check_and_transform_id(project, class_name = "Project")
-
+      # nocov start
       id <- glue::glue("{project_id}/{name}")
       path <- glue::glue(self$URL[["raw"]])
 
@@ -259,9 +259,7 @@ Apps <- R6::R6Class(
 
       app <- self$get(res$`sbg:id`)
 
-      return(app)
+      return(app) # nocov end
     }
   )
 )
-
-# nocov end

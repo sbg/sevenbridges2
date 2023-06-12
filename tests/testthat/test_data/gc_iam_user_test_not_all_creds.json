@@ -1,0 +1,12 @@
+{
+  "name": "{{your_volume_name}}",
+  "service": {
+    "type": "gcs",
+    "bucket": "{{bucket-name}}",
+    "prefix": "",
+    "credentials": {
+      "private_key": "{{private-key}}"
+    }
+  },
+  "access_mode": "RO"
+}

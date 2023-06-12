@@ -311,29 +311,6 @@ App <- R6::R6Class(
 
       # Return new or reload current object with newly created revision
       return(self$get_revision(revision = self$latest_revision + 1, in_place = in_place)) # nolint
-
-      # Update current object's latest_revision
-      # self$latest_revision <- res$`sbg:latestRevision`
-      #
-      # if (in_place) {
-      #   # Update the rest of the current object's fields
-      #   self$revision <- res$`sbg:latestRevision`
-      #   self$raw <- res
-      #   return(self)
-      # } else {
-      #   return(self$get_revision(revision = self$latest_revision, in_place = FALSE)) # nolint
-      # }
-
-      # Update app's details since res object doesn't contain all the
-      # information
-      # self <- self$get_revision(revision = self$revision)
-      # ------------------- CHECK THIS ----------------------
-      # ALTERNATIVELY we can manually update all fields
-      # to avoid making one more API call
-      # -----------------------------------------------------
-
-      # Print new object
-      # return(self)
     },
     #' @description Synchronize a copied app with its parent app
     #'

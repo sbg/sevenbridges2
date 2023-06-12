@@ -119,5 +119,8 @@ setup_resource_obj <- Resource$new(auth = setup_auth_object)
 # Apps obj
 setup_apps_obj <- Apps$new(auth = setup_auth_object)
 
+# Volumes obj
+setup_volumes_obj <- Volumes$new(auth = setup_auth_object)
+
 # Close session at the end of tests
 withr::defer(teardown_env())

@@ -83,7 +83,11 @@ api <- function(token = NULL, path = NULL,
   encode <- match.arg(encode)
 
   # set headers
-  headers <- set_headers(authorization = authorization, token = token)
+  headers <- set_headers(
+    authorization = authorization,
+    token = token,
+    advance_access = advance_access
+  )
 
   # setup query
   query <- setup_query(

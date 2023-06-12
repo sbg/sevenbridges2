@@ -1,0 +1,9 @@
+{
+  "name": "{{volume_name}}}}",
+  "service": {
+    "type": "gcs",
+    "bucket": "{{bucket-name}}",
+    "prefix": ""
+  },
+  "access_mode": "RO"
+}

@@ -1,0 +1,16 @@
+{
+   "name":"{{your_volume_name}}",
+   "service":{
+      "type":"s3",
+      "bucket":"{{bucket-name}}",
+      "prefix":"",
+      "credentials":{
+         "access_key_id":"{{access-key}}"
+      },
+      "properties":{
+         "sse_algorithm":"aws:kms",
+         "sse_aws_kms_key_id":"{{aws-kms-key-id}}"
+      }
+   },
+   "access_mode":"RW"
+}

@@ -68,7 +68,8 @@ is_missing <- function(input) {
       !checkmate::test_vector(input,
         min.len = 1,
         all.missing = FALSE
-      ) || isTRUE(input == "")
+      ) ||
+        isTRUE(input == "")
     )
   } else {
     missing(input)
@@ -127,7 +128,9 @@ check_tags <- function(tags) {
     names = "unnamed"
   )) {
     # nolint start
-    rlang::abort("Tags parameter must be an unnamed list of tags. For example: tags <- list('my_tag_1', 'my_tag_2')")
+    rlang::abort(
+      "Tags parameter must be an unnamed list of tags. For example: tags <- list('my_tag_1', 'my_tag_2')"
+    )
     # nolint end
   }
 }
@@ -147,51 +150,72 @@ check_settings <- function(settings) {
     }
 
     valid_input_names <- c(
-      "locked", "controlled", "use_interruptible_instances",
-      "use_memoization", "allow_network_access",
-      "use_elastic_disk", "location", "intermediate_files"
+      "locked",
+      "controlled",
+      "use_interruptible_instances",
+      "use_memoization",
+      "allow_network_access",
+      "use_elastic_disk",
+      "location",
+      "intermediate_files"
     )
 
-    invalid_element_names <- setdiff(names(settings), valid_input_names)
+    invalid_element_names <-
+      setdiff(names(settings), valid_input_names)
 
     if (length(invalid_element_names) > 0) {
       # nolint start
-      rlang::abort(glue::glue("Argument {invalid_element_names} is not a valid settings field."))
+      rlang::abort(glue::glue(
+        "Argument {invalid_element_names} is not a valid settings field."
+      ))
       # nolint end
     }
 
     checkmate::assert_logical(settings$locked,
-      .var.name = "locked", null.ok = TRUE
+      .var.name = "locked",
+      null.ok = TRUE
     )
     checkmate::assert_logical(settings$controlled,
-      .var.name = "controlled", null.ok = TRUE
+      .var.name = "controlled",
+      null.ok = TRUE
     )
-    checkmate::assert_logical(settings$use_interruptible_instances,
-      .var.name = "use_interruptible_instances", null.ok = TRUE
+    checkmate::assert_logical(
+      settings$use_interruptible_instances,
+      .var.name = "use_interruptible_instances",
+      null.ok = TRUE
     )
     checkmate::assert_logical(settings$use_memoization,
-      .var.name = "use_memoization", null.ok = TRUE
+      .var.name = "use_memoization",
+      null.ok = TRUE
     )
     checkmate::assert_logical(settings$allow_network_access,
-      .var.name = "allow_network_access", null.ok = TRUE
+      .var.name = "allow_network_access",
+      null.ok = TRUE
     )
     checkmate::assert_logical(settings$use_elastic_disk,
-      .var.name = "use_elastic_disk", null.ok = TRUE
+      .var.name = "use_elastic_disk",
+      null.ok = TRUE
     )
 
     checkmate::assert_character(settings$location,
-      .var.name = "location", null.ok = TRUE
+      .var.name = "location",
+      null.ok = TRUE
     )
 
     if ("intermediate_files" %in% names(settings)) {
       checkmate::assert_list(settings$intermediate_files,
-        .var.name = "intermediate_files", null.ok = TRUE
+        .var.name = "intermediate_files",
+        null.ok = TRUE
       )
-      checkmate::assert_integer(settings$intermediate_files$duration,
-        .var.name = "intermediate_files$duration", null.ok = TRUE
+      checkmate::assert_integer(
+        settings$intermediate_files$duration,
+        .var.name = "intermediate_files$duration",
+        null.ok = TRUE
       )
-      checkmate::assert_character(settings$intermediate_files$retention,
-        .var.name = "intermediate_files$retention", null.ok = TRUE
+      checkmate::assert_character(
+        settings$intermediate_files$retention,
+        .var.name = "intermediate_files$retention",
+        null.ok = TRUE
       )
     }
   }
@@ -220,14 +244,17 @@ check_folder_name <- function(name) {
 #' @importFrom rlang abort
 #' @noRd
 check_metadata <- function(metadata) {
-  if (!checkmate::test_list(metadata,
+  if (!checkmate::test_list(
+    metadata,
     types = "character",
     null.ok = TRUE,
     names = "named",
     max.len = 1000
   )) {
     # nolint start
-    rlang::abort("Metadata parameter must be a named list of key-value pairs. For example: metadata <- list(metadata_key_1 = 'metadata_value_1', metadata_key_2 = 'metadata_value_2')")
+    rlang::abort(
+      "Metadata parameter must be a named list of key-value pairs. For example: metadata <- list(metadata_key_1 = 'metadata_value_1', metadata_key_2 = 'metadata_value_2')"
+    )
     # nolint end
   }
 }
@@ -284,30 +311,37 @@ check_retry_params <- function(input, parameter_to_validate) {
 #' @importFrom checkmate assert_numeric
 #' @noRd
 check_upload_params <- function(size, part_size) {
-  checkmate::assert_numeric(size,
-    lower = 0, len = 1,
-    any.missing = FALSE, null.ok = FALSE
+  checkmate::assert_numeric(
+    size,
+    lower = 0,
+    len = 1,
+    any.missing = FALSE,
+    null.ok = FALSE
   )
-  checkmate::assert_numeric(part_size,
-    lower = 0, len = 1,
-    any.missing = FALSE, null.ok = FALSE
+  checkmate::assert_numeric(
+    part_size,
+    lower = 0,
+    len = 1,
+    any.missing = FALSE,
+    null.ok = FALSE
   )
 
-  if (!(size >= 0 && size <= getOption("sevenbridges2")$MAXIMUM_OBJECT_SIZE)) {
+  if (!(size >= 0 &&
+    size <= getOption("sevenbridges2")$MAXIMUM_OBJECT_SIZE)) {
     # nolint start
     rlang::abort("File size must be between 0 - 5497558138880 (5TB), inclusive")
     # nolint end
   }
-  if (!(part_size <= getOption("sevenbridges2")$MAXIMUM_PART_SIZE &&
-    part_size >= getOption("sevenbridges2")$MINIMUM_PART_SIZE)) {
+  if (!(
+    part_size <= getOption("sevenbridges2")$MAXIMUM_PART_SIZE &&
+      part_size >= getOption("sevenbridges2")$MINIMUM_PART_SIZE
+  )) {
     # nolint start
     rlang::abort("Parameter part_size must be 5 MB to 5 GB, last part can be < 5 MB")
     # nolint end
   }
   part_length <- ifelse(size == 0, 1,
-    as.integer(
-      ceiling(size / part_size)
-    )
+    as.integer(ceiling(size / part_size))
   )
   if (part_length < 1 ||
     part_length >= getOption("sevenbridges2")$MAXIMUM_TOTAL_PARTS) {
@@ -331,10 +365,14 @@ check_app_copy_strategy <- function(strategy) {
     rlang::abort("Please provide the copy strategy.")
   }
   # nolint start
-  supported_app_copy_strategies <- getOption("sevenbridges2")$APP_COPY_STRATEGIES
+  supported_app_copy_strategies <-
+    getOption("sevenbridges2")$APP_COPY_STRATEGIES
   if (!(strategy %in% supported_app_copy_strategies)) {
     rlang::abort(
-      glue::glue_col("The provided copy strategy ({magenta {strategy}}) is not supported. Please use one of the following strategies: ", "{green {paste(supported_app_copy_strategies, collapse = ', ')}}")
+      glue::glue_col(
+        "The provided copy strategy ({magenta {strategy}}) is not supported. Please use one of the following strategies: ",
+        "{green {paste(supported_app_copy_strategies, collapse = ', ')}}"
+      )
     )
   }
   # nolint end
@@ -352,4 +390,106 @@ check_file_path <- function(file_path) {
   if (!file.exists(file_path)) {
     rlang::abort(glue::glue_col("File {magenta {file_path}} does not exist."))
   }
+}
+
+#' Check all volume params when creating a volume
+#'
+#' @description This function checks parameters needed for value creation/update
+#' @param args Input parameters to check
+#' @param volume_type Storage type, can be one of: s3, gcs, azure, oss
+#'
+#' @importFrom checkmate assert_list
+#' @importFrom checkmate assert_character
+#' @importFrom rlang abort
+#' @importFrom glue glue_col
+#' @noRd
+check_volume_params <- function(args,
+                                volume_type = c("s3", "gcs", "azure", "OSS")) {
+  checkmate::assert_list(args, null.ok = FALSE)
+  volume_type <- match.arg(volume_type)
+
+  checkmate::assert_character(args[["name"]],
+    len = 1,
+    null.ok = FALSE,
+    typed.missing = TRUE
+  )
+
+  checkmate::assert_character(args[["access_mode"]], len = 1, null.ok = TRUE)
+
+  if (!is_missing(args[["access_mode"]]) &&
+    !(args[["access_mode"]] %in% c("RW", "RO"))) {
+    rlang::abort("Access mode must be RW or RO.")
+  }
+
+  checkmate::assert_character(args[["prefix"]],
+    len = 1,
+    typed.missing = TRUE,
+    null.ok = TRUE
+  )
+
+  checkmate::assert_character(args[["description"]],
+    len = 1,
+    typed.missing = TRUE,
+    null.ok = TRUE
+  )
+
+  if (volume_type %in% c("s3", "gcs", "OSS")) {
+    checkmate::assert_character(args[["bucket"]],
+      len = 1,
+      null.ok = FALSE,
+      typed.missing = TRUE
+    )
+  }
+
+  # Azure specific check
+  if (volume_type == "azure") {
+    checkmate::assert_character(args[["container"]],
+      len = 1,
+      null.ok = FALSE,
+      typed.missing = TRUE
+    )
+  }
+
+  checkmate::assert_list(args[["properties"]], null.ok = TRUE)
+
+  if (!is_missing(args[["endpoint"]])) {
+    checkmate::assert_character(args[["endpoint"]],
+      len = 1,
+      typed.missing = TRUE,
+      null.ok = TRUE
+    )
+  } else if (!is_missing(args[["root_url"]])) {
+    checkmate::assert_character(args[["root_url"]],
+      len = 1,
+      typed.missing = TRUE,
+      null.ok = TRUE
+    )
+  }
+}
+
+#' Transform configuration parameter in GC (IAM Role) volume creation
+#'
+#' @description This function checks whether provided configuration parameter
+#' is a named list or a file path to the configuration JSON file.
+#' @param configuration Path to JSON file or named list containing configuration
+#' parameters values for creating GC volume using IAM Role.
+#'
+#' @importFrom rlang abort
+#' @importFrom checkmate test_list
+#' @importFrom checkmate test_character
+#' @importFrom jsonlite toJSON
+#' @importFrom readr read_file
+#' @noRd
+transform_configuration_param <- function(configuration) {
+  if (checkmate::test_list(configuration, min.len = 1, null.ok = FALSE) &&
+    !is_missing(names(configuration))) {
+    config_json_string <- as.character(
+      jsonlite::toJSON(configuration, auto_unbox = TRUE, pretty = TRUE)
+    )
+  } else if (checkmate::test_character(configuration, len = 1, null.ok = FALSE, typed.missing = FALSE)) { # nolint
+    config_json_string <- readr::read_file(configuration)
+  } else {
+    rlang::abort("Invalid configuration parameter! \n Please, provide a string path to the JSON file or a named list.") # nolint
+  }
+  return(config_json_string)
 }
