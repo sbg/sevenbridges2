@@ -9,7 +9,8 @@ test_that("Volumes initialization works", {
     public = c(
       "URL", "query", "get",
       "create_s3_using_iam_user", "create_s3_using_iam_role",
-      "create_google_using_iam_user", "create_google_using_iam_role"
+      "create_google_using_iam_user", "create_google_using_iam_role",
+      "create_azure", "create_ali_oss"
     )
   )
 })

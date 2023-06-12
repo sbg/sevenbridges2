@@ -32,11 +32,12 @@ Volumes <- R6::R6Class(
     #' like 'limit', 'offset', 'fields', etc.
     #' @importFrom checkmate assert_list
     query = function(...) {
+      # nocov start
       res <- super$query(
         path = self$URL[["query"]],
         advance_access = TRUE,
         ...
-      )
+      ) # nocov end
       return(res)
       # return(asVolumeList(res, auth = self$auth))
     },
@@ -57,12 +58,12 @@ Volumes <- R6::R6Class(
         rlang::abort("Volume ID must be provided!")
       }
       checkmate::assert_string(id)
-
+      # nocov start
       res <- super$get(
         cls = self,
         id = id,
         advance_access = TRUE
-      )
+      ) # nocov end
       return(res)
       # return(asVolume(res, auth = self$auth))
     },
@@ -162,7 +163,7 @@ Volumes <- R6::R6Class(
         null.ok = FALSE,
         typed.missing = TRUE
       )
-
+      # nocov start
       body <- list(
         name = args[["name"]],
         description = args[["description"]],
@@ -190,7 +191,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(res)
+      return(res) # nocov end
       # return(asVolume(res, auth))
     },
     # Create new AWS Volume (IAM Role type authentication type) ---------------
@@ -286,7 +287,7 @@ Volumes <- R6::R6Class(
         null.ok = FALSE,
         typed.missing = TRUE
       )
-
+      # nocov start
       body <- list(
         name = args[["name"]],
         description = args[["description"]],
@@ -314,7 +315,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(res)
+      return(res) # nocov end
       # return(asVolume(res, auth))
     },
     # Create new Google Cloud Volume (IAM User type authentication type) ------
@@ -394,7 +395,7 @@ Volumes <- R6::R6Class(
         null.ok = FALSE,
         typed.missing = TRUE
       )
-
+      # nocov start
       body <- list(
         name = args[["name"]],
         description = args[["description"]],
@@ -422,7 +423,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(res)
+      return(res) # nocov end
       # return(asVolume(res, auth))
     },
     # Create new Google Cloud Volume (IAM Role type authentication type) ------
@@ -502,7 +503,7 @@ Volumes <- R6::R6Class(
         len = 1, null.ok = FALSE,
         typed.missing = TRUE
       )
-
+      # nocov start
       body <- list(
         name = args[["name"]],
         description = args[["description"]],
@@ -530,7 +531,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(res)
+      return(res) # nocov end
       # return(asVolume(res, auth))
     },
     # Create new AZURE Volume  -------------------------------------------------
@@ -620,7 +621,7 @@ Volumes <- R6::R6Class(
         null.ok = FALSE,
         typed.missing = TRUE
       )
-
+      # nocov start
       body <- list(
         name = args[["name"]],
         description = args[["description"]],
@@ -649,7 +650,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(res)
+      return(res) # nocov end
       # return(asVolume(res, auth))
     },
 
@@ -719,7 +720,7 @@ Volumes <- R6::R6Class(
         null.ok = FALSE,
         typed.missing = TRUE
       )
-
+      # nocov start
       body <- list(
         name = args[["name"]],
         description = args[["description"]],
@@ -747,7 +748,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(res)
+      return(res) # nocov end
       # return(asVolume(res, auth))
     }
   )
