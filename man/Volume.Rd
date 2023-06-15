@@ -52,6 +52,7 @@ set to FALSE.}
 \item \href{#method-Volume-update}{\code{Volume$update()}}
 \item \href{#method-Volume-deactivate}{\code{Volume$deactivate()}}
 \item \href{#method-Volume-reactivate}{\code{Volume$reactivate()}}
+\item \href{#method-Volume-delete}{\code{Volume$delete()}}
 \item \href{#method-Volume-clone}{\code{Volume$clone()}}
 }
 }
@@ -185,6 +186,21 @@ the 'active' field of the volume to TRUE.
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-delete"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-delete}{}}}
+\subsection{Method \code{delete()}}{
+Delete volume
+This call deletes a volume you've created to refer to storage on
+Amazon Web Services, Google Cloud Storage, Azure or Ali cloud.
+To be able to delete a volume, you first need to deactivate it and then
+delete all files on the Platform that were previously imported from
+the volume.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$delete()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-clone"></a>}}

@@ -206,7 +206,9 @@ Volume <- R6::R6Class(
       )
 
       res <- status_check(res)
+      rlang::inform(glue::glue("The volume {self$name} has been ", glue::glue_col("{red deactivated}."))) # nolint
       self$active <- FALSE
+      self
     },
     #' @description Reactivate volume
     #' This function reactivates the previously deactivated volume by updating
@@ -231,7 +233,45 @@ Volume <- R6::R6Class(
       )
 
       res <- status_check(res)
+      rlang::inform(glue::glue("The volume {self$name} has been ", glue::glue_col("{green reactivated}."))) # nolint
       self$active <- TRUE
+      self
+    },
+    #' @description Delete volume
+    #' This call deletes a volume you've created to refer to storage on
+    #' Amazon Web Services, Google Cloud Storage, Azure or Ali cloud.
+    #' To be able to delete a volume, you first need to deactivate it and then
+    #' delete all files on the Platform that were previously imported from
+    #' the volume.
+    delete = function() {
+      if (self$active) {
+        rlang::abort(
+          glue::glue("The volume {self$name} must be deactivated first in order to be able to delete it.") # nolint
+        )
+      }
+      path <- glue::glue(self$URL[["delete"]])
+
+      res <- sevenbridges2::api(
+        path = path,
+        method = "DELETE",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE
+      )
+      rlang::inform(glue::glue("The volume {self$name} has been ", glue::glue_col("{red deleted}."))) # nolint
+      self$initialize(
+        href = NULL,
+        id = NULL,
+        name = NULL,
+        description = NULL,
+        access_mode = NULL,
+        service = NULL,
+        created_on = NULL,
+        modified_on = NULL,
+        active = NULL,
+        auth = NULL,
+        response = attr(res, "response")
+      )
     }
   )
 )
