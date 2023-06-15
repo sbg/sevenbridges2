@@ -53,6 +53,8 @@ set to FALSE.}
 \item \href{#method-Volume-deactivate}{\code{Volume$deactivate()}}
 \item \href{#method-Volume-reactivate}{\code{Volume$reactivate()}}
 \item \href{#method-Volume-delete}{\code{Volume$delete()}}
+\item \href{#method-Volume-list_files}{\code{Volume$list_files()}}
+\item \href{#method-Volume-get_file}{\code{Volume$get_file()}}
 \item \href{#method-Volume-clone}{\code{Volume$clone()}}
 }
 }
@@ -201,6 +203,62 @@ the volume.
 \if{html}{\out{<div class="r">}}\preformatted{Volume$delete()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-list_files"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-list_files}{}}}
+\subsection{Method \code{list_files()}}{
+List volume contents
+This call lists the contents of a specific volume.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$list_files(
+  parent = NULL,
+  limit = getOption("sevenbridges2")$limit,
+  fields = "_all",
+  link = NULL,
+  continuation_token = NULL
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{parent}}{This is prefix parameter in volume context. If specified,
+the content of the parent directory on the current volume is listed.}
+
+\item{\code{limit}}{Defines the number of items you want to get from your API
+request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+
+\item{\code{fields}}{Selector specifying a subset of fields to include in the
+response. Can be one of: \code{href}, \code{location}, \code{volume}, \code{type},
+\code{metadata}, \verb{_all}. Default: \verb{_all}.}
+
+\item{\code{link}}{Link to use in the next chunk of results. Contains limit and
+continuation_token.}
+
+\item{\code{continuation_token}}{Continuation token received to use for next
+chunk of results. Behaves similarly like offset parameter.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-get_file"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-get_file}{}}}
+\subsection{Method \code{get_file()}}{
+Get volume file information
+This function returns the specific Volume File.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$get_file(file_id)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{file_id}}{Volume's file id.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-clone"></a>}}

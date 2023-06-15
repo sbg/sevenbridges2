@@ -258,6 +258,8 @@ Volume <- R6::R6Class(
         base_url = self$auth$url,
         advance_access = TRUE
       )
+      res <- status_check(res)
+
       rlang::inform(glue::glue("The volume {self$name} has been ", glue::glue_col("{red deleted}."))) # nolint
       self$initialize(
         href = NULL,
@@ -272,6 +274,31 @@ Volume <- R6::R6Class(
         auth = NULL,
         response = attr(res, "response")
       )
+    },
+    #' @description List volume contents
+    #' This call lists the contents of a specific volume.
+    #' @param parent This is prefix parameter in volume context. If specified,
+    #' the content of the parent directory on the current volume is listed.
+    #' @param limit Defines the number of items you want to get from your API
+    #' request. By default, `limit` is set to `50`. Maximum is `100`.
+    #' @param fields Selector specifying a subset of fields to include in the
+    #' response. Can be one of: `href`, `location`, `volume`, `type`,
+    #' `metadata`, `_all`. Default: `_all`.
+    #' @param link Link to use in the next chunk of results. Contains limit and
+    #' continuation_token.
+    #' @param continuation_token Continuation token received to use for next
+    #' chunk of results. Behaves similarly like offset parameter.
+    list_files = function(parent = NULL, # add return
+                          limit = getOption("sevenbridges2")$"limit",
+                          fields = "_all",
+                          link = NULL,
+                          continuation_token = NULL) {
+
+    },
+    #' @description Get volume file information
+    #' This function returns the specific Volume File.
+    #' @param file_id Volume's file id.
+    get_file = function(file_id) { # add return
     }
   )
 )
