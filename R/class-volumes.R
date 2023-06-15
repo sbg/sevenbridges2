@@ -38,8 +38,7 @@ Volumes <- R6::R6Class(
         advance_access = TRUE,
         ...
       ) # nocov end
-      return(res)
-      # return(asVolumeList(res, auth = self$auth))
+      return(asVolumeList(res, auth = self$auth))
     },
 
     # Get single volume -------------------------------------------------------
@@ -64,8 +63,7 @@ Volumes <- R6::R6Class(
         id = id,
         advance_access = TRUE
       ) # nocov end
-      return(res)
-      # return(asVolume(res, auth = self$auth))
+      return(asVolume(res, auth = self$auth))
     },
     # Delete volume -------------------------------------------------------
     #' @description Please, use delete() operation on the exact Volume object.
