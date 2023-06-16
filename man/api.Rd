@@ -17,6 +17,7 @@ api(
   authorization = FALSE,
   fields = "_all",
   base_url = NULL,
+  url = NULL,
   ...
 )
 }
@@ -68,6 +69,9 @@ More details please check
 api-information}}
 
 \item{base_url}{platform URL, default is NULL.}
+
+\item{url}{Full url of the resource. If \code{url} is provided, other parameters
+like base_url, path, query, limit, offset and fields will be ignored.}
 
 \item{...}{Other arguments passed to GET/POST/PUT/DELETE/PATCH call.}
 }

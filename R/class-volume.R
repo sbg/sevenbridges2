@@ -15,7 +15,7 @@ Volume <- R6::R6Class(
     #' @field URL URL endpoint fields
     URL = list(
       "list" = "storage/volumes/{id}/list",
-      "volume_file_details" = "storage/volumes/{id}/{object_id}",
+      "volume_file_details" = "storage/volumes/{id}",
       "update" = "storage/volumes/{id}",
       "deactivate" = "storage/volumes/{id}",
       "delete" = "storage/volumes/{id}",
@@ -282,10 +282,11 @@ Volume <- R6::R6Class(
     #' @param limit Defines the number of items you want to get from your API
     #' request. By default, `limit` is set to `50`. Maximum is `100`.
     #' @param fields Selector specifying a subset of fields to include in the
-    #' response. Can be one of: `href`, `location`, `volume`, `type`,
+    #' response. You can use: `href`, `location`, `volume`, `type`,
     #' `metadata`, `_all`. Default: `_all`.
     #' @param link Link to use in the next chunk of results. Contains limit and
-    #' continuation_token.
+    #' continuation_token. If provided it will overwrite other arguments'
+    #' values passed.
     #' @param continuation_token Continuation token received to use for next
     #' chunk of results. Behaves similarly like offset parameter.
     list_files = function(parent = NULL, # add return
@@ -293,12 +294,84 @@ Volume <- R6::R6Class(
                           fields = "_all",
                           link = NULL,
                           continuation_token = NULL) {
+      checkmate::assert_character(parent,
+        len = 1, null.ok = TRUE,
+        typed.missing = FALSE
+      )
+      checkmate::assert_character(fields, null.ok = TRUE, typed.missing = FALSE)
+      if (!all(fields %in% c(
+        "href", "location", "volume", "type",
+        "metadata", "_all", NULL
+      ))) {
+        rlang::abort("Fields parameter can contain subset of values: 'href', 'location', 'volume', 'type', 'metadata', '_all'") # nolint
+      }
+      checkmate::assert_character(link,
+        len = 1, null.ok = TRUE,
+        typed.missing = FALSE
+      )
+      checkmate::assert_character(continuation_token,
+        len = 1, null.ok = TRUE,
+        typed.missing = FALSE
+      )
 
+      path <- glue::glue(self$URL[["list"]])
+
+      res <- sevenbridges2::api(
+        url = link,
+        path = path,
+        query = list(prefix = parent, continuation_token = continuation_token),
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE,
+        limit = limit,
+        fields = fields
+      )
+      res <- status_check(res)
+      return(res)
     },
     #' @description Get volume file information
     #' This function returns the specific Volume File.
-    #' @param file_id Volume's file id.
-    get_file = function(file_id) { # add return
+    #' @param file_location Volume file id, which is represented as file
+    #' location.
+    #' @param link Link to the file resource received from listing volume's
+    #' contents. Cannot be used together with file_location.
+    #' @importFrom checkmate assert_character
+    #' @importFrom rlang abort
+    #' @importFrom glue glue
+    get_file = function(file_location = NULL, link = NULL) { # add return
+      checkmate::assert_character(file_location,
+        len = 1, null.ok = TRUE,
+        typed.missing = FALSE
+      )
+      checkmate::assert_character(link,
+        len = 1, null.ok = TRUE,
+        typed.missing = FALSE
+      )
+      if (!is_missing(file_location) && !is_missing(link)) {
+        rlang::abort("Please, provide either file_location or link, not both.")
+      }
+      if (is_missing(file_location) && is_missing(link)) {
+        rlang::abort("Empty arguments are not allowed. Please, provide either file_location or link.") # nolint
+      }
+      if (!is_missing(link)) {
+        link <- glue::glue(link, "&fields=_all")
+      }
+
+      path <- glue::glue(self$URL[["volume_file_details"]], "/object")
+
+      res <- sevenbridges2::api(
+        url = link,
+        path = path,
+        query = list(location = file_location),
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE
+      )
+      res <- status_check(res)
+      return(res)
+      # return(asVolumeFile(res))
     }
   )
 )

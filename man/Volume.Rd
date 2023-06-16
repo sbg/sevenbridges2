@@ -230,11 +230,12 @@ the content of the parent directory on the current volume is listed.}
 request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
 
 \item{\code{fields}}{Selector specifying a subset of fields to include in the
-response. Can be one of: \code{href}, \code{location}, \code{volume}, \code{type},
+response. You can use: \code{href}, \code{location}, \code{volume}, \code{type},
 \code{metadata}, \verb{_all}. Default: \verb{_all}.}
 
 \item{\code{link}}{Link to use in the next chunk of results. Contains limit and
-continuation_token.}
+continuation_token. If provided it will overwrite other arguments'
+values passed.}
 
 \item{\code{continuation_token}}{Continuation token received to use for next
 chunk of results. Behaves similarly like offset parameter.}
@@ -249,13 +250,17 @@ chunk of results. Behaves similarly like offset parameter.}
 Get volume file information
 This function returns the specific Volume File.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Volume$get_file(file_id)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Volume$get_file(file_location = NULL, link = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{file_id}}{Volume's file id.}
+\item{\code{file_location}}{Volume file id, which is represented as file
+location.}
+
+\item{\code{link}}{Link to the file resource received from listing volume's
+contents. Cannot be used together with file_location.}
 }
 \if{html}{\out{</div>}}
 }

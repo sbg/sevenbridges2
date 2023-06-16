@@ -40,6 +40,8 @@
 #' api-information}
 #'
 #' @param base_url platform URL, default is NULL.
+#' @param url Full url of the resource. If `url` is provided, other parameters
+#' like base_url, path, query, limit, offset and fields will be ignored.
 #' @param ... Other arguments passed to GET/POST/PUT/DELETE/PATCH call.
 #'
 #' @return returned request list of httr
@@ -70,17 +72,37 @@ api <- function(token = NULL, path = NULL,
                 authorization = FALSE,
                 fields = "_all",
                 base_url = NULL,
+                url = NULL,
                 ...) {
   if (is_missing(token)) rlang::abort("token must be provided")
-  if (is_missing(base_url)) {
-    rlang::abort("API address from the preferred platform must be provided")
+  if (is_missing(base_url) && is_missing(url)) {
+    rlang::abort("API address from the preferred platform must be provided or full url to the resource.") # nolint
   }
-  check_limit(limit)
-  check_offset(offset)
 
-  url <- paste0(base_url, path)
   method <- match.arg(method)
   encode <- match.arg(encode)
+
+  if (is_missing(url)) {
+    url <- paste0(base_url, path)
+    check_limit(limit)
+    check_offset(offset)
+
+    # setup query
+    query <- setup_query(
+      query = query,
+      limit = limit,
+      offset = offset,
+      fields = fields
+    )
+  } else {
+    parsed_url <- httr::parse_url(url)
+    url <- paste0(
+      parsed_url$scheme, "://",
+      parsed_url$hostname, "/",
+      parsed_url$path
+    )
+    query <- parsed_url$query
+  }
 
   # set headers
   headers <- set_headers(
@@ -88,15 +110,6 @@ api <- function(token = NULL, path = NULL,
     token = token,
     advance_access = advance_access
   )
-
-  # setup query
-  query <- setup_query(
-    query = query,
-    limit = limit,
-    offset = offset,
-    fields = fields
-  )
-
 
   # setup body
   body <- setup_body(method = method, body = body)
