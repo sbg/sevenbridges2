@@ -1156,7 +1156,7 @@ You can also use one or more search terms via the `query_terms` parameter to
 query all apps that are available to you. Search terms should relate to the
 following app details:
 
-  * name
+* name
 * label
 * toolkit
 * toolkit version
@@ -1301,7 +1301,7 @@ new_app_yaml <- a$apps$create(
 )
 ```
 
-### Create app in project
+### Create app in a project
 
 The app can also be directly created on a Project object by invoking
 `create_app()`. Except it has the predefined `project` parameter, the
@@ -1309,10 +1309,11 @@ The app can also be directly created on a Project object by invoking
 
 ```{r}
 # Create app from raw CWL (JSON) in specified project
-p$create_app(  
+p$create_app(
   raw = file_json,
   name = "new_app_json",
-  raw_format = "JSON")
+  raw_format = "JSON"
+)
 ```
 ## App object
 
@@ -1327,7 +1328,7 @@ The following actions are available for an App object:
 * sync
 
 
-## Print app
+### Print app
 
 The `print` method prints the content of the App object to the console.
 
@@ -1347,7 +1348,7 @@ new_app_json$print()
 • href: https://api.sbgenomics.com/v2/apps/user_123/test-project/new_app_json/0
 ```
 
-## Get app's revision
+### Get app's revision
 
 To obtain a particular revision of an app, use the `get_revision()` method. If
 you need a specific revision of an app, use the `revision` parameter.
@@ -1384,7 +1385,7 @@ my_app$get_revision(revision = 1, in_place = TRUE)
 ```
 
 
-## Create app's revision
+### Create app's revision
 
 The `create_revision()` method allows you to create a new revision for an
 existing app.
@@ -1418,7 +1419,7 @@ my_app$create_revision(from_path = "/path/to/your/raw_cwl_in_json_format.cwl", i
 ```
 
 
-## Copy an app
+### Copy an app
 
 An app can be copied to a specified destination project directly from an
 app's object, by calling its `copy()`method.
@@ -1448,7 +1449,7 @@ copied_app <- my_app$copy(
 ```
 
 
-## Sync a copied app
+### Sync a copied app
 
 To synchronize a copied app with the source app from which it has been copied,
 you can use the `sync()` method.
@@ -1458,7 +1459,7 @@ you can use the `sync()` method.
 copied_app$sync()
 ```
 
-#### Volumes
+# Volumes
 
 ## List volumes
 
@@ -1612,4 +1613,128 @@ ali_volume <- a$volumes$create_ali_oss(
 ali_volume_from_path <- a$volumes$create_ali_oss(
   from_path = "path/to/my/json/file.json"
 )
+```
+
+## Volume operations
+
+When you've created a new volume, you can notice it is represented as an object
+of class Volume. To preview all volume information, use print method:
+```{r}
+print(aws_iam_user_volume)
+```
+
+Within this volume you have following operations available to 
+execute:
+
+* `update`: update volume information
+* `list_files` : list volume content
+* `get_file`: get single volume file info
+* `deactivate` : deactivate volume
+* `reactivate` : reactivate previously deactivated volume
+* `delete` : delete previously deactivated volume
+
+### Update volume
+
+You can update volume's description, access_mode and service information. 
+Please, consult our [API documentation]
+('https://docs.sevenbridges.com/reference/update-a-volume-v2') 
+on how to use service parameter. 
+```{r}
+# If the volume is created with RO access mode and RO credential parameters,
+# and now we want to change it to RW, we should also set proper credential
+# parameters that are connected to RW user on the bucket.
+# If it's created with RW credentials, but access mode is set to RO, then no
+# change is needed in the credentials parameters.
+aws_iam_user_volume$update(
+  description = "Updated to RW",
+  access_mode = "RW",
+  service = list(
+    credentials = list(
+      access_key_id = "<access_key_id_for_rw>",
+      secret_access_key = "<secret_access_key_for_rw>",
+    )
+  )
+)
+```
+
+### List volume's content
+
+This operation lists all volume files in the root directory of the bucket, 
+unless `parent` parameter is specified. In that case, it lists the content of 
+that directory on the bucket. 
+You can also specify the `limit` parameter to control the number of results 
+returned. 
+The output is a `VolumeFiles` collection (work in progress), that contains the 
+information about the `continuation token` that can be used to fetch next chunk 
+of results. 
+Alternatively, you can use the `link` parameter for this too. 
+If you use `link` parameter, it will overwrite all other parameters if set 
+together with it, since it already contains the `limit` and `continuation_token` 
+info.
+```{r}
+# List all files in root bucket directory
+aws_iam_user_volume$list_files(limit = 20)
+
+# List all files specific directory on the bucket
+aws_iam_user_volume$list_files(parent = "dir_name")
+
+# Get next group of results by setting the continuation token
+aws_iam_user_volume$list_files(
+  limit = 20,
+  continuation_token = "continuation_token"
+)
+
+# Get next group of results by setting the link parameter
+aws_iam_user_volume$list_files(link = "link_to_next_results")
+```
+
+### Get Volume file info
+
+This operation returns a single volume file information. The input parameter 
+can be file's id which is represented as location on the bucket 
+(`file_location)`, or a link to that file resource. The link is a `href` field 
+of desired file received from response when returning list of volume files 
+with `list_files()`.
+Empty arguments are not allowed along with setting both parameters together.
+```{r}
+# Get single volume file info - by setting file_location
+aws_iam_user_volume$get_file(file_location = "file_location_on_bucket")
+
+# Get single volume file info - by setting link
+aws_iam_user_volume$get_file(link = "full/request/link/to/file")
+```
+
+### Deactivate and reactivate the volume
+
+Once deactivated, you cannot import from, export to, or browse within a volume. 
+As such, the content of the files imported from this volume will no longer be 
+accessible on the Platform. However, you can update the volume and manage 
+members. 
+Note that you cannot deactivate the volume if you have running imports or 
+exports unless you force the operation using the query parameter force=true.
+
+Note that to delete a volume, first you must deactivate it and delete all files 
+which have been imported from the volume to the Platform.
+
+To reactivate the volume, just use the reactivate() function.
+
+```{r}
+# Deactivate volume
+aws_iam_user_volume$deactivate()
+
+# Reactivate volume
+aws_iam_user_volume$reactivate()
+```
+
+### Delete volume
+
+To be able to delete a volume, you first need to deactivate it and then delete 
+all files on the Platform that were previously imported from the volume.
+
+```{r}
+# Deactivate volume
+aws_iam_user_volume$deactivate()
+
+# Delete volume
+aws_iam_user_volume$delete()
 ```

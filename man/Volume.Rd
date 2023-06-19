@@ -156,8 +156,15 @@ the volume to the cloud service where the data is stored.}
 \if{latex}{\out{\hypertarget{method-Volume-deactivate}{}}}
 \subsection{Method \code{deactivate()}}{
 Deactivate volume
-This function deactivates the volume by updating the 'active' field of
-the volume to FALSE.
+Once deactivated, you cannot import from, export to, or browse within a
+volume. As such, the content of the files imported from this volume will
+no longer be accessible on the Platform. However, you can update the
+volume and manage members.
+Note that you cannot deactivate the volume if you have running imports
+or exports unless you force the operation using the query parameter
+force=TRUE.
+Note that to delete a volume, first you must deactivate it and delete
+all files which have been imported from the volume to the Platform.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$deactivate(...)}\if{html}{\out{</div>}}
 }

@@ -184,8 +184,16 @@ Volume <- R6::R6Class(
       )
     }, # nocov end
     #' @description Deactivate volume
-    #' This function deactivates the volume by updating the 'active' field of
-    #' the volume to FALSE.
+    #' Once deactivated, you cannot import from, export to, or browse within a
+    #' volume. As such, the content of the files imported from this volume will
+    #' no longer be accessible on the Platform. However, you can update the
+    #' volume and manage members.
+    #' Note that you cannot deactivate the volume if you have running imports
+    #' or exports unless you force the operation using the query parameter
+    #' force=TRUE.
+    #' Note that to delete a volume, first you must deactivate it and delete
+    #' all files which have been imported from the volume to the Platform.
+    #'
     #' @param ... Other query parameters like 'force'.
     deactivate = function(...) {
       if (!self$active) {
