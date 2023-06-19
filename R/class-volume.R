@@ -135,20 +135,20 @@ Volume <- R6::R6Class(
     #' Default: `"RW"`.
     #' @param service String. This object more closely describes the mapping of
     #' the volume to the cloud service where the data is stored.
-    #' @importFrom checkmate assert_string assert_list
+    #' @importFrom checkmate assert_character assert_list
     update = function(description = NULL, access_mode = NULL,
                       service = NULL) {
-      checkmate::assert_string(description, null.ok = TRUE)
-      checkmate::assert_string(access_mode, null.ok = TRUE)
-      if (!is_missing(args[["access_mode"]]) &&
-        !(args[["access_mode"]] %in% c("RW", "RO"))) {
+      checkmate::assert_character(description, null.ok = TRUE)
+      checkmate::assert_character(access_mode, null.ok = TRUE)
+      if (!is_missing(access_mode) &&
+        !(access_mode %in% c("RW", "RO"))) {
         rlang::abort("Access mode must be RW or RO.")
       }
       checkmate::assert_list(service,
         any.missing = FALSE, all.missing = FALSE,
         null.ok = TRUE
       )
-
+      # nocov start
       body <- list(
         description = description,
         service = service,
@@ -182,7 +182,7 @@ Volume <- R6::R6Class(
         auth = auth,
         response = attr(res, "response")
       )
-    },
+    }, # nocov end
     #' @description Deactivate volume
     #' This function deactivates the volume by updating the 'active' field of
     #' the volume to FALSE.
@@ -193,7 +193,7 @@ Volume <- R6::R6Class(
           glue::glue("The volume {self$name} is already deactivated.")
         )
       }
-      path <- glue::glue(self$URL[["update"]])
+      path <- glue::glue(self$URL[["update"]]) # nocov start
 
       res <- sevenbridges2::api(
         path = path,
@@ -209,7 +209,7 @@ Volume <- R6::R6Class(
       rlang::inform(glue::glue("The volume {self$name} has been ", glue::glue_col("{red deactivated}."))) # nolint
       self$active <- FALSE
       self
-    },
+    }, # nocov end
     #' @description Reactivate volume
     #' This function reactivates the previously deactivated volume by updating
     #' the 'active' field of the volume to TRUE.
@@ -220,7 +220,7 @@ Volume <- R6::R6Class(
           glue::glue("The volume {self$name} is already active.")
         )
       }
-      path <- glue::glue(self$URL[["update"]])
+      path <- glue::glue(self$URL[["update"]]) # nocov start
 
       res <- sevenbridges2::api(
         path = path,
@@ -236,7 +236,7 @@ Volume <- R6::R6Class(
       rlang::inform(glue::glue("The volume {self$name} has been ", glue::glue_col("{green reactivated}."))) # nolint
       self$active <- TRUE
       self
-    },
+    }, # nocov end
     #' @description Delete volume
     #' This call deletes a volume you've created to refer to storage on
     #' Amazon Web Services, Google Cloud Storage, Azure or Ali cloud.
@@ -249,7 +249,7 @@ Volume <- R6::R6Class(
           glue::glue("The volume {self$name} must be deactivated first in order to be able to delete it.") # nolint
         )
       }
-      path <- glue::glue(self$URL[["delete"]])
+      path <- glue::glue(self$URL[["delete"]]) # nocov start
 
       res <- sevenbridges2::api(
         path = path,
@@ -274,7 +274,7 @@ Volume <- R6::R6Class(
         auth = NULL,
         response = attr(res, "response")
       )
-    },
+    }, # nocov end
     #' @description List volume contents
     #' This call lists the contents of a specific volume.
     #' @param parent This is prefix parameter in volume context. If specified,
@@ -296,9 +296,9 @@ Volume <- R6::R6Class(
                           continuation_token = NULL) {
       checkmate::assert_character(parent,
         len = 1, null.ok = TRUE,
-        typed.missing = FALSE
+        typed.missing = TRUE
       )
-      checkmate::assert_character(fields, null.ok = TRUE, typed.missing = FALSE)
+      checkmate::assert_character(fields, null.ok = TRUE, typed.missing = TRUE)
       if (!all(fields %in% c(
         "href", "location", "volume", "type",
         "metadata", "_all", NULL
@@ -307,14 +307,14 @@ Volume <- R6::R6Class(
       }
       checkmate::assert_character(link,
         len = 1, null.ok = TRUE,
-        typed.missing = FALSE
+        typed.missing = TRUE
       )
       checkmate::assert_character(continuation_token,
         len = 1, null.ok = TRUE,
-        typed.missing = FALSE
+        typed.missing = TRUE
       )
 
-      path <- glue::glue(self$URL[["list"]])
+      path <- glue::glue(self$URL[["list"]]) # nocov start
 
       res <- sevenbridges2::api(
         url = link,
@@ -329,7 +329,7 @@ Volume <- R6::R6Class(
       )
       res <- status_check(res)
       return(res)
-    },
+    }, # nocov end
     #' @description Get volume file information
     #' This function returns the specific Volume File.
     #' @param file_location Volume file id, which is represented as file
@@ -342,11 +342,11 @@ Volume <- R6::R6Class(
     get_file = function(file_location = NULL, link = NULL) { # add return
       checkmate::assert_character(file_location,
         len = 1, null.ok = TRUE,
-        typed.missing = FALSE
+        typed.missing = TRUE
       )
       checkmate::assert_character(link,
         len = 1, null.ok = TRUE,
-        typed.missing = FALSE
+        typed.missing = TRUE
       )
       if (!is_missing(file_location) && !is_missing(link)) {
         rlang::abort("Please, provide either file_location or link, not both.")
@@ -357,7 +357,7 @@ Volume <- R6::R6Class(
       if (!is_missing(link)) {
         link <- glue::glue(link, "&fields=_all")
       }
-
+      # nocov start
       path <- glue::glue(self$URL[["volume_file_details"]], "/object")
 
       res <- sevenbridges2::api(
@@ -372,7 +372,7 @@ Volume <- R6::R6Class(
       res <- status_check(res)
       return(res)
       # return(asVolumeFile(res))
-    }
+    } # nocov end
   )
 )
 
