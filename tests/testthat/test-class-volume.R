@@ -136,16 +136,16 @@ test_that("Volume list_file method throws error when expected", {
 })
 
 test_that("Volume get_file method throws error when expected", {
-  # Pass non-string file_location
+  # Pass non-string location
   testthat::expect_error(
-    setup_s3_volume_obj$get_file(file_location = 1234),
-    regexp = "Assertion on 'file_location' failed: Must be of type 'character' (or 'NULL'), not 'double'.", # nolint
+    setup_s3_volume_obj$get_file(location = 1234),
+    regexp = "Assertion on 'location' failed: Must be of type 'character' (or 'NULL'), not 'double'.", # nolint
     fixed = TRUE
   )
-  # Pass invalid file_location
+  # Pass invalid location
   testthat::expect_error(
-    setup_s3_volume_obj$get_file(file_location = NA),
-    regexp = "Assertion on 'file_location' failed: Must be of type 'character' (or 'NULL'), not 'logical'.", # nolint
+    setup_s3_volume_obj$get_file(location = NA),
+    regexp = "Assertion on 'location' failed: Must be of type 'character' (or 'NULL'), not 'logical'.", # nolint
     fixed = TRUE
   )
   # Pass non-string link
@@ -163,16 +163,16 @@ test_that("Volume get_file method throws error when expected", {
   # Check empty args
   testthat::expect_error(
     setup_s3_volume_obj$get_file(),
-    regexp = "Empty arguments are not allowed. Please, provide either file_location or link.", # nolint
+    regexp = "Empty arguments are not allowed. Please, provide either location or link.", # nolint
     fixed = TRUE
   )
   # Check if both args are provided
   testthat::expect_error(
     setup_s3_volume_obj$get_file(
-      file_location = "file-location",
+      location = "file-location",
       link = "link"
     ),
-    regexp = "Please, provide either file_location or link, not both.",
+    regexp = "Please, provide either location or link, not both.",
     fixed = TRUE
   )
 })

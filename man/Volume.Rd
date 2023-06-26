@@ -257,17 +257,17 @@ chunk of results. Behaves similarly like offset parameter.}
 Get volume file information
 This function returns the specific Volume File.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Volume$get_file(file_location = NULL, link = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Volume$get_file(location = NULL, link = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{file_location}}{Volume file id, which is represented as file
+\item{\code{location}}{Volume file id, which is represented as file
 location.}
 
 \item{\code{link}}{Link to the file resource received from listing volume's
-contents. Cannot be used together with file_location.}
+contents. Cannot be used together with location.}
 }
 \if{html}{\out{</div>}}
 }

@@ -340,15 +340,15 @@ Volume <- R6::R6Class(
     }, # nocov end
     #' @description Get volume file information
     #' This function returns the specific Volume File.
-    #' @param file_location Volume file id, which is represented as file
+    #' @param location Volume file id, which is represented as file
     #' location.
     #' @param link Link to the file resource received from listing volume's
-    #' contents. Cannot be used together with file_location.
+    #' contents. Cannot be used together with location.
     #' @importFrom checkmate assert_character
     #' @importFrom rlang abort
     #' @importFrom glue glue
-    get_file = function(file_location = NULL, link = NULL) { # add return
-      checkmate::assert_character(file_location,
+    get_file = function(location = NULL, link = NULL) { # add return
+      checkmate::assert_character(location,
         len = 1, null.ok = TRUE,
         typed.missing = TRUE
       )
@@ -356,11 +356,11 @@ Volume <- R6::R6Class(
         len = 1, null.ok = TRUE,
         typed.missing = TRUE
       )
-      if (!is_missing(file_location) && !is_missing(link)) {
-        rlang::abort("Please, provide either file_location or link, not both.")
+      if (!is_missing(location) && !is_missing(link)) {
+        rlang::abort("Please, provide either location or link, not both.")
       }
-      if (is_missing(file_location) && is_missing(link)) {
-        rlang::abort("Empty arguments are not allowed. Please, provide either file_location or link.") # nolint
+      if (is_missing(location) && is_missing(link)) {
+        rlang::abort("Empty arguments are not allowed. Please, provide either location or link.") # nolint
       }
       if (!is_missing(link)) {
         link <- glue::glue(link, "&fields=_all")
@@ -371,7 +371,7 @@ Volume <- R6::R6Class(
       res <- sevenbridges2::api(
         url = link,
         path = path,
-        query = list(location = file_location),
+        query = list(location = location),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
