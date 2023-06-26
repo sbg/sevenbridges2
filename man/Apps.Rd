@@ -61,8 +61,8 @@ This call lists all the apps available to you.
   visibility = c("private", "public"),
   query_terms = NULL,
   id = NULL,
-  limit = 50,
-  offset = 0
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset
 )}\if{html}{\out{</div>}}
 }
 
