@@ -274,7 +274,7 @@ testthat::test_that("Method files is working", {
   # nolint start
   testthat::expect_error(
     auth$files(project = "project-id", parent = "parent-id", name = "new_name"),
-    "Project and parent parameters are mutually exclusive. You should specify either a project or a parent directory, not both."
+    "Project and parent parameters are mutually exclusive. You must provide one of the two, not both."
   )
   # nolint end
 
