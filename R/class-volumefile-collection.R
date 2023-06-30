@@ -12,13 +12,19 @@ VolumeFileCollection <- R6::R6Class(
   inherit = Collection,
   portable = FALSE,
   public = list(
+    #' @field items Items representing volume files.
+    items = NULL,
     #' @field prefixes Prefixes (folders) in volume content response.
     prefixes = NULL,
+    #' @description Create new VolumeFileCollection object.
+    #' @param items Items representing volume files.
     #' @param prefixes Prefixes (folders) in volume content response.
-    initialize = function(prefixes = NA) {
+    #' @param ... Other arguments.
+    initialize = function(items = NA, prefixes = NA, ...) {
       # Initialize Collection class
       super$initialize(...)
 
+      self$items <- items
       self$prefixes <- prefixes
     },
     #' @description Return results as a list of VolumeFile objects.
@@ -29,10 +35,10 @@ VolumeFileCollection <- R6::R6Class(
     #' @param ... Other query or API parameters that can be passed to api()
     #' function like advance_access, fields etc.
     #' @importFrom rlang abort
-    `next` = function(...) {
-      checkmate::assert_list(links, null.ok = TRUE)
-      if (length(links) > 0) {
-        next_page_link <- links[[1]]
+    next_page = function(...) {
+      checkmate::assert_list(self$links, null.ok = TRUE)
+      if (length(self$links) > 0) {
+        next_page_link <- self$links[[1]]$`next`
       } else {
         rlang::abort("There are no links for the next page of results to be returned.") # nolint
       }
@@ -41,11 +47,23 @@ VolumeFileCollection <- R6::R6Class(
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
+        advance_access = TRUE,
         ...
       )
       res <- status_check(res)
 
-      return(VolumeFileCollection(res))
+      # Reload object to get new results
+      self$initialize(
+        href = res$href,
+        items = res$items,
+        continuation_token = res$continuation_token,
+        links = res$links,
+        limit = res$limit,
+        prefixes = res$prefixes,
+        auth = auth,
+        response = attr(res, "response")
+      )
+      return(self)
     }
   )
 )
@@ -54,8 +72,14 @@ VolumeFileCollection <- R6::R6Class(
 # Helper function for creating VolumeFileCollection objects
 asVolumeFileCollection <- function(x, auth = NULL) {
   VolumeFileCollection$new(
+    href = x$href,
+    items = x$items,
+    continuation_token = x$continuation_token,
+    links = x$links,
+    limit = x$limit,
     prefixes = x$prefixes,
-    auth = auth
+    auth = auth,
+    response = attr(x, "response")
   )
 }
 # nocov end

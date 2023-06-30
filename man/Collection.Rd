@@ -12,9 +12,11 @@ the total number of entries available in on the server and resource href.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{href}}{API request URL}
+\item{\code{href}}{API request URL.}
 
-\item{\code{items}}{Items in response.}
+\item{\code{auth}}{Seven Bridges Auth object.}
+
+\item{\code{response}}{Save raw API response.}
 
 \item{\code{continuation_token}}{Continuation token to be used for pagination.}
 
@@ -22,8 +24,6 @@ the total number of entries available in on the server and resource href.
 
 \item{\code{limit}}{Defines the number of items you want to get from your API
 request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
-
-\item{\code{auth}}{Authentication object}
 }
 \if{html}{\out{</div>}}
 }
@@ -31,8 +31,6 @@ request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-Collection-new}{\code{Collection$new()}}
-\item \href{#method-Collection-results}{\code{Collection$results()}}
-\item \href{#method-Collection-next}{\code{Collection$next()}}
 \item \href{#method-Collection-clone}{\code{Collection$clone()}}
 }
 }
@@ -40,23 +38,26 @@ request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
 \if{html}{\out{<a id="method-Collection-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Collection-new}{}}}
 \subsection{Method \code{new()}}{
+Create a new Collection object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Collection$new(
   href = NA,
-  items = NA,
+  auth = NA,
+  response = NA,
   continuation_token = NA,
   links = NA,
-  limit = NA,
-  auth = NA
+  limit = NA
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{href}}{API request URL}
+\item{\code{href}}{API request URL.}
 
-\item{\code{items}}{List of items returned in API response.}
+\item{\code{auth}}{Seven Bridges Auth object.}
+
+\item{\code{response}}{Raw API response.}
 
 \item{\code{continuation_token}}{Continuation token to be used for pagination.}
 
@@ -64,36 +65,6 @@ request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
 
 \item{\code{limit}}{Defines the number of items you want to get from your API
 request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
-
-\item{\code{auth}}{Seven Bridges Auth object.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Collection-results"></a>}}
-\if{latex}{\out{\hypertarget{method-Collection-results}{}}}
-\subsection{Method \code{results()}}{
-Return results.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Collection$results()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Collection-next"></a>}}
-\if{latex}{\out{\hypertarget{method-Collection-next}{}}}
-\subsection{Method \code{next()}}{
-Return next page/bulk of results.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Collection$next(...)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{Other query or API parameters that can be passed to api()
-function like advance_access, fields etc.}
 }
 \if{html}{\out{</div>}}
 }

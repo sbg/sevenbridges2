@@ -12,6 +12,8 @@ R6 Class representing a resource for managing volume files collections.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
+\item{\code{items}}{Items representing volume files.}
+
 \item{\code{prefixes}}{Prefixes (folders) in volume content response.}
 }
 \if{html}{\out{</div>}}
@@ -21,7 +23,7 @@ R6 Class representing a resource for managing volume files collections.
 \itemize{
 \item \href{#method-VolumeFileCollection-new}{\code{VolumeFileCollection$new()}}
 \item \href{#method-VolumeFileCollection-results}{\code{VolumeFileCollection$results()}}
-\item \href{#method-VolumeFileCollection-next}{\code{VolumeFileCollection$next()}}
+\item \href{#method-VolumeFileCollection-next_page}{\code{VolumeFileCollection$next_page()}}
 \item \href{#method-VolumeFileCollection-clone}{\code{VolumeFileCollection$clone()}}
 }
 }
@@ -29,14 +31,19 @@ R6 Class representing a resource for managing volume files collections.
 \if{html}{\out{<a id="method-VolumeFileCollection-new"></a>}}
 \if{latex}{\out{\hypertarget{method-VolumeFileCollection-new}{}}}
 \subsection{Method \code{new()}}{
+Create new VolumeFileCollection object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{VolumeFileCollection$new(prefixes = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{VolumeFileCollection$new(items = NA, prefixes = NA, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{items}}{Items representing volume files.}
+
 \item{\code{prefixes}}{Prefixes (folders) in volume content response.}
+
+\item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -52,12 +59,12 @@ Return results as a list of VolumeFile objects.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-VolumeFileCollection-next"></a>}}
-\if{latex}{\out{\hypertarget{method-VolumeFileCollection-next}{}}}
-\subsection{Method \code{next()}}{
+\if{html}{\out{<a id="method-VolumeFileCollection-next_page"></a>}}
+\if{latex}{\out{\hypertarget{method-VolumeFileCollection-next_page}{}}}
+\subsection{Method \code{next_page()}}{
 Return next page of results.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{VolumeFileCollection$next(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{VolumeFileCollection$next_page(...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
