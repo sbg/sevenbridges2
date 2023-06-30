@@ -88,6 +88,7 @@ Obucina
 OSS
 outputBinding
 ovewrite
+pageable
 param
 pre
 purrr
@@ -107,6 +108,7 @@ sbgstaff
 serviceaccount
 setenv
 sevenbridges
+SevenBridges
 sse
 starttransfer
 str
@@ -122,6 +124,8 @@ urlencoded
 vayu
 VCFtools
 VignetteBuilder
+VolumeFile
+VolumeFileCollection
 withr
 www
 yaml
