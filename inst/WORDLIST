@@ -48,6 +48,7 @@ fromJSON
 FS
 GC
 GCS
+gcs
 getenv
 GitLab
 gitlab

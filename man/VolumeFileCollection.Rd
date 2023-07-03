@@ -9,21 +9,12 @@ R6 Class representing a resource for managing volume files collections.
 \section{Super class}{
 \code{\link[sevenbridges2:Collection]{sevenbridges2::Collection}} -> \code{VolumeFileCollection}
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{items}}{Items representing volume files.}
-
-\item{\code{prefixes}}{Prefixes (folders) in volume content response.}
-}
-\if{html}{\out{</div>}}
-}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-VolumeFileCollection-new}{\code{VolumeFileCollection$new()}}
-\item \href{#method-VolumeFileCollection-results}{\code{VolumeFileCollection$results()}}
 \item \href{#method-VolumeFileCollection-next_page}{\code{VolumeFileCollection$next_page()}}
+\item \href{#method-VolumeFileCollection-prev_page}{\code{VolumeFileCollection$prev_page()}}
 \item \href{#method-VolumeFileCollection-clone}{\code{VolumeFileCollection$clone()}}
 }
 }
@@ -49,16 +40,6 @@ Create new VolumeFileCollection object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-VolumeFileCollection-results"></a>}}
-\if{latex}{\out{\hypertarget{method-VolumeFileCollection-results}{}}}
-\subsection{Method \code{results()}}{
-Return results as a list of VolumeFile objects.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{VolumeFileCollection$results()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VolumeFileCollection-next_page"></a>}}
 \if{latex}{\out{\hypertarget{method-VolumeFileCollection-next_page}{}}}
 \subsection{Method \code{next_page()}}{
@@ -75,6 +56,16 @@ function like advance_access, fields etc.}
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-VolumeFileCollection-prev_page"></a>}}
+\if{latex}{\out{\hypertarget{method-VolumeFileCollection-prev_page}{}}}
+\subsection{Method \code{prev_page()}}{
+Return previous page of results.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{VolumeFileCollection$prev_page()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VolumeFileCollection-clone"></a>}}

@@ -14,16 +14,13 @@ the total number of entries available in on the server and resource href.
 \describe{
 \item{\code{href}}{API request URL.}
 
-\item{\code{auth}}{Seven Bridges Auth object.}
-
-\item{\code{response}}{Save raw API response.}
-
-\item{\code{continuation_token}}{Continuation token to be used for pagination.}
+\item{\code{items}}{Items returned in API response.}
 
 \item{\code{links}}{List of links (hrefs) for next page resources.}
 
-\item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+\item{\code{response}}{Save raw API response.}
+
+\item{\code{auth}}{Seven Bridges Auth object.}
 }
 \if{html}{\out{</div>}}
 }
@@ -31,6 +28,8 @@ request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-Collection-new}{\code{Collection$new()}}
+\item \href{#method-Collection-next_page}{\code{Collection$next_page()}}
+\item \href{#method-Collection-prev_page}{\code{Collection$prev_page()}}
 \item \href{#method-Collection-clone}{\code{Collection$clone()}}
 }
 }
@@ -40,14 +39,7 @@ request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
 \subsection{Method \code{new()}}{
 Create a new Collection object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Collection$new(
-  href = NA,
-  auth = NA,
-  response = NA,
-  continuation_token = NA,
-  links = NA,
-  limit = NA
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Collection$new(href = NA, items = NA, links = NA, response = NA, auth = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -55,16 +47,49 @@ Create a new Collection object.
 \describe{
 \item{\code{href}}{API request URL.}
 
-\item{\code{auth}}{Seven Bridges Auth object.}
-
-\item{\code{response}}{Raw API response.}
-
-\item{\code{continuation_token}}{Continuation token to be used for pagination.}
+\item{\code{items}}{Items returned in API response.}
 
 \item{\code{links}}{List of links (hrefs) for next page resources.}
 
-\item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+\item{\code{response}}{Raw API response.}
+
+\item{\code{auth}}{Seven Bridges Auth object.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Collection-next_page"></a>}}
+\if{latex}{\out{\hypertarget{method-Collection-next_page}{}}}
+\subsection{Method \code{next_page()}}{
+Return next page of results.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Collection$next_page(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other query or API parameters that can be passed to api()
+function like advance_access, fields etc.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Collection-prev_page"></a>}}
+\if{latex}{\out{\hypertarget{method-Collection-prev_page}{}}}
+\subsection{Method \code{prev_page()}}{
+Return previous page of results.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Collection$prev_page(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other query or API parameters that can be passed to api()
+function like advance_access, fields etc.}
 }
 \if{html}{\out{</div>}}
 }

@@ -7,14 +7,6 @@
 #' Among the actual collection items it contains information regarding
 #' the total number of entries available in on the server and resource href.
 #'
-#' @field href API request URL.
-#' @field auth Seven Bridges Auth object.
-#' @field response Save raw API response.
-#' @field continuation_token Continuation token to be used for pagination.
-#' @field links List of links (hrefs) for next page resources.
-#' @field limit Defines the number of items you want to get from your API
-#' request. By default, `limit` is set to `50`. Maximum is `100`.
-#'
 #' @importFrom R6 R6Class
 #' @export
 Collection <- R6::R6Class(
@@ -22,28 +14,89 @@ Collection <- R6::R6Class(
   "Collection",
   portable = FALSE,
   public = list(
+    #' @field href API request URL.
     href = NULL,
-    auth = NULL,
-    response = NULL,
-    continuation_token = NULL,
+    #' @field items Items returned in API response.
+    items = NULL,
+    #' @field links List of links (hrefs) for next page resources.
     links = NULL,
-    limit = NULL,
+    #' @field response Save raw API response.
+    response = NULL,
+    #' @field auth Seven Bridges Auth object.
+    auth = NULL,
+
     #' @description Create a new Collection object.
     #' @param href API request URL.
-    #' @param auth Seven Bridges Auth object.
-    #' @param response Raw API response.
-    #' @param continuation_token Continuation token to be used for pagination.
+    #' @param items Items returned in API response.
     #' @param links List of links (hrefs) for next page resources.
-    #' @param limit Defines the number of items you want to get from your API
-    #' request. By default, `limit` is set to `50`. Maximum is `100`.
-    initialize = function(href = NA, auth = NA, response = NA,
-                          continuation_token = NA, links = NA, limit = NA) {
+    #' @param response Raw API response.
+    #' @param auth Seven Bridges Auth object.
+    initialize = function(href = NA, items = NA, links = NA, response = NA,
+                          auth = NA) {
       self$href <- href
-      self$auth <- auth
-      self$response <- response
-      self$continuation_token <- continuation_token
+      self$items <- items
       self$links <- links
-      self$limit <- limit
+      self$response <- response
+      self$auth <- auth
+    },
+    #' @description Return next page of results.
+    #' @param ... Other query or API parameters that can be passed to api()
+    #' function like advance_access, fields etc.
+    #' @importFrom rlang abort
+    next_page = function(...) {
+      checkmate::assert_list(self$links, null.ok = TRUE)
+      if (length(self$links) == 0) {
+        rlang::abort("No more entries to be returned.")
+      }
+      for (link in self$links) {
+        if (tolower(link$rel) == "next") {
+          res <- sevenbridges2::api(
+            url = link$href,
+            method = link$method,
+            token = self$auth$get_token(),
+            base_url = self$auth$url,
+            ...
+          )
+          res <- status_check(res)
+          private$load(res, auth = self$auth)
+        }
+      }
+    },
+    #' @description Return previous page of results.
+    #' @param ... Other query or API parameters that can be passed to api()
+    #' function like advance_access, fields etc.
+    #' @importFrom rlang abort
+    prev_page = function(...) {
+      checkmate::assert_list(self$links, null.ok = TRUE)
+      if (length(self$links) == 0) {
+        rlang::abort("No more entries to be returned.") # nolint
+      }
+      for (link in self$links) {
+        if (tolower(link$rel) == "prev") {
+          res <- sevenbridges2::api(
+            url = link$href,
+            method = link$method,
+            token = self$auth$get_token(),
+            base_url = self$auth$url,
+            ...
+          )
+          res <- status_check(res)
+          private$load(res, auth = self$auth)
+        }
+      }
+    }
+  ),
+  private = list(
+    # Reload object to get new results
+    load = function(res, auth) {
+      self$initialize(
+        href = res$href,
+        items = res$items,
+        links = res$links,
+        auth = auth,
+        response = attr(res, "response")
+      )
+      return(self)
     }
   )
 )
@@ -53,9 +106,8 @@ Collection <- R6::R6Class(
 asCollection <- function(x, auth = NULL) {
   Collection$new(
     href = x$href,
-    continuation_token = x$continuation_token,
+    items = x$items,
     links = x$links,
-    limit = x$limit,
     auth = auth,
     response = attr(x, "response")
   )

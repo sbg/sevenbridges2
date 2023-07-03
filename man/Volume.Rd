@@ -249,6 +249,10 @@ chunk of results. Behaves similarly like offset parameter.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+VolumeFileCollection object containing list of VolumeFile
+objects.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-get_file"></a>}}
@@ -270,6 +274,9 @@ location.}
 contents. Cannot be used together with location.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+VolumeFile object.
 }
 }
 \if{html}{\out{<hr>}}
