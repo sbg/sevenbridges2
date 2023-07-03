@@ -45,7 +45,38 @@ VolumeFile <- R6::R6Class(
       self$volume <- volume
       self$metadata <- metadata
       self$auth <- auth
-    }
+    },
+    # nocov start
+    #' @description Print method for VolumeFile class.
+    #'
+    #' @importFrom purrr discard
+    #' @importFrom glue glue_col
+    #' @importFrom cli cli_h1 cli_li cli_end
+    print = function() {
+      x <- as.list(self)
+
+      # Extract all except 'raw'
+      x$raw <- NULL
+
+      x <- purrr::discard(x, .p = is.function)
+      x <- purrr::discard(x, .p = is.environment)
+      x <- purrr::discard(x, .p = is.null)
+
+      # Remove lists
+      x <- purrr::discard(x, .p = is.list)
+
+      # Remove copy_of field if it's empty (NA)
+      x <- purrr::discard(x, .p = is.na)
+
+      string <- glue::glue_col("{green {names(x)}}: {x}")
+
+      cli::cli_h1("VolumeFile")
+
+      cli::cli_li(string)
+
+      # Close container elements
+      cli::cli_end()
+    } # nocov end
   )
 )
 

@@ -30,6 +30,7 @@ R6 Class representing a resource for managing VolumeFile objects.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-VolumeFile-new}{\code{VolumeFile$new()}}
+\item \href{#method-VolumeFile-print}{\code{VolumeFile$print()}}
 \item \href{#method-VolumeFile-clone}{\code{VolumeFile$clone()}}
 }
 }
@@ -70,6 +71,16 @@ Create a new VolumeFile object.
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-VolumeFile-print"></a>}}
+\if{latex}{\out{\hypertarget{method-VolumeFile-print}{}}}
+\subsection{Method \code{print()}}{
+Print method for VolumeFile class.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{VolumeFile$print()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VolumeFile-clone"></a>}}

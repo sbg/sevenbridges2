@@ -28,6 +28,7 @@ the total number of entries available in on the server and resource href.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-Collection-new}{\code{Collection$new()}}
+\item \href{#method-Collection-print}{\code{Collection$print()}}
 \item \href{#method-Collection-next_page}{\code{Collection$next_page()}}
 \item \href{#method-Collection-prev_page}{\code{Collection$prev_page()}}
 \item \href{#method-Collection-clone}{\code{Collection$clone()}}
@@ -54,6 +55,23 @@ Create a new Collection object.
 \item{\code{response}}{Raw API response.}
 
 \item{\code{auth}}{Seven Bridges Auth object.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Collection-print"></a>}}
+\if{latex}{\out{\hypertarget{method-Collection-print}{}}}
+\subsection{Method \code{print()}}{
+Print method for Collection class.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Collection$print(n = 10)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{n}}{Number of items to print in console.}
 }
 \if{html}{\out{</div>}}
 }

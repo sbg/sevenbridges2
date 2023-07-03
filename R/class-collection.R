@@ -39,6 +39,21 @@ Collection <- R6::R6Class(
       self$response <- response
       self$auth <- auth
     },
+    # nocov start
+    #' @description Print method for Collection class.
+    #' @param n Number of items to print in console.
+    print = function(n = 10) {
+      x <- as.list(self)
+      for (i in seq_len(length(x$items))) {
+        if (i > n) {
+          cli::cli_text()
+          cli::cli_text(glue::glue_col("{blue Reached maximum of ", n, " item(s) to print.}")) # nolint
+          break
+        }
+        cli::cli_h2(i)
+        x$items[[i]]$print()
+      }
+    }, # nocov end
     #' @description Return next page of results.
     #' @param ... Other query or API parameters that can be passed to api()
     #' function like advance_access, fields etc.
