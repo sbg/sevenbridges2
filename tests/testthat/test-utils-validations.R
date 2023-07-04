@@ -422,3 +422,72 @@ test_that("transform_configuration_param throws error when needed", {
     transform_configuration_param(configuration = c("field1", "field2"))
   )
 })
+
+test_that("check_upload_params throws error when needed", {
+  too_big_size <- getOption("sevenbridges2")$MAXIMUM_OBJECT_SIZE + 1
+  too_big_part_size <- getOption("sevenbridges2")$MAXIMUM_PART_SIZE + 1
+  too_small_part_size <- getOption("sevenbridges2")$MINIMUM_PART_SIZE - 1
+
+  # Setup test parameters for test
+  test_no_size <- list(size = NULL, part_size = 1000)
+  test_bad_size <- list(size = "Bad_size", part_size = 1000)
+  test_negative_size <- list(size = -5, part_size = 1000)
+  test_too_big_size <- list(size = too_big_size, part_size = 1000)
+
+  test_no_part_size <- list(size = 1000, part_size = NULL)
+  test_bad_part_size <- list(size = 1000, part_size = "Bad_size")
+  test_negative_part_size <- list(size = 1000, part_size = -1000)
+  test_too_big_part_size <- list(size = 1000, part_size = too_big_part_size)
+  test_too_small_part_size <- list(size = 1000, part_size = too_small_part_size)
+
+  # Edge case for part length
+  part_size <- getOption("sevenbridges2")$MINIMUM_PART_SIZE + 1
+  size <- (part_size * getOption("sevenbridges2")$MAXIMUM_TOTAL_PARTS)
+  test_bad_part_length <- list(size = size, part_size = part_size)
+
+  # Fails when no size is provided
+  testthat::expect_error(do.call(check_upload_params, test_no_size))
+
+  # Fails when bad size is provided
+  testthat::expect_error(do.call(check_upload_params, test_bad_size))
+
+  # Fails when negative size is provided
+  testthat::expect_error(do.call(check_upload_params, test_negative_size))
+
+  # Fails when too big size is provided
+  testthat::expect_error(
+    do.call(check_upload_params, test_too_big_size),
+    regexp = "File size must be between 0 - 5497558138880 (5TB), inclusive",
+    fixed = TRUE
+  )
+
+  # Fails when no part size is provided
+  testthat::expect_error(do.call(check_upload_params, test_no_part_size))
+
+  # Fails when bad part size is provided
+  testthat::expect_error(do.call(check_upload_params, test_bad_part_size))
+
+  # Fails when negative part size is provided
+  testthat::expect_error(do.call(check_upload_params, test_negative_part_size))
+
+  # Fails when too big part size is provided
+  testthat::expect_error(
+    do.call(check_upload_params, test_too_big_part_size),
+    regexp = "Parameter part_size must be 5 MB to 5 GB, last part can be < 5 MB", # nolint
+    fixed = TRUE
+  )
+
+  # Fails when too small part size is provided
+  testthat::expect_error(
+    do.call(check_upload_params, test_too_small_part_size),
+    regexp = "Parameter part_size must be 5 MB to 5 GB, last part can be < 5 MB", # nolint
+    fixed = TRUE
+  )
+
+  # Fails when part length is too big
+  testthat::expect_error(
+    do.call(check_upload_params, test_bad_part_length),
+    regexp = "Total number of parts must be from 1 to 10,000 (inclusive). Please, modify part_size.", # nolint
+    fixed = TRUE
+  )
+})
