@@ -239,7 +239,7 @@ check_folder_name <- function(name) {
 }
 #' Check metadata
 #'
-#' @param metadata settings named list
+#' @param metadata metadata named list
 #' @importFrom checkmate test_list
 #' @importFrom rlang abort
 #' @noRd
@@ -259,6 +259,18 @@ check_metadata <- function(metadata) {
   }
 }
 
+#' Transform metadata input
+#' Transform metadata input to be in API acceptable form.
+#'
+#' @param metadata metadata named list
+#' @noRd
+transform_metadata <- function(metadata) {
+  metadata_names <- paste0("metadata.", names(metadata))
+  names(metadata) <- metadata_names
+  encoded_metadata <- lapply(metadata, function(x) URLencode(x))
+  new_metadata <- flatten_query(encoded_metadata)
+  return(new_metadata)
+}
 
 #' Check file download destination
 #'

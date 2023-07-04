@@ -700,52 +700,45 @@ Auth <- R6::R6Class(
                      metadata = NULL, origin = NULL, tag = NULL, ...) {
       # Check input parameters
       checkmate::assert_character(name, null.ok = TRUE)
-      checkmate::assert_list(metadata,
-        types = "string", names = TRUE,
-        null.ok = TRUE
-      )
+      if (!is_missing(metadata)) {
+        check_metadata(metadata)
+        metadata <- transform_metadata(metadata)
+      }
       checkmate::assert_r6(origin, classes = "Task", null.ok = TRUE)
       checkmate::assert_vector(tag, null.ok = TRUE)
 
-      # Run API call based on project/parent parameters
-      if (!is.null(project)) {
-        id <- check_and_transform_id(project, "Project")
-        res <- sevenbridges2::api(
-          path = "files",
-          method = "GET",
-          token = self$get_token(),
-          base_url = self$url,
-          query = list(
-            project = id,
-            name = name,
-            metadata = metadata,
-            origin = origin,
-            tag = tag
-          ),
-          ...
-        )
-      } else if (!is.null(parent)) {
-        id <- check_and_transform_id(parent, "File")
-        res <- sevenbridges2::api(
-          path = "files",
-          method = "GET",
-          token = self$get_token(),
-          base_url = self$url,
-          query = list(
-            parent = id,
-            name = name,
-            metadata = metadata,
-            origin = origin,
-            tag = tag
-          ),
-          ...
-        )
-      } else {
-        # nolint start
-        rlang::abort("No project or parent directory was defined. You must provide one of the two!")
-        # nolint end
+      # Check project and parent parameters
+      if (is_missing(parent) && is_missing(project)) {
+        rlang::abort("No project or parent directory was defined. You must provide one of the two!") # nolint
+      }
+      if (!is_missing(parent) && !is_missing(project)) {
+        rlang::abort("Project and parent parameters are mutually exclusive. You must provide one of the two, not both.") # nolint
       }
 
+      if (!is_missing(project)) {
+        project <- check_and_transform_id(project, "Project")
+      }
+      if (!is_missing(parent)) {
+        parent <- check_and_transform_id(parent, "File")
+      }
+
+      query <- append(list(
+        project = project,
+        parent = parent,
+        name = name,
+        origin = origin,
+        tag = tag
+      ), metadata)
+
+      # Run API call based on project/parent parameters
+      res <- sevenbridges2::api(
+        path = "files",
+        method = "GET",
+        token = self$get_token(),
+        base_url = self$url,
+        query = query,
+        ...
+      )
       res <- status_check(res)
 
       res <- asFileList(res, auth = self)

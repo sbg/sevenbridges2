@@ -270,6 +270,14 @@ testthat::test_that("Method files is working", {
   testthat::expect_error(auth$files(name = "new_name"), "No project or parent directory was defined. You must provide one of the two!")
   # nolint end
 
+  # Test both project and parent directory are defined
+  # nolint start
+  testthat::expect_error(
+    auth$files(project = "project-id", parent = "parent-id", name = "new_name"),
+    "Project and parent parameters are mutually exclusive. You must provide one of the two, not both."
+  )
+  # nolint end
+
   # Test name parameter
   testthat::expect_error(auth$files(project = project_obj, name = 1))
   testthat::expect_error(auth$files(project = project_obj, name = TRUE))
@@ -301,7 +309,7 @@ testthat::test_that("Method files is working", {
   testthat::expect_error(auth$files(project = project_obj, tag = NULL))
 })
 
-testthat::test_that("Method files is working", {
+testthat::test_that("Method get_file is working", {
   # Generate dummy token
   dummy_token <-
     stringi::stri_rand_strings(1, 32, pattern = "[a-z0-9]") # fake token
@@ -317,10 +325,10 @@ testthat::test_that("Method files is working", {
 
   # Test file_id parameter
   testthat::expect_error(auth$get_file(file_id = 1))
-  testthat::expect_error(auth$files(file_id = TRUE))
-  testthat::expect_error(auth$files(file_id = list("test")))
-  testthat::expect_error(auth$files(file_id = c("test")))
-  testthat::expect_error(auth$files(file_id = NULL))
+  testthat::expect_error(auth$get_file(file_id = TRUE))
+  testthat::expect_error(auth$get_file(file_id = list("test")))
+  testthat::expect_error(auth$get_file(file_id = c("test")))
+  testthat::expect_error(auth$get_file(file_id = NULL))
 })
 
 

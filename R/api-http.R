@@ -50,7 +50,7 @@
 #' <https://docs.sevenbridges.com/page/api>
 #'
 #' @importFrom  httr PUT DELETE PATCH status_code content handle_find
-#' add_headers
+#' add_headers parse_url
 #' @importFrom  curl curl_escape
 #' @importFrom rlang abort
 #'
