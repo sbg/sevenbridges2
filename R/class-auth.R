@@ -710,13 +710,15 @@ Auth <- R6::R6Class(
       # Check project and parent parameters
       if (is_missing(parent) && is_missing(project)) {
         rlang::abort("No project or parent directory was defined. You must provide one of the two!") # nolint
-      } else if (!is_missing(parent) && !is_missing(project)) {
+      }
+      if (!is_missing(parent) && !is_missing(project)) {
         rlang::abort("Project and parent parameters are mutually exclusive. You must provide one of the two, not both.") # nolint
       }
 
       if (!is_missing(project)) {
         project <- check_and_transform_id(project, "Project")
-      } else if (!is_missing(parent)) {
+      }
+      if (!is_missing(parent)) {
         parent <- check_and_transform_id(parent, "File")
       }
 
