@@ -189,7 +189,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(asVolume(res, auth)) # nocov end
+      return(asVolume(res, auth = self$auth)) # nocov end
     },
     # Create new AWS Volume (IAM Role type authentication type) ---------------
     #' @description Create new volume to connect to your s3 bucket on AWS cloud.
@@ -312,7 +312,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(asVolume(res, auth)) # nocov end
+      return(asVolume(res, auth = self$auth)) # nocov end
     },
     # Create new Google Cloud Volume (IAM User type authentication type) ------
     #' @description Create new volume to connect to your bucket on GCS.
@@ -419,7 +419,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(asVolume(res, auth)) # nocov end
+      return(asVolume(res, auth = self$auth)) # nocov end
     },
     # Create new Google Cloud Volume (IAM Role type authentication type) ------
     #' @description Create new volume to connect to your bucket on GCS.
@@ -526,7 +526,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(asVolume(res, auth)) # nocov end
+      return(asVolume(res, auth = self$auth)) # nocov end
     },
     # Create new AZURE Volume  -------------------------------------------------
     #' @description This call creates a new volume by attaching a Microsoft
@@ -644,7 +644,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(asVolume(res, auth)) # nocov end
+      return(asVolume(res, auth = self$auth)) # nocov end
     },
 
     # Create new ALI (OSS) Volume  ---------------------------------------------
@@ -741,7 +741,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(asVolume(res, auth)) # nocov end
+      return(asVolume(res, auth = self$auth)) # nocov end
     }
   )
 )
