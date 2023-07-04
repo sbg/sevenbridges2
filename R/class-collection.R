@@ -42,6 +42,9 @@ Collection <- R6::R6Class(
     # nocov start
     #' @description Print method for Collection class.
     #' @param n Number of items to print in console.
+    #' @importFrom cli cli_text cli_h2
+    #' @importFrom checkmate test_atomic
+    #' @importFrom glue glue_col
     print = function(n = 10) {
       x <- as.list(self)
       for (i in seq_len(length(x$items))) {
@@ -50,8 +53,16 @@ Collection <- R6::R6Class(
           cli::cli_text(glue::glue_col("{blue Reached maximum of ", n, " item(s) to print.}")) # nolint
           break
         }
-        cli::cli_h2(i)
-        x$items[[i]]$print()
+        if (checkmate::test_r6(x$items[[i]])) {
+          cli::cli_h2(i)
+          x$items[[i]]$print()
+        } else {
+          cli::cli_h2(i)
+          string <- glue::glue_col("{green {names(x$items[[i]])}}: {x$items[[i]]}") # nolint
+          cli::cli_li(string)
+          # Close container elements
+          cli::cli_end()
+        }
       }
     }, # nocov end
     #' @description Return next page of results.

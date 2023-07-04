@@ -13,12 +13,16 @@ VolumeFileCollection <- R6::R6Class(
   portable = FALSE,
   public = list(
     #' @description Create new VolumeFileCollection object.
+    #' @importFrom checkmate assert_list
     #' @param items Items representing volume files.
     #' @param prefixes Prefixes (folders) in volume content response.
     #' @param ... Other arguments.
     initialize = function(items = NA, prefixes = NA, ...) {
       # Initialize Collection class
       super$initialize(...)
+
+      checkmate::assert_list(items, null.ok = FALSE)
+      checkmate::assert_list(prefixes, null.ok = FALSE)
 
       self$items <- asVolumeFileList(
         x = append(items, prefixes),

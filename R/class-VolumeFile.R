@@ -80,7 +80,6 @@ VolumeFile <- R6::R6Class(
   )
 )
 
-# nocov start
 # Helper function for creating VolumeFile objects
 asVolumeFile <- function(x, auth = NULL) {
   VolumeFile$new(
@@ -99,4 +98,3 @@ asVolumeFileList <- function(x, auth) {
   obj <- lapply(x, asVolumeFile, auth = auth)
   obj
 }
-# nocov end
