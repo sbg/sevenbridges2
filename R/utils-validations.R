@@ -498,7 +498,7 @@ transform_configuration_param <- function(configuration) {
     config_json_string <- as.character(
       jsonlite::toJSON(configuration, auto_unbox = TRUE, pretty = TRUE)
     )
-  } else if (checkmate::test_character(configuration, len = 1, null.ok = FALSE, typed.missing = FALSE)) { # nolint
+  } else if (checkmate::test_character(configuration, len = 1, null.ok = FALSE, typed.missing = TRUE)) { # nolint
     config_json_string <- readr::read_file(configuration)
   } else {
     rlang::abort("Invalid configuration parameter! \n Please, provide a string path to the JSON file or a named list.") # nolint

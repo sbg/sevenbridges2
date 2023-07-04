@@ -38,8 +38,7 @@ Volumes <- R6::R6Class(
         advance_access = TRUE,
         ...
       ) # nocov end
-      return(res)
-      # return(asVolumeList(res, auth = self$auth))
+      return(asVolumeList(res, auth = self$auth))
     },
 
     # Get single volume -------------------------------------------------------
@@ -63,10 +62,9 @@ Volumes <- R6::R6Class(
         cls = self,
         id = id,
         advance_access = TRUE
-      ) # nocov end
-      return(res)
-      # return(asVolume(res, auth = self$auth))
-    },
+      )
+      return(asVolume(res, auth = self$auth))
+    }, # nocov end
     # Delete volume -------------------------------------------------------
     #' @description Please, use delete() operation on the exact Volume object.
     #' @importFrom rlang inform
@@ -191,8 +189,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(res) # nocov end
-      # return(asVolume(res, auth))
+      return(asVolume(res, auth = self$auth)) # nocov end
     },
     # Create new AWS Volume (IAM Role type authentication type) ---------------
     #' @description Create new volume to connect to your s3 bucket on AWS cloud.
@@ -315,8 +312,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(res) # nocov end
-      # return(asVolume(res, auth))
+      return(asVolume(res, auth = self$auth)) # nocov end
     },
     # Create new Google Cloud Volume (IAM User type authentication type) ------
     #' @description Create new volume to connect to your bucket on GCS.
@@ -423,8 +419,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(res) # nocov end
-      # return(asVolume(res, auth))
+      return(asVolume(res, auth = self$auth)) # nocov end
     },
     # Create new Google Cloud Volume (IAM Role type authentication type) ------
     #' @description Create new volume to connect to your bucket on GCS.
@@ -531,8 +526,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(res) # nocov end
-      # return(asVolume(res, auth))
+      return(asVolume(res, auth = self$auth)) # nocov end
     },
     # Create new AZURE Volume  -------------------------------------------------
     #' @description This call creates a new volume by attaching a Microsoft
@@ -650,8 +644,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(res) # nocov end
-      # return(asVolume(res, auth))
+      return(asVolume(res, auth = self$auth)) # nocov end
     },
 
     # Create new ALI (OSS) Volume  ---------------------------------------------
@@ -748,8 +741,7 @@ Volumes <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(res) # nocov end
-      # return(asVolume(res, auth))
+      return(asVolume(res, auth = self$auth)) # nocov end
     }
   )
 )

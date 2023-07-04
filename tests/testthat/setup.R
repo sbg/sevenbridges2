@@ -122,5 +122,29 @@ setup_apps_obj <- Apps$new(auth = setup_auth_object)
 # Volumes obj
 setup_volumes_obj <- Volumes$new(auth = setup_auth_object)
 
+# Volume obj
+setup_s3_volume_obj <- Volume$new(
+  id = "volume-id",
+  name = "my_new_volume",
+  access_mode = "RW",
+  service = list(
+    type = "s3",
+    bucket = "bucket-name",
+    prefix = "",
+    endpoint = "s3.amazonaws.com",
+    credentials = list(
+      access_key_id = "access_key_id"
+    ),
+    properties = list(
+      sse_algorithm = "AES256"
+    ),
+    export_enabled = TRUE,
+    direct_export_enabled = FALSE
+  ),
+  created_on = "2023-06-15T14:50:16Z",
+  modified_on = "2023-06-15T14:50:16Z",
+  active = TRUE
+)
+
 # Close session at the end of tests
 withr::defer(teardown_env())
