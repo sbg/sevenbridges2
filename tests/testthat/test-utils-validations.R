@@ -144,6 +144,23 @@ test_that("check_metadata function throws error when metadata is not valid", {
   }
 })
 
+test_that("transform_metadata function works", {
+  metadata_values <- list(
+    disease_type = "Acute Myeloma",
+    sample_id = "some-id",
+    metadata_field = c("some other value1", "some-value2")
+  )
+  transformed_metadata <- transform_metadata(metadata_values)
+  testthat::expect_equal(length(names(transformed_metadata)), 4)
+  testthat::expect_true(
+    all(startsWith(names(transformed_metadata), "metadata."))
+  )
+  testthat::expect_true(names(transformed_metadata)[3] == names(transformed_metadata)[4]) # nolint
+  testthat::expect_equal(transformed_metadata[[1]], "Acute%20Myeloma")
+  testthat::expect_equal(transformed_metadata[[2]], metadata_values[[2]])
+  testthat::expect_equal(transformed_metadata[[3]], "some%20other%20value1")
+})
+
 test_that("check_download_path function throws error when parameters are not valid", { # nolint
   # Negative test use case for directory_path parameter
   testthat::expect_error(
