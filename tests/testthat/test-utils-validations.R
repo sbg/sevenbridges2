@@ -441,8 +441,8 @@ test_that("check_upload_params throws error when needed", {
   test_too_small_part_size <- list(size = 1000, part_size = too_small_part_size)
 
   # Edge case for part length
-  part_size <- getOption("sevenbridges2")$MINIMUM_PART_SIZE + 1
-  size <- (part_size * getOption("sevenbridges2")$MAXIMUM_TOTAL_PARTS)
+  part_size <- getOption("sevenbridges2")$MINIMUM_PART_SIZE
+  size <- (part_size * getOption("sevenbridges2")$MAXIMUM_TOTAL_PARTS) + getOption("sevenbridges2")$MINIMUM_PART_SIZE # nolint
   test_bad_part_length <- list(size = size, part_size = part_size)
 
   # Fails when no size is provided
