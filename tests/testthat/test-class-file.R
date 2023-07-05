@@ -32,7 +32,10 @@ test_that("File update_details method works", {
 test_that("File set_metadata method works", {
   # Negative test use cases for metadata parameter
   # nolint start
-  testthat::expect_error(setup_file_obj$set_metadata(), "Metadata fields are missing. You need to provide at least one.")
+  testthat::expect_error(setup_file_obj$set_metadata(),
+    regexp = "Metadata fields are missing. You need to provide at least one.",
+    fixed = TRUE
+  )
   # nolint end
   testthat::expect_error(setup_file_obj$set_metadata(metadata = "test"))
   testthat::expect_error(setup_file_obj$set_metadata(metadata = 1))
@@ -44,7 +47,10 @@ test_that("File set_metadata method works", {
 test_that("File copy_to method works", {
   # Negative test use cases for metadata parameter
   # nolint start
-  testthat::expect_error(setup_file_obj$copy_to(), "Project parameter is missing. You need to provide one.")
+  testthat::expect_error(
+    setup_file_obj$copy_to(),
+    "Project parameter is missing. You need to provide one."
+  )
   # nolint end
   testthat::expect_error(setup_file_obj$copy_to(project = setup_project_obj, name = 1)) # nolint
   testthat::expect_error(setup_file_obj$copy_to(project = setup_project_obj, name = TRUE)) # nolint
@@ -61,7 +67,10 @@ test_that("File copy_to method works", {
 test_that("File move_to_folder method works", {
   # Negative test use cases for metadata parameter
   # nolint start
-  testthat::expect_error(setup_file_obj$move_to_folder(), "Parent folder is missing. You need to provide one.")
+  testthat::expect_error(
+    setup_file_obj$move_to_folder(),
+    "Parent folder is missing. You need to provide one."
+  )
   # nolint end
   testthat::expect_error(setup_file_obj$move_to_folder(
     parent = setup_folder_obj,
