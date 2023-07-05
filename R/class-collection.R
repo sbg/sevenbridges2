@@ -74,7 +74,8 @@ Collection <- R6::R6Class(
       if (length(self$links) == 0) {
         rlang::abort("No more entries to be returned.")
       }
-      for (link in self$links) {
+      for (i in seq_len(length(self$links))) {
+        link <- self$links[[i]]
         if (tolower(link$rel) == "next") {
           res <- sevenbridges2::api(
             url = link$href,
@@ -85,6 +86,9 @@ Collection <- R6::R6Class(
           )
           res <- status_check(res)
           private$load(res, auth = self$auth)
+        }
+        if (i == length(self$links)) {
+          rlang::abort("You've reached the last page of results.")
         }
       }
     },
@@ -97,7 +101,8 @@ Collection <- R6::R6Class(
       if (length(self$links) == 0) {
         rlang::abort("No more entries to be returned.") # nolint
       }
-      for (link in self$links) {
+      for (i in seq_len(length(self$links))) {
+        link <- self$links[[i]]
         if (tolower(link$rel) == "prev") {
           res <- sevenbridges2::api(
             url = link$href,
@@ -108,6 +113,9 @@ Collection <- R6::R6Class(
           )
           res <- status_check(res)
           private$load(res, auth = self$auth)
+        }
+        if (i == length(self$links)) {
+          rlang::abort("You've reached the first page of results.")
         }
       }
     }
