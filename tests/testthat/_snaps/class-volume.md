@@ -13,3 +13,4 @@
       * id: volume-id
       * type: s3
       * bucket: bucket-name
+      * prefix:
