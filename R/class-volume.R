@@ -297,24 +297,19 @@ Volume <- R6::R6Class(
     #' values passed.
     #' @param continuation_token Continuation token received to use for next
     #' chunk of results. Behaves similarly like offset parameter.
+    #' @param ... Other parameters that can be passed to api() function, like
+    #' fields etc.
     #' @return VolumeFileCollection object containing list of VolumeFile
     #' objects.
     list_files = function(parent = NULL,
                           limit = getOption("sevenbridges2")$"limit",
-                          fields = "_all",
                           link = NULL,
-                          continuation_token = NULL) {
+                          continuation_token = NULL,
+                          ...) {
       checkmate::assert_character(parent,
         len = 1, null.ok = TRUE,
         typed.missing = TRUE
       )
-      checkmate::assert_character(fields, null.ok = TRUE, typed.missing = TRUE)
-      if (!all(fields %in% c(
-        "href", "location", "volume", "type",
-        "metadata", "_all", NULL
-      ))) {
-        rlang::abort("Fields parameter can contain subset of values: 'href', 'location', 'volume', 'type', 'metadata', '_all'") # nolint
-      }
       checkmate::assert_character(link,
         len = 1, null.ok = TRUE,
         typed.missing = TRUE
@@ -335,7 +330,7 @@ Volume <- R6::R6Class(
         base_url = self$auth$url,
         advance_access = TRUE,
         limit = limit,
-        fields = fields
+        ...
       )
       res <- status_check(res)
 
