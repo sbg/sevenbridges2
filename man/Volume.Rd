@@ -55,6 +55,9 @@ set to FALSE.}
 \item \href{#method-Volume-delete}{\code{Volume$delete()}}
 \item \href{#method-Volume-list_files}{\code{Volume$list_files()}}
 \item \href{#method-Volume-get_file}{\code{Volume$get_file()}}
+\item \href{#method-Volume-list_members}{\code{Volume$list_members()}}
+\item \href{#method-Volume-add_member}{\code{Volume$add_member()}}
+\item \href{#method-Volume-remove_member}{\code{Volume$remove_member()}}
 \item \href{#method-Volume-clone}{\code{Volume$clone()}}
 }
 }
@@ -280,6 +283,70 @@ contents. Cannot be used together with location.}
 }
 \subsection{Returns}{
 VolumeFile object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-list_members"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-list_members}{}}}
+\subsection{Method \code{list_members()}}{
+List members of a volume
+This function returns the members of a specific volume.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$list_members()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+List of Member class objects.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-add_member"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-add_member}{}}}
+\subsection{Method \code{add_member()}}{
+Add member to a volume
+This function adds members to the specified volume.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$add_member(
+  user,
+  permissions = list(read = TRUE, copy = FALSE, write = FALSE, admin = FALSE)
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{user}}{User's username, or object of class User, or object of
+class Member, you want to add to be a member of the volume.}
+
+\item{\code{permissions}}{List of permissions that will be associated with the
+user. It can contain fields: 'read', 'copy', 'write' and 'admin' with
+logical fields - TRUE if certain permission is allowed to the user, or
+FALSE if it's not.
+Example: list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Member object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-remove_member"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-remove_member}{}}}
+\subsection{Method \code{remove_member()}}{
+Remove member from a volume
+This function removes members from the specified volume.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$remove_member(user)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{user}}{User's username, or object of class User, or object of
+class Member, you want to remove from the volume's member list.}
+}
+\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}

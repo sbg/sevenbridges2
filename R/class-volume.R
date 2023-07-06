@@ -379,7 +379,112 @@ Volume <- R6::R6Class(
       res <- status_check(res)
 
       return(asVolumeFile(res, auth = self$auth))
-    } # nocov end
+      # nocov end
+    },
+    #' @description List members of a volume
+    #' This function returns the members of a specific volume.
+    #' @return List of Member class objects.
+    list_members = function() {
+      # nocov start
+      id <- self$id
+      path <- glue::glue(self$URL[["list_members"]])
+
+      res <- sevenbridges2::api(
+        path = path,
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE
+      )
+      res <- status_check(res)
+
+      return(asMemberList(res, auth = self$auth))
+      # nocov end
+    },
+    #' @description Add member to a volume
+    #' This function adds members to the specified volume.
+    #' @param user User's username, or object of class User, or object of
+    #' class Member, you want to add to be a member of the volume.
+    #' @param permissions List of permissions that will be associated with the
+    #' user. It can contain fields: 'read', 'copy', 'write' and 'admin' with
+    #' logical fields - TRUE if certain permission is allowed to the user, or
+    #' FALSE if it's not.
+    #' Example: list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)
+    #' @return Member object.
+    add_member = function(user, permissions = list(
+                            read = TRUE,
+                            copy = FALSE,
+                            write = FALSE,
+                            admin = FALSE
+                          )) {
+      if (checkmate::test_r6(user, classes = c("User"))) {
+        username <- user$username
+      }
+      if (checkmate::test_r6(user, classes = c("Member"))) {
+        username <- user$username
+      }
+      if (checkmate::test_character(user, len = 1, null.ok = FALSE)) {
+        username <- user
+      }
+      checkmate::assert_list(permissions,
+        null.ok = FALSE, max.len = 4,
+        types = "logical"
+      )
+      checkmate::assert_subset(names(permissions),
+        empty.ok = FALSE,
+        choices = c("read", "copy", "write", "admin")
+      )
+      # nocov start
+      id <- self$id
+      path <- glue::glue(self$URL[["add_members"]])
+
+      body <- list(
+        username = username,
+        permissions = permissions
+      )
+      res <- sevenbridges2::api(
+        path = path,
+        method = "POST",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE
+      )
+      res <- status_check(res)
+
+      return(asMember(res, auth = self$auth))
+      # nocov end
+    },
+    #' @description Remove member from a volume
+    #' This function removes members from the specified volume.
+    #' @param user User's username, or object of class User, or object of
+    #' class Member, you want to remove from the volume's member list.
+    remove_member = function(user) {
+      if (checkmate::test_r6(user, classes = c("User"))) {
+        username <- user$username
+      }
+      if (checkmate::test_r6(user, classes = c("Member"))) {
+        username <- user$username
+      }
+      if (checkmate::test_character(user, len = 1, null.ok = FALSE)) {
+        username <- user
+      }
+      # nocov start
+      id <- self$id
+      path <- glue::glue(self$URL[["remove_members"]])
+
+      res <- sevenbridges2::api(
+        path = path,
+        method = "DELETE",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE
+      )
+      res <- status_check(res)
+
+      rlang::inform(glue_col("Member {green {username}} was successfully removed from the {green {id}} volume.")) # nolint
+      # nocov end
+    }
   )
 )
 
