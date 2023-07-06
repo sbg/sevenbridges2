@@ -484,6 +484,149 @@ Volume <- R6::R6Class(
 
       rlang::inform(glue_col("Member {green {username}} was successfully removed from the {green {id}} volume.")) # nolint
       # nocov end
+    },
+    #' @description Get member's permissions on the volume
+    #' This function returns member's permissions set on the specified volume.
+    #' @param user User's username, or object of class User, or object of
+    #' class Member, you want to remove from the volume's member list.
+    #' @return Permission object.
+    get_member_permissions = function(user) {
+      if (checkmate::test_r6(user, classes = c("User"))) {
+        username <- user$username
+      }
+      if (checkmate::test_r6(user, classes = c("Member"))) {
+        username <- user$username
+      }
+      if (checkmate::test_character(user, len = 1, null.ok = FALSE)) {
+        username <- user
+      }
+      # nocov start
+      id <- self$id
+      path <- glue::glue(self$URL[["member_permissions"]])
+
+      res <- sevenbridges2::api(
+        path = path,
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE
+      )
+      res <- status_check(res)
+      member <- asMember(res, auth = self$auth)
+      rlang::inform(glue::glue_col("Member {green {username}} permissions:"))
+
+      return(member$permissions)
+      # nocov end
+    },
+    #' @description Overwrite a volume member's permission
+    #' This function overwrites the permissions for a member of a specific
+    #' volume.
+    #' @param user User's username, or object of class User, or object of
+    #' class Member, you want to overwrite permissions for.
+    #' @param permissions List of permissions that will be associated with the
+    #' user. It can contain fields: 'read', 'copy', 'write' and 'admin' with
+    #' logical values - TRUE if certain permission is allowed to the user, or
+    #' FALSE if it's not.
+    #' Example: list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)
+    #' @return Permission object.
+    overwrite_member_permissions = function(user, permissions = list(
+                                              read = TRUE,
+                                              copy = FALSE,
+                                              write = FALSE,
+                                              admin = FALSE
+                                            )) {
+      if (checkmate::test_r6(user, classes = c("User"))) {
+        username <- user$username
+      }
+      if (checkmate::test_r6(user, classes = c("Member"))) {
+        username <- user$username
+      }
+      if (checkmate::test_character(user, len = 1, null.ok = FALSE)) {
+        username <- user
+      }
+      checkmate::assert_list(permissions,
+        null.ok = FALSE, max.len = 4,
+        types = "logical"
+      )
+      checkmate::assert_subset(names(permissions),
+        empty.ok = FALSE,
+        choices = c("read", "copy", "write", "admin")
+      )
+      body <- flatten_query(permissions)
+
+      # nocov start
+      id <- self$id
+      path <- glue::glue(self$URL[["overwrite_permissions"]])
+
+      res <- sevenbridges2::api(
+        path = path,
+        method = "PUT",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE
+      )
+      res <- status_check(res)
+      rlang::inform(glue::glue_col("Member {green {username}}'s permissions have been {green overwritten} to:")) # nolint
+
+      return(asPermission(res, auth = self$auth))
+      # nocov end
+    },
+    #' @description Modify a volume member's permission
+    #' This function modifies the permissions for a member of a specific
+    #' volume. Note that this does not overwrite all previously set permissions
+    #' for the member. Refer to the `overwrite_member_permissions` to overwrite
+    #' rather than update permissions.
+    #' @param user User's username, or object of class User, or object of
+    #' class Member, you want to modify permissions for.
+    #' @param permissions List of permissions that will be updated for the
+    #' user. It can contain fields: 'read', 'copy', 'write' and 'admin' with
+    #' logical values - TRUE if certain permission is allowed to the user, or
+    #' FALSE if it's not.
+    #' Example: list(read = TRUE, copy = TRUE)
+    #' @return Member object.
+    modify_member_permissions = function(user, permissions = list(
+                                           read = TRUE,
+                                           copy = FALSE,
+                                           write = FALSE,
+                                           admin = FALSE
+                                         )) {
+      if (checkmate::test_r6(user, classes = c("User"))) {
+        username <- user$username
+      }
+      if (checkmate::test_r6(user, classes = c("Member"))) {
+        username <- user$username
+      }
+      if (checkmate::test_character(user, len = 1, null.ok = FALSE)) {
+        username <- user
+      }
+      checkmate::assert_list(permissions,
+        null.ok = FALSE, max.len = 4,
+        types = "logical"
+      )
+      checkmate::assert_subset(names(permissions),
+        empty.ok = FALSE,
+        choices = c("read", "copy", "write", "admin")
+      )
+      body <- flatten_query(permissions)
+
+      # nocov start
+      id <- self$id
+      path <- glue::glue(self$URL[["modify_permissions"]])
+
+      res <- sevenbridges2::api(
+        path = path,
+        method = "PATCH",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE
+      )
+      res <- status_check(res)
+      rlang::inform(glue::glue_col("Member {green {username}}'s permissions have been {green updated} to:")) # nolint
+
+      return(asPermission(res, auth = self$auth))
+      # nocov end
     }
   )
 )
