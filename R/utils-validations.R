@@ -356,7 +356,7 @@ check_upload_params <- function(size, part_size) {
     as.integer(ceiling(size / part_size))
   )
   if (part_length < 1 ||
-    part_length >= getOption("sevenbridges2")$MAXIMUM_TOTAL_PARTS) {
+    part_length > getOption("sevenbridges2")$MAXIMUM_TOTAL_PARTS) {
     # nolint start
     rlang::abort("Total number of parts must be from 1 to 10,000 (inclusive). Please, modify part_size.")
     # nolint end
