@@ -1,0 +1,149 @@
+# nolint start
+#' @title R6 Class representing a Collection
+#'
+#' @description
+#' R6 Class representing a resource for managing collections.
+#' Wrapper for SevenBridges pageable resources.
+#' Among the actual collection items it contains information regarding
+#' the total number of entries available in on the server and resource href.
+#'
+#' @importFrom R6 R6Class
+#' @export
+Collection <- R6::R6Class(
+  # nolint end
+  "Collection",
+  portable = FALSE,
+  public = list(
+    #' @field href API request URL.
+    href = NULL,
+    #' @field items Items returned in API response.
+    items = NULL,
+    #' @field links List of links (hrefs) for next page resources.
+    links = NULL,
+    #' @field response Save raw API response.
+    response = NULL,
+    #' @field auth Seven Bridges Auth object.
+    auth = NULL,
+
+    #' @description Create a new Collection object.
+    #' @param href API request URL.
+    #' @param items Items returned in API response.
+    #' @param links List of links (hrefs) for next page resources.
+    #' @param response Raw API response.
+    #' @param auth Seven Bridges Auth object.
+    initialize = function(href = NA, items = NA, links = NA, response = NA,
+                          auth = NA) {
+      self$href <- href
+      self$items <- items
+      self$links <- links
+      self$response <- response
+      self$auth <- auth
+    },
+    # nocov start
+    #' @description Print method for Collection class.
+    #' @param n Number of items to print in console.
+    #' @importFrom cli cli_text cli_h2
+    #' @importFrom checkmate test_atomic
+    #' @importFrom glue glue_col
+    print = function(n = 10) {
+      x <- as.list(self)
+      for (i in seq_len(length(x$items))) {
+        if (i > n) {
+          cli::cli_text()
+          cli::cli_text(glue::glue_col("{blue Reached maximum of ", n, " item(s) to print.}")) # nolint
+          break
+        }
+        if (checkmate::test_r6(x$items[[i]])) {
+          cli::cli_h2(i)
+          x$items[[i]]$print()
+        } else {
+          cli::cli_h2(i)
+          string <- glue::glue_col("{green {names(x$items[[i]])}}: {x$items[[i]]}") # nolint
+          cli::cli_li(string)
+          # Close container elements
+          cli::cli_end()
+        }
+      }
+    }, # nocov end
+    #' @description Return next page of results.
+    #' @param ... Other query or API parameters that can be passed to api()
+    #' function like advance_access, fields etc.
+    #' @importFrom rlang abort
+    next_page = function(...) {
+      checkmate::assert_list(self$links, null.ok = TRUE)
+      if (length(self$links) == 0) {
+        rlang::abort("No more entries to be returned.")
+      }
+      for (i in seq_len(length(self$links))) {
+        link <- self$links[[i]]
+        if (tolower(link$rel) == "next") {
+          res <- sevenbridges2::api(
+            url = link$href,
+            method = link$method,
+            token = self$auth$get_token(),
+            base_url = self$auth$url,
+            ...
+          )
+          res <- status_check(res)
+          private$load(res, auth = self$auth)
+        }
+        if (i == length(self$links)) {
+          rlang::abort("You've reached the last page of results.")
+        }
+      }
+    },
+    #' @description Return previous page of results.
+    #' @param ... Other query or API parameters that can be passed to api()
+    #' function like advance_access, fields etc.
+    #' @importFrom rlang abort
+    prev_page = function(...) {
+      checkmate::assert_list(self$links, null.ok = TRUE)
+      if (length(self$links) == 0) {
+        rlang::abort("No more entries to be returned.") # nolint
+      }
+      for (i in seq_len(length(self$links))) {
+        link <- self$links[[i]]
+        if (tolower(link$rel) == "prev") {
+          res <- sevenbridges2::api(
+            url = link$href,
+            method = link$method,
+            token = self$auth$get_token(),
+            base_url = self$auth$url,
+            ...
+          )
+          res <- status_check(res)
+          private$load(res, auth = self$auth)
+        }
+        if (i == length(self$links)) {
+          rlang::abort("You've reached the first page of results.")
+        }
+      }
+    }
+  ),
+  private = list(
+    # Reload object to get new results
+    load = function(res, auth) {
+      self$initialize(
+        href = res$href,
+        items = res$items,
+        links = res$links,
+        auth = auth,
+        response = attr(res, "response")
+      )
+      return(self)
+    }
+  )
+)
+
+# nocov start
+# Helper function for creating Collection objects
+asCollection <- function(x, auth = NULL) {
+  Collection$new(
+    href = x$href,
+    items = x$items,
+    links = x$links,
+    auth = auth,
+    response = attr(x, "response")
+  )
+}
+# nocov end

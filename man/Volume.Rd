@@ -221,9 +221,9 @@ This call lists the contents of a specific volume.
 \if{html}{\out{<div class="r">}}\preformatted{Volume$list_files(
   parent = NULL,
   limit = getOption("sevenbridges2")$limit,
-  fields = "_all",
   link = NULL,
-  continuation_token = NULL
+  continuation_token = NULL,
+  ...
 )}\if{html}{\out{</div>}}
 }
 
@@ -236,18 +236,25 @@ the content of the parent directory on the current volume is listed.}
 \item{\code{limit}}{Defines the number of items you want to get from your API
 request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
 
-\item{\code{fields}}{Selector specifying a subset of fields to include in the
-response. You can use: \code{href}, \code{location}, \code{volume}, \code{type},
-\code{metadata}, \verb{_all}. Default: \verb{_all}.}
-
 \item{\code{link}}{Link to use in the next chunk of results. Contains limit and
 continuation_token. If provided it will overwrite other arguments'
 values passed.}
 
 \item{\code{continuation_token}}{Continuation token received to use for next
 chunk of results. Behaves similarly like offset parameter.}
+
+\item{\code{...}}{Other parameters that can be passed to api() function, like
+fields etc.}
+
+\item{\code{fields}}{Selector specifying a subset of fields to include in the
+response. You can use: \code{href}, \code{location}, \code{volume}, \code{type},
+\code{metadata}, \verb{_all}. Default: \verb{_all}.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+VolumeFileCollection object containing list of VolumeFile
+objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -270,6 +277,9 @@ location.}
 contents. Cannot be used together with location.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+VolumeFile object.
 }
 }
 \if{html}{\out{<hr>}}

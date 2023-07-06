@@ -99,18 +99,6 @@ test_that("Volume list_file method throws error when expected", {
     regexp = "Assertion on 'parent' failed: Must be of type 'character' (or 'NULL'), not 'logical'.", # nolint
     fixed = TRUE
   )
-  # Pass non-string fields
-  testthat::expect_error(
-    setup_s3_volume_obj$list_files(fields = 1234),
-    regexp = "Assertion on 'fields' failed: Must be of type 'character' (or 'NULL'), not 'double'.", # nolint
-    fixed = TRUE
-  )
-  # Pass invalid fields
-  testthat::expect_error(
-    setup_s3_volume_obj$list_files(fields = c("field1", "field2")),
-    regexp = "Fields parameter can contain subset of values: 'href', 'location', 'volume', 'type', 'metadata', '_all'", # nolint
-    fixed = TRUE
-  )
   # Pass non-string link
   testthat::expect_error(
     setup_s3_volume_obj$list_files(link = 1234),

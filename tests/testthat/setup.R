@@ -146,5 +146,71 @@ setup_s3_volume_obj <- Volume$new(
   active = TRUE
 )
 
+# Collection object
+setup_collection_obj <- Collection$new(
+  href = "some-href",
+  items = list(
+    item1 = list(field1 = "value11", field2 = "value12"),
+    item2 = list(field1 = "value21", field2 = "value22"),
+    item3 = list(field1 = "value31", field2 = "value32")
+  ),
+  links = list(
+    list(href = "link-to-next-page", method = "GET", rel = "next"),
+    list(href = "link-to-prev-page", method = "GET", rel = "prev")
+  ),
+  response = list(raw = "raw-response-list"),
+  auth = setup_auth_object
+)
+
+setup_volume_file_obj <- VolumeFile$new(
+  href = "resource-href",
+  location = "my_new_file.txt",
+  type = "FILE",
+  storage_type = "s3",
+  volume = "my_s3_volume",
+  metadata = list(metadata_field = "metadata-value")
+)
+
+setup_volume_file_dir_obj <- VolumeFile$new(
+  href = "resource-href",
+  location = "my_new_folder",
+  type = "PREFIX",
+  storage_type = NULL,
+  volume = "my_s3_volume",
+  metadata = NULL
+)
+
+# VolumeFileCollection object
+setup_volfile_collection_obj <- VolumeFileCollection$new(
+  href = "some-href",
+  items = list(
+    list(
+      href = "resource-href",
+      location = "my_new_file1.txt",
+      type = "FILE",
+      storage_type = "s3",
+      volume = "my_s3_volume",
+      metadata = list(metadata_field = "metadata-value")
+    ),
+    list(
+      href = "resource-href",
+      location = "my_new_file2.txt",
+      type = "FILE",
+      storage_type = "s3",
+      volume = "my_s3_volume",
+      metadata = list(metadata_field = "metadata-value")
+    )
+  ),
+  prefixes = list(list(
+    href = "resource-href",
+    prefix = "my_new_folder",
+    volume = "my_s3_volume"
+  )),
+  links = list(list("next" = "link-to-next-page")),
+  response = list(raw = "raw-response-list"),
+  auth = setup_auth_object
+)
+
+
 # Close session at the end of tests
 withr::defer(teardown_env())

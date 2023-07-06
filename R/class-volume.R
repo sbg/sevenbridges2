@@ -90,7 +90,7 @@ Volume <- R6::R6Class(
       self$active <- active
       self$href <- href
     },
-    # nocov start PREPAKUJ!
+    # nocov start
     #' @description Print method for Volume class.
     #'
     #' @importFrom purrr discard
@@ -297,22 +297,19 @@ Volume <- R6::R6Class(
     #' values passed.
     #' @param continuation_token Continuation token received to use for next
     #' chunk of results. Behaves similarly like offset parameter.
-    list_files = function(parent = NULL, # add return
+    #' @param ... Other parameters that can be passed to api() function, like
+    #' fields etc.
+    #' @return VolumeFileCollection object containing list of VolumeFile
+    #' objects.
+    list_files = function(parent = NULL,
                           limit = getOption("sevenbridges2")$"limit",
-                          fields = "_all",
                           link = NULL,
-                          continuation_token = NULL) {
+                          continuation_token = NULL,
+                          ...) {
       checkmate::assert_character(parent,
         len = 1, null.ok = TRUE,
         typed.missing = TRUE
       )
-      checkmate::assert_character(fields, null.ok = TRUE, typed.missing = TRUE)
-      if (!all(fields %in% c(
-        "href", "location", "volume", "type",
-        "metadata", "_all", NULL
-      ))) {
-        rlang::abort("Fields parameter can contain subset of values: 'href', 'location', 'volume', 'type', 'metadata', '_all'") # nolint
-      }
       checkmate::assert_character(link,
         len = 1, null.ok = TRUE,
         typed.missing = TRUE
@@ -333,10 +330,11 @@ Volume <- R6::R6Class(
         base_url = self$auth$url,
         advance_access = TRUE,
         limit = limit,
-        fields = fields
+        ...
       )
       res <- status_check(res)
-      return(res)
+
+      return(asVolumeFileCollection(res, auth = self$auth))
     }, # nocov end
     #' @description Get volume file information
     #' This function returns the specific Volume File.
@@ -347,7 +345,8 @@ Volume <- R6::R6Class(
     #' @importFrom checkmate assert_character
     #' @importFrom rlang abort
     #' @importFrom glue glue
-    get_file = function(location = NULL, link = NULL) { # add return
+    #' @return VolumeFile object.
+    get_file = function(location = NULL, link = NULL) {
       checkmate::assert_character(location,
         len = 1, null.ok = TRUE,
         typed.missing = TRUE
@@ -378,8 +377,8 @@ Volume <- R6::R6Class(
         advance_access = TRUE
       )
       res <- status_check(res)
-      return(res)
-      # return(asVolumeFile(res))
+
+      return(asVolumeFile(res, auth = self$auth))
     } # nocov end
   )
 )
