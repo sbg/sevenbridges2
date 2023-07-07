@@ -63,6 +63,9 @@ status_check <- function(req, as = "parsed", ...) {
 #' @importFrom checkmate test_vector
 #' @noRd
 is_missing <- function(input) {
+  if (missing(input)) {
+    return(TRUE)
+  }
   if (checkmate::test_vector(input, null.ok = TRUE)) {
     isTRUE(
       !checkmate::test_vector(input,
@@ -72,7 +75,7 @@ is_missing <- function(input) {
         isTRUE(input == "")
     )
   } else {
-    missing(input)
+    return(FALSE)
   }
 }
 

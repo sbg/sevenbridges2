@@ -196,7 +196,7 @@ organize files you’ve imported from public datasets or copied between
 projects.
 .
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{File$add_tag(tags = NULL, overwrite = FALSE, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{File$add_tag(tags, overwrite = FALSE, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -227,7 +227,7 @@ API rate limit
 (\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).You can
 do that using \code{Auth$copy_files()} operation.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{File$copy_to(project = NULL, name = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{File$copy_to(project, name = NULL, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -289,7 +289,7 @@ This call returns the metadata values for the specified file.
 \subsection{Method \code{set_metadata()}}{
 This call changes the metadata values for the specified file.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{File$set_metadata(metadata_fields = NULL, overwrite = FALSE, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{File$set_metadata(metadata_fields, overwrite = FALSE, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -313,7 +313,7 @@ Default: FALSE.}
 This call moves a file from one folder to another. Moving of files is
 only allowed within the same project.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{File$move_to_folder(parent = NULL, name = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{File$move_to_folder(parent, name = NULL, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

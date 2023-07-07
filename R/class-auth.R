@@ -102,11 +102,17 @@ Auth <- R6::R6Class(
     #'
     #' @param ... Other arguments passed to methods.
     #' @return A new `Auth` object.
-    initialize = function(from = c("direct", "env", "file"), platform = NA,
-                          url = NA, token = NA, sysenv_url = NA,
-                          sysenv_token = NA, config_file = NA,
-                          profile_name = NA, fs = NA,
-                          authorization = FALSE, ...) {
+    initialize = function(from = c("direct", "env", "file"),
+                          platform = NA,
+                          url = NA,
+                          token = NA,
+                          sysenv_url = NA,
+                          sysenv_token = NA,
+                          config_file = NA,
+                          profile_name = NA,
+                          fs = NA,
+                          authorization = FALSE,
+                          ...) {
       self$fs <- fs
       self$from <- match.arg(from)
       self$authorization <- authorization
@@ -189,7 +195,9 @@ Auth <- R6::R6Class(
         rlang::inform(
           paste0(
             "Authenticating with system environment variables: ",
-            self$sysenv_url, " and ", self$sysenv_token
+            self$sysenv_url,
+            " and ",
+            self$sysenv_token
           )
         )
 
@@ -290,9 +298,11 @@ Auth <- R6::R6Class(
     #' @param complete Parameter for API request that allows you to search and
     #'  list all items. By default, it is set to `FALSE`.
     #' @importFrom httr headers
-    api = function(..., limit = getOption("sevenbridges2")$"limit",
+    api = function(...,
+                   limit = getOption("sevenbridges2")$"limit",
                    offset = getOption("sevenbridges2")$"offset",
-                   fields = NULL, complete = FALSE) {
+                   fields = NULL,
+                   complete = FALSE) {
       req <- sevenbridges2::api(
         self$get_token(),
         base_url = self$url,
@@ -304,12 +314,19 @@ Auth <- R6::R6Class(
       )
       req <- status_check(req)
 
-      if (complete) { # nocov start
+      if (complete) {
+        # nocov start
         N <- as.numeric(httr::headers(sbg_get_response(req))
         [["x-total-matching-query"]])
-        if (length(N)) .item <- length(req$items)
+        if (length(N)) {
+          .item <- length(req$items)
+        }
         if (.item < N) {
-          pb <- txtProgressBar(min = 1, max = N %/% 100 + 1, style = 3)
+          pb <- txtProgressBar(
+            min = 1,
+            max = N %/% 100 + 1,
+            style = 3
+          )
           res <- NULL
 
           for (i in 1:(N %/% 100 + 1)) {
@@ -318,8 +335,11 @@ Auth <- R6::R6Class(
             req <- sevenbridges2::api(
               self$get_token(),
               base_url = self$url,
-              limit = .limit, offset = .offset,
-              fields = fields, authorization = self$authorization, ...
+              limit = .limit,
+              offset = .offset,
+              fields = fields,
+              authorization = self$authorization,
+              ...
             )
             req <- status_check(req)
             res$items <- c(res$items, req$items)
@@ -468,7 +488,9 @@ Auth <- R6::R6Class(
     #'   group. If provided, the method will return the invoice incurred by that
     #'   billing group only.
     #' @param ... Other arguments passed to methods.
-    invoice = function(id = NULL, billing_group = NULL, ...) {
+    invoice = function(id = NULL,
+                       billing_group = NULL,
+                       ...) {
       if (is.null(id)) {
         if (is.null(billing_group_id)) {
           req <- sevenbridges2::api(
@@ -481,7 +503,8 @@ Auth <- R6::R6Class(
           req <- status_check(req)
           req
         } else {
-          billing_group_id <- check_and_transform_id(billing_group_id, "Billing") # nolint
+          billing_group_id <-
+            check_and_transform_id(billing_group_id, "Billing") # nolint
           req <- sevenbridges2::api(
             path = "billing/invoices",
             method = "GET",
@@ -517,29 +540,29 @@ Auth <- R6::R6Class(
     #' @param name Project's name.
     #' @param owner The username of the owner whose projects you want to query.
     #' @param tags The list of project tags.
+    #' @param limit The maximum number of collection items to return for a
+    #' single request. Minimum value is 1. The maximum value is 100 and the
+    #' default value is 50. This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection of
+    #' the first item to return. The default value is 0. This is a
+    #' pagination-specific attribute.
     #' @param ... Other arguments that can be passed to this method.
     #' Such as query parameters.
-    projects = function(name = NULL, owner = NULL, tags = NULL, ...) {
+    projects = function(name = NULL,
+                        owner = NULL,
+                        tags = NULL,
+                        limit = 50,
+                        offset = 0,
+                        ...) {
       check_tags(tags)
-      if (is.null(owner)) {
-        res <- sevenbridges2::api(
-          path = "projects",
-          method = "GET",
-          token = self$get_token(),
-          base_url = self$url,
-          query = list(name = name, tags = tags),
-          ...
-        )
-      } else {
-        res <- sevenbridges2::api(
-          path = paste0("projects", "/", owner),
-          method = "GET",
-          token = self$get_token(),
-          base_url = self$url,
-          query = list(name = name, tags = tags),
-          ...
-        )
-      }
+      res <- sevenbridges2::api(
+        path = paste0("projects", "/", owner),
+        method = "GET",
+        token = self$get_token(),
+        base_url = self$url,
+        query = list(name = name, tags = tags, limit = limit, offset = offset),
+        ...
+      )
 
       res <- status_check(res)
 
@@ -550,7 +573,9 @@ Auth <- R6::R6Class(
     # get specific project ----------------------------------------------------
     #' @description This call creates an object containing the details
     #' of a specified project.
-    #' @param project_owner Project owner's Platform username.
+    #' @param project_owner If you are using Enterprise, use the name of the
+    #' Division that owns the project; otherwise, enter the project owner's
+    #' Platform username.
     #' @param project The short name of the project you are querying.
     #' @details
     #' Note that project_owner is always case-sensitive, and that project is
@@ -558,9 +583,9 @@ Auth <- R6::R6Class(
     #' identifying objects using the API, please see the API overview.
     #' @param ... Other arguments.
     #' @return Project object.
-    project_get = function(project_owner = suppressMessages(
-                             self$user()$username
-                           ), project, ...) {
+    project_get = function(project_owner = suppressMessages(self$user()$username), # nolint
+                           project,
+                           ...) {
       res <- sevenbridges2::api(
         path = paste0("projects/", project_owner, "/", project),
         method = "GET",
@@ -606,7 +631,7 @@ Auth <- R6::R6Class(
     #' @param ... Other arguments.
     #' @importFrom rlang inform
     #' @importFrom glue glue
-    project_new = function(name = NULL,
+    project_new = function(name,
                            billing_group = NULL,
                            description = name,
                            tags = NULL,
@@ -622,14 +647,18 @@ Auth <- R6::R6Class(
                              "duration" = 24
                            ),
                            ...) {
-      if (is.null(name)) {
-        rlang::abort("You must provide at least a name for the project you want
-                     to create.")
+      if (is_missing(name)) {
+        rlang::abort("You must provide at least a name for the project you want to create.") # nolint
       }
 
       # check tags
-      if (!is.null(tags) && is.character(tags)) tags <- as.list(tags)
-      billing_group <- check_and_transform_id(billing_group, "Billing")
+      if (!is.null(tags) &&
+        is.character(tags)) {
+        tags <- as.list(tags)
+      }
+      if (!is_missing(billing_group)) {
+        billing_group <- check_and_transform_id(billing_group, "Billing")
+      }
 
       body <- list(
         "name" = name,
@@ -696,8 +725,13 @@ Auth <- R6::R6Class(
     #'   represented by vector of values.
     #' @param ... Other arguments that can be passed to this method. Such as
     #'   query parameters.
-    files = function(project = NULL, parent = NULL, name = NULL,
-                     metadata = NULL, origin = NULL, tag = NULL, ...) {
+    files = function(project = NULL,
+                     parent = NULL,
+                     name = NULL,
+                     metadata = NULL,
+                     origin = NULL,
+                     tag = NULL,
+                     ...) {
       # Check input parameters
       checkmate::assert_character(name, null.ok = TRUE)
       if (!is_missing(metadata)) {
@@ -712,7 +746,9 @@ Auth <- R6::R6Class(
         rlang::abort("No project or parent directory was defined. You must provide one of the two!") # nolint
       }
       if (!is_missing(parent) && !is_missing(project)) {
-        rlang::abort("Project and parent parameters are mutually exclusive. You must provide one of the two, not both.") # nolint
+        rlang::abort(
+          "Project and parent parameters are mutually exclusive. You must provide one of the two, not both." # nolint
+        )
       }
 
       if (!is_missing(project)) {
@@ -722,13 +758,16 @@ Auth <- R6::R6Class(
         parent <- check_and_transform_id(parent, "File")
       }
 
-      query <- append(list(
-        project = project,
-        parent = parent,
-        name = name,
-        origin = origin,
-        tag = tag
-      ), metadata)
+      query <- append(
+        list(
+          project = project,
+          parent = parent,
+          name = name,
+          origin = origin,
+          tag = tag
+        ),
+        metadata
+      )
 
       # Run API call based on project/parent parameters
       res <- sevenbridges2::api(
@@ -755,7 +794,9 @@ Auth <- R6::R6Class(
     #' @param ... Other arguments that can be passed to this method.
     #' @importFrom checkmate assert_character
     get_file = function(id, ...) {
-      if (is_missing(id)) rlang::abort("File id must be non-empty string.")
+      if (is_missing(id)) {
+        rlang::abort("File id must be non-empty string.")
+      }
       id <- check_and_transform_id(id, "File")
 
       # Run API call based on id parameter
@@ -790,7 +831,8 @@ Auth <- R6::R6Class(
         # nolint end
       }
 
-      project_id <- check_and_transform_id(destination_project, "Project")
+      project_id <-
+        check_and_transform_id(destination_project, "Project")
       file_ids <- lapply(files, check_and_transform_id, "File")
 
       body <- list(
@@ -816,12 +858,21 @@ Auth <- R6::R6Class(
         )
         element <- setNames(list(element), names(res[i]))
         result <- append(result, element)
-        cat(glue::glue_col("{blue  Original file id: }
-                           {names(res[i])}"), "\n")
-        cat(glue::glue_col("{blue  Copied file id: }
-                           {res[[i]]$new_file_id}"), "\n")
-        cat(glue::glue_col("{blue  Copied file name: }
-                           {res[[i]]$new_file_name}"), "\n")
+        cat(
+          glue::glue_col("{blue  Original file id: }
+                           {names(res[i])}"),
+          "\n"
+        )
+        cat(
+          glue::glue_col("{blue  Copied file id: }
+                           {res[[i]]$new_file_id}"),
+          "\n"
+        )
+        cat(
+          glue::glue_col("{blue  Copied file name: }
+                           {res[[i]]$new_file_name}"),
+          "\n"
+        )
         cat("\n")
       }
       invisible(result)
@@ -840,7 +891,9 @@ Auth <- R6::R6Class(
     #' @importFrom rlang abort inform
     #' @importFrom glue glue_col
     #' @importFrom checkmate test_r6 test_class
-    create_folder = function(name = NULL, parent = NULL, project = NULL) {
+    create_folder = function(name,
+                             parent = NULL,
+                             project = NULL) {
       check_folder_name(name)
 
       if (is_missing(parent) && is_missing(project)) {
@@ -951,7 +1004,6 @@ Auth <- R6::R6Class(
         project <- check_and_transform_id(project, "Project")
       }
 
-
       # Check filename
       if (is_missing(filename)) {
         filename <- basename(path)
@@ -1013,10 +1065,15 @@ Auth <- R6::R6Class(
       cli::cli_h1("Ongoing uploads")
       for (item in res$items) {
         fields_to_show <- c(
-          "href", "project", "parent", "name",
-          "initiated", "upload_id"
+          "href",
+          "project",
+          "parent",
+          "name",
+          "initiated",
+          "upload_id"
         )
-        string <- glue::glue("{fields_to_show}: {item[fields_to_show]}")
+        string <-
+          glue::glue("{fields_to_show}: {item[fields_to_show]}")
 
         cli::cli_h1("Upload info")
         cli::cli_li(string)
@@ -1046,7 +1103,9 @@ Auth <- R6::R6Class(
       status_check(res)
 
       rlang::inform(
-        glue::glue_col("The upload process with the following ID {green {upload_id}} has been aborted.") # nolint
+        glue::glue_col(
+          "The upload process with the following ID {green {upload_id}} has been aborted." # nolint
+        )
       )
     }
 

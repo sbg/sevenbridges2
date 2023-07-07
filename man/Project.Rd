@@ -293,7 +293,7 @@ like 'limit', 'offset', 'fields', etc.}
 A method for deleting members from the project. It can only
 be successfully run by a user who has admin privileges in the project.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$member_delete(username = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Project$member_delete(username)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -312,7 +312,7 @@ are about to remove.}
 This method returns the permissions of a specified user
 within a specified project.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$member_permissions_get(username = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Project$member_permissions_get(username, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -334,7 +334,7 @@ This method can be used to edit a user's permissions in a
 specified  project.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Project$member_permissions_modify(
-  username = NULL,
+  username,
   write = TRUE,
   read = TRUE,
   copy = TRUE,
