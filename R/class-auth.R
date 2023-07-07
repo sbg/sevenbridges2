@@ -646,8 +646,7 @@ Auth <- R6::R6Class(
                            ),
                            ...) {
       if (is_missing(name)) {
-        rlang::abort("You must provide at least a name for the project you want
-                     to create.")
+        rlang::abort("You must provide at least a name for the project you want to create.") # nolint
       }
 
       # check tags
@@ -655,8 +654,9 @@ Auth <- R6::R6Class(
         is.character(tags)) {
         tags <- as.list(tags)
       }
-      billing_group <-
-        check_and_transform_id(billing_group, "Billing")
+      if (!is_missing(billing_group)) {
+        billing_group <- check_and_transform_id(billing_group, "Billing")
+      }
 
       body <- list(
         "name" = name,
