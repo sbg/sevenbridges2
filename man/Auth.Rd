@@ -352,7 +352,9 @@ of a specified project.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{project_owner}}{Project owner's Platform username.}
+\item{\code{project_owner}}{If you are using Enterprise, use the name of the
+Division that owns the project; otherwise, enter the project owner's
+Platform username.}
 
 \item{\code{project}}{The short name of the project you are querying.}
 

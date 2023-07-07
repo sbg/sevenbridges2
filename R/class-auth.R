@@ -573,7 +573,9 @@ Auth <- R6::R6Class(
     # get specific project ----------------------------------------------------
     #' @description This call creates an object containing the details
     #' of a specified project.
-    #' @param project_owner Project owner's Platform username.
+    #' @param project_owner If you are using Enterprise, use the name of the
+    #' Division that owns the project; otherwise, enter the project owner's
+    #' Platform username.
     #' @param project The short name of the project you are querying.
     #' @details
     #' Note that project_owner is always case-sensitive, and that project is
