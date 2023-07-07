@@ -71,11 +71,11 @@ permissions within the project.}
 \item \href{#method-Project-detailed_print}{\code{Project$detailed_print()}}
 \item \href{#method-Project-edit}{\code{Project$edit()}}
 \item \href{#method-Project-delete}{\code{Project$delete()}}
-\item \href{#method-Project-member_list}{\code{Project$member_list()}}
-\item \href{#method-Project-member_add}{\code{Project$member_add()}}
-\item \href{#method-Project-member_delete}{\code{Project$member_delete()}}
-\item \href{#method-Project-member_permissions_get}{\code{Project$member_permissions_get()}}
-\item \href{#method-Project-member_permissions_modify}{\code{Project$member_permissions_modify()}}
+\item \href{#method-Project-list_members}{\code{Project$list_members()}}
+\item \href{#method-Project-add_member}{\code{Project$add_member()}}
+\item \href{#method-Project-remove_member}{\code{Project$remove_member()}}
+\item \href{#method-Project-get_member}{\code{Project$get_member()}}
+\item \href{#method-Project-modify_member_permissions}{\code{Project$modify_member_permissions()}}
 \item \href{#method-Project-files}{\code{Project$files()}}
 \item \href{#method-Project-create_folder}{\code{Project$create_folder()}}
 \item \href{#method-Project-get_root_folder}{\code{Project$get_root_folder()}}
@@ -224,102 +224,105 @@ permanently delete the project from the platform.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Project-member_list"></a>}}
-\if{latex}{\out{\hypertarget{method-Project-member_list}{}}}
-\subsection{Method \code{member_list()}}{
+\if{html}{\out{<a id="method-Project-list_members"></a>}}
+\if{latex}{\out{\hypertarget{method-Project-list_members}{}}}
+\subsection{Method \code{list_members()}}{
 Method for listing all the project members.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$member_list(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Project$list_members(...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other parameters that can be passed to api() function like
+limit, offset, fields etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+List of Member class objects.
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Project-member_add"></a>}}
-\if{latex}{\out{\hypertarget{method-Project-member_add}{}}}
-\subsection{Method \code{member_add()}}{
+\if{html}{\out{<a id="method-Project-add_member"></a>}}
+\if{latex}{\out{\hypertarget{method-Project-add_member}{}}}
+\subsection{Method \code{add_member()}}{
 Method for adding new members to a specified project.
 The call can only be successfully made by a user who has admin
 permissions in the project.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$member_add(
-  username = NULL,
+\if{html}{\out{<div class="r">}}\preformatted{Project$add_member(
+  user = NULL,
   email = NULL,
-  write = TRUE,
-  read = TRUE,
-  copy = TRUE,
-  execute = TRUE,
-  admin = FALSE,
-  ...
+  permissions = list(read = TRUE, copy = FALSE, write = FALSE, execute = FALSE, admin =
+    FALSE)
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{username}}{The Seven Bridges Platform username of the person
-you want to add to the project.}
+\item{\code{user}}{The Seven Bridges Platform username of the person
+you want to add to the project or object of class Member containing
+user's username.}
 
 \item{\code{email}}{The email address of the person you want to add to the
 project. This has to be the email address that the person used when
 registering for an account on the Seven Bridges Platform.}
 
-\item{\code{write}}{Whether the user should have the write permission.}
-
-\item{\code{read}}{Whether the user should have the read permission.}
-
-\item{\code{copy}}{Whether the user should have the copy permission.}
-
-\item{\code{execute}}{Whether the user should have the execute permission.}
-
-\item{\code{admin}}{Whether the user should have the admin permission.}
+\item{\code{permissions}}{List of permissions that will be associated with the
+project's member. It can contain fields: 'read', 'copy', 'write',
+'execute' and 'admin' with logical fields - TRUE if certain permission
+is allowed to the user, or FALSE if it's not.
+Example: list(read = TRUE, copy = TRUE, write = FALSE, execute = FALSE,
+admin = FALSE)}
 
 \item{\code{...}}{Other arguments that can be passed to api() function
 like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+Member object.
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Project-member_delete"></a>}}
-\if{latex}{\out{\hypertarget{method-Project-member_delete}{}}}
-\subsection{Method \code{member_delete()}}{
-A method for deleting members from the project. It can only
+\if{html}{\out{<a id="method-Project-remove_member"></a>}}
+\if{latex}{\out{\hypertarget{method-Project-remove_member}{}}}
+\subsection{Method \code{remove_member()}}{
+A method for removing members from the project. It can only
 be successfully run by a user who has admin privileges in the project.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$member_delete(username = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Project$remove_member(user)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{username}}{The Seven Bridges Platform username of the user you
-are about to remove.}
+\item{\code{user}}{The Seven Bridges Platform username of the person
+you want to remove from the project or object of class Member containing
+user's username.}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Project-member_permissions_get"></a>}}
-\if{latex}{\out{\hypertarget{method-Project-member_permissions_get}{}}}
-\subsection{Method \code{member_permissions_get()}}{
-This method returns the permissions of a specified user
-within a specified project.
+\if{html}{\out{<a id="method-Project-get_member"></a>}}
+\if{latex}{\out{\hypertarget{method-Project-get_member}{}}}
+\subsection{Method \code{get_member()}}{
+This method returns the information about the member of
+the specified project.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$member_permissions_get(username = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Project$get_member(user, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{username}}{Username of the user whose permissions you are
-enquiring about.}
+\item{\code{user}}{The Seven Bridges Platform username of the project member
+you want to get information about or object of class Member containing
+user's username.}
 
 \item{\code{...}}{Other arguments.}
 }
@@ -327,42 +330,36 @@ enquiring about.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Project-member_permissions_modify"></a>}}
-\if{latex}{\out{\hypertarget{method-Project-member_permissions_modify}{}}}
-\subsection{Method \code{member_permissions_modify()}}{
+\if{html}{\out{<a id="method-Project-modify_member_permissions"></a>}}
+\if{latex}{\out{\hypertarget{method-Project-modify_member_permissions}{}}}
+\subsection{Method \code{modify_member_permissions()}}{
 This method can be used to edit a user's permissions in a
 specified  project.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$member_permissions_modify(
-  username = NULL,
-  write = TRUE,
-  read = TRUE,
-  copy = TRUE,
-  execute = TRUE,
-  admin = FALSE,
-  ...
+\if{html}{\out{<div class="r">}}\preformatted{Project$modify_member_permissions(
+  user = NULL,
+  permissions = list(read = TRUE, copy = FALSE, write = FALSE, execute = FALSE, admin =
+    FALSE)
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{username}}{The project member whose permissions you are editing.}
+\item{\code{user}}{The Seven Bridges Platform username of the person
+you want to modify permissions on the volume for or object of class
+Member containing user's username.}
 
-\item{\code{write}}{Whether the user should have the write permission.}
-
-\item{\code{read}}{Whether the user should have the read permission.}
-
-\item{\code{copy}}{Whether the user should have the copy permission.}
-
-\item{\code{execute}}{Whether the user should have the execute permission.}
-
-\item{\code{admin}}{Whether the user should have the admin permission.}
-
-\item{\code{...}}{Other arguments that can be passed to api() function
-like 'limit', 'offset', 'fields', etc.}
+\item{\code{permissions}}{List of permissions that will be updated for the
+user. It can contain fields: 'read', 'copy', 'execute', 'write' and
+'admin' with logical values - TRUE if certain permission is allowed to
+the user, or FALSE if it's not.
+Example: list(read = TRUE, copy = TRUE)}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Permission object.
 }
 }
 \if{html}{\out{<hr>}}

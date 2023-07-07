@@ -58,8 +58,7 @@ set to FALSE.}
 \item \href{#method-Volume-list_members}{\code{Volume$list_members()}}
 \item \href{#method-Volume-add_member}{\code{Volume$add_member()}}
 \item \href{#method-Volume-remove_member}{\code{Volume$remove_member()}}
-\item \href{#method-Volume-get_member_permissions}{\code{Volume$get_member_permissions()}}
-\item \href{#method-Volume-overwrite_member_permissions}{\code{Volume$overwrite_member_permissions()}}
+\item \href{#method-Volume-get_member}{\code{Volume$get_member()}}
 \item \href{#method-Volume-modify_member_permissions}{\code{Volume$modify_member_permissions()}}
 \item \href{#method-Volume-clone}{\code{Volume$clone()}}
 }
@@ -295,9 +294,17 @@ VolumeFile object.
 List members of a volume
 This function returns the members of a specific volume.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Volume$list_members()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Volume$list_members(...)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other parameters that can be passed to api() function like
+limit, offset, fields etc.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 List of Member class objects.
 }
@@ -318,8 +325,9 @@ This function adds members to the specified volume.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{user}}{User's username, or object of class User, or object of
-class Member, you want to add to be a member of the volume.}
+\item{\code{user}}{The Seven Bridges Platform username of the person
+you want to add to the volume or object of class Member containing
+user's username.}
 
 \item{\code{permissions}}{List of permissions that will be associated with the
 user. It can contain fields: 'read', 'copy', 'write' and 'admin' with
@@ -346,64 +354,34 @@ This function removes members from the specified volume.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{user}}{User's username, or object of class User, or object of
-class Member, you want to remove from the volume's member list.}
+\item{\code{user}}{The Seven Bridges Platform username of the person
+you want to remove from the volume or object of class Member containing
+user's username.}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Volume-get_member_permissions"></a>}}
-\if{latex}{\out{\hypertarget{method-Volume-get_member_permissions}{}}}
-\subsection{Method \code{get_member_permissions()}}{
-Get member's permissions on the volume
-This function returns member's permissions set on the specified volume.
+\if{html}{\out{<a id="method-Volume-get_member"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-get_member}{}}}
+\subsection{Method \code{get_member()}}{
+Get member's info
+This function returns member's information.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Volume$get_member_permissions(user)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Volume$get_member(user)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{user}}{User's username, or object of class User, or object of
-class Member, you want to remove from the volume's member list.}
+\item{\code{user}}{The Seven Bridges Platform username of the person
+you want to get information about or object of class Member containing
+user's username.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Permission object.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Volume-overwrite_member_permissions"></a>}}
-\if{latex}{\out{\hypertarget{method-Volume-overwrite_member_permissions}{}}}
-\subsection{Method \code{overwrite_member_permissions()}}{
-Overwrite a volume member's permission
-This function overwrites the permissions for a member of a specific
-volume.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Volume$overwrite_member_permissions(
-  user,
-  permissions = list(read = TRUE, copy = FALSE, write = FALSE, admin = FALSE)
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{user}}{User's username, or object of class User, or object of
-class Member, you want to overwrite permissions for.}
-
-\item{\code{permissions}}{List of permissions that will be associated with the
-user. It can contain fields: 'read', 'copy', 'write' and 'admin' with
-logical values - TRUE if certain permission is allowed to the user, or
-FALSE if it's not.
-Example: list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Permission object.
+Member object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -413,8 +391,7 @@ Permission object.
 Modify a volume member's permission
 This function modifies the permissions for a member of a specific
 volume. Note that this does not overwrite all previously set permissions
-for the member. Refer to the \code{overwrite_member_permissions} to overwrite
-rather than update permissions.
+for the member.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$modify_member_permissions(
   user,
@@ -425,8 +402,9 @@ rather than update permissions.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{user}}{User's username, or object of class User, or object of
-class Member, you want to modify permissions for.}
+\item{\code{user}}{The Seven Bridges Platform username of the person
+you want to modify permissions for or object of class Member containing
+user's username.}
 
 \item{\code{permissions}}{List of permissions that will be updated for the
 user. It can contain fields: 'read', 'copy', 'write' and 'admin' with
@@ -437,7 +415,7 @@ Example: list(read = TRUE, copy = TRUE)}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Member object.
+Permission object.
 }
 }
 \if{html}{\out{<hr>}}

@@ -256,10 +256,14 @@ Project <- R6::R6Class(
       }
     },
     #' @description Method for listing all the project members.
-    #' @param ... Other arguments.
-    member_list = function(...) {
+    #' @param ... Other parameters that can be passed to api() function like
+    #' limit, offset, fields etc.
+    #' @importFrom glue glue
+    #' @return List of Member class objects.
+    list_members = function(...) {
+      id <- self$id
       res <- sevenbridges2::api(
-        path = paste0("projects/", self$id, "/members"),
+        path = glue::glue("projects/{id}/members"),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -268,51 +272,71 @@ Project <- R6::R6Class(
 
       res <- status_check(res)
 
-      members_list <- asMemberList(res, self$auth)
-      members_list
+      return(asMemberList(res, self$auth))
     },
     #' @description Method for adding new members to a specified project.
     #' The call can only be successfully made by a user who has admin
     #' permissions in the project.
-    #' @param username The Seven Bridges Platform username of the person
-    #' you want to add to the project.
+    #' @param user The Seven Bridges Platform username of the person
+    #' you want to add to the project or object of class Member containing
+    #' user's username.
     #' @param email The email address of the person you want to add to the
     #' project. This has to be the email address that the person used when
     #' registering for an account on the Seven Bridges Platform.
-    #' @param write Whether the user should have the write permission.
-    #' @param read Whether the user should have the read permission.
-    #' @param copy Whether the user should have the copy permission.
-    #' @param execute Whether the user should have the execute permission.
-    #' @param admin Whether the user should have the admin permission.
+    #' @param permissions List of permissions that will be associated with the
+    #' project's member. It can contain fields: 'read', 'copy', 'write',
+    #' 'execute' and 'admin' with logical fields - TRUE if certain permission
+    #' is allowed to the user, or FALSE if it's not.
+    #' Example: list(read = TRUE, copy = TRUE, write = FALSE, execute = FALSE,
+    #' admin = FALSE)
     #' @param ... Other arguments that can be passed to api() function
     #' like 'limit', 'offset', 'fields', etc.
-    member_add = function(username = NULL,
+    #' @importFrom rlang abort
+    #' @importFrom glue glue glue_col
+    #' @importFrom checkmate assert_character assert_list assert_subset
+    #' @return Member object.
+    add_member = function(user = NULL,
                           email = NULL,
-                          write = TRUE,
-                          read = TRUE,
-                          copy = TRUE,
-                          execute = TRUE,
-                          admin = FALSE,
-                          ...) {
-      if (is_missing(username) && is_missing(email)) {
-        rlang::abort("Neither username nor email are provided. You must
-                       provide at least one of these parameters before you can
-                       add a user to a project.")
+                          permissions = list(
+                            read = TRUE,
+                            copy = FALSE,
+                            write = FALSE,
+                            execute = FALSE,
+                            admin = FALSE
+                          )) {
+      if (is_missing(user) && is_missing(email)) {
+        rlang::abort("Neither username nor email are provided.
+        You must provide at least one of these parameters before you can add a user to a project.") # nolint
       }
+      if (!is_missing(username)) {
+        username <- check_and_transform_id(user,
+          class_name = "Member",
+          field_name = "username"
+        )
+      }
+      if (!is_missing(email)) {
+        checkmate::assert_character(email, len = 1, null.ok = TRUE)
+      }
+      checkmate::assert_list(permissions,
+        null.ok = FALSE, max.len = 5,
+        types = "logical"
+      )
+      checkmate::assert_subset(names(permissions),
+        empty.ok = FALSE,
+        choices = c(
+          "read", "copy", "execute", "write",
+          "admin"
+        )
+      )
       body <- list(
         "username" = username,
         "email" = email,
-        "permissions" = list(
-          "write" = write,
-          "read" = read,
-          "copy" = copy,
-          "execute" = execute,
-          "admin" = admin
-        )
+        "permissions" = permissions
       )
 
+      id <- self$id
       req <- sevenbridges2::api(
-        path = paste0("projects/", self$id, "/members"),
+        path = glue::glue("projects/{id}/members"),
         method = "POST",
         token = self$auth$get_token(),
         body = body,
@@ -323,25 +347,31 @@ Project <- R6::R6Class(
 
       res <- status_check(req)
 
-      asMember(res)
+      return(asMember(res, auth = self$auth))
     },
-    #' @description A method for deleting members from the project. It can only
+    #' @description A method for removing members from the project. It can only
     #' be successfully run by a user who has admin privileges in the project.
-    #' @param username The Seven Bridges Platform username of the user you
-    #' are about to remove.
-    member_delete = function(username = NULL) {
-      if (is_missing(username)) {
-        rlang::abort("Please provide a username for the user you want to remove
-                     from the project.")
+    #' @param user The Seven Bridges Platform username of the person
+    #' you want to remove from the project or object of class Member containing
+    #' user's username.
+    #' @importFrom rlang abort
+    #' @importFrom glue glue glue_col
+    remove_member = function(user) {
+      if (is_missing(user)) {
+        rlang::abort("Please provide a username for the user or project member you want to remove from the project.") # nolint
       }
+      id <- self$id
+      username <- check_and_transform_id(user,
+        class_name = "Member",
+        field_name = "username"
+      )
       req <- sevenbridges2::api(
-        path = paste0("projects/", self$id, "/members", "/", username),
+        path = glue::glue("projects/{id}/members/{username}"),
         method = "DELETE",
         token = self$auth$get_token(),
         authorization = self$auth$authorization,
         base_url = self$auth$url
       )
-
 
       if (req$status_code == 204) {
         rlang::inform(message = glue::glue_col(
@@ -351,17 +381,24 @@ Project <- R6::R6Class(
         ))
       }
     },
-    #' @description This method returns the permissions of a specified user
-    #' within a specified project.
-    #' @param username Username of the user whose permissions you are
-    #' enquiring about.
+    #' @description This method returns the information about the member of
+    #' the specified project.
+    #' @param user The Seven Bridges Platform username of the project member
+    #' you want to get information about or object of class Member containing
+    #' user's username.
+    #' @importFrom rlang abort
     #' @param ... Other arguments.
-    member_permissions_get = function(username = NULL, ...) {
-      if (is_missing(username)) {
-        rlang::abort("Please provide a username.")
+    get_member = function(user, ...) {
+      if (is_missing(user)) {
+        rlang::abort("Please provide a username or Member object.")
       }
+      id <- self$id
+      username <- check_and_transform_id(user,
+        class_name = "Member",
+        field_name = "username"
+      )
       req <- sevenbridges2::api(
-        path = paste0("projects/", self$id, "/members", "/", username),
+        path = glue::glue("projects/{id}/members/{username}"),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -370,46 +407,58 @@ Project <- R6::R6Class(
 
       res <- status_check(req)
 
-      asMember(res, self$auth)
+      return(asMember(res, self$auth))
     },
     #' @description This method can be used to edit a user's permissions in a
     #' specified  project.
-    #' @param username The project member whose permissions you are editing.
-    #' @param write Whether the user should have the write permission.
-    #' @param read Whether the user should have the read permission.
-    #' @param copy Whether the user should have the copy permission.
-    #' @param execute Whether the user should have the execute permission.
-    #' @param admin Whether the user should have the admin permission.
-    #' @param ... Other arguments that can be passed to api() function
-    #' like 'limit', 'offset', 'fields', etc.
-    member_permissions_modify = function(username = NULL,
-                                         write = TRUE,
-                                         read = TRUE,
-                                         copy = TRUE,
-                                         execute = TRUE,
-                                         admin = FALSE, ...) {
-      if (is_missing(username)) {
-        rlang::abort("Please provide a username.")
+    #' @param user The Seven Bridges Platform username of the person
+    #' you want to modify permissions on the volume for or object of class
+    #' Member containing user's username.
+    #' @param permissions List of permissions that will be updated for the
+    #' user. It can contain fields: 'read', 'copy', 'execute', 'write' and
+    #' 'admin' with logical values - TRUE if certain permission is allowed to
+    #' the user, or FALSE if it's not.
+    #' Example: list(read = TRUE, copy = TRUE)
+    #' @importFrom rlang abort
+    #' @importFrom glue glue glue_col
+    #' @importFrom checkmate assert_list assert_subset
+    #' @return Permission object.
+    modify_member_permissions = function(user = NULL,
+                                         permissions = list(
+                                           read = TRUE,
+                                           copy = FALSE,
+                                           write = FALSE,
+                                           execute = FALSE,
+                                           admin = FALSE
+                                         )) {
+      if (is_missing(user)) {
+        rlang::abort("Please provide a username or Member object.")
       }
-      body <- list(
-        "write" = write,
-        "read" = read,
-        "copy" = copy,
-        "execute" = execute,
-        "admin" = admin
+      username <- check_and_transform_id(user,
+        class_name = "Member",
+        field_name = "username"
       )
-
+      checkmate::assert_list(permissions,
+        null.ok = FALSE, max.len = 5,
+        types = "logical"
+      )
+      checkmate::assert_subset(names(permissions),
+        empty.ok = FALSE,
+        choices = c(
+          "read", "copy", "execute", "write",
+          "admin"
+        )
+      )
+      body <- flatten_query(permissions)
       body <- body[!sapply(body, is.null)]
 
       if (length(body) == 0) {
         rlang::abort("Please provide updated information.")
       }
+      id <- self$id
 
       req <- sevenbridges2::api(
-        path = paste0(
-          "projects/", self$id, "/members", "/", username,
-          "/permissions"
-        ),
+        path = glue::glue("projects/{id}/members/{username}/permissions"),
         method = "PATCH",
         token = self$auth$get_token(),
         body = body,
@@ -420,11 +469,11 @@ Project <- R6::R6Class(
 
       res <- status_check(req)
 
-
       if (req$status_code == 200) {
         rlang::inform(glue::glue_col(
           "Permissions for {green {username}} have been changed."
         ))
+        return(asPermission(res, auth = self$auth))
       } else {
         rlang::abort("Oops, something went wrong. ")
         res

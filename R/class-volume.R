@@ -19,12 +19,9 @@ Volume <- R6::R6Class(
       "update" = "storage/volumes/{id}",
       "deactivate" = "storage/volumes/{id}",
       "delete" = "storage/volumes/{id}",
-      "list_members" = "storage/volumes/{id}/members",
-      "add_members" = "storage/volumes/{id}/members",
-      "remove_members" = "storage/volumes/{id}/members/{username}",
-      "member_permissions" = "storage/volumes/{id}/members/{username}",
-      "overwrite_permissions" = "storage/volumes/{id}/members/{username}/permissions", # nolint
-      "modify_permissions" = "storage/volumes/{id}/members/{username}/permissions" # nolint
+      "members" = "storage/volumes/{id}/members",
+      "member_username" = "storage/volumes/{id}/members/{username}",
+      "member_permissions" = "storage/volumes/{id}/members/{username}/permissions" # nolint
     ),
     #' @field id String. Volume ID, constructed from {division}/{volume_name}
     #' or {volume_owner}/{volume_name}
@@ -383,18 +380,21 @@ Volume <- R6::R6Class(
     },
     #' @description List members of a volume
     #' This function returns the members of a specific volume.
+    #' @param ... Other parameters that can be passed to api() function like
+    #' limit, offset, fields etc.
     #' @return List of Member class objects.
-    list_members = function() {
+    list_members = function(...) {
       # nocov start
       id <- self$id
-      path <- glue::glue(self$URL[["list_members"]])
+      path <- glue::glue(self$URL[["members"]])
 
       res <- sevenbridges2::api(
         path = path,
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
-        advance_access = TRUE
+        advance_access = TRUE,
+        ...
       )
       res <- status_check(res)
 
@@ -403,8 +403,9 @@ Volume <- R6::R6Class(
     },
     #' @description Add member to a volume
     #' This function adds members to the specified volume.
-    #' @param user User's username, or object of class User, or object of
-    #' class Member, you want to add to be a member of the volume.
+    #' @param user The Seven Bridges Platform username of the person
+    #' you want to add to the volume or object of class Member containing
+    #' user's username.
     #' @param permissions List of permissions that will be associated with the
     #' user. It can contain fields: 'read', 'copy', 'write' and 'admin' with
     #' logical fields - TRUE if certain permission is allowed to the user, or
@@ -417,15 +418,10 @@ Volume <- R6::R6Class(
                             write = FALSE,
                             admin = FALSE
                           )) {
-      if (checkmate::test_r6(user, classes = c("User"))) {
-        username <- user$username
-      }
-      if (checkmate::test_r6(user, classes = c("Member"))) {
-        username <- user$username
-      }
-      if (checkmate::test_character(user, len = 1, null.ok = FALSE)) {
-        username <- user
-      }
+      username <- check_and_transform_id(user,
+        class_name = "Member",
+        field_name = "username"
+      )
       checkmate::assert_list(permissions,
         null.ok = FALSE, max.len = 4,
         types = "logical"
@@ -436,7 +432,7 @@ Volume <- R6::R6Class(
       )
       # nocov start
       id <- self$id
-      path <- glue::glue(self$URL[["add_members"]])
+      path <- glue::glue(self$URL[["members"]])
 
       body <- list(
         username = username,
@@ -457,21 +453,17 @@ Volume <- R6::R6Class(
     },
     #' @description Remove member from a volume
     #' This function removes members from the specified volume.
-    #' @param user User's username, or object of class User, or object of
-    #' class Member, you want to remove from the volume's member list.
+    #' @param user The Seven Bridges Platform username of the person
+    #' you want to remove from the volume or object of class Member containing
+    #' user's username.
     remove_member = function(user) {
-      if (checkmate::test_r6(user, classes = c("User"))) {
-        username <- user$username
-      }
-      if (checkmate::test_r6(user, classes = c("Member"))) {
-        username <- user$username
-      }
-      if (checkmate::test_character(user, len = 1, null.ok = FALSE)) {
-        username <- user
-      }
+      username <- check_and_transform_id(user,
+        class_name = "Member",
+        field_name = "username"
+      )
       # nocov start
       id <- self$id
-      path <- glue::glue(self$URL[["remove_members"]])
+      path <- glue::glue(self$URL[["member_username"]])
 
       res <- sevenbridges2::api(
         path = path,
@@ -485,24 +477,20 @@ Volume <- R6::R6Class(
       rlang::inform(glue_col("Member {green {username}} was successfully removed from the {green {id}} volume.")) # nolint
       # nocov end
     },
-    #' @description Get member's permissions on the volume
-    #' This function returns member's permissions set on the specified volume.
-    #' @param user User's username, or object of class User, or object of
-    #' class Member, you want to remove from the volume's member list.
-    #' @return Permission object.
-    get_member_permissions = function(user) {
-      if (checkmate::test_r6(user, classes = c("User"))) {
-        username <- user$username
-      }
-      if (checkmate::test_r6(user, classes = c("Member"))) {
-        username <- user$username
-      }
-      if (checkmate::test_character(user, len = 1, null.ok = FALSE)) {
-        username <- user
-      }
+    #' @description Get member's info
+    #' This function returns member's information.
+    #' @param user The Seven Bridges Platform username of the person
+    #' you want to get information about or object of class Member containing
+    #' user's username.
+    #' @return Member object.
+    get_member = function(user) {
+      username <- check_and_transform_id(user,
+        class_name = "Member",
+        field_name = "username"
+      )
       # nocov start
       id <- self$id
-      path <- glue::glue(self$URL[["member_permissions"]])
+      path <- glue::glue(self$URL[["member_username"]])
 
       res <- sevenbridges2::api(
         path = path,
@@ -512,94 +500,33 @@ Volume <- R6::R6Class(
         advance_access = TRUE
       )
       res <- status_check(res)
-      member <- asMember(res, auth = self$auth)
-      rlang::inform(glue::glue_col("Member {green {username}} permissions:"))
 
-      return(member$permissions)
-      # nocov end
-    },
-    #' @description Overwrite a volume member's permission
-    #' This function overwrites the permissions for a member of a specific
-    #' volume.
-    #' @param user User's username, or object of class User, or object of
-    #' class Member, you want to overwrite permissions for.
-    #' @param permissions List of permissions that will be associated with the
-    #' user. It can contain fields: 'read', 'copy', 'write' and 'admin' with
-    #' logical values - TRUE if certain permission is allowed to the user, or
-    #' FALSE if it's not.
-    #' Example: list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)
-    #' @return Permission object.
-    overwrite_member_permissions = function(user, permissions = list(
-                                              read = TRUE,
-                                              copy = FALSE,
-                                              write = FALSE,
-                                              admin = FALSE
-                                            )) {
-      if (checkmate::test_r6(user, classes = c("User"))) {
-        username <- user$username
-      }
-      if (checkmate::test_r6(user, classes = c("Member"))) {
-        username <- user$username
-      }
-      if (checkmate::test_character(user, len = 1, null.ok = FALSE)) {
-        username <- user
-      }
-      checkmate::assert_list(permissions,
-        null.ok = FALSE, max.len = 4,
-        types = "logical"
-      )
-      checkmate::assert_subset(names(permissions),
-        empty.ok = FALSE,
-        choices = c("read", "copy", "write", "admin")
-      )
-      body <- flatten_query(permissions)
-
-      # nocov start
-      id <- self$id
-      path <- glue::glue(self$URL[["overwrite_permissions"]])
-
-      res <- sevenbridges2::api(
-        path = path,
-        method = "PUT",
-        body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
-        advance_access = TRUE
-      )
-      res <- status_check(res)
-      rlang::inform(glue::glue_col("Member {green {username}}'s permissions have been {green overwritten} to:")) # nolint
-
-      return(asPermission(res, auth = self$auth))
+      return(asMember(res, auth = self$auth))
       # nocov end
     },
     #' @description Modify a volume member's permission
     #' This function modifies the permissions for a member of a specific
     #' volume. Note that this does not overwrite all previously set permissions
-    #' for the member. Refer to the `overwrite_member_permissions` to overwrite
-    #' rather than update permissions.
-    #' @param user User's username, or object of class User, or object of
-    #' class Member, you want to modify permissions for.
+    #' for the member.
+    #' @param user The Seven Bridges Platform username of the person
+    #' you want to modify permissions for or object of class Member containing
+    #' user's username.
     #' @param permissions List of permissions that will be updated for the
     #' user. It can contain fields: 'read', 'copy', 'write' and 'admin' with
     #' logical values - TRUE if certain permission is allowed to the user, or
     #' FALSE if it's not.
     #' Example: list(read = TRUE, copy = TRUE)
-    #' @return Member object.
+    #' @return Permission object.
     modify_member_permissions = function(user, permissions = list(
                                            read = TRUE,
                                            copy = FALSE,
                                            write = FALSE,
                                            admin = FALSE
                                          )) {
-      if (checkmate::test_r6(user, classes = c("User"))) {
-        username <- user$username
-      }
-      if (checkmate::test_r6(user, classes = c("Member"))) {
-        username <- user$username
-      }
-      if (checkmate::test_character(user, len = 1, null.ok = FALSE)) {
-        username <- user
-      }
+      username <- check_and_transform_id(user,
+        class_name = "Member",
+        field_name = "username"
+      )
       checkmate::assert_list(permissions,
         null.ok = FALSE, max.len = 4,
         types = "logical"
@@ -612,7 +539,7 @@ Volume <- R6::R6Class(
 
       # nocov start
       id <- self$id
-      path <- glue::glue(self$URL[["modify_permissions"]])
+      path <- glue::glue(self$URL[["member_permissions"]])
 
       res <- sevenbridges2::api(
         path = path,
