@@ -130,22 +130,17 @@ Project <- R6::R6Class(
 
       if (!is.null(x$settings) && length(x$settings) != 0) {
         project_settings <- x$settings
-        string_project_settings <- glue::glue(
-          "{names(project_settings)}: {project_settings}"
-        )
+        string_project_settings <- glue::glue("{names(project_settings)}: {project_settings}") # nolint
       }
       if (!is.null(x$tags) && length(x$tags) != 0) {
         project_tags <- x$tags
-        names(project_tags) <- paste0("tag_", seq_along(project_tags))
-        string_project_tags <- glue::glue(
-          "{names(project_tags)}: {project_tags}"
-        )
+        names(project_tags) <-
+          paste0("tag_", seq_along(project_tags))
+        string_project_tags <- glue::glue("{names(project_tags)}: {project_tags}") # nolint
       }
       if (!is.null(x$permissions) && length(x$permissions) != 0) {
         project_permissions <- x$permissions
-        string_project_permissions <- glue::glue(
-          "{names(project_permissions)}: {project_permissions}"
-        )
+        string_project_permissions <- glue::glue("{names(project_permissions)}: {project_permissions}") # nolint
       }
       x <- purrr::discard(x, .p = is.function)
       x <- purrr::discard(x, .p = is.environment)
@@ -159,12 +154,13 @@ Project <- R6::R6Class(
       cli::cli_li(string)
 
 
-      ifelse(exists("project_settings") && !is.null(project_settings),
-        {
-          cli::cli_li("settings")
-          cli::cli_ul(string_project_settings)
-        },
-        ""
+      ifelse(exists("project_settings") &&
+        !is.null(project_settings),
+      {
+        cli::cli_li("settings")
+        cli::cli_ul(string_project_settings)
+      },
+      ""
       )
       ifelse(exists("project_tags") && !is.null(project_tags),
         {
@@ -173,12 +169,13 @@ Project <- R6::R6Class(
         },
         ""
       )
-      ifelse(exists("project_permissions") && !is.null(project_permissions),
-        {
-          cli::cli_li("permissions")
-          cli::cli_ul(string_project_permissions)
-        },
-        ""
+      ifelse(exists("project_permissions") &&
+        !is.null(project_permissions),
+      {
+        cli::cli_li("permissions")
+        cli::cli_ul(string_project_permissions)
+      },
+      ""
       )
       # Close container elements
       cli::cli_end()
@@ -201,10 +198,12 @@ Project <- R6::R6Class(
                     description = NULL,
                     billing_group = NULL,
                     settings = NULL,
-                    tags = NULL, ...) {
+                    tags = NULL,
+                    ...) {
       check_tags(tags)
       check_settings(settings)
-      billing_group <- check_and_transform_id(billing_group, "Billing")
+      billing_group <-
+        check_and_transform_id(billing_group, "Billing")
 
       body <- list(
         "name" = name,
@@ -247,22 +246,28 @@ Project <- R6::R6Class(
       )
 
       if (res$status_code == 204) {
-        rlang::inform(message = glue::glue(
-          "Project {self$id} has been deleted."
-        ))
+        rlang::inform(message = glue::glue("Project {self$id} has been deleted.")) # nolint
       } else if (res$status_code %in% c("401", "403", "404", "503")) {
         msg <- httr::content(res, as = "parsed")$message
         rlang::abort(glue::glue("HTTP Status {res$status_code} : {msg}"))
       }
     },
     #' @description Method for listing all the project members.
+    #' @param limit Defines the number of items you want to get from your API
+    #' request. By default, `limit` is set to `50`. Maximum is `100`.
+    #' @param offset Defines where the retrieved items started.
+    #' By default, `offset` is set to `0`.
     #' @param ... Other arguments.
-    member_list = function(...) {
+    member_list = function(limit = getOption("sevenbridges2")$limit,
+                           offset = getOption("sevenbridges2")$offset,
+                           ...) {
       res <- sevenbridges2::api(
         path = paste0("projects/", self$id, "/members"),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
+        limit = limit,
+        offset = offset,
         ...
       )
 
@@ -295,9 +300,11 @@ Project <- R6::R6Class(
                           admin = FALSE,
                           ...) {
       if (is_missing(username) && is_missing(email)) {
-        rlang::abort("Neither username nor email are provided. You must
+        rlang::abort(
+          "Neither username nor email are provided. You must
                        provide at least one of these parameters before you can
-                       add a user to a project.")
+                       add a user to a project."
+        )
       }
       body <- list(
         "username" = username,
@@ -344,11 +351,13 @@ Project <- R6::R6Class(
 
 
       if (req$status_code == 204) {
-        rlang::inform(message = glue::glue_col(
-          "User {green {username}} has been deleted
+        rlang::inform(
+          message = glue::glue_col(
+            "User {green {username}} has been deleted
           from the {green {self$id}} project.",
-          .literal = TRUE
-        ))
+            .literal = TRUE
+          )
+        )
       }
     },
     #' @description This method returns the permissions of a specified user
@@ -387,7 +396,8 @@ Project <- R6::R6Class(
                                          read = TRUE,
                                          copy = TRUE,
                                          execute = TRUE,
-                                         admin = FALSE, ...) {
+                                         admin = FALSE,
+                                         ...) {
       if (is_missing(username)) {
         rlang::abort("Please provide a username.")
       }
@@ -407,7 +417,11 @@ Project <- R6::R6Class(
 
       req <- sevenbridges2::api(
         path = paste0(
-          "projects/", self$id, "/members", "/", username,
+          "projects/",
+          self$id,
+          "/members",
+          "/",
+          username,
           "/permissions"
         ),
         method = "PATCH",
@@ -422,9 +436,7 @@ Project <- R6::R6Class(
 
 
       if (req$status_code == 200) {
-        rlang::inform(glue::glue_col(
-          "Permissions for {green {username}} have been changed."
-        ))
+        rlang::inform(glue::glue_col("Permissions for {green {username}} have been changed.")) # nolint
       } else {
         rlang::abort("Oops, something went wrong. ")
         res

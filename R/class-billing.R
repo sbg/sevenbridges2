@@ -110,12 +110,14 @@ Billing <- R6::R6Class(
     #' maximum is 100.
     #' @param fields Selector specifying a subset of fields to include in the
     #' response.
+    #' @param ... Other arguments.
     analysis_breakdown = function(date_from = NULL,
                                   date_to = NULL,
                                   invoice_id = NULL,
                                   fields = NULL,
                                   limit = getOption("sevenbridges2")$limit,
-                                  offset = getOption("sevenbridges2")$offset) {
+                                  offset = getOption("sevenbridges2")$offset,
+                                  ...) {
       invoice_id <- check_and_transform_id(invoice_id, "Invoice")
 
       req <- sevenbridges2::api(
@@ -127,7 +129,8 @@ Billing <- R6::R6Class(
         invoice_id = invoice_id,
         offset = offset,
         date_from = date_from,
-        date_to = date_to
+        date_to = date_to,
+        ...
       )
       req <- status_check(req)
       # asAnalysisBreakdownList(req)
@@ -151,12 +154,14 @@ Billing <- R6::R6Class(
     #' maximum is 100.
     #' @param fields Selector specifying a subset of fields to include in the
     #' response.
+    #' @param ... Other arguments.
     storage_breakdown = function(date_from = NULL,
                                  date_to = NULL,
                                  invoice_id = NULL,
                                  fields = NULL,
                                  limit = getOption("sevenbridges2")$limit,
-                                 offset = getOption("sevenbridges2")$offset) {
+                                 offset = getOption("sevenbridges2")$offset,
+                                 ...) {
       invoice_id <- check_and_transform_id(invoice_id, "Invoice")
 
       req <- sevenbridges2::api(
@@ -168,7 +173,8 @@ Billing <- R6::R6Class(
         invoice_id = invoice_id,
         offset = offset,
         date_from = date_from,
-        date_to = date_to
+        date_to = date_to,
+        ...
       )
       req <- status_check(req)
       return(req)
@@ -189,12 +195,14 @@ Billing <- R6::R6Class(
     #' maximum is 100.
     #' @param fields Selector specifying a subset of fields to include in the
     #' response.
+    #' @param ... Other arguments.
     egress_breakdown = function(date_from = NULL,
                                 date_to = NULL,
                                 invoice_id = NULL,
                                 fields = NULL,
                                 limit = getOption("sevenbridges2")$limit,
-                                offset = getOption("sevenbridges2")$offset) {
+                                offset = getOption("sevenbridges2")$offset,
+                                ...) {
       invoice_id <- check_and_transform_id(invoice_id, "Invoice")
 
       req <- sevenbridges2::api(
@@ -206,7 +214,8 @@ Billing <- R6::R6Class(
         invoice_id = invoice_id,
         offset = offset,
         date_from = date_from,
-        date_to = date_to
+        date_to = date_to,
+        ...
       )
       req <- status_check(req)
       return(req)

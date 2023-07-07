@@ -229,12 +229,22 @@ permanently delete the project from the platform.
 \subsection{Method \code{member_list()}}{
 Method for listing all the project members.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$member_list(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Project$member_list(
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
+  ...
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{limit}}{Defines the number of items you want to get from your API
+request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+
+\item{\code{offset}}{Defines where the retrieved items started.
+By default, \code{offset} is set to \code{0}.}
+
 \item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
