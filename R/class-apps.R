@@ -43,6 +43,8 @@ Apps <- R6::R6Class(
     #' @param offset The zero-based starting index in the entire collection of
     #' the first item to return. The default value is 0. This is a
     #' pagination-specific attribute.
+    #' @param ... Other arguments such as `fields` which can be used to specify
+    #' a subset of fields to include in the response.
     #'
     #' @importFrom checkmate assert_list
     query = function(project = NULL,
@@ -50,7 +52,8 @@ Apps <- R6::R6Class(
                      query_terms = NULL,
                      id = NULL,
                      limit = getOption("sevenbridges2")$limit,
-                     offset = getOption("sevenbridges2")$offset) {
+                     offset = getOption("sevenbridges2")$offset,
+                     ...) {
       if (!is_missing(project)) {
         project <-
           check_and_transform_id(project, class_name = "Project")
@@ -77,7 +80,8 @@ Apps <- R6::R6Class(
         q = query_terms,
         id = id,
         offset = offset,
-        limit = limit
+        limit = limit,
+        ...
       )
 
       return(asAppList(res, auth = self$auth)) # nocov end
@@ -93,9 +97,11 @@ Apps <- R6::R6Class(
     #' path for this API call is known as App ID. You can also get the App ID
     #' for an app by making the call to list all apps available to you.
     #' @param revision The number of the app revision you want to get.
+    #' @param ... Other arguments such as `fields` which can be used to specify
+    #' a subset of fields to include in the response.
     #' @importFrom checkmate assert_int
     #' @importFrom rlang abort
-    get = function(id, revision = NULL) {
+    get = function(id, revision = NULL, ...) {
       if (is_missing(id)) {
         rlang::abort("App ID must be provided!")
       }
@@ -106,7 +112,8 @@ Apps <- R6::R6Class(
       id <- paste(c(id, revision), collapse = "/")
       res <- super$get(
         cls = self,
-        id = id
+        id = id,
+        ...
       )
 
       return(asApp(res, auth = self$auth)) # nocov end
@@ -131,13 +138,16 @@ Apps <- R6::R6Class(
     #' `clone_direct`: copy all revisions; get updates from the copied app
     #' `transient`: copy latest revision; get updates from the same app as the
     #' copied app
+    #' @param ... Other arguments such as `fields` which can be used to specify
+    #' a subset of fields to include in the response.
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #' @importFrom glue glue
     copy = function(app,
                     project,
                     name = NULL,
-                    strategy = c("clone", "direct", "clone_direct", "transient")) { # nolint
+                    strategy = c("clone", "direct", "clone_direct", "transient"), # nolint
+                    ...) {
       if (is_missing(app)) {
         rlang::abort("App parameter must be provided!")
       }
@@ -168,7 +178,8 @@ Apps <- R6::R6Class(
         method = "POST",
         body = body,
         token = self$auth$get_token(),
-        base_url = self$auth$url
+        base_url = self$auth$url,
+        ...
       )
 
       res <- status_check(req)
@@ -190,7 +201,8 @@ Apps <- R6::R6Class(
     #' @param name A short name for the app (without any non-alphanumeric
     #' characters or spaces)
     #' @param raw_format The type of format used (`JSON` or `YAML`).
-
+    #' @param ... Other arguments such as `fields` which can be used to specify
+    #' a subset of fields to include in the response.
     #' @importFrom checkmate assert_string
     #' @importFrom jsonlite validate fromJSON
     #' @importFrom rlang abort
@@ -199,7 +211,8 @@ Apps <- R6::R6Class(
                       from_path = NULL,
                       project,
                       name,
-                      raw_format = c("JSON", "YAML")) {
+                      raw_format = c("JSON", "YAML"),
+                      ...) {
       if (is_missing(raw) && is_missing(from_path)) {
         rlang::abort("App raw body OR file path must be provided!")
       }
@@ -252,7 +265,8 @@ Apps <- R6::R6Class(
         method = "POST",
         body = body,
         token = self$auth$get_token(),
-        base_url = self$auth$url
+        base_url = self$auth$url,
+        ...
       )
 
       res <- status_check(req)

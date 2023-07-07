@@ -449,7 +449,8 @@ This call lists all apps in project.
   query_terms = NULL,
   id = NULL,
   limit = getOption("sevenbridges2")$limit,
-  offset = getOption("sevenbridges2")$offset
+  offset = getOption("sevenbridges2")$offset,
+  ...
 )}\if{html}{\out{</div>}}
 }
 
@@ -468,6 +469,9 @@ default value is 50. This is a pagination-specific attribute.}
 \item{\code{offset}}{The zero-based starting index in the entire collection of
 the first item to return. The default value is 0. This is a
 pagination-specific attribute.}
+
+\item{\code{...}}{Other arguments that can be passed to this method.
+Such as query parameters.}
 }
 \if{html}{\out{</div>}}
 }

@@ -522,17 +522,21 @@ Project <- R6::R6Class(
     #' @param offset The zero-based starting index in the entire collection of
     #'   the first item to return. The default value is 0. This is a
     #'   pagination-specific attribute.
+    #' @param ... Other arguments that can be passed to this method.
+    #' Such as query parameters.
     list_apps = function(query_terms = NULL,
                          id = NULL,
                          limit = getOption("sevenbridges2")$limit,
-                         offset = getOption("sevenbridges2")$offset) {
+                         offset = getOption("sevenbridges2")$offset,
+                         ...) {
       self$auth$apps$query(
         project = self$id,
         visibility = "private",
         query_terms = query_terms,
         id = id,
         limit = limit,
-        offset = offset
+        offset = offset,
+        ...
       )
     },
     #' @description This call creates app in project.

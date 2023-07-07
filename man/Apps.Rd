@@ -62,7 +62,8 @@ This call lists all the apps available to you.
   query_terms = NULL,
   id = NULL,
   limit = getOption("sevenbridges2")$limit,
-  offset = getOption("sevenbridges2")$offset
+  offset = getOption("sevenbridges2")$offset,
+  ...
 )}\if{html}{\out{</div>}}
 }
 
@@ -85,6 +86,9 @@ default value is 50. This is a pagination-specific attribute.}
 \item{\code{offset}}{The zero-based starting index in the entire collection of
 the first item to return. The default value is 0. This is a
 pagination-specific attribute.}
+
+\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
+a subset of fields to include in the response.}
 }
 \if{html}{\out{</div>}}
 }
@@ -98,7 +102,7 @@ The app should be one in a project that you can access; this could be an
 app that has been uploaded to the Seven Bridges Platform by a project
 member, or a publicly available app that has been copied to the project.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Apps$get(id, revision = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Apps$get(id, revision = NULL, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -109,6 +113,9 @@ path for this API call is known as App ID. You can also get the App ID
 for an app by making the call to list all apps available to you.}
 
 \item{\code{revision}}{The number of the app revision you want to get.}
+
+\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
+a subset of fields to include in the response.}
 }
 \if{html}{\out{</div>}}
 }
@@ -126,7 +133,8 @@ member, or a publicly available app that has been copied to the project.
   app,
   project,
   name = NULL,
-  strategy = c("clone", "direct", "clone_direct", "transient")
+  strategy = c("clone", "direct", "clone_direct", "transient"),
+  ...
 )}\if{html}{\out{</div>}}
 }
 
@@ -149,6 +157,9 @@ revisions; get updates from the same app as the copied app (default)
 \code{clone_direct}: copy all revisions; get updates from the copied app
 \code{transient}: copy latest revision; get updates from the same app as the
 copied app}
+
+\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
+a subset of fields to include in the response.}
 }
 \if{html}{\out{</div>}}
 }
@@ -164,7 +175,8 @@ This call allows you to add an app using raw CWL.
   from_path = NULL,
   project,
   name,
-  raw_format = c("JSON", "YAML")
+  raw_format = c("JSON", "YAML"),
+  ...
 )}\if{html}{\out{</div>}}
 }
 
@@ -186,6 +198,9 @@ app.}
 characters or spaces)}
 
 \item{\code{raw_format}}{The type of format used (\code{JSON} or \code{YAML}).}
+
+\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
+a subset of fields to include in the response.}
 }
 \if{html}{\out{</div>}}
 }
