@@ -745,6 +745,12 @@ Auth <- R6::R6Class(
     #' @param tag List files containing this tag. Note that the tag must be an
     #'   exact complete string for the results to match. Multiple tags can be
     #'   represented by vector of values.
+    #' @param limit The maximum number of collection items to return for a
+    #'   single request. Minimum value is 1. The maximum value is 100 and the
+    #'   default value is 50. This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection of
+    #'   the first item to return. The default value is 0. This is a
+    #'   pagination-specific attribute.
     #' @param ... Other arguments that can be passed to this method. Such as
     #'   query parameters.
     files = function(project = NULL,
@@ -753,6 +759,8 @@ Auth <- R6::R6Class(
                      metadata = NULL,
                      origin = NULL,
                      tag = NULL,
+                     limit = getOption("sevenbridges2")$limit,
+                     offset = getOption("sevenbridges2")$offset,
                      ...) {
       # Check input parameters
       checkmate::assert_character(name, null.ok = TRUE)
@@ -797,6 +805,8 @@ Auth <- R6::R6Class(
         method = "GET",
         token = self$get_token(),
         base_url = self$url,
+        limit = limit,
+        offset = offset,
         query = query,
         ...
       )

@@ -227,7 +227,7 @@ API rate limit
 (\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).You can
 do that using \code{Auth$copy_files()} operation.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{File$copy_to(project = NULL, name = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{File$copy_to(project, name = NULL, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -313,7 +313,7 @@ Default: FALSE.}
 This call moves a file from one folder to another. Moving of files is
 only allowed within the same project.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{File$move_to_folder(parent = NULL, name = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{File$move_to_folder(parent, name = NULL, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -336,12 +336,22 @@ be of type \code{FOLDER}.}
 \subsection{Method \code{list_contents()}}{
 List folder contents.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{File$list_contents(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{File$list_contents(
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
+  ...
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{limit}}{Defines the number of items you want to get from your API
+request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+
+\item{\code{offset}}{Defines where the retrieved items started.
+By default, \code{offset} is set to \code{0}.}
+
 \item{\code{...}}{Additional parameters that can be passed to the method.}
 }
 \if{html}{\out{</div>}}

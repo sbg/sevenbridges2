@@ -470,6 +470,8 @@ and specify the subdirectory ID as the parent parameter.
   metadata = NULL,
   origin = NULL,
   tag = NULL,
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
   ...
 )}\if{html}{\out{</div>}}
 }
@@ -503,6 +505,14 @@ multiple instances of the same metadata field.}
 \item{\code{tag}}{List files containing this tag. Note that the tag must be an
 exact complete string for the results to match. Multiple tags can be
 represented by vector of values.}
+
+\item{\code{limit}}{The maximum number of collection items to return for a
+single request. Minimum value is 1. The maximum value is 100 and the
+default value is 50. This is a pagination-specific attribute.}
+
+\item{\code{offset}}{The zero-based starting index in the entire collection of
+the first item to return. The default value is 0. This is a
+pagination-specific attribute.}
 
 \item{\code{...}}{Other arguments that can be passed to this method. Such as
 query parameters.}

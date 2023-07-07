@@ -443,14 +443,24 @@ Project <- R6::R6Class(
       }
     },
     #' @description  List all project's files and folders.
+    #' @param limit The maximum number of collection items to return for a
+    #'   single request. Minimum value is 1. The maximum value is 100 and the
+    #'   default value is 50. This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection of
+    #'   the first item to return. The default value is 0. This is a
+    #'   pagination-specific attribute.
     #' @param ... Other arguments that can be passed to api() function
     #' like 'limit', 'offset', 'fields', etc.
-    files = function(...) {
+    files = function(limit = getOption("sevenbridges2")$limit,
+                     offset = getOption("sevenbridges2")$offset,
+                     ...) {
       req <- sevenbridges2::api(
         path = paste0("projects/", self$id, "/files"),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
+        limit = limit,
+        offset = offset,
         ...
       )
 

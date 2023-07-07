@@ -381,12 +381,24 @@ like 'limit', 'offset', 'fields', etc.}
 \subsection{Method \code{files()}}{
 List all project's files and folders.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$files(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Project$files(
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
+  ...
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{limit}}{The maximum number of collection items to return for a
+single request. Minimum value is 1. The maximum value is 100 and the
+default value is 50. This is a pagination-specific attribute.}
+
+\item{\code{offset}}{The zero-based starting index in the entire collection of
+the first item to return. The default value is 0. This is a
+pagination-specific attribute.}
+
 \item{\code{...}}{Other arguments that can be passed to api() function
 like 'limit', 'offset', 'fields', etc.}
 }
