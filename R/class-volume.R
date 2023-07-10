@@ -423,7 +423,7 @@ Volume <- R6::R6Class(
         field_name = "username"
       )
       checkmate::assert_list(permissions,
-        null.ok = FALSE, max.len = 4,
+        null.ok = FALSE, len = 4,
         types = "logical"
       )
       checkmate::assert_subset(names(permissions),

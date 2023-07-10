@@ -211,6 +211,25 @@ setup_volfile_collection_obj <- VolumeFileCollection$new(
   auth = setup_auth_object
 )
 
+setup_volume_member_object <- Member$new(
+  username = "test-member",
+  email = "test-member@gmail.com", type = "USER",
+  id = "test-member",
+  permissions = Permission$new(
+    read = TRUE, copy = FALSE, write = FALSE,
+    execute = NULL, admin = FALSE
+  )
+)
+
+setup_project_member_object <- Member$new(
+  username = "test-member",
+  email = "test-member@gmail.com", type = "USER",
+  id = "test-member",
+  permissions = Permission$new(
+    read = TRUE, copy = FALSE, write = FALSE,
+    execute = FALSE, admin = FALSE
+  )
+)
 
 # Close session at the end of tests
 withr::defer(teardown_env())
