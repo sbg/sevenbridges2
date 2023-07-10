@@ -339,11 +339,13 @@ Volume <- R6::R6Class(
     #' location.
     #' @param link Link to the file resource received from listing volume's
     #' contents. Cannot be used together with location.
+    #' @param ... Other parameters that can be passed to api() function, like
+    #' fields etc.
     #' @importFrom checkmate assert_character
     #' @importFrom rlang abort
     #' @importFrom glue glue
     #' @return VolumeFile object.
-    get_file = function(location = NULL, link = NULL) {
+    get_file = function(location = NULL, link = NULL, ...) {
       checkmate::assert_character(location,
         len = 1, null.ok = TRUE,
         typed.missing = TRUE
@@ -371,7 +373,8 @@ Volume <- R6::R6Class(
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
-        advance_access = TRUE
+        advance_access = TRUE,
+        ...
       )
       res <- status_check(res)
 
@@ -380,10 +383,16 @@ Volume <- R6::R6Class(
     },
     #' @description List members of a volume
     #' This function returns the members of a specific volume.
+    #' @param limit Defines the number of items you want to get from your API
+    #' request. By default, `limit` is set to `50`. Maximum is `100`.
+    #' @param offset Defines where the retrieved items started.
+    #' By default, `offset` is set to `0`.
     #' @param ... Other parameters that can be passed to api() function like
-    #' limit, offset, fields etc.
+    #' fields etc.
     #' @return List of Member class objects.
-    list_members = function(...) {
+    list_members = function(limit = getOption("sevenbridges2")$limit,
+                            offset = getOption("sevenbridges2")$offset,
+                            ...) {
       # nocov start
       id <- self$id
       path <- glue::glue(self$URL[["members"]])
@@ -394,6 +403,8 @@ Volume <- R6::R6Class(
         token = self$auth$get_token(),
         base_url = self$auth$url,
         advance_access = TRUE,
+        limit = limit,
+        offset = offset,
         ...
       )
       res <- status_check(res)
@@ -411,13 +422,15 @@ Volume <- R6::R6Class(
     #' logical fields - TRUE if certain permission is allowed to the user, or
     #' FALSE if it's not.
     #' Example: list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)
+    #' @param ... Other arguments that can be passed to api() function
+    #' like 'limit', 'offset', 'fields', etc.
     #' @return Member object.
     add_member = function(user, permissions = list(
                             read = TRUE,
                             copy = FALSE,
                             write = FALSE,
                             admin = FALSE
-                          )) {
+                          ), ...) {
       username <- check_and_transform_id(user,
         class_name = "Member",
         field_name = "username"
@@ -444,7 +457,8 @@ Volume <- R6::R6Class(
         body = body,
         token = self$auth$get_token(),
         base_url = self$auth$url,
-        advance_access = TRUE
+        advance_access = TRUE,
+        ...
       )
       res <- status_check(res)
 
@@ -482,8 +496,10 @@ Volume <- R6::R6Class(
     #' @param user The Seven Bridges Platform username of the person
     #' you want to get information about or object of class Member containing
     #' user's username.
+    #' @param ... Other arguments that can be passed to api() function
+    #' like 'fields', etc.
     #' @return Member object.
-    get_member = function(user) {
+    get_member = function(user, ...) {
       username <- check_and_transform_id(user,
         class_name = "Member",
         field_name = "username"
@@ -497,7 +513,8 @@ Volume <- R6::R6Class(
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
-        advance_access = TRUE
+        advance_access = TRUE,
+        ...
       )
       res <- status_check(res)
 

@@ -269,7 +269,7 @@ objects.
 Get volume file information
 This function returns the specific Volume File.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Volume$get_file(location = NULL, link = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Volume$get_file(location = NULL, link = NULL, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -280,6 +280,9 @@ location.}
 
 \item{\code{link}}{Link to the file resource received from listing volume's
 contents. Cannot be used together with location.}
+
+\item{\code{...}}{Other parameters that can be passed to api() function, like
+fields etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -294,14 +297,24 @@ VolumeFile object.
 List members of a volume
 This function returns the members of a specific volume.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Volume$list_members(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Volume$list_members(
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
+  ...
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{limit}}{Defines the number of items you want to get from your API
+request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+
+\item{\code{offset}}{Defines where the retrieved items started.
+By default, \code{offset} is set to \code{0}.}
+
 \item{\code{...}}{Other parameters that can be passed to api() function like
-limit, offset, fields etc.}
+fields etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -318,7 +331,8 @@ This function adds members to the specified volume.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$add_member(
   user,
-  permissions = list(read = TRUE, copy = FALSE, write = FALSE, admin = FALSE)
+  permissions = list(read = TRUE, copy = FALSE, write = FALSE, admin = FALSE),
+  ...
 )}\if{html}{\out{</div>}}
 }
 
@@ -334,6 +348,9 @@ user. It can contain fields: 'read', 'copy', 'write' and 'admin' with
 logical fields - TRUE if certain permission is allowed to the user, or
 FALSE if it's not.
 Example: list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)}
+
+\item{\code{...}}{Other arguments that can be passed to api() function
+like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -368,7 +385,7 @@ user's username.}
 Get member's info
 This function returns member's information.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Volume$get_member(user)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Volume$get_member(user, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -377,6 +394,9 @@ This function returns member's information.
 \item{\code{user}}{The Seven Bridges Platform username of the person
 you want to get information about or object of class Member containing
 user's username.}
+
+\item{\code{...}}{Other arguments that can be passed to api() function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
