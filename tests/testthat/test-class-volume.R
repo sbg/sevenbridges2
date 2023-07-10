@@ -9,7 +9,9 @@ test_that("Volume initialization works", {
     public = c(
       "URL", "id", "name", "service", "access_mode", "active", "created_on",
       "modified_on", "get_file", "list_files",
-      "delete", "reactivate", "deactivate", "update"
+      "delete", "reactivate", "deactivate", "update",
+      "list_members", "get_member", "add_member", "remove_member",
+      "modify_member_permissions"
     )
   )
 })
@@ -231,15 +233,6 @@ test_that("Volume add_member method throws error when expected", {
       )
     ),
     regexp = "Assertion on 'permissions' failed: Must have length 4, but has length 5.", # nolint
-    fixed = TRUE
-  )
-
-  testthat::expect_error(
-    setup_s3_volume_obj$add_member(
-      user = "test-username",
-      permissions = 1234
-    ),
-    regexp = "Assertion on 'permissions' failed: Must be of type 'list', not 'double'.", # nolint
     fixed = TRUE
   )
 

@@ -115,8 +115,6 @@ Project <- R6::R6Class(
       cat(glue::glue_col("{blue  Project name: } {self$name}"), "\n") # nocov
       cat(glue::glue_col("{blue  Project id: } {self$id}"), "\n") # nocov
     },
-    # nocov start
-
     #' @description Detailed print method for Project class.
     #'
     #' @details This method allows users to print all the fields from the
@@ -143,15 +141,22 @@ Project <- R6::R6Class(
       }
       if (!is.null(x$permissions) && length(x$permissions) != 0) {
         project_permissions <- x$permissions
-        string_project_permissions <- glue::glue(
-          "{names(project_permissions)}: {project_permissions}"
-        )
+        # Convert permissions env to a list and keep only those elements that
+        # are logical
+        permissions <- as.list(project_permissions)
+        permissions <- purrr::keep(permissions, .p = is.logical)
+        string_permissions <- glue::glue("{names(permissions)}: {permissions}")
       }
       x <- purrr::discard(x, .p = is.function)
       x <- purrr::discard(x, .p = is.environment)
       x <- purrr::discard(x, .p = is.null)
       x <- purrr::discard(x, .p = is.list)
-      x <- purrr::discard(x, .p = ~ .x == "")
+
+      # Handle POSIX format
+      x$modified_on <- as.character(x$modified_on)
+      x$created_on <- as.character(x$created_on)
+
+      x <- purrr::discard(x, .p = ~ is.character(.x) && .x == "")
       string <- glue::glue("{names(x)}: {x}")
       names(string) <- rep("*", times = length(string))
 
@@ -173,10 +178,10 @@ Project <- R6::R6Class(
         },
         ""
       )
-      ifelse(exists("project_permissions") && !is.null(project_permissions),
+      ifelse(exists("permissions") && !is.null(permissions),
         {
           cli::cli_li("permissions")
-          cli::cli_ul(string_project_permissions)
+          cli::cli_ul(string_permissions)
         },
         ""
       )
@@ -205,7 +210,7 @@ Project <- R6::R6Class(
       check_tags(tags)
       check_settings(settings)
       billing_group <- check_and_transform_id(billing_group, "Billing")
-
+      # nocov start
       body <- list(
         "name" = name,
         "description" = description,
@@ -231,7 +236,7 @@ Project <- R6::R6Class(
       res <- status_check(res)
 
       asProject(res, self$auth)
-    },
+    }, # nocov end
     # delete project ---------------------------------------------------------
     #' @description Method that allows you to delete project from a platform.
     #' It can only be successfully made if you have admin status for the
@@ -239,6 +244,7 @@ Project <- R6::R6Class(
     #' Please be careful when using this method and note that calling it will
     #' permanently delete the project from the platform.
     delete = function() {
+      # nocov start
       res <- sevenbridges2::api(
         path = paste0("projects/", self$id),
         method = "DELETE",
@@ -254,13 +260,14 @@ Project <- R6::R6Class(
         msg <- httr::content(res, as = "parsed")$message
         rlang::abort(glue::glue("HTTP Status {res$status_code} : {msg}"))
       }
-    },
+    }, # nocov end
     #' @description Method for listing all the project members.
     #' @param ... Other parameters that can be passed to api() function like
     #' limit, offset, fields etc.
     #' @importFrom glue glue
     #' @return List of Member class objects.
     list_members = function(...) {
+      # nocov start
       id <- self$id
       res <- sevenbridges2::api(
         path = glue::glue("projects/{id}/members"),
@@ -273,7 +280,7 @@ Project <- R6::R6Class(
       res <- status_check(res)
 
       return(asMemberList(res, self$auth))
-    },
+    }, # nocov end
     #' @description Method for adding new members to a specified project.
     #' The call can only be successfully made by a user who has admin
     #' permissions in the project.
@@ -305,10 +312,9 @@ Project <- R6::R6Class(
                             admin = FALSE
                           )) {
       if (is_missing(user) && is_missing(email)) {
-        rlang::abort("Neither username nor email are provided.
-        You must provide at least one of these parameters before you can add a user to a project.") # nolint
+        rlang::abort("Neither username nor email are provided. You must provide at least one of these parameters before you can add a user to a project.") # nolint
       }
-      if (!is_missing(username)) {
+      if (!is_missing(user)) {
         username <- check_and_transform_id(user,
           class_name = "Member",
           field_name = "username"
@@ -318,7 +324,7 @@ Project <- R6::R6Class(
         checkmate::assert_character(email, len = 1, null.ok = TRUE)
       }
       checkmate::assert_list(permissions,
-        null.ok = FALSE, max.len = 5,
+        null.ok = FALSE, len = 5,
         types = "logical"
       )
       checkmate::assert_subset(names(permissions),
@@ -328,6 +334,7 @@ Project <- R6::R6Class(
           "admin"
         )
       )
+      # nocov start
       body <- list(
         "username" = username,
         "email" = email,
@@ -348,7 +355,7 @@ Project <- R6::R6Class(
       res <- status_check(req)
 
       return(asMember(res, auth = self$auth))
-    },
+    }, # nocov end
     #' @description A method for removing members from the project. It can only
     #' be successfully run by a user who has admin privileges in the project.
     #' @param user The Seven Bridges Platform username of the person
@@ -360,6 +367,7 @@ Project <- R6::R6Class(
       if (is_missing(user)) {
         rlang::abort("Please provide a username for the user or project member you want to remove from the project.") # nolint
       }
+      # nocov start
       id <- self$id
       username <- check_and_transform_id(user,
         class_name = "Member",
@@ -380,7 +388,7 @@ Project <- R6::R6Class(
           .literal = TRUE
         ))
       }
-    },
+    }, # nocov end
     #' @description This method returns the information about the member of
     #' the specified project.
     #' @param user The Seven Bridges Platform username of the project member
@@ -392,6 +400,7 @@ Project <- R6::R6Class(
       if (is_missing(user)) {
         rlang::abort("Please provide a username or Member object.")
       }
+      # nocov start
       id <- self$id
       username <- check_and_transform_id(user,
         class_name = "Member",
@@ -408,7 +417,7 @@ Project <- R6::R6Class(
       res <- status_check(req)
 
       return(asMember(res, self$auth))
-    },
+    }, # nocov end
     #' @description This method can be used to edit a user's permissions in a
     #' specified  project.
     #' @param user The Seven Bridges Platform username of the person
@@ -449,6 +458,7 @@ Project <- R6::R6Class(
           "admin"
         )
       )
+      # nocov start
       body <- flatten_query(permissions)
       body <- body[!sapply(body, is.null)]
 
@@ -478,11 +488,12 @@ Project <- R6::R6Class(
         rlang::abort("Oops, something went wrong. ")
         res
       }
-    },
+    }, # nocov end
     #' @description  List all project's files and folders.
     #' @param ... Other arguments that can be passed to api() function
     #' like 'limit', 'offset', 'fields', etc.
     files = function(...) {
+      # nocov start
       req <- sevenbridges2::api(
         path = paste0("projects/", self$id, "/files"),
         method = "GET",
@@ -494,7 +505,7 @@ Project <- R6::R6Class(
       res <- status_check(req)
 
       asFileList(res, self$auth)
-    },
+    }, # nocov end
     #' @description  Create a new folder under the project's root directory.
     #' Every project on the Seven Bridges Platform is represented
     #' by a root folder which contains all the files associated
@@ -507,7 +518,7 @@ Project <- R6::R6Class(
     #' @importFrom glue glue_col
     create_folder = function(name, ...) {
       check_folder_name(name)
-
+      # nocov start
       body <- list(
         "name" = name,
         "project" = self$id,

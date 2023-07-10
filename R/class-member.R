@@ -38,7 +38,6 @@ Member <- R6::R6Class(
       self$type <- type
       self$permissions <- permissions
     },
-    # nocov start
     #' @description Print method for Member class.
     #' @importFrom purrr discard
     #' @importFrom glue glue
@@ -77,10 +76,10 @@ Member <- R6::R6Class(
 
       # Close container elements
       cli::cli_end()
-    } # nocov end
+    }
   )
 )
-
+# nocov start
 # Helper function for creating Member objects
 asMember <- function(x, auth = NULL) {
   Member$new(
@@ -100,3 +99,4 @@ asMemberList <- function(x, auth) {
   obj <- lapply(x$items, asMember, auth = auth)
   obj
 }
+# nocov end

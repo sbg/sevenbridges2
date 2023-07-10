@@ -75,7 +75,7 @@ Permission <- R6::R6Class(
     # nocov end
   )
 )
-
+# nocov start
 # Helper function for creating Permission objects
 asPermission <- function(x, auth = NULL) {
   Permission$new(
@@ -89,3 +89,4 @@ asPermission <- function(x, auth = NULL) {
     response = attr(x, "response")
   )
 }
+# nocov end

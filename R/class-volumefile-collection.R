@@ -38,6 +38,7 @@ VolumeFileCollection <- R6::R6Class(
       if (length(self$links) == 0) {
         rlang::abort("No more entries to be returned.")
       }
+      # nocov start
       for (link in self$links) {
         if (length(link[["next"]]) > 0) {
           res <- sevenbridges2::api(
@@ -52,7 +53,7 @@ VolumeFileCollection <- R6::R6Class(
           private$load(res, auth = self$auth)
         }
       }
-    },
+    }, # nocov end
     #' @description Return previous page of results.
     #' @importFrom rlang abort
     prev_page = function() {
@@ -61,6 +62,7 @@ VolumeFileCollection <- R6::R6Class(
   ),
   private = list(
     # Reload object to get new results
+    # nocov start
     load = function(res, auth) {
       self$initialize(
         href = res$href,
@@ -71,7 +73,7 @@ VolumeFileCollection <- R6::R6Class(
         response = attr(res, "response")
       )
       return(self)
-    }
+    } # nocov end
   )
 )
 
