@@ -128,16 +128,13 @@ Project <- R6::R6Class(
 
       if (!is.null(x$settings) && length(x$settings) != 0) {
         project_settings <- x$settings
-        string_project_settings <- glue::glue(
-          "{names(project_settings)}: {project_settings}"
-        )
+        string_project_settings <- glue::glue("{names(project_settings)}: {project_settings}") # nolint
       }
       if (!is.null(x$tags) && length(x$tags) != 0) {
         project_tags <- x$tags
-        names(project_tags) <- paste0("tag_", seq_along(project_tags))
-        string_project_tags <- glue::glue(
-          "{names(project_tags)}: {project_tags}"
-        )
+        names(project_tags) <-
+          paste0("tag_", seq_along(project_tags))
+        string_project_tags <- glue::glue("{names(project_tags)}: {project_tags}") # nolint
       }
       if (!is.null(x$permissions) && length(x$permissions) != 0) {
         project_permissions <- x$permissions
@@ -164,12 +161,13 @@ Project <- R6::R6Class(
       cli::cli_li(string)
 
 
-      ifelse(exists("project_settings") && !is.null(project_settings),
-        {
-          cli::cli_li("settings")
-          cli::cli_ul(string_project_settings)
-        },
-        ""
+      ifelse(exists("project_settings") &&
+        !is.null(project_settings),
+      {
+        cli::cli_li("settings")
+        cli::cli_ul(string_project_settings)
+      },
+      ""
       )
       ifelse(exists("project_tags") && !is.null(project_tags),
         {
@@ -206,7 +204,8 @@ Project <- R6::R6Class(
                     description = NULL,
                     billing_group = NULL,
                     settings = NULL,
-                    tags = NULL, ...) {
+                    tags = NULL,
+                    ...) {
       check_tags(tags)
       check_settings(settings)
       billing_group <- check_and_transform_id(billing_group, "Billing")
@@ -253,20 +252,23 @@ Project <- R6::R6Class(
       )
 
       if (res$status_code == 204) {
-        rlang::inform(message = glue::glue(
-          "Project {self$id} has been deleted."
-        ))
+        rlang::inform(message = glue::glue("Project {self$id} has been deleted.")) # nolint
       } else if (res$status_code %in% c("401", "403", "404", "503")) {
         msg <- httr::content(res, as = "parsed")$message
         rlang::abort(glue::glue("HTTP Status {res$status_code} : {msg}"))
       }
     }, # nocov end
     #' @description Method for listing all the project members.
-    #' @param ... Other parameters that can be passed to api() function like
-    #' limit, offset, fields etc.
+    #' @param limit Defines the number of items you want to get from your API
+    #' request. By default, `limit` is set to `50`. Maximum is `100`.
+    #' @param offset Defines where the retrieved items started.
+    #' By default, `offset` is set to `0`.
+    #' @param ... Other arguments.
     #' @importFrom glue glue
     #' @return List of Member class objects.
-    list_members = function(...) {
+    list_members = function(limit = getOption("sevenbridges2")$limit,
+                            offset = getOption("sevenbridges2")$offset,
+                            ...) {
       # nocov start
       id <- self$id
       res <- sevenbridges2::api(
@@ -274,6 +276,8 @@ Project <- R6::R6Class(
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
+        limit = limit,
+        offset = offset,
         ...
       )
 
@@ -310,7 +314,7 @@ Project <- R6::R6Class(
                             write = FALSE,
                             execute = FALSE,
                             admin = FALSE
-                          )) {
+                          ), ...) {
       if (is_missing(user) && is_missing(email)) {
         rlang::abort("Neither username nor email are provided. You must provide at least one of these parameters before you can add a user to a project.") # nolint
       }
@@ -382,11 +386,13 @@ Project <- R6::R6Class(
       )
 
       if (req$status_code == 204) {
-        rlang::inform(message = glue::glue_col(
-          "User {green {username}} has been deleted
+        rlang::inform(
+          message = glue::glue_col(
+            "User {green {username}} has been deleted
           from the {green {self$id}} project.",
-          .literal = TRUE
-        ))
+            .literal = TRUE
+          )
+        )
       }
     }, # nocov end
     #' @description This method returns the information about the member of
@@ -428,6 +434,8 @@ Project <- R6::R6Class(
     #' 'admin' with logical values - TRUE if certain permission is allowed to
     #' the user, or FALSE if it's not.
     #' Example: list(read = TRUE, copy = TRUE)
+    #' @param ... Other arguments that can be passed to api() function
+    #' like 'limit', 'offset', 'fields', etc.
     #' @importFrom rlang abort
     #' @importFrom glue glue glue_col
     #' @importFrom checkmate assert_list assert_subset
@@ -439,7 +447,7 @@ Project <- R6::R6Class(
                                            write = FALSE,
                                            execute = FALSE,
                                            admin = FALSE
-                                         )) {
+                                         ), ...) {
       if (is_missing(user)) {
         rlang::abort("Please provide a username or Member object.")
       }
@@ -490,15 +498,25 @@ Project <- R6::R6Class(
       }
     }, # nocov end
     #' @description  List all project's files and folders.
+    #' @param limit The maximum number of collection items to return for a
+    #'   single request. Minimum value is 1. The maximum value is 100 and the
+    #'   default value is 50. This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection of
+    #'   the first item to return. The default value is 0. This is a
+    #'   pagination-specific attribute.
     #' @param ... Other arguments that can be passed to api() function
     #' like 'limit', 'offset', 'fields', etc.
-    files = function(...) {
+    files = function(limit = getOption("sevenbridges2")$limit,
+                     offset = getOption("sevenbridges2")$offset,
+                     ...) {
       # nocov start
       req <- sevenbridges2::api(
         path = paste0("projects/", self$id, "/files"),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
+        limit = limit,
+        offset = offset,
         ...
       )
 
@@ -560,17 +578,21 @@ Project <- R6::R6Class(
     #' @param offset The zero-based starting index in the entire collection of
     #'   the first item to return. The default value is 0. This is a
     #'   pagination-specific attribute.
+    #' @param ... Other arguments that can be passed to this method.
+    #' Such as query parameters.
     list_apps = function(query_terms = NULL,
                          id = NULL,
                          limit = getOption("sevenbridges2")$limit,
-                         offset = getOption("sevenbridges2")$offset) {
+                         offset = getOption("sevenbridges2")$offset,
+                         ...) {
       self$auth$apps$query(
         project = self$id,
         visibility = "private",
         query_terms = query_terms,
         id = id,
         limit = limit,
-        offset = offset
+        offset = offset,
+        ...
       )
     },
     #' @description This call creates app in project.

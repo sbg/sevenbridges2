@@ -229,14 +229,23 @@ permanently delete the project from the platform.
 \subsection{Method \code{list_members()}}{
 Method for listing all the project members.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$list_members(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Project$list_members(
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
+  ...
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other parameters that can be passed to api() function like
-limit, offset, fields etc.}
+\item{\code{limit}}{Defines the number of items you want to get from your API
+request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+
+\item{\code{offset}}{Defines where the retrieved items started.
+By default, \code{offset} is set to \code{0}.}
+
+\item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -256,7 +265,8 @@ permissions in the project.
   user = NULL,
   email = NULL,
   permissions = list(read = TRUE, copy = FALSE, write = FALSE, execute = FALSE, admin =
-    FALSE)
+    FALSE),
+  ...
 )}\if{html}{\out{</div>}}
 }
 
@@ -339,7 +349,8 @@ specified  project.
 \if{html}{\out{<div class="r">}}\preformatted{Project$modify_member_permissions(
   user = NULL,
   permissions = list(read = TRUE, copy = FALSE, write = FALSE, execute = FALSE, admin =
-    FALSE)
+    FALSE),
+  ...
 )}\if{html}{\out{</div>}}
 }
 
@@ -355,6 +366,9 @@ user. It can contain fields: 'read', 'copy', 'execute', 'write' and
 'admin' with logical values - TRUE if certain permission is allowed to
 the user, or FALSE if it's not.
 Example: list(read = TRUE, copy = TRUE)}
+
+\item{\code{...}}{Other arguments that can be passed to api() function
+like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -368,12 +382,24 @@ Permission object.
 \subsection{Method \code{files()}}{
 List all project's files and folders.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$files(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Project$files(
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
+  ...
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{limit}}{The maximum number of collection items to return for a
+single request. Minimum value is 1. The maximum value is 100 and the
+default value is 50. This is a pagination-specific attribute.}
+
+\item{\code{offset}}{The zero-based starting index in the entire collection of
+the first item to return. The default value is 0. This is a
+pagination-specific attribute.}
+
 \item{\code{...}}{Other arguments that can be passed to api() function
 like 'limit', 'offset', 'fields', etc.}
 }
@@ -424,7 +450,8 @@ This call lists all apps in project.
   query_terms = NULL,
   id = NULL,
   limit = getOption("sevenbridges2")$limit,
-  offset = getOption("sevenbridges2")$offset
+  offset = getOption("sevenbridges2")$offset,
+  ...
 )}\if{html}{\out{</div>}}
 }
 
@@ -443,6 +470,9 @@ default value is 50. This is a pagination-specific attribute.}
 \item{\code{offset}}{The zero-based starting index in the entire collection of
 the first item to return. The default value is 0. This is a
 pagination-specific attribute.}
+
+\item{\code{...}}{Other arguments that can be passed to this method.
+Such as query parameters.}
 }
 \if{html}{\out{</div>}}
 }

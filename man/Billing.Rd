@@ -109,7 +109,8 @@ Method for getting a analysis breakdown for a billing group.
   invoice_id = NULL,
   fields = NULL,
   limit = getOption("sevenbridges2")$limit,
-  offset = getOption("sevenbridges2")$offset
+  offset = getOption("sevenbridges2")$offset,
+  ...
 )}\if{html}{\out{</div>}}
 }
 
@@ -135,6 +136,8 @@ maximum is 100.}
 
 \item{\code{offset}}{The zero-based starting index in the entire collection of
 the first item to return. The default value is 0.}
+
+\item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -151,7 +154,8 @@ Method for getting a storage breakdown for a billing group.
   invoice_id = NULL,
   fields = NULL,
   limit = getOption("sevenbridges2")$limit,
-  offset = getOption("sevenbridges2")$offset
+  offset = getOption("sevenbridges2")$offset,
+  ...
 )}\if{html}{\out{</div>}}
 }
 
@@ -177,6 +181,8 @@ maximum is 100.}
 
 \item{\code{offset}}{The zero-based starting index in the entire collection of
 the first item to return. The default value is 0.}
+
+\item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -193,7 +199,8 @@ Method for getting a egress breakdown for a billing group.
   invoice_id = NULL,
   fields = NULL,
   limit = getOption("sevenbridges2")$limit,
-  offset = getOption("sevenbridges2")$offset
+  offset = getOption("sevenbridges2")$offset,
+  ...
 )}\if{html}{\out{</div>}}
 }
 
@@ -219,6 +226,8 @@ maximum is 100.}
 
 \item{\code{offset}}{The zero-based starting index in the entire collection of
 the first item to return. The default value is 0.}
+
+\item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
 }
