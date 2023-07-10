@@ -300,8 +300,6 @@ Project <- R6::R6Class(
     #' is allowed to the user, or FALSE if it's not.
     #' Example: list(read = TRUE, copy = TRUE, write = FALSE, execute = FALSE,
     #' admin = FALSE)
-    #' @param ... Other arguments that can be passed to api() function
-    #' like 'limit', 'offset', 'fields', etc.
     #' @importFrom rlang abort
     #' @importFrom glue glue glue_col
     #' @importFrom checkmate assert_character assert_list assert_subset
@@ -314,7 +312,7 @@ Project <- R6::R6Class(
                             write = FALSE,
                             execute = FALSE,
                             admin = FALSE
-                          ), ...) {
+                          )) {
       if (is_missing(user) && is_missing(email)) {
         rlang::abort("Neither username nor email are provided. You must provide at least one of these parameters before you can add a user to a project.") # nolint
       }
@@ -352,8 +350,7 @@ Project <- R6::R6Class(
         token = self$auth$get_token(),
         body = body,
         authorization = self$auth$authorization,
-        base_url = self$auth$url,
-        ...
+        base_url = self$auth$url
       )
 
       res <- status_check(req)
@@ -434,8 +431,6 @@ Project <- R6::R6Class(
     #' 'admin' with logical values - TRUE if certain permission is allowed to
     #' the user, or FALSE if it's not.
     #' Example: list(read = TRUE, copy = TRUE)
-    #' @param ... Other arguments that can be passed to api() function
-    #' like 'limit', 'offset', 'fields', etc.
     #' @importFrom rlang abort
     #' @importFrom glue glue glue_col
     #' @importFrom checkmate assert_list assert_subset
@@ -447,7 +442,7 @@ Project <- R6::R6Class(
                                            write = FALSE,
                                            execute = FALSE,
                                            admin = FALSE
-                                         ), ...) {
+                                         )) {
       if (is_missing(user)) {
         rlang::abort("Please provide a username or Member object.")
       }
@@ -481,8 +476,7 @@ Project <- R6::R6Class(
         token = self$auth$get_token(),
         body = body,
         authorization = self$auth$authorization,
-        base_url = self$auth$url,
-        ...
+        base_url = self$auth$url
       )
 
       res <- status_check(req)

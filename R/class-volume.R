@@ -422,15 +422,13 @@ Volume <- R6::R6Class(
     #' logical fields - TRUE if certain permission is allowed to the user, or
     #' FALSE if it's not.
     #' Example: list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)
-    #' @param ... Other arguments that can be passed to api() function
-    #' like 'limit', 'offset', 'fields', etc.
     #' @return Member object.
     add_member = function(user, permissions = list(
                             read = TRUE,
                             copy = FALSE,
                             write = FALSE,
                             admin = FALSE
-                          ), ...) {
+                          )) {
       username <- check_and_transform_id(user,
         class_name = "Member",
         field_name = "username"
@@ -457,8 +455,7 @@ Volume <- R6::R6Class(
         body = body,
         token = self$auth$get_token(),
         base_url = self$auth$url,
-        advance_access = TRUE,
-        ...
+        advance_access = TRUE
       )
       res <- status_check(res)
 

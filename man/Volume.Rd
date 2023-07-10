@@ -331,8 +331,7 @@ This function adds members to the specified volume.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$add_member(
   user,
-  permissions = list(read = TRUE, copy = FALSE, write = FALSE, admin = FALSE),
-  ...
+  permissions = list(read = TRUE, copy = FALSE, write = FALSE, admin = FALSE)
 )}\if{html}{\out{</div>}}
 }
 
@@ -348,9 +347,6 @@ user. It can contain fields: 'read', 'copy', 'write' and 'admin' with
 logical fields - TRUE if certain permission is allowed to the user, or
 FALSE if it's not.
 Example: list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)}
-
-\item{\code{...}}{Other arguments that can be passed to api() function
-like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }

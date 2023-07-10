@@ -265,8 +265,7 @@ permissions in the project.
   user = NULL,
   email = NULL,
   permissions = list(read = TRUE, copy = FALSE, write = FALSE, execute = FALSE, admin =
-    FALSE),
-  ...
+    FALSE)
 )}\if{html}{\out{</div>}}
 }
 
@@ -287,9 +286,6 @@ project's member. It can contain fields: 'read', 'copy', 'write',
 is allowed to the user, or FALSE if it's not.
 Example: list(read = TRUE, copy = TRUE, write = FALSE, execute = FALSE,
 admin = FALSE)}
-
-\item{\code{...}}{Other arguments that can be passed to api() function
-like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -349,8 +345,7 @@ specified  project.
 \if{html}{\out{<div class="r">}}\preformatted{Project$modify_member_permissions(
   user = NULL,
   permissions = list(read = TRUE, copy = FALSE, write = FALSE, execute = FALSE, admin =
-    FALSE),
-  ...
+    FALSE)
 )}\if{html}{\out{</div>}}
 }
 
@@ -366,9 +361,6 @@ user. It can contain fields: 'read', 'copy', 'execute', 'write' and
 'admin' with logical values - TRUE if certain permission is allowed to
 the user, or FALSE if it's not.
 Example: list(read = TRUE, copy = TRUE)}
-
-\item{\code{...}}{Other arguments that can be passed to api() function
-like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
