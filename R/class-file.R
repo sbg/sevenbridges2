@@ -271,8 +271,8 @@ File <- R6::R6Class(
     #' @param ... Additional parameters that can be passed to the method.
     #'
     #' @importFrom checkmate assert_logical
-    add_tag = function(tags = NULL, overwrite = FALSE, ...) {
-      if (missing(tags)) {
+    add_tag = function(tags, overwrite = FALSE, ...) {
+      if (is_missing(tags)) {
         # nolint start
         rlang::abort("Tags parameter is missing. You need to provide at least one.")
         # nolint end
@@ -411,8 +411,8 @@ File <- R6::R6Class(
     #'
     #' @importFrom DescTools StripAttr
     #' @importFrom checkmate assert_logical
-    set_metadata = function(metadata_fields = NULL, overwrite = FALSE, ...) {
-      if (missing(metadata_fields)) {
+    set_metadata = function(metadata_fields, overwrite = FALSE, ...) {
+      if (is_missing(metadata_fields)) {
         # nolint start
         rlang::abort("Metadata fields are missing. You need to provide at least one.")
         # nolint end

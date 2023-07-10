@@ -196,7 +196,7 @@ organize files you’ve imported from public datasets or copied between
 projects.
 .
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{File$add_tag(tags = NULL, overwrite = FALSE, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{File$add_tag(tags, overwrite = FALSE, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -289,7 +289,7 @@ This call returns the metadata values for the specified file.
 \subsection{Method \code{set_metadata()}}{
 This call changes the metadata values for the specified file.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{File$set_metadata(metadata_fields = NULL, overwrite = FALSE, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{File$set_metadata(metadata_fields, overwrite = FALSE, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

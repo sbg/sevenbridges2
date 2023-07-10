@@ -564,29 +564,14 @@ Auth <- R6::R6Class(
                         offset = getOption("sevenbridges2")$offset,
                         ...) {
       check_tags(tags)
-      if (is.null(owner)) {
-        res <- sevenbridges2::api(
-          path = "projects",
-          method = "GET",
-          token = self$get_token(),
-          base_url = self$url,
-          limit = limit,
-          offset = offset,
-          query = list(name = name, tags = tags),
-          ...
-        )
-      } else {
-        res <- sevenbridges2::api(
-          path = paste0("projects", "/", owner),
-          method = "GET",
-          token = self$get_token(),
-          base_url = self$url,
-          limit = limit,
-          offset = offset,
-          query = list(name = name, tags = tags),
-          ...
-        )
-      }
+      res <- sevenbridges2::api(
+        path = paste0("projects", "/", owner),
+        method = "GET",
+        token = self$get_token(),
+        base_url = self$url,
+        query = list(name = name, tags = tags, limit = limit, offset = offset),
+        ...
+      )
 
       res <- status_check(res)
 
@@ -597,7 +582,9 @@ Auth <- R6::R6Class(
     # get specific project ----------------------------------------------------
     #' @description This call creates an object containing the details
     #' of a specified project.
-    #' @param project_owner Project owner's Platform username.
+    #' @param project_owner If you are using Enterprise, use the name of the
+    #' Division that owns the project; otherwise, enter the project owner's
+    #' Platform username.
     #' @param project The short name of the project you are querying.
     #' @details
     #' Note that project_owner is always case-sensitive, and that project is
@@ -653,7 +640,7 @@ Auth <- R6::R6Class(
     #' @param ... Other arguments.
     #' @importFrom rlang inform
     #' @importFrom glue glue
-    project_new = function(name = NULL,
+    project_new = function(name,
                            billing_group = NULL,
                            description = name,
                            tags = NULL,
@@ -669,9 +656,8 @@ Auth <- R6::R6Class(
                              "duration" = 24
                            ),
                            ...) {
-      if (is.null(name)) {
-        rlang::abort("You must provide at least a name for the project you want
-                     to create.")
+      if (is_missing(name)) {
+        rlang::abort("You must provide at least a name for the project you want to create.") # nolint
       }
 
       # check tags
@@ -679,8 +665,10 @@ Auth <- R6::R6Class(
         is.character(tags)) {
         tags <- as.list(tags)
       }
-      billing_group <-
-        check_and_transform_id(billing_group, "Billing")
+
+      if (!is_missing(billing_group)) {
+        billing_group <- check_and_transform_id(billing_group, "Billing")
+      }
 
       body <- list(
         "name" = name,
@@ -923,7 +911,7 @@ Auth <- R6::R6Class(
     #' @importFrom rlang abort inform
     #' @importFrom glue glue_col
     #' @importFrom checkmate test_r6 test_class
-    create_folder = function(name = NULL,
+    create_folder = function(name,
                              parent = NULL,
                              project = NULL) {
       check_folder_name(name)
@@ -1036,7 +1024,6 @@ Auth <- R6::R6Class(
       } else if (!is_missing(project)) {
         project <- check_and_transform_id(project, "Project")
       }
-
 
       # Check filename
       if (is_missing(filename)) {

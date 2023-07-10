@@ -361,7 +361,9 @@ of a specified project.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{project_owner}}{Project owner's Platform username.}
+\item{\code{project_owner}}{If you are using Enterprise, use the name of the
+Division that owns the project; otherwise, enter the project owner's
+Platform username.}
 
 \item{\code{project}}{The short name of the project you are querying.}
 
@@ -386,7 +388,7 @@ Project object.
 A method for creating a new project.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$project_new(
-  name = NULL,
+  name,
   billing_group = NULL,
   description = name,
   tags = NULL,
@@ -575,7 +577,7 @@ project or the provided parent folder. Remember that you should provide
 either the destination project (as the \code{project} parameter) or the
 destination folder (as the \code{parent} parameter), not both.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$create_folder(name = NULL, parent = NULL, project = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Auth$create_folder(name, parent = NULL, project = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

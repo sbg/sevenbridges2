@@ -336,7 +336,7 @@ Project <- R6::R6Class(
     #' be successfully run by a user who has admin privileges in the project.
     #' @param username The Seven Bridges Platform username of the user you
     #' are about to remove.
-    member_delete = function(username = NULL) {
+    member_delete = function(username) {
       if (is_missing(username)) {
         rlang::abort("Please provide a username for the user you want to remove
                      from the project.")
@@ -365,7 +365,7 @@ Project <- R6::R6Class(
     #' @param username Username of the user whose permissions you are
     #' enquiring about.
     #' @param ... Other arguments.
-    member_permissions_get = function(username = NULL, ...) {
+    member_permissions_get = function(username, ...) {
       if (is_missing(username)) {
         rlang::abort("Please provide a username.")
       }
@@ -391,7 +391,7 @@ Project <- R6::R6Class(
     #' @param admin Whether the user should have the admin permission.
     #' @param ... Other arguments that can be passed to api() function
     #' like 'limit', 'offset', 'fields', etc.
-    member_permissions_modify = function(username = NULL,
+    member_permissions_modify = function(username,
                                          write = TRUE,
                                          read = TRUE,
                                          copy = TRUE,
