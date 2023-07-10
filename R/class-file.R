@@ -504,14 +504,21 @@ File <- R6::R6Class(
 
     #' @description
     #' List folder contents.
-    #'
+    #' @param limit Defines the number of items you want to get from your API
+    #' request. By default, `limit` is set to `50`. Maximum is `100`.
+    #' @param offset Defines where the retrieved items started.
+    #' By default, `offset` is set to `0`.
     #' @param ... Additional parameters that can be passed to the method.
-    list_contents = function(...) {
+    list_contents = function(limit = getOption("sevenbridges2")$"limit",
+                             offset = getOption("sevenbridges2")$"offset",
+                             ...) {
       res <- sevenbridges2::api(
         path = paste0("files/", self$id, "/list"),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
+        limit = limit,
+        offset = offset,
         ...
       )
 

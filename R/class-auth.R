@@ -441,8 +441,15 @@ Auth <- R6::R6Class(
     # billing groups ----------------------------------------------------------
     #' @description Get billing group information
     #' @param id Billing group identifier as ID string or Billing object.
+    #' @param limit Defines the number of items you want to get from your API
+    #' request. By default, `limit` is set to `50`. Maximum is `100`.
+    #' @param offset Defines where the retrieved items started.
+    #' By default, `offset` is set to `0`.
     #' @param ... Other arguments passed to methods.
-    billing_groups = function(id = NULL, ...) {
+    billing_groups = function(id = NULL,
+                              limit = getOption("sevenbridges2")$limit,
+                              offset = getOption("sevenbridges2")$offset,
+                              ...) {
       if (is.null(id)) {
         # list billing API paths
         req <- sevenbridges2::api(
@@ -450,6 +457,8 @@ Auth <- R6::R6Class(
           method = "GET",
           token = self$get_token(),
           base_url = self$url,
+          limit = limit,
+          offset = offset,
           ...
         )
 
@@ -464,6 +473,8 @@ Auth <- R6::R6Class(
           method = "GET",
           token = self$get_token(),
           base_url = self$url,
+          limit = limit,
+          offset = offset,
           ...
         )
 
@@ -540,19 +551,17 @@ Auth <- R6::R6Class(
     #' @param name Project's name.
     #' @param owner The username of the owner whose projects you want to query.
     #' @param tags The list of project tags.
-    #' @param limit The maximum number of collection items to return for a
-    #' single request. Minimum value is 1. The maximum value is 100 and the
-    #' default value is 50. This is a pagination-specific attribute.
-    #' @param offset The zero-based starting index in the entire collection of
-    #' the first item to return. The default value is 0. This is a
-    #' pagination-specific attribute.
+    #' @param limit Defines the number of items you want to get from your API
+    #' request. By default, `limit` is set to `50`. Maximum is `100`.
+    #' @param offset Defines where the retrieved items started.
+    #' By default, `offset` is set to `0`.
     #' @param ... Other arguments that can be passed to this method.
     #' Such as query parameters.
     projects = function(name = NULL,
                         owner = NULL,
                         tags = NULL,
-                        limit = 50,
-                        offset = 0,
+                        limit = getOption("sevenbridges2")$limit,
+                        offset = getOption("sevenbridges2")$offset,
                         ...) {
       check_tags(tags)
       res <- sevenbridges2::api(
@@ -656,6 +665,7 @@ Auth <- R6::R6Class(
         is.character(tags)) {
         tags <- as.list(tags)
       }
+
       if (!is_missing(billing_group)) {
         billing_group <- check_and_transform_id(billing_group, "Billing")
       }
@@ -723,6 +733,12 @@ Auth <- R6::R6Class(
     #' @param tag List files containing this tag. Note that the tag must be an
     #'   exact complete string for the results to match. Multiple tags can be
     #'   represented by vector of values.
+    #' @param limit The maximum number of collection items to return for a
+    #'   single request. Minimum value is 1. The maximum value is 100 and the
+    #'   default value is 50. This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection of
+    #'   the first item to return. The default value is 0. This is a
+    #'   pagination-specific attribute.
     #' @param ... Other arguments that can be passed to this method. Such as
     #'   query parameters.
     files = function(project = NULL,
@@ -731,6 +747,8 @@ Auth <- R6::R6Class(
                      metadata = NULL,
                      origin = NULL,
                      tag = NULL,
+                     limit = getOption("sevenbridges2")$limit,
+                     offset = getOption("sevenbridges2")$offset,
                      ...) {
       # Check input parameters
       checkmate::assert_character(name, null.ok = TRUE)
@@ -775,6 +793,8 @@ Auth <- R6::R6Class(
         method = "GET",
         token = self$get_token(),
         base_url = self$url,
+        limit = limit,
+        offset = offset,
         query = query,
         ...
       )
@@ -979,6 +999,7 @@ Auth <- R6::R6Class(
                       filename = NULL,
                       overwrite = FALSE,
                       part_size = getOption("sevenbridges2")$RECOMMENDED_PART_SIZE, # nolint
+                      # nolint
                       init = FALSE) {
       # Check if the provided path is valid, i.e. if the file exists
       # and get its size.

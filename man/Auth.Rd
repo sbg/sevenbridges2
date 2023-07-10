@@ -248,13 +248,24 @@ the API
 \subsection{Method \code{billing_groups()}}{
 Get billing group information
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$billing_groups(id = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Auth$billing_groups(
+  id = NULL,
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
+  ...
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{id}}{Billing group identifier as ID string or Billing object.}
+
+\item{\code{limit}}{Defines the number of items you want to get from your API
+request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+
+\item{\code{offset}}{Defines where the retrieved items started.
+By default, \code{offset} is set to \code{0}.}
 
 \item{\code{...}}{Other arguments passed to methods.}
 }
@@ -306,8 +317,8 @@ way you will only be able to list projects you are a member of.
   name = NULL,
   owner = NULL,
   tags = NULL,
-  limit = 50,
-  offset = 0,
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
   ...
 )}\if{html}{\out{</div>}}
 }
@@ -321,13 +332,11 @@ way you will only be able to list projects you are a member of.
 
 \item{\code{tags}}{The list of project tags.}
 
-\item{\code{limit}}{The maximum number of collection items to return for a
-single request. Minimum value is 1. The maximum value is 100 and the
-default value is 50. This is a pagination-specific attribute.}
+\item{\code{limit}}{Defines the number of items you want to get from your API
+request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
 
-\item{\code{offset}}{The zero-based starting index in the entire collection of
-the first item to return. The default value is 0. This is a
-pagination-specific attribute.}
+\item{\code{offset}}{Defines where the retrieved items started.
+By default, \code{offset} is set to \code{0}.}
 
 \item{\code{...}}{Other arguments that can be passed to this method.
 Such as query parameters.}
@@ -463,6 +472,8 @@ and specify the subdirectory ID as the parent parameter.
   metadata = NULL,
   origin = NULL,
   tag = NULL,
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
   ...
 )}\if{html}{\out{</div>}}
 }
@@ -496,6 +507,14 @@ multiple instances of the same metadata field.}
 \item{\code{tag}}{List files containing this tag. Note that the tag must be an
 exact complete string for the results to match. Multiple tags can be
 represented by vector of values.}
+
+\item{\code{limit}}{The maximum number of collection items to return for a
+single request. Minimum value is 1. The maximum value is 100 and the
+default value is 50. This is a pagination-specific attribute.}
+
+\item{\code{offset}}{The zero-based starting index in the entire collection of
+the first item to return. The default value is 0. This is a
+pagination-specific attribute.}
 
 \item{\code{...}}{Other arguments that can be passed to this method. Such as
 query parameters.}
