@@ -1664,7 +1664,7 @@ unless `parent` parameter is specified. In that case, it lists the content of
 that directory on the bucket. 
 You can also specify the `limit` parameter to control the number of results 
 returned. 
-The output is a `VolumeFiles` collection (work in progress), that contains the 
+The output is a `VolumeFilesCollection` collection object, that contains the 
 information about the `continuation token` that can be used to fetch next chunk 
 of results. 
 Alternatively, you can use the `link` parameter for this too. 
@@ -1673,19 +1673,25 @@ together with it, since it already contains the `limit` and `continuation_token`
 info.
 ```{r}
 # List all files in root bucket directory
-aws_iam_user_volume$list_files(limit = 20)
+files_collection <- aws_iam_user_volume$list_files(limit = 20)
+
+# Print collection
+files_collection
 
 # List all files specific directory on the bucket
-aws_iam_user_volume$list_files(parent = "dir_name")
+folder_files_collection <- aws_iam_user_volume$list_files(parent = "dir_name")
 
 # Get next group of results by setting the continuation token
-aws_iam_user_volume$list_files(
+files_collection <- aws_iam_user_volume$list_files(
   limit = 20,
   continuation_token = "continuation_token"
 )
 
 # Get next group of results by setting the link parameter
 aws_iam_user_volume$list_files(link = "link_to_next_results")
+
+# Or use VolumeFileCollection's object method next_page() for this:
+files_collection$next_page()
 ```
 
 ### Get Volume file info
@@ -1737,4 +1743,64 @@ aws_iam_user_volume$deactivate()
 
 # Delete volume
 aws_iam_user_volume$delete()
+```
+
+### List volume members
+
+In order to fetch members of one volume or a specific member by its username, 
+you can use list_members() and get_member() operations:
+```{r}
+# List volume members
+aws_iam_user_volume$list_members() # limit = 2
+
+# Get single member
+aws_iam_user_volume$get_member(user = "member-username")
+```
+
+### Remove members
+
+User can remove volume members by providing its username or object of the Member
+class to the remove_member() function:
+```{r}
+# Remove member
+aws_iam_user_volume$remove_member("member-username")
+
+# Remove member using Member object
+members <- aws_iam_user_volume$list_members()
+aws_iam_user_volume$remove_member(members[[3]])
+```
+
+### Adding new members
+
+Function for adding new members can accept a Member object (for example used in
+some project) or its username. 
+```{r}
+# Add member via username
+aws_iam_user_volume$add_member(user = "member-username", permissions = list(
+  read = TRUE, copy = TRUE, write = FALSE, admin = FALSE
+))
+
+# Add member via Member object
+aws_iam_user_volume$add_member(
+  user = Member$new(
+    username = "member-username",
+    id = "member-username"
+  ),
+  permissions = list(
+    read = TRUE, copy = TRUE, write = FALSE,
+    admin = FALSE
+  )
+)
+```
+
+### Modifying member's permissions
+
+Users can modify specific member's permissions on the volume by providing the
+privileges they want to change:
+```{r}
+# Modify member permissions
+aws_iam_user_volume$modify_member_permissions(
+  user = "member-username",
+  permissions = list(write = TRUE)
+)
 ```
