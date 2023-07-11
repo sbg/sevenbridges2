@@ -417,8 +417,11 @@ Volume <- R6::R6Class(
     #' @param user The Seven Bridges Platform username of the person
     #' you want to add to the volume or object of class Member containing
     #' user's username.
-    #' @param permissions List of permissions that will be associated with the
-    #' user. It can contain fields: 'read', 'copy', 'write' and 'admin' with
+    #' @param permissions List of permissions granted to the user being added.
+    #' Permissions include listing the contents of a volume, importing files
+    #' from the volume to the Platform, exporting files from the Platform to
+    #' the volume, and admin privileges.
+    #' It can contain fields: 'read', 'copy', 'write' and 'admin' with
     #' logical fields - TRUE if certain permission is allowed to the user, or
     #' FALSE if it's not.
     #' Example: list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)
@@ -525,9 +528,13 @@ Volume <- R6::R6Class(
     #' @param user The Seven Bridges Platform username of the person
     #' you want to modify permissions for or object of class Member containing
     #' user's username.
-    #' @param permissions List of permissions that will be updated for the
-    #' user. It can contain fields: 'read', 'copy', 'write' and 'admin' with
-    #' logical values - TRUE if certain permission is allowed to the user, or
+    #' @param permissions List of specific (or all) permissions you want to
+    #' update for the member of the volume.
+    #' Permissions include listing the contents of a volume, importing files
+    #' from the volume to the Platform, exporting files from the Platform to
+    #' the volume, and admin privileges.
+    #' It can contain fields: 'read', 'copy', 'write' and 'admin' with
+    #' logical fields - TRUE if certain permission is allowed to the user, or
     #' FALSE if it's not.
     #' Example: list(read = TRUE, copy = TRUE)
     #' @return Permission object.

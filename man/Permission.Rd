@@ -39,10 +39,10 @@ R6 Class representing member's permissions.
 Create a new Permission object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Permission$new(
-  write = TRUE,
   read = TRUE,
-  copy = TRUE,
-  execute = TRUE,
+  copy = FALSE,
+  write = FALSE,
+  execute = FALSE,
   admin = FALSE,
   ...
 )}\if{html}{\out{</div>}}
@@ -51,10 +51,6 @@ Create a new Permission object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{write}}{User can add, modify, and remove files and workflows in a
-project. Set value to \code{TRUE} to assign the user write permission.
-Set to \code{FALSE} to remove write permission.}
-
 \item{\code{read}}{User can view file names, metadata, and workflows.
 They cannot view file contents. All members of a project have read
 permissions by default. Even if you try setting read permissions to
@@ -63,6 +59,10 @@ permissions by default. Even if you try setting read permissions to
 \item{\code{copy}}{User can view file content, copy, and download files from a
 project. Set value to \code{TRUE} to assign the user copy permission.
 Set to \code{FALSE} to remove copy permission.}
+
+\item{\code{write}}{User can add, modify, and remove files and workflows in a
+project. Set value to \code{TRUE} to assign the user write permission.
+Set to \code{FALSE} to remove write permission.}
 
 \item{\code{execute}}{User can execute workflows and abort tasks in a project.
 Set value to \code{TRUE} to assign the user execute permission.

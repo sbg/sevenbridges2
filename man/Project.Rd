@@ -284,6 +284,13 @@ registering for an account on the Seven Bridges Platform.}
 project's member. It can contain fields: 'read', 'copy', 'write',
 'execute' and 'admin' with logical fields - TRUE if certain permission
 is allowed to the user, or FALSE if it's not.
+Requests to add a project member must include the key permissions.
+However, if you do not include a value for some permission, it will be
+set to FALSE by default. The exception to this rule is the 'read'
+permission, which is the default permission on a project. It enables a
+user to read project data, including file names, but access file
+contents.
+
 Example: list(read = TRUE, copy = TRUE, write = FALSE, execute = FALSE,
 admin = FALSE)}
 }
@@ -340,7 +347,8 @@ user's username.}
 \if{latex}{\out{\hypertarget{method-Project-modify_member_permissions}{}}}
 \subsection{Method \code{modify_member_permissions()}}{
 This method can be used to edit a user's permissions in a
-specified  project.
+specified  project. It can only be successfully made by a user who
+has admin permissions in the project.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Project$modify_member_permissions(
   user = NULL,

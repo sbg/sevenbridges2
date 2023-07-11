@@ -20,9 +20,6 @@ Permission <- R6::R6Class(
     #' @field admin Admin permission.
     admin = NULL,
     #' @description Create a new Permission object.
-    #' @param write User can add, modify, and remove files and workflows in a
-    #' project. Set value to `TRUE` to assign the user write permission.
-    #' Set to `FALSE` to remove write permission.
     #' @param read User can view file names, metadata, and workflows.
     #' They cannot view file contents. All members of a project have read
     #' permissions by default. Even if you try setting read permissions to
@@ -30,6 +27,9 @@ Permission <- R6::R6Class(
     #' @param copy User can view file content, copy, and download files from a
     #' project. Set value to `TRUE` to assign the user copy permission.
     #' Set to `FALSE` to remove copy permission.
+    #' @param write User can add, modify, and remove files and workflows in a
+    #' project. Set value to `TRUE` to assign the user write permission.
+    #' Set to `FALSE` to remove write permission.
     #' @param execute User can execute workflows and abort tasks in a project.
     #' Set value to `TRUE` to assign the user execute permission.
     #' Set to `FALSE` to remove execute permission.
@@ -39,8 +39,8 @@ Permission <- R6::R6Class(
     #' assign the user admin permission. Set to `FALSE` to remove admin
     #' permission.
     #' @param ... Other arguments.
-    initialize = function(write = TRUE, read = TRUE, copy = TRUE,
-                          execute = TRUE, admin = FALSE, ...) {
+    initialize = function(read = TRUE, copy = FALSE, write = FALSE,
+                          execute = FALSE, admin = FALSE, ...) {
       # Initialize Item class
       super$initialize(...)
 

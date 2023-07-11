@@ -298,6 +298,13 @@ Project <- R6::R6Class(
     #' project's member. It can contain fields: 'read', 'copy', 'write',
     #' 'execute' and 'admin' with logical fields - TRUE if certain permission
     #' is allowed to the user, or FALSE if it's not.
+    #' Requests to add a project member must include the key permissions.
+    #' However, if you do not include a value for some permission, it will be
+    #' set to FALSE by default. The exception to this rule is the 'read'
+    #' permission, which is the default permission on a project. It enables a
+    #' user to read project data, including file names, but access file
+    #' contents.
+    #'
     #' Example: list(read = TRUE, copy = TRUE, write = FALSE, execute = FALSE,
     #' admin = FALSE)
     #' @importFrom rlang abort
@@ -326,7 +333,7 @@ Project <- R6::R6Class(
         checkmate::assert_character(email, len = 1, null.ok = TRUE)
       }
       checkmate::assert_list(permissions,
-        null.ok = FALSE, len = 5,
+        null.ok = FALSE, max.len = 5, min.len = 1,
         types = "logical"
       )
       checkmate::assert_subset(names(permissions),
@@ -336,6 +343,7 @@ Project <- R6::R6Class(
           "admin"
         )
       )
+
       # nocov start
       body <- list(
         "username" = username,
@@ -422,7 +430,8 @@ Project <- R6::R6Class(
       return(asMember(res, self$auth))
     }, # nocov end
     #' @description This method can be used to edit a user's permissions in a
-    #' specified  project.
+    #' specified  project. It can only be successfully made by a user who
+    #' has admin permissions in the project.
     #' @param user The Seven Bridges Platform username of the person
     #' you want to modify permissions on the volume for or object of class
     #' Member containing user's username.
@@ -451,7 +460,7 @@ Project <- R6::R6Class(
         field_name = "username"
       )
       checkmate::assert_list(permissions,
-        null.ok = FALSE, max.len = 5,
+        null.ok = FALSE, max.len = 5, min.len = 1,
         types = "logical"
       )
       checkmate::assert_subset(names(permissions),

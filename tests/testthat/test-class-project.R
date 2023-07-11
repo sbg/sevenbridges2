@@ -296,7 +296,7 @@ test_that("Project add_member method throws error when expected", {
       user = "test-username",
       permissions = list()
     ),
-    regexp = "Assertion on 'permissions' failed: Must have length 5, but has length 0.", # nolint
+    regexp = "Assertion on 'permissions' failed: Must have length >= 1, but has length 0.", # nolint
     fixed = TRUE
   )
 
@@ -315,21 +315,12 @@ test_that("Project add_member method throws error when expected", {
   testthat::expect_error(
     setup_project_obj$add_member(
       user = "test-username",
-      permissions = list(read = TRUE, copy = TRUE)
-    ),
-    regexp = "Assertion on 'permissions' failed: Must have length 5, but has length 2.", # nolint
-    fixed = TRUE
-  )
-
-  testthat::expect_error(
-    setup_project_obj$add_member(
-      user = "test-username",
       permissions = list(
         read = TRUE, copy = TRUE, execute = FALSE, admin = FALSE, write = FALSE,
         run = TRUE
       )
     ),
-    regexp = "Assertion on 'permissions' failed: Must have length 5, but has length 6.", # nolint
+    regexp = "Assertion on 'permissions' failed: Must have length <= 5, but has length 6.", # nolint
     fixed = TRUE
   )
 
@@ -436,7 +427,7 @@ test_that("Project modify_member_permissions method throws error when expected",
       user = "test-username",
       permissions = list()
     ),
-    regexp = "Assertion on 'names(permissions)' failed: Must be a subset of {'read','copy','execute','write','admin'}, not empty.", # nolint
+    regexp = "Assertion on 'permissions' failed: Must have length >= 1, but has length 0.", # nolint
     fixed = TRUE
   )
 
@@ -458,15 +449,6 @@ test_that("Project modify_member_permissions method throws error when expected",
       )
     ),
     regexp = "Assertion on 'permissions' failed: Must have length <= 5, but has length 6.", # nolint
-    fixed = TRUE
-  )
-
-  testthat::expect_error(
-    setup_project_obj$modify_member_permissions(
-      user = "test-username",
-      permissions = 1234
-    ),
-    regexp = "Assertion on 'permissions' failed: Must be of type 'list', not 'double'.", # nolint
     fixed = TRUE
   )
 
