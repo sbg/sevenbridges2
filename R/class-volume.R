@@ -19,12 +19,9 @@ Volume <- R6::R6Class(
       "update" = "storage/volumes/{id}",
       "deactivate" = "storage/volumes/{id}",
       "delete" = "storage/volumes/{id}",
-      "list_members" = "storage/volumes/{id}/members",
-      "add_members" = "storage/volumes/{id}/members",
-      "remove_members" = "storage/volumes/{id}/members/{username}",
-      "member_permissions" = "storage/volumes/{id}/members/{username}",
-      "overwrite_permissions" = "storage/volumes/{id}/members/{username}/permissions", # nolint
-      "modify_permissions" = "storage/volumes/{id}/members/{username}/permissions" # nolint
+      "members" = "storage/volumes/{id}/members",
+      "member_username" = "storage/volumes/{id}/members/{username}",
+      "member_permissions" = "storage/volumes/{id}/members/{username}/permissions" # nolint
     ),
     #' @field id String. Volume ID, constructed from {division}/{volume_name}
     #' or {volume_owner}/{volume_name}
@@ -342,11 +339,13 @@ Volume <- R6::R6Class(
     #' location.
     #' @param link Link to the file resource received from listing volume's
     #' contents. Cannot be used together with location.
+    #' @param ... Other parameters that can be passed to api() function, like
+    #' fields etc.
     #' @importFrom checkmate assert_character
     #' @importFrom rlang abort
     #' @importFrom glue glue
     #' @return VolumeFile object.
-    get_file = function(location = NULL, link = NULL) {
+    get_file = function(location = NULL, link = NULL, ...) {
       checkmate::assert_character(location,
         len = 1, null.ok = TRUE,
         typed.missing = TRUE
@@ -374,12 +373,209 @@ Volume <- R6::R6Class(
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
-        advance_access = TRUE
+        advance_access = TRUE,
+        ...
       )
       res <- status_check(res)
 
       return(asVolumeFile(res, auth = self$auth))
-    } # nocov end
+      # nocov end
+    },
+    #' @description List members of a volume
+    #' This function returns the members of a specific volume.
+    #' @param limit Defines the number of items you want to get from your API
+    #' request. By default, `limit` is set to `50`. Maximum is `100`.
+    #' @param offset Defines where the retrieved items started.
+    #' By default, `offset` is set to `0`.
+    #' @param ... Other parameters that can be passed to api() function like
+    #' fields etc.
+    #' @return List of Member class objects.
+    list_members = function(limit = getOption("sevenbridges2")$limit,
+                            offset = getOption("sevenbridges2")$offset,
+                            ...) {
+      # nocov start
+      id <- self$id
+      path <- glue::glue(self$URL[["members"]])
+
+      res <- sevenbridges2::api(
+        path = path,
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE,
+        limit = limit,
+        offset = offset,
+        ...
+      )
+      res <- status_check(res)
+
+      return(asMemberList(res, auth = self$auth))
+      # nocov end
+    },
+    #' @description Add member to a volume
+    #' This function adds members to the specified volume.
+    #' @param user The Seven Bridges Platform username of the person
+    #' you want to add to the volume or object of class Member containing
+    #' user's username.
+    #' @param permissions List of permissions granted to the user being added.
+    #' Permissions include listing the contents of a volume, importing files
+    #' from the volume to the Platform, exporting files from the Platform to
+    #' the volume, and admin privileges.
+    #' It can contain fields: 'read', 'copy', 'write' and 'admin' with
+    #' logical fields - TRUE if certain permission is allowed to the user, or
+    #' FALSE if it's not.
+    #' Example: list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)
+    #' @return Member object.
+    add_member = function(user, permissions = list(
+                            read = TRUE,
+                            copy = FALSE,
+                            write = FALSE,
+                            admin = FALSE
+                          )) {
+      username <- check_and_transform_id(user,
+        class_name = "Member",
+        field_name = "username"
+      )
+      checkmate::assert_list(permissions,
+        null.ok = FALSE, len = 4,
+        types = "logical"
+      )
+      checkmate::assert_subset(names(permissions),
+        empty.ok = FALSE,
+        choices = c("read", "copy", "write", "admin")
+      )
+      # nocov start
+      id <- self$id
+      path <- glue::glue(self$URL[["members"]])
+
+      body <- list(
+        username = username,
+        permissions = permissions
+      )
+      res <- sevenbridges2::api(
+        path = path,
+        method = "POST",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE
+      )
+      res <- status_check(res)
+
+      return(asMember(res, auth = self$auth))
+      # nocov end
+    },
+    #' @description Remove member from a volume
+    #' This function removes members from the specified volume.
+    #' @param user The Seven Bridges Platform username of the person
+    #' you want to remove from the volume or object of class Member containing
+    #' user's username.
+    remove_member = function(user) {
+      username <- check_and_transform_id(user,
+        class_name = "Member",
+        field_name = "username"
+      )
+      # nocov start
+      id <- self$id
+      path <- glue::glue(self$URL[["member_username"]])
+
+      res <- sevenbridges2::api(
+        path = path,
+        method = "DELETE",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE
+      )
+      res <- status_check(res)
+
+      rlang::inform(glue_col("Member {green {username}} was successfully removed from the {green {id}} volume.")) # nolint
+      # nocov end
+    },
+    #' @description Get member's info
+    #' This function returns member's information.
+    #' @param user The Seven Bridges Platform username of the person
+    #' you want to get information about or object of class Member containing
+    #' user's username.
+    #' @param ... Other arguments that can be passed to api() function
+    #' like 'fields', etc.
+    #' @return Member object.
+    get_member = function(user, ...) {
+      username <- check_and_transform_id(user,
+        class_name = "Member",
+        field_name = "username"
+      )
+      # nocov start
+      id <- self$id
+      path <- glue::glue(self$URL[["member_username"]])
+
+      res <- sevenbridges2::api(
+        path = path,
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE,
+        ...
+      )
+      res <- status_check(res)
+
+      return(asMember(res, auth = self$auth))
+      # nocov end
+    },
+    #' @description Modify a volume member's permission
+    #' This function modifies the permissions for a member of a specific
+    #' volume. Note that this does not overwrite all previously set permissions
+    #' for the member.
+    #' @param user The Seven Bridges Platform username of the person
+    #' you want to modify permissions for or object of class Member containing
+    #' user's username.
+    #' @param permissions List of specific (or all) permissions you want to
+    #' update for the member of the volume.
+    #' Permissions include listing the contents of a volume, importing files
+    #' from the volume to the Platform, exporting files from the Platform to
+    #' the volume, and admin privileges.
+    #' It can contain fields: 'read', 'copy', 'write' and 'admin' with
+    #' logical fields - TRUE if certain permission is allowed to the user, or
+    #' FALSE if it's not.
+    #' Example: list(read = TRUE, copy = TRUE)
+    #' @return Permission object.
+    modify_member_permissions = function(user, permissions = list(
+                                           read = TRUE,
+                                           copy = FALSE,
+                                           write = FALSE,
+                                           admin = FALSE
+                                         )) {
+      username <- check_and_transform_id(user,
+        class_name = "Member",
+        field_name = "username"
+      )
+      checkmate::assert_list(permissions,
+        null.ok = FALSE, max.len = 4,
+        types = "logical"
+      )
+      checkmate::assert_subset(names(permissions),
+        empty.ok = FALSE,
+        choices = c("read", "copy", "write", "admin")
+      )
+      body <- flatten_query(permissions)
+
+      # nocov start
+      id <- self$id
+      path <- glue::glue(self$URL[["member_permissions"]])
+
+      res <- sevenbridges2::api(
+        path = path,
+        method = "PATCH",
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE
+      )
+      res <- status_check(res)
+      rlang::inform(glue::glue_col("Member {green {username}}'s permissions have been {green updated} to:")) # nolint
+
+      return(asPermission(res, auth = self$auth))
+      # nocov end
+    }
   )
 )
 

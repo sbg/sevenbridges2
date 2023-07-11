@@ -91,12 +91,7 @@ test_that("Project print method works", {
 
 
 test_that("Project detailed_print method works", {
-  project_obj_file <- testthat::test_path(
-    "test_data",
-    "luna_lovegood_project_obj.RDS"
-  )
-  test_project <- readRDS(project_obj_file)
-  testthat::expect_snapshot(test_project$detailed_print())
+  testthat::expect_snapshot(setup_project_obj$detailed_print())
 })
 
 
@@ -247,4 +242,222 @@ test_that("Function asProjectList works", {
       "https://api.sbgenomics.com/v2/"
     )
   }
+})
+
+test_that("Project add_member method throws error when expected", {
+  # Both user and email are missing
+  testthat::expect_error(
+    setup_project_obj$add_member(),
+    regexp = "Neither username nor email are provided. You must provide at least one of these parameters before you can add a user to a project.", # nolint
+    fixed = TRUE
+  )
+
+  # Pass invalid user param
+  testthat::expect_error(
+    setup_project_obj$add_member(
+      user = File$new(id = "file-id"),
+      permissions = list(read = TRUE, copy = TRUE)
+    ),
+    regexp = "Assertion on 'user' failed: Must inherit from class 'Member', but has classes 'File','Item','R6'.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_project_obj$add_member(
+      user = 1234,
+      permissions = list(read = TRUE, copy = TRUE)
+    ),
+    regexp = "Assertion on 'user' failed: Must be of type 'character', not 'double'.", # nolint
+    fixed = TRUE
+  )
+
+  # Pass invalid email parameter
+  testthat::expect_error(
+    setup_project_obj$add_member(
+      user = "test-user", email = 1234,
+      permissions = list(read = TRUE, copy = TRUE)
+    ),
+    regexp = "Assertion on 'email' failed: Must be of type 'character' (or 'NULL'), not 'double'.", # nolint
+    fixed = TRUE
+  )
+
+  # Pass invalid permissions params
+  testthat::expect_error(
+    setup_project_obj$add_member(
+      user = "test-username",
+      permissions = 1234
+    ),
+    regexp = "Assertion on 'permissions' failed: Must be of type 'list', not 'double'.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_project_obj$add_member(
+      user = "test-username",
+      permissions = list()
+    ),
+    regexp = "Assertion on 'permissions' failed: Must have length >= 1, but has length 0.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_project_obj$add_member(
+      user = "test-username",
+      permissions = list(
+        read = 123, copy = FALSE, execute = FALSE, write = 234,
+        admin = FALSE
+      )
+    ),
+    regexp = "Assertion on 'permissions' failed: May only contain the following types: {logical}, but element 1 has type 'numeric'.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_project_obj$add_member(
+      user = "test-username",
+      permissions = list(
+        read = TRUE, copy = TRUE, execute = FALSE, admin = FALSE, write = FALSE,
+        run = TRUE
+      )
+    ),
+    regexp = "Assertion on 'permissions' failed: Must have length <= 5, but has length 6.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_project_obj$add_member(
+      user = "test-username",
+      permissions = list(
+        readme = TRUE, copyme = TRUE, admin = FALSE, write = FALSE,
+        execute = TRUE
+      )
+    ),
+    regexp = "Assertion on 'names(permissions)' failed: Must be a subset of {'read','copy','execute','write','admin'}, but has additional elements {'readme','copyme'}.", # nolint
+    fixed = TRUE
+  )
+})
+
+test_that("Project remove_member method throws error when expected", {
+  # Pass invalid user param
+  testthat::expect_error(
+    setup_project_obj$remove_member(user = NULL),
+    regexp = "Please provide a username for the user or project member you want to remove from the project.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_project_obj$remove_member(
+      user = File$new(id = "file-id")
+    ),
+    regexp = "Assertion on 'user' failed: Must inherit from class 'Member', but has classes 'File','Item','R6'.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_project_obj$remove_member(
+      user = 1234
+    ),
+    regexp = "Assertion on 'user' failed: Must be of type 'character', not 'double'.", # nolint
+    fixed = TRUE
+  )
+})
+
+test_that("Project get_member method throws error when expected", {
+  # Pass invalid user param
+  testthat::expect_error(
+    setup_project_obj$get_member(user = NULL),
+    regexp = "Please provide a username or Member object.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_project_obj$get_member(
+      user = File$new(id = "file-id")
+    ),
+    regexp = "Assertion on 'user' failed: Must inherit from class 'Member', but has classes 'File','Item','R6'.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_project_obj$get_member(
+      user = 1234
+    ),
+    regexp = "Assertion on 'user' failed: Must be of type 'character', not 'double'.", # nolint
+    fixed = TRUE
+  )
+})
+
+test_that("Project modify_member_permissions method throws error when expected", { # nolint
+  # Pass invalid user param
+  testthat::expect_error(
+    setup_project_obj$modify_member_permissions(),
+    regexp = "Please provide a username or Member object.",
+    fixed = TRUE
+  )
+  testthat::expect_error(
+    setup_project_obj$modify_member_permissions(
+      user = File$new(id = "file-id"),
+      permissions = list(read = TRUE, copy = TRUE)
+    ),
+    regexp = "Assertion on 'user' failed: Must inherit from class 'Member', but has classes 'File','Item','R6'.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_project_obj$modify_member_permissions(
+      user = 1234,
+      permissions = list(read = TRUE, copy = TRUE)
+    ),
+    regexp = "Assertion on 'user' failed: Must be of type 'character', not 'double'.", # nolint
+    fixed = TRUE
+  )
+
+  # Pass invalid permissions params
+  testthat::expect_error(
+    setup_project_obj$modify_member_permissions(
+      user = "test-username",
+      permissions = 1234
+    ),
+    regexp = "Assertion on 'permissions' failed: Must be of type 'list', not 'double'.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_project_obj$modify_member_permissions(
+      user = "test-username",
+      permissions = list()
+    ),
+    regexp = "Assertion on 'permissions' failed: Must have length >= 1, but has length 0.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_project_obj$modify_member_permissions(
+      user = "test-username",
+      permissions = list(read = 123, copy = FALSE, admin = FALSE)
+    ),
+    regexp = "Assertion on 'permissions' failed: May only contain the following types: {logical}, but element 1 has type 'numeric'.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_project_obj$modify_member_permissions(
+      user = "test-username",
+      permissions = list(
+        read = TRUE, copy = TRUE, admin = FALSE, write = FALSE, execute = TRUE,
+        run = TRUE
+      )
+    ),
+    regexp = "Assertion on 'permissions' failed: Must have length <= 5, but has length 6.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_project_obj$modify_member_permissions(
+      user = "test-username",
+      permissions = list(readme = TRUE, copy = TRUE)
+    ),
+    regexp = "Assertion on 'names(permissions)' failed: Must be a subset of {'read','copy','execute','write','admin'}, but has additional elements {'readme'}.", # nolint
+    fixed = TRUE
+  )
 })

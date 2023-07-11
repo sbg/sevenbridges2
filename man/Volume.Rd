@@ -55,6 +55,11 @@ set to FALSE.}
 \item \href{#method-Volume-delete}{\code{Volume$delete()}}
 \item \href{#method-Volume-list_files}{\code{Volume$list_files()}}
 \item \href{#method-Volume-get_file}{\code{Volume$get_file()}}
+\item \href{#method-Volume-list_members}{\code{Volume$list_members()}}
+\item \href{#method-Volume-add_member}{\code{Volume$add_member()}}
+\item \href{#method-Volume-remove_member}{\code{Volume$remove_member()}}
+\item \href{#method-Volume-get_member}{\code{Volume$get_member()}}
+\item \href{#method-Volume-modify_member_permissions}{\code{Volume$modify_member_permissions()}}
 \item \href{#method-Volume-clone}{\code{Volume$clone()}}
 }
 }
@@ -264,7 +269,7 @@ objects.
 Get volume file information
 This function returns the specific Volume File.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Volume$get_file(location = NULL, link = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Volume$get_file(location = NULL, link = NULL, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -275,11 +280,165 @@ location.}
 
 \item{\code{link}}{Link to the file resource received from listing volume's
 contents. Cannot be used together with location.}
+
+\item{\code{...}}{Other parameters that can be passed to api() function, like
+fields etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 VolumeFile object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-list_members"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-list_members}{}}}
+\subsection{Method \code{list_members()}}{
+List members of a volume
+This function returns the members of a specific volume.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$list_members(
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{limit}}{Defines the number of items you want to get from your API
+request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+
+\item{\code{offset}}{Defines where the retrieved items started.
+By default, \code{offset} is set to \code{0}.}
+
+\item{\code{...}}{Other parameters that can be passed to api() function like
+fields etc.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+List of Member class objects.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-add_member"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-add_member}{}}}
+\subsection{Method \code{add_member()}}{
+Add member to a volume
+This function adds members to the specified volume.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$add_member(
+  user,
+  permissions = list(read = TRUE, copy = FALSE, write = FALSE, admin = FALSE)
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{user}}{The Seven Bridges Platform username of the person
+you want to add to the volume or object of class Member containing
+user's username.}
+
+\item{\code{permissions}}{List of permissions granted to the user being added.
+Permissions include listing the contents of a volume, importing files
+from the volume to the Platform, exporting files from the Platform to
+the volume, and admin privileges.
+It can contain fields: 'read', 'copy', 'write' and 'admin' with
+logical fields - TRUE if certain permission is allowed to the user, or
+FALSE if it's not.
+Example: list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Member object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-remove_member"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-remove_member}{}}}
+\subsection{Method \code{remove_member()}}{
+Remove member from a volume
+This function removes members from the specified volume.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$remove_member(user)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{user}}{The Seven Bridges Platform username of the person
+you want to remove from the volume or object of class Member containing
+user's username.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-get_member"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-get_member}{}}}
+\subsection{Method \code{get_member()}}{
+Get member's info
+This function returns member's information.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$get_member(user, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{user}}{The Seven Bridges Platform username of the person
+you want to get information about or object of class Member containing
+user's username.}
+
+\item{\code{...}}{Other arguments that can be passed to api() function
+like 'fields', etc.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Member object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-modify_member_permissions"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-modify_member_permissions}{}}}
+\subsection{Method \code{modify_member_permissions()}}{
+Modify a volume member's permission
+This function modifies the permissions for a member of a specific
+volume. Note that this does not overwrite all previously set permissions
+for the member.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$modify_member_permissions(
+  user,
+  permissions = list(read = TRUE, copy = FALSE, write = FALSE, admin = FALSE)
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{user}}{The Seven Bridges Platform username of the person
+you want to modify permissions for or object of class Member containing
+user's username.}
+
+\item{\code{permissions}}{List of specific (or all) permissions you want to
+update for the member of the volume.
+Permissions include listing the contents of a volume, importing files
+from the volume to the Platform, exporting files from the Platform to
+the volume, and admin privileges.
+It can contain fields: 'read', 'copy', 'write' and 'admin' with
+logical fields - TRUE if certain permission is allowed to the user, or
+FALSE if it's not.
+Example: list(read = TRUE, copy = TRUE)}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Permission object.
 }
 }
 \if{html}{\out{<hr>}}

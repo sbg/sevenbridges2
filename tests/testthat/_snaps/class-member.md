@@ -1,20 +1,18 @@
-# Project print method works
+# Member print method works
 
     Code
-      test_member$print()
+      setup_project_member_object$print()
     Message <cliMessage>
       
       -- Member ----------------------------------------------------------------------
       * type: USER
-      * email: ginny.weasley@hogwarts.com
-      * username: ginny_weasley
-      * id: ginny_weasley
-      * href:
-      https://api.sbgenomics.com/v2/projects/luna_lovegood/nargles-project/members/
+      * email: test-member@gmail.com
+      * username: test-member
+      * id: test-member
+      * href: link/to/resource
       * permissions:
         * admin: FALSE
-        * execute: TRUE
-        * copy: TRUE
+        * execute: FALSE
+        * copy: FALSE
         * read: TRUE
-        * write: TRUE
-
+        * write: FALSE

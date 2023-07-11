@@ -9,33 +9,30 @@
 # Project detailed_print method works
 
     Code
-      test_project$detailed_print()
+      setup_project_obj$detailed_print()
     Message <cliMessage>
       
       -- Project ---------------------------------------------------------------------
       * category: PRIVATE
-      * modified_on: 2022-12-20T16:09:20Z
-      * created_on: 2022-12-20T16:09:20Z
-      * created_by: luna_lovegood
-      * root_folder: 12a1ab12345a12345a12345a
+      * modified_on: 2023-07-10 13:36:00
+      * created_on: 2023-06-10 13:36:00
+      * created_by: user1
+      * root_folder: root_folder_id
       * type: v2
-      * billing_group: ab12345a-123a-1234-1234-a1ab12a12ab1
-      * name: nargles-project
-      * id: luna_lovegood/nargles-project
-      * href: https://api.sbgenomics.com/v2/projects/luna_lovegood/nargles-project
+      * description: Project description
+      * billing_group: billing group
+      * name: Project name
+      * id: project_id
+      * href: NA
+      * response: NA
       * settings
         * locked: FALSE
-        * controlled: FALSE
-        * location: aws:us-east-1
-        * use_interruptible_instances: TRUE
-        * use_memoization: FALSE
-        * intermediate_files: list(duration = 24, retention = "LIMITED")
-        * allow_network_access: FALSE
-        * use_elastic_disk: FALSE
+      * tags
+        * tag_1: Tag1
+        * tag_2: Tag2
       * permissions
-        * write: TRUE
-        * read: TRUE
-        * copy: TRUE
-        * execute: TRUE
         * admin: TRUE
-
+        * execute: TRUE
+        * copy: TRUE
+        * read: TRUE
+        * write: TRUE

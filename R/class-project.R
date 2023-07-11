@@ -115,8 +115,6 @@ Project <- R6::R6Class(
       cat(glue::glue_col("{blue  Project name: } {self$name}"), "\n") # nocov
       cat(glue::glue_col("{blue  Project id: } {self$id}"), "\n") # nocov
     },
-    # nocov start
-
     #' @description Detailed print method for Project class.
     #'
     #' @details This method allows users to print all the fields from the
@@ -140,13 +138,22 @@ Project <- R6::R6Class(
       }
       if (!is.null(x$permissions) && length(x$permissions) != 0) {
         project_permissions <- x$permissions
-        string_project_permissions <- glue::glue("{names(project_permissions)}: {project_permissions}") # nolint
+        # Convert permissions env to a list and keep only those elements that
+        # are logical
+        permissions <- as.list(project_permissions)
+        permissions <- purrr::keep(permissions, .p = is.logical)
+        string_permissions <- glue::glue("{names(permissions)}: {permissions}")
       }
       x <- purrr::discard(x, .p = is.function)
       x <- purrr::discard(x, .p = is.environment)
       x <- purrr::discard(x, .p = is.null)
       x <- purrr::discard(x, .p = is.list)
-      x <- purrr::discard(x, .p = ~ .x == "")
+
+      # Handle POSIX format
+      x$modified_on <- as.character(x$modified_on)
+      x$created_on <- as.character(x$created_on)
+
+      x <- purrr::discard(x, .p = ~ is.character(.x) && .x == "")
       string <- glue::glue("{names(x)}: {x}")
       names(string) <- rep("*", times = length(string))
 
@@ -169,13 +176,12 @@ Project <- R6::R6Class(
         },
         ""
       )
-      ifelse(exists("project_permissions") &&
-        !is.null(project_permissions),
-      {
-        cli::cli_li("permissions")
-        cli::cli_ul(string_project_permissions)
-      },
-      ""
+      ifelse(exists("permissions") && !is.null(permissions),
+        {
+          cli::cli_li("permissions")
+          cli::cli_ul(string_permissions)
+        },
+        ""
       )
       # Close container elements
       cli::cli_end()
@@ -202,9 +208,8 @@ Project <- R6::R6Class(
                     ...) {
       check_tags(tags)
       check_settings(settings)
-      billing_group <-
-        check_and_transform_id(billing_group, "Billing")
-
+      billing_group <- check_and_transform_id(billing_group, "Billing")
+      # nocov start
       body <- list(
         "name" = name,
         "description" = description,
@@ -230,7 +235,7 @@ Project <- R6::R6Class(
       res <- status_check(res)
 
       asProject(res, self$auth)
-    },
+    }, # nocov end
     # delete project ---------------------------------------------------------
     #' @description Method that allows you to delete project from a platform.
     #' It can only be successfully made if you have admin status for the
@@ -238,6 +243,7 @@ Project <- R6::R6Class(
     #' Please be careful when using this method and note that calling it will
     #' permanently delete the project from the platform.
     delete = function() {
+      # nocov start
       res <- sevenbridges2::api(
         path = paste0("projects/", self$id),
         method = "DELETE",
@@ -251,18 +257,22 @@ Project <- R6::R6Class(
         msg <- httr::content(res, as = "parsed")$message
         rlang::abort(glue::glue("HTTP Status {res$status_code} : {msg}"))
       }
-    },
+    }, # nocov end
     #' @description Method for listing all the project members.
     #' @param limit Defines the number of items you want to get from your API
     #' request. By default, `limit` is set to `50`. Maximum is `100`.
     #' @param offset Defines where the retrieved items started.
     #' By default, `offset` is set to `0`.
     #' @param ... Other arguments.
-    member_list = function(limit = getOption("sevenbridges2")$limit,
-                           offset = getOption("sevenbridges2")$offset,
-                           ...) {
+    #' @importFrom glue glue
+    #' @return List of Member class objects.
+    list_members = function(limit = getOption("sevenbridges2")$limit,
+                            offset = getOption("sevenbridges2")$offset,
+                            ...) {
+      # nocov start
+      id <- self$id
       res <- sevenbridges2::api(
-        path = paste0("projects/", self$id, "/members"),
+        path = glue::glue("projects/{id}/members"),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -273,82 +283,112 @@ Project <- R6::R6Class(
 
       res <- status_check(res)
 
-      members_list <- asMemberList(res, self$auth)
-      members_list
-    },
+      return(asMemberList(res, self$auth))
+    }, # nocov end
     #' @description Method for adding new members to a specified project.
     #' The call can only be successfully made by a user who has admin
     #' permissions in the project.
-    #' @param username The Seven Bridges Platform username of the person
-    #' you want to add to the project.
+    #' @param user The Seven Bridges Platform username of the person
+    #' you want to add to the project or object of class Member containing
+    #' user's username.
     #' @param email The email address of the person you want to add to the
     #' project. This has to be the email address that the person used when
     #' registering for an account on the Seven Bridges Platform.
-    #' @param write Whether the user should have the write permission.
-    #' @param read Whether the user should have the read permission.
-    #' @param copy Whether the user should have the copy permission.
-    #' @param execute Whether the user should have the execute permission.
-    #' @param admin Whether the user should have the admin permission.
-    #' @param ... Other arguments that can be passed to api() function
-    #' like 'limit', 'offset', 'fields', etc.
-    member_add = function(username = NULL,
+    #' @param permissions List of permissions that will be associated with the
+    #' project's member. It can contain fields: 'read', 'copy', 'write',
+    #' 'execute' and 'admin' with logical fields - TRUE if certain permission
+    #' is allowed to the user, or FALSE if it's not.
+    #' Requests to add a project member must include the key permissions.
+    #' However, if you do not include a value for some permission, it will be
+    #' set to FALSE by default. The exception to this rule is the 'read'
+    #' permission, which is the default permission on a project. It enables a
+    #' user to read project data, including file names, but access file
+    #' contents.
+    #'
+    #' Example: list(read = TRUE, copy = TRUE, write = FALSE, execute = FALSE,
+    #' admin = FALSE)
+    #' @importFrom rlang abort
+    #' @importFrom glue glue glue_col
+    #' @importFrom checkmate assert_character assert_list assert_subset
+    #' @return Member object.
+    add_member = function(user = NULL,
                           email = NULL,
-                          write = TRUE,
-                          read = TRUE,
-                          copy = TRUE,
-                          execute = TRUE,
-                          admin = FALSE,
-                          ...) {
-      if (is_missing(username) && is_missing(email)) {
-        rlang::abort(
-          "Neither username nor email are provided. You must
-                       provide at least one of these parameters before you can
-                       add a user to a project."
+                          permissions = list(
+                            read = TRUE,
+                            copy = FALSE,
+                            write = FALSE,
+                            execute = FALSE,
+                            admin = FALSE
+                          )) {
+      if (is_missing(user) && is_missing(email)) {
+        rlang::abort("Neither username nor email are provided. You must provide at least one of these parameters before you can add a user to a project.") # nolint
+      }
+      if (!is_missing(user)) {
+        username <- check_and_transform_id(user,
+          class_name = "Member",
+          field_name = "username"
         )
       }
-      body <- list(
-        "username" = username,
-        "email" = email,
-        "permissions" = list(
-          "write" = write,
-          "read" = read,
-          "copy" = copy,
-          "execute" = execute,
-          "admin" = admin
+      if (!is_missing(email)) {
+        checkmate::assert_character(email, len = 1, null.ok = TRUE)
+      }
+      checkmate::assert_list(permissions,
+        null.ok = FALSE, max.len = 5, min.len = 1,
+        types = "logical"
+      )
+      checkmate::assert_subset(names(permissions),
+        empty.ok = FALSE,
+        choices = c(
+          "read", "copy", "execute", "write",
+          "admin"
         )
       )
 
+      # nocov start
+      body <- list(
+        "username" = username,
+        "email" = email,
+        "permissions" = permissions
+      )
+
+      id <- self$id
       req <- sevenbridges2::api(
-        path = paste0("projects/", self$id, "/members"),
+        path = glue::glue("projects/{id}/members"),
         method = "POST",
         token = self$auth$get_token(),
         body = body,
         authorization = self$auth$authorization,
-        base_url = self$auth$url,
-        ...
+        base_url = self$auth$url
       )
 
       res <- status_check(req)
 
-      asMember(res)
-    },
-    #' @description A method for deleting members from the project. It can only
+      return(asMember(res, auth = self$auth))
+    }, # nocov end
+    #' @description A method for removing members from the project. It can only
     #' be successfully run by a user who has admin privileges in the project.
-    #' @param username The Seven Bridges Platform username of the user you
-    #' are about to remove.
-    member_delete = function(username) {
-      if (is_missing(username)) {
-        rlang::abort("Please provide a username for the user you want to remove
-                     from the project.")
+    #' @param user The Seven Bridges Platform username of the person
+    #' you want to remove from the project or object of class Member containing
+    #' user's username.
+    #' @importFrom rlang abort
+    #' @importFrom glue glue glue_col
+    remove_member = function(user) {
+      if (is_missing(user)) {
+        rlang::abort("Please provide a username for the user or project member you want to remove from the project.") # nolint
       }
+      # nocov start
+      id <- self$id
+      username <- check_and_transform_id(user,
+        class_name = "Member",
+        field_name = "username"
+      )
       req <- sevenbridges2::api(
-        path = paste0("projects/", self$id, "/members", "/", username),
+        path = glue::glue("projects/{id}/members/{username}"),
         method = "DELETE",
         token = self$auth$get_token(),
         authorization = self$auth$authorization,
         base_url = self$auth$url
       )
-
 
       if (req$status_code == 204) {
         rlang::inform(
@@ -359,18 +399,26 @@ Project <- R6::R6Class(
           )
         )
       }
-    },
-    #' @description This method returns the permissions of a specified user
-    #' within a specified project.
-    #' @param username Username of the user whose permissions you are
-    #' enquiring about.
+    }, # nocov end
+    #' @description This method returns the information about the member of
+    #' the specified project.
+    #' @param user The Seven Bridges Platform username of the project member
+    #' you want to get information about or object of class Member containing
+    #' user's username.
+    #' @importFrom rlang abort
     #' @param ... Other arguments.
-    member_permissions_get = function(username, ...) {
-      if (is_missing(username)) {
-        rlang::abort("Please provide a username.")
+    get_member = function(user, ...) {
+      if (is_missing(user)) {
+        rlang::abort("Please provide a username or Member object.")
       }
+      # nocov start
+      id <- self$id
+      username <- check_and_transform_id(user,
+        class_name = "Member",
+        field_name = "username"
+      )
       req <- sevenbridges2::api(
-        path = paste0("projects/", self$id, "/members", "/", username),
+        path = glue::glue("projects/{id}/members/{username}"),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -379,69 +427,79 @@ Project <- R6::R6Class(
 
       res <- status_check(req)
 
-      asMember(res, self$auth)
-    },
+      return(asMember(res, self$auth))
+    }, # nocov end
     #' @description This method can be used to edit a user's permissions in a
-    #' specified  project.
-    #' @param username The project member whose permissions you are editing.
-    #' @param write Whether the user should have the write permission.
-    #' @param read Whether the user should have the read permission.
-    #' @param copy Whether the user should have the copy permission.
-    #' @param execute Whether the user should have the execute permission.
-    #' @param admin Whether the user should have the admin permission.
-    #' @param ... Other arguments that can be passed to api() function
-    #' like 'limit', 'offset', 'fields', etc.
-    member_permissions_modify = function(username,
-                                         write = TRUE,
-                                         read = TRUE,
-                                         copy = TRUE,
-                                         execute = TRUE,
-                                         admin = FALSE,
-                                         ...) {
-      if (is_missing(username)) {
-        rlang::abort("Please provide a username.")
+    #' specified  project. It can only be successfully made by a user who
+    #' has admin permissions in the project.
+    #' @param user The Seven Bridges Platform username of the person
+    #' you want to modify permissions on the volume for or object of class
+    #' Member containing user's username.
+    #' @param permissions List of permissions that will be updated for the
+    #' user. It can contain fields: 'read', 'copy', 'execute', 'write' and
+    #' 'admin' with logical values - TRUE if certain permission is allowed to
+    #' the user, or FALSE if it's not.
+    #' Example: list(read = TRUE, copy = TRUE)
+    #' @importFrom rlang abort
+    #' @importFrom glue glue glue_col
+    #' @importFrom checkmate assert_list assert_subset
+    #' @return Permission object.
+    modify_member_permissions = function(user = NULL,
+                                         permissions = list(
+                                           read = TRUE,
+                                           copy = FALSE,
+                                           write = FALSE,
+                                           execute = FALSE,
+                                           admin = FALSE
+                                         )) {
+      if (is_missing(user)) {
+        rlang::abort("Please provide a username or Member object.")
       }
-      body <- list(
-        "write" = write,
-        "read" = read,
-        "copy" = copy,
-        "execute" = execute,
-        "admin" = admin
+      username <- check_and_transform_id(user,
+        class_name = "Member",
+        field_name = "username"
       )
-
+      checkmate::assert_list(permissions,
+        null.ok = FALSE, max.len = 5, min.len = 1,
+        types = "logical"
+      )
+      checkmate::assert_subset(names(permissions),
+        empty.ok = FALSE,
+        choices = c(
+          "read", "copy", "execute", "write",
+          "admin"
+        )
+      )
+      # nocov start
+      body <- flatten_query(permissions)
       body <- body[!sapply(body, is.null)]
 
       if (length(body) == 0) {
         rlang::abort("Please provide updated information.")
       }
+      id <- self$id
 
       req <- sevenbridges2::api(
-        path = paste0(
-          "projects/",
-          self$id,
-          "/members",
-          "/",
-          username,
-          "/permissions"
-        ),
+        path = glue::glue("projects/{id}/members/{username}/permissions"),
         method = "PATCH",
         token = self$auth$get_token(),
         body = body,
         authorization = self$auth$authorization,
-        base_url = self$auth$url,
-        ...
+        base_url = self$auth$url
       )
 
       res <- status_check(req)
 
-
       if (req$status_code == 200) {
-        rlang::inform(glue::glue_col("Permissions for {green {username}} have been changed.")) # nolint
+        rlang::inform(glue::glue_col(
+          "Permissions for {green {username}} have been changed."
+        ))
+        return(asPermission(res, auth = self$auth))
       } else {
         rlang::abort("Oops, something went wrong. ")
         res
       }
-    },
+    }, # nocov end
     #' @description  List all project's files and folders.
     #' @param limit The maximum number of collection items to return for a
     #'   single request. Minimum value is 1. The maximum value is 100 and the
@@ -454,6 +512,7 @@ Project <- R6::R6Class(
     files = function(limit = getOption("sevenbridges2")$limit,
                      offset = getOption("sevenbridges2")$offset,
                      ...) {
+      # nocov start
       req <- sevenbridges2::api(
         path = paste0("projects/", self$id, "/files"),
         method = "GET",
@@ -467,7 +526,7 @@ Project <- R6::R6Class(
       res <- status_check(req)
 
       asFileList(res, self$auth)
-    },
+    }, # nocov end
     #' @description  Create a new folder under the project's root directory.
     #' Every project on the Seven Bridges Platform is represented
     #' by a root folder which contains all the files associated
@@ -480,7 +539,7 @@ Project <- R6::R6Class(
     #' @importFrom glue glue_col
     create_folder = function(name, ...) {
       check_folder_name(name)
-
+      # nocov start
       body <- list(
         "name" = name,
         "project" = self$id,

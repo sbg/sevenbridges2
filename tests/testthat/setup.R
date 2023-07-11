@@ -33,7 +33,10 @@ setup_permission_obj <-
     read = TRUE,
     copy = TRUE,
     execute = TRUE,
-    admin = TRUE
+    admin = TRUE,
+    href = NULL,
+    response = list("raw-response"),
+    auth = setup_auth_object
   )
 # Project obj
 setup_project_obj <-
@@ -47,8 +50,12 @@ setup_project_obj <-
     settings = list("locked" = FALSE),
     root_folder = "root_folder_id",
     created_by = "user1",
-    created_on = Sys.time(),
-    modified_on = Sys.time(),
+    created_on = as.POSIXct.POSIXlt(
+      strptime("2023-06-10 13:36:00", "%Y-%m-%d %H:%M:%S")
+    ),
+    modified_on = as.POSIXct.POSIXlt(
+      strptime("2023-07-10 13:36:00", "%Y-%m-%d %H:%M:%S")
+    ),
     permissions = setup_permission_obj,
     category = "PRIVATE",
     auth = setup_auth_object
@@ -211,6 +218,37 @@ setup_volfile_collection_obj <- VolumeFileCollection$new(
   auth = setup_auth_object
 )
 
+setup_volume_member_object <- Member$new(
+  username = "test-member",
+  email = "test-member@gmail.com", type = "USER",
+  id = "test-member",
+  permissions = Permission$new(
+    read = TRUE, copy = FALSE, write = FALSE,
+    execute = NULL, admin = FALSE,
+    href = NULL,
+    auth = setup_auth_object,
+    response = list(raw = "raw-response-list")
+  ),
+  href = "link/to/resource",
+  auth = setup_auth_object,
+  response = list(raw = "raw-response-list")
+)
+
+setup_project_member_object <- Member$new(
+  username = "test-member",
+  email = "test-member@gmail.com", type = "USER",
+  id = "test-member",
+  permissions = Permission$new(
+    read = TRUE, copy = FALSE, write = FALSE,
+    execute = FALSE, admin = FALSE,
+    href = NULL,
+    auth = setup_auth_object,
+    response = list(raw = "raw-response-list")
+  ),
+  href = "link/to/resource",
+  auth = setup_auth_object,
+  response = list(raw = "raw-response-list")
+)
 
 # Close session at the end of tests
 withr::defer(teardown_env())

@@ -74,6 +74,7 @@ Collection <- R6::R6Class(
       if (length(self$links) == 0) {
         rlang::abort("No more entries to be returned.")
       }
+      # nocov start
       for (i in seq_len(length(self$links))) {
         link <- self$links[[i]]
         if (tolower(link$rel) == "next") {
@@ -91,7 +92,7 @@ Collection <- R6::R6Class(
           rlang::abort("You've reached the last page of results.")
         }
       }
-    },
+    }, # nocov end
     #' @description Return previous page of results.
     #' @param ... Other query or API parameters that can be passed to api()
     #' function like advance_access, fields etc.
@@ -101,6 +102,7 @@ Collection <- R6::R6Class(
       if (length(self$links) == 0) {
         rlang::abort("No more entries to be returned.") # nolint
       }
+      # nocov start
       for (i in seq_len(length(self$links))) {
         link <- self$links[[i]]
         if (tolower(link$rel) == "prev") {
@@ -119,8 +121,9 @@ Collection <- R6::R6Class(
         }
       }
     }
-  ),
+  ), # nocov end
   private = list(
+    # nocov start
     # Reload object to get new results
     load = function(res, auth) {
       self$initialize(
@@ -131,7 +134,7 @@ Collection <- R6::R6Class(
         response = attr(res, "response")
       )
       return(self)
-    }
+    } # nocov end
   )
 )
 
