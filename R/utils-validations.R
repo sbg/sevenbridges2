@@ -508,3 +508,24 @@ transform_configuration_param <- function(configuration) {
   }
   return(config_json_string)
 }
+
+#' Convert date to string
+#'
+#' @description This function converts date data type to string.
+#' @param datetime Object to convert.
+#'
+#' @importFrom rlang abort
+#' @importFrom checkmate test_posixct
+#' @importFrom checkmate test_character
+#' @noRd
+check_and_transform_datetime <- function(datetime) {
+  if (missing(datetime)) {
+    rlang::abort("Date is required!")
+  }
+  if (checkmate::test_character(datetime)) {
+    return(datetime)
+  }
+  if (checkmate::test_posixct(datetime)) {
+    return(as.character(datetime))
+  }
+}
