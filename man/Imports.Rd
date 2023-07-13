@@ -23,16 +23,10 @@ R6 Class representing storage imports resource endpoints
 \item \href{#method-Imports-query}{\code{Imports$query()}}
 \item \href{#method-Imports-get}{\code{Imports$get()}}
 \item \href{#method-Imports-submit_import}{\code{Imports$submit_import()}}
+\item \href{#method-Imports-delete}{\code{Imports$delete()}}
 \item \href{#method-Imports-clone}{\code{Imports$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Resource" data-id="delete"><a href='../../sevenbridges2/html/Resource.html#method-Resource-delete'><code>sevenbridges2::Resource$delete()</code></a></span></li>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Imports-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Imports-new}{}}}
@@ -145,10 +139,10 @@ in bulk considering the API rate limit (bulk operations will be
 implemented in next releases).
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Imports$submit_import(
-  volume = NULL,
-  location,
-  project = NULL,
-  parent = NULL,
+  source_volume = NULL,
+  source_location,
+  destination_project = NULL,
+  destination_parent_directory = NULL,
   name = NULL,
   overwrite = FALSE,
   autorename = FALSE,
@@ -160,19 +154,20 @@ implemented in next releases).
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{volume}}{String volume id or Volume object you want to import files
-or folders from. Required if \code{location} parameter is provided as a
+\item{\code{source_volume}}{String volume id or Volume object you want to import
+files or folders from. Required if \code{location} parameter is provided as a
 string.}
 
-\item{\code{location}}{String file/folder location name on the volume or
+\item{\code{source_location}}{String file/folder location name on the volume or
 VolumeFile object you would like to import into some project/folder on
 the platform. Required.}
 
-\item{\code{project}}{String project id or Project object. Not required, but
-either \code{project} or \code{parent} must be provided.}
-
-\item{\code{parent}}{String folder id or File object (with type = 'FOLDER').
+\item{\code{destination_project}}{String project id or Project object.
 Not required, but either \code{project} or \code{parent} must be provided.}
+
+\item{\code{destination_parent_directory}}{String folder id or File object
+(with type = 'FOLDER'). Not required, but either \code{project} or \code{parent}
+must be provided.}
 
 \item{\code{name}}{The name of the alias to create. This name should be unique
 to the project.
@@ -210,6 +205,16 @@ like 'fields', etc.}
 \subsection{Returns}{
 Import job object.
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Imports-delete"></a>}}
+\if{latex}{\out{\hypertarget{method-Imports-delete}{}}}
+\subsection{Method \code{delete()}}{
+Deleting import jobs is not possible.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Imports$delete()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Imports-clone"></a>}}
