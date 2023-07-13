@@ -525,7 +525,7 @@ File <- R6::R6Class(
       res <- status_check(res)
 
       # Return folder contents
-      asFileList(res, auth = self)
+      asFileList(res, auth = self$auth)
     },
 
 

@@ -84,7 +84,7 @@ VolumeFile <- R6::R6Class(
 asVolumeFile <- function(x, auth = NULL) {
   VolumeFile$new(
     href = x$href,
-    location = paste0(x$prefix, x$location),
+    location = ifelse(length(x$prefix) > 0, paste0(x$prefix, "/"), x$location),
     type = ifelse(length(x$prefix) > 0, "PREFIX", "FILE"),
     storage_type = x$type,
     volume = x$volume,
