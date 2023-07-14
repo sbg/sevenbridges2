@@ -31,6 +31,7 @@ R6 Class representing storage imports resource endpoints
 \if{html}{\out{<a id="method-Imports-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Imports-new}{}}}
 \subsection{Method \code{new()}}{
+Create a new Imports object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Imports$new(...)}\if{html}{\out{</div>}}
 }
@@ -74,7 +75,7 @@ from this particular volume. Optional.}
 \item{\code{project}}{String project id or Project object. List all volume
 imports to this particular project. Optional.}
 
-\item{\code{state}}{The state of the import job. Possible values are:
+\item{\code{state}}{String. The state of the import job. Possible values are:
 \itemize{
 \item \code{PENDING}: the import is queued;
 \item \code{RUNNING}: the import is running;

@@ -18,7 +18,7 @@ Imports <- R6::R6Class(
       "get" = "storage/imports/{id}",
       "create" = "storage/imports"
     ),
-
+    #' @description Create a new Imports object.
     #' @param ... Other arguments.
     initialize = function(...) {
       # Initialize Resource class
@@ -37,7 +37,7 @@ Imports <- R6::R6Class(
     #' from this particular volume. Optional.
     #' @param project String project id or Project object. List all volume
     #' imports to this particular project. Optional.
-    #' @param state The state of the import job. Possible values are:
+    #' @param state String. The state of the import job. Possible values are:
     #' \itemize{
     #'    \item `PENDING`: the import is queued;
     #'    \item `RUNNING`: the import is running;
@@ -83,8 +83,9 @@ Imports <- R6::R6Class(
         offset = offset,
         ...
       )
-      return(res)
-      # return(asImportList(res, auth = self$auth))
+      res$items <- asImportList(res, auth = self$auth)
+
+      return(asCollection(res, auth = self$auth))
     }, # nocov end
 
     # Get import job details -----------------------------------------------
@@ -109,8 +110,7 @@ Imports <- R6::R6Class(
         advance_access = TRUE,
         ...
       )
-      return(res)
-      # return(asImport(res, auth = self$auth))
+      return(asImport(res, auth = self$auth))
     }, # nocov end
 
     # Start new import job -----------------------------------------------
@@ -234,7 +234,6 @@ Imports <- R6::R6Class(
       checkmate::assert_logical(autorename, len = 1, null.ok = TRUE)
       checkmate::assert_logical(preserve_folder_structure, len = 1, null.ok = TRUE) # nolint
 
-
       # Build body
       body <- list(
         source = list(
@@ -265,8 +264,7 @@ Imports <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(res)
-      # return(asImport(res, auth = self$auth))
+      return(asImport(res, auth = self$auth))
     },
     # Delete import job ----------------------------------------------------
     #' @description Deleting import jobs is not possible.
