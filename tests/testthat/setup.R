@@ -250,5 +250,24 @@ setup_project_member_object <- Member$new(
   response = list(raw = "raw-response-list")
 )
 
+setup_tasks_object <- Tasks$new(
+  username = "test-member",
+  email = "test-member@gmail.com", type = "USER",
+  id = "test-member",
+  permissions = Permission$new(
+    read = TRUE, copy = FALSE, write = FALSE,
+    execute = FALSE, admin = FALSE,
+    href = NULL,
+    auth = setup_auth_object,
+    response = list(raw = "raw-response-list")
+  ),
+  href = "link/to/resource",
+  auth = setup_auth_object,
+  response = list(raw = "raw-response-list")
+)
+
+# Tasks obj
+setup_tasks_obj <- Tasks$new(auth = setup_auth_object)
+
 # Close session at the end of tests
 withr::defer(teardown_env())

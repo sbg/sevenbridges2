@@ -81,6 +81,7 @@ permissions within the project.}
 \item \href{#method-Project-get_root_folder}{\code{Project$get_root_folder()}}
 \item \href{#method-Project-list_apps}{\code{Project$list_apps()}}
 \item \href{#method-Project-create_app}{\code{Project$create_app()}}
+\item \href{#method-Project-list_tasks}{\code{Project$list_tasks()}}
 \item \href{#method-Project-clone}{\code{Project$clone()}}
 }
 }
@@ -507,6 +508,89 @@ together with raw parameter.}
 characters or spaces).}
 
 \item{\code{raw_format}}{The type of format used (\code{JSON} or \code{YAML}).}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Project-list_tasks"></a>}}
+\if{latex}{\out{\hypertarget{method-Project-list_tasks}{}}}
+\subsection{Method \code{list_tasks()}}{
+This call lists all tasks from project you can access.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Project$list_tasks(
+  status = NULL,
+  parent = NULL,
+  created_from = NULL,
+  created_to = NULL,
+  started_from = NULL,
+  started_to = NULL,
+  ended_from = NULL,
+  ended_to = NULL,
+  order_by = c("created_time", "start_time", "name", "end_time", "created_by"),
+  order = c("asc", "desc"),
+  origin_id = NULL,
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{status}}{String. You can filter the returned tasks by their status.
+Set thevalue of status to one of the following values: \code{QUEUED}, \code{DRAFT},
+\code{RUNNING}, \code{COMPLETED}, \code{ABORTED}, \code{FAILED}.}
+
+\item{\code{parent}}{Provide task ID or task object of the parent task to return
+all child tasks from that parent. A parent task is a task that specifies
+criteria by which to batch its inputs into a series of further sub-tasks,
+calledchild tasks. See the documentation on
+\href{https://docs.sevenbridges.com/docs/about-batch-analyses}{batching tasks}
+for more details on how to run tasks in batches.}
+
+\item{\code{created_from}}{String. Enter the starting date for querying tasks
+created on the specified date and onwards.}
+
+\item{\code{created_to}}{String. Enter the ending date for querying tasks
+created until the specified date. You can use it in combination with
+\code{created_from} to specify a time interval.}
+
+\item{\code{started_from}}{String. Enter the starting date for querying tasks
+started on the specified date and onwards.}
+
+\item{\code{started_to}}{String. Enter the ending date for querying tasks
+started until the specified date.}
+
+\item{\code{ended_from}}{String. Enter the starting date for querying tasks
+that ended on a specified date.}
+
+\item{\code{ended_to}}{String. Enter the ending date for querying tasks that
+ended until a specified date.}
+
+\item{\code{order_by}}{String. Order returned results by the specified field.
+Allowed values: \code{created_time}, \code{start_time}, \code{name}, \code{end_time} and
+\code{created_by}. Sort can be done only by one column. The default value is
+\code{created_time}.}
+
+\item{\code{order}}{String. Sort results in ascending or descending order by
+specifying \code{asc} or \code{desc}, respectively. Only taken into account if
+\code{order_by} is explicitly specified. The default value is \code{asc}.}
+
+\item{\code{origin_id}}{String. Enter an automation run ID to list all tasks
+created from the specified automation run.}
+
+\item{\code{limit}}{The maximum number of collection items to return for a
+single request. Minimum value is 1. The maximum value is 100 and the
+default value is 50. This is a pagination-specific attribute.}
+
+\item{\code{offset}}{The zero-based starting index in the entire collection of
+the first item to return. The default value is 0. This is a
+pagination-specific attribute.}
+
+\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
+a subset of fields to include in the response.}
 }
 \if{html}{\out{</div>}}
 }

@@ -42,6 +42,9 @@ Seven Bridges single sign-on (\code{TRUE})?}
 
 \item{\code{volumes}}{Volumes object, for accessing volumes resources on the
 platform.}
+
+\item{\code{tasks}}{Tasks object, for accessing volumes resources on the
+platform.}
 }
 \if{html}{\out{</div>}}
 }
