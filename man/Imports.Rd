@@ -142,7 +142,7 @@ implemented in next releases).
   source_volume = NULL,
   source_location,
   destination_project = NULL,
-  destination_parent_directory = NULL,
+  destination_parent = NULL,
   name = NULL,
   overwrite = FALSE,
   autorename = FALSE,
@@ -155,19 +155,20 @@ implemented in next releases).
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{source_volume}}{String volume id or Volume object you want to import
-files or folders from. Required if \code{location} parameter is provided as a
-string.}
+files or folders from. Required if \code{source_location} parameter is
+provided as a string.}
 
 \item{\code{source_location}}{String file/folder location name on the volume or
 VolumeFile object you would like to import into some project/folder on
 the platform. Required.}
 
-\item{\code{destination_project}}{String project id or Project object.
-Not required, but either \code{project} or \code{parent} must be provided.}
+\item{\code{destination_project}}{String destination project id or Project
+object. Not required, but either \code{destination_project} or
+\code{destination_parent} directory must be provided.}
 
-\item{\code{destination_parent_directory}}{String folder id or File object
-(with type = 'FOLDER'). Not required, but either \code{project} or \code{parent}
-must be provided.}
+\item{\code{destination_parent}}{String folder id or File object
+(with type = 'FOLDER'). Not required, but either \code{destination_project}
+or \code{destination_parent} directory must be provided.}
 
 \item{\code{name}}{The name of the alias to create. This name should be unique
 to the project.
@@ -184,18 +185,21 @@ alphanumeric and special characters _, - and ..}
 
 \item{\code{overwrite}}{Boolean. Whether to overwrite the item if another one
 with the same name already exists at the destination.
-Keep in mind that if used with folders import, the folder's content
+Bear in mind that if used with folders import, the folder's content
 (files with the same name) will be overwritten, not the whole folder.}
 
 \item{\code{autorename}}{Boolean. Whether to automatically rename the item
 (by prefixing its name with an underscore and number) if another one
 with the same name already exists at the destination.
-Keep in mind that if used with folders import, the folder content will
+Bear in mind that if used with folders import, the folder content will
 be renamed, not the whole folder.}
 
 \item{\code{preserve_folder_structure}}{Boolean. Whether to keep the exact
 source folder structure. The default value is true if the item being
-imported is a folder. Should not be used if you are importing a file.}
+imported is a folder. Should not be used if you are importing a file.
+Bear in mind that if you use preserve_folder_structure = FALSE, that the
+response will be the parent folder object containing imported files
+alongside with other files if they exist.}
 
 \item{\code{...}}{Other arguments that can be passed to api() function
 like 'fields', etc.}

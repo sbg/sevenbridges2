@@ -128,16 +128,17 @@ Imports <- R6::R6Class(
     #' implemented in next releases).
     #'
     #' @param source_volume String volume id or Volume object you want to import
-    #' files or folders from. Required if `location` parameter is provided as a
-    #' string.
+    #' files or folders from. Required if `source_location` parameter is
+    #' provided as a string.
     #' @param source_location String file/folder location name on the volume or
     #' VolumeFile object you would like to import into some project/folder on
     #' the platform. Required.
-    #' @param destination_project String project id or Project object.
-    #' Not required, but either `project` or `parent` must be provided.
-    #' @param destination_parent_directory String folder id or File object
-    #' (with type = 'FOLDER'). Not required, but either `project` or `parent`
-    #' must be provided.
+    #' @param destination_project String destination project id or Project
+    #' object. Not required, but either `destination_project` or
+    #' `destination_parent` directory must be provided.
+    #' @param destination_parent String folder id or File object
+    #' (with type = 'FOLDER'). Not required, but either `destination_project`
+    #' or `destination_parent` directory must be provided.
     #' @param name The name of the alias to create. This name should be unique
     #' to the project.
     #' If the name is already in use in the project, you should
@@ -153,16 +154,19 @@ Imports <- R6::R6Class(
     #'
     #' @param overwrite Boolean. Whether to overwrite the item if another one
     #' with the same name already exists at the destination.
-    #' Keep in mind that if used with folders import, the folder's content
+    #' Bear in mind that if used with folders import, the folder's content
     #' (files with the same name) will be overwritten, not the whole folder.
     #' @param autorename Boolean. Whether to automatically rename the item
     #' (by prefixing its name with an underscore and number) if another one
     #' with the same name already exists at the destination.
-    #' Keep in mind that if used with folders import, the folder content will
+    #' Bear in mind that if used with folders import, the folder content will
     #' be renamed, not the whole folder.
     #' @param preserve_folder_structure Boolean. Whether to keep the exact
     #' source folder structure. The default value is true if the item being
     #' imported is a folder. Should not be used if you are importing a file.
+    #' Bear in mind that if you use preserve_folder_structure = FALSE, that the
+    #' response will be the parent folder object containing imported files
+    #' alongside with other files if they exist.
     #'
     #' @param ... Other arguments that can be passed to api() function
     #' like 'fields', etc.
@@ -173,10 +177,13 @@ Imports <- R6::R6Class(
     #' @return Import job object.
     submit_import = function(source_volume = NULL, source_location,
                              destination_project = NULL,
-                             destination_parent_directory = NULL,
+                             destination_parent = NULL,
                              name = NULL, overwrite = FALSE,
                              autorename = FALSE,
                              preserve_folder_structure = NULL, ...) {
+      if (is_missing(source_location)) {
+        rlang::abort("Source file/folder location must be provided as a string or VolumeFile object!") # nolint
+      }
       if (is_missing(source_volume)) {
         if (checkmate::test_r6(source_location, classes = "VolumeFile")) {
           volume <- check_and_transform_id(source_location,
@@ -184,43 +191,43 @@ Imports <- R6::R6Class(
             field_name = "volume"
           )
         } else {
-          rlang::abort("Volume id must be provided if source location is provided as string.") # nolint
+          rlang::abort(
+            "Volume id must be provided if source location is provided as string. \nSource file/folder location must be provided as a string or VolumeFile object." # nolint
+          )
         }
       } else {
         volume <- check_and_transform_id(source_volume, class_name = "Volume")
       }
-      if (is_missing(source_location)) {
-        rlang::abort("File/folder location must be provided as a string or VolumeFile object!") # nolint
-      } else {
-        location <- check_and_transform_id(source_location,
-          class_name = "VolumeFile",
-          field_name = "location"
-        )
-      }
+      location <- check_and_transform_id(source_location,
+        class_name = "VolumeFile",
+        field_name = "location"
+      )
       if (is_missing(destination_project) &&
-        is_missing(destination_parent_directory)) {
+        is_missing(destination_parent)) {
         rlang::abort("Please, provide either destination project or parent parameter.") # nolint
       }
       if (!is_missing(destination_project) &&
-        !is_missing(destination_parent_directory)) {
+        !is_missing(destination_parent)) {
         rlang::abort("Either destination project or parent parameter must be proveded, not both.") # nolint
       }
       if (!is_missing(destination_project)) {
-        project <- check_and_transform_id(
+        destination_project <- check_and_transform_id(
           destination_project,
           class_name = "Project"
         )
       }
-      if (checkmate::test_r6(destination_parent_directory, classes = "File")) {
-        if (tolower(destination_parent_directory$type) != "folder") {
-          rlang::abort("Destination parent directory paremeter must contain folder id or File object with type = 'Folder'") # nolint
+      if (checkmate::test_r6(destination_parent, classes = "R6")) {
+        checkmate::assert_r6(destination_parent, classes = "File")
+        if (tolower(destination_parent$type) != "folder") {
+          rlang::abort("Destination parent directory parameter must contain folder id or File object with type = 'folder'.") # nolint
         }
-        parent <- destination_parent_directory[["id"]]
+        parent <- destination_parent[["id"]]
       } else {
         checkmate::assert_character(
-          destination_parent_directory,
+          destination_parent,
           len = 1, null.ok = TRUE
         )
+        parent <- destination_parent
       }
       checkmate::assert_character(name, len = 1, null.ok = TRUE)
       checkmate::assert_logical(overwrite, len = 1, null.ok = TRUE)
@@ -235,7 +242,7 @@ Imports <- R6::R6Class(
           location = location
         ),
         destination = list(
-          project = project,
+          project = destination_project,
           parent = parent,
           name = name
         ),
