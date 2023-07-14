@@ -1804,3 +1804,43 @@ aws_iam_user_volume$modify_member_permissions(
   permissions = list(write = TRUE)
 )
 ```
+
+# Tasks
+
+## List tasks
+
+You can list all tasks by calling the `tasks$query()` 
+method from the authentication object. The method has many additional 
+query parameters that could allow you to search for tasks by specific 
+criteria such as: `status`, `parent`, `project`, `created_from`, `created_to`, 
+`started_from`, `started_to`, `ended_from`, `ended_to`, `order_by`, `order`, 
+`origin_id`.
+
+```{r}
+# Query all tasks
+a$tasks$query()
+
+# Query tasks by their status
+a$tasks$query(status = "COMPLETED", limit = 5)
+```
+
+To list all the tasks in a project, use the following.
+```{r}
+# a better way
+p <- a$projects(query = list(name = "demo"))
+p$list_tasks()
+
+# alternatively
+p <- a$projects("demo")
+a$tasks$query(project = p)
+```
+
+## Get single task information
+
+In order to retrieve information about a single task of interest, you can get 
+it using the `tasks$get()` method using its id as parameter.
+
+```{r}
+# Get volume
+a$volumes$get(id = "<task_id>")
+```
