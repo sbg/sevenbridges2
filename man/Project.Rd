@@ -81,6 +81,7 @@ permissions within the project.}
 \item \href{#method-Project-get_root_folder}{\code{Project$get_root_folder()}}
 \item \href{#method-Project-list_apps}{\code{Project$list_apps()}}
 \item \href{#method-Project-create_app}{\code{Project$create_app()}}
+\item \href{#method-Project-list_imports}{\code{Project$list_imports()}}
 \item \href{#method-Project-clone}{\code{Project$clone()}}
 }
 }
@@ -509,6 +510,52 @@ characters or spaces).}
 \item{\code{raw_format}}{The type of format used (\code{JSON} or \code{YAML}).}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Project-list_imports"></a>}}
+\if{latex}{\out{\hypertarget{method-Project-list_imports}{}}}
+\subsection{Method \code{list_imports()}}{
+This call lists imports initiated by particular user
+into this destination project.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Project$list_imports(
+  volume = NULL,
+  state = NULL,
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{volume}}{String volume id or Volume object. List all imports
+from particular volume. Optional.}
+
+\item{\code{state}}{String. The state of the import job. Possible values are:
+\itemize{
+\item \code{PENDING}: the import is queued;
+\item \code{RUNNING}: the import is running;
+\item \code{COMPLETED}: the import has completed successfully;
+\item \code{FAILED}: the import has failed.
+}
+Example: state = c("RUNNING", "FAILED")}
+
+\item{\code{limit}}{Defines the number of items you want to get from your API
+request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+
+\item{\code{offset}}{Defines where the retrieved items started.
+By default, \code{offset} is set to \code{0}.}
+
+\item{\code{...}}{Other arguments that can be passed to api() function
+like 'fields', etc.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Collection of import jobs (Import class objects).
 }
 }
 \if{html}{\out{<hr>}}

@@ -7,7 +7,8 @@ test_that("VolumeFile initialization works", {
     setup_volume_file_obj,
     classes = c("VolumeFile"),
     public = c(
-      "href", "location", "type", "storage_type", "volume", "metadata"
+      "href", "location", "type", "storage_type", "volume", "metadata",
+      "import"
     )
   )
 })

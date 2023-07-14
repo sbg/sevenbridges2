@@ -235,6 +235,7 @@ Imports <- R6::R6Class(
       checkmate::assert_logical(preserve_folder_structure, len = 1, null.ok = TRUE) # nolint
 
       # Build body
+      # nocov start
       body <- list(
         source = list(
           volume = volume,
@@ -249,7 +250,7 @@ Imports <- R6::R6Class(
         autorename = autorename,
         preserve_folder_structure = preserve_folder_structure
       )
-      # nocov start
+
       path <- glue::glue(self$URL[["create"]])
 
       res <- sevenbridges2::api(
