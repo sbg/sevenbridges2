@@ -255,6 +255,35 @@ setup_volume_member_object <- Member$new(
 # Imports obj
 setup_imports_obj <- Imports$new(auth = setup_auth_object)
 
+file_obj_params_list <- list(
+  id = "file-id",
+  name = "File_name",
+  size = 100,
+  project = "user1/project-id",
+  parent = "parent-id",
+  type = "file",
+  created_on = "2023-06-06T11:14:11Z",
+  modified_on = "2023-06-06T11:14:11Z",
+  href = "https://api.sbgenomics.com/v2/files/file-id",
+  auth = setup_auth_object
+)
+# Import obj
+setup_import_obj <- Import$new(
+  href = "link-to-the-resource",
+  id = "import-job-id",
+  state = "COMPLETED",
+  overwrite = FALSE,
+  autorename = TRUE,
+  preserve_folder_structure = NULL,
+  source = list(volume = "volume-id", location = "location-name"),
+  destination = list(project = "project-id", name = "file_name.txt"),
+  started_on = "2023-07-13T12:34:56Z",
+  finished_on = "2023-07-13T12:34:56Z",
+  error = NULL,
+  result = file_obj_params_list,
+  auth = setup_auth_object
+)
+
 
 # Close session at the end of tests
 withr::defer(teardown_env())
