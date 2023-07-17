@@ -193,15 +193,14 @@ Exports <- R6::R6Class(
       # Build body
       # nocov start
       body <- list(
-        source = list(
-          file = source_file
-        ),
         destination = list(
           volume = destination_volume,
           location = destination_location
         ),
+        source = list(
+          file = source_file
+        ),
         overwrite = overwrite,
-        copy_only = copy_only,
         properties = properties
       )
 
@@ -211,6 +210,7 @@ Exports <- R6::R6Class(
         path = path,
         method = "POST",
         body = body,
+        query = list(copy_only = copy_only),
         token = self$auth$get_token(),
         base_url = self$auth$url,
         advance_access = TRUE,
@@ -218,6 +218,7 @@ Exports <- R6::R6Class(
       )
 
       res <- status_check(res)
+
       return(res)
       # return(asExport(res, auth = self$auth))
     },
