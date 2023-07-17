@@ -28,8 +28,8 @@ Tasks <- R6::R6Class(
     #' @description This call lists all tasks you can access.
     #'
     #' @param status String. You can filter the returned tasks by their status.
-    #' Set thevalue of status to one of the following values: `QUEUED`, `DRAFT`,
-    #' `RUNNING`, `COMPLETED`, `ABORTED`, `FAILED`.
+    #' Set the value of status to one of the following values: `QUEUED`,
+    #' `DRAFT`, `RUNNING`, `COMPLETED`, `ABORTED`, `FAILED`.
     #' @param parent Provide task ID or task object of the parent task to return
     #'  all child tasks from that parent. A parent task is a task that specifies
     #' criteria by which to batch its inputs into a series of further sub-tasks,

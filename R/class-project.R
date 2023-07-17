@@ -648,12 +648,12 @@ Project <- R6::R6Class(
     #' @description This call lists all tasks from project you can access.
     #'
     #' @param status String. You can filter the returned tasks by their status.
-    #' Set thevalue of status to one of the following values: `QUEUED`, `DRAFT`,
-    #' `RUNNING`, `COMPLETED`, `ABORTED`, `FAILED`.
+    #' Set the value of status to one of the following values: `QUEUED`, `DRAFT`
+    #' , `RUNNING`, `COMPLETED`, `ABORTED`, `FAILED`.
     #' @param parent Provide task ID or task object of the parent task to return
     #'  all child tasks from that parent. A parent task is a task that specifies
     #' criteria by which to batch its inputs into a series of further sub-tasks,
-    #'  calledchild tasks. See the documentation on
+    #'  called child tasks. See the documentation on
     #' [batching tasks](https://docs.sevenbridges.com/docs/about-batch-analyses)
     #'  for more details on how to run tasks in batches.
     #' @param created_from String. Enter the starting date for querying tasks
