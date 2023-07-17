@@ -60,6 +60,7 @@ set to FALSE.}
 \item \href{#method-Volume-remove_member}{\code{Volume$remove_member()}}
 \item \href{#method-Volume-get_member}{\code{Volume$get_member()}}
 \item \href{#method-Volume-modify_member_permissions}{\code{Volume$modify_member_permissions()}}
+\item \href{#method-Volume-list_imports}{\code{Volume$list_imports()}}
 \item \href{#method-Volume-clone}{\code{Volume$clone()}}
 }
 }
@@ -439,6 +440,52 @@ Example: list(read = TRUE, copy = TRUE)}
 }
 \subsection{Returns}{
 Permission object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-list_imports"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-list_imports}{}}}
+\subsection{Method \code{list_imports()}}{
+This call lists import jobs initiated by particular user
+from this volume.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$list_imports(
+  project = NULL,
+  state = NULL,
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{project}}{String project id or Project object. List all volume
+imports to this project. Optional.}
+
+\item{\code{state}}{String. The state of the import job. Possible values are:
+\itemize{
+\item \code{PENDING}: the import is queued;
+\item \code{RUNNING}: the import is running;
+\item \code{COMPLETED}: the import has completed successfully;
+\item \code{FAILED}: the import has failed.
+}
+Example: state = c("RUNNING", "FAILED")}
+
+\item{\code{limit}}{Defines the number of items you want to get from your API
+request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+
+\item{\code{offset}}{Defines where the retrieved items started.
+By default, \code{offset} is set to \code{0}.}
+
+\item{\code{...}}{Other arguments that can be passed to api() function
+like 'fields', etc.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Collection of import jobs (Import class objects).
 }
 }
 \if{html}{\out{<hr>}}

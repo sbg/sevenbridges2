@@ -360,3 +360,12 @@ check_and_transform_id <- function(x, class_name, field_name = "id") {
   }
   return(id)
 }
+
+extract_common_query_params <- function(args, param_name) {
+  if (!is_missing(args[[param_name]])) {
+    param_value <- args[[param_name]]
+  } else {
+    param_value <- getOption("sevenbridges2")[[param_name]]
+  }
+  return(param_value)
+}

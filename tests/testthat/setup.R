@@ -60,6 +60,22 @@ setup_project_obj <-
     category = "PRIVATE",
     auth = setup_auth_object
   )
+# Project member object
+setup_project_member_object <- Member$new(
+  username = "test-member",
+  email = "test-member@gmail.com", type = "USER",
+  id = "test-member",
+  permissions = Permission$new(
+    read = TRUE, copy = FALSE, write = FALSE,
+    execute = FALSE, admin = FALSE,
+    href = NULL,
+    auth = setup_auth_object,
+    response = list(raw = "raw-response-list")
+  ),
+  href = "link/to/resource",
+  auth = setup_auth_object,
+  response = list(raw = "raw-response-list")
+)
 
 setup_file_obj <-
   File$new(
@@ -169,6 +185,7 @@ setup_collection_obj <- Collection$new(
   auth = setup_auth_object
 )
 
+# VolumeFile object type file
 setup_volume_file_obj <- VolumeFile$new(
   href = "resource-href",
   location = "my_new_file.txt",
@@ -177,7 +194,7 @@ setup_volume_file_obj <- VolumeFile$new(
   volume = "my_s3_volume",
   metadata = list(metadata_field = "metadata-value")
 )
-
+# VolumeFile object type folder
 setup_volume_file_dir_obj <- VolumeFile$new(
   href = "resource-href",
   location = "my_new_folder",
@@ -218,6 +235,7 @@ setup_volfile_collection_obj <- VolumeFileCollection$new(
   auth = setup_auth_object
 )
 
+# Volume member object
 setup_volume_member_object <- Member$new(
   username = "test-member",
   email = "test-member@gmail.com", type = "USER",
@@ -234,21 +252,38 @@ setup_volume_member_object <- Member$new(
   response = list(raw = "raw-response-list")
 )
 
-setup_project_member_object <- Member$new(
-  username = "test-member",
-  email = "test-member@gmail.com", type = "USER",
-  id = "test-member",
-  permissions = Permission$new(
-    read = TRUE, copy = FALSE, write = FALSE,
-    execute = FALSE, admin = FALSE,
-    href = NULL,
-    auth = setup_auth_object,
-    response = list(raw = "raw-response-list")
-  ),
-  href = "link/to/resource",
-  auth = setup_auth_object,
-  response = list(raw = "raw-response-list")
+# Imports obj
+setup_imports_obj <- Imports$new(auth = setup_auth_object)
+
+file_obj_params_list <- list(
+  id = "file-id",
+  name = "File_name",
+  size = 100,
+  project = "user1/project-id",
+  parent = "parent-id",
+  type = "file",
+  created_on = "2023-06-06T11:14:11Z",
+  modified_on = "2023-06-06T11:14:11Z",
+  href = "https://api.sbgenomics.com/v2/files/file-id",
+  auth = setup_auth_object
 )
+# Import obj
+setup_import_obj <- Import$new(
+  href = "link-to-the-resource",
+  id = "import-job-id",
+  state = "COMPLETED",
+  overwrite = FALSE,
+  autorename = TRUE,
+  preserve_folder_structure = NULL,
+  source = list(volume = "volume-id", location = "location-name"),
+  destination = list(project = "project-id", name = "file_name.txt"),
+  started_on = "2023-07-13T12:34:56Z",
+  finished_on = "2023-07-13T12:34:56Z",
+  error = NULL,
+  result = file_obj_params_list,
+  auth = setup_auth_object
+)
+
 
 # Close session at the end of tests
 withr::defer(teardown_env())
