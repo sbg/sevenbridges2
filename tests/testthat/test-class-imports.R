@@ -207,7 +207,7 @@ test_that("Imports submit_import() throws error when needed", {
   )
   testthat::expect_error(
     do.call(setup_imports_obj$submit_import, bad_parent_type),
-    regexp = "Assertion on 'destination_parent' failed: Must be of type 'character' (or 'NULL'), not 'double'.", # nolint
+    regexp = "Assertion on 'destination_parent' failed: Must be of type 'character', not 'double'.", # nolint
     fixed = TRUE
   )
   # 7. Test with bad name parameter

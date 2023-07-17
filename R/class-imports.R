@@ -95,14 +95,8 @@ Imports <- R6::R6Class(
     #' @param ... Other arguments that can be passed to api() function
     #' like 'fields', etc.
     #'
-    #' @importFrom checkmate assert_string
-    #' @importFrom rlang abort
     #' @return Import job object.
     get = function(id, ...) {
-      if (is_missing(id)) {
-        rlang::abort("Import job ID must be provided!")
-      }
-      checkmate::assert_string(id)
       # nocov start
       res <- super$get(
         cls = self,
@@ -216,19 +210,17 @@ Imports <- R6::R6Class(
           class_name = "Project"
         )
       }
-      if (checkmate::test_r6(destination_parent, classes = "R6")) {
-        checkmate::assert_r6(destination_parent, classes = "File")
-        if (tolower(destination_parent$type) != "folder") {
+      if (!is_missing(destination_parent)) {
+        parent <- check_and_transform_id(
+          x = destination_parent,
+          class_name = "File"
+        )
+        if (checkmate::test_r6(destination_parent, classes = "R6") &&
+          tolower(destination_parent$type) != "folder") {
           rlang::abort("Destination parent directory parameter must contain folder id or File object with type = 'folder'.") # nolint
         }
-        parent <- destination_parent[["id"]]
-      } else {
-        checkmate::assert_character(
-          destination_parent,
-          len = 1, null.ok = TRUE
-        )
-        parent <- destination_parent
       }
+
       checkmate::assert_character(name, len = 1, null.ok = TRUE)
       checkmate::assert_logical(overwrite, len = 1, null.ok = TRUE)
       checkmate::assert_logical(autorename, len = 1, null.ok = TRUE)
