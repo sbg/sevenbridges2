@@ -17,6 +17,7 @@ aws
 bamtools
 bg
 BioData
+calledchild
 Cavatica
 CGC
 cli
@@ -86,6 +87,7 @@ namelookup
 nocov
 nolint
 Obucina
+onwards
 OSS
 outputBinding
 ovewrite
@@ -118,6 +120,7 @@ stringr
 Sys
 sysenv
 testthat
+thevalue
 trifunovic
 Trifunovic
 unmount

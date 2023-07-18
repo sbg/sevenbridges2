@@ -128,13 +128,15 @@ Project <- R6::R6Class(
 
       if (!is.null(x$settings) && length(x$settings) != 0) {
         project_settings <- x$settings
-        string_project_settings <- glue::glue("{names(project_settings)}: {project_settings}") # nolint
+        string_project_settings <-
+          glue::glue("{names(project_settings)}: {project_settings}") # nolint
       }
       if (!is.null(x$tags) && length(x$tags) != 0) {
         project_tags <- x$tags
         names(project_tags) <-
           paste0("tag_", seq_along(project_tags))
-        string_project_tags <- glue::glue("{names(project_tags)}: {project_tags}") # nolint
+        string_project_tags <-
+          glue::glue("{names(project_tags)}: {project_tags}") # nolint
       }
       if (!is.null(x$permissions) && length(x$permissions) != 0) {
         project_permissions <- x$permissions
@@ -142,7 +144,8 @@ Project <- R6::R6Class(
         # are logical
         permissions <- as.list(project_permissions)
         permissions <- purrr::keep(permissions, .p = is.logical)
-        string_permissions <- glue::glue("{names(permissions)}: {permissions}")
+        string_permissions <-
+          glue::glue("{names(permissions)}: {permissions}")
       }
       x <- purrr::discard(x, .p = is.function)
       x <- purrr::discard(x, .p = is.environment)
@@ -208,7 +211,8 @@ Project <- R6::R6Class(
                     ...) {
       check_tags(tags)
       check_settings(settings)
-      billing_group <- check_and_transform_id(billing_group, "Billing")
+      billing_group <-
+        check_and_transform_id(billing_group, "Billing")
       # nocov start
       body <- list(
         "name" = name,
@@ -235,7 +239,8 @@ Project <- R6::R6Class(
       res <- status_check(res)
 
       asProject(res, self$auth)
-    }, # nocov end
+    },
+    # nocov end
     # delete project ---------------------------------------------------------
     #' @description Method that allows you to delete project from a platform.
     #' It can only be successfully made if you have admin status for the
@@ -257,7 +262,8 @@ Project <- R6::R6Class(
         msg <- httr::content(res, as = "parsed")$message
         rlang::abort(glue::glue("HTTP Status {res$status_code} : {msg}"))
       }
-    }, # nocov end
+    },
+    # nocov end
     #' @description Method for listing all the project members.
     #' @param limit Defines the number of items you want to get from your API
     #' request. By default, `limit` is set to `50`. Maximum is `100`.
@@ -284,7 +290,8 @@ Project <- R6::R6Class(
       res <- status_check(res)
 
       return(asMemberList(res, self$auth))
-    }, # nocov end
+    },
+    # nocov end
     #' @description Method for adding new members to a specified project.
     #' The call can only be successfully made by a user who has admin
     #' permissions in the project.
@@ -321,7 +328,9 @@ Project <- R6::R6Class(
                             admin = FALSE
                           )) {
       if (is_missing(user) && is_missing(email)) {
-        rlang::abort("Neither username nor email are provided. You must provide at least one of these parameters before you can add a user to a project.") # nolint
+        rlang::abort(
+          "Neither username nor email are provided. You must provide at least one of these parameters before you can add a user to a project." # nolint
+        )
       }
       if (!is_missing(user)) {
         username <- check_and_transform_id(user,
@@ -332,11 +341,15 @@ Project <- R6::R6Class(
       if (!is_missing(email)) {
         checkmate::assert_character(email, len = 1, null.ok = TRUE)
       }
-      checkmate::assert_list(permissions,
-        null.ok = FALSE, max.len = 5, min.len = 1,
+      checkmate::assert_list(
+        permissions,
+        null.ok = FALSE,
+        max.len = 5,
+        min.len = 1,
         types = "logical"
       )
-      checkmate::assert_subset(names(permissions),
+      checkmate::assert_subset(
+        names(permissions),
         empty.ok = FALSE,
         choices = c(
           "read", "copy", "execute", "write",
@@ -364,7 +377,8 @@ Project <- R6::R6Class(
       res <- status_check(req)
 
       return(asMember(res, auth = self$auth))
-    }, # nocov end
+    },
+    # nocov end
     #' @description A method for removing members from the project. It can only
     #' be successfully run by a user who has admin privileges in the project.
     #' @param user The Seven Bridges Platform username of the person
@@ -374,7 +388,9 @@ Project <- R6::R6Class(
     #' @importFrom glue glue glue_col
     remove_member = function(user) {
       if (is_missing(user)) {
-        rlang::abort("Please provide a username for the user or project member you want to remove from the project.") # nolint
+        rlang::abort(
+          "Please provide a username for the user or project member you want to remove from the project." # nolint
+        )
       }
       # nocov start
       id <- self$id
@@ -399,7 +415,8 @@ Project <- R6::R6Class(
           )
         )
       }
-    }, # nocov end
+    },
+    # nocov end
     #' @description This method returns the information about the member of
     #' the specified project.
     #' @param user The Seven Bridges Platform username of the project member
@@ -428,7 +445,8 @@ Project <- R6::R6Class(
       res <- status_check(req)
 
       return(asMember(res, self$auth))
-    }, # nocov end
+    },
+    # nocov end
     #' @description This method can be used to edit a user's permissions in a
     #' specified  project. It can only be successfully made by a user who
     #' has admin permissions in the project.
@@ -459,11 +477,15 @@ Project <- R6::R6Class(
         class_name = "Member",
         field_name = "username"
       )
-      checkmate::assert_list(permissions,
-        null.ok = FALSE, max.len = 5, min.len = 1,
+      checkmate::assert_list(
+        permissions,
+        null.ok = FALSE,
+        max.len = 5,
+        min.len = 1,
         types = "logical"
       )
-      checkmate::assert_subset(names(permissions),
+      checkmate::assert_subset(
+        names(permissions),
         empty.ok = FALSE,
         choices = c(
           "read", "copy", "execute", "write",
@@ -491,15 +513,14 @@ Project <- R6::R6Class(
       res <- status_check(req)
 
       if (req$status_code == 200) {
-        rlang::inform(glue::glue_col(
-          "Permissions for {green {username}} have been changed."
-        ))
+        rlang::inform(glue::glue_col("Permissions for {green {username}} have been changed.")) # nolint
         return(asPermission(res, auth = self$auth))
       } else {
         rlang::abort("Oops, something went wrong. ")
         res
       }
-    }, # nocov end
+    },
+    # nocov end
     #' @description  List all project's files and folders.
     #' @param limit The maximum number of collection items to return for a
     #'   single request. Minimum value is 1. The maximum value is 100 and the
@@ -526,7 +547,8 @@ Project <- R6::R6Class(
       res <- status_check(req)
 
       asFileList(res, self$auth)
-    }, # nocov end
+    },
+    # nocov end
     #' @description  Create a new folder under the project's root directory.
     #' Every project on the Seven Bridges Platform is represented
     #' by a root folder which contains all the files associated
@@ -622,6 +644,84 @@ Project <- R6::R6Class(
         raw_format = raw_format
       )
     },
+
+    #' @description This call lists all tasks from project you can access.
+    #'
+    #' @param status String. You can filter the returned tasks by their status.
+    #' Set the value of status to one of the following values: `QUEUED`, `DRAFT`
+    #' , `RUNNING`, `COMPLETED`, `ABORTED`, `FAILED`.
+    #' @param parent Provide task ID or task object of the parent task to return
+    #'  all child tasks from that parent. A parent task is a task that specifies
+    #' criteria by which to batch its inputs into a series of further sub-tasks,
+    #'  called child tasks. See the documentation on
+    #' [batching tasks](https://docs.sevenbridges.com/docs/about-batch-analyses)
+    #'  for more details on how to run tasks in batches.
+    #' @param created_from String. Enter the starting date for querying tasks
+    #' created on the specified date and onwards.
+    #' @param created_to String. Enter the ending date for querying tasks
+    #' created until the specified date. You can use it in combination with
+    #' `created_from` to specify a time interval.
+    #' @param started_from String. Enter the starting date for querying tasks
+    #' started on the specified date and onwards.
+    #' @param started_to String. Enter the ending date for querying tasks
+    #' started until the specified date.
+    #' @param ended_from String. Enter the starting date for querying tasks
+    #' that ended on a specified date.
+    #' @param ended_to String. Enter the ending date for querying tasks that
+    #' ended until a specified date.
+    #' @param order_by String. Order returned results by the specified field.
+    #' Allowed values: `created_time`, `start_time`, `name`, `end_time` and
+    #' `created_by`. Sort can be done only by one column. The default value is
+    #' `created_time`.
+    #' @param order String. Sort results in ascending or descending order by
+    #' specifying `asc` or `desc`, respectively. Only taken into account if
+    #' `order_by` is explicitly specified. The default value is `asc`.
+    #' @param origin_id String. Enter an automation run ID to list all tasks
+    #' created from the specified automation run.
+    #' @param limit The maximum number of collection items to return for a
+    #' single request. Minimum value is 1. The maximum value is 100 and the
+    #' default value is 50. This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection of
+    #' the first item to return. The default value is 0. This is a
+    #' pagination-specific attribute.
+    #' @param ... Other arguments such as `fields` which can be used to specify
+    #' a subset of fields to include in the response.
+    list_tasks = function(status = NULL,
+                          parent = NULL,
+                          created_from = NULL,
+                          created_to = NULL,
+                          started_from = NULL,
+                          started_to = NULL,
+                          ended_from = NULL,
+                          ended_to = NULL,
+                          order_by = c(
+                            "created_time", "start_time", "name",
+                            "end_time", "created_by"
+                          ),
+                          order = c("asc", "desc"),
+                          origin_id = NULL,
+                          limit = getOption("sevenbridges2")$limit,
+                          offset = getOption("sevenbridges2")$offset,
+                          ...) {
+      self$auth$tasks$query(
+        status = status,
+        parent = parent,
+        project = self$id,
+        created_from = created_from,
+        created_to = created_to,
+        started_from = started_from,
+        started_to = started_to,
+        ended_from = ended_from,
+        ended_to = ended_to,
+        order_by = order_by,
+        order = order,
+        origin_id = origin_id,
+        limit = limit,
+        offset = offset,
+        ...
+      )
+    },
+
     #' @description This call lists imports initiated by particular user
     #' into this destination project.
     #'

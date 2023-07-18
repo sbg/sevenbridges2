@@ -284,6 +284,9 @@ setup_import_obj <- Import$new(
   auth = setup_auth_object
 )
 
+# Tasks obj
+setup_tasks_obj <- Tasks$new(auth = setup_auth_object)
+
 # Exports obj
 setup_exports_obj <- Exports$new(auth = setup_auth_object)
 

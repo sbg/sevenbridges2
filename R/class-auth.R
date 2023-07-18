@@ -56,6 +56,10 @@ Auth <- R6::R6Class(
     #' platform.
     volumes = NULL,
 
+    #' @field tasks Tasks object, for accessing volumes resources on the
+    #' platform.
+    tasks = NULL,
+
     #' @field imports Storage imports object, for accessing volume imports
     #' resources on the platform.
     imports = NULL,
@@ -280,6 +284,9 @@ Auth <- R6::R6Class(
 
       # Volumes resource
       self$volumes <- Volumes$new(self)
+
+      # Tasks resource
+      self$tasks <- Tasks$new(self)
 
       # Imports resource
       self$imports <- Imports$new(self)

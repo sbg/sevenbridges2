@@ -28,4 +28,3 @@
       * volume: my_s3_volume
       * type: PREFIX
       * location: my_new_folder/
-      * href: resource-href
