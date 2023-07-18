@@ -90,10 +90,6 @@ Exports <- R6::R6Class(
     #' @importFrom rlang abort
     #' @return Export job object.
     get = function(id, ...) {
-      if (is_missing(id)) {
-        rlang::abort("Export job ID must be provided!")
-      }
-      checkmate::assert_string(id)
       # nocov start
       res <- super$get(
         cls = self,
@@ -171,7 +167,11 @@ Exports <- R6::R6Class(
       if (is_missing(source_file)) {
         rlang::abort("Source file must be provided as a string or File object!")
       }
-      source_file <- check_and_transform_id(source_file, class_name = "File")
+      file <- check_and_transform_id(source_file, class_name = "File")
+      if (checkmate::test_r6(source_file, classes = "File") &&
+        tolower(source_file$type) == "folder") {
+        rlang::abort("Folders cannot be exported. Please, provide single file id or File object with type = 'file'.") # nolint
+      }
 
       if (is_missing(destination_volume)) {
         rlang::abort("Destination volume must be provided as a string or Volume object!") # nolint
@@ -198,7 +198,7 @@ Exports <- R6::R6Class(
           location = destination_location
         ),
         source = list(
-          file = source_file
+          file = file
         ),
         overwrite = overwrite,
         properties = properties

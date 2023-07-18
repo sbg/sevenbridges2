@@ -284,6 +284,8 @@ setup_import_obj <- Import$new(
   auth = setup_auth_object
 )
 
+# Exports obj
+setup_exports_obj <- Exports$new(auth = setup_auth_object)
 
 # Close session at the end of tests
 withr::defer(teardown_env())

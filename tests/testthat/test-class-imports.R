@@ -221,7 +221,7 @@ test_that("Imports submit_import() throws error when needed", {
     regexp = "Assertion on 'name' failed: Must be of type 'character' (or 'NULL'), not 'double'.", # nolint
     fixed = TRUE
   )
-  # 7. Test with bad overwrite parameter
+  # 8. Test with bad overwrite parameter
   bad_overwrite_type <- list(
     source_location = setup_volume_file_obj,
     destination_project = setup_project_obj,
@@ -232,7 +232,7 @@ test_that("Imports submit_import() throws error when needed", {
     regexp = "Assertion on 'overwrite' failed: Must be of type 'logical' (or 'NULL'), not 'character'.", # nolint
     fixed = TRUE
   )
-  # 7. Test with bad autorename parameter
+  # 9. Test with bad autorename parameter
   bad_autorename_type <- list(
     source_location = setup_volume_file_obj,
     destination_project = setup_project_obj,
@@ -243,7 +243,7 @@ test_that("Imports submit_import() throws error when needed", {
     regexp = "Assertion on 'autorename' failed: Must be of type 'logical' (or 'NULL'), not 'double'.", # nolint
     fixed = TRUE
   )
-  # 8. Test with bad preserve_folder_structure parameter
+  # 10. Test with bad preserve_folder_structure parameter
   bad_preserve_f_structure_type <- list(
     source_location = setup_volume_file_obj,
     destination_project = setup_project_obj,

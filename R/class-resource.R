@@ -77,6 +77,8 @@ Resource <- R6::R6Class(
       }
       if (is_missing(id)) {
         rlang::abort("Please provide id parameter!")
+      } else {
+        checkmate::assert_character(id, len = 1, null.ok = FALSE)
       }
 
       if (is.null(cls[["auth"]])) {
