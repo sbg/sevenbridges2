@@ -491,3 +491,23 @@ test_that("check_upload_params throws error when needed", {
     fixed = TRUE
   )
 })
+
+test_that("check_and_transform_datetime works as expected", {
+  # Fails when no datetime is provided
+  testthat::expect_error(check_and_transform_datetime(),
+    regexp = "Date is required!",
+    fixed = TRUE
+  )
+
+  # Check if character returns character back
+  time <- "2016-04-01 14:25:50"
+  testthat::expect_equal(check_and_transform_datetime(time),
+    expected = "2016-04-01 14:25:50"
+  )
+
+  # Check if Date/time  returns character back
+  time <- as.POSIXct("2016-04-01 14:25:50", tz = "UTC")
+  testthat::expect_equal(check_and_transform_datetime(time),
+    expected = "2016-04-01 14:25:50"
+  )
+})
