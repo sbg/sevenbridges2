@@ -7,7 +7,8 @@ test_that("VolumeFile initialization works", {
     setup_volume_file_obj,
     classes = c("VolumeFile"),
     public = c(
-      "href", "location", "type", "storage_type", "volume", "metadata"
+      "href", "location", "type", "storage_type", "volume", "metadata",
+      "import"
     )
   )
 })
@@ -20,7 +21,10 @@ test_that("asVolumeFile function works", {
     volume = "my_s3_volume"
   )
   vol_file_dir <- asVolumeFile(param_list_res, auth = setup_auth_object)
-  testthat::expect_equal(vol_file_dir$location, param_list_res$prefix)
+  testthat::expect_equal(
+    vol_file_dir$location,
+    paste0(param_list_res$prefix, "/")
+  )
   testthat::expect_equal(vol_file_dir$type, "PREFIX")
 
   # Pass inputs for files

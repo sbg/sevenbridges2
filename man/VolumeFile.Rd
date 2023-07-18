@@ -31,6 +31,7 @@ R6 Class representing a resource for managing VolumeFile objects.
 \itemize{
 \item \href{#method-VolumeFile-new}{\code{VolumeFile$new()}}
 \item \href{#method-VolumeFile-print}{\code{VolumeFile$print()}}
+\item \href{#method-VolumeFile-import}{\code{VolumeFile$import()}}
 \item \href{#method-VolumeFile-clone}{\code{VolumeFile$clone()}}
 }
 }
@@ -81,6 +82,81 @@ Print method for VolumeFile class.
 \if{html}{\out{<div class="r">}}\preformatted{VolumeFile$print()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-VolumeFile-import"></a>}}
+\if{latex}{\out{\hypertarget{method-VolumeFile-import}{}}}
+\subsection{Method \code{import()}}{
+This call lets you queue a job to import this file or folder
+from a volume into a project on the Platform.
+Essentially, you are importing an item from your cloud storage provider
+(Amazon Web Services, Google Cloud Storage, Azure or Ali Cloud) via the
+volume onto the Platform.
+If successful, an alias will be created on the Platform. Aliases appear
+on the Platform and can be copied, executed, and modified as such.
+They refer back to the respective item on the given volume.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{VolumeFile$import(
+  destination_project = NULL,
+  destination_parent = NULL,
+  name = NULL,
+  overwrite = FALSE,
+  autorename = FALSE,
+  preserve_folder_structure = NULL,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{destination_project}}{String destination project id or Project
+object. Not required, but either \code{destination_project} or
+\code{destination_parent} directory must be provided.}
+
+\item{\code{destination_parent}}{String folder id or File object
+(with type = 'FOLDER'). Not required, but either \code{destination_project}
+or \code{destination_parent} directory must be provided.}
+
+\item{\code{name}}{The name of the alias to create. This name should be unique
+to the project.
+If the name is already in use in the project, you should
+use the \code{overwrite} query parameter in this call to force any item with
+that name to be deleted before the alias is created.
+If name is omitted, the alias name will default to the last segment of
+the complete location (including the prefix) on the volume.
+
+Segments are considered to be separated with forward slashes /.
+Allowed characters in file names are all alphanumeric and special
+characters except forward slash /, while folder names can contain
+alphanumeric and special characters _, - and ..}
+
+\item{\code{overwrite}}{Boolean. Whether to overwrite the item if another one
+with the same name already exists at the destination.
+Bear in mind that if used with folders import, the folder's content
+(files with the same name) will be overwritten, not the whole folder.}
+
+\item{\code{autorename}}{Boolean. Whether to automatically rename the item
+(by prefixing its name with an underscore and number) if another one
+with the same name already exists at the destination.
+Bear in mind that if used with folders import, the folder content will
+be renamed, not the whole folder.}
+
+\item{\code{preserve_folder_structure}}{Boolean. Whether to keep the exact
+source folder structure. The default value is true if the item being
+imported is a folder. Should not be used if you are importing a file.
+Bear in mind that if you use preserve_folder_structure = FALSE, that the
+response will be the parent folder object containing imported files
+alongside with other files if they exist.}
+
+\item{\code{...}}{Other arguments that can be passed to api() function
+like 'fields', etc.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Import job object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VolumeFile-clone"></a>}}

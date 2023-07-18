@@ -77,8 +77,8 @@ This call lists all tasks you can access.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{status}}{String. You can filter the returned tasks by their status.
-Set thevalue of status to one of the following values: \code{QUEUED}, \code{DRAFT},
-\code{RUNNING}, \code{COMPLETED}, \code{ABORTED}, \code{FAILED}.}
+Set the value of status to one of the following values: \code{QUEUED},
+\code{DRAFT}, \code{RUNNING}, \code{COMPLETED}, \code{ABORTED}, \code{FAILED}.}
 
 \item{\code{parent}}{Provide task ID or task object of the parent task to return
 all child tasks from that parent. A parent task is a task that specifies
