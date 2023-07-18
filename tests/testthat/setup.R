@@ -290,5 +290,21 @@ setup_tasks_obj <- Tasks$new(auth = setup_auth_object)
 # Exports obj
 setup_exports_obj <- Exports$new(auth = setup_auth_object)
 
+# Export obj
+setup_export_obj <- Export$new(
+  href = "link-to-the-resource",
+  id = "export-job-id",
+  state = "COMPLETED",
+  overwrite = FALSE,
+  properties = NULL,
+  source = list(file = "file-id"),
+  destination = list(volume = "volume-id", location = "file_name.txt"),
+  started_on = "2023-07-14T12:34:56Z",
+  finished_on = "2023-07-14T12:34:56Z",
+  error = NULL,
+  result = file_obj_params_list,
+  auth = setup_auth_object
+)
+
 # Close session at the end of tests
 withr::defer(teardown_env())

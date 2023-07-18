@@ -61,6 +61,7 @@ set to FALSE.}
 \item \href{#method-Volume-get_member}{\code{Volume$get_member()}}
 \item \href{#method-Volume-modify_member_permissions}{\code{Volume$modify_member_permissions()}}
 \item \href{#method-Volume-list_imports}{\code{Volume$list_imports()}}
+\item \href{#method-Volume-list_exports}{\code{Volume$list_exports()}}
 \item \href{#method-Volume-clone}{\code{Volume$clone()}}
 }
 }
@@ -486,6 +487,50 @@ like 'fields', etc.}
 }
 \subsection{Returns}{
 Collection of import jobs (Import class objects).
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-list_exports"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-list_exports}{}}}
+\subsection{Method \code{list_exports()}}{
+This call lists export jobs initiated by a user into this
+volume.
+Note that when you export a file from a project on the Platform into a
+volume, you write to your cloud storage bucket.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$list_exports(
+  state = NULL,
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{state}}{String. The state of the export job. Possible values are:
+\itemize{
+\item \code{PENDING}: the export is queued;
+\item \code{RUNNING}: the export is running;
+\item \code{COMPLETED}: the export has completed successfully;
+\item \code{FAILED}: the export has failed.
+}
+Example: state = c("RUNNING", "FAILED")}
+
+\item{\code{limit}}{Defines the number of items you want to get from your API
+request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+
+\item{\code{offset}}{Defines where the retrieved items started.
+By default, \code{offset} is set to \code{0}.}
+
+\item{\code{...}}{Other arguments that can be passed to api() function
+like 'fields', etc.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Collection of export jobs (Export class objects).
 }
 }
 \if{html}{\out{<hr>}}
