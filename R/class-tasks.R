@@ -194,6 +194,37 @@ Tasks <- R6::R6Class(
 
       return(res)
       # return(asTask(res, auth = self$auth)) # nocov end
+    },
+    # Create a new draft task --------------------------------------------------
+    #' @description This call creates a new task. You can create either a single
+    #'  task or a batch task by using the app's default batching, override
+    #'  batching, or disable batching completely. A parent task is a task that
+    #'  specifies criteria by which to batch its inputs into a series of further
+    #'   sub-tasks, called child tasks. the documentation on
+    #'   [batching tasks] (https://docs.sevenbridges.com/docs/about-batch-analyses) #nolint
+    #'  for more details on batching criteria.
+    #'
+    #' @param id The ID of the task you are querying.
+    #' @param ... Other arguments such as `fields` which can be used to specify
+    #' a subset of fields to include in the response.
+    #' @importFrom checkmate assert_string
+    #' @importFrom rlang abort
+    create = function(id, ...) {
+      if (is_missing(id)) {
+        rlang::abort("Task ID must be provided!")
+      }
+
+      checkmate::assert_string(id)
+
+      # nocov start
+      res <- super$get(
+        cls = self,
+        id = id,
+        ...
+      )
+
+      return(res)
+      # return(asTask(res, auth = self$auth)) # nocov end
     }
   )
 )

@@ -540,13 +540,13 @@ This call lists all tasks from project you can access.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{status}}{String. You can filter the returned tasks by their status.
-Set thevalue of status to one of the following values: \code{QUEUED}, \code{DRAFT},
-\code{RUNNING}, \code{COMPLETED}, \code{ABORTED}, \code{FAILED}.}
+Set the value of status to one of the following values: \code{QUEUED}, \code{DRAFT}
+, \code{RUNNING}, \code{COMPLETED}, \code{ABORTED}, \code{FAILED}.}
 
 \item{\code{parent}}{Provide task ID or task object of the parent task to return
 all child tasks from that parent. A parent task is a task that specifies
 criteria by which to batch its inputs into a series of further sub-tasks,
-calledchild tasks. See the documentation on
+called child tasks. See the documentation on
 \href{https://docs.sevenbridges.com/docs/about-batch-analyses}{batching tasks}
 for more details on how to run tasks in batches.}
 

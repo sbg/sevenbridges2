@@ -22,6 +22,7 @@ R6 Class representing tasks resource endpoint
 \item \href{#method-Tasks-new}{\code{Tasks$new()}}
 \item \href{#method-Tasks-query}{\code{Tasks$query()}}
 \item \href{#method-Tasks-get}{\code{Tasks$get()}}
+\item \href{#method-Tasks-create}{\code{Tasks$create()}}
 \item \href{#method-Tasks-clone}{\code{Tasks$clone()}}
 }
 }
@@ -77,8 +78,8 @@ This call lists all tasks you can access.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{status}}{String. You can filter the returned tasks by their status.
-Set thevalue of status to one of the following values: \code{QUEUED}, \code{DRAFT},
-\code{RUNNING}, \code{COMPLETED}, \code{ABORTED}, \code{FAILED}.}
+Set the value of status to one of the following values: \code{QUEUED},
+\code{DRAFT}, \code{RUNNING}, \code{COMPLETED}, \code{ABORTED}, \code{FAILED}.}
 
 \item{\code{parent}}{Provide task ID or task object of the parent task to return
 all child tasks from that parent. A parent task is a task that specifies
@@ -146,6 +147,32 @@ start and end time, the number of jobs completed in it, and its input
 and output files. You can also see the status of the task.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Tasks$get(id, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{id}}{The ID of the task you are querying.}
+
+\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
+a subset of fields to include in the response.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Tasks-create"></a>}}
+\if{latex}{\out{\hypertarget{method-Tasks-create}{}}}
+\subsection{Method \code{create()}}{
+This call creates a new task. You can create either a single
+task or a batch task by using the app's default batching, override
+batching, or disable batching completely. A parent task is a task that
+specifies criteria by which to batch its inputs into a series of further
+sub-tasks, called child tasks. the documentation on
+\link{batching tasks} (https://docs.sevenbridges.com/docs/about-batch-analyses) #nolint
+for more details on batching criteria.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Tasks$create(id, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
