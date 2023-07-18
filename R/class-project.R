@@ -720,6 +720,40 @@ Project <- R6::R6Class(
         offset = offset,
         ...
       )
+    },
+
+    #' @description This call lists imports initiated by particular user
+    #' into this destination project.
+    #'
+    #' @param volume String volume id or Volume object. List all imports
+    #' from particular volume. Optional.
+    #' @param state String. The state of the import job. Possible values are:
+    #' \itemize{
+    #'    \item `PENDING`: the import is queued;
+    #'    \item `RUNNING`: the import is running;
+    #'    \item `COMPLETED`: the import has completed successfully;
+    #'    \item `FAILED`: the import has failed.
+    #' }
+    #' Example: state = c("RUNNING", "FAILED")
+    #' @param limit Defines the number of items you want to get from your API
+    #' request. By default, `limit` is set to `50`. Maximum is `100`.
+    #' @param offset Defines where the retrieved items started.
+    #' By default, `offset` is set to `0`.
+    #' @param ... Other arguments that can be passed to api() function
+    #' like 'fields', etc.
+    #' @return Collection of import jobs (Import class objects).
+    list_imports = function(volume = NULL, state = NULL,
+                            limit = getOption("sevenbridges2")$limit,
+                            offset = getOption("sevenbridges2")$offset,
+                            ...) {
+      self$auth$imports$query(
+        project = self,
+        volume = volume,
+        state = state,
+        limit = limit,
+        offset = offset,
+        ...
+      )
     }
   )
 )

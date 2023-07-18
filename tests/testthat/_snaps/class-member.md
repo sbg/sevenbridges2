@@ -15,4 +15,3 @@
         * execute: FALSE
         * copy: FALSE
         * read: TRUE
-        * write: FALSE

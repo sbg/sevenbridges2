@@ -47,4 +47,3 @@
         * task: 123a1a1a-12a1-1234-a123-1234567a1a12
       * storage
         * type: PLATFORM
-        * hosted_on_locations: list("aws:us-east-1")

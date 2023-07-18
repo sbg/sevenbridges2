@@ -31,6 +31,7 @@ utils::globalVariables(c(
     offset = 0L,
     limit = 50L,
     advance_access = FALSE,
+    fields = "_all",
     input_check = TRUE,
     default_retry_count = 5,
     default_retry_timeout = 5,

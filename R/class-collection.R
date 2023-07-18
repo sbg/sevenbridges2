@@ -86,7 +86,10 @@ Collection <- R6::R6Class(
             ...
           )
           res <- status_check(res)
+
+          # Reload Collection object
           private$load(res, auth = self$auth)
+          break
         }
         if (i == length(self$links)) {
           rlang::abort("You've reached the last page of results.")
@@ -114,7 +117,10 @@ Collection <- R6::R6Class(
             ...
           )
           res <- status_check(res)
+
+          # Reload Collection object
           private$load(res, auth = self$auth)
+          break
         }
         if (i == length(self$links)) {
           rlang::abort("You've reached the first page of results.")
@@ -124,8 +130,24 @@ Collection <- R6::R6Class(
   ), # nocov end
   private = list(
     # nocov start
+    items_class = function() {
+      if (length(self$items) > 0) {
+        return(class(self$items[[1]])[[1]])
+      } else {
+        return(NULL)
+      }
+    },
     # Reload object to get new results
     load = function(res, auth) {
+      # Get items class to convert its elements
+      items_class <- private$items_class()
+      if (!is.null(items_class)) {
+        res$items <- do.call(
+          glue::glue("as", items_class, "List"),
+          list(x = res, auth = auth)
+        )
+      }
+
       self$initialize(
         href = res$href,
         items = res$items,

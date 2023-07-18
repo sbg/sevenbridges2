@@ -45,6 +45,9 @@ platform.}
 
 \item{\code{tasks}}{Tasks object, for accessing volumes resources on the
 platform.}
+
+\item{\code{imports}}{Storage imports object, for accessing volume imports
+resources on the platform.}
 }
 \if{html}{\out{</div>}}
 }
