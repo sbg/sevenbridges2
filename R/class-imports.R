@@ -257,7 +257,11 @@ Imports <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(asImport(res, auth = self$auth))
+      import <- asImport(res, auth = self$auth)
+
+      rlang::inform(glue::glue_col("New import with id {green {import$id} } has started!")) # nolint
+
+      return(import)
     },
     # Delete import job ----------------------------------------------------
     #' @description Deleting import jobs is not possible.

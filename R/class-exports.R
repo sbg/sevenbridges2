@@ -73,10 +73,9 @@ Exports <- R6::R6Class(
         offset = offset,
         ...
       )
-      # res$items <- asExportList(res, auth = self$auth)
+      res$items <- asExportList(res, auth = self$auth)
 
-      return(res)
-      # return(asCollection(res, auth = self$auth))
+      return(asCollection(res, auth = self$auth))
     }, # nocov end
 
     # Get export job details -----------------------------------------------
@@ -97,8 +96,7 @@ Exports <- R6::R6Class(
         advance_access = TRUE,
         ...
       )
-      return(res)
-      # return(asExport(res, auth = self$auth))
+      return(asExport(res, auth = self$auth))
     }, # nocov end
     # Start new export job -----------------------------------------------
     #' @description This call lets you queue a job to export a file from a
@@ -168,7 +166,7 @@ Exports <- R6::R6Class(
         rlang::abort("Source file must be provided as a string or File object!")
       }
       file <- check_and_transform_id(source_file, class_name = "File")
-      if (checkmate::test_r6(source_file, classes = "File") &&
+      if (checkmate::test_r6(source_file, classes = "R6") &&
         tolower(source_file$type) == "folder") {
         rlang::abort("Folders cannot be exported. Please, provide single file id or File object with type = 'file'.") # nolint
       }
@@ -180,7 +178,7 @@ Exports <- R6::R6Class(
         class_name = "Volume"
       )
       if (is_missing(destination_location)) {
-        rlang::abort("Destination location name must be provided as a string!") # nolint
+        rlang::abort("Destination location name must be provided as a string!")
       }
       checkmate::assert_character(
         destination_location,
@@ -188,7 +186,7 @@ Exports <- R6::R6Class(
       )
       checkmate::assert_logical(overwrite, len = 1, null.ok = TRUE)
       checkmate::assert_logical(copy_only, len = 1, null.ok = TRUE)
-      checkmate::assert_list(properties, null.ok = TRUE) # nolint
+      checkmate::assert_list(properties, null.ok = TRUE)
 
       # Build body
       # nocov start
@@ -219,8 +217,11 @@ Exports <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(res)
-      # return(asExport(res, auth = self$auth))
+      export <- asExport(res, auth = self$auth)
+
+      rlang::inform(glue::glue_col("New export with id {green {export$id} } has started!")) # nolint
+
+      return(export)
     },
 
     # Delete export job ----------------------------------------------------
