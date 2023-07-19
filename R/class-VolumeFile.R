@@ -129,6 +129,7 @@ VolumeFile <- R6::R6Class(
     import = function(destination_project = NULL, destination_parent = NULL,
                       name = NULL, overwrite = FALSE, autorename = FALSE,
                       preserve_folder_structure = NULL, ...) {
+      # nocov start
       self$auth$imports$submit_import(
         source_volume = self$volume,
         source_location = self$location,
@@ -139,7 +140,7 @@ VolumeFile <- R6::R6Class(
         autorename = autorename,
         preserve_folder_structure = preserve_folder_structure,
         ...
-      )
+      ) # nocov end
     }
   )
 )
