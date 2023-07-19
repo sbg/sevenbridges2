@@ -1855,7 +1855,7 @@ import job object when provided with job id.
 
 ```{r}
 # Get single import
-imp_obj <- auth$imports$get(id = "import-job-id")
+imp_obj <- a$imports$get(id = "import-job-id")
 ```
 
 ### Submit new import - import some volume file into the project
@@ -1866,10 +1866,10 @@ method from auth$imports path, or directly on the selected VolumeFile object
 
 ```{r}
 ## First, get a volume where you want to import files from
-vol1 <- auth$volumes$get(id = "volumes_test_division/volume-name")
+vol1 <- a$volumes$get(id = "volumes_test_division/volume-name")
 
 ## Then, get a project object/id where you want to import files
-test_proj <- auth$get("my-project-id")
+test_proj <- a$get("my-project-id")
 
 ## list all volume's files
 vol1_content <- vol1$list_files()
@@ -1878,7 +1878,7 @@ vol1_content <- vol1$list_files()
 volume_file_import <- vol1_content[[3]]
 
 ## make file import
-imp_job1 <- auth$imports$submit_import(
+imp_job1 <- a$imports$submit_import(
   source_location = volume_file_import,
   destination_project = test_proj,
   autorename = TRUE
@@ -1899,7 +1899,7 @@ volume_folder_import <- vol1_content[[4]]
 print(imp_job1)
 
 ## make folder import
-imp_job2 <- auth$imports$submit_import(
+imp_job2 <- a$imports$submit_import(
   source_location = volume_folder_import,
   destination_project = test_proj,
   overwrite = TRUE,
@@ -1908,6 +1908,99 @@ imp_job2 <- auth$imports$submit_import(
 
 # print import job info
 print(imp_job2)
+```
+
+# Exports
+
+### List file exports into the volumes
+
+Users are able to preview all export jobs they've created when they were trying
+to export their files from the Platform into some cloud bucket using volumes. 
+
+```{r}
+# List exports
+all_exports <- a$exports$list_exports()
+
+# Limit results to 5
+exp_limit5 <- a$exports$list_exports(limit = 5)
+
+# Load next page of 5 results
+exp_limit5$next_page(advance_access = TRUE)
+```
+
+It is possible to use some query parameters as different criteria for filtering
+results like volume, state etc:
+
+```{r}
+# List exports with different criteria
+exp_states <- a$exports$query(state = c("RUNNING", "FAILED"))
+
+exp_proj <- a$exports$query(volume = "my-volume-id")
+```
+
+Listing exports is also available within Volume objects, where 
+results contains all files exported to that specific volume they're 
+called from.
+
+```{r}
+## Get a volume where you want to list all exports
+vol1 <- a$volumes$get(id = "volumes_test_division/volume-name")
+vol1$list_exports()
+```
+
+
+### Get single export job
+
+Similarly like in other resource classes, get() method will return single
+export job object when provided with job id.
+
+```{r}
+# Get single export
+exp_obj <- auth$exports$get(id = "export-job-id")
+```
+
+### Submit new export - export some file from the platform into the volume
+
+In order to export platform files into the volumes, users can use 
+submit_export() method from auth$exports path, or directly on the selected 
+File object (file they want to export) where this function is also available. 
+
+```{r}
+## First, get a volume where you want to export files into
+vol1 <- a$volumes$get(id = "volumes_test_division/volume-name")
+
+## Then, get a File object/id you want to export from the platform
+test_file <- a$get("my-file-id")
+
+## make file export
+exp_job1 <- a$exports$submit_export(
+  source_file = test_file,
+  destination_volume = vol1,
+  destination_location = "new_volume_file.txt"
+)
+
+## print export job info
+print(exp_job1)
+```
+
+Bear in mind that folders export from the platform into the volumes is not 
+possible with this function. For such cases (or multiple files export) it is 
+better to use bulk actions.
+
+Users can also export the file into some volume's directory, by providing the 
+prefix within the location parameter as a folder name, that will be virtually 
+created on the volume:
+
+```{r}
+## export file into the folder 'test_folder'
+exp_job2 <- a$exports$submit_export(
+  source_file = test_file,
+  destination_volume = vol1,
+  destination_location = "test_folder/new_volume_file.txt"
+)
+
+# print export job info
+print(exp_job2)
 ```
 
 # Tasks
