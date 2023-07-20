@@ -211,12 +211,13 @@ Imports <- R6::R6Class(
         )
       }
       if (!is_missing(destination_parent)) {
-        parent <- check_and_transform_id(
+        obj <- destination_parent
+        destination_parent <- check_and_transform_id(
           x = destination_parent,
           class_name = "File"
         )
-        if (checkmate::test_r6(destination_parent, classes = "R6") &&
-          tolower(destination_parent$type) != "folder") {
+        if (checkmate::test_r6(obj, classes = "R6") &&
+          tolower(obj$type) != "folder") {
           rlang::abort("Destination parent directory parameter must contain folder id or File object with type = 'folder'.") # nolint
         }
       }
@@ -235,7 +236,7 @@ Imports <- R6::R6Class(
         ),
         destination = list(
           project = destination_project,
-          parent = parent,
+          parent = destination_parent,
           name = name
         ),
         overwrite = overwrite,

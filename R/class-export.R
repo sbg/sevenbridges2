@@ -91,7 +91,6 @@ Export <- R6::R6Class(
 
       x <- purrr::discard(x, .p = is.function)
       x <- purrr::discard(x, .p = is.environment)
-      x <- purrr::discard(x, .p = is.null)
 
       # Flatten the list keeping names
       x <- as.list(unlist(x))
@@ -99,11 +98,12 @@ Export <- R6::R6Class(
       # Remove if any leftover lists
       x <- purrr::discard(x, .p = is.list)
 
-      # Remove it's empty (NA)
-      x <- purrr::discard(x, .p = is.na)
-
       elements_subset <- c("id", "state", "started_on", "finished_on")
       x <- x[elements_subset]
+
+      x <- purrr::discard(x, .p = is.null)
+      # Remove it's empty (NA)
+      x <- purrr::discard(x, .p = is.na)
 
       string <- glue::glue_col("{green {names(x)}}: {x}")
 
