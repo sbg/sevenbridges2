@@ -169,16 +169,101 @@ task or a batch task by using the app's default batching, override
 batching, or disable batching completely. A parent task is a task that
 specifies criteria by which to batch its inputs into a series of further
 sub-tasks, called child tasks. the documentation on
-\link{batching tasks} (https://docs.sevenbridges.com/docs/about-batch-analyses) #nolint
+\link{batching tasks} (https://docs.sevenbridges.com/docs/about-batch-analyses)
 for more details on batching criteria.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Tasks$create(id, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Tasks$create(
+  project,
+  app,
+  name = NULL,
+  description = NULL,
+  execution_settings = NULL,
+  inputs = NULL,
+  batch = NULL,
+  batch_input = NULL,
+  use_interruptible_instances = NULL,
+  action = NULL,
+  ...
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{The ID of the task you are querying.}
+\item{\code{project}}{The ID string of a project or a Project object where you
+want to create the task in.}
+
+\item{\code{app}}{The ID string of an app or an App object you want to run.
+Recall that apps are specified by their projects, in the form
+\code{{project_owner}/{project}/{app_name}}}
+
+\item{\code{name}}{String. The name of the task.}
+
+\item{\code{description}}{String. An optional description of the task.}
+
+\item{\code{execution_settings}}{Named list with detailed task execution
+parameters. Detailed task execution parameters:
+\itemize{
+\item \code{instance_type}: String. Possible value is the specific instance type,
+e.g. \code{"instance_type" = "c4.2xlarge;ebs-gp2;2000"}.
+\item \code{max_parallel_instances}: Integer. Maximum number of instances
+running at the same time. Takes any integer value equal to or greater
+than 1, e.g. \code{"max_parallel_instances" = 2.}
+\item \code{use_memoization}: Boolean. Set to \code{FALSE} by default. Set to \code{TRUE}
+to enable
+\href{https://docs.sevenbridges.com/docs/about-memoization}{memoization}.
+\item \code{use_elastic_disk}: Boolean. Set to \code{TRUE} to enable
+\href{https://docs.sevenbridges.com/page/elastic-disk}{Elastic Disk}.
+}
+
+Here is an example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{execution_settings <- list(
+  "instance_type" = "c4.2xlarge;ebs-gp2;2000",
+  "max_parallel_instances" = 2,
+  "use_memoization" = TRUE,
+  "use_elastic_disk" = TRUE
+  )
+}\if{html}{\out{</div>}}}
+
+\item{\code{inputs}}{List of objects. See the section on
+\href{https://docs.sevenbridges.com/docs/the-api#section-inputs}{specifying task inputs}
+for information on creating task input objects. Here is an example with
+various input types:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{inputs <- list(
+  "input_file"= "<file_id/file_object>",
+  "input_directory" = "<folder_id/folder_object>",
+  "input_array_string" = list("<string_elem_1>", "<string_elem_2>"),
+  "input_boolean" = TRUE,
+  "input_double" = 54.6,
+  "input_enum" = "enum_1",
+  "input_float" = 11.2,
+  "input_integer" = "asdf",
+  "input_long" = 4212,
+  "input_string" = "test_string",
+  "input_record" = list(
+    "input_record_field_file" = "<file_id/file_object>",
+    "input_record_field_integer" = 42
+   )
+  )
+}\if{html}{\out{</div>}}}
+
+\item{\code{batch}}{Boolean. This is set to \code{FALSE} by default. Set to \code{TRUE} to
+create a batch task and specify the \code{batch_input} and \code{batch-by}
+criteria as described below.}
+
+\item{\code{batch_input}}{String. The ID of the input on which you wish to
+batch. You would typically batch on the input consisting of a list of
+files. If this parameter is omitted, the default batching criteria
+defined for the app will be used.}
+
+\item{\code{use_interruptible_instances}}{Boolean. This field can be \code{TRUE} or
+\code{FALSE}. Set this field to \code{TRUE} to allow the use of
+\href{https://docs.sevenbridges.com/docs/about-spot-instances}{spot instances}.}
+
+\item{\code{action}}{String. If set to \code{run}, the task will be run immediately
+upon creation.}
 
 \item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
 a subset of fields to include in the response.}

@@ -270,7 +270,9 @@ check_metadata <- function(metadata) {
 transform_metadata <- function(metadata) {
   metadata_names <- paste0("metadata.", names(metadata))
   names(metadata) <- metadata_names
-  encoded_metadata <- lapply(metadata, function(x) URLencode(x))
+  encoded_metadata <- lapply(metadata, function(x) {
+    URLencode(x)
+  })
   new_metadata <- flatten_query(encoded_metadata)
   return(new_metadata)
 }
@@ -498,13 +500,19 @@ check_volume_params <- function(args,
 transform_configuration_param <- function(configuration) {
   if (checkmate::test_list(configuration, min.len = 1, null.ok = FALSE) &&
     !is_missing(names(configuration))) {
-    config_json_string <- as.character(
-      jsonlite::toJSON(configuration, auto_unbox = TRUE, pretty = TRUE)
-    )
-  } else if (checkmate::test_character(configuration, len = 1, null.ok = FALSE, typed.missing = TRUE)) { # nolint
+    config_json_string <- as.character(jsonlite::toJSON(configuration, auto_unbox = TRUE, pretty = TRUE)) # nolint
+  } else if (checkmate::test_character(
+    configuration,
+    len = 1,
+    null.ok = FALSE,
+    typed.missing = TRUE
+  )) {
+    # nolint
     config_json_string <- readr::read_file(configuration)
   } else {
-    rlang::abort("Invalid configuration parameter! \n Please, provide a string path to the JSON file or a named list.") # nolint
+    rlang::abort(
+      "Invalid configuration parameter! \n Please, provide a string path to the JSON file or a named list." # nolint
+    )
   }
   return(config_json_string)
 }
@@ -527,5 +535,49 @@ check_and_transform_datetime <- function(datetime) {
   }
   if (checkmate::test_posixct(datetime)) {
     return(as.character(datetime))
+  }
+}
+
+
+#' Check execution settings parameters
+#'
+#' @description Check execution settings parameters.
+#' @param execution_settings List of execution settings parameters.
+#'
+#' @noRd
+check_execution_settings <- function(execution_settings = NULL) {
+  checkmate::assert_list(
+    execution_settings,
+    min.len = 1,
+    max.len = 4,
+    any.missing = TRUE,
+    null.ok = TRUE
+  )
+  if ("instance_type" %in% names(execution_settings)) {
+    checkmate::assert_string(
+      x = execution_settings[["execution_settings"]],
+      null.ok = TRUE
+    )
+  }
+
+  if ("max_parallel_instances" %in% names(execution_settings)) {
+    checkmate::assert_int(
+      x = execution_settings[["max_parallel_instances"]],
+      null.ok = TRUE
+    )
+  }
+
+  if ("use_memoization" %in% names(execution_settings)) {
+    checkmate::assert_logical(
+      x = execution_settings[["use_memoization"]],
+      null.ok = TRUE
+    )
+  }
+
+  if ("use_elastic_disk" %in% names(execution_settings)) {
+    checkmate::assert_logical(
+      x = execution_settings[["use_elastic_disk"]],
+      null.ok = TRUE
+    )
   }
 }
