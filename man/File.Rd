@@ -56,6 +56,7 @@ R6 Class representing a resource for managing files.
 \item \href{#method-File-list_contents}{\code{File$list_contents()}}
 \item \href{#method-File-delete}{\code{File$delete()}}
 \item \href{#method-File-download}{\code{File$download()}}
+\item \href{#method-File-submit_export}{\code{File$submit_export()}}
 \item \href{#method-File-clone}{\code{File$clone()}}
 }
 }
@@ -401,6 +402,88 @@ parameter is set to \code{curl}.}
 \item{\code{retry_timeout}}{Number of seconds between two retries.}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-File-submit_export"></a>}}
+\if{latex}{\out{\hypertarget{method-File-submit_export}{}}}
+\subsection{Method \code{submit_export()}}{
+This call lets you queue a job to export this file from a
+project on the Platform into a volume. The file selected for export must
+not be a public file or an alias. Aliases are objects stored in your
+cloud storage bucket which have been made available on the Platform.
+The volume you are exporting to must be configured for read-write access.
+To do this, set the \code{access_mode} parameter to \code{RW} when creating or
+modifying a volume.
+
+Essentially, the call writes to your cloud storage bucket via the volume.
+If this call is successful, the original project file will become an
+alias to the newly exported object on the volume. The source file will
+be deleted from the Platform and, if no more copies of this file exist,
+it will no longer count towards your total storage price on the Platform.
+In summary, once you export a file from the Platform to a volume, it is
+no longer part of the storage on the Platform and cannot be exported
+again.
+
+If you want to export multiple files, the recommended way is to do it
+in bulk considering the API rate limit (\link{learn more}
+(https://docs.sevenbridges.com/docs/api-rate-limit)).
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{File$submit_export(
+  destination_volume,
+  destination_location,
+  overwrite = FALSE,
+  copy_only = FALSE,
+  properties = NULL,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{destination_volume}}{String volume id or Volume object you want to
+export files into. Required.}
+
+\item{\code{destination_location}}{String volume-specific location to which the
+file will be exported.
+This location should be recognizable to the underlying cloud service as
+a valid key or path to a new file. Please note that if this volume has
+been configured with a prefix parameter, the value of prefix will be
+prepended to location before attempting to create the file on the volume.
+
+If you would like to export the file into some folder on the volume,
+please add folder name as prefix before file name in form
+\verb{<folder-name>/<file-name>}.}
+
+\item{\code{overwrite}}{Boolean. Whether to overwrite the item if another one
+with the same name already exists at the destination.}
+
+\item{\code{copy_only}}{Boolean. If true, file will be copied to a volume but
+source file will remain on the Platform.}
+
+\item{\code{properties}}{Named list of additional volume properties, like:
+\itemize{
+\item \code{sse_algorithm} - String. S3 server-side encryption to use when
+exporting to this bucket. Supported values:
+AES256 (SSE-S3 encryption), aws:kms, null (no server-side encryption).
+Default: AES256.
+\item \code{sse_aws_kms_key_Id}: String. Applies to type: s3.
+If AWS KMS encryption is used, this should be set to the required KMS
+key. If not set and aws:kms is set as sse_algorithm, default KMS key
+is used.
+\item \code{aws_canned_acl}: String. S3 canned ACL to apply on the object
+on during export. Supported values: any one of S3 canned ACLs;
+null (do not apply canned ACLs). Default: null.
+}}
+
+\item{\code{...}}{Other arguments that can be passed to api() function
+like 'fields', etc.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Export job object.
 }
 }
 \if{html}{\out{<hr>}}

@@ -82,7 +82,10 @@ imports to this particular project. Optional.}
 \item \code{COMPLETED}: the import has completed successfully;
 \item \code{FAILED}: the import has failed.
 }
-Example: state = c("RUNNING", "FAILED")}
+Example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{state = c("RUNNING", "FAILED")
+}\if{html}{\out{</div>}}}
 
 \item{\code{limit}}{Defines the number of items you want to get from your API
 request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}

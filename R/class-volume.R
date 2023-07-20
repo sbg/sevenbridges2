@@ -608,6 +608,38 @@ Volume <- R6::R6Class(
         offset = offset,
         ...
       )
+    },
+    #' @description This call lists export jobs initiated by a user into this
+    #' volume.
+    #' Note that when you export a file from a project on the Platform into a
+    #' volume, you write to your cloud storage bucket.
+    #'
+    #' @param state String. The state of the export job. Possible values are:
+    #' \itemize{
+    #'    \item `PENDING`: the export is queued;
+    #'    \item `RUNNING`: the export is running;
+    #'    \item `COMPLETED`: the export has completed successfully;
+    #'    \item `FAILED`: the export has failed.
+    #' }
+    #' Example: state = c("RUNNING", "FAILED")
+    #' @param limit Defines the number of items you want to get from your API
+    #' request. By default, `limit` is set to `50`. Maximum is `100`.
+    #' @param offset Defines where the retrieved items started.
+    #' By default, `offset` is set to `0`.
+    #' @param ... Other arguments that can be passed to api() function
+    #' like 'fields', etc.
+    #' @return Collection of export jobs (Export class objects).
+    list_exports = function(state = NULL,
+                            limit = getOption("sevenbridges2")$limit,
+                            offset = getOption("sevenbridges2")$offset,
+                            ...) {
+      self$auth$exports$query(
+        volume = self,
+        state = state,
+        limit = limit,
+        offset = offset,
+        ...
+      )
     }
   )
 )

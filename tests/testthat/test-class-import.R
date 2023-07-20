@@ -11,7 +11,14 @@ test_that("Import initialization works", {
       "preserve_folder_structure", "started_on", "finished_on", "state"
     )
   )
-
+  # Check whether source contains volume and location fields
+  testthat::expect_true(
+    all(c("volume", "location") %in% names(setup_import_obj$source))
+  )
+  # Check whether destination contains project and name fields
+  testthat::expect_true(
+    all(c("project", "name") %in% names(setup_import_obj$destination))
+  )
   # Check whether result is of class File
   testthat::expect_true(
     checkmate::test_r6(setup_import_obj$result, classes = "File")

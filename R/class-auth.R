@@ -64,6 +64,10 @@ Auth <- R6::R6Class(
     #' resources on the platform.
     imports = NULL,
 
+    #' @field exports Storage exports object, for accessing volume exports
+    #' resources on the platform.
+    exports = NULL,
+
     #' @description
     #' Create a new Auth object. All methods can be accessed through this
     #' object.
@@ -286,6 +290,9 @@ Auth <- R6::R6Class(
 
       # Imports resource
       self$imports <- Imports$new(self)
+
+      # Exports resource
+      self$exports <- Exports$new(self)
     },
     #' @description
     #' Returns the authentication token read from system environment variable.

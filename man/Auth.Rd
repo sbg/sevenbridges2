@@ -48,6 +48,9 @@ platform.}
 
 \item{\code{imports}}{Storage imports object, for accessing volume imports
 resources on the platform.}
+
+\item{\code{exports}}{Storage exports object, for accessing volume exports
+resources on the platform.}
 }
 \if{html}{\out{</div>}}
 }
