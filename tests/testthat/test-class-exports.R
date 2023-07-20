@@ -135,7 +135,7 @@ test_that("Exports submit_export() throws error when needed", {
   )
   testthat::expect_error(
     do.call(setup_exports_obj$submit_export, bad_location_type),
-    regexp = "Assertion on 'destination_location' failed: Must be of type 'character', not 'double'.", # nolint
+    regexp = "Assertion on 'destination_location' failed: Must be of type 'string', not 'double'.", # nolint
     fixed = TRUE
   )
 

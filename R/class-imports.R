@@ -44,7 +44,10 @@ Imports <- R6::R6Class(
     #'    \item `COMPLETED`: the import has completed successfully;
     #'    \item `FAILED`: the import has failed.
     #' }
-    #' Example: state = c("RUNNING", "FAILED")
+    #' Example:
+    #' ```{r}
+    #' state = c("RUNNING", "FAILED")
+    #' ```
     #' @param limit Defines the number of items you want to get from your API
     #' request. By default, `limit` is set to `50`. Maximum is `100`.
     #' @param offset Defines where the retrieved items started.
@@ -165,7 +168,7 @@ Imports <- R6::R6Class(
     #' @param ... Other arguments that can be passed to api() function
     #' like 'fields', etc.
     #'
-    #' @importFrom checkmate test_r6 assert_character assert_logical
+    #' @importFrom checkmate test_r6 assert_string assert_logical
     #' @importFrom glue glue
     #' @importFrom rlang abort
     #' @return Import job object.
@@ -211,18 +214,17 @@ Imports <- R6::R6Class(
         )
       }
       if (!is_missing(destination_parent)) {
-        obj <- destination_parent
+        if (checkmate::test_r6(destination_parent, classes = "File") &&
+          tolower(destination_parent$type) != "folder") {
+          rlang::abort("Destination parent directory parameter must contain folder id or File object with type = 'folder'.") # nolint
+        }
         destination_parent <- check_and_transform_id(
           x = destination_parent,
           class_name = "File"
         )
-        if (checkmate::test_r6(obj, classes = "R6") &&
-          tolower(obj$type) != "folder") {
-          rlang::abort("Destination parent directory parameter must contain folder id or File object with type = 'folder'.") # nolint
-        }
       }
 
-      checkmate::assert_character(name, len = 1, null.ok = TRUE)
+      checkmate::assert_string(name, null.ok = TRUE)
       checkmate::assert_logical(overwrite, len = 1, null.ok = TRUE)
       checkmate::assert_logical(autorename, len = 1, null.ok = TRUE)
       checkmate::assert_logical(preserve_folder_structure, len = 1, null.ok = TRUE) # nolint

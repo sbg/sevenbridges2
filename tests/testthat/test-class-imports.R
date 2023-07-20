@@ -218,7 +218,7 @@ test_that("Imports submit_import() throws error when needed", {
   )
   testthat::expect_error(
     do.call(setup_imports_obj$submit_import, bad_name_type),
-    regexp = "Assertion on 'name' failed: Must be of type 'character' (or 'NULL'), not 'double'.", # nolint
+    regexp = "Assertion on 'name' failed: Must be of type 'string' (or 'NULL'), not 'double'.", # nolint
     fixed = TRUE
   )
   # 8. Test with bad overwrite parameter

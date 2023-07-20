@@ -74,7 +74,10 @@ into this particular volume. Optional.}
 \item \code{COMPLETED}: the export has completed successfully;
 \item \code{FAILED}: the export has failed.
 }
-Example: state = c("RUNNING", "FAILED")}
+Example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{state = c("RUNNING", "FAILED")
+}\if{html}{\out{</div>}}}
 
 \item{\code{limit}}{Defines the number of items you want to get from your API
 request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
@@ -136,8 +139,7 @@ no longer part of the storage on the Platform and cannot be exported
 again.
 
 If you want to export multiple files, the recommended way is to do it
-in bulk considering the API rate limit (\link{learn more}
-(https://docs.sevenbridges.com/docs/api-rate-limit)).
+in bulk considering the API rate limit (\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Exports$submit_export(
   source_file,

@@ -38,7 +38,10 @@ Exports <- R6::R6Class(
     #'    \item `COMPLETED`: the export has completed successfully;
     #'    \item `FAILED`: the export has failed.
     #' }
-    #' Example: state = c("RUNNING", "FAILED")
+    #' Example:
+    #' ```{r}
+    #' state = c("RUNNING", "FAILED")
+    #' ```
     #' @param limit Defines the number of items you want to get from your API
     #' request. By default, `limit` is set to `50`. Maximum is `100`.
     #' @param offset Defines where the retrieved items started.
@@ -117,9 +120,9 @@ Exports <- R6::R6Class(
     #' again.
     #'
     #' If you want to export multiple files, the recommended way is to do it
-    #' in bulk considering the API rate limit ([learn more]
-    #' (https://docs.sevenbridges.com/docs/api-rate-limit)).
-    #'
+    # nolint start
+    #' in bulk considering the API rate limit ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).
+    # nolint end
     #' @param source_file String file id or File object you want to export to
     #' the volume. Required.
     #' @param destination_volume String volume id or Volume object you want to
@@ -155,7 +158,7 @@ Exports <- R6::R6Class(
     #' @param ... Other arguments that can be passed to api() function
     #' like 'fields', etc.
     #'
-    #' @importFrom checkmate test_r6 assert_character assert_logical
+    #' @importFrom checkmate test_r6 assert_string assert_logical assert_list
     #' @importFrom glue glue
     #' @importFrom rlang abort
     #' @return Export job object.
@@ -165,11 +168,11 @@ Exports <- R6::R6Class(
       if (is_missing(source_file)) {
         rlang::abort("Source file must be provided as a string or File object!")
       }
-      file <- check_and_transform_id(source_file, class_name = "File")
-      if (checkmate::test_r6(source_file, classes = "R6") &&
+      if (checkmate::test_r6(source_file, classes = "File") &&
         tolower(source_file$type) == "folder") {
         rlang::abort("Folders cannot be exported. Please, provide single file id or File object with type = 'file'.") # nolint
       }
+      file <- check_and_transform_id(source_file, class_name = "File")
 
       if (is_missing(destination_volume)) {
         rlang::abort("Destination volume must be provided as a string or Volume object!") # nolint
@@ -180,9 +183,9 @@ Exports <- R6::R6Class(
       if (is_missing(destination_location)) {
         rlang::abort("Destination location name must be provided as a string!")
       }
-      checkmate::assert_character(
+      checkmate::assert_string(
         destination_location,
-        len = 1, null.ok = FALSE
+        null.ok = FALSE
       )
       checkmate::assert_logical(overwrite, len = 1, null.ok = TRUE)
       checkmate::assert_logical(copy_only, len = 1, null.ok = TRUE)
