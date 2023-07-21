@@ -334,21 +334,22 @@ Tasks <- R6::R6Class(
 
       task_meta <- list(
         "name" = name,
-        "project" = project,
+        "project" = project_id,
         "app" = app_id,
-        "description" = description,
+        "description" = description
       )
 
-      task_data <- c(task_data, task_meta, task_inputs)
+      task_data <- c(task_data, task_meta)
+
+      task_data[["inputs"]] <- task_inputs
+
 
       task_data[["use_interruptible_instances"]] <-
         use_interruptible_instances
 
       task_data[["execution_settings"]] <- execution_settings
 
-      task_data[["output_location"]] <- output_location
-
-      params[["action"]] <- "run"
+      params[["action"]] <- action
 
       res <- sevenbridges2::api(
         path = self$URL[["query"]],
@@ -361,11 +362,7 @@ Tasks <- R6::R6Class(
 
       res <- status_check(res)
 
-      # if (action == "run" and res$error) {
-      #   rlang::abort('Unable to run task! Task contains errors.')
-      # }
       return(res)
-
       # return(asTask(res, auth = self$auth))
     }
   ),
@@ -375,23 +372,31 @@ Tasks <- R6::R6Class(
     serialize_inputs = function(input_value) {
       if (is.list(input_value)) {
         return_value <- list()
-        for (x in input_value) {
-          elem <- private$serialize_inputs(x)
-          c(return_value, elem)
+        if (is.null(names(input_value))) {
+          for (x in input_value) {
+            elem <- private$serialize_inputs(x)
+            return_value <- c(return_value, list(elem))
+          }
+        } else {
+          for (name in names(input_value)) {
+            elem <- private$serialize_inputs(input_value[[name]])
+            return_value[[name]] <- elem
+          }
         }
       } else if (checkmate::test_r6(input_value, classes = "File")) {
         return_value <- private$to_api_file_format(input_value)
       } else {
         return_value <- input_value
       }
+
       return(return_value)
     },
 
     # Convert input value to File format  --------------------------------------
-    #' @importFrom checkmate test_r6
+    #' @importFrom stringr str_to_title
     to_api_file_format = function(file) {
       return(list(
-        "class" = file[["type"]],
+        "class" = stringr::str_to_title(file[["type"]]),
         "path" = file[["id"]]
       ))
     }
