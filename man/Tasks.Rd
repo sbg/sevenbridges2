@@ -175,6 +175,7 @@ for more details on batching criteria.
 \if{html}{\out{<div class="r">}}\preformatted{Tasks$create(
   project,
   app,
+  revision = NULL,
   name = NULL,
   description = NULL,
   execution_settings = NULL,
@@ -196,6 +197,10 @@ want to create the task in.}
 \item{\code{app}}{The ID string of an app or an App object you want to run.
 Recall that apps are specified by their projects, in the form
 \code{{project_owner}/{project}/{app_name}}}
+
+\item{\code{revision}}{Numeric. The app
+\link{revision (version)} (https://docs.sevenbridges.com/docs/app-versions)
+number.}
 
 \item{\code{name}}{String. The name of the task.}
 

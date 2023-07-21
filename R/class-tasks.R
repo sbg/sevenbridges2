@@ -211,6 +211,9 @@ Tasks <- R6::R6Class(
     #' @param app The ID string of an app or an App object you want to run.
     #' Recall that apps are specified by their projects, in the form
     #' `{project_owner}/{project}/{app_name}`
+    #' @param revision Numeric. The app
+    #' [revision (version)] (https://docs.sevenbridges.com/docs/app-versions)
+    #'  number.
     #' @param name String. The name of the task.
     #' @param description String. An optional description of the task.
     #' @param execution_settings Named list with detailed task execution
@@ -279,6 +282,7 @@ Tasks <- R6::R6Class(
     #' @importFrom rlang abort
     create = function(project,
                       app,
+                      revision = NULL,
                       name = NULL,
                       description = NULL,
                       execution_settings = NULL,
@@ -296,8 +300,16 @@ Tasks <- R6::R6Class(
         rlang::abort("App parameter must be provided!")
       }
 
-      project_id <- check_and_transform_id(project, class_name = "Project")
+      project_id <-
+        check_and_transform_id(project, class_name = "Project")
       app_id <- check_and_transform_id(app, class_name = "App")
+
+      if (!is_missing(revision)) {
+        checkmate::check_int(revision, null.ok = TRUE)
+        app_id <- glue::glue("{app_id}/{revision}")
+      } else if (checkmate::test_r6(app)) {
+        app_id <- glue::glue("{app_id}/{app$revision}")
+      }
 
       checkmate::assert_string(name, null.ok = TRUE)
       checkmate::assert_string(description, null.ok = TRUE)
@@ -307,11 +319,81 @@ Tasks <- R6::R6Class(
       checkmate::assert_logical(use_interruptible_instances, null.ok = TRUE)
       checkmate::assert_string(action, null.ok = TRUE)
 
-      # nocov start
+      task_inputs <- list()
+      task_data <- list()
+      params <- list()
 
+      if (!is_missing(inputs)) {
+        task_inputs <- private$serialize_inputs(inputs)
+      }
 
+      if (!is_missing(batch_input) && !is_missing(batch_by)) {
+        task_data[["batch_input"]] <- batch_input
+        task_data[["batch_by"]] <- batch_by
+      }
+
+      task_meta <- list(
+        "name" = name,
+        "project" = project,
+        "app" = app_id,
+        "description" = description,
+      )
+
+      task_data <- c(task_data, task_meta, task_inputs)
+
+      task_data[["use_interruptible_instances"]] <-
+        use_interruptible_instances
+
+      task_data[["execution_settings"]] <- execution_settings
+
+      task_data[["output_location"]] <- output_location
+
+      params[["action"]] <- "run"
+
+      res <- sevenbridges2::api(
+        path = self$URL[["query"]],
+        method = "POST",
+        query = params,
+        body = task_data,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+      )
+
+      res <- status_check(res)
+
+      # if (action == "run" and res$error) {
+      #   rlang::abort('Unable to run task! Task contains errors.')
+      # }
       return(res)
-      # return(asTask(res, auth = self$auth)) # nocov end
+
+      # return(asTask(res, auth = self$auth))
+    }
+  ),
+  private = list(
+    # Serialize input values  --------------------------------------------------
+    #' @importFrom checkmate test_r6
+    serialize_inputs = function(input_value) {
+      if (is.list(input_value)) {
+        return_value <- list()
+        for (x in input_value) {
+          elem <- private$serialize_inputs(x)
+          c(return_value, elem)
+        }
+      } else if (checkmate::test_r6(input_value, classes = "File")) {
+        return_value <- private$to_api_file_format(input_value)
+      } else {
+        return_value <- input_value
+      }
+      return(return_value)
+    },
+
+    # Convert input value to File format  --------------------------------------
+    #' @importFrom checkmate test_r6
+    to_api_file_format = function(file) {
+      return(list(
+        "class" = file[["type"]],
+        "path" = file[["id"]]
+      ))
     }
   )
 )

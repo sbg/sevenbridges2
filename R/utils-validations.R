@@ -141,8 +141,9 @@ check_tags <- function(tags) {
 #' Check project settings
 #'
 #' @param settings settings named list
-#' @importFrom checkmate assert_logical assert_list
-#' assert_character assert_integer
+# nolint start
+#' @importFrom checkmate assert_logical assert_list assert_character assert_integer
+# nolint end
 #' @importFrom rlang abort
 #' @noRd
 check_settings <- function(settings) {
@@ -544,6 +545,7 @@ check_and_transform_datetime <- function(datetime) {
 #' @description Check execution settings parameters.
 #' @param execution_settings List of execution settings parameters.
 #'
+#' @importFrom checkmate assert_list assert_string assert_int assert_logical
 #' @noRd
 check_execution_settings <- function(execution_settings = NULL) {
   checkmate::assert_list(
