@@ -2042,3 +2042,74 @@ it using the `tasks$get()` method using its id as parameter.
 # Get volume
 a$volumes$get(id = "<task_id>")
 ```
+
+## Create a draft task
+
+To create a draft task, you can call the `tasks$create` method. You need to pass
+the following arguments:
+
+* name: The name for this task
+* description (optional): A description for this task
+* app: The app id or app object
+* inputs (optional): A list of inputs for this task
+
+We can create draft task by only defining project and which app will be run:
+```{r}
+# Create a draft task
+draft_task <- a$tasks$create(
+  project = "<project>",
+  app = "<app>",
+  inputs = "<inputs>"
+)
+```
+
+This will create an empty task, without any parameter defined.
+User has the option to set execution settings by using `execution_settings`
+parameter, and also to define usage of interruptible instances through
+`use_interruptible_instances` parameter.
+
+```{r}
+# Create task with execution settings and with use of interruptible instances
+execution_settings <- list(
+  "instance_type" = "c4.2xlarge;ebs-gp2;2000",
+  "max_parallel_instances" = 2,
+  "use_memoization" = TRUE,
+  "use_elastic_disk" = FALSE
+)
+task_exec_settings <- a$tasks$create(
+  project = "<project>",
+  app = "<app>",
+  execution_settings = execution_settings,
+  use_interruptible_instances = FALSE,
+)
+```
+
+To run the app immediately after it was created we have `action` parameter,
+which when set to `run` will start the analysis task when it's created.
+
+```{r}
+# Create and run task
+task_exec_settings <- a$tasks$create(
+  project = "<project>",
+  app = "<app>",
+  input = "<inputs>",
+  action = "run"
+)
+```
+
+## Create Batch task
+To run tasks in batch mode we have `batch` and `batch_input` parameters.
+First one is boolean and there we define whether to run batch task or not, and
+second one defines input on which the task will be batched.
+
+```{r}
+
+# Create a draft task
+draft_task <- a$tasks$create(
+  project = "<project>",
+  app = "<app>",
+  inputs = "<inputs>",
+  batch = TRUE,
+  batch_input = "<name_of_the_input>"
+)
+```
