@@ -6,7 +6,7 @@ test_that("Tasks initialization works", {
   checkmate::assert_r6(
     setup_tasks_obj,
     classes = c("Resource", "Tasks"),
-    public = c("URL", "query", "get")
+    public = c("URL", "query", "get", "create")
   )
 })
 

@@ -271,7 +271,7 @@ for more details on batching criteria.
 want to create the task in.}
 
 \item{\code{revision}}{Numeric. The app
-\link{revision (version)} (https://docs.sevenbridges.com/docs/app-versions)
+\href{https://docs.sevenbridges.com/docs/app-versions}{revision (version)}
 number.}
 
 \item{\code{name}}{String. The name of the task.}

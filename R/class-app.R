@@ -367,7 +367,7 @@ App <- R6::R6Class(
     #' @param project The ID string of a project or a Project object where you
     #' want to create the task in.
     #' @param revision Numeric. The app
-    #' [revision (version)] (https://docs.sevenbridges.com/docs/app-versions)
+    #' [revision (version)](https://docs.sevenbridges.com/docs/app-versions)
     #'  number.
     #' @param name String. The name of the task.
     #' @param description String. An optional description of the task.
