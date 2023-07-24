@@ -323,10 +323,6 @@ Tasks <- R6::R6Class(
       task_data <- list()
       params <- list()
 
-      if (!is_missing(inputs)) {
-        task_inputs <- private$serialize_inputs(inputs)
-      }
-
       if (!is_missing(batch_input) && !is_missing(batch_by)) {
         task_data[["batch_input"]] <- batch_input
         task_data[["batch_by"]] <- batch_by
@@ -341,8 +337,10 @@ Tasks <- R6::R6Class(
 
       task_data <- c(task_data, task_meta)
 
-      task_data[["inputs"]] <- task_inputs
-
+      if (!is_missing(inputs)) {
+        task_inputs <- private$serialize_inputs(inputs)
+        task_data[["inputs"]] <- task_inputs
+      }
 
       task_data[["use_interruptible_instances"]] <-
         use_interruptible_instances
