@@ -397,6 +397,42 @@ Tasks <- R6::R6Class(
         "class" = stringr::str_to_title(file[["type"]]),
         "path" = file[["id"]]
       ))
+    },
+    # Map input/output values
+    #' @importFrom checkmate test_list
+    map_input_output = function(input) {
+      return_value <- list()
+      if (checkmate::test_list(input)) {
+        if ("class" %in% names(input)) {
+          if (tolower(input[["class"]]) %in% c("file", "folder")) {
+            f_data <- list(
+              id = input[["path"]],
+              type = tolower(input[["class"]]),
+              name = ifelse("basename" %in% names(input),
+                input[["basename"]],
+                input[["name"]]
+              ),
+              metadata = input[["metadata"]],
+              size = input[["size"]],
+              tags = input[["tags"]]
+            )
+            return_value <- asFile(f_data, auth = self$auth)
+          }
+        } else {
+          for (i in seq_len(length(input))) {
+            elem_name <- names(input[i])
+            vals <- private$map_input_output(input[[i]])
+            if (!is.null(elem_name)) {
+              return_value[[elem_name]] <- vals
+            } else {
+              return_value <- c(return_value, list(vals))
+            }
+          }
+        }
+      } else {
+        return_value <- input
+      }
+      return(return_value)
     }
   )
 )
