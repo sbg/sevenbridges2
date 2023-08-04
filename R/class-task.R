@@ -83,15 +83,58 @@ Task <- R6::R6Class(
     warnings = NULL,
     #' @field price List. Task cost. (contains amount and currency)
     price = NULL,
-    #' @field inputs List.Inputs that were submitted to the task.
+    #' @field inputs List. Inputs that were submitted to the task.
     inputs = NULL,
     #' @field outputs List. Generated outputs from the task.
     outputs = NULL,
     #' @field output_location List. Location where task outputs will be stored.
     output_location = NULL,
-    #' @field href Link to the current task resource.
-    href = NULL,
-    #' @param ... Other arguments.
+    #'
+    #' @description Initialize Task class
+    #' @param id String. The ID of the task.
+    #' @param name String. The name of the task.
+    #' @param status String. Task status (different from execution_status).
+    #' Allowed values:
+    #' * QUEUED
+    #' * DRAFT
+    #' * RUNNING
+    #' * COMPLETED
+    #' * ABORTED
+    #' * FAILED
+    #' @param description String. An optional description of a task.
+    #' @param project String. Identifier of the project that
+    #' the task is located in.
+    #' @param app String. The identifier of the app that was used for the task.
+    #' @param created_by String. Username of the task creator.
+    #' @param executed_by String. Username of the task executor.
+    #' @param created_on String. The time when the task was created.
+    #' @param start_time String. Task start time.
+    #' @param end_time String. Task end time.
+    #' @param origin String. Id of the entity that created the task, e.g.
+    #' automation run, if task was created by an automation run.
+    #' @param use_interruptable_instances Boolean. This field can be TRUE or
+    #' FALSE. Set this field to TRUE to allow the use of spot instances.
+    #' @param batch Boolean. TRUE for batch tasks, FALSE for regular & child
+    #' tasks (batch this task; if FALSE, will not create a batch task).
+    #' @param batch_by List. Batching criteria.
+    #' @param batch_group List. Batch group for a batch task. Represents the
+    #' group that is assigned to the child task from the batching criteria that
+    #'  was used when the task was started.
+    #' @param batch_input String. Input identifier on to which to apply
+    #' batching.
+    #' @param batch_parent String. Parent task for a batch child. (batch task
+    #' which is the parent of this task).
+    #' @param execution_settings List. Execution settings for the task.
+    #' @param execution_status List. Task execution status. (info about current
+    #' execution status)
+    #' @param errors List. Validations errors stored as a high-level errors
+    #' array property in the API response.
+    #' @param warnings List. Validation warnings from API response.
+    #' @param price List. Task cost. (contains amount and currency)
+    #' @param inputs List. Inputs that were submitted to the task.
+    #' @param outputs List. Generated outputs from the task.
+    #' @param output_location List. Location where task outputs will be stored.
+    #' @param ... Other api parameters.
     initialize = function(id = NA, name = NA, status = NA, description = NA,
                           project = NA, app = NA, created_by = NA,
                           executed_by = NA, created_on = NA, start_time = NA,
@@ -101,7 +144,7 @@ Task <- R6::R6Class(
                           batch_parent = NA, execution_settings = NA,
                           execution_status = NA, errors = NA, warnings = NA,
                           price = NA, inputs = NA, outputs = NA,
-                          output_location = NA, href = NA, ...) {
+                          output_location = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
@@ -127,10 +170,9 @@ Task <- R6::R6Class(
       self$execution_status <- execution_status
       self$errors <- errors
       self$warnings <- warnings
-      self$inputs <- inputs
-      self$outputs <- outputs
+      self$inputs <- private$map_input_output(inputs)
+      self$outputs <- private$map_input_output(outputs)
       self$output_location <- output_location
-      self$href <- href
     },
 
     #' @description Print method for Task class.
@@ -225,6 +267,52 @@ Task <- R6::R6Class(
 
       return(asTask(res, auth = self$auth))
     } # nocov end
+  ),
+  private = list(
+    # Map input/output values
+    #' @importFrom checkmate test_list
+    map_input_output = function(input) {
+      return_value <- list()
+      if (checkmate::test_list(input)) {
+        if ("class" %in% names(input)) {
+          if (tolower(input[["class"]]) %in% c("file", "folder")) {
+            f_data <- list(
+              id = input[["path"]],
+              type = tolower(input[["class"]]),
+              name = ifelse("basename" %in% names(input),
+                input[["basename"]],
+                input[["name"]]
+              ),
+              metadata = input[["metadata"]],
+              size = input[["size"]],
+              tags = input[["tags"]]
+            )
+            if (!is.null(input[["secondaryFiles"]])) {
+              secondary_files <- list()
+              for (sf in input[["secondaryFiles"]]) {
+                sf_data <- list(id = sf[["path"]])
+                secondary_files <- append(secondary_files, sf_data)
+              }
+              f_data[["secondary_files"]] <- secondary_files
+            }
+            return_value <- asFile(f_data, auth = self$auth)
+          }
+        } else {
+          for (i in seq_len(length(input))) {
+            elem_name <- names(input[i])
+            vals <- private$map_input_output(input[[i]])
+            if (!is.null(elem_name)) {
+              return_value[[elem_name]] <- vals
+            } else {
+              return_value <- c(return_value, list(vals))
+            }
+          }
+        }
+      } else {
+        return_value <- input
+      }
+      return(return_value)
+    }
   )
 )
 

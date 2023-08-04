@@ -38,6 +38,8 @@ File <- R6::R6Class(
     parent = NULL,
     #' @field type This can be of type `File` or `Folder`.
     type = NULL,
+    #' @field secondary_files Secondary files
+    secondary_files = NULL,
 
     #' @description Create a new File object.
     #' @param id Character used as file ID.
@@ -53,11 +55,13 @@ File <- R6::R6Class(
     #' @param tags List as tags.
     #' @param metadata  List for metadata associated with the file.
     #' @param url  File download url.
+    #' @param secondary_files Secondary files
     #' @param ... Other arguments.
     initialize = function(id = NA, name = NA, size = NA, project = NA,
                           parent = NA, type = NA, created_on = NA,
                           modified_on = NA, storage = NA, origin = NA,
-                          tags = NA, metadata = NA, url = NA, ...) {
+                          tags = NA, metadata = NA, url = NA,
+                          secondary_files = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
@@ -74,6 +78,7 @@ File <- R6::R6Class(
       self$tags <- tags
       self$metadata <- metadata
       self$url <- url
+      self$secondary_files <- private$get_secondary_files(secondary_files)
     },
 
     # nocov start
@@ -689,6 +694,19 @@ File <- R6::R6Class(
         ...
       )
     }
+  ),
+  private = list(
+    # Handle secondary files parameter to return list of File objects
+    get_secondary_files = function(secondary_files) {
+      if (!is_missing(secondary_files)) {
+        sf_list <- list()
+        for (ind in seq_len(length(secondary_files))) {
+          fl <- asFile(secondary_files[ind], auth = self$auth)
+          sf_list <- append(sf_list, fl)
+        }
+        return(sf_list)
+      }
+    }
   )
 )
 
@@ -708,6 +726,7 @@ asFile <- function(x, auth = NULL) {
     origin = x$origin,
     metadata = x$metadata,
     tags = x$tags,
+    secondary_files = x$secondary_files,
     auth = auth,
     response = attr(x, "response")
   )

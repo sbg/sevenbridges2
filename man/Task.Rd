@@ -79,13 +79,11 @@ array property in the API response.}
 
 \item{\code{price}}{List. Task cost. (contains amount and currency)}
 
-\item{\code{inputs}}{List.Inputs that were submitted to the task.}
+\item{\code{inputs}}{List. Inputs that were submitted to the task.}
 
 \item{\code{outputs}}{List. Generated outputs from the task.}
 
 \item{\code{output_location}}{List. Location where task outputs will be stored.}
-
-\item{\code{href}}{Link to the current task resource.}
 }
 \if{html}{\out{</div>}}
 }
@@ -103,6 +101,7 @@ array property in the API response.}
 \if{html}{\out{<a id="method-Task-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Task-new}{}}}
 \subsection{Method \code{new()}}{
+Initialize Task class
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Task$new(
   id = NA,
@@ -131,7 +130,6 @@ array property in the API response.}
   inputs = NA,
   outputs = NA,
   output_location = NA,
-  href = NA,
   ...
 )}\if{html}{\out{</div>}}
 }
@@ -139,7 +137,78 @@ array property in the API response.}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments.}
+\item{\code{id}}{String. The ID of the task.}
+
+\item{\code{name}}{String. The name of the task.}
+
+\item{\code{status}}{String. Task status (different from execution_status).
+Allowed values:
+\itemize{
+\item QUEUED
+\item DRAFT
+\item RUNNING
+\item COMPLETED
+\item ABORTED
+\item FAILED
+}}
+
+\item{\code{description}}{String. An optional description of a task.}
+
+\item{\code{project}}{String. Identifier of the project that
+the task is located in.}
+
+\item{\code{app}}{String. The identifier of the app that was used for the task.}
+
+\item{\code{created_by}}{String. Username of the task creator.}
+
+\item{\code{executed_by}}{String. Username of the task executor.}
+
+\item{\code{created_on}}{String. The time when the task was created.}
+
+\item{\code{start_time}}{String. Task start time.}
+
+\item{\code{end_time}}{String. Task end time.}
+
+\item{\code{origin}}{String. Id of the entity that created the task, e.g.
+automation run, if task was created by an automation run.}
+
+\item{\code{use_interruptable_instances}}{Boolean. This field can be TRUE or
+FALSE. Set this field to TRUE to allow the use of spot instances.}
+
+\item{\code{batch}}{Boolean. TRUE for batch tasks, FALSE for regular & child
+tasks (batch this task; if FALSE, will not create a batch task).}
+
+\item{\code{batch_by}}{List. Batching criteria.}
+
+\item{\code{batch_group}}{List. Batch group for a batch task. Represents the
+group that is assigned to the child task from the batching criteria that
+was used when the task was started.}
+
+\item{\code{batch_input}}{String. Input identifier on to which to apply
+batching.}
+
+\item{\code{batch_parent}}{String. Parent task for a batch child. (batch task
+which is the parent of this task).}
+
+\item{\code{execution_settings}}{List. Execution settings for the task.}
+
+\item{\code{execution_status}}{List. Task execution status. (info about current
+execution status)}
+
+\item{\code{errors}}{List. Validations errors stored as a high-level errors
+array property in the API response.}
+
+\item{\code{warnings}}{List. Validation warnings from API response.}
+
+\item{\code{price}}{List. Task cost. (contains amount and currency)}
+
+\item{\code{inputs}}{List. Inputs that were submitted to the task.}
+
+\item{\code{outputs}}{List. Generated outputs from the task.}
+
+\item{\code{output_location}}{List. Location where task outputs will be stored.}
+
+\item{\code{...}}{Other api parameters.}
 }
 \if{html}{\out{</div>}}
 }
