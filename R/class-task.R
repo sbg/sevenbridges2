@@ -160,7 +160,8 @@ Task <- R6::R6Class(
       self$start_time <- start_time
       self$end_time <- end_time
       self$origin <- origin
-      self$use_interruptable_instances <- use_interruptable_instances
+      self$use_interruptable_instances <-
+        use_interruptable_instances
       self$batch <- batch
       self$batch_by <- batch_by
       self$batch_group <- batch_group
@@ -231,23 +232,28 @@ Task <- R6::R6Class(
       id <- self$id
       path <- glue::glue(self$URL[["run"]])
 
+      params <- list()
       params[["batch"]] <- batch
-      params[["use_interruptible_instances"]] <- use_interruptible_instances
+      params[["use_interruptible_instances"]] <-
+        use_interruptible_instances
 
       res <- sevenbridges2::api(
         path = path,
         method = "POST",
         query = params,
+        body = list(),
         token = self$auth$get_token(),
         base_url = self$auth$url,
         ...
       )
+
       res <- status_check(res)
 
       return(asTask(res, auth = self$auth))
-    }, # nocov end
+    },
+    # nocov end
     #' @description This call aborts the specified task. Only tasks whose
-    #' status is "RUNNING" or "QUEUED" may be aborted.
+    #' status is `RUNNING` or `QUEUED` may be aborted.
     #'
     #' @param ... Other parameters that can be passed to api() function like
     #' fields etc.
@@ -266,6 +272,183 @@ Task <- R6::R6Class(
       res <- status_check(res)
 
       return(asTask(res, auth = self$auth))
+    },
+    # nocov end
+    #' @description This call clones the specified task. Once cloned, the task
+    #' can either be in `draft` mode or immediately ran, by setting the `run`
+    #' parameter to `TRUE`.
+    #' @param run Boolean. Set this to `TRUE` in order to create a draft task
+    #' and execute it immediately. Default: `FALSE`.
+    #' @param ... Other parameters that can be passed to api() function like
+    #' fields etc.
+    #' @importFrom checkmate assert_logical
+    clone_task = function(run = NULL, ...) {
+      # nocov start
+      action <- NULL
+      checkmate::assert_logical(run, null.ok = TRUE)
+      if (!is_missing(run)) {
+        if (run) {
+          action <- "run"
+        }
+      }
+      id <- self$id
+      path <- glue::glue(self$URL[["clone"]])
+
+      params <- list("action" = action)
+      res <- sevenbridges2::api(
+        path = path,
+        method = "POST",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        query = params,
+        ...
+      )
+      res <- status_check(res)
+
+      return(asTask(res, auth = self$auth))
+    }, # nocov end
+    #' @description This call returns execution details of the specified task.
+    #' The task is referred to by its ID, which you can obtain by making the
+    #' call to list all tasks you can access. The call breaks down the
+    #' information into the task's distinct jobs. A job is a single subprocess
+    #' carried out in a task. The information returned by this call is broadly
+    #' similar to that which can be found in the task stats and logs provided
+    #' on the Platform.
+    #' The task execution details include the following information:
+    #' *  The name of the command line job that executed
+    #' *  The start time of the job
+    #' *  End time of the job (if it completed)
+    #' *  The status of the job (`DONE`, `FAILED`, or `RUNNING`)
+    #' *  Information on the computational instance that the job was run on,
+    #' including the provider ID, the type of instance used and the cloud
+    #' service provider
+    #' *  A link that can be used to download the standard error logs for the
+    #' job
+    #' *  SHA hash of the Docker image ('checksum')
+    #' @param ... Other parameters that can be passed to api() function like
+    #' fields etc.
+    get_execution_details = function(...) {
+      # nocov start
+      id <- self$id
+      path <- glue::glue(self$URL[["execution_details"]])
+
+      res <- sevenbridges2::api(
+        path = path,
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+      res <- status_check(res)
+
+      return(asTask(res, auth = self$auth))
+    }, # nocov end
+    #' @description This call retrieves batch child tasks for this task if its
+    #' a batch task.
+    #' @param status String. You can filter the returned tasks by their status.
+    #' Set the value of status to one of the following values: `QUEUED`,
+    #' `DRAFT`, `RUNNING`, `COMPLETED`, `ABORTED`, `FAILED`.
+    #' @param project Provide the project ID or project object you wish to list
+    #'  the tasks from.
+    #' @param created_from String. Enter the starting date for querying tasks
+    #' created on the specified date and onwards.
+    #' @param created_to String. Enter the ending date for querying tasks
+    #' created until the specified date. You can use it in combination with
+    #' `created_from` to specify a time interval.
+    #' @param started_from String. Enter the starting date for querying tasks
+    #' started on the specified date and onwards.
+    #' @param started_to String. Enter the ending date for querying tasks
+    #' started until the specified date.
+    #' @param ended_from String. Enter the starting date for querying tasks
+    #' that ended on a specified date.
+    #' @param ended_to String. Enter the ending date for querying tasks that
+    #' ended until a specified date.
+    #' @param order_by String. Order returned results by the specified field.
+    #' Allowed values: `created_time`, `start_time`, `name`, `end_time` and
+    #' `created_by`. Sort can be done only by one column. The default value is
+    #' `created_time`.
+    #' @param order String. Sort results in ascending or descending order by
+    #' specifying `asc` or `desc`, respectively. Only taken into account if
+    #' `order_by` is explicitly specified. The default value is `asc`.
+    #' @param origin_id String. Enter an automation run ID to list all tasks
+    #' created from the specified automation run.
+    #' @param limit The maximum number of collection items to return for a
+    #' single request. Minimum value is 1. The maximum value is 100 and the
+    #' default value is 50. This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection of
+    #' the first item to return. The default value is 0. This is a
+    #' pagination-specific attribute.
+    #' @param ... Other arguments such as `fields` which can be used to specify
+    #' a subset of fields to include in the response.
+    list_batch_children = function(status = NULL,
+                                   project = NULL,
+                                   created_from = NULL,
+                                   created_to = NULL,
+                                   started_from = NULL,
+                                   started_to = NULL,
+                                   ended_from = NULL,
+                                   ended_to = NULL,
+                                   order_by = NULL,
+                                   order = NULL,
+                                   origin_id = NULL,
+                                   limit = getOption("sevenbridges2")$limit,
+                                   offset = getOption("sevenbridges2")$offset,
+                                   ...) {
+      # nocov start
+      parent <- self$id
+
+      self$auth$tasks$query(
+        status = status,
+        parent = parent,
+        project = project,
+        created_from = created_from,
+        created_to = created_to,
+        started_from = started_from,
+        started_to = started_to,
+        ended_from = ended_from,
+        ended_to = ended_to,
+        order_by = order_by,
+        order = order,
+        origin_id = origin_id,
+        offset = offset,
+        limit = limit,
+        ...
+      )
+    }, # nocov end
+    #' @description This call deletes the specified task. The task is referred
+    #' to by its ID, which you can obtain by making the call to list all tasks
+    #' you can access.
+    #' @param ... Other arguments such as `fields` which can be used to specify
+    #' a subset of fields to include in the response.
+    delete = function(...) {
+      # nocov start
+      id <- self$id
+      path <- glue::glue(self$URL[["delete"]])
+
+      res <- sevenbridges2::api(
+        path = path,
+        method = "DELETE",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+      res <- status_check(res)
+
+      rlang::inform(
+        glue::glue_col(
+          "The task with the following ID {green {id}} has been deleted."
+        )
+      )
+    }, # nocov end
+    #' @description This call reruns (executes) the specified task.
+    #' @param ... Other arguments such as `fields` which can be used to specify
+    #' a subset of fields to include in the response.
+    rerun = function(...) {
+      # nocov start
+      id <- self$id
+      path <- glue::glue(self$URL[["clone"]])
+
+      self$clone_task(run = TRUE)
     } # nocov end
   ),
   private = list(
