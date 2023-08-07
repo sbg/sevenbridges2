@@ -135,16 +135,33 @@ Task <- R6::R6Class(
     #' @param outputs List. Generated outputs from the task.
     #' @param output_location List. Location where task outputs will be stored.
     #' @param ... Other api parameters.
-    initialize = function(id = NA, name = NA, status = NA, description = NA,
-                          project = NA, app = NA, created_by = NA,
-                          executed_by = NA, created_on = NA, start_time = NA,
-                          end_time = NA, origin = NA,
-                          use_interruptable_instances = NA, batch = NA,
-                          batch_by = NA, batch_group = NA, batch_input = NA,
-                          batch_parent = NA, execution_settings = NA,
-                          execution_status = NA, errors = NA, warnings = NA,
-                          price = NA, inputs = NA, outputs = NA,
-                          output_location = NA, ...) {
+    initialize = function(id = NA,
+                          name = NA,
+                          status = NA,
+                          description = NA,
+                          project = NA,
+                          app = NA,
+                          created_by = NA,
+                          executed_by = NA,
+                          created_on = NA,
+                          start_time = NA,
+                          end_time = NA,
+                          origin = NA,
+                          use_interruptable_instances = NA,
+                          batch = NA,
+                          batch_by = NA,
+                          batch_group = NA,
+                          batch_input = NA,
+                          batch_parent = NA,
+                          execution_settings = NA,
+                          execution_status = NA,
+                          errors = NA,
+                          warnings = NA,
+                          price = NA,
+                          inputs = NA,
+                          outputs = NA,
+                          output_location = NA,
+                          ...) {
       # Initialize Item class
       super$initialize(...)
 
