@@ -96,6 +96,11 @@ array property in the API response.}
 \item \href{#method-Task-print}{\code{Task$print()}}
 \item \href{#method-Task-run}{\code{Task$run()}}
 \item \href{#method-Task-abort}{\code{Task$abort()}}
+\item \href{#method-Task-clone_task}{\code{Task$clone_task()}}
+\item \href{#method-Task-get_execution_details}{\code{Task$get_execution_details()}}
+\item \href{#method-Task-list_batch_children}{\code{Task$list_batch_children()}}
+\item \href{#method-Task-delete}{\code{Task$delete()}}
+\item \href{#method-Task-rerun}{\code{Task$rerun()}}
 \item \href{#method-Task-clone}{\code{Task$clone()}}
 }
 }
@@ -103,6 +108,7 @@ array property in the API response.}
 \if{html}{\out{<a id="method-Task-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Task-new}{}}}
 \subsection{Method \code{new()}}{
+Initialize Task class
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Task$new(
   id = NA,
@@ -131,7 +137,6 @@ array property in the API response.}
   inputs = NA,
   outputs = NA,
   output_location = NA,
-  href = NA,
   ...
 )}\if{html}{\out{</div>}}
 }
@@ -139,7 +144,78 @@ array property in the API response.}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments.}
+\item{\code{id}}{String. The ID of the task.}
+
+\item{\code{name}}{String. The name of the task.}
+
+\item{\code{status}}{String. Task status (different from execution_status).
+Allowed values:
+\itemize{
+\item QUEUED
+\item DRAFT
+\item RUNNING
+\item COMPLETED
+\item ABORTED
+\item FAILED
+}}
+
+\item{\code{description}}{String. An optional description of a task.}
+
+\item{\code{project}}{String. Identifier of the project that
+the task is located in.}
+
+\item{\code{app}}{String. The identifier of the app that was used for the task.}
+
+\item{\code{created_by}}{String. Username of the task creator.}
+
+\item{\code{executed_by}}{String. Username of the task executor.}
+
+\item{\code{created_on}}{String. The time when the task was created.}
+
+\item{\code{start_time}}{String. Task start time.}
+
+\item{\code{end_time}}{String. Task end time.}
+
+\item{\code{origin}}{String. Id of the entity that created the task, e.g.
+automation run, if task was created by an automation run.}
+
+\item{\code{use_interruptable_instances}}{Boolean. This field can be TRUE or
+FALSE. Set this field to TRUE to allow the use of spot instances.}
+
+\item{\code{batch}}{Boolean. TRUE for batch tasks, FALSE for regular & child
+tasks (batch this task; if FALSE, will not create a batch task).}
+
+\item{\code{batch_by}}{List. Batching criteria.}
+
+\item{\code{batch_group}}{List. Batch group for a batch task. Represents the
+group that is assigned to the child task from the batching criteria that
+was used when the task was started.}
+
+\item{\code{batch_input}}{String. Input identifier on to which to apply
+batching.}
+
+\item{\code{batch_parent}}{String. Parent task for a batch child. (batch task
+which is the parent of this task).}
+
+\item{\code{execution_settings}}{List. Execution settings for the task.}
+
+\item{\code{execution_status}}{List. Task execution status. (info about current
+execution status)}
+
+\item{\code{errors}}{List. Validations errors stored as a high-level errors
+array property in the API response.}
+
+\item{\code{warnings}}{List. Validation warnings from API response.}
+
+\item{\code{price}}{List. Task cost. (contains amount and currency)}
+
+\item{\code{inputs}}{List. Inputs that were submitted to the task.}
+
+\item{\code{outputs}}{List. Generated outputs from the task.}
+
+\item{\code{output_location}}{List. Location where task outputs will be stored.}
+
+\item{\code{...}}{Other api parameters.}
 }
 \if{html}{\out{</div>}}
 }
@@ -187,7 +263,7 @@ fields etc.}
 \if{latex}{\out{\hypertarget{method-Task-abort}{}}}
 \subsection{Method \code{abort()}}{
 This call aborts the specified task. Only tasks whose
-status is "RUNNING" or "QUEUED" may be aborted.
+status is \code{RUNNING} or \code{QUEUED} may be aborted.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Task$abort(...)}\if{html}{\out{</div>}}
 }
@@ -197,6 +273,184 @@ status is "RUNNING" or "QUEUED" may be aborted.
 \describe{
 \item{\code{...}}{Other parameters that can be passed to api() function like
 fields etc.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Task-clone_task"></a>}}
+\if{latex}{\out{\hypertarget{method-Task-clone_task}{}}}
+\subsection{Method \code{clone_task()}}{
+This call clones the specified task. Once cloned, the task
+can either be in \code{draft} mode or immediately ran, by setting the \code{run}
+parameter to \code{TRUE}.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Task$clone_task(run = NULL, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{run}}{Boolean. Set this to \code{TRUE} in order to create a draft task
+and execute it immediately. Default: \code{FALSE}.}
+
+\item{\code{...}}{Other parameters that can be passed to api() function like
+fields etc.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Task-get_execution_details"></a>}}
+\if{latex}{\out{\hypertarget{method-Task-get_execution_details}{}}}
+\subsection{Method \code{get_execution_details()}}{
+This call returns execution details of the specified task.
+The task is referred to by its ID, which you can obtain by making the
+call to list all tasks you can access. The call breaks down the
+information into the task's distinct jobs. A job is a single subprocess
+carried out in a task. The information returned by this call is broadly
+similar to that which can be found in the task stats and logs provided
+on the Platform.
+The task execution details include the following information:
+\itemize{
+\item The name of the command line job that executed
+\item The start time of the job
+\item End time of the job (if it completed)
+\item The status of the job (\code{DONE}, \code{FAILED}, or \code{RUNNING})
+\item Information on the computational instance that the job was run on,
+including the provider ID, the type of instance used and the cloud
+service provider
+\item A link that can be used to download the standard error logs for the
+job
+\item SHA hash of the Docker image ('checksum')
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Task$get_execution_details(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other parameters that can be passed to api() function like
+fields etc.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Task-list_batch_children"></a>}}
+\if{latex}{\out{\hypertarget{method-Task-list_batch_children}{}}}
+\subsection{Method \code{list_batch_children()}}{
+This call retrieves batch child tasks for this task if its
+a batch task.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Task$list_batch_children(
+  status = NULL,
+  project = NULL,
+  created_from = NULL,
+  created_to = NULL,
+  started_from = NULL,
+  started_to = NULL,
+  ended_from = NULL,
+  ended_to = NULL,
+  order_by = NULL,
+  order = NULL,
+  origin_id = NULL,
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{status}}{String. You can filter the returned tasks by their status.
+Set the value of status to one of the following values: \code{QUEUED},
+\code{DRAFT}, \code{RUNNING}, \code{COMPLETED}, \code{ABORTED}, \code{FAILED}.}
+
+\item{\code{project}}{Provide the project ID or project object you wish to list
+the tasks from.}
+
+\item{\code{created_from}}{String. Enter the starting date for querying tasks
+created on the specified date and onwards.}
+
+\item{\code{created_to}}{String. Enter the ending date for querying tasks
+created until the specified date. You can use it in combination with
+\code{created_from} to specify a time interval.}
+
+\item{\code{started_from}}{String. Enter the starting date for querying tasks
+started on the specified date and onwards.}
+
+\item{\code{started_to}}{String. Enter the ending date for querying tasks
+started until the specified date.}
+
+\item{\code{ended_from}}{String. Enter the starting date for querying tasks
+that ended on a specified date.}
+
+\item{\code{ended_to}}{String. Enter the ending date for querying tasks that
+ended until a specified date.}
+
+\item{\code{order_by}}{String. Order returned results by the specified field.
+Allowed values: \code{created_time}, \code{start_time}, \code{name}, \code{end_time} and
+\code{created_by}. Sort can be done only by one column. The default value is
+\code{created_time}.}
+
+\item{\code{order}}{String. Sort results in ascending or descending order by
+specifying \code{asc} or \code{desc}, respectively. Only taken into account if
+\code{order_by} is explicitly specified. The default value is \code{asc}.}
+
+\item{\code{origin_id}}{String. Enter an automation run ID to list all tasks
+created from the specified automation run.}
+
+\item{\code{limit}}{The maximum number of collection items to return for a
+single request. Minimum value is 1. The maximum value is 100 and the
+default value is 50. This is a pagination-specific attribute.}
+
+\item{\code{offset}}{The zero-based starting index in the entire collection of
+the first item to return. The default value is 0. This is a
+pagination-specific attribute.}
+
+\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
+a subset of fields to include in the response.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Task-delete"></a>}}
+\if{latex}{\out{\hypertarget{method-Task-delete}{}}}
+\subsection{Method \code{delete()}}{
+This call deletes the specified task. The task is referred
+to by its ID, which you can obtain by making the call to list all tasks
+you can access.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Task$delete(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
+a subset of fields to include in the response.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Task-rerun"></a>}}
+\if{latex}{\out{\hypertarget{method-Task-rerun}{}}}
+\subsection{Method \code{rerun()}}{
+This call reruns (executes) the specified task.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Task$rerun(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
+a subset of fields to include in the response.}
 }
 \if{html}{\out{</div>}}
 }

@@ -162,8 +162,7 @@ Tasks <- R6::R6Class(
         ...
       )
 
-      return(res)
-      # return(asTaskList(res, auth = self$auth)) # nocov end
+      return(asTaskList(res, auth = self$auth)) # nocov end
     },
 
     # Get single task -------------------------------------------------------
@@ -192,8 +191,7 @@ Tasks <- R6::R6Class(
         ...
       )
 
-      return(res)
-      # return(asTask(res, auth = self$auth)) # nocov end
+      return(asTask(res, auth = self$auth)) # nocov end
     },
     # Create a new draft task --------------------------------------------------
     #' @description This call creates a new task. You can create either a single
@@ -360,8 +358,7 @@ Tasks <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(res)
-      # return(asTask(res, auth = self$auth))
+      return(asTask(res, auth = self$auth))
     }
   ),
   private = list(
