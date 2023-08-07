@@ -282,16 +282,22 @@ Task <- R6::R6Class(
               name = ifelse("basename" %in% names(input),
                 input[["basename"]],
                 input[["name"]]
-              ),
-              metadata = input[["metadata"]],
-              size = input[["size"]],
-              tags = input[["tags"]]
+              )
             )
+            f_data <- append(f_data, input)
             if (!is.null(input[["secondaryFiles"]])) {
               secondary_files <- list()
               for (sf in input[["secondaryFiles"]]) {
-                sf_data <- list(id = sf[["path"]])
-                secondary_files <- append(secondary_files, sf_data)
+                sf_data <- list(
+                  id = sf[["path"]],
+                  type = tolower(sf[["class"]]),
+                  name = ifelse("basename" %in% names(sf),
+                    sf[["basename"]],
+                    sf[["name"]]
+                  )
+                )
+                sf_data <- append(sf_data, sf)
+                secondary_files <- append(secondary_files, list(sf_data))
               }
               f_data[["secondary_files"]] <- secondary_files
             }

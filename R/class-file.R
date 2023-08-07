@@ -701,7 +701,7 @@ File <- R6::R6Class(
       if (!is_missing(secondary_files)) {
         sf_list <- list()
         for (ind in seq_len(length(secondary_files))) {
-          fl <- asFile(secondary_files[ind], auth = self$auth)
+          fl <- asFile(secondary_files[[ind]], auth = self$auth)
           sf_list <- append(sf_list, fl)
         }
         return(sf_list)
