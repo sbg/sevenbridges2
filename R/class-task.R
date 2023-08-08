@@ -361,7 +361,7 @@ Task <- R6::R6Class(
       )
       res <- status_check(res)
 
-      return(asTask(res, auth = self$auth))
+      return(res)
     }, # nocov end
     #' @description This call retrieves batch child tasks for this task if its
     #' a batch task.
@@ -414,6 +414,9 @@ Task <- R6::R6Class(
                                    limit = getOption("sevenbridges2")$limit,
                                    offset = getOption("sevenbridges2")$offset,
                                    ...) {
+      if (is_missing(self$batch) || !self$batch) {
+        rlang::abort("This task is not a batch task.")
+      }
       # nocov start
       parent <- self$id
 

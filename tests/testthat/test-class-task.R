@@ -46,3 +46,12 @@ test_that("Task method clone_task() throws error when expected", {
     fixed = TRUE
   )
 })
+
+test_that("Task method list_batch_children() throws error when expected", {
+  bad_batch_param <- list(batch = FALSE)
+  testthat::expect_error(
+    do.call(setup_task_obj$list_batch_children, bad_batch_param),
+    regexp = "This task is not a batch task.",
+    fixed = TRUE
+  )
+})
