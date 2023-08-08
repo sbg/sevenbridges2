@@ -306,5 +306,19 @@ setup_export_obj <- Export$new(
   auth = setup_auth_object
 )
 
+setup_task_obj <- Task$new(
+  id = "task-id",
+  name = "Task name",
+  description = "My new test task",
+  project = "project-id",
+  app = "app-id",
+  created_by = "user1",
+  executed_by = "user1",
+  created_on = "12-08-2023",
+  start_time = "12-08-2023",
+  end_time = "12-08-2023",
+  auth = setup_auth_object
+)
+
 # Close session at the end of tests
 withr::defer(teardown_env())
