@@ -236,14 +236,18 @@ Task <- R6::R6Class(
     #' @param use_interruptible_instances Boolean. This field can be TRUE or
     #' FALSE. Set this field to TRUE to allow the use of
     #' [spot instances](https://docs.sevenbridges.com/docs/about-spot-instances)
+    #' @param in_place Boolean. Default TRUE. Should the new object of
+    #' Task class be returned or the current to be reinitialized.
     #' @param ... Other parameters that can be passed to api() function like
     #' fields etc.
     #' @importFrom checkmate assert_logical
     run = function(batch = NULL,
                    use_interruptible_instances = NULL,
+                   in_place = TRUE,
                    ...) {
       checkmate::assert_logical(batch, null.ok = TRUE)
       checkmate::assert_logical(use_interruptible_instances, null.ok = TRUE)
+      checkmate::assert_logical(in_place, null.ok = FALSE)
 
       # nocov start
       id <- self$id
@@ -266,7 +270,39 @@ Task <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(asTask(res, auth = self$auth))
+      if (in_place) {
+        self$initialize(
+          href = res$href,
+          id = res$id,
+          name = res$name,
+          status = res$status,
+          description = res$description,
+          project = res$project,
+          app = res$app,
+          created_by = res$created_by,
+          executed_by = res$executed_by,
+          created_on = res$created_on,
+          start_time = res$start_time,
+          end_time = res$end_time,
+          origin = res$origin,
+          use_interruptable_instances =
+            res$use_interruptable_instances,
+          batch = res$batch,
+          batch_by = res$batch_by,
+          batch_group = res$batch_group,
+          batch_input = res$batch_input,
+          batch_parent = res$batch_parent,
+          execution_settings = res$execution_settings,
+          execution_status = res$execution_status,
+          errors = res$errors,
+          warnings = res$warnings,
+          inputs = private$map_input_output(res$inputs),
+          outputs = private$map_input_output(res$outputs),
+          output_location = res$output_location
+        )
+      } else {
+        return(asTask(res, auth = self$auth))
+      }
     },
     # nocov end
     #' @description This call aborts the specified task. Only tasks whose
@@ -461,9 +497,11 @@ Task <- R6::R6Class(
       )
     }, # nocov end
     #' @description This call reruns (executes) the specified task.
+    #' @param in_place Boolean. Default TRUE. Should the new object of
+    #' Task class be returned or the current to be reinitialized.
     #' @param ... Other arguments such as `fields` which can be used to specify
     #' a subset of fields to include in the response.
-    rerun = function(...) {
+    rerun = function(in_place = TRUE, ...) {
       # nocov start
       id <- self$id
       path <- glue::glue(self$URL[["clone"]])

@@ -235,7 +235,12 @@ Print method for Task class.
 This call runs (executes) the task. Only tasks whose status
 is "DRAFT" can be run.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Task$run(batch = NULL, use_interruptible_instances = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Task$run(
+  batch = NULL,
+  use_interruptible_instances = NULL,
+  in_place = TRUE,
+  ...
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -249,6 +254,9 @@ tasks considering the API rate limit
 \item{\code{use_interruptible_instances}}{Boolean. This field can be TRUE or
 FALSE. Set this field to TRUE to allow the use of
 \href{https://docs.sevenbridges.com/docs/about-spot-instances}{spot instances}}
+
+\item{\code{in_place}}{Boolean. Default TRUE. Should the new object of
+Task class be returned or the current to be reinitialized.}
 
 \item{\code{...}}{Other parameters that can be passed to api() function like
 fields etc.}
@@ -441,12 +449,15 @@ a subset of fields to include in the response.}
 \subsection{Method \code{rerun()}}{
 This call reruns (executes) the specified task.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Task$rerun(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Task$rerun(in_place = TRUE, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{in_place}}{Boolean. Default TRUE. Should the new object of
+Task class be returned or the current to be reinitialized.}
+
 \item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
 a subset of fields to include in the response.}
 }

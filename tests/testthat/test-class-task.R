@@ -25,6 +25,7 @@ test_that("Task print method works", {
 test_that("Task method run() throws error when expected", {
   bad_batch_param <- list(batch = 123)
   bad_use_interupt_inst_param <- list(use_interruptible_instances = 123)
+  bad_in_place_param <- list(in_place = 123)
 
   testthat::expect_error(
     do.call(setup_task_obj$run, bad_batch_param),
@@ -34,6 +35,11 @@ test_that("Task method run() throws error when expected", {
   testthat::expect_error(
     do.call(setup_task_obj$run, bad_use_interupt_inst_param),
     regexp = "Assertion on 'use_interruptible_instances' failed: Must be of type 'logical' (or 'NULL'), not 'double'.", # nolint
+    fixed = TRUE
+  )
+  testthat::expect_error(
+    do.call(setup_task_obj$run, bad_in_place_param),
+    regexp = "Assertion on 'in_place' failed: Must be of type 'logical', not 'double'.", # nolint
     fixed = TRUE
   )
 })
