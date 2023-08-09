@@ -321,5 +321,192 @@ setup_export_obj <- Export$new(
   auth = setup_auth_object
 )
 
+setup_task_inputs_raw <- list(
+  input_reads = list(
+    list(
+      path = "input_reads_nested_file_1_id",
+      metadata = list(paired_end = "1", sample_id = "TCRBOA3-T"),
+      size = 12580652281,
+      contents = NULL,
+      name = "TCRBOA3-T-WEX.read1.fastq",
+      checksum = NULL,
+      location = "input_reads_file_1_id_location",
+      class = "File",
+      dirname = "/Projects/parent_id/"
+    ),
+    list(
+      path = "input_reads_nested_file_2_id",
+      metadata = list(paired_end = "2", sample_id = "TCRBOA3-T"),
+      size = 12580652281,
+      contents = NULL,
+      name = "TCRBOA3-T-WEX.read2.fastq",
+      checksum = NULL,
+      location = "input_reads_nested_file_2_location",
+      class = "File",
+      dirname = "/Projects/parent-id/"
+    ),
+    another_level_nested = list(
+      list(
+        path = "input_reads_nested_file_3_id",
+        metadata = list(paired_end = "1", sample_id = "TCRBOA3-T"),
+        size = 12580652281,
+        contents = NULL,
+        name = "TCRBOA3-T-WEX.read1.fastq",
+        checksum = NULL,
+        location = "input_reads_nested_file_3_location",
+        class = "File",
+        dirname = "/Projects/parent_id/"
+      ),
+      list(
+        path = "input_reads_nested_file_4_id",
+        metadata = list(paired_end = "2", sample_id = "TCRBOA3-T"),
+        size = 12580652281,
+        contents = NULL,
+        name = "TCRBOA3-T-WEX.read2.fastq",
+        checksum = NULL,
+        location = "input_reads_nested_file_4_location",
+        class = "File",
+        dirname = "/Projects/parent_id"
+      )
+    )
+  ),
+  target_bed = list(
+    path = "target_bed_file_id",
+    metadata = structure(list(), names = character(0)),
+    size = 5312162L,
+    contents = NULL,
+    name = "v5_core_targets.refse-ccds-gencode-ucsc.bed",
+    checksum = NULL,
+    location = "target_bed_file_location",
+    class = "File",
+    dirname = "/Projects/parent_id/reference_files/"
+  ),
+  bait_bed = list(
+    path = "bait_bed_id",
+    metadata = structure(list(), names = character(0)),
+    size = 5506630L,
+    contents = NULL,
+    name = "SureSelect_XT_Human_All_Exon_V5_annot.bed",
+    checksum = NULL,
+    location = "bait_bed_location",
+    class = "File",
+    dirname = "/Projects/parent_id/reference_files/"
+  ),
+  kgsnp_database = list(
+    path = "kgsnp_database_id",
+    metadata = structure(list(), names = character(0)),
+    size = 7398865818,
+    contents = NULL,
+    name = "1000G_phase1.snps.high_confidence.hg19.sites.vcf",
+    checksum = NULL,
+    location = "kgsnp_database_location",
+    class = "File",
+    dirname = "/Projects/parent_id/reference_files/"
+  ),
+  input_tar_with_reference = list(
+    path = "input_tar_with_reference_id",
+    metadata = list(library_id = "UCSC"),
+    size = 8689960960,
+    contents = NULL,
+    name = "ucsc.hg19.fasta.tar",
+    checksum = NULL,
+    location = "input_tar_with_reference_location",
+    class = "File",
+    dirname = "/Projects/parent_id/reference_files/"
+  ),
+  mgindel_database = list(
+    path = "mgindel_database_id",
+    metadata = structure(list(), names = character(0)),
+    size = 20718745L,
+    contents = NULL,
+    name = "Mills_and_1000G_gold_standard.tab.indels.hg19.sites.vcf.gz",
+    checksum = NULL,
+    location = "mgindel_database_location",
+    class = "File",
+    dirname = "/Projects/parent_id/reference_files/"
+  ),
+  char = "char_value",
+  double = 235.6,
+  some_vars = list(
+    int = 10,
+    str = "text"
+  )
+)
+
+setup_task_outputs_raw <- list(
+  alignment_metrics = list(
+    path = "alignment_metrics_id",
+    size = 2337L,
+    name = "_1_TCRBOA3-T.ALN_METRIC.txt",
+    checksum = "sum",
+    location = NULL,
+    secondaryFiles = list(),
+    class = "File",
+    dirname = "/mnt/nosbgfs/workspaces/wp-id/tasks/task-id/SBG_Rename_App_4"
+  ),
+  per_target_coverage = list(
+    path = "per_target_coverage_id",
+    size = 18757531L,
+    name = "_1_TCRBOA3-T.per_target_coverage.txt",
+    checksum = "sum",
+    location = NULL,
+    class = "File",
+    dirname = "/mnt/nosbgfs/workspaces/wp-id/tasks/task-id/Picard_CollectHsMetrics" # nolint
+  ),
+  hs_metrics = list(
+    path = "hs_metrics_id",
+    size = 5523L,
+    name = "_1_TCRBOA3-T.hsMetrics.txt",
+    checksum = "sum",
+    location = NULL,
+    class = "File",
+    dirname = "/mnt/nosbgfs/workspaces/wp-id/tasks/task-id/Picard_CollectHsMetrics" # nolint
+  ),
+  dedup_metrics = list(
+    path = "dedup_metrics_id",
+    size = 2952L,
+    name = "_1_TCRBOA3-T.DEDUP.txt",
+    checksum = "sum",
+    location = NULL,
+    secondaryFiles = list(),
+    class = "File",
+    dirname = "/mnt/nosbgfs/workspaces/wp-id/tasks/task-id/SBG_Rename_App"
+  ),
+  output_bam = list(
+    path = "output_bam_id",
+    size = 6632805966,
+    name = "_1_TCRBOA3-T.sorted.dedup.recal.bam",
+    checksum = "sum",
+    location = NULL,
+    secondaryFiles = list(
+      list(
+        path = "sec_file_id",
+        metadata = list(
+          `__inherit__` = "input_bam",
+          intervals_file = "v5_core_targets.refse-ccds-gencode-ucsc.bed",
+          reference_genome = "ucsc.hg19",
+          sample_id = "TCRBOA3-T"
+        ),
+        size = 2950000L,
+        contents = NULL,
+        name = "_1_TCRBOA3-T.sorted.dedup.recal.bam.bai",
+        checksum = "sum",
+        location = "parent-id",
+        class = "File",
+        dirname = "/mnt/nosbgfs/workspaces/wp-id/tasks/task-id/SBG_Rename_App_2" # nolint
+      )
+    ),
+    class = "File",
+    dirname = "/mnt/nosbgfs/workspaces/wp-id/tasks/task-id/SBG_Rename_App_2" # nolint
+  ),
+  recal_table = list(
+    path = "recal_table_id", size = 861779L,
+    name = "_1_TCRBOA3-T.recal_result.txt",
+    checksum = "sum",
+    location = NULL, secondaryFiles = list(), class = "File",
+    dirname = "/mnt/nosbgfs/workspaces/wp-id/tasks/task-id/SBG_Rename_App_1" # nolint
+  )
+)
+
 # Close session at the end of tests
 withr::defer(teardown_env())

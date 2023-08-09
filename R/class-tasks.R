@@ -162,7 +162,10 @@ Tasks <- R6::R6Class(
         ...
       )
 
-      return(asTaskList(res, auth = self$auth)) # nocov end
+      res$items <- asTaskList(res, auth = self$auth)
+
+      return(asCollection(res, auth = self$auth))
+      # nocov end
     },
 
     # Get single task -------------------------------------------------------

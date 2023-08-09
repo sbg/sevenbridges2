@@ -83,15 +83,13 @@ Task <- R6::R6Class(
     warnings = NULL,
     #' @field price List. Task cost. (contains amount and currency)
     price = NULL,
-    #' @field inputs List.Inputs that were submitted to the task.
+    #' @field inputs List. Inputs that were submitted to the task.
     inputs = NULL,
     #' @field outputs List. Generated outputs from the task.
     outputs = NULL,
     #' @field output_location List. Location where task outputs will be stored.
     output_location = NULL,
-    #' @field href Link to the current task resource.
-    href = NULL,
-
+    #'
     #' @description Initialize Task class
     #' @param id String. The ID of the task.
     #' @param name String. The name of the task.
@@ -190,10 +188,9 @@ Task <- R6::R6Class(
       self$execution_status <- execution_status
       self$errors <- errors
       self$warnings <- warnings
-      self$inputs <- inputs
-      self$outputs <- outputs
+      self$inputs <- private$map_input_output(inputs)
+      self$outputs <- private$map_input_output(outputs)
       self$output_location <- output_location
-      self$href <- href
     },
 
     #' @description Print method for Task class.
@@ -473,6 +470,58 @@ Task <- R6::R6Class(
 
       self$clone_task(run = TRUE)
     } # nocov end
+  ),
+  private = list(
+    # Map input/output values
+    #' @importFrom checkmate test_list
+    map_input_output = function(input) {
+      return_value <- list()
+      if (checkmate::test_list(input)) {
+        if ("class" %in% names(input)) {
+          if (tolower(input[["class"]]) %in% c("file", "folder")) {
+            f_data <- list(
+              id = input[["path"]],
+              type = tolower(input[["class"]]),
+              name = ifelse("basename" %in% names(input),
+                input[["basename"]],
+                input[["name"]]
+              )
+            )
+            f_data <- append(f_data, input)
+            if (!is.null(input[["secondaryFiles"]])) {
+              secondary_files <- list()
+              for (sf in input[["secondaryFiles"]]) {
+                sf_data <- list(
+                  id = sf[["path"]],
+                  type = tolower(sf[["class"]]),
+                  name = ifelse("basename" %in% names(sf),
+                    sf[["basename"]],
+                    sf[["name"]]
+                  )
+                )
+                sf_data <- append(sf_data, sf)
+                secondary_files <- append(secondary_files, list(sf_data))
+              }
+              f_data[["secondary_files"]] <- secondary_files
+            }
+            return_value <- asFile(f_data, auth = self$auth)
+          }
+        } else {
+          for (i in seq_len(length(input))) {
+            elem_name <- names(input[i])
+            vals <- private$map_input_output(input[[i]])
+            if (!is.null(elem_name)) {
+              return_value[[elem_name]] <- vals
+            } else {
+              return_value <- c(return_value, list(vals))
+            }
+          }
+        }
+      } else {
+        return_value <- input
+      }
+      return(return_value)
+    }
   )
 )
 

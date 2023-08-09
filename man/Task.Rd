@@ -79,13 +79,11 @@ array property in the API response.}
 
 \item{\code{price}}{List. Task cost. (contains amount and currency)}
 
-\item{\code{inputs}}{List.Inputs that were submitted to the task.}
+\item{\code{inputs}}{List. Inputs that were submitted to the task.}
 
 \item{\code{outputs}}{List. Generated outputs from the task.}
 
 \item{\code{output_location}}{List. Location where task outputs will be stored.}
-
-\item{\code{href}}{Link to the current task resource.}
 }
 \if{html}{\out{</div>}}
 }
