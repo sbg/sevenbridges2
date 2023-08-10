@@ -180,8 +180,9 @@ for more details on batching criteria.
   description = NULL,
   execution_settings = NULL,
   inputs = NULL,
-  batch = NULL,
+  batch = FALSE,
   batch_input = NULL,
+  batch_by = NULL,
   use_interruptible_instances = NULL,
   action = NULL,
   ...
@@ -262,6 +263,8 @@ criteria as described below.}
 batch. You would typically batch on the input consisting of a list of
 files. If this parameter is omitted, the default batching criteria
 defined for the app will be used.}
+
+\item{\code{batch_by}}{String. Batching criteria.}
 
 \item{\code{use_interruptible_instances}}{Boolean. This field can be \code{TRUE} or
 \code{FALSE}. Set this field to \code{TRUE} to allow the use of

@@ -98,7 +98,7 @@ array property in the API response.}
 \item \href{#method-Task-get_execution_details}{\code{Task$get_execution_details()}}
 \item \href{#method-Task-list_batch_children}{\code{Task$list_batch_children()}}
 \item \href{#method-Task-delete}{\code{Task$delete()}}
-\item \href{#method-Task-rerun}{\code{Task$rerun()}}
+\item \href{#method-Task-update}{\code{Task$update()}}
 \item \href{#method-Task-clone}{\code{Task$clone()}}
 }
 }
@@ -271,12 +271,15 @@ fields etc.}
 This call aborts the specified task. Only tasks whose
 status is \code{RUNNING} or \code{QUEUED} may be aborted.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Task$abort(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Task$abort(in_place = TRUE, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{in_place}}{Boolean. Default TRUE. Should the new object of
+Task class be returned or the current to be reinitialized.}
+
 \item{\code{...}}{Other parameters that can be passed to api() function like
 fields etc.}
 }
@@ -291,7 +294,7 @@ This call clones the specified task. Once cloned, the task
 can either be in \code{draft} mode or immediately ran, by setting the \code{run}
 parameter to \code{TRUE}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Task$clone_task(run = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Task$clone_task(run = FALSE, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -444,19 +447,102 @@ a subset of fields to include in the response.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Task-rerun"></a>}}
-\if{latex}{\out{\hypertarget{method-Task-rerun}{}}}
-\subsection{Method \code{rerun()}}{
-This call reruns (executes) the specified task.
+\if{html}{\out{<a id="method-Task-update"></a>}}
+\if{latex}{\out{\hypertarget{method-Task-update}{}}}
+\subsection{Method \code{update()}}{
+Change the details of the specified task, including its
+name, description, and inputs. Note that you can only modify tasks with
+a task status of DRAFT. Tasks which are RUNNING, QUEUED, ABORTED,
+COMPLETED or FAILED cannot be modified in order to enable the
+reproducibility of analyses which have been queued for execution or
+has initiated executing.
+There are two things to note if you are editing a batch task:
+\itemize{
+\item \code{1} If you want to change the input on which to batch and
+the batch criteria, you need to specify the batch_input and batch_by
+parameters together in the same function call.
+\item \code{2} If you want to disable batching on a task, set batch to
+false. Or, you can also set the parameters batch_input and batch_by
+to NULL.
+}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Task$rerun(in_place = TRUE, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Task$update(
+  name = NULL,
+  description = NULL,
+  execution_settings = NULL,
+  inputs = NULL,
+  batch = FALSE,
+  batch_input = NULL,
+  batch_by = NULL,
+  ...
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{in_place}}{Boolean. Default TRUE. Should the new object of
-Task class be returned or the current to be reinitialized.}
+\item{\code{name}}{The name of the task.}
+
+\item{\code{description}}{An optional description of the task.}
+
+\item{\code{execution_settings}}{Named list with detailed task execution
+parameters. Detailed task execution parameters:
+\itemize{
+\item \code{instance_type}: String. Possible value is the specific instance type,
+e.g. \code{"instance_type" = "c4.2xlarge;ebs-gp2;2000"}.
+\item \code{max_parallel_instances}: Integer. Maximum number of instances
+running at the same time. Takes any integer value equal to or greater
+than 1, e.g. \code{"max_parallel_instances" = 2.}
+\item \code{use_memoization}: Boolean. Set to \code{FALSE} by default. Set to \code{TRUE}
+to enable
+\href{https://docs.sevenbridges.com/docs/about-memoization}{memoization}.
+\item \code{use_elastic_disk}: Boolean. Set to \code{TRUE} to enable
+\href{https://docs.sevenbridges.com/page/elastic-disk}{Elastic Disk}.
+}
+
+Here is an example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{execution_settings <- list(
+  "instance_type" = "c4.2xlarge;ebs-gp2;2000",
+  "max_parallel_instances" = 2,
+  "use_memoization" = TRUE,
+  "use_elastic_disk" = TRUE
+  )
+}\if{html}{\out{</div>}}}
+
+\item{\code{inputs}}{List of objects. See the section on
+\href{https://docs.sevenbridges.com/docs/the-api#section-inputs}{specifying task inputs}
+for information on creating task input objects. Here is an example with
+various input types:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{inputs <- list(
+  "input_file"= "<file_id/file_object>",
+  "input_directory" = "<folder_id/folder_object>",
+  "input_array_string" = list("<string_elem_1>", "<string_elem_2>"),
+  "input_boolean" = TRUE,
+  "input_double" = 54.6,
+  "input_enum" = "enum_1",
+  "input_float" = 11.2,
+  "input_integer" = "asdf",
+  "input_long" = 4212,
+  "input_string" = "test_string",
+  "input_record" = list(
+    "input_record_field_file" = "<file_id/file_object>",
+    "input_record_field_integer" = 42
+   )
+  )
+}\if{html}{\out{</div>}}}
+
+\item{\code{batch}}{Boolean. This is set to \code{FALSE} by default. Set to \code{TRUE} to
+create a batch task and specify the \code{batch_input} and \code{batch-by}
+criteria as described below.}
+
+\item{\code{batch_input}}{String. The ID of the input on which you wish to
+batch. You would typically batch on the input consisting of a list of
+files. If this parameter is omitted, the default batching criteria
+defined for the app will be used.}
+
+\item{\code{batch_by}}{String. Batching criteria.}
 
 \item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
 a subset of fields to include in the response.}
