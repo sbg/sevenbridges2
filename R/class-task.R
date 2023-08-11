@@ -648,7 +648,7 @@ Task <- R6::R6Class(
                       description = NULL,
                       execution_settings = NULL,
                       inputs = NULL,
-                      batch = FALSE,
+                      batch = NULL,
                       batch_input = NULL,
                       batch_by = NULL,
                       ...) {
@@ -656,7 +656,7 @@ Task <- R6::R6Class(
       checkmate::assert_string(description, null.ok = TRUE)
       check_execution_settings(execution_settings)
       checkmate::assert_list(inputs, null.ok = TRUE)
-      checkmate::assert_logical(batch, null.ok = FALSE)
+      checkmate::assert_logical(batch, null.ok = TRUE)
       checkmate::assert_string(batch_input, null.ok = TRUE)
       checkmate::assert_list(batch_by, null.ok = TRUE)
 
@@ -668,7 +668,7 @@ Task <- R6::R6Class(
         "description" = description
       )
 
-      if (batch) {
+      if (!is_missing(batch) && batch) {
         if (!is_missing(batch_input) && !is_missing(batch_by)) {
           task_data[["batch_input"]] <- batch_input
           task_data[["batch_by"]] <- batch_by
