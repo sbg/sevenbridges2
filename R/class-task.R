@@ -555,6 +555,16 @@ Task <- R6::R6Class(
         )
       )
     }, # nocov end
+    #' @description This call reruns (executes) the specified task.
+    #' @param ... Other arguments such as `fields` which can be used to specify
+    #' a subset of fields to include in the response.
+    rerun = function(...) {
+      # nocov start
+      id <- self$id
+      path <- glue::glue(self$URL[["clone"]])
+
+      self$clone_task(run = TRUE)
+    }, # nocov end
     #' @description Change the details of the specified task, including its
     #' name, description, and inputs. Note that you can only modify tasks with
     #' a task status of DRAFT. Tasks which are RUNNING, QUEUED, ABORTED,

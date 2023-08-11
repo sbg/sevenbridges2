@@ -98,6 +98,7 @@ array property in the API response.}
 \item \href{#method-Task-get_execution_details}{\code{Task$get_execution_details()}}
 \item \href{#method-Task-list_batch_children}{\code{Task$list_batch_children()}}
 \item \href{#method-Task-delete}{\code{Task$delete()}}
+\item \href{#method-Task-rerun}{\code{Task$rerun()}}
 \item \href{#method-Task-update}{\code{Task$update()}}
 \item \href{#method-Task-clone}{\code{Task$clone()}}
 }
@@ -435,6 +436,24 @@ to by its ID, which you can obtain by making the call to list all tasks
 you can access.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Task$delete(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
+a subset of fields to include in the response.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Task-rerun"></a>}}
+\if{latex}{\out{\hypertarget{method-Task-rerun}{}}}
+\subsection{Method \code{rerun()}}{
+This call reruns (executes) the specified task.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Task$rerun(...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

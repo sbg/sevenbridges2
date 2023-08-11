@@ -12,7 +12,7 @@ test_that("Task initialization works", {
       "batch_group", "batch_by", "batch", "use_interruptable_instances",
       "origin", "end_time", "start_time", "created_on", "executed_by",
       "created_by", "app", "project", "description", "status", "name", "id",
-      "URL", "auth", "clone", "delete", "list_batch_children",
+      "URL", "auth", "clone", "rerun", "delete", "list_batch_children",
       "get_execution_details", "clone_task", "abort", "run", "print"
     )
   )
