@@ -270,7 +270,13 @@ Tasks <- R6::R6Class(
     #' batch. You would typically batch on the input consisting of a list of
     #' files. If this parameter is omitted, the default batching criteria
     #' defined for the app will be used.
-    #' @param batch_by String. Batching criteria.
+    #' @param batch_by List. Batching criteria. For example:
+    #' ```{r}
+    #' batch_by = list(
+    #'  type = "CRITERIA",
+    #'  criteria = list("metadata.condition")
+    #' )
+    #' ```
     #' @param use_interruptible_instances Boolean. This field can be `TRUE` or
     #' `FALSE`. Set this field to `TRUE` to allow the use of
     # nolint start
@@ -320,7 +326,7 @@ Tasks <- R6::R6Class(
       checkmate::assert_list(inputs, null.ok = TRUE)
       checkmate::assert_logical(batch, null.ok = FALSE)
       checkmate::assert_string(batch_input, null.ok = TRUE)
-      checkmate::assert_string(batch_by, null.ok = TRUE)
+      checkmate::assert_list(batch_by, null.ok = TRUE)
       checkmate::assert_logical(use_interruptible_instances, null.ok = TRUE)
       checkmate::assert_string(action, null.ok = TRUE)
 
@@ -339,7 +345,7 @@ Tasks <- R6::R6Class(
       if (batch) {
         if (!is_missing(batch_input) && !is_missing(batch_by)) {
           task_data[["batch_input"]] <- batch_input
-          # task_data[["batch_by"]] <- batch_by
+          task_data[["batch_by"]] <- batch_by
         } else {
           rlang::abort("Batch is set to TRUE, therefore, please, set batching criteria (batch_by) and batch inputs.") # nolint
         }

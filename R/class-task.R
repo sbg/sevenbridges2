@@ -270,6 +270,12 @@ Task <- R6::R6Class(
 
       res <- status_check(res)
 
+      rlang::inform(
+        glue::glue_col(
+          "Execution of task {green {self$name}} has started."
+        )
+      )
+
       if (in_place) {
         self$initialize(
           href = res$href,
@@ -326,6 +332,12 @@ Task <- R6::R6Class(
         ...
       )
       res <- status_check(res)
+
+      rlang::inform(
+        glue::glue_col(
+          "Task {green {self$name}} has been aborted."
+        )
+      )
 
       if (in_place) {
         self$initialize(
@@ -394,7 +406,11 @@ Task <- R6::R6Class(
         ...
       )
       res <- status_check(res)
-
+      rlang::inform(
+        glue::glue_col(
+          "New cloned draft task with id {green {res$id}} has been created."
+        )
+      )
       return(asTask(res, auth = self$auth))
     }, # nocov end
     #' @description This call returns execution details of the specified task.
@@ -430,6 +446,10 @@ Task <- R6::R6Class(
         ...
       )
       res <- status_check(res)
+
+      if (self$batch) {
+        rlang::inform("Execution details can be seen on each child task.")
+      }
 
       return(res)
     }, # nocov end
@@ -603,7 +623,13 @@ Task <- R6::R6Class(
     #' batch. You would typically batch on the input consisting of a list of
     #' files. If this parameter is omitted, the default batching criteria
     #' defined for the app will be used.
-    #' @param batch_by String. Batching criteria.
+    #' @param batch_by List. Batching criteria. For example:
+    #' ```{r}
+    #' batch_by = list(
+    #'  type = "CRITERIA",
+    #'  criteria = list("metadata.condition")
+    #' )
+    #' ```
     #' @param ... Other arguments such as `fields` which can be used to specify
     #' a subset of fields to include in the response.
     update = function(name = NULL,
@@ -620,7 +646,7 @@ Task <- R6::R6Class(
       checkmate::assert_list(inputs, null.ok = TRUE)
       checkmate::assert_logical(batch, null.ok = FALSE)
       checkmate::assert_string(batch_input, null.ok = TRUE)
-      checkmate::assert_string(batch_by, null.ok = TRUE)
+      checkmate::assert_list(batch_by, null.ok = TRUE)
 
       task_inputs <- list()
       task_data <- list()
@@ -633,7 +659,7 @@ Task <- R6::R6Class(
       if (batch) {
         if (!is_missing(batch_input) && !is_missing(batch_by)) {
           task_data[["batch_input"]] <- batch_input
-          # task_data[["batch_by"]] <- batch_by
+          task_data[["batch_by"]] <- batch_by
         } else {
           rlang::abort("Batch is set to TRUE, therefore, please, set batching criteria (batch_by) and batch inputs.") # nolint
         }
@@ -659,6 +685,11 @@ Task <- R6::R6Class(
       )
 
       res <- status_check(res)
+      rlang::inform(
+        glue::glue_col(
+          "Task {green {self$name}} has been updated."
+        )
+      )
 
       self$initialize(
         href = res$href,

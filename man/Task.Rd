@@ -542,7 +542,13 @@ batch. You would typically batch on the input consisting of a list of
 files. If this parameter is omitted, the default batching criteria
 defined for the app will be used.}
 
-\item{\code{batch_by}}{String. Batching criteria.}
+\item{\code{batch_by}}{List. Batching criteria. For example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{batch_by = list(
+ type = "CRITERIA",
+ criteria = list("metadata.condition")
+)
+}\if{html}{\out{</div>}}}
 
 \item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
 a subset of fields to include in the response.}
