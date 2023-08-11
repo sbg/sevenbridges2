@@ -320,6 +320,8 @@ Task <- R6::R6Class(
     #' @param ... Other parameters that can be passed to api() function like
     #' fields etc.
     abort = function(in_place = TRUE, ...) {
+      checkmate::assert_logical(in_place, null.ok = FALSE)
+
       # nocov start
       id <- self$id
       path <- glue::glue(self$URL[["abort"]])
@@ -672,7 +674,7 @@ Task <- R6::R6Class(
 
       task_data[["execution_settings"]] <- execution_settings
       task_data[["batch"]] <- batch
-
+      # nocov start
       id <- self$id
 
       res <- sevenbridges2::api(
@@ -722,7 +724,7 @@ Task <- R6::R6Class(
         auth = self$auth,
         response = attr(res, "response")
       )
-    }
+    } # nocov end
   ),
   private = list(
     # Map input/output values
