@@ -37,6 +37,8 @@ R6 Class representing a resource for managing files.
 \item{\code{parent}}{Parent folder ID.}
 
 \item{\code{type}}{This can be of type \code{File} or \code{Folder}.}
+
+\item{\code{secondary_files}}{Secondary files}
 }
 \if{html}{\out{</div>}}
 }
@@ -80,6 +82,7 @@ Create a new File object.
   tags = NA,
   metadata = NA,
   url = NA,
+  secondary_files = NA,
   ...
 )}\if{html}{\out{</div>}}
 }
@@ -112,6 +115,8 @@ Create a new File object.
 \item{\code{metadata}}{List for metadata associated with the file.}
 
 \item{\code{url}}{File download url.}
+
+\item{\code{secondary_files}}{Secondary files}
 
 \item{\code{...}}{Other arguments.}
 }

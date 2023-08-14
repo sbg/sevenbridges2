@@ -112,11 +112,13 @@ serviceaccount
 setenv
 sevenbridges
 SevenBridges
+SHA
 sse
 starttransfer
 str
 stringi
 stringr
+subprocess
 Sys
 sysenv
 testthat

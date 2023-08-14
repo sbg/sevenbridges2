@@ -324,6 +324,10 @@ setup_body <- function(method, body = list()) {
     if (!is.list(body)) {
       rlang::abort("Body should be a list.")
     }
+    if (length(body) == 0) {
+      # Specific handling of POST with emtpy body
+      return("{}")
+    }
     body <- jsonlite::toJSON(body, auto_unbox = TRUE, null = "null")
   }
   return(body)

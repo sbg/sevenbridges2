@@ -108,32 +108,32 @@ Tasks <- R6::R6Class(
           check_and_transform_id(parent, class_name = "Task")
       }
 
-      if (!missing(project)) {
+      if (!is_missing(project)) {
         project <-
           check_and_transform_id(project, class_name = "Project")
       }
 
-      if (!missing(created_from)) {
+      if (!is_missing(created_from)) {
         created_from <- check_and_transform_datetime(created_from)
       }
 
-      if (!missing(created_to)) {
+      if (!is_missing(created_to)) {
         created_to <- check_and_transform_datetime(created_to)
       }
 
-      if (!missing(started_from)) {
+      if (!is_missing(started_from)) {
         started_from <- check_and_transform_datetime(started_from)
       }
 
-      if (!missing(started_to)) {
+      if (!is_missing(started_to)) {
         started_to <- check_and_transform_datetime(started_to)
       }
 
-      if (!missing(ended_from)) {
+      if (!is_missing(ended_from)) {
         ended_from <- check_and_transform_datetime(ended_from)
       }
 
-      if (!missing(ended_to)) {
+      if (!is_missing(ended_to)) {
         ended_to <- check_and_transform_datetime(ended_to)
       }
 
@@ -162,8 +162,10 @@ Tasks <- R6::R6Class(
         ...
       )
 
-      return(res)
-      # return(asTaskList(res, auth = self$auth)) # nocov end
+      res$items <- asTaskList(res, auth = self$auth)
+
+      return(asCollection(res, auth = self$auth))
+      # nocov end
     },
 
     # Get single task -------------------------------------------------------
@@ -192,8 +194,7 @@ Tasks <- R6::R6Class(
         ...
       )
 
-      return(res)
-      # return(asTask(res, auth = self$auth)) # nocov end
+      return(asTask(res, auth = self$auth)) # nocov end
     },
     # Create a new draft task --------------------------------------------------
     #' @description This call creates a new task. You can create either a single
@@ -360,8 +361,7 @@ Tasks <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(res)
-      # return(asTask(res, auth = self$auth))
+      return(asTask(res, auth = self$auth))
     }
   ),
   private = list(
