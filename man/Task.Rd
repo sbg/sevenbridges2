@@ -490,7 +490,7 @@ to NULL.
   description = NULL,
   execution_settings = NULL,
   inputs = NULL,
-  batch = FALSE,
+  batch = NULL,
   batch_input = NULL,
   batch_by = NULL,
   ...

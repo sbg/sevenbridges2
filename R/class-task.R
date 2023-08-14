@@ -744,27 +744,15 @@ Task <- R6::R6Class(
       if (checkmate::test_list(input)) {
         if ("class" %in% names(input)) {
           if (tolower(input[["class"]]) %in% c("file", "folder")) {
-            f_data <- list(
-              id = input[["path"]],
-              type = tolower(input[["class"]]),
-              name = ifelse("basename" %in% names(input),
-                input[["basename"]],
-                input[["name"]]
-              )
-            )
+            f_data <- map_fields_util(input)
             f_data <- append(f_data, input)
+
             if (!is.null(input[["secondaryFiles"]])) {
               secondary_files <- list()
               for (sf in input[["secondaryFiles"]]) {
-                sf_data <- list(
-                  id = sf[["path"]],
-                  type = tolower(sf[["class"]]),
-                  name = ifelse("basename" %in% names(sf),
-                    sf[["basename"]],
-                    sf[["name"]]
-                  )
-                )
+                sf_data <- map_fields_util(sf)
                 sf_data <- append(sf_data, sf)
+
                 secondary_files <- append(secondary_files, list(sf_data))
               }
               f_data[["secondary_files"]] <- secondary_files
@@ -786,6 +774,20 @@ Task <- R6::R6Class(
         return_value <- input
       }
       return(return_value)
+    },
+    # Map fields
+    map_fields_util = function(input) {
+      mapped_data <- list(
+        id = input[["path"]],
+        type = tolower(input[["class"]])
+      )
+      if ("basename" %in% names(input)) {
+        mapped_data[["name"]] <- input[["basename"]]
+      }
+      if ("name" %in% names(input)) {
+        mapped_data[["name"]] <- input[["name"]]
+      }
+      return(mapped_data)
     }
   )
 )
