@@ -348,25 +348,11 @@ setup_task_inputs_raw <- list(
     another_level_nested = list(
       list(
         path = "input_reads_nested_file_3_id",
-        metadata = list(paired_end = "1", sample_id = "TCRBOA3-T"),
-        size = 12580652281,
-        contents = NULL,
-        name = "TCRBOA3-T-WEX.read1.fastq",
-        checksum = NULL,
-        location = "input_reads_nested_file_3_location",
-        class = "File",
-        dirname = "/Projects/parent_id/"
+        class = "File"
       ),
       list(
         path = "input_reads_nested_file_4_id",
-        metadata = list(paired_end = "2", sample_id = "TCRBOA3-T"),
-        size = 12580652281,
-        contents = NULL,
-        name = "TCRBOA3-T-WEX.read2.fastq",
-        checksum = NULL,
-        location = "input_reads_nested_file_4_location",
-        class = "File",
-        dirname = "/Projects/parent_id"
+        class = "File"
       )
     )
   ),

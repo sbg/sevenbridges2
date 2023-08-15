@@ -129,6 +129,18 @@ test_that("Tasks create() throws error when needed", {
       app = setup_app_obj,
       batch_input = 1
     )
+  test_bad_batch_by <-
+    list(
+      project = setup_project_obj,
+      app = setup_app_obj,
+      batch_by = 1
+    )
+  test_missing_batch_inputs <-
+    list(
+      project = setup_project_obj,
+      app = setup_app_obj,
+      batch = TRUE
+    )
   test_bad_use_inter_instance <-
     list(
       project = setup_project_obj,
@@ -174,6 +186,16 @@ test_that("Tasks create() throws error when needed", {
 
   # Test bad batch_input parameter
   testthat::expect_error(do.call(setup_tasks_obj$create, test_bad_batch_input))
+
+  # Test bad batch_by parameter
+  testthat::expect_error(do.call(setup_tasks_obj$create, test_bad_batch_by))
+
+  # Test missing batch input parameters
+  testthat::expect_error(
+    do.call(setup_tasks_obj$create, test_missing_batch_inputs),
+    regexp = "Batch is set to TRUE, therefore, please, set batching criteria (batch_by) and batch inputs.", # nolint
+    fixed = TRUE
+  )
 
   # Test bad use_interruptible_instance parameter
   testthat::expect_error(do.call(setup_tasks_obj$create, test_bad_use_inter_instance)) # nolint

@@ -182,6 +182,7 @@ for more details on batching criteria.
   inputs = NULL,
   batch = NULL,
   batch_input = NULL,
+  batch_by = NULL,
   use_interruptible_instances = NULL,
   action = NULL,
   ...
@@ -262,6 +263,14 @@ criteria as described below.}
 batch. You would typically batch on the input consisting of a list of
 files. If this parameter is omitted, the default batching criteria
 defined for the app will be used.}
+
+\item{\code{batch_by}}{List. Batching criteria. For example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{batch_by = list(
+ type = "CRITERIA",
+ criteria = list("metadata.condition")
+)
+}\if{html}{\out{</div>}}}
 
 \item{\code{use_interruptible_instances}}{Boolean. This field can be \code{TRUE} or
 \code{FALSE}. Set this field to \code{TRUE} to allow the use of

@@ -18,7 +18,7 @@ Task <- R6::R6Class(
       "abort" = "tasks/{id}/actions/abort",
       "clone" = "tasks/{id}/actions/clone",
       "execution_details" = "tasks/{id}/execution_details",
-      "delete" = "tasks/{id}"
+      "task" = "tasks/{id}"
     ),
     #' @field id String. The ID of the task.
     id = NULL,
@@ -236,14 +236,18 @@ Task <- R6::R6Class(
     #' @param use_interruptible_instances Boolean. This field can be TRUE or
     #' FALSE. Set this field to TRUE to allow the use of
     #' [spot instances](https://docs.sevenbridges.com/docs/about-spot-instances)
+    #' @param in_place Boolean. Default TRUE. Should the new object of
+    #' Task class be returned or the current to be reinitialized.
     #' @param ... Other parameters that can be passed to api() function like
     #' fields etc.
     #' @importFrom checkmate assert_logical
     run = function(batch = NULL,
                    use_interruptible_instances = NULL,
+                   in_place = TRUE,
                    ...) {
       checkmate::assert_logical(batch, null.ok = TRUE)
       checkmate::assert_logical(use_interruptible_instances, null.ok = TRUE)
+      checkmate::assert_logical(in_place, null.ok = FALSE)
 
       # nocov start
       id <- self$id
@@ -266,15 +270,58 @@ Task <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(asTask(res, auth = self$auth))
+      rlang::inform(
+        glue::glue_col(
+          "Execution of task {green {self$name}} has started."
+        )
+      )
+
+      if (in_place) {
+        self$initialize(
+          href = res$href,
+          id = res$id,
+          name = res$name,
+          status = res$status,
+          description = res$description,
+          project = res$project,
+          app = res$app,
+          created_by = res$created_by,
+          executed_by = res$executed_by,
+          created_on = res$created_on,
+          start_time = res$start_time,
+          end_time = res$end_time,
+          origin = res$origin,
+          use_interruptable_instances =
+            res$use_interruptable_instances,
+          batch = res$batch,
+          batch_by = res$batch_by,
+          batch_group = res$batch_group,
+          batch_input = res$batch_input,
+          batch_parent = res$batch_parent,
+          execution_settings = res$execution_settings,
+          execution_status = res$execution_status,
+          errors = res$errors,
+          warnings = res$warnings,
+          inputs = private$map_input_output(res$inputs),
+          outputs = private$map_input_output(res$outputs),
+          output_location = res$output_location,
+          auth = self$auth,
+          response = attr(res, "response")
+        )
+      } else {
+        return(asTask(res, auth = self$auth))
+      }
     },
     # nocov end
     #' @description This call aborts the specified task. Only tasks whose
     #' status is `RUNNING` or `QUEUED` may be aborted.
-    #'
+    #' @param in_place Boolean. Default TRUE. Should the new object of
+    #' Task class be returned or the current to be reinitialized.
     #' @param ... Other parameters that can be passed to api() function like
     #' fields etc.
-    abort = function(...) {
+    abort = function(in_place = TRUE, ...) {
+      checkmate::assert_logical(in_place, null.ok = FALSE)
+
       # nocov start
       id <- self$id
       path <- glue::glue(self$URL[["abort"]])
@@ -288,7 +335,47 @@ Task <- R6::R6Class(
       )
       res <- status_check(res)
 
-      return(asTask(res, auth = self$auth))
+      rlang::inform(
+        glue::glue_col(
+          "Task {green {self$name}} has been aborted."
+        )
+      )
+
+      if (in_place) {
+        self$initialize(
+          href = res$href,
+          id = res$id,
+          name = res$name,
+          status = res$status,
+          description = res$description,
+          project = res$project,
+          app = res$app,
+          created_by = res$created_by,
+          executed_by = res$executed_by,
+          created_on = res$created_on,
+          start_time = res$start_time,
+          end_time = res$end_time,
+          origin = res$origin,
+          use_interruptable_instances =
+            res$use_interruptable_instances,
+          batch = res$batch,
+          batch_by = res$batch_by,
+          batch_group = res$batch_group,
+          batch_input = res$batch_input,
+          batch_parent = res$batch_parent,
+          execution_settings = res$execution_settings,
+          execution_status = res$execution_status,
+          errors = res$errors,
+          warnings = res$warnings,
+          inputs = private$map_input_output(res$inputs),
+          outputs = private$map_input_output(res$outputs),
+          output_location = res$output_location,
+          auth = self$auth,
+          response = attr(res, "response")
+        )
+      } else {
+        return(asTask(res, auth = self$auth))
+      }
     },
     # nocov end
     #' @description This call clones the specified task. Once cloned, the task
@@ -299,7 +386,7 @@ Task <- R6::R6Class(
     #' @param ... Other parameters that can be passed to api() function like
     #' fields etc.
     #' @importFrom checkmate assert_logical
-    clone_task = function(run = NULL, ...) {
+    clone_task = function(run = FALSE, ...) {
       # nocov start
       action <- NULL
       checkmate::assert_logical(run, null.ok = TRUE)
@@ -321,7 +408,11 @@ Task <- R6::R6Class(
         ...
       )
       res <- status_check(res)
-
+      rlang::inform(
+        glue::glue_col(
+          "New cloned draft task with id {green {res$id}} has been created."
+        )
+      )
       return(asTask(res, auth = self$auth))
     }, # nocov end
     #' @description This call returns execution details of the specified task.
@@ -357,6 +448,10 @@ Task <- R6::R6Class(
         ...
       )
       res <- status_check(res)
+
+      if (self$batch) {
+        rlang::inform("Execution details can be seen on each child task.")
+      }
 
       return(res)
     }, # nocov end
@@ -443,7 +538,7 @@ Task <- R6::R6Class(
     delete = function(...) {
       # nocov start
       id <- self$id
-      path <- glue::glue(self$URL[["delete"]])
+      path <- glue::glue(self$URL[["task"]])
 
       res <- sevenbridges2::api(
         path = path,
@@ -469,6 +564,176 @@ Task <- R6::R6Class(
       path <- glue::glue(self$URL[["clone"]])
 
       self$clone_task(run = TRUE)
+    }, # nocov end
+    #' @description Change the details of the specified task, including its
+    #' name, description, and inputs. Note that you can only modify tasks with
+    #' a task status of DRAFT. Tasks which are RUNNING, QUEUED, ABORTED,
+    #' COMPLETED or FAILED cannot be modified in order to enable the
+    #' reproducibility of analyses which have been queued for execution or
+    #' has initiated executing.
+    #' There are two things to note if you are editing a batch task:
+    #' \itemize{
+    #'    \item `1` If you want to change the input on which to batch and
+    #'    the batch criteria, you need to specify the batch_input and batch_by
+    #'    parameters together in the same function call.
+    #'    \item `2` If you want to disable batching on a task, set batch to
+    #'    false. Or, you can also set the parameters batch_input and batch_by
+    #'    to NULL.
+    #'  }
+    #' @param name The name of the task.
+    #' @param description An optional description of the task.
+    #' @param execution_settings Named list with detailed task execution
+    #' parameters. Detailed task execution parameters:
+    #' * `instance_type`: String. Possible value is the specific instance type,
+    #' e.g. `"instance_type" = "c4.2xlarge;ebs-gp2;2000"`.
+    #' * `max_parallel_instances`: Integer. Maximum number of instances
+    #' running at the same time. Takes any integer value equal to or greater
+    #' than 1, e.g. `"max_parallel_instances" = 2.`
+    #' * `use_memoization`: Boolean. Set to `FALSE` by default. Set to `TRUE`
+    #' to enable
+    #' [memoization](https://docs.sevenbridges.com/docs/about-memoization).
+    #' * `use_elastic_disk`: Boolean. Set to `TRUE` to enable
+    #' [Elastic Disk](https://docs.sevenbridges.com/page/elastic-disk).
+    #'
+    #' Here is an example:
+    #' ```{r}
+    #' execution_settings <- list(
+    #'   "instance_type" = "c4.2xlarge;ebs-gp2;2000",
+    #'   "max_parallel_instances" = 2,
+    #'   "use_memoization" = TRUE,
+    #'   "use_elastic_disk" = TRUE
+    #'   )
+    #' ```
+    #' @param inputs List of objects. See the section on
+    # nolint start
+    #' [specifying task inputs](https://docs.sevenbridges.com/docs/the-api#section-inputs)
+    # nolint end
+    #'  for information on creating task input objects. Here is an example with
+    #'  various input types:
+    #'  ```{r}
+    #'  inputs <- list(
+    #'    "input_file"= "<file_id/file_object>",
+    #'    "input_directory" = "<folder_id/folder_object>",
+    #'    "input_array_string" = list("<string_elem_1>", "<string_elem_2>"),
+    #'    "input_boolean" = TRUE,
+    #'    "input_double" = 54.6,
+    #'    "input_enum" = "enum_1",
+    #'    "input_float" = 11.2,
+    #'    "input_integer" = "asdf",
+    #'    "input_long" = 4212,
+    #'    "input_string" = "test_string",
+    #'    "input_record" = list(
+    #'      "input_record_field_file" = "<file_id/file_object>",
+    #'      "input_record_field_integer" = 42
+    #'     )
+    #'    )
+    #'  ````
+    #' @param batch Boolean. This is set to `FALSE` by default. Set to `TRUE` to
+    #' create a batch task and specify the `batch_input` and `batch-by`
+    #' criteria as described below.
+    #' @param batch_input String. The ID of the input on which you wish to
+    #' batch. You would typically batch on the input consisting of a list of
+    #' files. If this parameter is omitted, the default batching criteria
+    #' defined for the app will be used.
+    #' @param batch_by List. Batching criteria. For example:
+    #' ```{r}
+    #' batch_by = list(
+    #'  type = "CRITERIA",
+    #'  criteria = list("metadata.condition")
+    #' )
+    #' ```
+    #' @param ... Other arguments such as `fields` which can be used to specify
+    #' a subset of fields to include in the response.
+    update = function(name = NULL,
+                      description = NULL,
+                      execution_settings = NULL,
+                      inputs = NULL,
+                      batch = NULL,
+                      batch_input = NULL,
+                      batch_by = NULL,
+                      ...) {
+      checkmate::assert_string(name, null.ok = TRUE)
+      checkmate::assert_string(description, null.ok = TRUE)
+      check_execution_settings(execution_settings)
+      checkmate::assert_list(inputs, null.ok = TRUE)
+      checkmate::assert_logical(batch, null.ok = TRUE)
+      checkmate::assert_string(batch_input, null.ok = TRUE)
+      checkmate::assert_list(batch_by, null.ok = TRUE)
+
+      task_inputs <- list()
+      task_data <- list()
+
+      task_data <- list(
+        "name" = name,
+        "description" = description
+      )
+
+      if (!is_missing(batch) && batch) {
+        if (!is_missing(batch_input) && !is_missing(batch_by)) {
+          task_data[["batch_input"]] <- batch_input
+          task_data[["batch_by"]] <- batch_by
+        } else {
+          rlang::abort("Batch is set to TRUE, therefore, please, set batching criteria (batch_by) and batch inputs.") # nolint
+        }
+      }
+
+      if (!is_missing(inputs)) {
+        task_inputs <- self$auth$tasks$private$serialize_inputs(inputs)
+        task_data[["inputs"]] <- task_inputs
+      }
+
+      task_data[["execution_settings"]] <- execution_settings
+      task_data[["batch"]] <- batch
+      # nocov start
+      id <- self$id
+
+      res <- sevenbridges2::api(
+        path = glue::glue(self$URL[["task"]]),
+        method = "PATCH",
+        body = task_data,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(res)
+      rlang::inform(
+        glue::glue_col(
+          "Task {green {self$name}} has been updated."
+        )
+      )
+
+      self$initialize(
+        href = res$href,
+        id = res$id,
+        name = res$name,
+        status = res$status,
+        description = res$description,
+        project = res$project,
+        app = res$app,
+        created_by = res$created_by,
+        executed_by = res$executed_by,
+        created_on = res$created_on,
+        start_time = res$start_time,
+        end_time = res$end_time,
+        origin = res$origin,
+        use_interruptable_instances =
+          res$use_interruptable_instances,
+        batch = res$batch,
+        batch_by = res$batch_by,
+        batch_group = res$batch_group,
+        batch_input = res$batch_input,
+        batch_parent = res$batch_parent,
+        execution_settings = res$execution_settings,
+        execution_status = res$execution_status,
+        errors = res$errors,
+        warnings = res$warnings,
+        inputs = private$map_input_output(res$inputs),
+        outputs = private$map_input_output(res$outputs),
+        output_location = res$output_location,
+        auth = self$auth,
+        response = attr(res, "response")
+      )
     } # nocov end
   ),
   private = list(
@@ -479,27 +744,15 @@ Task <- R6::R6Class(
       if (checkmate::test_list(input)) {
         if ("class" %in% names(input)) {
           if (tolower(input[["class"]]) %in% c("file", "folder")) {
-            f_data <- list(
-              id = input[["path"]],
-              type = tolower(input[["class"]]),
-              name = ifelse("basename" %in% names(input),
-                input[["basename"]],
-                input[["name"]]
-              )
-            )
+            f_data <- map_fields_util(input)
             f_data <- append(f_data, input)
+
             if (!is.null(input[["secondaryFiles"]])) {
               secondary_files <- list()
               for (sf in input[["secondaryFiles"]]) {
-                sf_data <- list(
-                  id = sf[["path"]],
-                  type = tolower(sf[["class"]]),
-                  name = ifelse("basename" %in% names(sf),
-                    sf[["basename"]],
-                    sf[["name"]]
-                  )
-                )
+                sf_data <- map_fields_util(sf)
                 sf_data <- append(sf_data, sf)
+
                 secondary_files <- append(secondary_files, list(sf_data))
               }
               f_data[["secondary_files"]] <- secondary_files
@@ -521,6 +774,20 @@ Task <- R6::R6Class(
         return_value <- input
       }
       return(return_value)
+    },
+    # Map fields
+    map_fields_util = function(input) {
+      mapped_data <- list(
+        id = input[["path"]],
+        type = tolower(input[["class"]])
+      )
+      if ("basename" %in% names(input)) {
+        mapped_data[["name"]] <- input[["basename"]]
+      }
+      if ("name" %in% names(input)) {
+        mapped_data[["name"]] <- input[["name"]]
+      }
+      return(mapped_data)
     }
   )
 )
