@@ -4,6 +4,7 @@ stages:
   - build
   - document
   - check
+  - sonar
   - publish
 
 variables:
