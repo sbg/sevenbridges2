@@ -27,7 +27,7 @@ before_script:
   - apt-get -y install ${APT_DEPS}
   - apt-get install -y nodejs
   - apt-get install -y npm
-  - R -e "install.packages(c('remotes', 'devtools'))"
+  - R -e "install.packages(c('remotes', 'devtools', 'covr'))"
   - R -e "if (!requireNamespace('renv', quietly = TRUE)) remotes::install_version('renv', version = '0.16')"
   - R -e "renv::restore(lockfile = 'renv.lock')"
 
@@ -57,8 +57,7 @@ coverage:
   rules:
     - when: always
   script:
-    - Rscript -e "install.packages('devtools'); devtools::install()"
-    - Rscruot -e "install.packages('covr')"
+    - Rscript -e "devtools::install()"
     - Rscript run_cov.R
   artifacts:
     paths:
