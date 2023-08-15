@@ -1,0 +1,77 @@
+image: rocker/r-ver:4.2.2
+
+stages:
+  - build
+  - document
+  - check
+  - publish
+
+variables:
+  APT_DEPS: "git libssl-dev libcurl4-openssl-dev  libcurl4-openssl-dev libssl-dev  libfreetype6-dev libfribidi-dev libharfbuzz-dev git libxml2-dev libfontconfig1-dev libgit2-dev libssl-dev pandoc libicu-dev libz-dev libcurl4-openssl-dev libjpeg-dev libpng-dev libtiff-dev make zlib1g-dev  git libgit2-dev libssl-dev libcurl4-openssl-dev  git  libicu-dev pandoc make  make zlib1g-dev  libssl-dev libcurl4-openssl-dev  pandoc  libssl-dev  libfreetype6-dev libfribidi-dev libharfbuzz-dev libxml2-dev libfontconfig1-dev libssl-dev pandoc libicu-dev libcurl4-openssl-dev libjpeg-dev libpng-dev libtiff-dev make  libfreetype6-dev libfribidi-dev libharfbuzz-dev libfontconfig1-dev libjpeg-dev libpng-dev libtiff-dev  libxml2-dev libicu-dev pandoc make  libxml2-dev libcurl4-openssl-dev libssl-dev  libicu-dev  libfontconfig1-dev libfreetype6-dev  libfreetype6-dev libfribidi-dev libharfbuzz-dev libfontconfig1-dev  git libgit2-dev libssl-dev libcurl4-openssl-dev make  libxml2-dev"
+  IMAGE: dockerhub.sbgenomics.com/$CI_PROJECT_NAME
+  RENV_PATHS_CACHE: ${CI_PROJECT_DIR}/cache
+  RENV_PATHS_LIBRARY: ${CI_PROJECT_DIR}/renv/library
+  RENV_CONFIG_REPOS_OVERRIDE: http://cran.r-project.org
+  LIBRARY_NAME: examplePackage
+
+cache:
+  key: $CI_JOB_NAME
+  paths:
+    - ${RENV_PATHS_CACHE}
+    - ${RENV_PATHS_LIBRARY}
+
+before_script:
+  - mkdir -p ${RENV_PATHS_CACHE} ${RENV_PATHS_LIBRARY}
+  - apt-get -qq update;
+  - apt-get -y install ${APT_DEPS}
+  - apt-get install -y nodejs
+  - apt-get install -y npm
+  - R -e "install.packages('remotes')"
+  - R -e "if (!requireNamespace('renv', quietly = TRUE)) remotes::install_version('renv', version = '0.16')"
+  - R -e "renv::restore(lockfile = 'renv.lock')"
+
+buildbinary:
+  stage: build
+  script:
+    - R -e 'devtools::build(binary = TRUE, vignettes = FALSE)'
+
+documentation:
+  stage: document
+  script:
+    - R -e 'devtools::document()'
+
+lintr:
+  stage: check
+  script:
+    # redirect lintr stdout and stderr to file
+    - CI="" R -e "lintr::lint_package()" &> lint_output.txt
+    # fail if file is not empty
+    - [ ! -s lint_output.txt ]
+  artifacts:
+    paths:
+      - lint_output.txt
+
+coverage:
+  stage: coverage
+  rules:
+    - when: always
+  script:
+    - Rscript -e "install.packages(c('covr', 'devtools')); devtools::install()"
+    - Rscript run_cov.R
+  artifacts:
+    paths:
+      - covr_sonarqube.xml
+
+sonar:
+  stage: sonar
+  dependencies:
+     - coverage
+  image: emeraldsquad/sonar-scanner:2.2.0
+  before_script: []
+  script:
+    - infinity sonar scanner
+  allow_failure: true
+  only:
+    - merge_requests
+    - master
+    - develop
