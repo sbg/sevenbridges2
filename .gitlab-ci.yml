@@ -52,7 +52,7 @@ lintr:
       - lint_output.txt
 
 coverage:
-  stage: coverage
+  stage: check
   rules:
     - when: always
   script:
