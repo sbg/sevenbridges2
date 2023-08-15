@@ -57,7 +57,8 @@ coverage:
   rules:
     - when: always
   script:
-    - Rscript -e "install.packages(c('covr', 'devtools')); devtools::install()"
+    - Rscript -e "install.packages('devtools'); devtools::install()"
+    - Rscruot -e "install.packages('covr')"
     - Rscript run_cov.R
   artifacts:
     paths:
