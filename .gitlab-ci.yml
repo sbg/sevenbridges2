@@ -57,7 +57,7 @@ coverage:
   rules:
     - when: always
   script:
-    - Rscript -e "devtools::install()"
+    - Rscript -e "devtools::install(dependencies = FALSE)"
     - Rscript run_cov.R
   artifacts:
     paths:
