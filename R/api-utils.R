@@ -100,7 +100,7 @@ parse_time <- function(reset_time_as_unix_epoch, origin = "1970-01-01",
     reset_time_as_unix_epoch <- reset_time_as_unix_epoch / 1000
   }
   reset_time_as_posixlt <- as.POSIXlt(reset_time_as_unix_epoch,
-    origin = "1970-01-01", tz = ""
+    origin = "1970-01-01", tz = time_zone
   )
   reset_date_time <- as.character(reset_time_as_posixlt)
   reset_time_zone <- reset_time_as_posixlt$zone

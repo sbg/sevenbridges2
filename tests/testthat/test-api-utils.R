@@ -4,10 +4,10 @@ testthat::test_that("Utility function parse_time works (seconds)", {
 
   human_readable_date <- parse_time(test_unix_timestamp,
     origin = "1970-01-01",
-    time_zone = ""
+    time_zone = "GMT"
   )
 
-  testthat::expect_equal(human_readable_date, "2017-03-16 22:34:53 CET",
+  testthat::expect_equal(human_readable_date, "2017-03-16 21:34:53 ",
     label = "Epoch conversion to human-readable date went wrong."
   )
 })
@@ -18,10 +18,10 @@ testthat::test_that("Utility function parse_time works (milliseconds)", {
 
   human_readable_date <- parse_time(test_unix_timestamp,
     origin = "1970-01-01",
-    time_zone = "", use_milliseconds = TRUE
+    time_zone = "GMT", use_milliseconds = TRUE
   )
 
-  testthat::expect_equal(human_readable_date, "2050-12-30 01:00:00 CET",
+  testthat::expect_equal(human_readable_date, "2050-12-30 ",
     label = "Epoch conversion to human-readable date went wrong."
   )
 })
