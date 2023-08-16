@@ -74,7 +74,7 @@ sonar:
   script:
     - infinity sonar scanner
   allow_failure: true
-  only:
-    - merge_requests
-    - master
-    - develop
+  # only:
+  #   - merge_requests
+  #   - master
+  #   - develop
