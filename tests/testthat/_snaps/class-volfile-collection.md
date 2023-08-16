@@ -29,3 +29,4 @@
       * type: PREFIX
       * location: my_new_folder/
       * href: resource-href
+
