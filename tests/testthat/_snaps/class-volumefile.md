@@ -9,3 +9,5 @@
       * storage_type: s3
       * type: FILE
       * location: my_new_file.txt
+      * href: resource-href
+

@@ -25,6 +25,8 @@ cloneable
 Config
 CONST
 copyOf
+coverageReportPaths
+covr
 cph
 cre
 createdBy
@@ -94,6 +96,8 @@ ovewrite
 pageable
 param
 pre
+projectKey
+projectName
 purrr
 Quickstart
 readr
@@ -114,6 +118,7 @@ setenv
 sevenbridges
 SevenBridges
 SHA
+sonarqube
 sse
 starttransfer
 str

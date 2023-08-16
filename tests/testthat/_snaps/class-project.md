@@ -35,3 +35,5 @@
         * execute: TRUE
         * copy: TRUE
         * read: TRUE
+        * write: TRUE
+

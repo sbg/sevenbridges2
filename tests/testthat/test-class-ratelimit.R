@@ -17,7 +17,7 @@ test_that("Rate class initialization works", {
   testthat::expect_equal(rate_limit_test_obj$rate$remaining, 1000L)
   testthat::expect_equal(
     rate_limit_test_obj$rate$reset,
-    "2023-03-31 11:12:32 CEST"
+    parse_time(test_ratelimit_response$rate$reset)
   )
   testthat::expect_equal(rate_limit_test_obj$instance$limit, 25L)
   testthat::expect_equal(rate_limit_test_obj$instance$remaining, 25L)
