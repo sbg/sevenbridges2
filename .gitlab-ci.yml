@@ -31,15 +31,15 @@ before_script:
   - R -e "if (!requireNamespace('renv', quietly = TRUE)) remotes::install_version('renv', version = '0.16')"
   - R -e "renv::restore(lockfile = 'renv.lock')"
 
-# buildbinary:
-#   stage: build
-#   script:
-#     - R -e 'devtools::build(binary = TRUE, vignettes = FALSE)'
-#
-# documentation:
-#   stage: document
-#   script:
-#     - R -e 'devtools::document()'
+buildbinary:
+  stage: build
+  script:
+    - R -e 'devtools::build(binary = TRUE, vignettes = FALSE)'
+
+documentation:
+  stage: document
+  script:
+    - R -e 'devtools::document()'
 
 lintr:
   stage: check
@@ -74,7 +74,7 @@ sonar:
   script:
     - infinity sonar scanner
   allow_failure: true
-  # only:
-  #   - merge_requests
-  #   - master
-  #   - develop
+  only:
+    - merge_requests
+    - master
+    - develop
