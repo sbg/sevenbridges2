@@ -45,6 +45,7 @@ lintr:
   stage: check
   script:
     # redirect lintr stdout and stderr to file
+    - R -e "install.packages('lintr'))"
     - CI="" Rscript -e "lintr::lint_package()" &> lint_output.txt
     # fail if file is not empty
     - if [ -s "lint_output.txt" ]; then exit 1; fi
