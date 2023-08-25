@@ -38,6 +38,9 @@ the auth token.}
 auth token (\code{FALSE}) or an access token from the
 Seven Bridges single sign-on (\code{TRUE})?}
 
+\item{\code{projects}}{Projects object, for accessing projects resources on the
+platform.}
+
 \item{\code{apps}}{Apps object, for accessing apps resources on the platform.}
 
 \item{\code{volumes}}{Volumes object, for accessing volumes resources on the
@@ -65,9 +68,6 @@ resources on the platform.}
 \item \href{#method-Auth-billing}{\code{Auth$billing()}}
 \item \href{#method-Auth-billing_groups}{\code{Auth$billing_groups()}}
 \item \href{#method-Auth-invoice}{\code{Auth$invoice()}}
-\item \href{#method-Auth-projects}{\code{Auth$projects()}}
-\item \href{#method-Auth-project_get}{\code{Auth$project_get()}}
-\item \href{#method-Auth-project_new}{\code{Auth$project_new()}}
 \item \href{#method-Auth-files}{\code{Auth$files()}}
 \item \href{#method-Auth-get_file}{\code{Auth$get_file()}}
 \item \href{#method-Auth-copy_files}{\code{Auth$copy_files()}}
@@ -308,154 +308,6 @@ group. If provided, the method will return the invoice incurred by that
 billing group only.}
 
 \item{\code{...}}{Other arguments passed to methods.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Auth-projects"></a>}}
-\if{latex}{\out{\hypertarget{method-Auth-projects}{}}}
-\subsection{Method \code{projects()}}{
-A method to list all projects available to particular user.
-if the username is not provided, all projects available to the currently
-authenticated user will be listed. Otherwise, projects will be listed
-for the user whose username is provided. Please keep in mind that this
-way you will only be able to list projects you are a member of.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$projects(
-  name = NULL,
-  owner = NULL,
-  tags = NULL,
-  limit = getOption("sevenbridges2")$limit,
-  offset = getOption("sevenbridges2")$offset,
-  ...
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{Project's name.}
-
-\item{\code{owner}}{The username of the owner whose projects you want to query.}
-
-\item{\code{tags}}{The list of project tags.}
-
-\item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
-
-\item{\code{offset}}{Defines where the retrieved items started.
-By default, \code{offset} is set to \code{0}.}
-
-\item{\code{...}}{Other arguments that can be passed to this method.
-Such as query parameters.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Auth-project_get"></a>}}
-\if{latex}{\out{\hypertarget{method-Auth-project_get}{}}}
-\subsection{Method \code{project_get()}}{
-This call creates an object containing the details
-of a specified project.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$project_get(
-  project_owner = suppressMessages(self$user()$username),
-  project,
-  ...
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{project_owner}}{If you are using Enterprise, use the name of the
-Division that owns the project; otherwise, enter the project owner's
-Platform username.}
-
-\item{\code{project}}{The short name of the project you are querying.}
-
-\item{\code{...}}{Other arguments.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Details}{
-Note that project_owner is always case-sensitive, and that project is
-not the project's name but its short name. For full details of
-identifying objects using the API, please see the API overview.
-}
-
-\subsection{Returns}{
-Project object.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Auth-project_new"></a>}}
-\if{latex}{\out{\hypertarget{method-Auth-project_new}{}}}
-\subsection{Method \code{project_new()}}{
-A method for creating a new project.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$project_new(
-  name,
-  billing_group = NULL,
-  description = name,
-  tags = NULL,
-  type = "v2",
-  locked = FALSE,
-  controlled = FALSE,
-  location = NULL,
-  use_interruptible_instances = TRUE,
-  use_memoization = FALSE,
-  use_elastic_disk = FALSE,
-  intermediate_files = list(retention = "LIMITED", duration = 24),
-  ...
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{The name of the project you are creating.}
-
-\item{\code{billing_group}}{The Billing object or ID of the billing group for
-the project.}
-
-\item{\code{description}}{Description of the project.}
-
-\item{\code{tags}}{The list of project tags.}
-
-\item{\code{type}}{Project's type. All projects have type v2.}
-
-\item{\code{locked}}{(boolean) Set this field to true to lock down a project.
-Locking down a project prevents any Seven Bridges team member from
-viewing any information about the task.}
-
-\item{\code{controlled}}{Set this field to true to define this project as
-controlled i.e. one which will contain controlled data. Set false to
-define the project as open i.e. one which will contain open data.}
-
-\item{\code{location}}{Specify the location for this project:
-aws:us-east-1 or aws:us-west-2}
-
-\item{\code{use_interruptible_instances}}{Defines the use of spot instances.}
-
-\item{\code{use_memoization}}{Set to false by default. Set to true to enable
-memoization.}
-
-\item{\code{use_elastic_disk}}{Set to true to enable Elastic disk.}
-
-\item{\code{intermediate_files}}{A list defining the retention period for
-intermediate files. Expected elements:
-\itemize{
-\item retention - Specifies that intermediate files should be retained
-for a limited amount of time. The value is always LIMITED.
-\item duration - Specifies intermediate files retention period in hours.
-The minimum value is 1. The maximum value is 120 and the default value
-is 24.
-}}
-
-\item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
 }
