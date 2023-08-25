@@ -153,8 +153,14 @@ Projects <- R6::R6Class(
       if (!is_missing(billing_group)) {
         billing_group <- check_and_transform_id(billing_group, "Billing")
       }
-      # check tags
       check_tags(tags)
+      checkmate::assert_logical(locked)
+      checkmate::assert_logical(controlled)
+      checkmate::assert_string(location, null.ok = TRUE)
+      checkmate::assert_logical(use_interruptible_instances)
+      checkmate::assert_logical(use_memoization)
+      checkmate::assert_logical(use_elastic_disk)
+      checkmate::assert_list(intermediate_files)
 
       body <- list(
         "name" = name,
