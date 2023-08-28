@@ -97,27 +97,24 @@ Such as query parameters.}
 This call creates an object containing the details
 of a specified project.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Projects$get(project_owner = NULL, project, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Projects$get(id, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{project_owner}}{If you are using Enterprise, use the name of the
-Division that owns the project; otherwise, enter the project owner's
-Platform username. By default, your username is used and properly handled
-for the usage in this operation.}
-
-\item{\code{project}}{The short name of the project you are querying.}
+\item{\code{id}}{Project ID. It consists of project owner's username or
+if you are using Enterprise, then the Division name and project's
+short name in form of <owner_username>/\if{html}{\out{<project-short-name>}} or
+\if{html}{\out{<division-name>}}/\if{html}{\out{<project-short-name>}}.}
 
 \item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Details}{
-Note that project_owner is always case-sensitive, and that project is
-not the project's name but its short name. For full details of
-identifying objects using the API, please see the API overview.
+For full details of identifying objects using the API, please see the
+API overview.
 }
 
 \subsection{Returns}{

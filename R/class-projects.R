@@ -65,31 +65,17 @@ Projects <- R6::R6Class(
     # get specific project ----------------------------------------------------
     #' @description This call creates an object containing the details
     #' of a specified project.
-    #' @param project_owner If you are using Enterprise, use the name of the
-    #' Division that owns the project; otherwise, enter the project owner's
-    #' Platform username. By default, your username is used and properly handled
-    #' for the usage in this operation.
-    #' @param project The short name of the project you are querying.
+    #' @param id Project ID. It consists of project owner's username or
+    #' if you are using Enterprise, then the Division name and project's
+    #' short name in form of <owner_username>/<project-short-name> or
+    #' <division-name>/<project-short-name>.
+    #'
     #' @details
-    #' Note that project_owner is always case-sensitive, and that project is
-    #' not the project's name but its short name. For full details of
-    #' identifying objects using the API, please see the API overview.
+    #' For full details of identifying objects using the API, please see the
+    #' API overview.
     #' @param ... Other arguments.
-    #' @importFrom stringr str_split
     #' @return Project object.
-    get = function(project_owner = NULL, project, ...) {
-      if (is_missing(project_owner)) {
-        user <- suppressMessages(self$auth$user()$username)
-        project_owner <- stringr::str_split(
-          user,
-          pattern = "/"
-        )[[1]][1]
-      }
-      checkmate::assert_string(project_owner, null.ok = FALSE)
-      checkmate::assert_string(project, null.ok = FALSE)
-
-      id <- glue::glue(project_owner, "/", tolower(project))
-
+    get = function(id, ...) {
       res <- super$get(
         cls = self,
         id = id,

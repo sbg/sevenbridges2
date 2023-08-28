@@ -32,20 +32,14 @@ test_that("Projects query() throws error when expected", {
 
 test_that("Projects get() throws error when expected", {
   # Setup test parameters for test
-  test_no_project <- list(project = NULL, project_owner = "owner")
-  test_bad_project <- list(project = 1, project_owner = "owner")
-  test_bad_project_owner <- list(project = "foo", project_owner = 123)
+  test_no_id <- list(id = NULL)
+  test_bad_id <- list(id = 1)
 
   # Get fails when no project is provided
-  testthat::expect_error(do.call(setup_projects_obj$get, test_no_project))
+  testthat::expect_error(do.call(setup_projects_obj$get, test_no_id))
 
   # Get fails when bad project is provided
-  testthat::expect_error(do.call(setup_projects_obj$get, test_bad_project))
-
-  # Get fails when bad project owner is provided
-  testthat::expect_error(
-    do.call(setup_projects_obj$get, test_bad_project_owner)
-  )
+  testthat::expect_error(do.call(setup_projects_obj$get, test_bad_id))
 })
 
 test_that("Projects create() throws error when expected", {
