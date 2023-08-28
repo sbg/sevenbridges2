@@ -84,7 +84,9 @@ Apps <- R6::R6Class(
         ...
       )
 
-      return(asAppList(res, auth = self$auth)) # nocov end
+      res$items <- asAppList(res, auth = self$auth)
+
+      return(asCollection(res, auth = self$auth)) # nocov end
     },
 
     # Get single app -------------------------------------------------------

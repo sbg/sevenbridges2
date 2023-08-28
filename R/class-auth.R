@@ -49,6 +49,10 @@ Auth <- R6::R6Class(
     #' Seven Bridges single sign-on (`TRUE`)?
     authorization = NULL,
 
+    #' @field projects Projects object, for accessing projects resources on the
+    #' platform.
+    projects = NULL,
+
     #' @field apps Apps object, for accessing apps resources on the platform.
     apps = NULL,
 
@@ -278,6 +282,8 @@ Auth <- R6::R6Class(
         # look up an accurate platform name instead of simply `NULL`
         self$platform <- sbg_platform_lookup(self$url)
       }
+      # Projects resource
+      self$projects <- Projects$new(self)
 
       # Apps resource
       self$apps <- Apps$new(self)
@@ -562,166 +568,6 @@ Auth <- R6::R6Class(
 
         asInvoice(req, auth = self)
       }
-    },
-    # list all projects -------------------------------------------------------
-    #' @description A method to list all projects available to particular user.
-    #' if the username is not provided, all projects available to the currently
-    #' authenticated user will be listed. Otherwise, projects will be listed
-    #' for the user whose username is provided. Please keep in mind that this
-    #' way you will only be able to list projects you are a member of.
-    #' @param name Project's name.
-    #' @param owner The username of the owner whose projects you want to query.
-    #' @param tags The list of project tags.
-    #' @param limit Defines the number of items you want to get from your API
-    #' request. By default, `limit` is set to `50`. Maximum is `100`.
-    #' @param offset Defines where the retrieved items started.
-    #' By default, `offset` is set to `0`.
-    #' @param ... Other arguments that can be passed to this method.
-    #' Such as query parameters.
-    projects = function(name = NULL,
-                        owner = NULL,
-                        tags = NULL,
-                        limit = getOption("sevenbridges2")$limit,
-                        offset = getOption("sevenbridges2")$offset,
-                        ...) {
-      check_tags(tags)
-      res <- sevenbridges2::api(
-        path = paste0("projects", "/", owner),
-        method = "GET",
-        token = self$get_token(),
-        base_url = self$url,
-        query = list(name = name, tags = tags, limit = limit, offset = offset),
-        ...
-      )
-
-      res <- status_check(res)
-
-      res <- asProjectList(res, auth = self)
-
-      res
-    },
-    # get specific project ----------------------------------------------------
-    #' @description This call creates an object containing the details
-    #' of a specified project.
-    #' @param project_owner If you are using Enterprise, use the name of the
-    #' Division that owns the project; otherwise, enter the project owner's
-    #' Platform username.
-    #' @param project The short name of the project you are querying.
-    #' @details
-    #' Note that project_owner is always case-sensitive, and that project is
-    #' not the project's name but its short name. For full details of
-    #' identifying objects using the API, please see the API overview.
-    #' @param ... Other arguments.
-    #' @return Project object.
-    project_get = function(project_owner = suppressMessages(self$user()$username), # nolint
-                           project,
-                           ...) {
-      res <- sevenbridges2::api(
-        path = paste0("projects/", project_owner, "/", project),
-        method = "GET",
-        token = self$get_token(),
-        base_url = self$url,
-        ...
-      )
-
-      res <- status_check(res)
-
-      asProject(res, auth = self)
-    },
-    # create new project
-    #' @description A method for creating a new project.
-    #'
-    #' @param name The name of the project you are creating.
-    #' @param billing_group The Billing object or ID of the billing group for
-    #'   the project.
-    #' @param description Description of the project.
-    #' @param tags The list of project tags.
-    #' @param type Project's type. All projects have type v2.
-    #' @param locked (boolean) Set this field to true to lock down a project.
-    #'    Locking down a project prevents any Seven Bridges team member from
-    #'    viewing any information about the task.
-    #' @param controlled Set this field to true to define this project as
-    #' controlled i.e. one which will contain controlled data. Set false to
-    #' define the project as open i.e. one which will contain open data.
-    #' @param location Specify the location for this project:
-    #' aws:us-east-1 or aws:us-west-2
-    #' @param use_interruptible_instances Defines the use of spot instances.
-    #' @param use_memoization Set to false by default. Set to true to enable
-    #' memoization.
-    #' @param use_elastic_disk Set to true to enable Elastic disk.
-    #' @param intermediate_files A list defining the retention period for
-    #' intermediate files. Expected elements:
-    #' \itemize{
-    #' \item retention - Specifies that intermediate files should be retained
-    #' for a limited amount of time. The value is always LIMITED.
-    #' \item duration - Specifies intermediate files retention period in hours.
-    #' The minimum value is 1. The maximum value is 120 and the default value
-    #' is 24.
-    #' }
-    #' @param ... Other arguments.
-    #' @importFrom rlang inform
-    #' @importFrom glue glue
-    project_new = function(name,
-                           billing_group = NULL,
-                           description = name,
-                           tags = NULL,
-                           type = "v2",
-                           locked = FALSE,
-                           controlled = FALSE,
-                           location = NULL,
-                           use_interruptible_instances = TRUE,
-                           use_memoization = FALSE,
-                           use_elastic_disk = FALSE,
-                           intermediate_files = list(
-                             "retention" = "LIMITED",
-                             "duration" = 24
-                           ),
-                           ...) {
-      if (is_missing(name)) {
-        rlang::abort("You must provide at least a name for the project you want to create.") # nolint
-      }
-
-      # check tags
-      if (!is.null(tags) &&
-        is.character(tags)) {
-        tags <- as.list(tags)
-      }
-
-      if (!is_missing(billing_group)) {
-        billing_group <- check_and_transform_id(billing_group, "Billing")
-      }
-
-      body <- list(
-        "name" = name,
-        "type" = type,
-        "description" = description,
-        "tags" = tags,
-        "billing_group" = billing_group,
-        "settings" = list(
-          "locked" = locked,
-          "controlled" = controlled,
-          "location" = location,
-          "use_interruptible_instances" = use_interruptible_instances,
-          "use_memoization" = use_memoization,
-          "use_elastic_disk" = use_elastic_disk,
-          "intermediate_files" = intermediate_files
-        )
-      )
-
-      res <- sevenbridges2::api(
-        path = "projects",
-        token = self$get_token(),
-        body = body,
-        method = "POST",
-        base_url = self$url,
-        ...
-      )
-
-      res <- status_check(res)
-
-      rlang::inform(glue::glue("New project has been created on the
-                               {self$platform} platform."))
-      asProject(res, auth = self)
     },
     # list all files -------------------------------------------------------
     #' @description This call returns a list of files and subdirectories in a

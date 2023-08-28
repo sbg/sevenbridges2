@@ -234,6 +234,7 @@ check_folder_name <- function(name) {
   if (is_missing(name)) {
     rlang::abort("Please, provide the folder's name.")
   }
+  checkmate::assert_string(name)
   if (substr(name, 1, 2) == "__") {
     rlang::abort("The folder name cannot start with \"__\"")
   }

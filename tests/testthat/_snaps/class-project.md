@@ -1,10 +1,10 @@
 # Project print method works
 
     Code
-      test_project$print()
+      setup_project_obj$print()
     Output
-      Project name:  nargles-project 
-      Project id:  luna_lovegood/nargles-project 
+      Project name:  Project name 
+      Project id:  project_id 
 
 # Project detailed_print method works
 

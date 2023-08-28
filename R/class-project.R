@@ -13,6 +13,14 @@ Project <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
+    #' @field URL URL endpoint fields
+    URL = list(
+      "project" = "projects/{id}",
+      "members" = "projects/{id}/members",
+      "member" = "projects/{id}/members/{username}",
+      "member_permissions" = "projects/{id}/members/{username}/permissions",
+      "files" = "projects/{id}/files"
+    ),
     #' @field id Project's ID.
     id = NULL,
     #' @field name Project's name.
@@ -190,7 +198,7 @@ Project <- R6::R6Class(
       cli::cli_end()
     },
 
-    # edit project ---------------------------------------------------------
+    # Update project ---------------------------------------------------------
     #' @description Method that allows you to edit an already existing project.
     #' As a project Admin you can use it to change the name, settings,
     #' tags or billing group of the project. Users with write permissions in
@@ -203,12 +211,17 @@ Project <- R6::R6Class(
     #' @param tags The list of project tags.
     #' @param ... Other arguments that can be passed to api() function
     #' like 'limit', 'offset', 'fields', etc.
-    edit = function(name = NULL,
-                    description = NULL,
-                    billing_group = NULL,
-                    settings = NULL,
-                    tags = NULL,
-                    ...) {
+    #' @importFrom checkmate assert_string
+    #' @importFrom rlang abort
+    #' @importFrom glue glue
+    update = function(name = NULL,
+                      description = NULL,
+                      billing_group = NULL,
+                      settings = NULL,
+                      tags = NULL,
+                      ...) {
+      checkmate::assert_string(name, null.ok = TRUE)
+      checkmate::assert_string(description, null.ok = TRUE)
       check_tags(tags)
       check_settings(settings)
       billing_group <-
@@ -227,8 +240,10 @@ Project <- R6::R6Class(
         rlang::abort("Please provide updated information.")
       }
 
+      id <- self$id
+
       res <- sevenbridges2::api(
-        path = paste0("projects/", self$id),
+        path = glue::glue(self$URL[["project"]]),
         method = "PATCH",
         body = body,
         token = self$auth$get_token(),
@@ -238,19 +253,24 @@ Project <- R6::R6Class(
 
       res <- status_check(res)
 
-      asProject(res, self$auth)
+      return(asProject(res, self$auth))
     },
     # nocov end
-    # delete project ---------------------------------------------------------
+    # Delete project ---------------------------------------------------------
     #' @description Method that allows you to delete project from a platform.
     #' It can only be successfully made if you have admin status for the
     #' project.
     #' Please be careful when using this method and note that calling it will
     #' permanently delete the project from the platform.
+    #' @importFrom rlang abort inform
+    #' @importFrom httr content
+    #' @importFrom glue glue
     delete = function() {
       # nocov start
+      id <- self$id
+
       res <- sevenbridges2::api(
-        path = paste0("projects/", self$id),
+        path = glue::glue(self$URL[["project"]]),
         method = "DELETE",
         token = self$auth$get_token(),
         base_url = self$auth$url
@@ -264,6 +284,7 @@ Project <- R6::R6Class(
       }
     },
     # nocov end
+    # Project members ---------------------------------------------------------
     #' @description Method for listing all the project members.
     #' @param limit Defines the number of items you want to get from your API
     #' request. By default, `limit` is set to `50`. Maximum is `100`.
@@ -278,7 +299,7 @@ Project <- R6::R6Class(
       # nocov start
       id <- self$id
       res <- sevenbridges2::api(
-        path = glue::glue("projects/{id}/members"),
+        path = glue::glue(self$URL[["members"]]),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -288,8 +309,9 @@ Project <- R6::R6Class(
       )
 
       res <- status_check(res)
+      res$items <- asMemberList(res, self$auth)
 
-      return(asMemberList(res, self$auth))
+      return(asCollection(res, auth = self$auth))
     },
     # nocov end
     #' @description Method for adding new members to a specified project.
@@ -366,7 +388,7 @@ Project <- R6::R6Class(
 
       id <- self$id
       req <- sevenbridges2::api(
-        path = glue::glue("projects/{id}/members"),
+        path = glue::glue(self$URL[["members"]]),
         method = "POST",
         token = self$auth$get_token(),
         body = body,
@@ -384,7 +406,7 @@ Project <- R6::R6Class(
     #' @param user The Seven Bridges Platform username of the person
     #' you want to remove from the project or object of class Member containing
     #' user's username.
-    #' @importFrom rlang abort
+    #' @importFrom rlang abort inform
     #' @importFrom glue glue glue_col
     remove_member = function(user) {
       if (is_missing(user)) {
@@ -399,7 +421,7 @@ Project <- R6::R6Class(
         field_name = "username"
       )
       req <- sevenbridges2::api(
-        path = glue::glue("projects/{id}/members/{username}"),
+        path = glue::glue(self$URL[["member"]]),
         method = "DELETE",
         token = self$auth$get_token(),
         authorization = self$auth$authorization,
@@ -423,6 +445,7 @@ Project <- R6::R6Class(
     #' you want to get information about or object of class Member containing
     #' user's username.
     #' @importFrom rlang abort
+    #' @importFrom glue glue
     #' @param ... Other arguments.
     get_member = function(user, ...) {
       if (is_missing(user)) {
@@ -435,7 +458,7 @@ Project <- R6::R6Class(
         field_name = "username"
       )
       req <- sevenbridges2::api(
-        path = glue::glue("projects/{id}/members/{username}"),
+        path = glue::glue(self$URL[["member"]]),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -502,7 +525,7 @@ Project <- R6::R6Class(
       id <- self$id
 
       req <- sevenbridges2::api(
-        path = glue::glue("projects/{id}/members/{username}/permissions"),
+        path = glue::glue(self$URL[["member_permissions"]]),
         method = "PATCH",
         token = self$auth$get_token(),
         body = body,
@@ -521,6 +544,7 @@ Project <- R6::R6Class(
       }
     },
     # nocov end
+    # Project files ---------------------------------------------------------
     #' @description  List all project's files and folders.
     #' @param limit The maximum number of collection items to return for a
     #'   single request. Minimum value is 1. The maximum value is 100 and the
@@ -534,8 +558,9 @@ Project <- R6::R6Class(
                      offset = getOption("sevenbridges2")$offset,
                      ...) {
       # nocov start
+      id <- self$id
       req <- sevenbridges2::api(
-        path = paste0("projects/", self$id, "/files"),
+        path = glue::glue(self$URL[["files"]]),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -545,8 +570,9 @@ Project <- R6::R6Class(
       )
 
       res <- status_check(req)
+      res$items <- asFileList(res, self$auth)
 
-      asFileList(res, self$auth)
+      return(asCollection(res, auth = self$auth))
     },
     # nocov end
     #' @description  Create a new folder under the project's root directory.
@@ -559,6 +585,7 @@ Project <- R6::R6Class(
     #' @param ... Other arguments that can be passed to api() function
     #' like 'limit', 'offset', 'fields', etc.
     #' @importFrom glue glue_col
+    #' @importFrom rlang inform
     create_folder = function(name, ...) {
       check_folder_name(name)
       # nocov start
@@ -584,7 +611,7 @@ Project <- R6::R6Class(
         rlang::inform(glue::glue_col("New folder {green {name}} has been created."))
         # nolint end
       }
-      asFile(res, self$auth)
+      return(asFile(res, self$auth))
     },
     #' @description  Get project's root folder object
     get_root_folder = function() {
@@ -644,7 +671,7 @@ Project <- R6::R6Class(
         raw_format = raw_format
       )
     },
-
+    # Project tasks ---------------------------------------------------------
     #' @description This call lists all tasks from project you can access.
     #'
     #' @param status String. You can filter the returned tasks by their status.
@@ -756,8 +783,6 @@ Project <- R6::R6Class(
         ...
       )
     },
-
-    # Create a new draft task in project ---------------------------------------
     #' @description This call creates a new task. You can create either a single
     #'  task or a batch task by using the app's default batching, override
     #'  batching, or disable batching completely. A parent task is a task that
@@ -869,7 +894,7 @@ Project <- R6::R6Class(
   )
 )
 
-# Helper function for creating Project objects
+# Helper function for creating Project objects --------------------------------
 asProject <- function(x, auth = NULL) {
   Project$new(
     href = x$href,

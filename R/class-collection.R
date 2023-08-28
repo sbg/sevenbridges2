@@ -47,6 +47,9 @@ Collection <- R6::R6Class(
     #' @importFrom glue glue_col
     print = function(n = 10) {
       x <- as.list(self)
+      if (length(x$items) == 0) {
+        cli::cli_text(glue::glue("The list of items is empty."))
+      }
       for (i in seq_len(length(x$items))) {
         if (i > n) {
           cli::cli_text()

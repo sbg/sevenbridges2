@@ -15,6 +15,8 @@ This is main object for Projects
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
+\item{\code{URL}}{URL endpoint fields}
+
 \item{\code{id}}{Project's ID.}
 
 \item{\code{name}}{Project's name.}
@@ -69,7 +71,7 @@ permissions within the project.}
 \item \href{#method-Project-new}{\code{Project$new()}}
 \item \href{#method-Project-print}{\code{Project$print()}}
 \item \href{#method-Project-detailed_print}{\code{Project$detailed_print()}}
-\item \href{#method-Project-edit}{\code{Project$edit()}}
+\item \href{#method-Project-update}{\code{Project$update()}}
 \item \href{#method-Project-delete}{\code{Project$delete()}}
 \item \href{#method-Project-list_members}{\code{Project$list_members()}}
 \item \href{#method-Project-add_member}{\code{Project$add_member()}}
@@ -174,15 +176,15 @@ Project object more descriptively.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Project-edit"></a>}}
-\if{latex}{\out{\hypertarget{method-Project-edit}{}}}
-\subsection{Method \code{edit()}}{
+\if{html}{\out{<a id="method-Project-update"></a>}}
+\if{latex}{\out{\hypertarget{method-Project-update}{}}}
+\subsection{Method \code{update()}}{
 Method that allows you to edit an already existing project.
 As a project Admin you can use it to change the name, settings,
 tags or billing group of the project. Users with write permissions in
 the project can change the project description.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$edit(
+\if{html}{\out{<div class="r">}}\preformatted{Project$update(
   name = NULL,
   description = NULL,
   billing_group = NULL,

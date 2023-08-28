@@ -38,6 +38,10 @@ setup_permission_obj <-
     response = list("raw-response"),
     auth = setup_auth_object
   )
+
+# Projects obj
+setup_projects_obj <- Projects$new(auth = setup_auth_object)
+
 # Project obj
 setup_project_obj <-
   Project$new(

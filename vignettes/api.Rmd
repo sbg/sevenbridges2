@@ -431,10 +431,10 @@ a$billing_groups()
 # set billing group for the new project
 bid <- "<billing_group_id>"
 # create new project
-(p <- a$project_new(
+p <- a$projects$create(
   name = "api testing", billing_group = bid,
   description = "Just a test"
-))
+)
 ```
 
 ```
@@ -467,17 +467,17 @@ The **new project** is created on the platform. Notice also that the variable p 
 
 ```{r}
 # list first 50 projects
-a$projects()
+a$projects$query()
 # return all projects that contain the term "demo"
-a$projects(query = list(name = "demo"))
+a$projects$query(name = "demo")
 # return all projects tagged with "test_1"
-a$projects(query = list(tags = c("test_1")))
+a$projects$query(tags = list("test_1"))
 ```
 
 ## Get Details of a Specified Project
 
 ```{r}
-a$project_get(project_owner = "luna_lovegood", project = "nargles-project")
+a$projects$get(project = "api-testing")
 ```
 
 ```
@@ -512,7 +512,7 @@ a$project_get(project_owner = "luna_lovegood", project = "nargles-project")
 ## Create a New Project
 
 ```{r}
-a$project_new(
+a$projects$create(
   name = "api_created_project",
   billing_group = "<your_billing_group_id>",
   description = "This project has been created using the
@@ -545,17 +545,16 @@ API library.
 ## Edit an existing project
 
 If for some reason you want to edit an existing project, you can do so by using
-the **edit** method on the Project class object. As a project Admin you can use
+the **update** method on the Project class object. As a project Admin you can use
 it to change the name, settings, tags or billing group of the project. For 
 example, if you want to change the name and description of the project, you can
 do it in the following way:
 
 ```{r}
-p <- a$project_get(
-  project_owner = "<your_username>",
+p <- a$projects$get(
   project = "<project's-short-name>"
 )
-p$edit(
+p$update(
   name = "project_with_modified_name",
   description = "This is the modified description."
 )
@@ -573,8 +572,7 @@ client library. To do that, you need to call the \code{delete} method on the
 project object:
 
 ```{r}
-p <- a$project_get(
-  project_owner = "<your_username>",
+p <- a$projects$get(
   project = "<project's-short-name>"
 )
 p$delete()
@@ -589,7 +587,7 @@ permanently delete the project from the platform.
 To get a list of the members of the specified project:
 
 ```{r}
-p$member_list()
+p$list_members()
 ```
 
 
@@ -598,11 +596,10 @@ p$member_list()
 To add a new user to a specified project:
 
 ```{r}
-p <- a$project_get(
-  project_owner = "<your_username>",
+p <- a$projects$get(
   project = "<project's-short-name>"
 )
-p$member_add(username = "<username_of_a_user_you_want_to_add>")
+p$add_member(user = "<username_of_a_user_you_want_to_add>")
 ```
 
 
@@ -615,31 +612,22 @@ has admin permissions in the project.
 On the other hand, you can delete a member from the project in a similar way:
 
 ```{r}
-p$member_delete(username = "<username_of_a_user_you_want_to_remove>")
+p$remove_member(user = "<username_of_a_user_you_want_to_remove>")
 ```
 
 
-## Get a project member's permissions
+## Get and modify project member's permissions
 
 Sometimes you may just want to investigate a members's permissions within a 
-specified project, and you can do that by calling:
-
-```{r}
-p$member_permissions_get(username = "<username_of_a_user_of_interest>")
-```
-
-
-## Modify a project member's permissions
-
-To modify a project member's permissions you can use the \code{
-member_permissions_modify} method. For this method to work, the user calling it 
+specified project or update them, and you can do that by calling the \code{
+modify_member_permissions} method. For this method to work, the user calling it 
 must have admin permissions in the project. For example, you may want to give 
-admin permissions to a project member:
+write permissions to a project member:
 
 ```{r}
-p$member_permissions_modify(
-  username = "<username_of_the_member_whose_permissions_you_are_editing>",
-  admin = TRUE
+p$modify_member_permissions(
+  user = "<username_of_a_user_of_interest>",
+  permissions = list(write = TRUE)
 )
 ```
 
@@ -806,7 +794,7 @@ of a destination project.
 # Option 1 - Using the project parameter
 
 # Option 1.a (providing a Project object as project parameter)
-my_project <- a$project_get(project = "<short-name-of-the-project>")
+my_project <- a$projects$get(project = "<short-name-of-the-project>")
 a$create_folder(name = "my_new_folder", project = my_project)
 
 # Option 1.b (providing a project's ID as project parameter)
@@ -1031,7 +1019,7 @@ a <- Auth$new(platform = "aws-us", token = "<your-token>")
 
 # Option 1 - Using the project parameter
 # Option 1.a (providing a Project object as project parameter)
-destination_project <- a$project_get(project = "<short-name-of-the-project>")
+destination_project <- a$projects$get(project = "<short-name-of-the-project>")
 
 up <- a$upload(
   path = "/path/to/your/file.txt",
@@ -1081,7 +1069,7 @@ the upload process will start right away.
 ```{r}
 a <- Auth$new(platform = "aws-us", token = "<your-token>")
 
-destination_project <- a$project_get(project = "<short-name-of-the-project>")
+destination_project <- a$projects$get(project = "<short-name-of-the-project>")
 
 up <- a$upload(
   path = "/path/to/your/file.txt",
@@ -2025,11 +2013,11 @@ a$tasks$query(status = "COMPLETED", limit = 5)
 To list all the tasks in a project, use the following.
 ```{r}
 # a better way
-p <- a$projects(query = list(name = "demo"))
+p <- a$projects$query(name = "demo")
 p$list_tasks()
 
 # alternatively
-p <- a$projects("demo")
+p <- a$projects$query(name = "demo")
 a$tasks$query(project = p)
 ```
 

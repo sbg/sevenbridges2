@@ -126,8 +126,8 @@ test_that("check_folder_name function works", {
 })
 
 test_that("check_folder_name function throws error when expected", {
-  invalid_names <- c(
-    NULL, "", c(), NA,
+  invalid_names <- list(
+    NULL, "", NA, 123,
     "New folder", "__inputs", "Another new folder"
   )
   for (name in invalid_names) {
