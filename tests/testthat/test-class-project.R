@@ -1,99 +1,108 @@
 test_that("Project initialization works", {
-  # Load auth object
-  test_auth_obj <- readRDS(testthat::test_path("test_data", "auth.RDS"))
+  # Item object creation works
+  testthat::expect_no_error(Project$new(auth = setup_auth_object))
 
-  # Load predefined response needed for creating a project object
-  test_project_response <- readRDS(testthat::test_path(
-    "test_data",
-    "get_project_response.RDS"
-  ))
-
-  # Create project object using the asProject helper function
-  test_project <- asProject(x = test_project_response, auth = test_auth_obj)
-
-  testthat::expect_true(checkmate::test_class(test_project,
-    classes = c("Project", "Item", "R6")
-  ))
-
-  # Check if all the expected fields are filled
-  testthat::expect_equal(test_project$category, "PRIVATE")
-  testthat::expect_equal(test_project$modified_on, "2022-12-20T16:09:20Z")
-  testthat::expect_equal(test_project$created_on, "2022-12-20T16:09:20Z")
-  testthat::expect_equal(test_project$created_by, "luna_lovegood")
-  testthat::expect_equal(test_project$root_folder, "12a1ab12345a12345a12345a")
-  testthat::expect_equal(test_project$type, "v2")
-  testthat::expect_equal(
-    test_project$billing_group,
-    "ab12345a-123a-1234-1234-a1ab12a12ab1"
-  )
-  testthat::expect_equal(test_project$name, "nargles-project")
-  testthat::expect_equal(test_project$id, "luna_lovegood/nargles-project")
-  # nolint start
-  testthat::expect_equal(test_project$href, "https://api.sbgenomics.com/v2/projects/luna_lovegood/nargles-project")
-  # nolint end
-
-  # Get settings list from test_project object
-  settings_list <- test_project$settings
-
-  # Set expected settings list
-  expected_settings_list <- list(
-    locked = FALSE,
-    controlled = FALSE,
-    location = "aws:us-east-1",
-    use_interruptible_instances = TRUE,
-    use_memoization = FALSE,
-    intermediate_files = list(duration = 24, retention = "LIMITED"),
-    allow_network_access = FALSE,
-    use_elastic_disk = FALSE
-  )
-
-  keys <- names(settings_list)
-
-  # Compare the two lists
-  expect_equal(settings_list[keys], expected_settings_list[keys])
-
-  # Get permissions list from test project object
-  permissions_list <- test_project$permissions
-
-  # # Set expected permissions list
-  expected_permissions_list <- list(
-    write = TRUE,
-    read = TRUE,
-    copy = TRUE,
-    execute = TRUE,
-    admin = TRUE
-  )
-
-  permissions_keys <- names(permissions_list)
-
-  # Compare the two lists
-  expect_equal(
-    permissions_list[permissions_keys],
-    expected_permissions_list[permissions_keys]
-  )
-
-  # Check if superclass field auth is as expected
-  testthat::expect_equal(test_project$auth$platform, "aws-us")
-  testthat::expect_equal(
-    test_project$auth$url,
-    "https://api.sbgenomics.com/v2/"
+  # Item object class and methods are set
+  checkmate::assert_r6(
+    setup_project_obj,
+    classes = c("Item", "Project"),
+    public = c(
+      "category", "permissions", "modified_on", "created_on", "created_by",
+      "root_folder", "settings", "tags", "type", "description",
+      "billing_group", "name", "id", "create_task", "list_imports",
+      "list_tasks", "create_app", "list_apps", "get_root_folder",
+      "create_folder", "files", "modify_member_permissions", "get_member",
+      "remove_member", "add_member", "list_members", "delete", "edit",
+      "detailed_print", "URL", "print"
+    )
   )
 })
 
 test_that("Project print method works", {
-  project_obj_file <- testthat::test_path(
-    "test_data",
-    "luna_lovegood_project_obj.RDS"
-  )
-  test_project <- readRDS(project_obj_file)
-  testthat::expect_snapshot(test_project$print())
+  testthat::expect_snapshot(setup_project_obj$print())
 })
-
 
 test_that("Project detailed_print method works", {
   testthat::expect_snapshot(setup_project_obj$detailed_print())
 })
 
+test_that("Project update method throws error when expected", {
+  bad_name_param <- list(name = 1)
+  bad_description_param <- list(description = 1)
+  bad_billing_param1 <- list(billing = 1)
+  bad_billing_param2 <- list(billing = setup_file_obj)
+  bad_tags_param <- list(tags = 1)
+  bad_settings_param <- list(settings = 1)
+
+  # Test with invalid name param
+  testthat::expect_error(
+    do.call(setup_project_obj$update, bad_name_param),
+    regexp = "Assertion on 'name' failed: Must be of type 'string' (or 'NULL'), not 'double'.", # nolint
+    fixed = TRUE
+  )
+  # Test with invalid description param
+  testthat::expect_error(
+    do.call(setup_project_obj$update, bad_description_param),
+    regexp = "Assertion on 'description' failed: Must be of type 'string' (or 'NULL'), not 'double'.", # nolint
+    fixed = TRUE
+  )
+  # Test with invalid billing param1
+  testthat::expect_error(
+    do.call(setup_project_obj$update, bad_billing_param1),
+    regexp = "Assertion on 'billing_group' failed: Must be of type 'character', not 'double'.", # nolint
+    fixed = TRUE
+  )
+  # Test with invalid billing param2
+  testthat::expect_error(
+    do.call(setup_project_obj$update, bad_billing_param2),
+    regexp = "Assertion on 'billing_group' failed: Must inherit from class 'Billing', but has classes 'File','Item','R6'.", # nolint
+    fixed = TRUE
+  )
+  # Test with invalid tags param
+  testthat::expect_error(
+    do.call(setup_project_obj$update, bad_tags_param),
+    regexp = "Tags parameter must be an unnamed list of tags. For example: tags <- list('my_tag_1', 'my_tag_2')", # nolint
+    fixed = TRUE
+  )
+  # Test with invalid settings param
+  testthat::expect_error(
+    do.call(setup_project_obj$update, bad_settings_param),
+    regexp = "Settings must be provided as a list.", # nolint
+    fixed = TRUE
+  )
+})
+
+test_that("Project create_folder method throws error when expected", {
+  missing_folder_name <- list(name = NULL)
+  bad_format_folder_name <- list(name = 123)
+  spaces_folder_name <- list(name = "name with spaces")
+  invalid_folder_name <- list(name = "__start_with_underscores")
+
+  # Test with missing_folder_name
+  testthat::expect_error(
+    do.call(setup_project_obj$create_folder, missing_folder_name),
+    regexp = "Please, provide the folder's name.",
+    fixed = TRUE
+  )
+  # Test with bad_format_folder_name
+  testthat::expect_error(
+    do.call(setup_project_obj$create_folder, bad_format_folder_name),
+    regexp = "Assertion on 'name' failed: Must be of type 'string', not 'double'.", # nolint
+    fixed = TRUE
+  )
+  # Test with spaces_folder_name
+  testthat::expect_error(
+    do.call(setup_project_obj$create_folder, spaces_folder_name),
+    regexp = "The folder name cannot contain spaces in the name.",
+    fixed = TRUE
+  )
+  # Test with invalid_folder_name
+  testthat::expect_error(
+    do.call(setup_project_obj$create_folder, invalid_folder_name),
+    regexp = "The folder name cannot start with \"__\"",
+    fixed = TRUE
+  )
+})
 
 test_that("Project list_apps method works", {
   test_query_terms_bad <-
@@ -148,100 +157,6 @@ test_that("Project create_app method works", {
     regexp = "Name parameter must be provided!",
     fixed = TRUE
   )
-})
-
-
-test_that("Function asProjectList works", {
-  # Load auth object
-  test_auth_obj <- readRDS(testthat::test_path("test_data", "auth.RDS"))
-
-  # Load predefined response needed for creating a project object
-  test_project_response <- readRDS(testthat::test_path(
-    "test_data",
-    "get_project_response.RDS"
-  ))
-
-  # Create a list with 2 copies of test_project_response
-  test_project_responses_list <- list(
-    items = rep(list(test_project_response), 2)
-  )
-
-  # Create a list of project objects using the asProjectList helper function
-  test_project_list <- asProjectList(
-    x = test_project_responses_list,
-    auth = test_auth_obj
-  )
-
-  for (test_project in test_project_list) {
-    testthat::expect_true(checkmate::test_class(test_project,
-      classes = c("Project", "Item", "R6")
-    ))
-
-    # Check if all the expected fields are filled
-    testthat::expect_equal(test_project$category, "PRIVATE")
-    testthat::expect_equal(test_project$modified_on, "2022-12-20T16:09:20Z")
-    testthat::expect_equal(test_project$created_on, "2022-12-20T16:09:20Z")
-    testthat::expect_equal(test_project$created_by, "luna_lovegood")
-    testthat::expect_equal(test_project$root_folder, "12a1ab12345a12345a12345a")
-    testthat::expect_equal(test_project$type, "v2")
-    testthat::expect_equal(
-      test_project$billing_group,
-      "ab12345a-123a-1234-1234-a1ab12a12ab1"
-    )
-    testthat::expect_equal(test_project$name, "nargles-project")
-    testthat::expect_equal(test_project$id, "luna_lovegood/nargles-project")
-    # nolint start
-    testthat::expect_equal(test_project$href, "https://api.sbgenomics.com/v2/projects/luna_lovegood/nargles-project")
-    # nolint end
-
-    # Get settings list from test_project object
-    settings_list <- test_project$settings
-
-    # Set expected settings list
-    expected_settings_list <- list(
-      locked = FALSE,
-      controlled = FALSE,
-      location = "aws:us-east-1",
-      use_interruptible_instances = TRUE,
-      use_memoization = FALSE,
-      intermediate_files = list(duration = 24, retention = "LIMITED"),
-      allow_network_access = FALSE,
-      use_elastic_disk = FALSE
-    )
-
-    keys <- names(settings_list)
-
-    # Compare the two lists
-    expect_equal(settings_list[keys], expected_settings_list[keys])
-
-
-    # Get permissions list from test project object
-    permissions_list <- test_project$permissions
-
-    # # Set expected permissions list
-    expected_permissions_list <- list(
-      write = TRUE,
-      read = TRUE,
-      copy = TRUE,
-      execute = TRUE,
-      admin = TRUE
-    )
-
-    permissions_keys <- names(permissions_list)
-
-    # Compare the two lists
-    expect_equal(
-      permissions_list[permissions_keys],
-      expected_permissions_list[permissions_keys]
-    )
-
-    # Check if superclass field auth is as expected
-    testthat::expect_equal(test_project$auth$platform, "aws-us")
-    testthat::expect_equal(
-      test_project$auth$url,
-      "https://api.sbgenomics.com/v2/"
-    )
-  }
 })
 
 test_that("Project add_member method throws error when expected", {

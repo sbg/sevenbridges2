@@ -58,7 +58,7 @@ Projects <- R6::R6Class(
         offset = offset,
         ...
       )
-      res$items <- asProjectList(res, auth = self)
+      res$items <- asProjectList(res, auth = self$auth)
 
       return(asCollection(res, auth = self$auth))
     },
