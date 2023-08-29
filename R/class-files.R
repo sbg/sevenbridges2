@@ -171,8 +171,8 @@ Files <- R6::R6Class(
         path = glue::glue(self$URL[["copy"]]),
         method = "POST",
         body = body,
-        token = self$get_token(),
-        base_url = self$url
+        token = self$auth$get_token(),
+        base_url = self$auth$url
       )
 
       res <- status_check(req)
@@ -253,10 +253,10 @@ Files <- R6::R6Class(
       # nocov start
       res <- sevenbridges2::api(
         path = glue::glue(self$URL[["query"]]),
-        token = self$get_token(),
+        token = self$auth$get_token(),
         body = body,
         method = "POST",
-        base_url = self$url
+        base_url = self$auth$url
       )
 
       res <- status_check(res)

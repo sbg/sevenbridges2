@@ -605,7 +605,7 @@ Project <- R6::R6Class(
     },
     #' @description  Get project's root folder object
     get_root_folder = function() {
-      self$auth$get_file(id = self$root_folder)
+      self$auth$files$get(id = self$root_folder)
     },
     # Project apps ---------------------------------------------------------
     #' @description This call lists all apps in project.
