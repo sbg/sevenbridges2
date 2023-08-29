@@ -81,6 +81,9 @@ setup_project_member_object <- Member$new(
   response = list(raw = "raw-response-list")
 )
 
+# Files obj
+setup_files_obj <- Files$new(auth = setup_auth_object)
+
 setup_file_obj <-
   File$new(
     id = "file-id",

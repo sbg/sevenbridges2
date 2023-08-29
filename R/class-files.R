@@ -62,6 +62,8 @@ Files <- R6::R6Class(
     #'   pagination-specific attribute.
     #' @param ... Other arguments that can be passed to this method. Such as
     #'   query parameters.
+    #' @importFrom checkmate assert_string assert_vector
+    #' @importFrom rlang abort
     query = function(project = NULL,
                      parent = NULL,
                      name = NULL,
@@ -72,7 +74,7 @@ Files <- R6::R6Class(
                      offset = getOption("sevenbridges2")$offset,
                      ...) {
       # Check input parameters
-      checkmate::assert_character(name, null.ok = TRUE)
+      checkmate::assert_string(name, null.ok = TRUE)
       if (!is_missing(metadata)) {
         check_metadata(metadata)
         metadata <- transform_metadata(metadata)
@@ -82,7 +84,7 @@ Files <- R6::R6Class(
       } else {
         origin_task_id <- NULL
       }
-      checkmate::assert_vector(tag, null.ok = TRUE)
+      checkmate::assert_character(tag, null.ok = TRUE)
 
       # Check project and parent parameters
       if (is_missing(parent) && is_missing(project)) {
@@ -151,13 +153,10 @@ Files <- R6::R6Class(
     #' @importFrom checkmate assert_list test_atomic assert_character assert_r6
     #' @importFrom glue glue_col
     copy = function(files, destination_project) {
-      checkmate::assert_list(files, types = "File")
-
-      if (is_missing(files) && is_missing(destination_project)) {
-        # nolint start
-        rlang::abort("Both the files and destination_project are missing. You need to provide both of them.")
-        # nolint end
+      if (is_missing(files) || is_missing(destination_project)) {
+        rlang::abort("Parameter 'files' or 'destination_project' is missing. You need to provide both of them.") # nolint
       }
+      checkmate::assert_list(files, types = "File")
 
       project_id <-
         check_and_transform_id(destination_project, "Project")
