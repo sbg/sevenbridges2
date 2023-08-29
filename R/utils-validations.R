@@ -299,7 +299,7 @@ check_download_path <- function(directory_path, filename) {
 #' Check retry parameters
 #'
 #' @description This function validates provided retry parameter
-#' used within the `download()` method of a `File`object.
+#' used within the `download()` method of a `File` object.
 #' @param input Value to check.
 #' @param parameter_to_validate Retry parameter to be validated.
 #' @noRd
