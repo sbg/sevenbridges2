@@ -607,7 +607,6 @@ Project <- R6::R6Class(
     get_root_folder = function() {
       self$auth$get_file(id = self$root_folder)
     },
-    # nocov end
     # Project apps ---------------------------------------------------------
     #' @description This call lists all apps in project.
     #'
@@ -879,7 +878,7 @@ Project <- R6::R6Class(
         use_interruptible_instances = use_interruptible_instances,
         action = action,
         ...
-      )
+      ) # nocov end
     }
   )
 )

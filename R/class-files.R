@@ -62,7 +62,7 @@ Files <- R6::R6Class(
     #'   pagination-specific attribute.
     #' @param ... Other arguments that can be passed to this method. Such as
     #'   query parameters.
-    #' @importFrom checkmate assert_string assert_vector
+    #' @importFrom checkmate assert_string assert_character
     #' @importFrom rlang abort
     query = function(project = NULL,
                      parent = NULL,
@@ -102,7 +102,7 @@ Files <- R6::R6Class(
       if (!is_missing(parent)) {
         parent <- check_and_transform_id(parent, "File")
       }
-
+      # nocov start
       params_list <- append(
         list(
           project = project,
@@ -141,7 +141,7 @@ Files <- R6::R6Class(
         ...
       )
       return(asFile(res, auth = self$auth))
-    },
+    }, # nocov end
     #' @description  Copy file/files to the specified project. This call allows
     #'   you to copy files between projects. Unlike the call to copy a file
     #'   between projects, this call lets you batch the copy operation and copy
@@ -161,7 +161,7 @@ Files <- R6::R6Class(
       project_id <-
         check_and_transform_id(destination_project, "Project")
       file_ids <- lapply(files, check_and_transform_id, "File")
-
+      # nocov start
       body <- list(
         "project" = project_id,
         "file_ids" = file_ids
@@ -203,7 +203,7 @@ Files <- R6::R6Class(
         cat("\n")
       }
       invisible(result)
-    },
+    }, # nocov end
     #' @description A method for creating a new folder. It allows you to create
     #'   a new folder on the Platform within the root folder of a specified
     #'   project or the provided parent folder. Remember that you should provide
@@ -250,7 +250,7 @@ Files <- R6::R6Class(
           "type" = "FOLDER"
         )
       }
-
+      # nocov start
       res <- sevenbridges2::api(
         path = glue::glue(self$URL[["query"]]),
         token = self$get_token(),
@@ -266,7 +266,7 @@ Files <- R6::R6Class(
         rlang::inform(glue::glue_col("New folder {green {name}} has been created."))
         # nolint end
         return(asFile(res, self$auth))
-      }
+      } # nocov end
     }
   )
 )

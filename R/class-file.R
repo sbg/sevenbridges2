@@ -254,7 +254,9 @@ File <- R6::R6Class(
 
       res <- status_check(res)
 
-      # Reload object to set new tags
+      rlang::inform("File has been updated!")
+
+      # Reload object
       self$initialize(
         href = res$href,
         id = res$id,
@@ -349,9 +351,7 @@ File <- R6::R6Class(
     #' @return `File` or `Folder`
     copy_to = function(project, name = NULL, ...) {
       if (is_missing(project)) {
-        # nolint start
         rlang::abort("Project parameter is missing. You need to provide one.")
-        # nolint end
       }
       project_id <- check_and_transform_id(project, "Project")
       checkmate::assert_string(name, null.ok = TRUE)

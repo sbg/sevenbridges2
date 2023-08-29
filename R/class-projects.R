@@ -49,7 +49,7 @@ Projects <- R6::R6Class(
       checkmate::assert_string(name, null.ok = TRUE)
       checkmate::assert_string(owner, null.ok = TRUE)
       check_tags(tags)
-
+      # nocov start
       res <- super$query(
         path = self$URL[["query"]],
         name = name,
@@ -82,7 +82,7 @@ Projects <- R6::R6Class(
         ...
       )
       return(asProject(res, auth = self$auth))
-    },
+    }, # nocov end
     # create new project
     #' @description A method for creating a new project.
     #'
@@ -147,7 +147,7 @@ Projects <- R6::R6Class(
       checkmate::assert_logical(use_memoization)
       checkmate::assert_logical(use_elastic_disk)
       checkmate::assert_list(intermediate_files)
-
+      # nocov start
       body <- list(
         "name" = name,
         "description" = description,
@@ -180,6 +180,6 @@ Projects <- R6::R6Class(
         )
       )
       return(asProject(res, auth = self$auth))
-    }
+    } # nocov end
   )
 )

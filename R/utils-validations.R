@@ -288,7 +288,7 @@ check_download_path <- function(directory_path, filename) {
   if (dir.exists(directory_path)) {
     if (is_missing(filename)) {
       rlang::abort("The filename parameter is missing.")
-    } else if (!checkmate::test_character(filename, len = 1L)) {
+    } else if (!checkmate::test_string(filename)) {
       rlang::abort("The filename parameter should be a length-one string.")
     }
   } else {
