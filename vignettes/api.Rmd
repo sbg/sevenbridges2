@@ -634,10 +634,10 @@ p$modify_member_permissions(
 ## List project files
 
 In order to list all files and folders (special type of files) within 
-specified project object, you can use the Project's `files()` method. 
+specified project object, you can use the Project's `list_files()` method. 
 
 ```{r}
-p$files()
+p$list_files()
 ```
 
 ## Create folder within project's Files

@@ -545,9 +545,10 @@ Project <- R6::R6Class(
     #'   pagination-specific attribute.
     #' @param ... Other arguments that can be passed to api() function
     #' like 'limit', 'offset', 'fields', etc.
-    files = function(limit = getOption("sevenbridges2")$limit,
-                     offset = getOption("sevenbridges2")$offset,
-                     ...) {
+    #' @importFrom glue glue
+    list_files = function(limit = getOption("sevenbridges2")$limit,
+                          offset = getOption("sevenbridges2")$offset,
+                          ...) {
       # nocov start
       req <- sevenbridges2::api(
         path = glue::glue(self$URL[["files"]]),
