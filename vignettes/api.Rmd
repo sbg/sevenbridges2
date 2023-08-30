@@ -634,10 +634,10 @@ p$modify_member_permissions(
 ## List project files
 
 In order to list all files and folders (special type of files) within 
-specified project object, you can use the Project's `files()` method. 
+specified project object, you can use the Project's `list_files()` method. 
 
 ```{r}
-p$files()
+p$list_files()
 ```
 
 ## Create folder within project's Files
@@ -683,7 +683,7 @@ parameter.
 
 ```{r}
 # List files in project root directory
-a$files(project = "<project_object>")
+a$files$query(project = "<project_object>")
 ```
 ```
 [[1]]
@@ -717,7 +717,7 @@ a$files(project = "<project_object>")
 ```
 ``` {r}
 # List files in subdirectory
-a$files(parent = "<parent_directory_object>")
+a$files$query(parent = "<parent_directory_object>")
 ```
 
 You can also try and find file with certain:
@@ -733,24 +733,24 @@ this field.
 
 ```{r}
 # List file with this name
-a$files(project = "<project_object", name = "<file_name>")
+a$files$query(project = "<project_object", name = "<file_name>")
 
 # List file with metadata field value
-a$files(
+a$files$query(
   project = "<project_object",
   metadata = list("<metadata_field>" = "<metadata_field_value>")
 )
 
 # List file with this tag
-a$files(project = "<project_object", tag = c("<tag_value>"))
+a$files$query(project = "<project_object", tag = c("<tag_value>"))
 
 # List file from this task
-a$files(project = "<project_object", task = "<task_object>")
+a$files$query(project = "<project_object", task = "<task_object>")
 ```
 
 Also there is an option to get certain file using it's ID
 ```{r}
-a$get_file(file_id = "6435367997d9446ecb66cfb2")
+a$files$get(id = "6435367997d9446ecb66cfb2")
 ```
 ```
 ── File ────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -772,10 +772,10 @@ This method allows you to copy files between projects.
 Unlike the call to copy a file between projects, 
 this call lets you batch the copy operation and copy a list of files at a time.
 ```{r}
-file1 <- a$get_file(file_id = "6435367997d9446ecb66cfb2")
-file2 <- a$get_file(file_id = "6435367997d9446ecb66cgr2")
+file1 <- a$files$get(id = "6435367997d9446ecb66cfb2")
+file2 <- a$files$get(id = "6435367997d9446ecb66cgr2")
 
-a$copy_files(files = list(file1, file2), destination_project = "<short-name-of-the-project>")
+a$files$copy(files = list(file1, file2), destination_project = "<short-name-of-the-project>")
 ```
 
 ## Create a folder within the destination project or parent folder
@@ -795,10 +795,10 @@ of a destination project.
 
 # Option 1.a (providing a Project object as project parameter)
 my_project <- a$projects$get(project = "<short-name-of-the-project>")
-a$create_folder(name = "my_new_folder", project = my_project)
+a$files$create_folder(name = "my_new_folder", project = my_project)
 
 # Option 1.b (providing a project's ID as project parameter)
-a$create_folder(name = "my_new_folder", project = "<project_id>")
+a$files$create_folder(name = "my_new_folder", project = "<project_id>")
 ```
 
 
@@ -811,11 +811,11 @@ an ID of the parent destination folder.
 # Option 2 - Using the parent parameter
 
 # Option 2.a (providing a File (must be a folder) object as parent parameter)
-my_parent_folder <- a$get_file(id = "<folder_id>")
-a$create_folder(name = "my_new_folder", parent = my_parent_folder)
+my_parent_folder <- a$files$get(id = "<folder_id>")
+a$files$create_folder(name = "my_new_folder", parent = my_parent_folder)
 
 # Option 2.b (providing a file's (folder's) ID as project parameter)
-a$create_folder(name = "my_new_folder", parent = "<folder_id>")
+a$files$create_folder(name = "my_new_folder", parent = "<folder_id>")
 ```
 
 ## File print
@@ -876,19 +876,19 @@ file$detailed_print()
 ## Update file details
 
 User can also update the name, the full set metadata, and tags for a specified
-file using `update_details()` method.
+file using `update()` method.
 
 ``` {r}
 # Update file name
-file$update_details(name = "<new_name>")
+file$update(name = "<new_name>")
 
 # Update file metadata
-file$update_details(
+file$update(
   metadata = list("<metadata_field>" = "<metadata_field_value")
 )
 
 # Update file tags
-file$update_details(tags = list("<tag_value>"))
+file$update(tags = list("<tag_value>"))
 ```
 
 ## Add tags to a file
@@ -1041,7 +1041,7 @@ up$start()
 
 # Option 2 - Using the parent parameter
 # Option 2.a (providing a File (must be a folder) object as parent parameter)
-destination_folder <- a$get_file(id = "<folder_id>")
+destination_folder <- a$files$get(id = "<folder_id>")
 
 up <- a$upload(
   path = "/path/to/your/file.txt",
@@ -1818,7 +1818,7 @@ results like volume, project, state etc:
 # List imports with different criteria
 imp_states <- auth$imports$query(state = c("RUNNING", "FAILED"))
 
-imp_proj <- auth$imports$query(project = "my-project-id")
+imp_project <- auth$imports$query(project = "my-project-id")
 ```
 
 Listing imports is also available within Project and Volume objects, where 
@@ -1831,7 +1831,7 @@ vol1 <- auth$volumes$get(id = "volumes_test_division/volume-name")
 vol1$list_imports()
 
 ## Get a project object where you want to list imports
-test_proj <- auth$get("my-project-id")
+test_proj <- auth$projects$get("my-project-id")
 test_proj$list_imports()
 ```
 
@@ -1857,7 +1857,7 @@ method from auth$imports path, or directly on the selected VolumeFile object
 vol1 <- a$volumes$get(id = "volumes_test_division/volume-name")
 
 ## Then, get a project object/id where you want to import files
-test_proj <- a$get("my-project-id")
+test_proj <- a$projects$get("my-project-id")
 
 ## list all volume's files
 vol1_content <- vol1$list_files()
@@ -1923,7 +1923,7 @@ results like volume, state etc:
 # List exports with different criteria
 exp_states <- a$exports$query(state = c("RUNNING", "FAILED"))
 
-exp_proj <- a$exports$query(volume = "my-volume-id")
+exp_volume <- a$exports$query(volume = "my-volume-id")
 ```
 
 Listing exports is also available within Volume objects, where 
@@ -1958,7 +1958,7 @@ File object (file they want to export) where this function is also available.
 vol1 <- a$volumes$get(id = "volumes_test_division/volume-name")
 
 ## Then, get a File object/id you want to export from the platform
-test_file <- a$get("my-file-id")
+test_file <- a$files$get("my-file-id")
 
 ## make file export
 exp_job1 <- a$exports$submit_export(
@@ -2014,11 +2014,11 @@ To list all the tasks in a project, use the following.
 ```{r}
 # a better way
 p <- a$projects$query(name = "demo")
-p$list_tasks()
+p$items[[1]]$list_tasks()
 
 # alternatively
 p <- a$projects$query(name = "demo")
-a$tasks$query(project = p)
+a$tasks$query(project = p$items[[1]])
 ```
 
 ## Get single task information

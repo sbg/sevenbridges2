@@ -15,11 +15,11 @@ Project <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
-      "project" = "projects/{id}",
-      "members" = "projects/{id}/members",
-      "member" = "projects/{id}/members/{username}",
-      "member_permissions" = "projects/{id}/members/{username}/permissions",
-      "files" = "projects/{id}/files"
+      "project" = "projects/{self$id}",
+      "members" = "projects/{self$id}/members",
+      "member" = "projects/{self$id}/members/{username}",
+      "member_permissions" = "projects/{self$id}/members/{username}/permissions", # nolint
+      "files" = "projects/{self$id}/files"
     ),
     #' @field id Project's ID.
     id = NULL,
@@ -240,8 +240,6 @@ Project <- R6::R6Class(
         rlang::abort("Please provide updated information.")
       }
 
-      id <- self$id
-
       res <- sevenbridges2::api(
         path = glue::glue(self$URL[["project"]]),
         method = "PATCH",
@@ -267,8 +265,6 @@ Project <- R6::R6Class(
     #' @importFrom glue glue
     delete = function() {
       # nocov start
-      id <- self$id
-
       res <- sevenbridges2::api(
         path = glue::glue(self$URL[["project"]]),
         method = "DELETE",
@@ -297,7 +293,6 @@ Project <- R6::R6Class(
                             offset = getOption("sevenbridges2")$offset,
                             ...) {
       # nocov start
-      id <- self$id
       res <- sevenbridges2::api(
         path = glue::glue(self$URL[["members"]]),
         method = "GET",
@@ -386,7 +381,6 @@ Project <- R6::R6Class(
         "permissions" = permissions
       )
 
-      id <- self$id
       req <- sevenbridges2::api(
         path = glue::glue(self$URL[["members"]]),
         method = "POST",
@@ -415,7 +409,6 @@ Project <- R6::R6Class(
         )
       }
       # nocov start
-      id <- self$id
       username <- check_and_transform_id(user,
         class_name = "Member",
         field_name = "username"
@@ -452,7 +445,6 @@ Project <- R6::R6Class(
         rlang::abort("Please provide a username or Member object.")
       }
       # nocov start
-      id <- self$id
       username <- check_and_transform_id(user,
         class_name = "Member",
         field_name = "username"
@@ -522,7 +514,6 @@ Project <- R6::R6Class(
       if (length(body) == 0) {
         rlang::abort("Please provide updated information.")
       }
-      id <- self$id
 
       req <- sevenbridges2::api(
         path = glue::glue(self$URL[["member_permissions"]]),
@@ -554,11 +545,11 @@ Project <- R6::R6Class(
     #'   pagination-specific attribute.
     #' @param ... Other arguments that can be passed to api() function
     #' like 'limit', 'offset', 'fields', etc.
-    files = function(limit = getOption("sevenbridges2")$limit,
-                     offset = getOption("sevenbridges2")$offset,
-                     ...) {
+    #' @importFrom glue glue
+    list_files = function(limit = getOption("sevenbridges2")$limit,
+                          offset = getOption("sevenbridges2")$offset,
+                          ...) {
       # nocov start
-      id <- self$id
       req <- sevenbridges2::api(
         path = glue::glue(self$URL[["files"]]),
         method = "GET",
@@ -615,9 +606,8 @@ Project <- R6::R6Class(
     },
     #' @description  Get project's root folder object
     get_root_folder = function() {
-      self$auth$get_file(id = self$root_folder)
+      self$auth$files$get(id = self$root_folder)
     },
-    # nocov end
     # Project apps ---------------------------------------------------------
     #' @description This call lists all apps in project.
     #'
@@ -889,7 +879,7 @@ Project <- R6::R6Class(
         use_interruptible_instances = use_interruptible_instances,
         action = action,
         ...
-      )
+      ) # nocov end
     }
   )
 )

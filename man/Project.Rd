@@ -78,7 +78,7 @@ permissions within the project.}
 \item \href{#method-Project-remove_member}{\code{Project$remove_member()}}
 \item \href{#method-Project-get_member}{\code{Project$get_member()}}
 \item \href{#method-Project-modify_member_permissions}{\code{Project$modify_member_permissions()}}
-\item \href{#method-Project-files}{\code{Project$files()}}
+\item \href{#method-Project-list_files}{\code{Project$list_files()}}
 \item \href{#method-Project-create_folder}{\code{Project$create_folder()}}
 \item \href{#method-Project-get_root_folder}{\code{Project$get_root_folder()}}
 \item \href{#method-Project-list_apps}{\code{Project$list_apps()}}
@@ -382,12 +382,12 @@ Permission object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Project-files"></a>}}
-\if{latex}{\out{\hypertarget{method-Project-files}{}}}
-\subsection{Method \code{files()}}{
+\if{html}{\out{<a id="method-Project-list_files"></a>}}
+\if{latex}{\out{\hypertarget{method-Project-list_files}{}}}
+\subsection{Method \code{list_files()}}{
 List all project's files and folders.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$files(
+\if{html}{\out{<div class="r">}}\preformatted{Project$list_files(
   limit = getOption("sevenbridges2")$limit,
   offset = getOption("sevenbridges2")$offset,
   ...

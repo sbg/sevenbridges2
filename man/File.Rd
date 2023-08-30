@@ -12,6 +12,8 @@ R6 Class representing a resource for managing files.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
+\item{\code{URL}}{URL endpoint fields}
+
 \item{\code{id}}{Character used as a file ID.}
 
 \item{\code{name}}{String used as a file name.}
@@ -48,7 +50,7 @@ R6 Class representing a resource for managing files.
 \item \href{#method-File-new}{\code{File$new()}}
 \item \href{#method-File-print}{\code{File$print()}}
 \item \href{#method-File-detailed_print}{\code{File$detailed_print()}}
-\item \href{#method-File-update_details}{\code{File$update_details()}}
+\item \href{#method-File-update}{\code{File$update()}}
 \item \href{#method-File-add_tag}{\code{File$add_tag()}}
 \item \href{#method-File-copy_to}{\code{File$copy_to()}}
 \item \href{#method-File-get_download_url}{\code{File$get_download_url()}}
@@ -162,14 +164,14 @@ on the Platform.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-File-update_details"></a>}}
-\if{latex}{\out{\hypertarget{method-File-update_details}{}}}
-\subsection{Method \code{update_details()}}{
+\if{html}{\out{<a id="method-File-update"></a>}}
+\if{latex}{\out{\hypertarget{method-File-update}{}}}
+\subsection{Method \code{update()}}{
 Updates the name, the full set metadata, and tags
 for a specified file.
 .
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{File$update_details(name = NULL, metadata = NULL, tags = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{File$update(name = NULL, metadata = NULL, tags = NULL, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

@@ -41,6 +41,9 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \item{\code{projects}}{Projects object, for accessing projects resources on the
 platform.}
 
+\item{\code{files}}{Files object, for accessing files resources on the
+platform.}
+
 \item{\code{apps}}{Apps object, for accessing apps resources on the platform.}
 
 \item{\code{volumes}}{Volumes object, for accessing volumes resources on the
@@ -68,10 +71,6 @@ resources on the platform.}
 \item \href{#method-Auth-billing}{\code{Auth$billing()}}
 \item \href{#method-Auth-billing_groups}{\code{Auth$billing_groups()}}
 \item \href{#method-Auth-invoice}{\code{Auth$invoice()}}
-\item \href{#method-Auth-files}{\code{Auth$files()}}
-\item \href{#method-Auth-get_file}{\code{Auth$get_file()}}
-\item \href{#method-Auth-copy_files}{\code{Auth$copy_files()}}
-\item \href{#method-Auth-create_folder}{\code{Auth$create_folder()}}
 \item \href{#method-Auth-upload}{\code{Auth$upload()}}
 \item \href{#method-Auth-list_ongoing_uploads}{\code{Auth$list_ongoing_uploads()}}
 \item \href{#method-Auth-upload_abort}{\code{Auth$upload_abort()}}
@@ -308,148 +307,6 @@ group. If provided, the method will return the invoice incurred by that
 billing group only.}
 
 \item{\code{...}}{Other arguments passed to methods.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Auth-files"></a>}}
-\if{latex}{\out{\hypertarget{method-Auth-files}{}}}
-\subsection{Method \code{files()}}{
-This call returns a list of files and subdirectories in a
-specified project or directory within a project, with specified
-properties that you can access. The project or directory whose contents
-you want to list is specified as a query parameter in the call. Further
-properties to filter by can also be specified as query parameters. Note
-that this call lists both files and subdirectories in the specified
-project or directory within a project, but not the contents of the
-subdirectories. To list the contents of a subdirectory, make a new call
-and specify the subdirectory ID as the parent parameter.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$files(
-  project = NULL,
-  parent = NULL,
-  name = NULL,
-  metadata = NULL,
-  origin = NULL,
-  tag = NULL,
-  limit = getOption("sevenbridges2")$limit,
-  offset = getOption("sevenbridges2")$offset,
-  ...
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{project}}{The ID string of project or a Project object. Project
-should not be used together with parent. If parent is used, the call
-will list the content of the specified folder, within the project to
-which the folder belongs. If project is used, the call will list the
-content at the root of the project's files.}
-
-\item{\code{parent}}{The ID string of parent folder or a File object which must
-be of type \code{FOLDER}. Should not be used together with project. If
-parent is used, the call will list the content of the specified folder,
-within the project to which the folder belongs. If project is used, the
-call will list the content at the root of the project's files.}
-
-\item{\code{name}}{Name of the file. List file with this name. Note that the
-name must be an exact complete string for the results to match.
-Multiple names can be represented as a vector.}
-
-\item{\code{metadata}}{List file with this metadata field values. List only
-files that have the specified value in metadata field. Different
-metadata fields are represented as a named list. You can also define
-multiple instances of the same metadata field.}
-
-\item{\code{origin}}{Task object. List only files produced by task.}
-
-\item{\code{tag}}{List files containing this tag. Note that the tag must be an
-exact complete string for the results to match. Multiple tags can be
-represented by vector of values.}
-
-\item{\code{limit}}{The maximum number of collection items to return for a
-single request. Minimum value is 1. The maximum value is 100 and the
-default value is 50. This is a pagination-specific attribute.}
-
-\item{\code{offset}}{The zero-based starting index in the entire collection of
-the first item to return. The default value is 0. This is a
-pagination-specific attribute.}
-
-\item{\code{...}}{Other arguments that can be passed to this method. Such as
-query parameters.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Auth-get_file"></a>}}
-\if{latex}{\out{\hypertarget{method-Auth-get_file}{}}}
-\subsection{Method \code{get_file()}}{
-This call returns a single file object with its details
-The call returns the file's name, its tags, and all of its metadata.
-Files are specified by their IDs, which you can obtain by making
-the API call to list all files in a project.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$get_file(id, ...)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{id}}{The ID string of file or a File object.}
-
-\item{\code{...}}{Other arguments that can be passed to this method.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Auth-copy_files"></a>}}
-\if{latex}{\out{\hypertarget{method-Auth-copy_files}{}}}
-\subsection{Method \code{copy_files()}}{
-Copy file/files to the specified project. This call allows
-you to copy files between projects. Unlike the call to copy a file
-between projects, this call lets you batch the copy operation and copy
-a list of files at a time.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$copy_files(files, destination_project)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{files}}{The list of files IDs or list of File object to copy.}
-
-\item{\code{destination_project}}{Project object or project ID string in form of
-<project_owner>/\if{html}{\out{<project-name>}} where you want to copy files into.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Auth-create_folder"></a>}}
-\if{latex}{\out{\hypertarget{method-Auth-create_folder}{}}}
-\subsection{Method \code{create_folder()}}{
-A method for creating a new folder. It allows you to create
-a new folder on the Platform within the root folder of a specified
-project or the provided parent folder. Remember that you should provide
-either the destination project (as the \code{project} parameter) or the
-destination folder (as the \code{parent} parameter), not both.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$create_folder(name, parent = NULL, project = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{The name of the folder you are about to create.}
-
-\item{\code{parent}}{The ID string of the parent destination folder or a File
-object which must be of type \code{FOLDER}.}
-
-\item{\code{project}}{The ID of the destination project, or a Project object.}
 }
 \if{html}{\out{</div>}}
 }

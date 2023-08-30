@@ -11,7 +11,7 @@ test_that("Project initialization works", {
       "root_folder", "settings", "tags", "type", "description",
       "billing_group", "name", "id", "create_task", "list_imports",
       "list_tasks", "create_app", "list_apps", "get_root_folder",
-      "create_folder", "files", "modify_member_permissions", "get_member",
+      "create_folder", "list_files", "modify_member_permissions", "get_member",
       "remove_member", "add_member", "list_members", "delete", "update",
       "detailed_print", "URL", "print"
     )

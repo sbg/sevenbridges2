@@ -12,6 +12,16 @@ File <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
+    #' @field URL URL endpoint fields
+    URL = list(
+      "file" = "files/{self$id}",
+      "add_tag" = "files/{self$id}/tags",
+      "copy" = "files/{self$id}/actions/copy",
+      "download_url" = "files/{self$id}/download_info",
+      "metadata" = "files/{self$id}/metadata",
+      "move" = "files/{self$id}/actions/move",
+      "content" = "files/{self$id}/list"
+    ),
     #' @field id Character used as a file ID.
     id = NULL,
     #' @field name String used as a file name.
@@ -214,9 +224,10 @@ File <- R6::R6Class(
     #' @return `File` or `Folder`
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
-    update_details = function(name = NULL,
-                              metadata = NULL,
-                              tags = NULL, ...) {
+    #' @importFrom glue glue
+    update = function(name = NULL,
+                      metadata = NULL,
+                      tags = NULL, ...) {
       checkmate::assert_string(name, null.ok = TRUE)
       check_tags(tags)
       check_metadata(metadata)
@@ -233,7 +244,7 @@ File <- R6::R6Class(
       }
 
       res <- sevenbridges2::api(
-        path = paste0("files/", self$id),
+        path = glue::glue(self$URL[["file"]]),
         method = "PATCH",
         body = body,
         token = self$auth$get_token(),
@@ -243,7 +254,9 @@ File <- R6::R6Class(
 
       res <- status_check(res)
 
-      # Reload object to set new tags
+      rlang::inform("File has been updated!")
+
+      # Reload object
       self$initialize(
         href = res$href,
         id = res$id,
@@ -276,6 +289,8 @@ File <- R6::R6Class(
     #' @param ... Additional parameters that can be passed to the method.
     #'
     #' @importFrom checkmate assert_logical
+    #' @importFrom glue glue
+    #' @importFrom rlang abort
     add_tag = function(tags, overwrite = FALSE, ...) {
       if (is_missing(tags)) {
         # nolint start
@@ -293,7 +308,7 @@ File <- R6::R6Class(
       }
 
       res <- sevenbridges2::api(
-        path = paste0("files/", self$id, "/tags"),
+        path = glue::glue(self$URL[["add_tag"]]),
         method = "PUT",
         body = body,
         token = self$auth$get_token(),
@@ -330,13 +345,13 @@ File <- R6::R6Class(
     #' @param ... Additional parameters that can be passed to the method.
     #'
     #' @importFrom checkmate assert_r6 assert_string
+    #' @importFrom rlang abort
+    #' @importFrom glue glue
     #'
     #' @return `File` or `Folder`
     copy_to = function(project, name = NULL, ...) {
       if (is_missing(project)) {
-        # nolint start
         rlang::abort("Project parameter is missing. You need to provide one.")
-        # nolint end
       }
       project_id <- check_and_transform_id(project, "Project")
       checkmate::assert_string(name, null.ok = TRUE)
@@ -347,7 +362,7 @@ File <- R6::R6Class(
       )
 
       res <- sevenbridges2::api(
-        path = paste0("files/", self$id, "/actions/copy"),
+        path = glue::glue(self$URL[["copy"]]),
         method = "POST",
         body = body,
         token = self$auth$get_token(),
@@ -358,16 +373,17 @@ File <- R6::R6Class(
       res <- status_check(res)
 
       # Return newly created file
-      asFile(res, auth = self$auth)
+      return(asFile(res, auth = self$auth))
     },
 
     #' @description
     #' This method returns a URL that you can use to download the specified
     #' file.
+    #' @importFrom glue glue
     #' @param ... Additional parameters that can be passed to the method.
     get_download_url = function(...) {
       res <- sevenbridges2::api(
-        path = paste0("files/", self$id, "/download_info"),
+        path = glue::glue(self$URL[["download_url"]]),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -388,9 +404,10 @@ File <- R6::R6Class(
     #' @param ... Additional parameters that can be passed to the method.
     #'
     #' @importFrom DescTools StripAttr
+    #' @importFrom glue glue
     get_metadata = function(...) {
       res <- sevenbridges2::api(
-        path = paste0("files/", self$id, "/metadata"),
+        path = glue::glue(self$URL[["metadata"]]),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -416,6 +433,8 @@ File <- R6::R6Class(
     #'
     #' @importFrom DescTools StripAttr
     #' @importFrom checkmate assert_logical
+    #' @importFrom rlang abort
+    #' @importFrom glue glue
     set_metadata = function(metadata_fields, overwrite = FALSE, ...) {
       if (is_missing(metadata_fields)) {
         # nolint start
@@ -429,35 +448,23 @@ File <- R6::R6Class(
       body <- metadata_fields
 
       if (overwrite) {
-        res <- sevenbridges2::api(
-          path = paste0("files/", self$id, "/metadata"),
-          method = "PUT",
-          body = body,
-          token = self$auth$get_token(),
-          base_url = self$auth$url,
-          ...
-        )
-
-        res <- status_check(res)
-
-        # Set new metadata fields
-        self$metadata <- DescTools::StripAttr(res, attr_names = "response")
-        self$metadata
+        method <- "PUT"
       } else {
-        res <- sevenbridges2::api(
-          path = paste0("files/", self$id, "/metadata"),
-          method = "PATCH",
-          body = body,
-          token = self$auth$get_token(),
-          base_url = self$auth$url,
-          ...
-        )
-
-        res <- status_check(res)
-
-        # Add new metadata fields
-        self$metadata <- DescTools::StripAttr(res, attr_names = "response")
+        method <- "PATCH"
       }
+      res <- sevenbridges2::api(
+        path = glue::glue(self$URL[["metadata"]]),
+        method = method,
+        body = body,
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      res <- status_check(res)
+
+      # Set new metadata fields
+      self$metadata <- DescTools::StripAttr(res, attr_names = "response")
 
       return(self$metadata)
     },
@@ -474,6 +481,7 @@ File <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_r6 assert_string
     #' @importFrom rlang abort
+    #' @importFrom glue glue
     move_to_folder = function(parent, name = NULL, ...) {
       if (is_missing(parent)) {
         # nolint start
@@ -493,7 +501,7 @@ File <- R6::R6Class(
       )
 
       res <- sevenbridges2::api(
-        path = paste0("files/", self$id, "/actions/move"),
+        path = glue::glue(self$URL[["move"]]),
         method = "POST",
         body = body,
         token = self$auth$get_token(),
@@ -504,7 +512,7 @@ File <- R6::R6Class(
       res <- status_check(res)
 
       # Return newly created file
-      asFile(res, auth = self$auth)
+      return(asFile(res, auth = self$auth))
     },
 
     #' @description
@@ -518,7 +526,7 @@ File <- R6::R6Class(
                              offset = getOption("sevenbridges2")$"offset",
                              ...) {
       res <- sevenbridges2::api(
-        path = paste0("files/", self$id, "/list"),
+        path = glue::glue(self$URL[["content"]]),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -529,10 +537,11 @@ File <- R6::R6Class(
 
       res <- status_check(res)
 
-      # Return folder contents
-      asFileList(res, auth = self$auth)
-    },
+      res$items <- asFileList(res, auth = self$auth)
 
+      # Return folder contents as Collection
+      return(asCollection(res, auth = self$auth))
+    },
 
     #' @description Delete method for File class.
     #' @importFrom purrr discard
@@ -542,7 +551,7 @@ File <- R6::R6Class(
     #' @importFrom glue glue
     delete = function() {
       res <- sevenbridges2::api(
-        path = paste0("files/", self$id),
+        path = glue::glue(self$URL[["file"]]),
         method = "DELETE",
         token = self$auth$get_token(),
         base_url = self$auth$url

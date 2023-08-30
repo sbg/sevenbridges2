@@ -16,7 +16,7 @@ test_that("Projects query() throws error when expected", {
   test_bad_owner <- list(owner = 123)
   test_bad_tags <- list(tags = 123)
 
-  # Query fails when project param is not valid
+  # Query fails when name param is not valid
   testthat::expect_error(do.call(setup_projects_obj$query, test_bad_name))
 
   # Query fails when owner param is not valid
