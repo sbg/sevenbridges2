@@ -1,6 +1,6 @@
 test_that("File initialization works", {
   # Item object creation works
-  testthat::expect_no_error(File$new(auth = setup_auth_object))
+  testthat::expect_no_error(asFile(auth = setup_auth_object))
 
   # Item object class and methods are set
   checkmate::assert_r6(

@@ -68,53 +68,25 @@ Project <- R6::R6Class(
     #' @field category Project's category. By default projects are PRIVATE.
     category = NULL,
     #' @description Create a new Project object.
-    #' @param id Project's ID.
-    #' @param name Project's name.
-    #' @param billing_group The ID of the billing group for the project.
-    #' @param description Project's description.
-    #' @param type Project's type. All projects have type v2.
-    #' @param tags The list of project tags. By default, projects do not have
-    #' any tags.
-    #' @param settings A list which contains detailed project settings.
-    #' @param root_folder ID for of the project's root folder.
-    #' @param created_by Username of the person who created the project.
-    #' @param created_on Date and time of project creation.
-    #' @param modified_on Date and time describing when the project was
-    #' last modified.
-    #' @param permissions An object containing the information about user's
-    #' permissions within the project.
-    #' @param category Project's category. By default projects are PRIVATE.
+    #' @param res Response containing Project object information.
     #' @param ... Other arguments.
-    initialize = function(id = NA,
-                          name = NA,
-                          billing_group = NA,
-                          description = NA,
-                          type = "v2",
-                          tags = NA,
-                          settings = NA,
-                          root_folder = NA,
-                          created_by = NA,
-                          created_on = NA,
-                          modified_on = NA,
-                          permissions = NA,
-                          category = NA,
-                          ...) {
+    initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
-      self$id <- id
-      self$name <- name
-      self$billing_group <- billing_group
-      self$description <- description
-      self$type <- type
-      self$tags <- tags
-      self$settings <- settings
-      self$root_folder <- root_folder
-      self$created_by <- created_by
-      self$created_on <- created_on
-      self$modified_on <- modified_on
-      self$permissions <- permissions
-      self$category <- category
+      self$id <- res$id
+      self$name <- res$name
+      self$billing_group <- res$billing_group
+      self$description <- res$description
+      self$type <- "v2"
+      self$tags <- res$tags
+      self$settings <- res$settings
+      self$root_folder <- res$root_folder
+      self$created_by <- res$created_by
+      self$created_on <- res$created_on
+      self$modified_on <- res$modified_on
+      self$permissions <- res$permissions
+      self$category <- res$category
     },
     #' @description  Basic print method for Project class.
     #'
@@ -197,7 +169,25 @@ Project <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
-
+    #' @description
+    #' Reload Project.
+    #' @param ... Other query parameters.
+    #' @return Project
+    reload = function(...) {
+      path <- glue::glue(self$URL[["project"]])
+      res <- super$reload(
+        path = path,
+        ...
+      )
+      rlang::inform("Project object is refreshed!")
+      # Reload object
+      self$initialize(
+        res = res,
+        href = res$href,
+        response = attr(res, "response"),
+        auth = self$auth
+      )
+    }, # nocov end
     # Update project ---------------------------------------------------------
     #' @description Method that allows you to edit an already existing project.
     #' As a project Admin you can use it to change the name, settings,
@@ -251,7 +241,13 @@ Project <- R6::R6Class(
 
       res <- status_check(res)
 
-      return(asProject(res, self$auth))
+      # Reload object
+      self$initialize(
+        res = res,
+        href = res$href,
+        response = attr(res, "response"),
+        auth = self$auth
+      )
     },
     # nocov end
     # Delete project ---------------------------------------------------------
@@ -885,22 +881,10 @@ Project <- R6::R6Class(
 )
 
 # Helper function for creating Project objects --------------------------------
-asProject <- function(x, auth = NULL) {
+asProject <- function(x = NULL, auth = NULL) {
   Project$new(
+    res = x,
     href = x$href,
-    id = x$id,
-    name = x$name,
-    type = x$type,
-    description = x$description,
-    settings = x$settings,
-    tags = x$tags,
-    permissions = x$permissions,
-    root_folder = x$root_folder,
-    billing_group = x$billing_group,
-    created_by = x$created_by,
-    category = x$category,
-    created_on = x$created_on,
-    modified_on = x$modified_on,
     auth = auth,
     response = attr(x, "response")
   )

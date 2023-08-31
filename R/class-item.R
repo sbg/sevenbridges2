@@ -34,8 +34,9 @@ Item <- R6::R6Class(
     #' @description
     #' Reload the Item (resource).
     #' @param path Path to Item resource.
+    #' @param ... Other query parameters.
     #' @importFrom rlang abort
-    reload = function(path = NA) {
+    reload = function(path = NA, ...) {
       if (!is_missing(self$href)) {
         reload_url <- self$href
       } else {

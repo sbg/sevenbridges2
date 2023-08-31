@@ -54,7 +54,7 @@ File <- R6::R6Class(
     #' @description Create a new File object.
     #' @param res Response containing File object information.
     #' @param ... Other arguments.
-    initialize = function(res = NULL, ...) {
+    initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
@@ -194,15 +194,20 @@ File <- R6::R6Class(
     },
     #' @description
     #' Reload File.
+    #' @param ... Other query parameters.
     #' @return File
-    reload = function() {
+    reload = function(...) {
       path <- glue::glue(self$URL[["file"]])
       res <- super$reload(
-        path = path
+        path = path,
+        ...
       )
+      rlang::inform("File object is refreshed!")
       # Reload object
       self$initialize(
         res = res,
+        href = res$href,
+        response = attr(res, "response"),
         auth = self$auth
       )
     }, # nocov end
@@ -704,7 +709,7 @@ File <- R6::R6Class(
 )
 
 # Helper function for creating File objects
-asFile <- function(x, auth = NULL) {
+asFile <- function(x = NULL, auth = NULL) {
   File$new(
     res = x,
     href = x$href,

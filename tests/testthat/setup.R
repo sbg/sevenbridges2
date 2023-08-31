@@ -42,28 +42,31 @@ setup_permission_obj <-
 # Projects obj
 setup_projects_obj <- Projects$new(auth = setup_auth_object)
 
+# Project obj response
+project_res <- list(
+  id = "project_id",
+  name = "Project name",
+  billing_group = "billing group",
+  description = "Project description",
+  tags = list("Tag1", "Tag2"),
+  settings = list("locked" = FALSE),
+  root_folder = "root_folder_id",
+  created_by = "user1",
+  created_on = as.POSIXct.POSIXlt(
+    strptime("2023-06-10 13:36:00", "%Y-%m-%d %H:%M:%S")
+  ),
+  modified_on = as.POSIXct.POSIXlt(
+    strptime("2023-07-10 13:36:00", "%Y-%m-%d %H:%M:%S")
+  ),
+  permissions = setup_permission_obj,
+  category = "PRIVATE"
+)
 # Project obj
-setup_project_obj <-
-  Project$new(
-    id = "project_id",
-    name = "Project name",
-    billing_group = "billing group",
-    description = "Project description",
-    type = "v2",
-    tags = list("Tag1", "Tag2"),
-    settings = list("locked" = FALSE),
-    root_folder = "root_folder_id",
-    created_by = "user1",
-    created_on = as.POSIXct.POSIXlt(
-      strptime("2023-06-10 13:36:00", "%Y-%m-%d %H:%M:%S")
-    ),
-    modified_on = as.POSIXct.POSIXlt(
-      strptime("2023-07-10 13:36:00", "%Y-%m-%d %H:%M:%S")
-    ),
-    permissions = setup_permission_obj,
-    category = "PRIVATE",
-    auth = setup_auth_object
-  )
+setup_project_obj <- asProject(
+  x = project_res,
+  auth = setup_auth_object
+)
+
 # Project member object
 setup_project_member_object <- Member$new(
   username = "test-member",
@@ -108,12 +111,10 @@ file_res <- list(
     hosted_on_locations = list("aws:us-east-1")
   )
 )
-setup_file_obj <-
-  File$new(
-    res = file_res,
-    href = file_res$href,
-    auth = setup_auth_object
-  )
+setup_file_obj <- asFile(
+  x = file_res,
+  auth = setup_auth_object
+)
 
 folder_res <- list(
   id = "folder_id",
@@ -126,12 +127,10 @@ folder_res <- list(
   href = "https://api.sbgenomics.com/v2/files/folder_id",
   url = NA
 )
-setup_folder_obj <-
-  File$new(
-    res = folder_res,
-    href = folder_res$href,
-    auth = setup_auth_object
-  )
+setup_folder_obj <- asFile(
+  x = folder_res,
+  auth = setup_auth_object
+)
 
 # Load raw cwl app
 setup_app_path <- testthat::test_path(

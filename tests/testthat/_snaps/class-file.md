@@ -14,7 +14,6 @@
       * name: File name
       * id: file-id
       * href: https://api.sbgenomics.com/v2/files/file-id
-      * response: NA
 
 # File detailed_print method works
 
@@ -32,7 +31,6 @@
       * name: File name
       * id: file-id
       * href: https://api.sbgenomics.com/v2/files/file-id
-      * response: NA
       * tags
         * tag_1: tag_1
       * metadata

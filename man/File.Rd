@@ -71,7 +71,7 @@ R6 Class representing a resource for managing files.
 \subsection{Method \code{new()}}{
 Create a new File object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{File$new(res = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{File$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -128,9 +128,16 @@ on the Platform.
 \subsection{Method \code{reload()}}{
 Reload File.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{File$reload()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{File$reload(...)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other query parameters.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 File
 }

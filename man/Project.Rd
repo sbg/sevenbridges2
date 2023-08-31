@@ -71,6 +71,7 @@ permissions within the project.}
 \item \href{#method-Project-new}{\code{Project$new()}}
 \item \href{#method-Project-print}{\code{Project$print()}}
 \item \href{#method-Project-detailed_print}{\code{Project$detailed_print()}}
+\item \href{#method-Project-reload}{\code{Project$reload()}}
 \item \href{#method-Project-update}{\code{Project$update()}}
 \item \href{#method-Project-delete}{\code{Project$delete()}}
 \item \href{#method-Project-list_members}{\code{Project$list_members()}}
@@ -89,68 +90,19 @@ permissions within the project.}
 \item \href{#method-Project-clone}{\code{Project$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Item" data-id="reload"><a href='../../sevenbridges2/html/Item.html#method-Item-reload'><code>sevenbridges2::Item$reload()</code></a></span></li>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Project-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new Project object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$new(
-  id = NA,
-  name = NA,
-  billing_group = NA,
-  description = NA,
-  type = "v2",
-  tags = NA,
-  settings = NA,
-  root_folder = NA,
-  created_by = NA,
-  created_on = NA,
-  modified_on = NA,
-  permissions = NA,
-  category = NA,
-  ...
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Project$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{Project's ID.}
-
-\item{\code{name}}{Project's name.}
-
-\item{\code{billing_group}}{The ID of the billing group for the project.}
-
-\item{\code{description}}{Project's description.}
-
-\item{\code{type}}{Project's type. All projects have type v2.}
-
-\item{\code{tags}}{The list of project tags. By default, projects do not have
-any tags.}
-
-\item{\code{settings}}{A list which contains detailed project settings.}
-
-\item{\code{root_folder}}{ID for of the project's root folder.}
-
-\item{\code{created_by}}{Username of the person who created the project.}
-
-\item{\code{created_on}}{Date and time of project creation.}
-
-\item{\code{modified_on}}{Date and time describing when the project was
-last modified.}
-
-\item{\code{permissions}}{An object containing the information about user's
-permissions within the project.}
-
-\item{\code{category}}{Project's category. By default projects are PRIVATE.}
+\item{\code{res}}{Response containing Project object information.}
 
 \item{\code{...}}{Other arguments.}
 }
@@ -181,6 +133,26 @@ This method allows users to print all the fields from the
 Project object more descriptively.
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Project-reload"></a>}}
+\if{latex}{\out{\hypertarget{method-Project-reload}{}}}
+\subsection{Method \code{reload()}}{
+Reload Project.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Project$reload(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other query parameters.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Project
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-update"></a>}}

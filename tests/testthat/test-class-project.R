@@ -1,6 +1,6 @@
 test_that("Project initialization works", {
   # Item object creation works
-  testthat::expect_no_error(Project$new(auth = setup_auth_object))
+  testthat::expect_no_error(asProject(auth = setup_auth_object))
 
   # Item object class and methods are set
   checkmate::assert_r6(
