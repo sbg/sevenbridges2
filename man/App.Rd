@@ -14,7 +14,7 @@ R6 Class representing a resource for managing apps.
 \describe{
 \item{\code{URL}}{URL endpoint fields}
 
-\item{\code{id}}{Character used as an app ID.}
+\item{\code{id}}{Character used as an app ID - short app name.}
 
 \item{\code{project}}{Project ID if any, when returned by an API call.}
 
@@ -35,6 +35,7 @@ R6 Class representing a resource for managing apps.
 \itemize{
 \item \href{#method-App-new}{\code{App$new()}}
 \item \href{#method-App-print}{\code{App$print()}}
+\item \href{#method-App-reload}{\code{App$reload()}}
 \item \href{#method-App-copy}{\code{App$copy()}}
 \item \href{#method-App-get_revision}{\code{App$get_revision()}}
 \item \href{#method-App-create_revision}{\code{App$create_revision()}}
@@ -43,47 +44,19 @@ R6 Class representing a resource for managing apps.
 \item \href{#method-App-clone}{\code{App$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Item" data-id="reload"><a href='../../sevenbridges2/html/Item.html#method-Item-reload'><code>sevenbridges2::Item$reload()</code></a></span></li>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-App-new"></a>}}
 \if{latex}{\out{\hypertarget{method-App-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new App object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{App$new(
-  id = NA,
-  project = NA,
-  name = NA,
-  revision = NA,
-  raw = NA,
-  copy_of = NA,
-  latest_revision = NA,
-  ...
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{App$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{Character used as an app ID.}
-
-\item{\code{project}}{Project ID if any, when returned by an API call.}
-
-\item{\code{name}}{String used as a file name.}
-
-\item{\code{revision}}{Integer representing app's revision.}
-
-\item{\code{raw}}{App's raw CWL (JSON or YAML).}
-
-\item{\code{copy_of}}{The original application of which this is a copy.}
-
-\item{\code{latest_revision}}{Integer representing app's latest revision.}
+\item{\code{res}}{Response containing App object information.}
 
 \item{\code{...}}{Other arguments.}
 }
@@ -99,6 +72,26 @@ Print method for App class.
 \if{html}{\out{<div class="r">}}\preformatted{App$print()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-App-reload"></a>}}
+\if{latex}{\out{\hypertarget{method-App-reload}{}}}
+\subsection{Method \code{reload()}}{
+Reload App.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{App$reload(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other query parameters.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Project
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-App-copy"></a>}}

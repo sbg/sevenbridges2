@@ -187,7 +187,7 @@ Project <- R6::R6Class(
         response = attr(res, "response"),
         auth = self$auth
       )
-    }, # nocov end
+    },
     # Update project ---------------------------------------------------------
     #' @description Method that allows you to edit an already existing project.
     #' As a project Admin you can use it to change the name, settings,

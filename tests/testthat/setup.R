@@ -139,14 +139,17 @@ setup_app_path <- testthat::test_path(
 )
 setup_raw_cwl <- readRDS(setup_app_path)
 
-setup_app_obj <- App$new(
-  id = "user_free_1/user-free-1-s-demo-project/fastqc-analysis", # nolint
+app_res <- list(
+  id = "user_free_1/user-free-1-s-demo-project/fastqc-analysis/7",
   project = "user_free_1/user-free-1-s-demo-project",
   name = "FastQC Analysis",
   revision = 0,
   raw = setup_raw_cwl,
   copy_of = NA,
-  latest_revision = 0,
+  latest_revision = 0
+)
+setup_app_obj <- asApp(
+  x = app_res,
   auth = setup_auth_object
 )
 

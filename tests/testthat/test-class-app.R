@@ -1,6 +1,6 @@
 test_that("App initialization works", {
   # Resource object creation works
-  testthat::expect_no_error(App$new(auth = setup_auth_object))
+  testthat::expect_no_error(asApp(auth = setup_auth_object))
 
   # Resource object class and methods are set
   checkmate::assert_r6(
