@@ -32,6 +32,13 @@ R6 Class representing member's permissions.
 \item \href{#method-Permission-clone}{\code{Permission$clone()}}
 }
 }
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Item" data-id="reload"><a href='../../sevenbridges2/html/Item.html#method-Item-reload'><code>sevenbridges2::Item$reload()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Permission-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Permission-new}{}}}

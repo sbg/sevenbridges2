@@ -7,7 +7,6 @@
       -- File ------------------------------------------------------------------------
       * type: file
       * parent: parent-id
-      * url: NA
       * modified_on: 2023-06-06T11:14:11Z
       * created_on: 2023-06-06T11:14:11Z
       * project: user1/project-id
@@ -26,7 +25,6 @@
       -- File ------------------------------------------------------------------------
       * type: file
       * parent: parent-id
-      * url: NA
       * modified_on: 2023-06-06T11:14:11Z
       * created_on: 2023-06-06T11:14:11Z
       * project: user1/project-id

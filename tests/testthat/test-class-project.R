@@ -170,7 +170,7 @@ test_that("Project add_member method throws error when expected", {
   # Pass invalid user param
   testthat::expect_error(
     setup_project_obj$add_member(
-      user = File$new(id = "file-id"),
+      user = setup_file_obj,
       permissions = list(read = TRUE, copy = TRUE)
     ),
     regexp = "Assertion on 'user' failed: Must inherit from class 'Member', but has classes 'File','Item','R6'.", # nolint
@@ -262,7 +262,7 @@ test_that("Project remove_member method throws error when expected", {
 
   testthat::expect_error(
     setup_project_obj$remove_member(
-      user = File$new(id = "file-id")
+      user = setup_file_obj
     ),
     regexp = "Assertion on 'user' failed: Must inherit from class 'Member', but has classes 'File','Item','R6'.", # nolint
     fixed = TRUE
@@ -287,7 +287,7 @@ test_that("Project get_member method throws error when expected", {
 
   testthat::expect_error(
     setup_project_obj$get_member(
-      user = File$new(id = "file-id")
+      user = setup_file_obj
     ),
     regexp = "Assertion on 'user' failed: Must inherit from class 'Member', but has classes 'File','Item','R6'.", # nolint
     fixed = TRUE
@@ -311,7 +311,7 @@ test_that("Project modify_member_permissions method throws error when expected",
   )
   testthat::expect_error(
     setup_project_obj$modify_member_permissions(
-      user = File$new(id = "file-id"),
+      user = setup_file_obj,
       permissions = list(read = TRUE, copy = TRUE)
     ),
     regexp = "Assertion on 'user' failed: Must inherit from class 'Member', but has classes 'File','Item','R6'.", # nolint

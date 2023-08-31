@@ -29,6 +29,28 @@ Item <- R6::R6Class(
       self$href <- href
       self$response <- response
       self$auth <- auth
-    }
+    },
+    # nocov start
+    #' @description
+    #' Reload the Item (resource).
+    #' @param path Path to Item resource.
+    #' @importFrom rlang abort
+    reload = function(path = NA) {
+      if (!is_missing(self$href)) {
+        reload_url <- self$href
+      } else {
+        reload_url <- ""
+      }
+      res <- sevenbridges2::api(
+        url = reload_url,
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        path = path,
+        ...
+      )
+      res <- status_check(res)
+      return(res)
+    } # nocov end
   )
 )

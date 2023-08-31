@@ -84,45 +84,53 @@ setup_project_member_object <- Member$new(
 # Files obj
 setup_files_obj <- Files$new(auth = setup_auth_object)
 
+file_res <- list(
+  id = "file-id",
+  name = "File name",
+  size = 100,
+  project = "user1/project-id",
+  parent = "parent-id",
+  type = "file",
+  created_on = "2023-06-06T11:14:11Z",
+  modified_on = "2023-06-06T11:14:11Z",
+  href = "https://api.sbgenomics.com/v2/files/file-id",
+  tags = list("tag_1"),
+  metadata = list(
+    sbg_public_files_category = "test",
+    reference_genome = "HG19_Broad_variant",
+    sample_id = "HCC1143_1M",
+    case_id = "CCLE-HCC1143",
+    investigation = "CCLE-BRCA"
+  ),
+  origin = list(task = "123a1a1a-12a1-1234-a123-1234567a1a12"),
+  storage = list(
+    type = "PLATFORM",
+    hosted_on_locations = list("aws:us-east-1")
+  )
+)
 setup_file_obj <-
   File$new(
-    id = "file-id",
-    name = "File name",
-    size = 100,
-    project = "user1/project-id",
-    parent = "parent-id",
-    type = "file",
-    created_on = "2023-06-06T11:14:11Z",
-    modified_on = "2023-06-06T11:14:11Z",
-    href = "https://api.sbgenomics.com/v2/files/file-id",
-    auth = setup_auth_object,
-    tags = list("tag_1"),
-    metadata = list(
-      sbg_public_files_category = "test",
-      reference_genome = "HG19_Broad_variant",
-      sample_id = "HCC1143_1M",
-      case_id = "CCLE-HCC1143",
-      investigation = "CCLE-BRCA"
-    ),
-    origin = list(task = "123a1a1a-12a1-1234-a123-1234567a1a12"),
-    storage = list(
-      type = "PLATFORM",
-      hosted_on_locations = list("aws:us-east-1")
-    )
+    res = file_res,
+    href = file_res$href,
+    auth = setup_auth_object
   )
 
-
+folder_res <- list(
+  id = "folder_id",
+  name = "Folder_name",
+  project = "user1/project-id",
+  parent = "parent-id",
+  type = "folder",
+  created_on = "2023-06-06T11:14:11Z",
+  modified_on = "2023-06-06T11:14:11Z",
+  href = "https://api.sbgenomics.com/v2/files/folder_id",
+  url = NA
+)
 setup_folder_obj <-
   File$new(
-    id = "folder_id",
-    name = "Folder_name",
-    project = "user1/project-id",
-    parent = "parent-id",
-    type = "folder",
-    created_on = "2023-06-06T11:14:11Z",
-    modified_on = "2023-06-06T11:14:11Z",
-    href = "https://api.sbgenomics.com/v2/files/folder_id",
-    url = NA
+    res = folder_res,
+    href = folder_res$href,
+    auth = setup_auth_object
   )
 
 # Load raw cwl app

@@ -50,6 +50,7 @@ R6 Class representing a resource for managing files.
 \item \href{#method-File-new}{\code{File$new()}}
 \item \href{#method-File-print}{\code{File$print()}}
 \item \href{#method-File-detailed_print}{\code{File$detailed_print()}}
+\item \href{#method-File-reload}{\code{File$reload()}}
 \item \href{#method-File-update}{\code{File$update()}}
 \item \href{#method-File-add_tag}{\code{File$add_tag()}}
 \item \href{#method-File-copy_to}{\code{File$copy_to()}}
@@ -70,55 +71,13 @@ R6 Class representing a resource for managing files.
 \subsection{Method \code{new()}}{
 Create a new File object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{File$new(
-  id = NA,
-  name = NA,
-  size = NA,
-  project = NA,
-  parent = NA,
-  type = NA,
-  created_on = NA,
-  modified_on = NA,
-  storage = NA,
-  origin = NA,
-  tags = NA,
-  metadata = NA,
-  url = NA,
-  secondary_files = NA,
-  ...
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{File$new(res = NULL, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{Character used as file ID.}
-
-\item{\code{name}}{String used as file name.}
-
-\item{\code{size}}{File size.}
-
-\item{\code{project}}{Project ID if any, when returned by an API call.}
-
-\item{\code{parent}}{Parent folder ID.}
-
-\item{\code{type}}{\code{File} or \code{"Folder"}.}
-
-\item{\code{created_on}}{Date created on.}
-
-\item{\code{modified_on}}{Date modified on.}
-
-\item{\code{storage}}{List as storage type.}
-
-\item{\code{origin}}{List as origin.}
-
-\item{\code{tags}}{List as tags.}
-
-\item{\code{metadata}}{List for metadata associated with the file.}
-
-\item{\code{url}}{File download url.}
-
-\item{\code{secondary_files}}{Secondary files}
+\item{\code{res}}{Response containing File object information.}
 
 \item{\code{...}}{Other arguments.}
 }
@@ -162,6 +121,19 @@ on the Platform.
 }
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-File-reload"></a>}}
+\if{latex}{\out{\hypertarget{method-File-reload}{}}}
+\subsection{Method \code{reload()}}{
+Reload File.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{File$reload()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+File
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-update"></a>}}
