@@ -15,6 +15,8 @@ This is main object for Billing
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
+\item{\code{URL}}{URL endpoint fields}
+
 \item{\code{id}}{Billing group identifier.}
 
 \item{\code{owner}}{Username of the user that owns the billing group.}
@@ -36,62 +38,30 @@ This is main object for Billing
 \itemize{
 \item \href{#method-Billing-new}{\code{Billing$new()}}
 \item \href{#method-Billing-print}{\code{Billing$print()}}
+\item \href{#method-Billing-reload}{\code{Billing$reload()}}
 \item \href{#method-Billing-analysis_breakdown}{\code{Billing$analysis_breakdown()}}
 \item \href{#method-Billing-storage_breakdown}{\code{Billing$storage_breakdown()}}
 \item \href{#method-Billing-egress_breakdown}{\code{Billing$egress_breakdown()}}
 \item \href{#method-Billing-clone}{\code{Billing$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Item" data-id="reload"><a href='../../sevenbridges2/html/Item.html#method-Item-reload'><code>sevenbridges2::Item$reload()</code></a></span></li>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Billing-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Billing-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new Billing object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Billing$new(
-  id = NA,
-  owner = NA,
-  name = NA,
-  type = NA,
-  pending = FALSE,
-  disabled = FALSE,
-  balance = NA,
-  ...
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Billing$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{Billing group identifier.}
+\item{\code{res}}{Response containing File object information.}
 
-\item{\code{owner}}{Username of the user that owns the billing group.}
-
-\item{\code{name}}{Billing group name.}
-
-\item{\code{type}}{Billing group type (free or regular)}
-
-\item{\code{pending}}{Billing group approval status. TRUE if billing group is
-not yet approved, FALSE if the billing group has been approved.}
-
-\item{\code{disabled}}{Indicator of whether the billing group is disabled.
-TRUE if billing group is disabled, FALSE if its enabled.}
-
-\item{\code{balance}}{Billing group balance.}
-
-\item{\code{...}}{Additional arguments.}
+\item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A new Billing object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -103,6 +73,26 @@ Print billing group information as a bullet list.
 \if{html}{\out{<div class="r">}}\preformatted{Billing$print()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Billing-reload"></a>}}
+\if{latex}{\out{\hypertarget{method-Billing-reload}{}}}
+\subsection{Method \code{reload()}}{
+Reload Billing group object.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Billing$reload(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other query parameters.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Billing
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Billing-analysis_breakdown"></a>}}
