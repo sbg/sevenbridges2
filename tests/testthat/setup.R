@@ -180,7 +180,7 @@ setup_apps_obj <- Apps$new(auth = setup_auth_object)
 setup_volumes_obj <- Volumes$new(auth = setup_auth_object)
 
 # Volume obj
-setup_s3_volume_obj <- Volume$new(
+volume_res <- list(
   id = "volume-id",
   name = "my_new_volume",
   access_mode = "RW",
@@ -201,6 +201,10 @@ setup_s3_volume_obj <- Volume$new(
   created_on = "2023-06-15T14:50:16Z",
   modified_on = "2023-06-15T14:50:16Z",
   active = TRUE
+)
+setup_s3_volume_obj <- asVolume(
+  x = volume_res,
+  auth = setup_auth_object
 )
 
 # Collection object
