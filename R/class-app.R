@@ -16,7 +16,7 @@ App <- R6::R6Class(
     URL = list(
       "get_revision" = "apps/{self$id}/{revision}",
       "create_revision" = "apps/{self$id}/{revision}/raw",
-      "copy" = "apps/{self$id}/actions/copy",
+      "copy" = "apps/{id}/actions/copy",
       "sync" = "apps/{self$id}/actions/sync"
     ),
     #' @field id Character used as an app ID - short app name.
@@ -159,7 +159,7 @@ App <- R6::R6Class(
       # Use full app ID (with revision number) or omit revision number (copy
       # the latest version of the app)
       id <- ifelse(use_revision,
-        paste0(self$id, self$revision, collapse = "/"),
+        glue::glue(self$id, "/", self$revision),
         self$id
       )
 
@@ -329,7 +329,6 @@ App <- R6::R6Class(
     #' @importFrom glue glue
     sync = function(...) {
       path <- glue::glue(self$URL[["sync"]])
-
       res <- sevenbridges2::api(
         path = path,
         method = "POST",
