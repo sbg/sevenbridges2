@@ -16,7 +16,9 @@ including the costs for analysis and storage, and the invoice period.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{invoice_id}}{Invoice identifier.}
+\item{\code{URL}}{URL endpoint fields}
+
+\item{\code{id}}{Invoice identifier.}
 
 \item{\code{pending}}{Invoice approval status.}
 
@@ -37,51 +39,23 @@ including the costs for analysis and storage, and the invoice period.
 \itemize{
 \item \href{#method-Invoice-new}{\code{Invoice$new()}}
 \item \href{#method-Invoice-print}{\code{Invoice$print()}}
+\item \href{#method-Invoice-reload}{\code{Invoice$reload()}}
 \item \href{#method-Invoice-clone}{\code{Invoice$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Item" data-id="reload"><a href='../../sevenbridges2/html/Item.html#method-Item-reload'><code>sevenbridges2::Item$reload()</code></a></span></li>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Invoice-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Invoice-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new Invoice object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Invoice$new(
-  invoice_id = NA,
-  pending = NA,
-  approval_date = NA,
-  invoice_period = NA,
-  analysis_costs = NA,
-  storage_costs = NA,
-  total = NA,
-  ...
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Invoice$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{invoice_id}}{Invoice identifier.}
-
-\item{\code{pending}}{Invoice approval status. TRUE if invoice has not yet been
-approved by Seven Bridges, FALSE otherwise.}
-
-\item{\code{approval_date}}{Invoice approval date.}
-
-\item{\code{invoice_period}}{Invoicing period (from-to).}
-
-\item{\code{analysis_costs}}{Costs of your analysis.}
-
-\item{\code{storage_costs}}{Storage costs.}
-
-\item{\code{total}}{Total costs.}
+\item{\code{res}}{Response containing Invoice object information.}
 
 \item{\code{...}}{Other arguments passed to methods.}
 }
@@ -97,6 +71,26 @@ Print invoice information as a bullet list.
 \if{html}{\out{<div class="r">}}\preformatted{Invoice$print()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Invoice-reload"></a>}}
+\if{latex}{\out{\hypertarget{method-Invoice-reload}{}}}
+\subsection{Method \code{reload()}}{
+Reload Invoice.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Invoice$reload(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other query parameters.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Invoice
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Invoice-clone"></a>}}

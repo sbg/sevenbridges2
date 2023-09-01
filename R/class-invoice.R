@@ -13,8 +13,12 @@ Invoice <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field invoice_id Invoice identifier.
-    invoice_id = NULL,
+    #' @field URL URL endpoint fields
+    URL = list(
+      "invoice" = "billing/invoices/{self$id}"
+    ),
+    #' @field id Invoice identifier.
+    id = NULL,
     #' @field pending Invoice approval status.
     pending = NULL,
     #' @field approval_date Invoice approval date.
@@ -28,35 +32,21 @@ Invoice <- R6::R6Class(
     #' @field total Total costs.
     total = NULL,
 
-
     #' @description
     #' Create a new Invoice object.
-    #' @param invoice_id  Invoice identifier.
-    #' @param pending Invoice approval status. TRUE if invoice has not yet been
-    #' approved by Seven Bridges, FALSE otherwise.
-    #' @param approval_date Invoice approval date.
-    #' @param invoice_period Invoicing period (from-to).
-    #' @param analysis_costs Costs of your analysis.
-    #' @param storage_costs Storage costs.
-    #' @param total Total costs.
+    #' @param res Response containing Invoice object information.
     #' @param ... Other arguments passed to methods.
-    initialize = function(invoice_id = NA,
-                          pending = NA,
-                          approval_date = NA,
-                          invoice_period = NA,
-                          analysis_costs = NA,
-                          storage_costs = NA,
-                          total = NA, ...) {
+    initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
-      self$invoice_id <- invoice_id
-      self$pending <- pending
-      self$approval_date <- approval_date
-      self$invoice_period <- invoice_period
-      self$analysis_costs <- analysis_costs
-      self$storage_costs <- storage_costs
-      self$total <- total
+      self$id <- res$id
+      self$pending <- res$pending
+      self$approval_date <- res$approval_date
+      self$invoice_period <- res$invoice_period
+      self$analysis_costs <- res$analysis_costs
+      self$storage_costs <- res$storage_costs
+      self$total <- res$total
     },
     # nocov start
     #' @description
@@ -128,22 +118,35 @@ Invoice <- R6::R6Class(
         },
         ""
       )
+    },
+    #' @description
+    #' Reload Invoice.
+    #' @param ... Other query parameters.
+    #' @return Invoice
+    reload = function(...) {
+      path <- glue::glue(self$URL[["invoice"]])
+      res <- super$reload(
+        path = path,
+        ...
+      )
+      rlang::inform("Invoice object is refreshed!")
+      # Reload object
+      self$initialize(
+        res = res,
+        href = res$href,
+        response = attr(res, "response"),
+        auth = self$auth
+      )
     } # nocov end
   )
 )
 
-asInvoice <- function(x, auth = NULL) {
+asInvoice <- function(x = NULL, auth = NULL) {
   Invoice$new(
-    invoice_id = x$id,
-    pending = x$pending,
-    approval_date = x$approval_date,
-    invoice_period = x$invoice_period,
-    analysis_costs = x$analysis_costs,
-    storage_costs = x$storage_costs,
-    total = x$total,
+    res = x,
     href = x$href,
-    auth = auth,
-    response = attr(x, "response")
+    response = attr(x, "response"),
+    auth = auth
   )
 }
 

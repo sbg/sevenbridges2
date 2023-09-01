@@ -19,7 +19,7 @@ test_that("Invoice initialization works", {
   )
 
   # Check if all the expected fields are filled
-  testthat::expect_equal(test_invoice_object$invoice_id, "0123456789")
+  testthat::expect_equal(test_invoice_object$id, "0123456789")
   testthat::expect_equal(test_invoice_object$pending, FALSE)
   testthat::expect_equal(
     test_invoice_object$approval_date,
