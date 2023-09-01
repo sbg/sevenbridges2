@@ -304,8 +304,7 @@ setup_import_obj <- Import$new(
 # Tasks obj
 setup_tasks_obj <- Tasks$new(auth = setup_auth_object)
 
-# Task obj
-setup_task_obj <- Task$new(
+task_res <- list(
   id = "task-id",
   name = "Task name",
   description = "My new test task",
@@ -315,7 +314,11 @@ setup_task_obj <- Task$new(
   executed_by = "user1",
   created_on = "12-08-2023",
   start_time = "12-08-2023",
-  end_time = "12-08-2023",
+  end_time = "12-08-2023"
+)
+# Task obj
+setup_task_obj <- asTask(
+  x = task_res,
   auth = setup_auth_object
 )
 

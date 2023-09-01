@@ -13,7 +13,7 @@ test_that("Project initialization works", {
       "list_tasks", "create_app", "list_apps", "get_root_folder",
       "create_folder", "list_files", "modify_member_permissions", "get_member",
       "remove_member", "add_member", "list_members", "delete", "update",
-      "detailed_print", "URL", "print"
+      "detailed_print", "URL", "print", "reload"
     )
   )
 })

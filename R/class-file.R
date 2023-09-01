@@ -691,6 +691,10 @@ File <- R6::R6Class(
         properties = properties,
         ...
       )
+      # nolint start
+      rlang::inform(glue::glue_col("File {green {self$name}} has been exported to the {green {destination_volume}} volume.
+                                   Please, reload file object to fetch updated information."))
+      # nolint end
     }
   ),
   private = list(

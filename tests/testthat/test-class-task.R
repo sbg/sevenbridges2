@@ -1,6 +1,6 @@
 test_that("Task initialization works", {
   # Item object creation works
-  testthat::expect_no_error(Task$new(auth = setup_auth_object))
+  testthat::expect_no_error(asTask(auth = setup_auth_object))
 
   # Item object class and methods are set
   checkmate::assert_r6(
@@ -13,7 +13,7 @@ test_that("Task initialization works", {
       "origin", "end_time", "start_time", "created_on", "executed_by",
       "created_by", "app", "project", "description", "status", "name", "id",
       "URL", "auth", "clone", "rerun", "delete", "list_batch_children",
-      "get_execution_details", "clone_task", "abort", "run", "print"
+      "get_execution_details", "clone_task", "abort", "run", "print", "reload"
     )
   )
 })

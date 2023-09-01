@@ -12,7 +12,7 @@ test_that("File initialization works", {
       "project", "size", "name", "id", "URL", "submit_export",
       "download", "delete", "list_contents", "move_to_folder",
       "set_metadata", "get_metadata", "get_download_url", "copy_to",
-      "add_tag", "update", "detailed_print", "print"
+      "add_tag", "update", "detailed_print", "print", "reload"
     )
   )
 })

@@ -92,6 +92,7 @@ array property in the API response.}
 \itemize{
 \item \href{#method-Task-new}{\code{Task$new()}}
 \item \href{#method-Task-print}{\code{Task$print()}}
+\item \href{#method-Task-reload}{\code{Task$reload()}}
 \item \href{#method-Task-run}{\code{Task$run()}}
 \item \href{#method-Task-abort}{\code{Task$abort()}}
 \item \href{#method-Task-clone_task}{\code{Task$clone_task()}}
@@ -103,125 +104,21 @@ array property in the API response.}
 \item \href{#method-Task-clone}{\code{Task$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Item" data-id="reload"><a href='../../sevenbridges2/html/Item.html#method-Item-reload'><code>sevenbridges2::Item$reload()</code></a></span></li>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Task-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Task-new}{}}}
 \subsection{Method \code{new()}}{
 Initialize Task class
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Task$new(
-  id = NA,
-  name = NA,
-  status = NA,
-  description = NA,
-  project = NA,
-  app = NA,
-  created_by = NA,
-  executed_by = NA,
-  created_on = NA,
-  start_time = NA,
-  end_time = NA,
-  origin = NA,
-  use_interruptable_instances = NA,
-  batch = NA,
-  batch_by = NA,
-  batch_group = NA,
-  batch_input = NA,
-  batch_parent = NA,
-  execution_settings = NA,
-  execution_status = NA,
-  errors = NA,
-  warnings = NA,
-  price = NA,
-  inputs = NA,
-  outputs = NA,
-  output_location = NA,
-  ...
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Task$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{String. The ID of the task.}
+\item{\code{res}}{Response containing Task object information.}
 
-\item{\code{name}}{String. The name of the task.}
-
-\item{\code{status}}{String. Task status (different from execution_status).
-Allowed values:
-\itemize{
-\item QUEUED
-\item DRAFT
-\item RUNNING
-\item COMPLETED
-\item ABORTED
-\item FAILED
-}}
-
-\item{\code{description}}{String. An optional description of a task.}
-
-\item{\code{project}}{String. Identifier of the project that
-the task is located in.}
-
-\item{\code{app}}{String. The identifier of the app that was used for the task.}
-
-\item{\code{created_by}}{String. Username of the task creator.}
-
-\item{\code{executed_by}}{String. Username of the task executor.}
-
-\item{\code{created_on}}{String. The time when the task was created.}
-
-\item{\code{start_time}}{String. Task start time.}
-
-\item{\code{end_time}}{String. Task end time.}
-
-\item{\code{origin}}{String. Id of the entity that created the task, e.g.
-automation run, if task was created by an automation run.}
-
-\item{\code{use_interruptable_instances}}{Boolean. This field can be TRUE or
-FALSE. Set this field to TRUE to allow the use of spot instances.}
-
-\item{\code{batch}}{Boolean. TRUE for batch tasks, FALSE for regular & child
-tasks (batch this task; if FALSE, will not create a batch task).}
-
-\item{\code{batch_by}}{List. Batching criteria.}
-
-\item{\code{batch_group}}{List. Batch group for a batch task. Represents the
-group that is assigned to the child task from the batching criteria that
-was used when the task was started.}
-
-\item{\code{batch_input}}{String. Input identifier on to which to apply
-batching.}
-
-\item{\code{batch_parent}}{String. Parent task for a batch child. (batch task
-which is the parent of this task).}
-
-\item{\code{execution_settings}}{List. Execution settings for the task.}
-
-\item{\code{execution_status}}{List. Task execution status. (info about current
-execution status)}
-
-\item{\code{errors}}{List. Validations errors stored as a high-level errors
-array property in the API response.}
-
-\item{\code{warnings}}{List. Validation warnings from API response.}
-
-\item{\code{price}}{List. Task cost. (contains amount and currency)}
-
-\item{\code{inputs}}{List. Inputs that were submitted to the task.}
-
-\item{\code{outputs}}{List. Generated outputs from the task.}
-
-\item{\code{output_location}}{List. Location where task outputs will be stored.}
-
-\item{\code{...}}{Other api parameters.}
+\item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -235,6 +132,26 @@ Print method for Task class.
 \if{html}{\out{<div class="r">}}\preformatted{Task$print()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Task-reload"></a>}}
+\if{latex}{\out{\hypertarget{method-Task-reload}{}}}
+\subsection{Method \code{reload()}}{
+Reload Task.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Task$reload(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other query parameters.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Task
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Task-run"></a>}}

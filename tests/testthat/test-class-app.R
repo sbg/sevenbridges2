@@ -6,7 +6,10 @@ test_that("App initialization works", {
   checkmate::assert_r6(
     setup_app_obj,
     classes = c("Item", "App"),
-    public = c("URL", "id", "project", "name", "revision", "copy_of", "latest_revision", "raw") # nolint
+    public = c(
+      "URL", "id", "project", "name", "revision",
+      "copy_of", "latest_revision", "raw", "reload"
+    )
   )
 })
 
