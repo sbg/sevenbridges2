@@ -11,6 +11,10 @@ User <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
+    #' @field URL URL endpoint fields
+    URL = list(
+      "user" = "user"
+    ),
     #' @field username User name.
     username = NULL,
     #' @field email User's email address.
@@ -41,53 +45,26 @@ User <- R6::R6Class(
 
     #' @description
     #' Create a new User object.
-    #' @param username User name.
-    #' @param email User's email address.
-    #' @param first_name User's first name.
-    #' @param last_name User's last name.
-    #' @param affiliation The company or the institute the user is affiliated
-    #' with.
-    #' @param phone User's phone number.
-    #' @param address User's residential address.
-    #' @param city User's city of residence.
-    #' @param state User's state of residence.
-    #' @param country User's country of residence.
-    #' @param zip_code Zip code for the user's residence.
-    #' @param role User's role.
-    #' @param tags Platform tags associated with the user.
-    #'
-    #' @param ... Additional arguments.
-    #'
+    #' @param res Response containing User object information.
+    #' @param ... Other arguments.
     #' @return A new User object.
-    initialize = function(username = NA,
-                          email = NA,
-                          first_name = NA,
-                          last_name = NA,
-                          affiliation = NA,
-                          phone = NA,
-                          address = NA,
-                          city = NA,
-                          state = NA,
-                          country = NA,
-                          zip_code = NA,
-                          role = NA,
-                          tags = NA, ...) {
+    initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
-      self$username <- username
-      self$email <- email
-      self$first_name <- first_name
-      self$last_name <- last_name
-      self$affiliation <- affiliation
-      self$phone <- phone
-      self$address <- address
-      self$city <- city
-      self$state <- state
-      self$country <- country
-      self$zip_code <- zip_code
-      self$role <- role
-      self$tags <- tags
+      self$username <- res$username
+      self$email <- res$email
+      self$first_name <- res$first_name
+      self$last_name <- res$last_name
+      self$affiliation <- res$affiliation
+      self$phone <- res$phone
+      self$address <- res$address
+      self$city <- res$city
+      self$state <- res$state
+      self$country <- res$country
+      self$zip_code <- res$zip_code
+      self$role <- res$role
+      self$tags <- res$tags
     },
     # nocov start
     #' @description
@@ -132,26 +109,33 @@ User <- R6::R6Class(
 
       # Close container elements
       cli::cli_end()
-    } # nocov end
-  )
+    },
+    #' @description
+    #' Reload User
+    #' @param ... Other query parameters.
+    #' @return User
+    reload = function(...) {
+      path <- glue::glue(self$URL[["user"]])
+      res <- super$reload(
+        path = path,
+        ...
+      )
+      rlang::inform("User object is refreshed!")
+      # Reload object
+      self$initialize(
+        res = res,
+        href = res$href,
+        response = attr(res, "response"),
+        auth = self$auth
+      )
+    }
+  ) # nocov end
 )
 
 # Helper function for creating User objects
-asUser <- function(x, auth = NULL) {
+asUser <- function(x = NULL, auth = NULL) {
   User$new(
-    username = x$username,
-    email = x$email,
-    first_name = x$first_name,
-    last_name = x$last_name,
-    affiliation = x$affiliation,
-    phone = x$phone,
-    address = x$address,
-    city = x$city,
-    state = x$state,
-    country = x$country,
-    zip_code = x$zip_code,
-    role = x$role,
-    tags = x$tags,
+    res = x,
     href = x$href,
     auth = auth,
     response = attr(x, "response")

@@ -26,6 +26,20 @@ credentials_path <- testthat::test_path(
 setup_auth_object <-
   Auth$new(from = "file", config_file = credentials_path)
 
+# User obj
+user_res <- list(
+  username = "luna_lovegood",
+  email = "luna.lovegood@hogwarts.com",
+  first_name = "Luna",
+  last_name = "Lovegood",
+  affiliation = "Hogwarts",
+  country = "United Kingdom"
+)
+setup_user_object <- asUser(
+  x = user_res,
+  auth = setup_auth_object
+)
+
 # Permission obj
 setup_permission_obj <-
   Permission$new(
@@ -68,7 +82,7 @@ setup_project_obj <- asProject(
 )
 
 # Project member object
-setup_project_member_object <- Member$new(
+proj_member_res <- list(
   username = "test-member",
   email = "test-member@gmail.com", type = "USER",
   id = "test-member",
@@ -80,8 +94,11 @@ setup_project_member_object <- Member$new(
     response = list(raw = "raw-response-list")
   ),
   href = "link/to/resource",
-  auth = setup_auth_object,
   response = list(raw = "raw-response-list")
+)
+setup_project_member_object <- asMember(
+  x = proj_member_res,
+  auth = setup_auth_object
 )
 
 # Files obj
@@ -253,7 +270,7 @@ setup_volfile_collection_obj <- VolumeFileCollection$new(
 )
 
 # Volume member object
-setup_volume_member_object <- Member$new(
+volume_member_res <- list(
   username = "test-member",
   email = "test-member@gmail.com", type = "USER",
   id = "test-member",
@@ -265,8 +282,11 @@ setup_volume_member_object <- Member$new(
     response = list(raw = "raw-response-list")
   ),
   href = "link/to/resource",
-  auth = setup_auth_object,
   response = list(raw = "raw-response-list")
+)
+setup_volume_member_object <- asMember(
+  x = volume_member_res,
+  auth = setup_auth_object
 )
 
 # Imports obj

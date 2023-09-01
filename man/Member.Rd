@@ -45,29 +45,13 @@ R6 Class representing a resource for managing project members.
 \subsection{Method \code{new()}}{
 Create a new Member object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Member$new(
-  id = NA,
-  username = NA,
-  email = NA,
-  type = NA,
-  permissions = NA,
-  ...
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Member$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{Member's id - same as username.}
-
-\item{\code{username}}{Member's username - same as id.}
-
-\item{\code{email}}{Member's email.}
-
-\item{\code{type}}{Type of membership. Default value is \code{USER}.}
-
-\item{\code{permissions}}{Member's permissions within a project.
-Should be an object of class Permission.}
+\item{\code{res}}{Response containing Member object information.}
 
 \item{\code{...}}{Other arguments.}
 }
