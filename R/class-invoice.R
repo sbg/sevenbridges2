@@ -15,7 +15,7 @@ Invoice <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
-      "invoice" = "billing/invoices/{self$id}"
+      "reload" = "billing/invoices/{id}"
     ),
     #' @field id Invoice identifier.
     id = NULL,
@@ -124,19 +124,11 @@ Invoice <- R6::R6Class(
     #' @param ... Other query parameters.
     #' @return Invoice
     reload = function(...) {
-      path <- glue::glue(self$URL[["invoice"]])
-      res <- super$reload(
-        path = path,
+      super$reload(
+        cls = self,
         ...
       )
       rlang::inform("Invoice object is refreshed!")
-      # Reload object
-      self$initialize(
-        res = res,
-        href = res$href,
-        response = attr(res, "response"),
-        auth = self$auth
-      )
     } # nocov end
   )
 )

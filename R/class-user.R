@@ -115,19 +115,11 @@ User <- R6::R6Class(
     #' @param ... Other query parameters.
     #' @return User
     reload = function(...) {
-      path <- glue::glue(self$URL[["user"]])
-      res <- super$reload(
-        path = path,
+      super$reload(
+        cls = self,
         ...
       )
       rlang::inform("User object is refreshed!")
-      # Reload object
-      self$initialize(
-        res = res,
-        href = res$href,
-        response = attr(res, "response"),
-        auth = self$auth
-      )
     }
   ) # nocov end
 )

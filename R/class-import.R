@@ -12,6 +12,10 @@ Import <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
+    #' @field URL URL endpoint fields
+    URL = list(
+      "reload" = "storage/imports/{id}"
+    ),
     #' @field id String. Import job identifier.
     id = NULL,
     #' @field state String. The state of the import job. Possible values are:
@@ -51,45 +55,24 @@ Import <- R6::R6Class(
     result = NULL,
 
     #' @description Create a new Import object.
-    #' @param id String. Import job identifier.
-    #' @param state String. The state of the import job.
-    #' @param overwrite Boolean. Whether the imported file/folder name was
-    #' overwritten or not if another one with the same name had already existed.
-    #' @param autorename Boolean. Whether the imported file/folder name was
-    #' automatically renamed (by prefixing its name with an underscore and
-    #' number) if another one with the same name had already existed.
-    #' @param preserve_folder_structure Boolean. Whether the imported folder
-    #' structure was preserved or not.
-    #' @param source List containing source volume id and source location of the
-    #' file/folder is being imported to the platform.
-    #' @param destination List containing destination project id or parent
-    #' directory id where the file/folder is being imported, together with its
-    #' name.
-    #' @param started_on Time when the import job started.
-    #' @param finished_on Time when the import job ended.
-    #' @param error In case of error in the import job, standard API error is
-    #' returned here.
-    #' @param result File object that was imported.
+    #' @param res Response containing Import object information.
     #' @param ... Other arguments.
-    initialize = function(id = NA, state = NA, overwrite = NA, autorename = NA,
-                          preserve_folder_structure = NA, source = NA,
-                          destination = NA, started_on = NA, finished_on = NA,
-                          error = NA, result = NA, ...) {
+    initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
-      self$id <- id
-      self$state <- state
-      self$overwrite <- overwrite
-      self$autorename <- autorename
-      self$preserve_folder_structure <- preserve_folder_structure
-      self$source <- source
-      self$destination <- destination
-      self$started_on <- started_on
-      self$finished_on <- finished_on
-      self$error <- error
-      if (!is_missing(result)) {
-        self$result <- asFile(result, self$auth)
+      self$id <- res$id
+      self$state <- res$state
+      self$overwrite <- res$overwrite
+      self$autorename <- res$autorename
+      self$preserve_folder_structure <- res$preserve_folder_structure
+      self$source <- res$source
+      self$destination <- res$destination
+      self$started_on <- res$started_on
+      self$finished_on <- res$finished_on
+      self$error <- res$error
+      if (!is_missing(res$result)) {
+        self$result <- asFile(res$result, self$auth)
       }
     },
     # nocov start
@@ -123,27 +106,28 @@ Import <- R6::R6Class(
 
       # Close container elements
       cli::cli_end()
+    },
+    #' @description
+    #' Reload Import.
+    #' @param ... Other query parameters.
+    #' @return Import
+    reload = function(...) {
+      super$reload(
+        cls = self,
+        ...
+      )
+      rlang::inform("Import object is refreshed!")
     } # nocov end
   )
 )
 # nocov start
 # Helper function for creating Import objects
-asImport <- function(x, auth = NULL) {
+asImport <- function(x = NULL, auth = NULL) {
   Import$new(
+    res = x,
     href = x$href,
-    id = x$id,
-    state = x$state,
-    overwrite = x$overwrite,
-    autorename = x$autorename,
-    preserve_folder_structure = x$preserve_folder_structure,
-    source = x$source,
-    destination = x$destination,
-    started_on = x$started_on,
-    finished_on = x$finished_on,
-    error = x$error,
-    result = x$result,
-    auth = auth,
-    response = attr(x, "response")
+    response = attr(x, "response"),
+    auth = auth
   )
 }
 

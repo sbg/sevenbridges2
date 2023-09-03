@@ -15,7 +15,7 @@ Billing <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
-      "billing_group" = "billing/groups/{self$id}",
+      "reload" = "billing/groups/{id}",
       "breakdown_analysis" = "billing/groups/{self$id}/breakdown/analysis",
       "storage_breakdown" = "billing/groups/{self$id}/breakdown/storage",
       "egress_breakdown" = "billing/groups/{self$id}/breakdown/egress"
@@ -89,19 +89,11 @@ Billing <- R6::R6Class(
     #' @param ... Other query parameters.
     #' @return Billing
     reload = function(...) {
-      path <- glue::glue(self$URL[["billing_group"]])
-      res <- super$reload(
-        path = path,
+      super$reload(
+        cls = self,
         ...
       )
       rlang::inform("Billing group object is refreshed!")
-      # Reload object
-      self$initialize(
-        res = res,
-        href = res$href,
-        response = attr(res, "response"),
-        auth = self$auth
-      )
     },
     #' @description Method for getting a analysis breakdown for a billing group.
     #'

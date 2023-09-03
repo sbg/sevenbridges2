@@ -224,22 +224,27 @@ setup_collection_obj <- Collection$new(
 )
 
 # VolumeFile object type file
-setup_volume_file_obj <- VolumeFile$new(
-  href = "resource-href",
+volume_file_res <- list(
   location = "my_new_file.txt",
-  type = "FILE",
-  storage_type = "s3",
+  type = "s3",
   volume = "my_s3_volume",
-  metadata = list(metadata_field = "metadata-value")
+  metadata = list(metadata_field = "metadata-value"),
+  href = "resource-href"
+)
+setup_volume_file_obj <- asVolumeFile(
+  x = volume_file_res,
+  auth = setup_auth_object
 )
 # VolumeFile object type folder
-setup_volume_file_dir_obj <- VolumeFile$new(
-  href = "resource-href",
-  location = "my_new_folder",
-  type = "PREFIX",
-  storage_type = NULL,
+volume_file_folder_res <- list(
+  prefix = "my_new_folder",
+  type = "s3",
   volume = "my_s3_volume",
   metadata = NULL
+)
+setup_volume_file_dir_obj <- asVolumeFile(
+  x = volume_file_folder_res,
+  auth = setup_auth_object
 )
 
 # VolumeFileCollection object
@@ -309,7 +314,7 @@ file_obj_params_list <- list(
   auth = setup_auth_object
 )
 # Import obj
-setup_import_obj <- Import$new(
+import_res <- list(
   href = "link-to-the-resource",
   id = "import-job-id",
   state = "COMPLETED",
@@ -321,7 +326,10 @@ setup_import_obj <- Import$new(
   started_on = "2023-07-13T12:34:56Z",
   finished_on = "2023-07-13T12:34:56Z",
   error = NULL,
-  result = file_obj_params_list,
+  result = file_obj_params_list
+)
+setup_import_obj <- asImport(
+  x = import_res,
   auth = setup_auth_object
 )
 
@@ -350,7 +358,7 @@ setup_task_obj <- asTask(
 setup_exports_obj <- Exports$new(auth = setup_auth_object)
 
 # Export obj
-setup_export_obj <- Export$new(
+export_res <- list(
   href = "link-to-the-resource",
   id = "export-job-id",
   state = "COMPLETED",
@@ -361,7 +369,10 @@ setup_export_obj <- Export$new(
   started_on = "2023-07-14T12:34:56Z",
   finished_on = "2023-07-14T12:34:56Z",
   error = NULL,
-  result = file_obj_params_list,
+  result = file_obj_params_list
+)
+setup_export_obj <- asExport(
+  x = export_res,
   auth = setup_auth_object
 )
 

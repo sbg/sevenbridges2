@@ -14,6 +14,7 @@ App <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
+      "reload" = "apps/{id}/{revision}",
       "get_revision" = "apps/{self$id}/{revision}",
       "create_revision" = "apps/{self$id}/{revision}/raw",
       "copy" = "apps/{id}/actions/copy",
@@ -84,22 +85,13 @@ App <- R6::R6Class(
     #' @description
     #' Reload App.
     #' @param ... Other query parameters.
-    #' @return Project
+    #' @return App.
     reload = function(...) {
-      revision <- self$revision
-      path <- glue::glue(self$URL[["get_revision"]])
-      res <- super$reload(
-        path = path,
+      super$reload(
+        cls = self,
         ...
       )
       rlang::inform("App object is refreshed!")
-      # Reload object
-      self$initialize(
-        res = res,
-        href = res$href,
-        response = attr(res, "response"),
-        auth = self$auth
-      )
     }, # nocov end
     #' @description A method that copies the current app.
     #'

@@ -12,6 +12,8 @@ R6 Class representing a resource for managing volume import jobs.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
+\item{\code{URL}}{URL endpoint fields}
+
 \item{\code{id}}{String. Import job identifier.}
 
 \item{\code{state}}{String. The state of the import job. Possible values are:
@@ -56,70 +58,23 @@ returned here.}
 \itemize{
 \item \href{#method-Import-new}{\code{Import$new()}}
 \item \href{#method-Import-print}{\code{Import$print()}}
+\item \href{#method-Import-reload}{\code{Import$reload()}}
 \item \href{#method-Import-clone}{\code{Import$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Item" data-id="reload"><a href='../../sevenbridges2/html/Item.html#method-Item-reload'><code>sevenbridges2::Item$reload()</code></a></span></li>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Import-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Import-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new Import object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Import$new(
-  id = NA,
-  state = NA,
-  overwrite = NA,
-  autorename = NA,
-  preserve_folder_structure = NA,
-  source = NA,
-  destination = NA,
-  started_on = NA,
-  finished_on = NA,
-  error = NA,
-  result = NA,
-  ...
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Import$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{String. Import job identifier.}
-
-\item{\code{state}}{String. The state of the import job.}
-
-\item{\code{overwrite}}{Boolean. Whether the imported file/folder name was
-overwritten or not if another one with the same name had already existed.}
-
-\item{\code{autorename}}{Boolean. Whether the imported file/folder name was
-automatically renamed (by prefixing its name with an underscore and
-number) if another one with the same name had already existed.}
-
-\item{\code{preserve_folder_structure}}{Boolean. Whether the imported folder
-structure was preserved or not.}
-
-\item{\code{source}}{List containing source volume id and source location of the
-file/folder is being imported to the platform.}
-
-\item{\code{destination}}{List containing destination project id or parent
-directory id where the file/folder is being imported, together with its
-name.}
-
-\item{\code{started_on}}{Time when the import job started.}
-
-\item{\code{finished_on}}{Time when the import job ended.}
-
-\item{\code{error}}{In case of error in the import job, standard API error is
-returned here.}
-
-\item{\code{result}}{File object that was imported.}
+\item{\code{res}}{Response containing Import object information.}
 
 \item{\code{...}}{Other arguments.}
 }
@@ -135,6 +90,26 @@ Print method for Import class.
 \if{html}{\out{<div class="r">}}\preformatted{Import$print()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Import-reload"></a>}}
+\if{latex}{\out{\hypertarget{method-Import-reload}{}}}
+\subsection{Method \code{reload()}}{
+Reload Import.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Import$reload(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other query parameters.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Import
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Import-clone"></a>}}

@@ -1,6 +1,6 @@
 test_that("VolumeFile initialization works", {
   # VolumeFile object creation works
-  testthat::expect_no_error(VolumeFile$new(auth = setup_auth_object))
+  testthat::expect_no_error(asVolumeFile(auth = setup_auth_object))
 
   # VolumeFile object class and methods are set
   checkmate::assert_r6(

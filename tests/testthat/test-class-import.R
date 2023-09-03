@@ -1,6 +1,6 @@
 test_that("Import initialization works", {
   # Item object creation works
-  testthat::expect_no_error(Import$new(auth = setup_auth_object))
+  testthat::expect_no_error(asImport(auth = setup_auth_object))
 
   # Item object class and methods are set
   checkmate::assert_r6(
@@ -8,7 +8,8 @@ test_that("Import initialization works", {
     classes = c("Item", "Import"),
     public = c(
       "id", "source", "destination", "overwrite", "autorename", "result",
-      "preserve_folder_structure", "started_on", "finished_on", "state"
+      "preserve_folder_structure", "started_on", "finished_on", "state",
+      "reload"
     )
   )
   # Check whether source contains volume and location fields

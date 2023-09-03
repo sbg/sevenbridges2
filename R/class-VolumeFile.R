@@ -9,10 +9,9 @@
 VolumeFile <- R6::R6Class(
   # nolint end
   "VolumeFile",
+  inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field href URL to the resource.
-    href = NULL,
     #' @field location File/prefix location on the volume.
     location = NULL,
     #' @field type Type of resource - can be either FILE or PREFIX.
@@ -24,27 +23,24 @@ VolumeFile <- R6::R6Class(
     volume = NULL,
     #' @field metadata File's metadata if exists.
     metadata = NULL,
-    #' @field auth SevenBridges authentication object.
-    auth = NULL,
     #' @description Create a new VolumeFile object.
-    #' @param href URL to the resource.
-    #' @param location File/prefix location on the volume.
-    #' @param type Type of resource - can be either FILE or PREFIX.
-    #' @param storage_type Type of storage (cloud provider). Can be one of:
-    #' 's3', 'gcs', 'azure', 'OSS'.
-    #' @param volume Volume id.
-    #' @param metadata File's metadata if exists.
-    #' @param auth SevenBridges authentication object.
-    initialize = function(href = NA, location = NA, type = NA,
-                          storage_type = NA, volume = NA, metadata = NA,
-                          auth = NA) {
-      self$href <- href
-      self$location <- location
-      self$type <- type
-      self$storage_type <- storage_type
-      self$volume <- volume
-      self$metadata <- metadata
-      self$auth <- auth
+    #' @param res Response containing VolumeFile object info.
+    #' @param ... Other arguments.
+    initialize = function(res = NA, ...) {
+      # Initialize Item class
+      super$initialize(...)
+
+      if (is.null(res$location) && is.null(res$prefix)) {
+        self$location <- NULL
+      } else {
+        self$location <- ifelse(length(res$prefix) > 0,
+          paste0(res$prefix, "/"), res$location
+        )
+      }
+      self$type <- ifelse(length(res$prefix) > 0, "PREFIX", "FILE")
+      self$storage_type <- res$type
+      self$volume <- res$volume
+      self$metadata <- res$metadata
     },
     # nocov start
     #' @description Print method for VolumeFile class.
@@ -76,6 +72,11 @@ VolumeFile <- R6::R6Class(
 
       # Close container elements
       cli::cli_end()
+    },
+    #' @description
+    #' Reload VolumeFile.
+    reload = function() {
+      rlang::inform("Please, use get_file() method on the Volume object to reload the VolumeFile.") # nolint
     }, # nocov end
     # Start new import job -----------------------------------------------
     #' @description This call lets you queue a job to import this file or folder
@@ -146,14 +147,11 @@ VolumeFile <- R6::R6Class(
 )
 
 # Helper function for creating VolumeFile objects
-asVolumeFile <- function(x, auth = NULL) {
+asVolumeFile <- function(x = NULL, auth = NULL) {
   VolumeFile$new(
+    res = x,
     href = x$href,
-    location = ifelse(length(x$prefix) > 0, paste0(x$prefix, "/"), x$location),
-    type = ifelse(length(x$prefix) > 0, "PREFIX", "FILE"),
-    storage_type = x$type,
-    volume = x$volume,
-    metadata = x$metadata,
+    response = attr(x, "response"),
     auth = auth
   )
 }

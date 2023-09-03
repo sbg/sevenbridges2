@@ -14,6 +14,7 @@ File <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
+      "reload" = "files/{id}",
       "file" = "files/{self$id}",
       "add_tag" = "files/{self$id}/tags",
       "copy" = "files/{self$id}/actions/copy",
@@ -197,19 +198,11 @@ File <- R6::R6Class(
     #' @param ... Other query parameters.
     #' @return File
     reload = function(...) {
-      path <- glue::glue(self$URL[["file"]])
-      res <- super$reload(
-        path = path,
+      super$reload(
+        cls = self,
         ...
       )
       rlang::inform("File object is refreshed!")
-      # Reload object
-      self$initialize(
-        res = res,
-        href = res$href,
-        response = attr(res, "response"),
-        auth = self$auth
-      )
     }, # nocov end
     #' @description
     #' Updates the name, the full set metadata, and tags
@@ -260,6 +253,8 @@ File <- R6::R6Class(
       # Reload object
       self$initialize(
         res = res,
+        href = res$href,
+        response = attr("response", res),
         auth = self$auth
       )
     }, # nocov end

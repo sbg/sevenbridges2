@@ -57,13 +57,13 @@ Create a new Item object.
 \subsection{Method \code{reload()}}{
 Reload the Item (resource).
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Item$reload(path = NA, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Item$reload(cls, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{path}}{Path to Item resource.}
+\item{\code{cls}}{Item class object.}
 
 \item{\code{...}}{Other query parameters.}
 }

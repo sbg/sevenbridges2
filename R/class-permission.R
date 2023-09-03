@@ -71,8 +71,12 @@ Permission <- R6::R6Class(
 
       # Close container elements
       cli::cli_end()
-    }
-    # nocov end
+    },
+    #' @description
+    #' Reload Permission.
+    reload = function() {
+      rlang::inform("Reloading Permission objects is not possible.")
+    } # nocov end
   )
 )
 # nocov start

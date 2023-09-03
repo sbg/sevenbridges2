@@ -14,6 +14,7 @@ Volume <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
+      "reload" = "storage/volumes/{id}",
       "volume" = "storage/volumes/{self$id}",
       "list" = "storage/volumes/{self$id}/list",
       "volume_file" = "storage/volumes/{self$id}/object",
@@ -102,19 +103,11 @@ Volume <- R6::R6Class(
     #' @param ... Other query parameters.
     #' @return Volume
     reload = function(...) {
-      path <- glue::glue(self$URL[["volume"]])
-      res <- super$reload(
-        path = path,
+      super$reload(
+        cls = self,
         ...
       )
       rlang::inform("Volume object is refreshed!")
-      # Reload object
-      self$initialize(
-        res = res,
-        href = res$href,
-        response = attr(res, "response"),
-        auth = self$auth
-      )
     },
     # nocov end
     #' @description Update a volume.

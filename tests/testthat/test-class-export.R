@@ -1,6 +1,6 @@
 test_that("Export initialization works", {
   # Item object creation works
-  testthat::expect_no_error(Export$new(auth = setup_auth_object))
+  testthat::expect_no_error(asExport(auth = setup_auth_object))
 
   # Item object class and methods are set
   checkmate::assert_r6(
@@ -8,7 +8,7 @@ test_that("Export initialization works", {
     classes = c("Item", "Export"),
     public = c(
       "id", "source", "destination", "overwrite", "state", "result",
-      "properties", "started_on", "finished_on"
+      "properties", "started_on", "finished_on", "reload"
     )
   )
   # Check whether destination contains volume and location fields

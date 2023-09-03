@@ -11,7 +11,7 @@ test_that("Volume initialization works", {
       "modified_on", "get_file", "list_files",
       "delete", "reactivate", "deactivate", "update",
       "list_members", "get_member", "add_member", "remove_member",
-      "modify_member_permissions", "list_imports"
+      "modify_member_permissions", "list_imports", "reload"
     )
   )
 })

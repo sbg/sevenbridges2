@@ -90,7 +90,7 @@ Reload App.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Project
+App.
 }
 }
 \if{html}{\out{<hr>}}

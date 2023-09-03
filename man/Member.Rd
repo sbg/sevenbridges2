@@ -29,16 +29,10 @@ R6 Class representing a resource for managing project members.
 \itemize{
 \item \href{#method-Member-new}{\code{Member$new()}}
 \item \href{#method-Member-print}{\code{Member$print()}}
+\item \href{#method-Member-reload}{\code{Member$reload()}}
 \item \href{#method-Member-clone}{\code{Member$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Item" data-id="reload"><a href='../../sevenbridges2/html/Item.html#method-Item-reload'><code>sevenbridges2::Item$reload()</code></a></span></li>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Member-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Member-new}{}}}
@@ -65,6 +59,16 @@ Create a new Member object.
 Print method for Member class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Member$print()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Member-reload"></a>}}
+\if{latex}{\out{\hypertarget{method-Member-reload}{}}}
+\subsection{Method \code{reload()}}{
+Reload Member.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Member$reload()}\if{html}{\out{</div>}}
 }
 
 }

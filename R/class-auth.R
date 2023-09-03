@@ -613,7 +613,6 @@ Auth <- R6::R6Class(
                       filename = NULL,
                       overwrite = FALSE,
                       part_size = getOption("sevenbridges2")$RECOMMENDED_PART_SIZE, # nolint
-                      # nolint
                       init = FALSE) {
       # Check if the provided path is valid, i.e. if the file exists
       # and get its size.
@@ -743,7 +742,6 @@ Auth <- R6::R6Class(
         )
       )
     }
-
     # nocov end
   )
 )

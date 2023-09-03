@@ -12,6 +12,10 @@ Export <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
+    #' @field URL URL endpoint fields
+    URL = list(
+      "reload" = "storage/exports/{id}"
+    ),
     #' @field id String. Export job identifier.
     id = NULL,
     #' @field state String. The state of the export job. Possible values are:
@@ -45,39 +49,23 @@ Export <- R6::R6Class(
     result = NULL,
 
     #' @description Create a new Export object.
-    #' @param id String. Export job identifier.
-    #' @param state String. The state of the export job.
-    #' @param source List containing source file id that is being exported to
-    #' the volume.
-    #' @param destination List containing destination volume id and location
-    #' (file name) on the volume where the file is being exported.
-    #' @param overwrite Boolean. Whether the exported file name was
-    #' overwritten or not, if another one with the same name had already
-    #' existed on the volume.
-    #' @param started_on Time when the export job started.
-    #' @param finished_on Time when the export job ended.
-    #' @param properties List of volume properties set.
-    #' @param error In case of error in the export job, standard API error is
-    #' returned here.
-    #' @param result File object that was exported.
+    #' @param res Response containing Export job information.
     #' @param ... Other arguments.
-    initialize = function(id = NA, state = NA, source = NA, destination = NA,
-                          overwrite = NA, started_on = NA, finished_on = NA,
-                          properties = NA, error = NA, result = NA, ...) {
+    initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
-      self$id <- id
-      self$state <- state
-      self$source <- source
-      self$destination <- destination
-      self$overwrite <- overwrite
-      self$started_on <- started_on
-      self$finished_on <- finished_on
-      self$properties <- properties
-      self$error <- error
-      if (!is_missing(result)) {
-        self$result <- asFile(result, self$auth)
+      self$id <- res$id
+      self$state <- res$state
+      self$source <- res$source
+      self$destination <- res$destination
+      self$overwrite <- res$overwrite
+      self$started_on <- res$started_on
+      self$finished_on <- res$finished_on
+      self$properties <- res$properties
+      self$error <- res$error
+      if (!is_missing(res$result)) {
+        self$result <- asFile(res$result, self$auth)
       }
     },
     # nocov start
@@ -113,26 +101,28 @@ Export <- R6::R6Class(
 
       # Close container elements
       cli::cli_end()
+    },
+    #' @description
+    #' Reload Export.
+    #' @param ... Other query parameters.
+    #' @return Export
+    reload = function(...) {
+      super$reload(
+        cls = self,
+        ...
+      )
+      rlang::inform("Export object is refreshed!")
     } # nocov end
   )
 )
 # nocov start
 # Helper function for creating Export objects
-asExport <- function(x, auth = NULL) {
+asExport <- function(x = NULL, auth = NULL) {
   Export$new(
+    res = x,
     href = x$href,
-    id = x$id,
-    state = x$state,
-    source = x$source,
-    destination = x$destination,
-    overwrite = x$overwrite,
-    started_on = x$started_on,
-    finished_on = x$finished_on,
-    properties = x$properties,
-    error = x$error,
-    result = x$result,
-    auth = auth,
-    response = attr(x, "response")
+    response = attr(x, "response"),
+    auth = auth
   )
 }
 

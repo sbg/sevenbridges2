@@ -33,25 +33,35 @@ Item <- R6::R6Class(
     # nocov start
     #' @description
     #' Reload the Item (resource).
-    #' @param path Path to Item resource.
+    #' @param cls Item class object.
     #' @param ... Other query parameters.
     #' @importFrom rlang abort
-    reload = function(path = NA, ...) {
+    reload = function(cls, ...) {
       if (!is_missing(self$href)) {
         reload_url <- self$href
       } else {
         reload_url <- ""
+      }
+      id <- cls$id
+      if (inherits(cls, "App")) {
+        revision <- cls$revision
       }
       res <- sevenbridges2::api(
         url = reload_url,
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
-        path = path,
+        path = glue::glue(cls$URL[["reload"]]),
         ...
       )
       res <- status_check(res)
-      return(res)
+
+      cls$initialize(
+        res = res,
+        href = res$href,
+        response = attr(res, "response"),
+        auth = self$auth
+      )
     } # nocov end
   )
 )

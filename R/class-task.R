@@ -14,6 +14,7 @@ Task <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
+      "reload" = "tasks/{id}",
       "run" = "tasks/{self$id}/actions/run",
       "abort" = "tasks/{self$id}/actions/abort",
       "clone" = "tasks/{self$id}/actions/clone",
@@ -163,19 +164,11 @@ Task <- R6::R6Class(
     #' @param ... Other query parameters.
     #' @return Task
     reload = function(...) {
-      path <- glue::glue(self$URL[["task"]])
-      res <- super$reload(
-        path = path,
+      super$reload(
+        cls = self,
         ...
       )
       rlang::inform("Task object is refreshed!")
-      # Reload object
-      self$initialize(
-        res = res,
-        href = res$href,
-        response = attr(res, "response"),
-        auth = self$auth
-      )
     },
     #' @description This call runs (executes) the task. Only tasks whose status
     #' is "DRAFT" can be run.

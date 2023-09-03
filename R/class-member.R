@@ -70,6 +70,11 @@ Member <- R6::R6Class(
 
       # Close container elements
       cli::cli_end()
+    },
+    #' @description
+    #' Reload Member.
+    reload = function() {
+      rlang::inform("Reloading Member objects is not possible.")
     }
   )
 )

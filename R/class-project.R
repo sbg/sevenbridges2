@@ -15,6 +15,7 @@ Project <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
+      "reload" = "projects/{id}",
       "project" = "projects/{self$id}",
       "members" = "projects/{self$id}/members",
       "member" = "projects/{self$id}/members/{username}",
@@ -174,19 +175,11 @@ Project <- R6::R6Class(
     #' @param ... Other query parameters.
     #' @return Project
     reload = function(...) {
-      path <- glue::glue(self$URL[["project"]])
-      res <- super$reload(
-        path = path,
+      super$reload(
+        cls = self,
         ...
       )
       rlang::inform("Project object is refreshed!")
-      # Reload object
-      self$initialize(
-        res = res,
-        href = res$href,
-        response = attr(res, "response"),
-        auth = self$auth
-      )
     },
     # Update project ---------------------------------------------------------
     #' @description Method that allows you to edit an already existing project.
