@@ -389,12 +389,18 @@ Finally, you may want to get an egress breakdown for a billing group:
 ```{r}
 my_billing_group$egress_breakdown()
 ```
+If something changes in the billing group, you can refresh your Billing
+object by reloading it with:
 
+```{r}
+my_billing_group$reload()
+```
 
 To retrieve information about a selected invoice, including the costs for analysis and storage, and the invoice period, you can use the invoice method with the id parameter set to the ID of the invoice you are querying.
 
 ```{r}
-a$invoice(id = "<invoice_id>")
+invoice <- a$invoice(id = "<invoice_id>")
+invoice
 ```
 
 ```
@@ -418,6 +424,11 @@ a$invoice(id = "<invoice_id>")
 ```
 <div align="right"><a href="#top">top</a></div>
 
+Same applies for invoices, if something changes, you can refresh your Invoice object by reloading it with:
+
+```{r}
+invoice$reload()
+```
 
 ## Create Project
 
@@ -564,6 +575,11 @@ Keep in mind that this modifies only the name of the project, not its short
 name. Therefore, after calling this method, the id of the project will remain 
 the same \code{your_username/project's-short-name}.
 
+If something changes in the project on the Platform UI, you can refresh your Project object to fetch the changes, by reloading it with:
+
+```{r}
+p$reload()
+```
 
 ## Delete a project
 
@@ -980,6 +996,14 @@ file$delete()
 folder$delete()
 ```
 
+## Reload file
+
+To keep your local File object up to date with the file on the platform, you can always call the `reload()` function:
+
+```{r}
+file$reload()
+folder$reload()
+```
 
 ## Download a file
 
@@ -1447,6 +1471,14 @@ you can use the `sync()` method.
 copied_app$sync()
 ```
 
+## Reload app
+
+To keep your local App object up to date with the app on the platform, you can always call the `reload()` function:
+
+```{r}
+my_app$reload()
+```
+
 # Volumes
 
 ## List volumes
@@ -1643,6 +1675,14 @@ aws_iam_user_volume$update(
     )
   )
 )
+```
+
+## Reload volume
+
+To keep your local Volume object up to date with the volume on the platform, you can always call the `reload()` function:
+
+```{r}
+aws_iam_user_volume$reload()
 ```
 
 ### List volume's content
@@ -1898,6 +1938,14 @@ imp_job2 <- a$imports$submit_import(
 print(imp_job2)
 ```
 
+## Reload import job
+
+In order to refresh the import job object and get the up to date info about its state, you can always call the `reload()` function:
+
+```{r}
+imp_job1$reload()
+```
+
 # Exports
 
 ### List file exports into the volumes
@@ -1989,6 +2037,14 @@ exp_job2 <- a$exports$submit_export(
 
 # print export job info
 print(exp_job2)
+```
+
+## Reload export job
+
+In order to refresh the export job object and get the up to date info about its state, you can always call the `reload()` function:
+
+```{r}
+exp_job1$reload()
 ```
 
 # Tasks
@@ -2215,6 +2271,14 @@ them and start the execution immediately.
 ```{r} 
 # Rerun task
 draft_task$rerun()
+```
+
+## Reload task
+
+In order to refresh the task object and get the up to date info about its status, you can always call the `reload()` function:
+
+```{r}
+draft_task$reload()
 ```
 
 ## Delete task
