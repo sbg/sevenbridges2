@@ -26,6 +26,23 @@ credentials_path <- testthat::test_path(
 setup_auth_object <-
   Auth$new(from = "file", config_file = credentials_path)
 
+# Rate limit object
+rate_limit_res <- list(
+  rate = list(
+    limit = 1000,
+    remaining = 990,
+    reset = 1693846218
+  ),
+  instance = list(
+    limit = -1,
+    remaining = 987654342
+  )
+)
+setup_rate_limit_obj <- asRate(
+  x = rate_limit_res,
+  auth = setup_auth_object
+)
+
 # User obj
 user_res <- list(
   username = "luna_lovegood",
