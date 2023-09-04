@@ -9,6 +9,8 @@ R6 Class representing a resource for managing files' uploads.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
+\item{\code{URL}}{URL endpoint fields}
+
 \item{\code{upload_id}}{Upload ID received after upload initialization.}
 
 \item{\code{path}}{Relative or absolute path to the file on the local disc.}

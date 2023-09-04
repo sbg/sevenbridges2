@@ -9,6 +9,8 @@ R6 Class representing a resource for managing parts of the files' uploads.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
+\item{\code{URL}}{URL endpoint fields}
+
 \item{\code{part_number}}{Part number.}
 
 \item{\code{part_size}}{Part size.}

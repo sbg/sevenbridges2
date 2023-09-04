@@ -14,18 +14,17 @@ VolumeFileCollection <- R6::R6Class(
   public = list(
     #' @description Create new VolumeFileCollection object.
     #' @importFrom checkmate assert_list
-    #' @param items Items representing volume files.
-    #' @param prefixes Prefixes (folders) in volume content response.
+    #' @param res Response containing VolumeFileCollection object information.
     #' @param ... Other arguments.
-    initialize = function(items = NA, prefixes = NA, ...) {
+    initialize = function(res = NA, ...) {
       # Initialize Collection class
       super$initialize(...)
 
-      checkmate::assert_list(items, null.ok = FALSE)
-      checkmate::assert_list(prefixes, null.ok = FALSE)
+      checkmate::assert_list(res$items, null.ok = FALSE)
+      checkmate::assert_list(res$prefixes, null.ok = FALSE)
 
       self$items <- asVolumeFileList(
-        x = append(items, prefixes),
+        x = append(res$items, res$prefixes),
         auth = self$auth
       )
     },
@@ -66,8 +65,7 @@ VolumeFileCollection <- R6::R6Class(
     load = function(res, auth) {
       self$initialize(
         href = res$href,
-        items = res$items,
-        prefixes = res$prefixes,
+        res = res,
         links = res$links,
         auth = auth,
         response = attr(res, "response")
@@ -79,11 +77,10 @@ VolumeFileCollection <- R6::R6Class(
 
 # nocov start
 # Helper function for creating VolumeFileCollection objects
-asVolumeFileCollection <- function(x, auth = NULL) {
+asVolumeFileCollection <- function(x = NULL, auth = NULL) {
   VolumeFileCollection$new(
     href = x$href,
-    items = x$items,
-    prefixes = x$prefixes,
+    res = x,
     links = x$links,
     auth = auth,
     response = attr(x, "response")

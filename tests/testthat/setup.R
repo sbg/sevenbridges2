@@ -248,7 +248,7 @@ setup_volume_file_dir_obj <- asVolumeFile(
 )
 
 # VolumeFileCollection object
-setup_volfile_collection_obj <- VolumeFileCollection$new(
+vol_file_collection_res <- list(
   href = "some-href",
   items = list(
     list(
@@ -274,7 +274,10 @@ setup_volfile_collection_obj <- VolumeFileCollection$new(
     volume = "my_s3_volume"
   )),
   links = list(list("next" = "link-to-next-page")),
-  response = list(raw = "raw-response-list"),
+  response = list(raw = "raw-response-list")
+)
+setup_volfile_collection_obj <- asVolumeFileCollection(
+  x = vol_file_collection_res,
   auth = setup_auth_object
 )
 

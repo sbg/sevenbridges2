@@ -31,15 +31,13 @@ R6 Class representing a resource for managing volume files collections.
 \subsection{Method \code{new()}}{
 Create new VolumeFileCollection object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{VolumeFileCollection$new(items = NA, prefixes = NA, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{VolumeFileCollection$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{items}}{Items representing volume files.}
-
-\item{\code{prefixes}}{Prefixes (folders) in volume content response.}
+\item{\code{res}}{Response containing VolumeFileCollection object information.}
 
 \item{\code{...}}{Other arguments.}
 }
