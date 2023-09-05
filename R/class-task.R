@@ -14,7 +14,7 @@ Task <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
-      "reload" = "tasks/{id}",
+      "get" = "tasks/{id}",
       "run" = "tasks/{self$id}/actions/run",
       "abort" = "tasks/{self$id}/actions/abort",
       "clone" = "tasks/{self$id}/actions/clone",

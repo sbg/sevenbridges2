@@ -14,7 +14,7 @@ File <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
-      "reload" = "files/{id}",
+      "get" = "files/{id}",
       "file" = "files/{self$id}",
       "add_tag" = "files/{self$id}/tags",
       "copy" = "files/{self$id}/actions/copy",

@@ -37,6 +37,9 @@ Item <- R6::R6Class(
     #' @param ... Other query parameters.
     #' @importFrom rlang abort
     reload = function(cls, ...) {
+      if (is_missing(cls)) {
+        rlang::abort("Please provide cls parameter!")
+      }
       if (!is_missing(self$href)) {
         reload_url <- self$href
       } else {
@@ -51,7 +54,7 @@ Item <- R6::R6Class(
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
-        path = glue::glue(cls$URL[["reload"]]),
+        path = glue::glue(cls$URL[["get"]]),
         ...
       )
       res <- status_check(res)

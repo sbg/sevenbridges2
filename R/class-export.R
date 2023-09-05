@@ -14,7 +14,7 @@ Export <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
-      "reload" = "storage/exports/{id}"
+      "get" = "storage/exports/{id}"
     ),
     #' @field id String. Export job identifier.
     id = NULL,

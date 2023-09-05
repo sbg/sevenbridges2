@@ -15,7 +15,7 @@ Project <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
-      "reload" = "projects/{id}",
+      "get" = "projects/{id}",
       "project" = "projects/{self$id}",
       "members" = "projects/{self$id}/members",
       "member" = "projects/{self$id}/members/{username}",

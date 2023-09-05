@@ -14,7 +14,7 @@ App <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
-      "reload" = "apps/{id}/{revision}",
+      "get" = "apps/{id}/{revision}",
       "get_revision" = "apps/{self$id}/{revision}",
       "create_revision" = "apps/{self$id}/{revision}/raw",
       "copy" = "apps/{id}/actions/copy",

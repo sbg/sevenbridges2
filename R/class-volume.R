@@ -14,7 +14,7 @@ Volume <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
-      "reload" = "storage/volumes/{id}",
+      "get" = "storage/volumes/{id}",
       "volume" = "storage/volumes/{self$id}",
       "list" = "storage/volumes/{self$id}/list",
       "volume_file" = "storage/volumes/{self$id}/object",

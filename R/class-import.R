@@ -14,7 +14,7 @@ Import <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
-      "reload" = "storage/imports/{id}"
+      "get" = "storage/imports/{id}"
     ),
     #' @field id String. Import job identifier.
     id = NULL,

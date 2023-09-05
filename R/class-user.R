@@ -13,7 +13,7 @@ User <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
-      "user" = "user"
+      "get" = "user"
     ),
     #' @field username User name.
     username = NULL,

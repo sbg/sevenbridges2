@@ -15,7 +15,7 @@ Billing <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
-      "reload" = "billing/groups/{id}",
+      "get" = "billing/groups/{id}",
       "breakdown_analysis" = "billing/groups/{self$id}/breakdown/analysis",
       "storage_breakdown" = "billing/groups/{self$id}/breakdown/storage",
       "egress_breakdown" = "billing/groups/{self$id}/breakdown/egress"

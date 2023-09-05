@@ -15,7 +15,7 @@ Invoice <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
-      "reload" = "billing/invoices/{id}"
+      "get" = "billing/invoices/{id}"
     ),
     #' @field id Invoice identifier.
     id = NULL,
