@@ -15,6 +15,8 @@ This is main object for Users.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
+\item{\code{URL}}{URL endpoint fields}
+
 \item{\code{username}}{User name.}
 
 \item{\code{email}}{User's email address.}
@@ -49,6 +51,7 @@ with.}
 \itemize{
 \item \href{#method-User-new}{\code{User$new()}}
 \item \href{#method-User-print}{\code{User$print()}}
+\item \href{#method-User-reload}{\code{User$reload()}}
 \item \href{#method-User-clone}{\code{User$clone()}}
 }
 }
@@ -58,55 +61,15 @@ with.}
 \subsection{Method \code{new()}}{
 Create a new User object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{User$new(
-  username = NA,
-  email = NA,
-  first_name = NA,
-  last_name = NA,
-  affiliation = NA,
-  phone = NA,
-  address = NA,
-  city = NA,
-  state = NA,
-  country = NA,
-  zip_code = NA,
-  role = NA,
-  tags = NA,
-  ...
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{User$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{username}}{User name.}
+\item{\code{res}}{Response containing User object information.}
 
-\item{\code{email}}{User's email address.}
-
-\item{\code{first_name}}{User's first name.}
-
-\item{\code{last_name}}{User's last name.}
-
-\item{\code{affiliation}}{The company or the institute the user is affiliated
-with.}
-
-\item{\code{phone}}{User's phone number.}
-
-\item{\code{address}}{User's residential address.}
-
-\item{\code{city}}{User's city of residence.}
-
-\item{\code{state}}{User's state of residence.}
-
-\item{\code{country}}{User's country of residence.}
-
-\item{\code{zip_code}}{Zip code for the user's residence.}
-
-\item{\code{role}}{User's role.}
-
-\item{\code{tags}}{Platform tags associated with the user.}
-
-\item{\code{...}}{Additional arguments.}
+\item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -123,6 +86,26 @@ Print user information as bullet list
 \if{html}{\out{<div class="r">}}\preformatted{User$print()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-User-reload"></a>}}
+\if{latex}{\out{\hypertarget{method-User-reload}{}}}
+\subsection{Method \code{reload()}}{
+Reload User
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{User$reload(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other query parameters.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+User
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-User-clone"></a>}}

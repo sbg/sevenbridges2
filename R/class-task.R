@@ -14,11 +14,12 @@ Task <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
-      "run" = "tasks/{id}/actions/run",
-      "abort" = "tasks/{id}/actions/abort",
-      "clone" = "tasks/{id}/actions/clone",
-      "execution_details" = "tasks/{id}/execution_details",
-      "task" = "tasks/{id}"
+      "get" = "tasks/{id}",
+      "run" = "tasks/{self$id}/actions/run",
+      "abort" = "tasks/{self$id}/actions/abort",
+      "clone" = "tasks/{self$id}/actions/clone",
+      "execution_details" = "tasks/{self$id}/execution_details",
+      "task" = "tasks/{self$id}"
     ),
     #' @field id String. The ID of the task.
     id = NULL,
@@ -91,106 +92,38 @@ Task <- R6::R6Class(
     output_location = NULL,
     #'
     #' @description Initialize Task class
-    #' @param id String. The ID of the task.
-    #' @param name String. The name of the task.
-    #' @param status String. Task status (different from execution_status).
-    #' Allowed values:
-    #' * QUEUED
-    #' * DRAFT
-    #' * RUNNING
-    #' * COMPLETED
-    #' * ABORTED
-    #' * FAILED
-    #' @param description String. An optional description of a task.
-    #' @param project String. Identifier of the project that
-    #' the task is located in.
-    #' @param app String. The identifier of the app that was used for the task.
-    #' @param created_by String. Username of the task creator.
-    #' @param executed_by String. Username of the task executor.
-    #' @param created_on String. The time when the task was created.
-    #' @param start_time String. Task start time.
-    #' @param end_time String. Task end time.
-    #' @param origin String. Id of the entity that created the task, e.g.
-    #' automation run, if task was created by an automation run.
-    #' @param use_interruptable_instances Boolean. This field can be TRUE or
-    #' FALSE. Set this field to TRUE to allow the use of spot instances.
-    #' @param batch Boolean. TRUE for batch tasks, FALSE for regular & child
-    #' tasks (batch this task; if FALSE, will not create a batch task).
-    #' @param batch_by List. Batching criteria.
-    #' @param batch_group List. Batch group for a batch task. Represents the
-    #' group that is assigned to the child task from the batching criteria that
-    #'  was used when the task was started.
-    #' @param batch_input String. Input identifier on to which to apply
-    #' batching.
-    #' @param batch_parent String. Parent task for a batch child. (batch task
-    #' which is the parent of this task).
-    #' @param execution_settings List. Execution settings for the task.
-    #' @param execution_status List. Task execution status. (info about current
-    #' execution status)
-    #' @param errors List. Validations errors stored as a high-level errors
-    #' array property in the API response.
-    #' @param warnings List. Validation warnings from API response.
-    #' @param price List. Task cost. (contains amount and currency)
-    #' @param inputs List. Inputs that were submitted to the task.
-    #' @param outputs List. Generated outputs from the task.
-    #' @param output_location List. Location where task outputs will be stored.
-    #' @param ... Other api parameters.
-    initialize = function(id = NA,
-                          name = NA,
-                          status = NA,
-                          description = NA,
-                          project = NA,
-                          app = NA,
-                          created_by = NA,
-                          executed_by = NA,
-                          created_on = NA,
-                          start_time = NA,
-                          end_time = NA,
-                          origin = NA,
-                          use_interruptable_instances = NA,
-                          batch = NA,
-                          batch_by = NA,
-                          batch_group = NA,
-                          batch_input = NA,
-                          batch_parent = NA,
-                          execution_settings = NA,
-                          execution_status = NA,
-                          errors = NA,
-                          warnings = NA,
-                          price = NA,
-                          inputs = NA,
-                          outputs = NA,
-                          output_location = NA,
-                          ...) {
+    #' @param res Response containing Task object information.
+    #' @param ... Other arguments.
+    initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
-      self$id <- id
-      self$name <- name
-      self$status <- status
-      self$description <- description
-      self$project <- project
-      self$app <- app
-      self$created_by <- created_by
-      self$executed_by <- executed_by
-      self$created_on <- created_on
-      self$start_time <- start_time
-      self$end_time <- end_time
-      self$origin <- origin
+      self$id <- res$id
+      self$name <- res$name
+      self$status <- res$status
+      self$description <- res$description
+      self$project <- res$project
+      self$app <- res$app
+      self$created_by <- res$created_by
+      self$executed_by <- res$executed_by
+      self$created_on <- res$created_on
+      self$start_time <- res$start_time
+      self$end_time <- res$end_time
+      self$origin <- res$origin
       self$use_interruptable_instances <-
-        use_interruptable_instances
-      self$batch <- batch
-      self$batch_by <- batch_by
-      self$batch_group <- batch_group
-      self$batch_input <- batch_input
-      self$batch_parent <- batch_parent
-      self$execution_settings <- execution_settings
-      self$execution_status <- execution_status
-      self$errors <- errors
-      self$warnings <- warnings
-      self$inputs <- private$map_input_output(inputs)
-      self$outputs <- private$map_input_output(outputs)
-      self$output_location <- output_location
+        res$use_interruptable_instances
+      self$batch <- res$batch
+      self$batch_by <- res$batch_by
+      self$batch_group <- res$batch_group
+      self$batch_input <- res$batch_input
+      self$batch_parent <- res$batch_parent
+      self$execution_settings <- res$execution_settings
+      self$execution_status <- res$execution_status
+      self$errors <- res$errors
+      self$warnings <- res$warnings
+      self$inputs <- private$map_input_output(res$inputs)
+      self$outputs <- private$map_input_output(res$outputs)
+      self$output_location <- res$output_location
     },
 
     #' @description Print method for Task class.
@@ -226,6 +159,17 @@ Task <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+    #' @description
+    #' Reload Task.
+    #' @param ... Other query parameters.
+    #' @return Task
+    reload = function(...) {
+      super$reload(
+        cls = self,
+        ...
+      )
+      rlang::inform("Task object is refreshed!")
+    },
     #' @description This call runs (executes) the task. Only tasks whose status
     #' is "DRAFT" can be run.
     #'
@@ -250,7 +194,6 @@ Task <- R6::R6Class(
       checkmate::assert_logical(in_place, null.ok = FALSE)
 
       # nocov start
-      id <- self$id
       path <- glue::glue(self$URL[["run"]])
 
       params <- list()
@@ -278,33 +221,8 @@ Task <- R6::R6Class(
 
       if (in_place) {
         self$initialize(
+          res = res,
           href = res$href,
-          id = res$id,
-          name = res$name,
-          status = res$status,
-          description = res$description,
-          project = res$project,
-          app = res$app,
-          created_by = res$created_by,
-          executed_by = res$executed_by,
-          created_on = res$created_on,
-          start_time = res$start_time,
-          end_time = res$end_time,
-          origin = res$origin,
-          use_interruptable_instances =
-            res$use_interruptable_instances,
-          batch = res$batch,
-          batch_by = res$batch_by,
-          batch_group = res$batch_group,
-          batch_input = res$batch_input,
-          batch_parent = res$batch_parent,
-          execution_settings = res$execution_settings,
-          execution_status = res$execution_status,
-          errors = res$errors,
-          warnings = res$warnings,
-          inputs = private$map_input_output(res$inputs),
-          outputs = private$map_input_output(res$outputs),
-          output_location = res$output_location,
           auth = self$auth,
           response = attr(res, "response")
         )
@@ -323,7 +241,6 @@ Task <- R6::R6Class(
       checkmate::assert_logical(in_place, null.ok = FALSE)
 
       # nocov start
-      id <- self$id
       path <- glue::glue(self$URL[["abort"]])
 
       res <- sevenbridges2::api(
@@ -343,33 +260,8 @@ Task <- R6::R6Class(
 
       if (in_place) {
         self$initialize(
+          res = res,
           href = res$href,
-          id = res$id,
-          name = res$name,
-          status = res$status,
-          description = res$description,
-          project = res$project,
-          app = res$app,
-          created_by = res$created_by,
-          executed_by = res$executed_by,
-          created_on = res$created_on,
-          start_time = res$start_time,
-          end_time = res$end_time,
-          origin = res$origin,
-          use_interruptable_instances =
-            res$use_interruptable_instances,
-          batch = res$batch,
-          batch_by = res$batch_by,
-          batch_group = res$batch_group,
-          batch_input = res$batch_input,
-          batch_parent = res$batch_parent,
-          execution_settings = res$execution_settings,
-          execution_status = res$execution_status,
-          errors = res$errors,
-          warnings = res$warnings,
-          inputs = private$map_input_output(res$inputs),
-          outputs = private$map_input_output(res$outputs),
-          output_location = res$output_location,
           auth = self$auth,
           response = attr(res, "response")
         )
@@ -395,7 +287,6 @@ Task <- R6::R6Class(
           action <- "run"
         }
       }
-      id <- self$id
       path <- glue::glue(self$URL[["clone"]])
 
       params <- list("action" = action)
@@ -437,7 +328,6 @@ Task <- R6::R6Class(
     #' fields etc.
     get_execution_details = function(...) {
       # nocov start
-      id <- self$id
       path <- glue::glue(self$URL[["execution_details"]])
 
       res <- sevenbridges2::api(
@@ -537,7 +427,6 @@ Task <- R6::R6Class(
     #' a subset of fields to include in the response.
     delete = function(...) {
       # nocov start
-      id <- self$id
       path <- glue::glue(self$URL[["task"]])
 
       res <- sevenbridges2::api(
@@ -560,7 +449,6 @@ Task <- R6::R6Class(
     #' a subset of fields to include in the response.
     rerun = function(...) {
       # nocov start
-      id <- self$id
       path <- glue::glue(self$URL[["clone"]])
 
       self$clone_task(run = TRUE)
@@ -684,9 +572,8 @@ Task <- R6::R6Class(
 
       task_data[["execution_settings"]] <- execution_settings
       task_data[["batch"]] <- batch
-      # nocov start
-      id <- self$id
 
+      # nocov start
       res <- sevenbridges2::api(
         path = glue::glue(self$URL[["task"]]),
         method = "PATCH",
@@ -704,33 +591,8 @@ Task <- R6::R6Class(
       )
 
       self$initialize(
+        res = res,
         href = res$href,
-        id = res$id,
-        name = res$name,
-        status = res$status,
-        description = res$description,
-        project = res$project,
-        app = res$app,
-        created_by = res$created_by,
-        executed_by = res$executed_by,
-        created_on = res$created_on,
-        start_time = res$start_time,
-        end_time = res$end_time,
-        origin = res$origin,
-        use_interruptable_instances =
-          res$use_interruptable_instances,
-        batch = res$batch,
-        batch_by = res$batch_by,
-        batch_group = res$batch_group,
-        batch_input = res$batch_input,
-        batch_parent = res$batch_parent,
-        execution_settings = res$execution_settings,
-        execution_status = res$execution_status,
-        errors = res$errors,
-        warnings = res$warnings,
-        inputs = private$map_input_output(res$inputs),
-        outputs = private$map_input_output(res$outputs),
-        output_location = res$output_location,
         auth = self$auth,
         response = attr(res, "response")
       )
@@ -794,37 +656,12 @@ Task <- R6::R6Class(
 
 # nocov start
 # Helper function for creating Task objects
-asTask <- function(x, auth = NULL) {
+asTask <- function(x = NULL, auth = NULL) {
   Task$new(
+    res = x,
     href = x$href,
-    id = x$id,
-    name = x$name,
-    status = x$status,
-    description = x$description,
-    project = x$project,
-    app = x$app,
-    created_by = x$created_by,
-    executed_by = x$executed_by,
-    created_on = x$created_on,
-    start_time = x$start_time,
-    end_time = x$end_time,
-    origin = x$origin,
-    use_interruptable_instances = x$use_interruptable_instances,
-    batch = x$batch,
-    batch_by = x$batch_by,
-    batch_group = x$batch_group,
-    batch_input = x$batch_input,
-    batch_parent = x$batch_parent,
-    execution_settings = x$execution_settings,
-    execution_status = x$execution_status,
-    errors = x$errors,
-    warnings = x$warnings,
-    price = x$price,
-    inputs = x$inputs,
-    outputs = x$outputs,
-    output_location = x$output_location,
-    auth = auth,
-    response = attr(x, "response")
+    response = attr(x, "response"),
+    auth = auth
   )
 }
 

@@ -14,6 +14,7 @@ File <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
+      "get" = "files/{id}",
       "file" = "files/{self$id}",
       "add_tag" = "files/{self$id}/tags",
       "copy" = "files/{self$id}/actions/copy",
@@ -52,43 +53,26 @@ File <- R6::R6Class(
     secondary_files = NULL,
 
     #' @description Create a new File object.
-    #' @param id Character used as file ID.
-    #' @param name String used as file name.
-    #' @param size File size.
-    #' @param project Project ID if any, when returned by an API call.
-    #' @param parent Parent folder ID.
-    #' @param type `File` or `"Folder"`.
-    #' @param created_on Date created on.
-    #' @param modified_on Date modified on.
-    #' @param storage List as storage type.
-    #' @param origin List as origin.
-    #' @param tags List as tags.
-    #' @param metadata  List for metadata associated with the file.
-    #' @param url  File download url.
-    #' @param secondary_files Secondary files
+    #' @param res Response containing File object information.
     #' @param ... Other arguments.
-    initialize = function(id = NA, name = NA, size = NA, project = NA,
-                          parent = NA, type = NA, created_on = NA,
-                          modified_on = NA, storage = NA, origin = NA,
-                          tags = NA, metadata = NA, url = NA,
-                          secondary_files = NA, ...) {
+    initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
-      self$id <- id
-      self$name <- name
-      self$size <- size
-      self$project <- project
-      self$parent <- parent
-      self$type <- type
-      self$created_on <- created_on
-      self$modified_on <- modified_on
-      self$storage <- storage
-      self$origin <- origin
-      self$tags <- tags
-      self$metadata <- metadata
-      self$url <- url
-      self$secondary_files <- private$get_secondary_files(secondary_files)
+      self$id <- res$id
+      self$name <- res$name
+      self$size <- res$size
+      self$project <- res$project
+      self$parent <- res$parent
+      self$type <- res$type
+      self$created_on <- res$created_on
+      self$modified_on <- res$modified_on
+      self$storage <- res$storage
+      self$origin <- res$origin
+      self$tags <- res$tags
+      self$metadata <- res$metadata
+      self$url <- res$url
+      self$secondary_files <- private$get_secondary_files(res$secondary_files)
     },
 
     # nocov start
@@ -209,7 +193,17 @@ File <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
-
+    #' @description
+    #' Reload File.
+    #' @param ... Other query parameters.
+    #' @return File
+    reload = function(...) {
+      super$reload(
+        cls = self,
+        ...
+      )
+      rlang::inform("File object is refreshed!")
+    }, # nocov end
     #' @description
     #' Updates the name, the full set metadata, and tags
     #' for a specified file.
@@ -231,7 +225,7 @@ File <- R6::R6Class(
       checkmate::assert_string(name, null.ok = TRUE)
       check_tags(tags)
       check_metadata(metadata)
-
+      # nocov start
       body <- list(
         "name" = name,
         "tags" = tags,
@@ -258,23 +252,12 @@ File <- R6::R6Class(
 
       # Reload object
       self$initialize(
+        res = res,
         href = res$href,
-        id = res$id,
-        name = res$name,
-        size = res$size,
-        project = res$project,
-        parent = res$parent,
-        type = res$type,
-        created_on = res$created_on,
-        modified_on = res$modified_on,
-        storage = res$storage,
-        origin = res$origin,
-        metadata = res$metadata,
-        tags = res$tags,
-        auth = auth,
-        response = attr(res, "response")
+        response = attr("response", res),
+        auth = self$auth
       )
-    },
+    }, # nocov end
 
     #' @description
     #' This method allows you to tag files on the Platform. You can tag your
@@ -300,7 +283,7 @@ File <- R6::R6Class(
 
       check_tags(tags)
       checkmate::assert_logical(overwrite)
-
+      # nocov start
       if (overwrite) {
         body <- tags
       } else {
@@ -324,7 +307,7 @@ File <- R6::R6Class(
       } else {
         self$tags <- unique(c(self$tags, tags))
       }
-    },
+    }, # nocov end
 
     #' @description
     #' This call copies the specified file to a new project. Files retain their
@@ -355,7 +338,7 @@ File <- R6::R6Class(
       }
       project_id <- check_and_transform_id(project, "Project")
       checkmate::assert_string(name, null.ok = TRUE)
-
+      # nocov start
       body <- list(
         project = project_id,
         name = name
@@ -420,7 +403,7 @@ File <- R6::R6Class(
       self$metadata <- DescTools::StripAttr(res, attr_names = "response")
 
       return(self$metadata)
-    },
+    }, # nocov end
 
     #' @description
     #' This call changes the metadata values for the specified file.
@@ -444,7 +427,7 @@ File <- R6::R6Class(
 
       check_metadata(metadata_fields)
       checkmate::assert_logical(overwrite)
-
+      # nocov start
       body <- metadata_fields
 
       if (overwrite) {
@@ -467,7 +450,7 @@ File <- R6::R6Class(
       self$metadata <- DescTools::StripAttr(res, attr_names = "response")
 
       return(self$metadata)
-    },
+    }, # nocov end
 
     #' @description
     #' This call moves a file from one folder to another. Moving of files is
@@ -494,7 +477,7 @@ File <- R6::R6Class(
       parent_id <- check_and_transform_id(parent, "File")
 
       checkmate::assert_string(name, null.ok = TRUE)
-
+      # nocov start
       body <- list(
         parent = parent_id,
         name = name
@@ -565,7 +548,7 @@ File <- R6::R6Class(
         msg <- httr::content(res, as = "parsed")$message
         rlang::abort(glue::glue("HTTP Status {res$status_code} : {msg}"))
       }
-    },
+    }, # nocov end
     #' @description Download method for File class. It allows download a
     #' platform file to your local computer. To specify the destination for
     #' your download, you should provide the path to the destination directory
@@ -598,6 +581,7 @@ File <- R6::R6Class(
       check_retry_params(retry_count, parameter_to_validate = "count")
       check_retry_params(retry_timeout, parameter_to_validate = "timeout")
 
+      # nocov start
       # create full destination path for download
       destfile <- file.path(directory_path, filename)
 
@@ -702,6 +686,10 @@ File <- R6::R6Class(
         properties = properties,
         ...
       )
+      # nolint start
+      rlang::inform(glue::glue_col("File {green {self$name}} has been exported to the {green {destination_volume}} volume.
+                                   Please, reload file object to fetch updated information."))
+      # nolint end
     }
   ),
   private = list(
@@ -720,24 +708,12 @@ File <- R6::R6Class(
 )
 
 # Helper function for creating File objects
-asFile <- function(x, auth = NULL) {
+asFile <- function(x = NULL, auth = NULL) {
   File$new(
+    res = x,
     href = x$href,
-    id = x$id,
-    name = x$name,
-    size = x$size,
-    project = x$project,
-    parent = x$parent,
-    type = x$type,
-    created_on = x$created_on,
-    modified_on = x$modified_on,
-    storage = x$storage,
-    origin = x$origin,
-    metadata = x$metadata,
-    tags = x$tags,
-    secondary_files = x$secondary_files,
-    auth = auth,
-    response = attr(x, "response")
+    response = attr(x, "response"),
+    auth = auth
   )
 }
 

@@ -25,43 +25,31 @@ Rate <- R6::R6Class(
     #' instance limit. It consists of the following fields:
     #' \itemize{
     #' \item `limit` Indicates the total number of instances available
-    #' to the user.
+    #' to the user. For the first few months, instance limits are unlimited.
+    #' This is indicated by a special limit of -1. Correspondingly, the
+    #' remaining value is high.
     #' \item `remaining` Indicates the number of the instances that are
-    #' available at the moment.
+    #' available at the moment. For the first few months, instance limits are
+    #' unlimited. This is indicated by a high remaining value. Correspondingly,
+    #' the limit is set to a special value of -1.
     #' }
     instance = NULL,
     #' @description
     #' Create a new rate limit object.
-    #' @param limit Indicates how many requests can be made in five minutes.
-    #' @param remaining Indicates how many requests remain.
-    #' @param reset Indicates the time when the request rate limit will be
-    #' reset.
-    #' @param instance_limit Indicates the total number of instances available
-    #' to the user. For the first few months, instance limits are unlimited.
-    #' This is indicated by a special limit of -1. Correspondingly, the
-    #' remaining value is high.
-    #' @param instance_remaining Indicates the number of the instances that are
-    #' available at the moment. For the first few months, instance limits are
-    #' unlimited. This is indicated by a high remaining value. Correspondingly,
-    #' the limit is set to a special value of -1.
+    #' @param res Response containing Rate limit object info.
     #' @param ... Other arguments passed to methods.
-    initialize = function(limit = NA,
-                          remaining = NA,
-                          reset = NA,
-                          instance_limit = NA,
-                          instance_remaining = NA,
-                          ...) {
+    initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
       # Rate
-      self$rate$limit <- limit
-      self$rate$remaining <- remaining
-      self$rate$reset <- reset
+      self$rate$limit <- res$rate$limit
+      self$rate$remaining <- res$rate$remaining
+      self$rate$reset <- parse_time(reset_time_as_unix_epoch = res$rate$reset)
 
       # Instance
-      self$instance$limit <- instance_limit
-      self$instance$remaining <- instance_remaining
+      self$instance$limit <- res$instance$limit
+      self$instance$remaining <- res$instance$remaining
     },
     # nocov start
     #' @description
@@ -112,13 +100,9 @@ Rate <- R6::R6Class(
 )
 
 # Helper function for creating Rate objects
-asRate <- function(x, auth = NULL) {
+asRate <- function(x = NULL, auth = NULL) {
   Rate$new(
-    limit = x$rate$limit,
-    remaining = x$rate$remaining,
-    reset = parse_time(reset_time_as_unix_epoch = x$rate$reset),
-    instance_limit = x$instance$limit,
-    instance_remaining = x$instance$remaining,
+    res = x,
     href = x$href,
     auth = auth,
     response = attr(x, "response")

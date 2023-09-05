@@ -1,24 +1,17 @@
 test_that("Rate class initialization works", {
-  rate_limit_response <- testthat::test_path(
-    "test_data",
-    "rate_limit_response.RDS"
+  # Item object creation works
+  testthat::expect_no_error(asRate(auth = setup_auth_object))
+
+  # Item object class and methods are set
+  checkmate::assert_r6(
+    setup_rate_limit_obj,
+    classes = c("Item", "Rate"),
+    public = c(
+      "rate", "instance", "print"
+    )
   )
-  test_ratelimit_response <- readRDS(rate_limit_response)
+})
 
-  rate_limit_test_obj <- asRate(test_ratelimit_response)
-
-  testthat::expect_true(checkmate::test_class(rate_limit_test_obj,
-    classes =
-      c("Rate", "Item", "R6")
-  ))
-
-  # Check if all the expected fields are filled
-  testthat::expect_equal(rate_limit_test_obj$rate$limit, 1000L)
-  testthat::expect_equal(rate_limit_test_obj$rate$remaining, 1000L)
-  testthat::expect_equal(
-    rate_limit_test_obj$rate$reset,
-    parse_time(test_ratelimit_response$rate$reset)
-  )
-  testthat::expect_equal(rate_limit_test_obj$instance$limit, 25L)
-  testthat::expect_equal(rate_limit_test_obj$instance$remaining, 25L)
+test_that("Rate print method works", {
+  testthat::expect_snapshot(setup_rate_limit_obj$print())
 })

@@ -20,23 +20,17 @@ Member <- R6::R6Class(
     #' @field permissions Member's permissions.
     permissions = NULL,
     #' @description Create a new Member object.
-    #' @param id Member's id - same as username.
-    #' @param username Member's username - same as id.
-    #' @param email Member's email.
-    #' @param type Type of membership. Default value is `USER`.
-    #' @param permissions Member's permissions within a project.
-    #' Should be an object of class Permission.
+    #' @param res Response containing Member object information.
     #' @param ... Other arguments.
-    initialize = function(id = NA, username = NA, email = NA, type = NA,
-                          permissions = NA, ...) {
+    initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
-      self$id <- id
-      self$username <- username
-      self$email <- email
-      self$type <- type
-      self$permissions <- permissions
+      self$id <- res$id
+      self$username <- res$username
+      self$email <- res$email
+      self$type <- res$type
+      self$permissions <- res$permissions
     },
     #' @description Print method for Member class.
     #' @importFrom purrr discard
@@ -76,18 +70,19 @@ Member <- R6::R6Class(
 
       # Close container elements
       cli::cli_end()
+    },
+    #' @description
+    #' Reload Member.
+    reload = function() {
+      rlang::inform("Reloading Member objects is not possible.")
     }
   )
 )
 # nocov start
 # Helper function for creating Member objects
-asMember <- function(x, auth = NULL) {
+asMember <- function(x = NULL, auth = NULL) {
   Member$new(
-    id = x$id,
-    username = x$username,
-    email = x$email,
-    type = x$type,
-    permissions = asPermission(x$permissions, auth = auth),
+    res = x,
     href = x$href,
     auth = auth,
     response = attr(x, "response")

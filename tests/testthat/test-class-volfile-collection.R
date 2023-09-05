@@ -1,7 +1,7 @@
 test_that("VolumeFileCollection initialization works", {
   # VolumeFileCollection object creation works
-  testthat::expect_error(VolumeFileCollection$new(auth = setup_auth_object),
-    regexp = "Assertion on 'items' failed: Must be of type 'list', not 'logical'.", # nolint
+  testthat::expect_error(asVolumeFileCollection(auth = setup_auth_object),
+    regexp = "Assertion on 'res$items' failed: Must be of type 'list', not 'NULL'.", # nolint
     fixed = TRUE
   )
 
@@ -22,14 +22,12 @@ test_that("VolumeFileCollection initialization works", {
 })
 
 test_that("VolumeFileCollection's pagination methods throw error when needed", { # nolint
-  volfile_collection_obj <- VolumeFileCollection$new(
-    href = "some-href",
-    items = list(),
-    prefixes = list(),
-    links = list(),
-    response = list(raw = "raw-response-list"),
-    auth = setup_auth_object
-  )
+
+  volfile_collection_obj <- setup_volfile_collection_obj$clone()
+  # Empty items, prefixes and links
+  volfile_collection_obj$items <- list()
+  volfile_collection_obj$links <- list()
+
   testthat::expect_error(volfile_collection_obj$next_page(),
     regexp = "No more entries to be returned.",
     fixed = TRUE

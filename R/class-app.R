@@ -14,12 +14,13 @@ App <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
-      "get_revision" = "apps/{id}/{revision}",
-      "create_revision" = "apps/{id}/{revision}/raw",
+      "get" = "apps/{id}/{revision}",
+      "get_revision" = "apps/{self$id}/{revision}",
+      "create_revision" = "apps/{self$id}/{revision}/raw",
       "copy" = "apps/{id}/actions/copy",
-      "sync" = "apps/{id}/actions/sync"
+      "sync" = "apps/{self$id}/actions/sync"
     ),
-    #' @field id Character used as an app ID.
+    #' @field id Character used as an app ID - short app name.
     id = NULL,
     #' @field project Project ID if any, when returned by an API call.
     project = NULL,
@@ -34,26 +35,23 @@ App <- R6::R6Class(
     #' @field raw App's raw CWL (JSON or YAML).
     raw = NULL,
     #' @description Create a new App object.
-    #' @param id Character used as an app ID.
-    #' @param project Project ID if any, when returned by an API call.
-    #' @param name String used as a file name.
-    #' @param revision Integer representing app's revision.
-    #' @param raw App's raw CWL (JSON or YAML).
-    #' @param copy_of The original application of which this is a copy.
-    #' @param latest_revision Integer representing app's latest revision.
+    #' @param res Response containing App object information.
     #' @param ... Other arguments.
-    initialize = function(id = NA, project = NA, name = NA, revision = NA,
-                          raw = NA, copy_of = NA, latest_revision = NA, ...) {
+    initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
-      self$id <- id
-      self$project <- project
-      self$name <- name
-      self$revision <- revision
-      self$copy_of <- copy_of
-      self$latest_revision <- latest_revision
-      self$raw <- raw
+      self$id <- sub("/[^/]*$", "", res$id)
+      self$project <- res$project
+      self$name <- res$name
+      self$revision <- res$revision
+      self$raw <- res$raw
+      self$copy_of <- ifelse(!is.null(res$raw$`sbg:copyOf`),
+        res$raw$`sbg:copyOf`, NA
+      )
+      self$latest_revision <- ifelse(!is.null(res$raw$`sbg:latestRevision`),
+        res$raw$`sbg:latestRevision`, NA
+      )
     },
     # nocov start
     #' @description Print method for App class.
@@ -83,6 +81,17 @@ App <- R6::R6Class(
 
       # Close container elements
       cli::cli_end()
+    },
+    #' @description
+    #' Reload App.
+    #' @param ... Other query parameters.
+    #' @return App.
+    reload = function(...) {
+      super$reload(
+        cls = self,
+        ...
+      )
+      rlang::inform("App object is refreshed!")
     }, # nocov end
     #' @description A method that copies the current app.
     #'
@@ -142,7 +151,7 @@ App <- R6::R6Class(
       # Use full app ID (with revision number) or omit revision number (copy
       # the latest version of the app)
       id <- ifelse(use_revision,
-        paste0(self$id, self$revision, collapse = "/"),
+        glue::glue(self$id, "/", self$revision),
         self$id
       )
 
@@ -162,7 +171,7 @@ App <- R6::R6Class(
       rlang::inform(glue::glue_col("App {green {self$name}} has been copied to {green {project}} project.")) # nolint
 
       # Return newly created app
-      asApp(res, auth = self$auth)
+      return(asApp(res, auth = self$auth))
       # nocov end
     },
     #' @description Get app's revision
@@ -186,8 +195,6 @@ App <- R6::R6Class(
       # Check in_place parameter to be logical
       checkmate::assert_logical(in_place, len = 1, any.missing = FALSE, null.ok = FALSE) # nolint
 
-
-      id <- sub("/\\d+$", "", self$id)
       path <- glue::glue(self$URL[["get_revision"]])
 
       # nocov start
@@ -203,18 +210,11 @@ App <- R6::R6Class(
 
       if (in_place) {
         self$initialize(
+          res = res,
           href = res$href,
-          id = res$id,
-          project = res$project,
-          name = res$name,
-          revision = res$revision,
-          raw = res$raw,
-          copy_of = ifelse(!is.null(res$raw$`sbg:copyOf`), res$raw$`sbg:copyOf`, NA), # nolint
-          latest_revision = ifelse(!is.null(res$raw$`sbg:latestRevision`), res$raw$`sbg:latestRevision`, NA), # nolint
-          auth = auth,
-          response = attr(res, "response")
+          response = attr(res, "response"),
+          auth = self$auth
         )
-        return(self)
       } else {
         # Return new object
         return(asApp(res, self$auth))
@@ -292,7 +292,6 @@ App <- R6::R6Class(
       }
 
       # nocov start
-      id <- sub("/\\d+$", "", self$id)
       revision <- self$latest_revision + 1
       path <- glue::glue(self$URL[["create_revision"]])
 
@@ -321,9 +320,7 @@ App <- R6::R6Class(
     #' a subset of fields to include in the response.
     #' @importFrom glue glue
     sync = function(...) {
-      id <- self$id
       path <- glue::glue(self$URL[["sync"]])
-
       res <- sevenbridges2::api(
         path = path,
         method = "POST",
@@ -338,19 +335,11 @@ App <- R6::R6Class(
 
       # Reload object
       self$initialize(
+        res = res,
         href = res$href,
-        id = res$id,
-        project = res$project,
-        name = res$name,
-        revision = res$revision,
-        raw = res$raw,
-        copy_of = ifelse(!is.null(res$raw$`sbg:copyOf`), res$raw$`sbg:copyOf`, NA), # nolint
-        latest_revision = ifelse(!is.null(res$raw$`sbg:latestRevision`), res$raw$`sbg:latestRevision`, NA), # nolint
-        auth = auth,
-        response = attr(res, "response")
+        response = attr(res, "response"),
+        auth = self$auth
       )
-
-      return(self)
     },
 
     # Create a new draft task using this app -----------------------------------
@@ -466,16 +455,10 @@ App <- R6::R6Class(
 )
 # nocov start
 # Helper function for creating App objects
-asApp <- function(x, auth = NULL) {
+asApp <- function(x = NULL, auth = NULL) {
   App$new(
+    res = x,
     href = x$href,
-    id = sub("/[^/]*$", "", x$id),
-    project = x$project,
-    name = x$name,
-    revision = x$revision,
-    raw = x$raw,
-    copy_of = ifelse(!is.null(x$raw$`sbg:copyOf`), x$raw$`sbg:copyOf`, NA),
-    latest_revision = ifelse(!is.null(x$raw$`sbg:latestRevision`), x$raw$`sbg:latestRevision`, NA), # nolint
     auth = auth,
     response = attr(x, "response")
   )

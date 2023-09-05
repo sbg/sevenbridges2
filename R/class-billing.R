@@ -13,6 +13,13 @@ Billing <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
+    #' @field URL URL endpoint fields
+    URL = list(
+      "get" = "billing/groups/{id}",
+      "breakdown_analysis" = "billing/groups/{self$id}/breakdown/analysis",
+      "storage_breakdown" = "billing/groups/{self$id}/breakdown/storage",
+      "egress_breakdown" = "billing/groups/{self$id}/breakdown/egress"
+    ),
     #' @field id Billing group identifier.
     id = NULL,
     #' @field owner Username of the user that owns the billing group.
@@ -30,36 +37,19 @@ Billing <- R6::R6Class(
 
     #' @description
     #' Create a new Billing object.
-    #' @param id  Billing group identifier.
-    #' @param owner Username of the user that owns the billing group.
-    #' @param name Billing group name.
-    #' @param type Billing group type (free or regular)
-    #' @param pending Billing group approval status. TRUE if billing group is
-    #' not yet approved, FALSE if the billing group has been approved.
-    #' @param disabled Indicator of whether the billing group is disabled.
-    #' TRUE if billing group is disabled, FALSE if its enabled.
-    #' @param balance Billing group balance.
-    #'
-    #' @param ... Additional arguments.
-    #'
-    #' @return A new Billing object.
-    initialize = function(id = NA,
-                          owner = NA,
-                          name = NA,
-                          type = NA,
-                          pending = FALSE,
-                          disabled = FALSE,
-                          balance = NA, ...) {
+    #' @param res Response containing File object information.
+    #' @param ... Other arguments.
+    initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
-      self$id <- id
-      self$owner <- owner
-      self$name <- name
-      self$type <- type
-      self$pending <- pending
-      self$disabled <- disabled
-      self$balance <- balance
+      self$id <- res$id
+      self$owner <- res$owner
+      self$name <- res$name
+      self$type <- res$type
+      self$pending <- res$pending
+      self$disabled <- res$disabled
+      self$balance <- res$balance
     },
     # nocov start
     #' @description
@@ -94,6 +84,17 @@ Billing <- R6::R6Class(
       )
       cli::cli_end()
     },
+    #' @description
+    #' Reload Billing group object.
+    #' @param ... Other query parameters.
+    #' @return Billing
+    reload = function(...) {
+      super$reload(
+        cls = self,
+        ...
+      )
+      rlang::inform("Billing group object is refreshed!")
+    },
     #' @description Method for getting a analysis breakdown for a billing group.
     #'
     #' @param offset The zero-based starting index in the entire collection of
@@ -121,7 +122,7 @@ Billing <- R6::R6Class(
       invoice_id <- check_and_transform_id(invoice_id, "Invoice")
 
       req <- sevenbridges2::api(
-        path = paste0("billing/groups/", self$id, "/breakdown/analysis"),
+        path = glue::glue(self$URL[["breakdown_analysis"]]),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -165,7 +166,7 @@ Billing <- R6::R6Class(
       invoice_id <- check_and_transform_id(invoice_id, "Invoice")
 
       req <- sevenbridges2::api(
-        path = paste0("billing/groups/", self$id, "/breakdown/storage"),
+        path = glue::glue(self$URL[["storage_breakdown"]]),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -206,7 +207,7 @@ Billing <- R6::R6Class(
       invoice_id <- check_and_transform_id(invoice_id, "Invoice")
 
       req <- sevenbridges2::api(
-        path = paste0("billing/groups/", self$id, "/breakdown/egress"),
+        path = glue::glue(self$URL[["egress_breakdown"]]),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -223,15 +224,9 @@ Billing <- R6::R6Class(
   )
 )
 
-asBilling <- function(x, auth = NULL) {
+asBilling <- function(x = NULL, auth = NULL) {
   Billing$new(
-    id = x$id,
-    owner = x$owner,
-    name = x$name,
-    type = x$type,
-    pending = x$pending,
-    disabled = x$disabled,
-    balance = x$balance,
+    res = x,
     href = x$href,
     auth = auth,
     response = attr(x, "response")

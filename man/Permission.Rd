@@ -29,6 +29,7 @@ R6 Class representing member's permissions.
 \itemize{
 \item \href{#method-Permission-new}{\code{Permission$new()}}
 \item \href{#method-Permission-print}{\code{Permission$print()}}
+\item \href{#method-Permission-reload}{\code{Permission$reload()}}
 \item \href{#method-Permission-clone}{\code{Permission$clone()}}
 }
 }
@@ -86,6 +87,16 @@ permission.}
 Print method for Permission class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Permission$print()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Permission-reload"></a>}}
+\if{latex}{\out{\hypertarget{method-Permission-reload}{}}}
+\subsection{Method \code{reload()}}{
+Reload Permission.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Permission$reload()}\if{html}{\out{</div>}}
 }
 
 }

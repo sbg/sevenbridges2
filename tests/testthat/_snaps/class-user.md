@@ -1,7 +1,7 @@
 # User print method works
 
     Code
-      test_user$print()
+      setup_user_object$print()
     Message <cliMessage>
       
       -- User ------------------------------------------------------------------------
@@ -11,5 +11,4 @@
       * first_name: Luna
       * email: luna.lovegood@hogwarts.com
       * username: luna_lovegood
-      * href: https://api.sbgenomics.com/v2/users/luna_lovegood
 

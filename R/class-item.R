@@ -29,6 +29,42 @@ Item <- R6::R6Class(
       self$href <- href
       self$response <- response
       self$auth <- auth
-    }
+    },
+    # nocov start
+    #' @description
+    #' Reload the Item (resource).
+    #' @param cls Item class object.
+    #' @param ... Other query parameters.
+    #' @importFrom rlang abort
+    reload = function(cls, ...) {
+      if (is_missing(cls)) {
+        rlang::abort("Please provide cls parameter!")
+      }
+      if (!is_missing(self$href)) {
+        reload_url <- self$href
+      } else {
+        reload_url <- ""
+      }
+      id <- cls$id
+      if (inherits(cls, "App")) {
+        revision <- cls$revision
+      }
+      res <- sevenbridges2::api(
+        url = reload_url,
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        path = glue::glue(cls$URL[["get"]]),
+        ...
+      )
+      res <- status_check(res)
+
+      cls$initialize(
+        res = res,
+        href = res$href,
+        response = attr(res, "response"),
+        auth = self$auth
+      )
+    } # nocov end
   )
 )

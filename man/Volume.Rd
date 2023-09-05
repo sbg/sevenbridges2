@@ -39,8 +39,6 @@ the volume to the cloud service where the data is stored.}
 
 \item{\code{active}}{Boolean. If a volume is deactivated, this field will be
 set to FALSE.}
-
-\item{\code{href}}{Link to the current volume resource.}
 }
 \if{html}{\out{</div>}}
 }
@@ -49,6 +47,7 @@ set to FALSE.}
 \itemize{
 \item \href{#method-Volume-new}{\code{Volume$new()}}
 \item \href{#method-Volume-print}{\code{Volume$print()}}
+\item \href{#method-Volume-reload}{\code{Volume$reload()}}
 \item \href{#method-Volume-update}{\code{Volume$update()}}
 \item \href{#method-Volume-deactivate}{\code{Volume$deactivate()}}
 \item \href{#method-Volume-reactivate}{\code{Volume$reactivate()}}
@@ -71,49 +70,13 @@ set to FALSE.}
 \subsection{Method \code{new()}}{
 Create a new Volume object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Volume$new(
-  id = NA,
-  name = NA,
-  description = NA,
-  access_mode = NA,
-  service = NA,
-  created_on = NA,
-  modified_on = NA,
-  active = NA,
-  href = NA,
-  ...
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Volume$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{String. Volume ID, constructed from {division}/{volume_name}
-or {volume_owner}/{volume_name}}
-
-\item{\code{name}}{String. The name of the volume. It must be unique from all
-other volumes for this user.}
-
-\item{\code{description}}{String. The description of the volume.}
-
-\item{\code{access_mode}}{String. Signifies whether this volume should be used
-for read-write (RW) or read-only (RO) operations. The access mode is
-consulted independently of the credentials granted to Seven Bridges
-when the volume was created, so it is possible to use a read-write
-credentials to register both read-write and read-only volumes using it.
-Default: \code{"RW"}.}
-
-\item{\code{service}}{String. This object more closely describes the mapping of
-the volume to the cloud service where the data is stored.}
-
-\item{\code{created_on}}{The date and time this volume was created.}
-
-\item{\code{modified_on}}{The date and time this volume was last modified.}
-
-\item{\code{active}}{Boolean. If a volume is deactivated, this field will be
-set to FALSE.}
-
-\item{\code{href}}{Link to the current volume resource.}
+\item{\code{res}}{Response containing Volume object info.}
 
 \item{\code{...}}{Other arguments.}
 }
@@ -129,6 +92,26 @@ Print method for Volume class.
 \if{html}{\out{<div class="r">}}\preformatted{Volume$print()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-reload"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-reload}{}}}
+\subsection{Method \code{reload()}}{
+Reload Volume
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$reload(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other query parameters.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Volume
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-update"></a>}}

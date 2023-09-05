@@ -14,14 +14,13 @@ Volume <- R6::R6Class(
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
-      "list" = "storage/volumes/{id}/list",
-      "volume_file_details" = "storage/volumes/{id}",
-      "update" = "storage/volumes/{id}",
-      "deactivate" = "storage/volumes/{id}",
-      "delete" = "storage/volumes/{id}",
-      "members" = "storage/volumes/{id}/members",
-      "member_username" = "storage/volumes/{id}/members/{username}",
-      "member_permissions" = "storage/volumes/{id}/members/{username}/permissions" # nolint
+      "get" = "storage/volumes/{id}",
+      "volume" = "storage/volumes/{self$id}",
+      "list" = "storage/volumes/{self$id}/list",
+      "volume_file" = "storage/volumes/{self$id}/object",
+      "members" = "storage/volumes/{self$id}/members",
+      "member_username" = "storage/volumes/{self$id}/members/{username}",
+      "member_permissions" = "storage/volumes/{self$id}/members/{username}/permissions" # nolint
     ),
     #' @field id String. Volume ID, constructed from {division}/{volume_name}
     #' or {volume_owner}/{volume_name}
@@ -49,43 +48,21 @@ Volume <- R6::R6Class(
     #' @field active Boolean. If a volume is deactivated, this field will be
     #' set to FALSE.
     active = NULL,
-    #' @field href Link to the current volume resource.
-    href = NULL,
     #' @description Create a new Volume object.
-    #' @param id String. Volume ID, constructed from {division}/{volume_name}
-    #' or {volume_owner}/{volume_name}
-    #' @param name String. The name of the volume. It must be unique from all
-    #' other volumes for this user.
-    #' @param description String. The description of the volume.
-    #' @param access_mode String. Signifies whether this volume should be used
-    #' for read-write (RW) or read-only (RO) operations. The access mode is
-    #' consulted independently of the credentials granted to Seven Bridges
-    #' when the volume was created, so it is possible to use a read-write
-    #' credentials to register both read-write and read-only volumes using it.
-    #' Default: `"RW"`.
-    #' @param service String. This object more closely describes the mapping of
-    #' the volume to the cloud service where the data is stored.
-    #' @param created_on The date and time this volume was created.
-    #' @param modified_on The date and time this volume was last modified.
-    #' @param active Boolean. If a volume is deactivated, this field will be
-    #' set to FALSE.
-    #' @param href Link to the current volume resource.
+    #' @param res Response containing Volume object info.
     #' @param ... Other arguments.
-    initialize = function(id = NA, name = NA, description = NA,
-                          access_mode = NA, service = NA, created_on = NA,
-                          modified_on = NA, active = NA, href = NA, ...) {
+    initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
 
-      self$id <- id
-      self$name <- name
-      self$description <- description
-      self$access_mode <- access_mode
-      self$service <- service
-      self$created_on <- created_on
-      self$modified_on <- modified_on
-      self$active <- active
-      self$href <- href
+      self$id <- res$id
+      self$name <- res$name
+      self$description <- res$description
+      self$access_mode <- res$access_mode
+      self$service <- res$service
+      self$created_on <- res$created_on
+      self$modified_on <- res$modified_on
+      self$active <- res$active
     },
     # nocov start
     #' @description Print method for Volume class.
@@ -120,7 +97,19 @@ Volume <- R6::R6Class(
 
       # Close container elements
       cli::cli_end()
-    }, # nocov end
+    },
+    #' @description
+    #' Reload Volume
+    #' @param ... Other query parameters.
+    #' @return Volume
+    reload = function(...) {
+      super$reload(
+        cls = self,
+        ...
+      )
+      rlang::inform("Volume object is refreshed!")
+    },
+    # nocov end
     #' @description Update a volume.
     #' This function updates the details of a specific volume.
     #' @param description String. The description of the volume.
@@ -153,7 +142,7 @@ Volume <- R6::R6Class(
       )
       body <- body[!sapply(body, is.null)]
 
-      path <- glue::glue(self$URL[["update"]])
+      path <- glue::glue(self$URL[["volume"]])
 
       res <- sevenbridges2::api(
         path = path,
@@ -167,16 +156,9 @@ Volume <- R6::R6Class(
       res <- status_check(res)
 
       self$initialize(
+        res = res,
         href = res$href,
-        id = res$id,
-        name = res$name,
-        description = res$description,
-        access_mode = res$access_mode,
-        service = res$service,
-        created_on = res$created_on,
-        modified_on = res$modified_on,
-        active = res$active,
-        auth = auth,
+        auth = self$auth,
         response = attr(res, "response")
       )
     }, # nocov end
@@ -198,7 +180,7 @@ Volume <- R6::R6Class(
           glue::glue("The volume {self$name} is already deactivated.")
         )
       }
-      path <- glue::glue(self$URL[["update"]]) # nocov start
+      path <- glue::glue(self$URL[["volume"]]) # nocov start
 
       res <- sevenbridges2::api(
         path = path,
@@ -211,9 +193,12 @@ Volume <- R6::R6Class(
       )
 
       res <- status_check(res)
+
       rlang::inform(glue::glue("The volume {self$name} has been ", glue::glue_col("{red deactivated}."))) # nolint
+
       self$active <- FALSE
-      self
+
+      return(self)
     }, # nocov end
     #' @description Reactivate volume
     #' This function reactivates the previously deactivated volume by updating
@@ -225,7 +210,7 @@ Volume <- R6::R6Class(
           glue::glue("The volume {self$name} is already active.")
         )
       }
-      path <- glue::glue(self$URL[["update"]]) # nocov start
+      path <- glue::glue(self$URL[["volume"]]) # nocov start
 
       res <- sevenbridges2::api(
         path = path,
@@ -238,9 +223,12 @@ Volume <- R6::R6Class(
       )
 
       res <- status_check(res)
+
       rlang::inform(glue::glue("The volume {self$name} has been ", glue::glue_col("{green reactivated}."))) # nolint
+
       self$active <- TRUE
-      self
+
+      return(self)
     }, # nocov end
     #' @description Delete volume
     #' This call deletes a volume you've created to refer to storage on
@@ -254,7 +242,7 @@ Volume <- R6::R6Class(
           glue::glue("The volume {self$name} must be deactivated first in order to be able to delete it.") # nolint
         )
       }
-      path <- glue::glue(self$URL[["delete"]]) # nocov start
+      path <- glue::glue(self$URL[["volume"]]) # nocov start
 
       res <- sevenbridges2::api(
         path = path,
@@ -266,16 +254,10 @@ Volume <- R6::R6Class(
       res <- status_check(res)
 
       rlang::inform(glue::glue("The volume {self$name} has been ", glue::glue_col("{red deleted}."))) # nolint
+
       self$initialize(
+        res = NULL,
         href = NULL,
-        id = NULL,
-        name = NULL,
-        description = NULL,
-        access_mode = NULL,
-        service = NULL,
-        created_on = NULL,
-        modified_on = NULL,
-        active = NULL,
         auth = NULL,
         response = attr(res, "response")
       )
@@ -299,7 +281,7 @@ Volume <- R6::R6Class(
     #' @return VolumeFileCollection object containing list of VolumeFile
     #' objects.
     list_files = function(parent = NULL,
-                          limit = getOption("sevenbridges2")$"limit",
+                          limit = getOption("sevenbridges2")$limit,
                           link = NULL,
                           continuation_token = NULL,
                           ...) {
@@ -364,7 +346,7 @@ Volume <- R6::R6Class(
         link <- glue::glue(link, "&fields=_all")
       }
       # nocov start
-      path <- glue::glue(self$URL[["volume_file_details"]], "/object")
+      path <- glue::glue(self$URL[["volume_file"]])
 
       res <- sevenbridges2::api(
         url = link,
@@ -394,7 +376,6 @@ Volume <- R6::R6Class(
                             offset = getOption("sevenbridges2")$offset,
                             ...) {
       # nocov start
-      id <- self$id
       path <- glue::glue(self$URL[["members"]])
 
       res <- sevenbridges2::api(
@@ -445,7 +426,6 @@ Volume <- R6::R6Class(
         choices = c("read", "copy", "write", "admin")
       )
       # nocov start
-      id <- self$id
       path <- glue::glue(self$URL[["members"]])
 
       body <- list(
@@ -476,7 +456,6 @@ Volume <- R6::R6Class(
         field_name = "username"
       )
       # nocov start
-      id <- self$id
       path <- glue::glue(self$URL[["member_username"]])
 
       res <- sevenbridges2::api(
@@ -505,7 +484,6 @@ Volume <- R6::R6Class(
         field_name = "username"
       )
       # nocov start
-      id <- self$id
       path <- glue::glue(self$URL[["member_username"]])
 
       res <- sevenbridges2::api(
@@ -559,7 +537,6 @@ Volume <- R6::R6Class(
       body <- flatten_query(permissions)
 
       # nocov start
-      id <- self$id
       path <- glue::glue(self$URL[["member_permissions"]])
 
       res <- sevenbridges2::api(
@@ -646,17 +623,10 @@ Volume <- R6::R6Class(
 
 # nocov start
 # Helper function for creating Volume objects
-asVolume <- function(x, auth = NULL) {
+asVolume <- function(x = NULL, auth = NULL) {
   Volume$new(
+    res = x,
     href = x$href,
-    id = x$id,
-    name = x$name,
-    description = x$description,
-    access_mode = x$access_mode,
-    service = x$service,
-    created_on = x$created_on,
-    modified_on = x$modified_on,
-    active = x$active,
     auth = auth,
     response = attr(x, "response")
   )

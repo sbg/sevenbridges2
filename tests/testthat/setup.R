@@ -26,6 +26,37 @@ credentials_path <- testthat::test_path(
 setup_auth_object <-
   Auth$new(from = "file", config_file = credentials_path)
 
+# Rate limit object
+rate_limit_res <- list(
+  rate = list(
+    limit = 1000,
+    remaining = 990,
+    reset = 1693846218
+  ),
+  instance = list(
+    limit = -1,
+    remaining = 987654342
+  )
+)
+setup_rate_limit_obj <- asRate(
+  x = rate_limit_res,
+  auth = setup_auth_object
+)
+
+# User obj
+user_res <- list(
+  username = "luna_lovegood",
+  email = "luna.lovegood@hogwarts.com",
+  first_name = "Luna",
+  last_name = "Lovegood",
+  affiliation = "Hogwarts",
+  country = "United Kingdom"
+)
+setup_user_object <- asUser(
+  x = user_res,
+  auth = setup_auth_object
+)
+
 # Permission obj
 setup_permission_obj <-
   Permission$new(
@@ -42,30 +73,33 @@ setup_permission_obj <-
 # Projects obj
 setup_projects_obj <- Projects$new(auth = setup_auth_object)
 
+# Project obj response
+project_res <- list(
+  id = "project_id",
+  name = "Project name",
+  billing_group = "billing group",
+  description = "Project description",
+  tags = list("Tag1", "Tag2"),
+  settings = list("locked" = FALSE),
+  root_folder = "root_folder_id",
+  created_by = "user1",
+  created_on = as.POSIXct.POSIXlt(
+    strptime("2023-06-10 13:36:00", "%Y-%m-%d %H:%M:%S")
+  ),
+  modified_on = as.POSIXct.POSIXlt(
+    strptime("2023-07-10 13:36:00", "%Y-%m-%d %H:%M:%S")
+  ),
+  permissions = setup_permission_obj,
+  category = "PRIVATE"
+)
 # Project obj
-setup_project_obj <-
-  Project$new(
-    id = "project_id",
-    name = "Project name",
-    billing_group = "billing group",
-    description = "Project description",
-    type = "v2",
-    tags = list("Tag1", "Tag2"),
-    settings = list("locked" = FALSE),
-    root_folder = "root_folder_id",
-    created_by = "user1",
-    created_on = as.POSIXct.POSIXlt(
-      strptime("2023-06-10 13:36:00", "%Y-%m-%d %H:%M:%S")
-    ),
-    modified_on = as.POSIXct.POSIXlt(
-      strptime("2023-07-10 13:36:00", "%Y-%m-%d %H:%M:%S")
-    ),
-    permissions = setup_permission_obj,
-    category = "PRIVATE",
-    auth = setup_auth_object
-  )
+setup_project_obj <- asProject(
+  x = project_res,
+  auth = setup_auth_object
+)
+
 # Project member object
-setup_project_member_object <- Member$new(
+proj_member_res <- list(
   username = "test-member",
   email = "test-member@gmail.com", type = "USER",
   id = "test-member",
@@ -77,53 +111,60 @@ setup_project_member_object <- Member$new(
     response = list(raw = "raw-response-list")
   ),
   href = "link/to/resource",
-  auth = setup_auth_object,
   response = list(raw = "raw-response-list")
+)
+setup_project_member_object <- asMember(
+  x = proj_member_res,
+  auth = setup_auth_object
 )
 
 # Files obj
 setup_files_obj <- Files$new(auth = setup_auth_object)
 
-setup_file_obj <-
-  File$new(
-    id = "file-id",
-    name = "File name",
-    size = 100,
-    project = "user1/project-id",
-    parent = "parent-id",
-    type = "file",
-    created_on = "2023-06-06T11:14:11Z",
-    modified_on = "2023-06-06T11:14:11Z",
-    href = "https://api.sbgenomics.com/v2/files/file-id",
-    auth = setup_auth_object,
-    tags = list("tag_1"),
-    metadata = list(
-      sbg_public_files_category = "test",
-      reference_genome = "HG19_Broad_variant",
-      sample_id = "HCC1143_1M",
-      case_id = "CCLE-HCC1143",
-      investigation = "CCLE-BRCA"
-    ),
-    origin = list(task = "123a1a1a-12a1-1234-a123-1234567a1a12"),
-    storage = list(
-      type = "PLATFORM",
-      hosted_on_locations = list("aws:us-east-1")
-    )
+file_res <- list(
+  id = "file-id",
+  name = "File name",
+  size = 100,
+  project = "user1/project-id",
+  parent = "parent-id",
+  type = "file",
+  created_on = "2023-06-06T11:14:11Z",
+  modified_on = "2023-06-06T11:14:11Z",
+  href = "https://api.sbgenomics.com/v2/files/file-id",
+  tags = list("tag_1"),
+  metadata = list(
+    sbg_public_files_category = "test",
+    reference_genome = "HG19_Broad_variant",
+    sample_id = "HCC1143_1M",
+    case_id = "CCLE-HCC1143",
+    investigation = "CCLE-BRCA"
+  ),
+  origin = list(task = "123a1a1a-12a1-1234-a123-1234567a1a12"),
+  storage = list(
+    type = "PLATFORM",
+    hosted_on_locations = list("aws:us-east-1")
   )
+)
+setup_file_obj <- asFile(
+  x = file_res,
+  auth = setup_auth_object
+)
 
-
-setup_folder_obj <-
-  File$new(
-    id = "folder_id",
-    name = "Folder_name",
-    project = "user1/project-id",
-    parent = "parent-id",
-    type = "folder",
-    created_on = "2023-06-06T11:14:11Z",
-    modified_on = "2023-06-06T11:14:11Z",
-    href = "https://api.sbgenomics.com/v2/files/folder_id",
-    url = NA
-  )
+folder_res <- list(
+  id = "folder_id",
+  name = "Folder_name",
+  project = "user1/project-id",
+  parent = "parent-id",
+  type = "folder",
+  created_on = "2023-06-06T11:14:11Z",
+  modified_on = "2023-06-06T11:14:11Z",
+  href = "https://api.sbgenomics.com/v2/files/folder_id",
+  url = NA
+)
+setup_folder_obj <- asFile(
+  x = folder_res,
+  auth = setup_auth_object
+)
 
 # Load raw cwl app
 setup_app_path <- testthat::test_path(
@@ -132,14 +173,17 @@ setup_app_path <- testthat::test_path(
 )
 setup_raw_cwl <- readRDS(setup_app_path)
 
-setup_app_obj <- App$new(
-  id = "user_free_1/user-free-1-s-demo-project/fastqc-analysis", # nolint
+app_res <- list(
+  id = "user_free_1/user-free-1-s-demo-project/fastqc-analysis/7",
   project = "user_free_1/user-free-1-s-demo-project",
   name = "FastQC Analysis",
   revision = 0,
   raw = setup_raw_cwl,
   copy_of = NA,
-  latest_revision = 0,
+  latest_revision = 0
+)
+setup_app_obj <- asApp(
+  x = app_res,
   auth = setup_auth_object
 )
 
@@ -153,7 +197,7 @@ setup_apps_obj <- Apps$new(auth = setup_auth_object)
 setup_volumes_obj <- Volumes$new(auth = setup_auth_object)
 
 # Volume obj
-setup_s3_volume_obj <- Volume$new(
+volume_res <- list(
   id = "volume-id",
   name = "my_new_volume",
   access_mode = "RW",
@@ -175,6 +219,10 @@ setup_s3_volume_obj <- Volume$new(
   modified_on = "2023-06-15T14:50:16Z",
   active = TRUE
 )
+setup_s3_volume_obj <- asVolume(
+  x = volume_res,
+  auth = setup_auth_object
+)
 
 # Collection object
 setup_collection_obj <- Collection$new(
@@ -193,26 +241,31 @@ setup_collection_obj <- Collection$new(
 )
 
 # VolumeFile object type file
-setup_volume_file_obj <- VolumeFile$new(
-  href = "resource-href",
+volume_file_res <- list(
   location = "my_new_file.txt",
-  type = "FILE",
-  storage_type = "s3",
+  type = "s3",
   volume = "my_s3_volume",
-  metadata = list(metadata_field = "metadata-value")
+  metadata = list(metadata_field = "metadata-value"),
+  href = "resource-href"
+)
+setup_volume_file_obj <- asVolumeFile(
+  x = volume_file_res,
+  auth = setup_auth_object
 )
 # VolumeFile object type folder
-setup_volume_file_dir_obj <- VolumeFile$new(
-  href = "resource-href",
-  location = "my_new_folder",
-  type = "PREFIX",
-  storage_type = NULL,
+volume_file_folder_res <- list(
+  prefix = "my_new_folder",
+  type = "s3",
   volume = "my_s3_volume",
   metadata = NULL
 )
+setup_volume_file_dir_obj <- asVolumeFile(
+  x = volume_file_folder_res,
+  auth = setup_auth_object
+)
 
 # VolumeFileCollection object
-setup_volfile_collection_obj <- VolumeFileCollection$new(
+vol_file_collection_res <- list(
   href = "some-href",
   items = list(
     list(
@@ -238,12 +291,15 @@ setup_volfile_collection_obj <- VolumeFileCollection$new(
     volume = "my_s3_volume"
   )),
   links = list(list("next" = "link-to-next-page")),
-  response = list(raw = "raw-response-list"),
+  response = list(raw = "raw-response-list")
+)
+setup_volfile_collection_obj <- asVolumeFileCollection(
+  x = vol_file_collection_res,
   auth = setup_auth_object
 )
 
 # Volume member object
-setup_volume_member_object <- Member$new(
+volume_member_res <- list(
   username = "test-member",
   email = "test-member@gmail.com", type = "USER",
   id = "test-member",
@@ -255,8 +311,11 @@ setup_volume_member_object <- Member$new(
     response = list(raw = "raw-response-list")
   ),
   href = "link/to/resource",
-  auth = setup_auth_object,
   response = list(raw = "raw-response-list")
+)
+setup_volume_member_object <- asMember(
+  x = volume_member_res,
+  auth = setup_auth_object
 )
 
 # Imports obj
@@ -275,7 +334,7 @@ file_obj_params_list <- list(
   auth = setup_auth_object
 )
 # Import obj
-setup_import_obj <- Import$new(
+import_res <- list(
   href = "link-to-the-resource",
   id = "import-job-id",
   state = "COMPLETED",
@@ -287,15 +346,17 @@ setup_import_obj <- Import$new(
   started_on = "2023-07-13T12:34:56Z",
   finished_on = "2023-07-13T12:34:56Z",
   error = NULL,
-  result = file_obj_params_list,
+  result = file_obj_params_list
+)
+setup_import_obj <- asImport(
+  x = import_res,
   auth = setup_auth_object
 )
 
 # Tasks obj
 setup_tasks_obj <- Tasks$new(auth = setup_auth_object)
 
-# Task obj
-setup_task_obj <- Task$new(
+task_res <- list(
   id = "task-id",
   name = "Task name",
   description = "My new test task",
@@ -305,7 +366,11 @@ setup_task_obj <- Task$new(
   executed_by = "user1",
   created_on = "12-08-2023",
   start_time = "12-08-2023",
-  end_time = "12-08-2023",
+  end_time = "12-08-2023"
+)
+# Task obj
+setup_task_obj <- asTask(
+  x = task_res,
   auth = setup_auth_object
 )
 
@@ -313,7 +378,7 @@ setup_task_obj <- Task$new(
 setup_exports_obj <- Exports$new(auth = setup_auth_object)
 
 # Export obj
-setup_export_obj <- Export$new(
+export_res <- list(
   href = "link-to-the-resource",
   id = "export-job-id",
   state = "COMPLETED",
@@ -324,7 +389,10 @@ setup_export_obj <- Export$new(
   started_on = "2023-07-14T12:34:56Z",
   finished_on = "2023-07-14T12:34:56Z",
   error = NULL,
-  result = file_obj_params_list,
+  result = file_obj_params_list
+)
+setup_export_obj <- asExport(
+  x = export_res,
   auth = setup_auth_object
 )
 

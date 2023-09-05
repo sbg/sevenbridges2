@@ -12,6 +12,8 @@ R6 Class representing a resource for managing volume export jobs.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
+\item{\code{URL}}{URL endpoint fields}
+
 \item{\code{id}}{String. Export job identifier.}
 
 \item{\code{state}}{String. The state of the export job. Possible values are:
@@ -50,6 +52,7 @@ returned here.}
 \itemize{
 \item \href{#method-Export-new}{\code{Export$new()}}
 \item \href{#method-Export-print}{\code{Export$print()}}
+\item \href{#method-Export-reload}{\code{Export$reload()}}
 \item \href{#method-Export-clone}{\code{Export$clone()}}
 }
 }
@@ -59,48 +62,13 @@ returned here.}
 \subsection{Method \code{new()}}{
 Create a new Export object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Export$new(
-  id = NA,
-  state = NA,
-  source = NA,
-  destination = NA,
-  overwrite = NA,
-  started_on = NA,
-  finished_on = NA,
-  properties = NA,
-  error = NA,
-  result = NA,
-  ...
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Export$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{String. Export job identifier.}
-
-\item{\code{state}}{String. The state of the export job.}
-
-\item{\code{source}}{List containing source file id that is being exported to
-the volume.}
-
-\item{\code{destination}}{List containing destination volume id and location
-(file name) on the volume where the file is being exported.}
-
-\item{\code{overwrite}}{Boolean. Whether the exported file name was
-overwritten or not, if another one with the same name had already
-existed on the volume.}
-
-\item{\code{started_on}}{Time when the export job started.}
-
-\item{\code{finished_on}}{Time when the export job ended.}
-
-\item{\code{properties}}{List of volume properties set.}
-
-\item{\code{error}}{In case of error in the export job, standard API error is
-returned here.}
-
-\item{\code{result}}{File object that was exported.}
+\item{\code{res}}{Response containing Export job information.}
 
 \item{\code{...}}{Other arguments.}
 }
@@ -116,6 +84,26 @@ Print method for Export class.
 \if{html}{\out{<div class="r">}}\preformatted{Export$print()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Export-reload"></a>}}
+\if{latex}{\out{\hypertarget{method-Export-reload}{}}}
+\subsection{Method \code{reload()}}{
+Reload Export.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Export$reload(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other query parameters.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Export
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Export-clone"></a>}}

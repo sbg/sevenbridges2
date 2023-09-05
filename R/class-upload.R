@@ -11,6 +11,12 @@ Upload <- R6::R6Class(
   "Upload",
   portable = FALSE,
   public = list(
+    #' @field URL URL endpoint fields
+    URL = list(
+      "init" = "upload/multipart",
+      "upload_job" = "upload/multipart/{self$upload_id}",
+      "upload_complete_all" = "upload/multipart/{self$upload_id}/complete"
+    ),
     #' @field upload_id Upload ID received after upload initialization.
     upload_id = NULL,
     #' @field path Relative or absolute path to the file on the local disc.
@@ -94,7 +100,7 @@ Upload <- R6::R6Class(
     }, # nocov end
 
     #' @description Initialize new multipart file upload.
-    #' @importFrom glue glue_col
+    #' @importFrom glue glue glue_col
     init = function() {
       if (self$initialized) {
         rlang::abort("Upload has already been initialized.")
@@ -112,7 +118,7 @@ Upload <- R6::R6Class(
       }
 
       res <- sevenbridges2::api(
-        path = "upload/multipart",
+        path = glue::glue(self$URL[["init"]]),
         method = "POST",
         query = list(overwrite = self$overwrite),
         body = body,
@@ -147,6 +153,7 @@ Upload <- R6::R6Class(
     #' Please, bear in mind that the output could be heavy for printing if
     #' there are lot of parts.
     #' @importFrom checkmate assert_logical
+    #' @importFrom glue glue
     info = function(list_parts = FALSE) {
       if (!self$initialized) {
         rlang::abort("Upload has not been initialized yet.")
@@ -155,7 +162,7 @@ Upload <- R6::R6Class(
 
       # nocov start
       res <- sevenbridges2::api(
-        path = paste0("upload/multipart/", self$upload_id),
+        path = glue::glue(self$URL[["upload_job"]]),
         method = "GET",
         query = list(list_parts = list_parts),
         token = self$auth$get_token(),
@@ -181,6 +188,8 @@ Upload <- R6::R6Class(
     }, # nocov end
 
     #' @description Start the file upload
+    #' @importFrom rlang abort
+    #' @importFrom httr PUT
     start = function() {
       if (!self$initialized) {
         rlang::abort("Upload has not been initialized yet.")
@@ -230,19 +239,20 @@ Upload <- R6::R6Class(
       )
 
       # Return newly uploaded file
-      asFile(res, auth = self$auth)
+      return(asFile(res, auth = self$auth))
     }, # nocov end
 
     #' @description Abort the multipart upload
     #' This call aborts an ongoing upload.
-    #' @importFrom glue glue_col
+    #' @importFrom glue glue glue_col
+    #' @importFrom rlang abort
     abort = function() {
       if (!self$initialized) {
         rlang::abort("Upload has not been initialized yet.")
       }
       # nocov start
       res <- sevenbridges2::api(
-        path = paste0("upload/multipart/", self$upload_id),
+        path = glue::glue(self$URL[["upload_job"]]),
         method = "DELETE",
         token = self$auth$get_token(),
         base_url = self$auth$url
@@ -297,11 +307,7 @@ Upload <- R6::R6Class(
       })
       body <- list(parts = all_parts)
       res <- sevenbridges2::api(
-        path = paste0(
-          "upload/multipart/",
-          self$upload_id,
-          "/complete"
-        ),
+        path = glue::glue(self$URL[["upload_complete_all"]]),
         method = "POST",
         body = body,
         token = self$auth$get_token(),
@@ -327,6 +333,11 @@ Part <- R6::R6Class(
   "Part",
   portable = FALSE,
   public = list(
+    #' @field URL URL endpoint fields
+    URL = list(
+      "part_info" = "upload/multipart/{upload_id}/part/{self$part_number}",
+      "complete_part" = "upload/multipart/{upload_id}/part"
+    ),
     #' @field part_number Part number.
     part_number = NULL,
     #' @field part_size Part size.
@@ -407,16 +418,12 @@ Part <- R6::R6Class(
     #' @param upload_id Upload object or ID of the upload process that part
     #'   belongs to.
     #' @importFrom checkmate assert_character
+    #' @importFrom glue glue
     upload_info_part = function(upload_id) {
       upload_id <- check_and_transform_id(upload_id, "Upload")
       # nocov start
       res <- sevenbridges2::api(
-        path = paste0(
-          "upload/multipart/",
-          upload_id,
-          "/part/",
-          self$part_number
-        ),
+        path = glue::glue(self$URL[["part_info"]]),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url
@@ -446,11 +453,7 @@ Part <- R6::R6Class(
       )
 
       res <- sevenbridges2::api(
-        path = paste0(
-          "upload/multipart/",
-          upload_id,
-          "/part/"
-        ),
+        path = glue::glue(self$URL[["complete_part"]]),
         method = "POST",
         body = body,
         token = self$auth$get_token(),

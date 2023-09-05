@@ -6,11 +6,12 @@
 \description{
 R6 Class representing a resource for managing VolumeFile objects.
 }
+\section{Super class}{
+\code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{VolumeFile}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{href}}{URL to the resource.}
-
 \item{\code{location}}{File/prefix location on the volume.}
 
 \item{\code{type}}{Type of resource - can be either FILE or PREFIX.}
@@ -21,8 +22,6 @@ R6 Class representing a resource for managing VolumeFile objects.
 \item{\code{volume}}{Volume id.}
 
 \item{\code{metadata}}{File's metadata if exists.}
-
-\item{\code{auth}}{SevenBridges authentication object.}
 }
 \if{html}{\out{</div>}}
 }
@@ -31,6 +30,7 @@ R6 Class representing a resource for managing VolumeFile objects.
 \itemize{
 \item \href{#method-VolumeFile-new}{\code{VolumeFile$new()}}
 \item \href{#method-VolumeFile-print}{\code{VolumeFile$print()}}
+\item \href{#method-VolumeFile-reload}{\code{VolumeFile$reload()}}
 \item \href{#method-VolumeFile-import}{\code{VolumeFile$import()}}
 \item \href{#method-VolumeFile-clone}{\code{VolumeFile$clone()}}
 }
@@ -41,34 +41,15 @@ R6 Class representing a resource for managing VolumeFile objects.
 \subsection{Method \code{new()}}{
 Create a new VolumeFile object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{VolumeFile$new(
-  href = NA,
-  location = NA,
-  type = NA,
-  storage_type = NA,
-  volume = NA,
-  metadata = NA,
-  auth = NA
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{VolumeFile$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{href}}{URL to the resource.}
+\item{\code{res}}{Response containing VolumeFile object info.}
 
-\item{\code{location}}{File/prefix location on the volume.}
-
-\item{\code{type}}{Type of resource - can be either FILE or PREFIX.}
-
-\item{\code{storage_type}}{Type of storage (cloud provider). Can be one of:
-'s3', 'gcs', 'azure', 'OSS'.}
-
-\item{\code{volume}}{Volume id.}
-
-\item{\code{metadata}}{File's metadata if exists.}
-
-\item{\code{auth}}{SevenBridges authentication object.}
+\item{\code{...}}{Other arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -80,6 +61,16 @@ Create a new VolumeFile object.
 Print method for VolumeFile class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{VolumeFile$print()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-VolumeFile-reload"></a>}}
+\if{latex}{\out{\hypertarget{method-VolumeFile-reload}{}}}
+\subsection{Method \code{reload()}}{
+Reload VolumeFile.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{VolumeFile$reload()}\if{html}{\out{</div>}}
 }
 
 }

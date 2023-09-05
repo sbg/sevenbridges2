@@ -23,8 +23,6 @@
       * billing_group: billing group
       * name: Project name
       * id: project_id
-      * href: NA
-      * response: NA
       * settings
         * locked: FALSE
       * tags

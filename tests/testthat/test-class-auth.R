@@ -286,22 +286,16 @@ testthat::test_that("Method upload throws error when needed", {
   }
 
   # Invalid parent param - File object (type File instead of Folder)
-  example_file_obj <- File$new(
-    id = "file-id",
-    name = "file-name",
-    type = "file"
-  )
-
   testthat::expect_error(
     auth$upload(
       path = test_upload_file_path,
-      parent = example_file_obj
+      parent = setup_file_obj
     ),
     "The provided parent object is not a folder."
   )
 
   # Invalid project param
-  invalid_project_obj <- c("", NULL, list(), 232424, NA, example_file_obj)
+  invalid_project_obj <- c("", NULL, list(), 232424, NA, setup_file_obj)
   for (id in invalid_project_obj) {
     testthat::expect_error(
       auth$upload(

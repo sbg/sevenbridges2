@@ -537,7 +537,7 @@ Auth <- R6::R6Class(
                        billing_group = NULL,
                        ...) {
       if (is.null(id)) {
-        if (is.null(billing_group_id)) {
+        if (is.null(billing_group)) {
           req <- sevenbridges2::api(
             path = "billing/invoices",
             method = "GET",
@@ -549,7 +549,7 @@ Auth <- R6::R6Class(
           req
         } else {
           billing_group_id <-
-            check_and_transform_id(billing_group_id, "Billing") # nolint
+            check_and_transform_id(billing_group, "Billing") # nolint
           req <- sevenbridges2::api(
             path = "billing/invoices",
             method = "GET",
@@ -613,7 +613,6 @@ Auth <- R6::R6Class(
                       filename = NULL,
                       overwrite = FALSE,
                       part_size = getOption("sevenbridges2")$RECOMMENDED_PART_SIZE, # nolint
-                      # nolint
                       init = FALSE) {
       # Check if the provided path is valid, i.e. if the file exists
       # and get its size.
@@ -743,7 +742,6 @@ Auth <- R6::R6Class(
         )
       )
     }
-
     # nocov end
   )
 )

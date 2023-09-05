@@ -29,9 +29,13 @@ be reset.
 instance limit. It consists of the following fields:
 \itemize{
 \item \code{limit} Indicates the total number of instances available
-to the user.
+to the user. For the first few months, instance limits are unlimited.
+This is indicated by a special limit of -1. Correspondingly, the
+remaining value is high.
 \item \code{remaining} Indicates the number of the instances that are
-available at the moment.
+available at the moment. For the first few months, instance limits are
+unlimited. This is indicated by a high remaining value. Correspondingly,
+the limit is set to a special value of -1.
 }}
 }
 \if{html}{\out{</div>}}
@@ -44,41 +48,26 @@ available at the moment.
 \item \href{#method-Rate-clone}{\code{Rate$clone()}}
 }
 }
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Item" data-id="reload"><a href='../../sevenbridges2/html/Item.html#method-Item-reload'><code>sevenbridges2::Item$reload()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Rate-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Rate-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new rate limit object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Rate$new(
-  limit = NA,
-  remaining = NA,
-  reset = NA,
-  instance_limit = NA,
-  instance_remaining = NA,
-  ...
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Rate$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{limit}}{Indicates how many requests can be made in five minutes.}
-
-\item{\code{remaining}}{Indicates how many requests remain.}
-
-\item{\code{reset}}{Indicates the time when the request rate limit will be
-reset.}
-
-\item{\code{instance_limit}}{Indicates the total number of instances available
-to the user. For the first few months, instance limits are unlimited.
-This is indicated by a special limit of -1. Correspondingly, the
-remaining value is high.}
-
-\item{\code{instance_remaining}}{Indicates the number of the instances that are
-available at the moment. For the first few months, instance limits are
-unlimited. This is indicated by a high remaining value. Correspondingly,
-the limit is set to a special value of -1.}
+\item{\code{res}}{Response containing Rate limit object info.}
 
 \item{\code{...}}{Other arguments passed to methods.}
 }

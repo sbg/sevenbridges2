@@ -7,7 +7,6 @@
       -- File ------------------------------------------------------------------------
       * type: file
       * parent: parent-id
-      * url: NA
       * modified_on: 2023-06-06T11:14:11Z
       * created_on: 2023-06-06T11:14:11Z
       * project: user1/project-id
@@ -15,7 +14,6 @@
       * name: File name
       * id: file-id
       * href: https://api.sbgenomics.com/v2/files/file-id
-      * response: NA
 
 # File detailed_print method works
 
@@ -26,7 +24,6 @@
       -- File ------------------------------------------------------------------------
       * type: file
       * parent: parent-id
-      * url: NA
       * modified_on: 2023-06-06T11:14:11Z
       * created_on: 2023-06-06T11:14:11Z
       * project: user1/project-id
@@ -34,7 +31,6 @@
       * name: File name
       * id: file-id
       * href: https://api.sbgenomics.com/v2/files/file-id
-      * response: NA
       * tags
         * tag_1: tag_1
       * metadata
