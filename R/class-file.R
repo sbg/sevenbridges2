@@ -248,15 +248,14 @@ File <- R6::R6Class(
 
       res <- status_check(res)
 
-      rlang::inform("File has been updated!")
-
       # Reload object
       self$initialize(
         res = res,
         href = res$href,
-        response = attr("response", res),
+        response = attr(res, "response"),
         auth = self$auth
       )
+      rlang::inform("File has been updated!")
     }, # nocov end
 
     #' @description
