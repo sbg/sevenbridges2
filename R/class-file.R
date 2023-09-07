@@ -543,6 +543,7 @@ File <- R6::R6Class(
         rlang::inform(message = glue::glue(
           "File {self$id} has been deleted."
         ))
+        self$id <- NULL
       } else if (res$status_code %in% c("401", "403", "404", "503")) {
         msg <- httr::content(res, as = "parsed")$message
         rlang::abort(glue::glue("HTTP Status {res$status_code} : {msg}"))
