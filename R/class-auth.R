@@ -76,6 +76,10 @@ Auth <- R6::R6Class(
     #' resources on the platform.
     exports = NULL,
 
+    #' @field invoices Invoices object, for accessing invoice resources on the
+    #' platform.
+    invoices = NULL,
+
     #' @description
     #' Create a new Auth object. All methods can be accessed through this
     #' object.
@@ -306,6 +310,9 @@ Auth <- R6::R6Class(
 
       # Exports resource
       self$exports <- Exports$new(self)
+
+      # Invoices resource
+      self$invoices <- Invoices$new(self)
     },
     #' @description
     #' Returns the authentication token read from system environment variable.
@@ -515,65 +522,6 @@ Auth <- R6::R6Class(
         req <- status_check(req)
 
         asBilling(req, auth = self)
-      }
-    },
-    # invoices ---------------------------------------------------------------
-    #' @description Get invoice information \cr \cr
-    #' If no id provided, This call returns a list of invoices, with
-    #' information about each, including whether or not the invoice is pending
-    #' the billing period it covers. The call returns information about all
-    #' your available invoices, unless you use the query parameter bg_id to
-    #' specify the ID of a particular billing group, in which case it will
-    #' return the invoice incurred by that billing group only. If id was
-    #' provided, This call retrieves information about a selected invoice,
-    #' including the costs for analysis and storage, and the invoice period.
-    #'
-    #' @param id Invoice identifier as ID string or Invoice object.
-    #' @param billing_group Billing object or ID of a particular billing
-    #'   group. If provided, the method will return the invoice incurred by that
-    #'   billing group only.
-    #' @param ... Other arguments passed to methods.
-    invoice = function(id = NULL,
-                       billing_group = NULL,
-                       ...) {
-      if (is.null(id)) {
-        if (is.null(billing_group)) {
-          req <- sevenbridges2::api(
-            path = "billing/invoices",
-            method = "GET",
-            token = self$get_token(),
-            base_url = self$url,
-            ...
-          )
-          req <- status_check(req)
-          req
-        } else {
-          billing_group_id <-
-            check_and_transform_id(billing_group, "Billing") # nolint
-          req <- sevenbridges2::api(
-            path = "billing/invoices",
-            method = "GET",
-            token = self$get_token(),
-            query = list(billing_group = billing_group_id),
-            base_url = self$url,
-            ...
-          )
-          req <- status_check(req)
-          req
-        }
-      } else {
-        id <- check_and_transform_id(id, "Invoice")
-
-        req <- sevenbridges2::api(
-          path = paste0("billing/invoices/", id),
-          method = "GET",
-          token = self$get_token(),
-          base_url = self$url,
-          ...
-        )
-        req <- status_check(req)
-
-        asInvoice(req, auth = self)
       }
     },
     # upload a single file

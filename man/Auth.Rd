@@ -57,6 +57,9 @@ resources on the platform.}
 
 \item{\code{exports}}{Storage exports object, for accessing volume exports
 resources on the platform.}
+
+\item{\code{invoices}}{Invoices object, for accessing invoice resources on the
+platform.}
 }
 \if{html}{\out{</div>}}
 }
@@ -70,7 +73,6 @@ resources on the platform.}
 \item \href{#method-Auth-rate_limit}{\code{Auth$rate_limit()}}
 \item \href{#method-Auth-billing}{\code{Auth$billing()}}
 \item \href{#method-Auth-billing_groups}{\code{Auth$billing_groups()}}
-\item \href{#method-Auth-invoice}{\code{Auth$invoice()}}
 \item \href{#method-Auth-upload}{\code{Auth$upload()}}
 \item \href{#method-Auth-list_ongoing_uploads}{\code{Auth$list_ongoing_uploads()}}
 \item \href{#method-Auth-upload_abort}{\code{Auth$upload_abort()}}
@@ -274,37 +276,6 @@ request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
 
 \item{\code{offset}}{Defines where the retrieved items started.
 By default, \code{offset} is set to \code{0}.}
-
-\item{\code{...}}{Other arguments passed to methods.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Auth-invoice"></a>}}
-\if{latex}{\out{\hypertarget{method-Auth-invoice}{}}}
-\subsection{Method \code{invoice()}}{
-Get invoice information \cr \cr
-If no id provided, This call returns a list of invoices, with
-information about each, including whether or not the invoice is pending
-the billing period it covers. The call returns information about all
-your available invoices, unless you use the query parameter bg_id to
-specify the ID of a particular billing group, in which case it will
-return the invoice incurred by that billing group only. If id was
-provided, This call retrieves information about a selected invoice,
-including the costs for analysis and storage, and the invoice period.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$invoice(id = NULL, billing_group = NULL, ...)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{id}}{Invoice identifier as ID string or Invoice object.}
-
-\item{\code{billing_group}}{Billing object or ID of a particular billing
-group. If provided, the method will return the invoice incurred by that
-billing group only.}
 
 \item{\code{...}}{Other arguments passed to methods.}
 }
