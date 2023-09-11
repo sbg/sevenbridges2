@@ -31,6 +31,14 @@ Invoices <- R6::R6Class(
     #'
     #' @param billing_group ID of a billing group or billing group object for
     #' which you want to list invoices. Optional.
+    #' @param limit The maximum number of collection items to return for a
+    #' single request. Minimum value is 1. The maximum value is 100 and the
+    #' default value is 50. This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection of
+    #' the first item to return. The default value is 0. This is a
+    #' pagination-specific attribute.
+    #' @param ... Other arguments that can be passed to this method. Such as
+    #' query parameters.
     #' @return Collection of invoices (Invoice class objects).
     query = function(billing_group = NULL,
                      limit = getOption("sevenbridges2")$limit,
