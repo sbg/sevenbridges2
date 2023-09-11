@@ -73,6 +73,7 @@ Invoice <- R6::R6Class(
       x <- purrr::discard(x, .p = is.null)
       x <- purrr::discard(x, .p = is.list)
       x <- purrr::discard(x, .p = ~ .x == "")
+      x <- purrr::discard(x, .p = is.na)
 
       string <- glue::glue("{names(x)}: {x}")
       string_invoice_period <- glue::glue(
@@ -118,6 +119,9 @@ Invoice <- R6::R6Class(
         },
         ""
       )
+
+      # Close container elements
+      cli::cli_end()
     },
     #' @description
     #' Reload Invoice.

@@ -569,5 +569,34 @@ setup_task_outputs_raw <- list(
   )
 )
 
+# Invoices obj
+setup_invoices_obj <- Invoices$new(auth = setup_auth_object)
+
+# Invoice obj
+invoice_res <- list(
+  id = "some-id",
+  href = "some-href",
+  pending = FALSE,
+  approval_date = "2020-01-01T00:00:00Z",
+  invoice_period = list(
+    from = "2020-01-01T11:00:00Z",
+    to = "2020-01-31T23:59:59Z"
+  ),
+  analysis_costs = list(
+    currency = "USD",
+    amount = "1244.1"
+  ),
+  analysis_costs = list(
+    currency = "USD",
+    amount = "117.4"
+  ),
+  total = list(
+    currency = "USD",
+    amount = "1361.5"
+  )
+)
+
+setup_invoice_obj <- asInvoice(x = invoice_res, auth = setup_auth_object)
+
 # Close session at the end of tests
 withr::defer(teardown_env())
