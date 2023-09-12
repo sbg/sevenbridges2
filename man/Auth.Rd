@@ -72,7 +72,6 @@ platform.}
 \item \href{#method-Auth-user}{\code{Auth$user()}}
 \item \href{#method-Auth-rate_limit}{\code{Auth$rate_limit()}}
 \item \href{#method-Auth-billing}{\code{Auth$billing()}}
-\item \href{#method-Auth-billing_groups}{\code{Auth$billing_groups()}}
 \item \href{#method-Auth-upload}{\code{Auth$upload()}}
 \item \href{#method-Auth-list_ongoing_uploads}{\code{Auth$list_ongoing_uploads()}}
 \item \href{#method-Auth-upload_abort}{\code{Auth$upload_abort()}}
@@ -247,36 +246,6 @@ the API
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments passed to methods.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Auth-billing_groups"></a>}}
-\if{latex}{\out{\hypertarget{method-Auth-billing_groups}{}}}
-\subsection{Method \code{billing_groups()}}{
-Get billing group information
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$billing_groups(
-  id = NULL,
-  limit = getOption("sevenbridges2")$limit,
-  offset = getOption("sevenbridges2")$offset,
-  ...
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{id}}{Billing group identifier as ID string or Billing object.}
-
-\item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
-
-\item{\code{offset}}{Defines where the retrieved items started.
-By default, \code{offset} is set to \code{0}.}
-
 \item{\code{...}}{Other arguments passed to methods.}
 }
 \if{html}{\out{</div>}}

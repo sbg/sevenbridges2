@@ -482,51 +482,6 @@ Auth <- R6::R6Class(
       print_billing_api_paths(req)
       invisible(req)
     },
-    # billing groups ----------------------------------------------------------
-    #' @description Get billing group information
-    #' @param id Billing group identifier as ID string or Billing object.
-    #' @param limit Defines the number of items you want to get from your API
-    #' request. By default, `limit` is set to `50`. Maximum is `100`.
-    #' @param offset Defines where the retrieved items started.
-    #' By default, `offset` is set to `0`.
-    #' @param ... Other arguments passed to methods.
-    billing_groups = function(id = NULL,
-                              limit = getOption("sevenbridges2")$limit,
-                              offset = getOption("sevenbridges2")$offset,
-                              ...) {
-      if (is.null(id)) {
-        # list billing API paths
-        req <- sevenbridges2::api(
-          path = "billing/groups",
-          method = "GET",
-          token = self$get_token(),
-          base_url = self$url,
-          limit = limit,
-          offset = offset,
-          ...
-        )
-
-        req <- status_check(req)
-
-        billing_list <- asBillingList(req, self)
-        billing_list
-      } else {
-        id <- check_and_transform_id(id, "Billing")
-        req <- sevenbridges2::api(
-          path = paste0("billing/groups/", id),
-          method = "GET",
-          token = self$get_token(),
-          base_url = self$url,
-          limit = limit,
-          offset = offset,
-          ...
-        )
-
-        req <- status_check(req)
-
-        asBilling(req, auth = self)
-      }
-    },
     # upload a single file
     #' @description This method allows you to upload a single file from your
     #'   local computer to the Platform.
