@@ -3,6 +3,7 @@
 export(App)
 export(Apps)
 export(Auth)
+export(Billing_groups)
 export(Collection)
 export(Export)
 export(Exports)

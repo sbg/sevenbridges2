@@ -313,6 +313,9 @@ Auth <- R6::R6Class(
 
       # Invoices resource
       self$invoices <- Invoices$new(self)
+
+      # Billng_groups resousrce
+      self$billing_groups <- Billing_groups$new(self)
     },
     #' @description
     #' Returns the authentication token read from system environment variable.
