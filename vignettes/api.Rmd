@@ -325,15 +325,14 @@ To get information about your billing groups:
 
 ```{r}
 # check your billing info
-a$billing_groups()
-a$invoice()
+a$billing_groups$query()
 ```
 
 This call lists all your billing groups, including groups that are pending or have been disabled.
 
 To get information about your invoices:
 ```{r}
-a$invoice()
+a$invoices$query()
 ```
 
 The call returns information about all your available invoices, unless you use the \code{billing_group_id} query parameter to specify the ID of a particular billing group, in which case it will return the invoice incurred by that billing group only.
@@ -341,7 +340,7 @@ The call returns information about all your available invoices, unless you use t
 To get a detailed information for a specific billing group, please use the billing_group method with the billing group ID. The information returned includes the billing group owner, the total balance, and the status of the billing group (pending, disabled,...). 
 
 ```{r}
-a$billing_groups(id = "<billing_group_id>")
+a$billing_groups$get(id = "<billing_group_id>")
 ```
 
 ```
@@ -360,7 +359,7 @@ a$billing_groups(id = "<billing_group_id>")
 
 Keep in mind that you can assign the output of the previous call to a variable, which will be an R6 environment:
 ```{r}
-my_billing_group <- a$billing_groups(id = "<billing_group_id>")
+my_billing_group <- a$billing_groups$get(id = "<billing_group_id>")
 # you can still print the billing group info by calling the print method
 my_billing_group$print()
 ```
@@ -399,7 +398,7 @@ my_billing_group$reload()
 To retrieve information about a selected invoice, including the costs for analysis and storage, and the invoice period, you can use the invoice method with the id parameter set to the ID of the invoice you are querying.
 
 ```{r}
-invoice <- a$invoice(id = "<invoice_id>")
+invoice <- a$invoices$get(id = "<invoice_id>")
 invoice
 ```
 
@@ -438,7 +437,7 @@ Create a new project called "api testing" with the billing group `id` obtained a
 
 ```{r}
 # list all available billing groups for currently logged in user
-a$billing_groups()
+a$billing_groups$query()
 # set billing group for the new project
 bid <- "<billing_group_id>"
 # create new project
