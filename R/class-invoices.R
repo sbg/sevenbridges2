@@ -45,14 +45,14 @@ Invoices <- R6::R6Class(
                      offset = getOption("sevenbridges2")$offset,
                      ...) {
       if (!is_missing(billing_group)) {
-        billing <- check_and_transform_id(billing_group, "Billing")
+        billing_group <- check_and_transform_id(billing_group, "Billing")
       }
 
       # nocov start
       res <- super$query(
         path = self$URL[["query"]],
         advance_access = TRUE,
-        billing_group = billing,
+        billing_group = billing_group,
         limit = limit,
         offset = offset,
         ...

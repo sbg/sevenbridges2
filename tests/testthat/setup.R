@@ -569,6 +569,26 @@ setup_task_outputs_raw <- list(
   )
 )
 
+# Billing_groups obj
+setup_billing_groups_obj <- Billing_groups$new(auth = setup_auth_object)
+
+# Billing obj
+billing_group_res <- list(
+  id = "some-id",
+  href = "some-href",
+  owner = "some-owner",
+  name = "some-name",
+  type = "regular",
+  pending = FALSE,
+  disabled = FALSE,
+  balance = list(
+    currency = "Galleon [ʛ]",
+    amount = "33333.3"
+  )
+)
+
+setup_billing_obj <- asBilling(x = billing_group_res, auth = setup_auth_object)
+
 # Invoices obj
 setup_invoices_obj <- Invoices$new(auth = setup_auth_object)
 

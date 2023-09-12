@@ -60,6 +60,9 @@ resources on the platform.}
 
 \item{\code{invoices}}{Invoices object, for accessing invoice resources on the
 platform.}
+
+\item{\code{billing_groups}}{Billing_groups object, for accessing billing groups
+resources on the platform.}
 }
 \if{html}{\out{</div>}}
 }

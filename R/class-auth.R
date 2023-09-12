@@ -80,6 +80,10 @@ Auth <- R6::R6Class(
     #' platform.
     invoices = NULL,
 
+    #' @field billing_groups Billing_groups object, for accessing billing groups
+    #'  resources on the platform.
+    billing_groups = NULL,
+
     #' @description
     #' Create a new Auth object. All methods can be accessed through this
     #' object.

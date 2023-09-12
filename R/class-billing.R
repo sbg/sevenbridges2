@@ -103,7 +103,7 @@ Billing <- R6::R6Class(
     #' transactions analysis in the following format: mm-dd-yyyy.
     #' @param date_to A string representing the ending date for retrieving
     #' transactions analysis in the following format: mm-dd-yyyy.
-    #' @param invoice_id A string representing invoice ID or Invoice object to
+    #' @param invoice A string representing invoice ID or Invoice object to
     #'   show a breakdown for the specific invoice. If omitted, the current
     #'   spending breakdown is returned.
     #' @param limit An integer representing the maximum number of collection
@@ -114,12 +114,15 @@ Billing <- R6::R6Class(
     #' @param ... Other arguments.
     analysis_breakdown = function(date_from = NULL,
                                   date_to = NULL,
-                                  invoice_id = NULL,
+                                  invoice = NULL,
                                   fields = NULL,
                                   limit = getOption("sevenbridges2")$limit,
                                   offset = getOption("sevenbridges2")$offset,
                                   ...) {
-      invoice_id <- check_and_transform_id(invoice_id, "Invoice")
+      if (!is_missing(invoice)) {
+        invoice <- check_and_transform_id(invoice, "Invoice")
+      }
+
 
       req <- sevenbridges2::api(
         path = glue::glue(self$URL[["breakdown_analysis"]]),
@@ -127,7 +130,7 @@ Billing <- R6::R6Class(
         token = self$auth$get_token(),
         base_url = self$auth$url,
         limit = limit,
-        invoice_id = invoice_id,
+        invoice_id = invoice,
         offset = offset,
         date_from = date_from,
         date_to = date_to,
@@ -147,7 +150,7 @@ Billing <- R6::R6Class(
     #' storage analysis in the following format: mm-dd-yyyy.
     #' @param date_to A string representing the ending date for retrieving
     #' storage analysis in the following format: mm-dd-yyyy.
-    #' @param invoice_id A string representing invoice ID or Invoice object to
+    #' @param invoice A string representing invoice ID or Invoice object to
     #'   show a breakdown for the specific invoice. If omitted, the current
     #'   spending breakdown is returned.
     #' @param limit An integer representing the maximum number of collection
@@ -158,12 +161,14 @@ Billing <- R6::R6Class(
     #' @param ... Other arguments.
     storage_breakdown = function(date_from = NULL,
                                  date_to = NULL,
-                                 invoice_id = NULL,
+                                 invoice = NULL,
                                  fields = NULL,
                                  limit = getOption("sevenbridges2")$limit,
                                  offset = getOption("sevenbridges2")$offset,
                                  ...) {
-      invoice_id <- check_and_transform_id(invoice_id, "Invoice")
+      if (!is_missing(invoice)) {
+        invoice <- check_and_transform_id(invoice, "Invoice")
+      }
 
       req <- sevenbridges2::api(
         path = glue::glue(self$URL[["storage_breakdown"]]),
@@ -171,7 +176,7 @@ Billing <- R6::R6Class(
         token = self$auth$get_token(),
         base_url = self$auth$url,
         limit = limit,
-        invoice_id = invoice_id,
+        invoice_id = invoice,
         offset = offset,
         date_from = date_from,
         date_to = date_to,
@@ -188,7 +193,7 @@ Billing <- R6::R6Class(
     #' egress analysis in the following format: mm-dd-yyyy.
     #' @param date_to A string representing the ending date for retrieving
     #' egress analysis in the following format: mm-dd-yyyy.
-    #' @param invoice_id A string representing invoice ID or Invoice object to
+    #' @param invoice A string representing invoice ID or Invoice object to
     #'   show a breakdown for the specific invoice. If omitted, the current
     #'   spending breakdown is returned.
     #' @param limit An integer representing the maximum number of collection
@@ -199,12 +204,14 @@ Billing <- R6::R6Class(
     #' @param ... Other arguments.
     egress_breakdown = function(date_from = NULL,
                                 date_to = NULL,
-                                invoice_id = NULL,
+                                invoice = NULL,
                                 fields = NULL,
                                 limit = getOption("sevenbridges2")$limit,
                                 offset = getOption("sevenbridges2")$offset,
                                 ...) {
-      invoice_id <- check_and_transform_id(invoice_id, "Invoice")
+      if (!is_missing(invoice)) {
+        invoice <- check_and_transform_id(invoice, "Invoice")
+      }
 
       req <- sevenbridges2::api(
         path = glue::glue(self$URL[["egress_breakdown"]]),
@@ -212,7 +219,7 @@ Billing <- R6::R6Class(
         token = self$auth$get_token(),
         base_url = self$auth$url,
         limit = limit,
-        invoice_id = invoice_id,
+        invoice_id = invoice,
         offset = offset,
         date_from = date_from,
         date_to = date_to,
