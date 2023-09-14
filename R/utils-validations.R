@@ -12,10 +12,6 @@
 status_check <- function(req, as = "parsed", ...) {
   # nocov start
   if (httr::status_code(req) %in% c("200", "201", "202", "204")) {
-    # Check this !!!
-    if (!is.null(req$request$headers["X-SBG-Auth-Token"])) {
-      req$request$headers["X-SBG-Auth-Token"] <- "<your_auth_token>"
-    }
     res <- httr::content(req, as = as, ...)
     if (!is.null(res)) {
       attr(res, "response") <- req
