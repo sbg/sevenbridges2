@@ -123,6 +123,13 @@ Billing <- R6::R6Class(
         invoice <- check_and_transform_id(invoice, "Invoice")
       }
 
+      if (!is_missing(date_from)) {
+        date_from <- check_and_transform_datetime(date_from)
+      }
+
+      if (!is_missing(date_to)) {
+        date_to <- check_and_transform_datetime(date_to)
+      }
 
       req <- sevenbridges2::api(
         path = glue::glue(self$URL[["breakdown_analysis"]]),
@@ -170,6 +177,14 @@ Billing <- R6::R6Class(
         invoice <- check_and_transform_id(invoice, "Invoice")
       }
 
+      if (!is_missing(date_from)) {
+        date_from <- check_and_transform_datetime(date_from)
+      }
+
+      if (!is_missing(date_to)) {
+        date_to <- check_and_transform_datetime(date_to)
+      }
+
       req <- sevenbridges2::api(
         path = glue::glue(self$URL[["storage_breakdown"]]),
         method = "GET",
@@ -211,6 +226,14 @@ Billing <- R6::R6Class(
                                 ...) {
       if (!is_missing(invoice)) {
         invoice <- check_and_transform_id(invoice, "Invoice")
+      }
+
+      if (!is_missing(date_from)) {
+        date_from <- check_and_transform_datetime(date_from)
+      }
+
+      if (!is_missing(date_to)) {
+        date_to <- check_and_transform_datetime(date_to)
       }
 
       req <- sevenbridges2::api(
