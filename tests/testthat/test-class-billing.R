@@ -1,95 +1,65 @@
-test_that("Billing group initialization works", {
-  # Load auth object
-  test_auth_obj <- readRDS(testthat::test_path("test_data", "auth.RDS"))
+test_that("Billing initialization works", {
+  # Item object creation works
+  testthat::expect_no_error(asBilling(auth = setup_auth_object))
 
-  # Load predefined response needed for creating a billing group object
-  test_billing_group_response <-
-    readRDS(testthat::test_path("test_data", "ravenclaw_test_resp.RDS"))
-
-  # Create billing group object
-  test_billing_group <- asBilling(
-    x = test_billing_group_response,
-    auth = test_auth_obj
-  )
-
-  testthat::expect_true(
-    checkmate::test_class(test_billing_group,
-      classes = c("Billing", "Item", "R6")
+  # Item object class and methods are set
+  checkmate::assert_r6(
+    setup_billing_obj,
+    classes = c("Item", "Billing"),
+    public = c(
+      "id",
+      "owner",
+      "name",
+      "type",
+      "pending",
+      "disabled",
+      "balance",
+      "print",
+      "reload",
+      "analysis_breakdown",
+      "storage_breakdown",
+      "egress_breakdown"
     )
-  )
-
-  # Check if all the expected fields are filled
-  testthat::expect_equal(
-    test_billing_group$id,
-    "asdfg123-1234-1234-ab12-7e7e7e777abc"
-  )
-  testthat::expect_equal(test_billing_group$owner, "luna_lovegood")
-  testthat::expect_equal(test_billing_group$name, "Ravenclaw Test")
-  testthat::expect_equal(test_billing_group$type, "regular")
-  testthat::expect_equal(test_billing_group$pending, FALSE)
-  testthat::expect_equal(test_billing_group$disabled, FALSE)
-  # nolint start
-  testthat::expect_equal(test_billing_group$href, "https://api.sbgenomics.com/v2/billing/groups/asdfg123-1234-1234-ab12-7e7e7e777abc")
-  # nolint end
-  testthat::expect_equal(test_billing_group$balance$currency, "Galleon [ʛ]")
-  testthat::expect_equal(test_billing_group$balance$amount, 33333.3)
-
-  # Check if superclass field auth is as expected
-  testthat::expect_equal(test_billing_group$auth$platform, "aws-us")
-  testthat::expect_equal(
-    test_billing_group$auth$url,
-    "https://api.sbgenomics.com/v2/"
   )
 })
 
-test_that("Function asBillingList works", {
-  # Load auth object
-  test_auth_obj <- readRDS(testthat::test_path("test_data", "auth.RDS"))
+test_that("Billing print method works", {
+  testthat::expect_snapshot(setup_billing_obj$print())
+})
 
-  # Load predefined response needed for creating a billing group object
-  test_billing_group_response <-
-    readRDS(testthat::test_path("test_data", "ravenclaw_test_resp.RDS"))
+test_that("Breakdown queries throws error when needed", {
+  # Setup test parameters for test
+  test_bad_date_from <- list(date_from = 1)
+  test_bad_date_to <- list(date_to = 1)
+  test_bad_invoice <- list(invoice = 1)
 
-  # Create a list with 2 copies of test_billing_group_response
-  test_billing_group_resp_list <- list(
-    items = rep(list(test_billing_group_response), 2)
-  )
+  ## Analysis breakdown tests
+  # Test bad date_from parameter
+  testthat::expect_error(do.call(setup_billing_obj$analysis_breakdown, test_bad_date_from)) # nolint
 
-  # Create a list of billing group objects using the asBillingList helper
-  # function
-  test_billing_group_list <- asBillingList(
-    x = test_billing_group_resp_list,
-    auth = test_auth_obj
-  )
+  # Test bad date_to parameter
+  testthat::expect_error(do.call(setup_billing_obj$analysis_breakdown, test_bad_date_to)) # nolint
 
-  for (test_billing_group in test_billing_group_list) {
-    testthat::expect_true(
-      checkmate::test_class(test_billing_group,
-        classes = c("Billing", "Item", "R6")
-      )
-    )
+  # Test bad invoice parameter
+  testthat::expect_error(do.call(setup_billing_obj$analysis_breakdown, test_bad_invoice)) # nolint
 
-    # Check if all the expected fields are filled
-    testthat::expect_equal(
-      test_billing_group$id,
-      "asdfg123-1234-1234-ab12-7e7e7e777abc"
-    )
-    testthat::expect_equal(test_billing_group$owner, "luna_lovegood")
-    testthat::expect_equal(test_billing_group$name, "Ravenclaw Test")
-    testthat::expect_equal(test_billing_group$type, "regular")
-    testthat::expect_equal(test_billing_group$pending, FALSE)
-    testthat::expect_equal(test_billing_group$disabled, FALSE)
-    # nolint start
-    testthat::expect_equal(test_billing_group$href, "https://api.sbgenomics.com/v2/billing/groups/asdfg123-1234-1234-ab12-7e7e7e777abc")
-    # nolint end
-    testthat::expect_equal(test_billing_group$balance$currency, "Galleon [ʛ]")
-    testthat::expect_equal(test_billing_group$balance$amount, 33333.3)
+  ## Storage breakdown tests
+  # Test bad date_from parameter
+  testthat::expect_error(do.call(setup_billing_obj$storage_breakdown, test_bad_date_from)) # nolint
 
-    # Check if superclass field auth is as expected
-    testthat::expect_equal(test_billing_group$auth$platform, "aws-us")
-    testthat::expect_equal(
-      test_billing_group$auth$url,
-      "https://api.sbgenomics.com/v2/"
-    )
-  }
+  # Test bad date_to parameter
+  testthat::expect_error(do.call(setup_billing_obj$storage_breakdown, test_bad_date_to)) # nolint
+
+  # Test bad invoice parameter
+  testthat::expect_error(do.call(setup_billing_obj$storage_breakdown, test_bad_invoice)) # nolint
+
+  ## Egress breakdown tests
+  # Test bad date_from parameter
+  testthat::expect_error(do.call(setup_billing_obj$egress_breakdown, test_bad_date_from)) # nolint
+
+  # Test bad date_to parameter
+  testthat::expect_error(do.call(setup_billing_obj$egress_breakdown, test_bad_date_to)) # nolint
+
+  # Test bad invoice parameter
+  testthat::expect_error(do.call(setup_billing_obj$egress_breakdown, test_bad_invoice)) # nolint
 })
