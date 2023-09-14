@@ -74,7 +74,6 @@ resources on the platform.}
 \item \href{#method-Auth-api}{\code{Auth$api()}}
 \item \href{#method-Auth-user}{\code{Auth$user()}}
 \item \href{#method-Auth-rate_limit}{\code{Auth$rate_limit()}}
-\item \href{#method-Auth-billing}{\code{Auth$billing()}}
 \item \href{#method-Auth-upload}{\code{Auth$upload()}}
 \item \href{#method-Auth-list_ongoing_uploads}{\code{Auth$list_ongoing_uploads()}}
 \item \href{#method-Auth-upload_abort}{\code{Auth$upload_abort()}}
@@ -235,24 +234,6 @@ information about your current instance limit.
 \if{html}{\out{<div class="r">}}\preformatted{Auth$rate_limit()}\if{html}{\out{</div>}}
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Auth-billing"></a>}}
-\if{latex}{\out{\hypertarget{method-Auth-billing}{}}}
-\subsection{Method \code{billing()}}{
-Get list of paths used to access billing information via
-the API
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Auth$billing(...)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{Other arguments passed to methods.}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Auth-upload"></a>}}

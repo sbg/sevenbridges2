@@ -451,41 +451,6 @@ Auth <- R6::R6Class(
 
       asRate(req)
     },
-    # billing -----------------------------------------------------------------
-    #' @description Get list of paths used to access billing information via
-    #' the API
-    #' @param ... Other arguments passed to methods.
-    #' @importFrom purrr discard
-    #' @importFrom glue glue
-    #' @importFrom cli cli_h1 cli_li
-    billing = function(...) {
-      # list billing API paths
-      req <- sevenbridges2::api(
-        path = "billing",
-        method = "GET",
-        token = self$get_token(),
-        base_url = self$url,
-        ...
-      )
-
-      req <- status_check(req)
-
-      print_billing_api_paths <- function(x) {
-        # x <- as.list(self)
-        # x <- purrr::discard(x, .p = is.list)
-        x <- purrr::discard(x, .p = is.function)
-        x <- purrr::discard(x, .p = is.environment)
-        x <- purrr::discard(x, .p = is.null)
-        x <- purrr::discard(x, .p = ~ .x == "")
-        string <- glue::glue("{names(x)}: {x}")
-        names(string) <- rep("*", times = length(string))
-
-        cli::cli_h1("Billing API paths")
-        cli::cli_li(string)
-      }
-      print_billing_api_paths(req)
-      invisible(req)
-    },
     # upload a single file
     #' @description This method allows you to upload a single file from your
     #'   local computer to the Platform.
