@@ -37,8 +37,12 @@ VolumeFile <- R6::R6Class(
 
       if (is.null(res$location) && is.null(res$prefix)) {
         self$location <- NULL
-      } # this part must be here because if value is null next line would fail
-      self$location <- ifelse(length(res$prefix) > 0, res$prefix, res$location)
+      } else {
+        self$location <- ifelse(length(res$prefix) > 0,
+          res$prefix,
+          res$location
+        )
+      }
       self$type <- ifelse(length(res$prefix) > 0, "PREFIX", "FILE")
       self$storage_type <- res$type
       self$volume <- res$volume
