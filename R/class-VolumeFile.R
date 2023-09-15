@@ -141,8 +141,8 @@ VolumeFile <- R6::R6Class(
         len = 1, null.ok = TRUE,
         typed.missing = TRUE
       )
-
-      path <- glue::glue(self$URL[["list"]]) # nocov start
+      # nocov start
+      path <- glue::glue(self$URL[["list"]])
 
       res <- sevenbridges2::api(
         path = path,
@@ -160,7 +160,7 @@ VolumeFile <- R6::R6Class(
       res <- status_check(res)
 
       return(asVolumeFileCollection(res, auth = self$auth))
-    },
+    }, # nocov end
     # Start new import job -----------------------------------------------
     #' @description This call lets you queue a job to import this file or folder
     #' from a volume into a project on the Platform.
