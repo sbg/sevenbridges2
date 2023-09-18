@@ -103,7 +103,7 @@ Method for getting a analysis breakdown for a billing group.
 \if{html}{\out{<div class="r">}}\preformatted{Billing$analysis_breakdown(
   date_from = NULL,
   date_to = NULL,
-  invoice_id = NULL,
+  invoice = NULL,
   fields = NULL,
   limit = getOption("sevenbridges2")$limit,
   offset = getOption("sevenbridges2")$offset,
@@ -120,7 +120,7 @@ transactions analysis in the following format: mm-dd-yyyy.}
 \item{\code{date_to}}{A string representing the ending date for retrieving
 transactions analysis in the following format: mm-dd-yyyy.}
 
-\item{\code{invoice_id}}{A string representing invoice ID or Invoice object to
+\item{\code{invoice}}{A string representing invoice ID or Invoice object to
 show a breakdown for the specific invoice. If omitted, the current
 spending breakdown is returned.}
 
@@ -148,7 +148,7 @@ Method for getting a storage breakdown for a billing group.
 \if{html}{\out{<div class="r">}}\preformatted{Billing$storage_breakdown(
   date_from = NULL,
   date_to = NULL,
-  invoice_id = NULL,
+  invoice = NULL,
   fields = NULL,
   limit = getOption("sevenbridges2")$limit,
   offset = getOption("sevenbridges2")$offset,
@@ -165,7 +165,7 @@ storage analysis in the following format: mm-dd-yyyy.}
 \item{\code{date_to}}{A string representing the ending date for retrieving
 storage analysis in the following format: mm-dd-yyyy.}
 
-\item{\code{invoice_id}}{A string representing invoice ID or Invoice object to
+\item{\code{invoice}}{A string representing invoice ID or Invoice object to
 show a breakdown for the specific invoice. If omitted, the current
 spending breakdown is returned.}
 
@@ -193,7 +193,7 @@ Method for getting a egress breakdown for a billing group.
 \if{html}{\out{<div class="r">}}\preformatted{Billing$egress_breakdown(
   date_from = NULL,
   date_to = NULL,
-  invoice_id = NULL,
+  invoice = NULL,
   fields = NULL,
   limit = getOption("sevenbridges2")$limit,
   offset = getOption("sevenbridges2")$offset,
@@ -210,7 +210,7 @@ egress analysis in the following format: mm-dd-yyyy.}
 \item{\code{date_to}}{A string representing the ending date for retrieving
 egress analysis in the following format: mm-dd-yyyy.}
 
-\item{\code{invoice_id}}{A string representing invoice ID or Invoice object to
+\item{\code{invoice}}{A string representing invoice ID or Invoice object to
 show a breakdown for the specific invoice. If omitted, the current
 spending breakdown is returned.}
 
