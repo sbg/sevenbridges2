@@ -166,7 +166,7 @@ App <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       rlang::inform(glue::glue_col("App {green {self$name}} has been copied to {green {project}} project.")) # nolint
 
@@ -206,7 +206,7 @@ App <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       if (in_place) {
         self$initialize(
@@ -304,7 +304,7 @@ App <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       rlang::inform(glue::glue_col("New {green {self$name}} app revision with number {green {self$latest_revision + 1}} has been created.")) # nolint
 
@@ -329,7 +329,7 @@ App <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       rlang::inform(glue::glue_col("App {green {self$name}} has been updated.")) # nolint
 

@@ -56,7 +56,7 @@ Resource <- R6::R6Class(
         fields = fields
       )
 
-      res <- status_check(res)
+
 
       return(res)
       # nocov end
@@ -102,7 +102,7 @@ Resource <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       return(res)
       # nocov end
@@ -145,7 +145,7 @@ Resource <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       return(res)
       # nocov end

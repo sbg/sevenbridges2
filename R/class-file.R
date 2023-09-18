@@ -72,7 +72,8 @@ File <- R6::R6Class(
       self$tags <- res$tags
       self$metadata <- res$metadata
       self$url <- res$url
-      self$secondary_files <- private$get_secondary_files(res$secondary_files)
+      self$secondary_files <-
+        private$get_secondary_files(res$secondary_files)
     },
 
     # nocov start
@@ -88,7 +89,8 @@ File <- R6::R6Class(
       x <- purrr::discard(x, .p = is.null)
       x <- purrr::discard(x, .p = is.list)
 
-      string <- glue::glue("{names(x)}: {ifelse(names(x) == 'size', paste0(x, ' bytes'), x)}") # nolint
+      string <-
+        glue::glue("{names(x)}: {ifelse(names(x) == 'size', paste0(x, ' bytes'), x)}") # nolint
 
       cli::cli_h1("File")
 
@@ -125,30 +127,26 @@ File <- R6::R6Class(
       if (!is.null(x$tags) && length(x$tags) != 0) {
         file_tags <- x$tags
         names(file_tags) <- paste0("tag_", seq_along(file_tags))
-        string_file_tags <- glue::glue(
-          "{names(file_tags)}: {file_tags}"
-        )
+        string_file_tags <-
+          glue::glue("{names(file_tags)}: {file_tags}")
       }
 
       if (!is.null(x$metadata) && length(x$metadata) != 0) {
         file_metadata <- x$metadata
-        string_file_metadata <- glue::glue(
-          "{names(file_metadata)}: {file_metadata}"
-        )
+        string_file_metadata <-
+          glue::glue("{names(file_metadata)}: {file_metadata}")
       }
 
       if (!is.null(x$origin) && length(x$origin) != 0) {
         file_origin <- x$origin
-        string_file_origin <- glue::glue(
-          "{names(file_origin)}: {file_origin}"
-        )
+        string_file_origin <-
+          glue::glue("{names(file_origin)}: {file_origin}")
       }
 
       if (!is.null(x$storage) && length(x$storage) != 0) {
         file_storage <- x$storage
-        string_file_storage <- glue::glue(
-          "{names(file_storage)}: {file_storage}"
-        )
+        string_file_storage <-
+          glue::glue("{names(file_storage)}: {file_storage}")
       }
 
       x <- purrr::discard(x, .p = is.function)
@@ -156,7 +154,8 @@ File <- R6::R6Class(
       x <- purrr::discard(x, .p = is.null)
       x <- purrr::discard(x, .p = is.list)
 
-      string <- glue::glue("{names(x)}: {ifelse(names(x) == 'size', paste0(x, ' bytes'), x)}") # nolint
+      string <-
+        glue::glue("{names(x)}: {ifelse(names(x) == 'size', paste0(x, ' bytes'), x)}") # nolint
       names(string) <- rep("*", times = length(string))
 
       cli::cli_h1("File")
@@ -203,7 +202,8 @@ File <- R6::R6Class(
         ...
       )
       rlang::inform("File object is refreshed!")
-    }, # nocov end
+    },
+    # nocov end
     #' @description
     #' Updates the name, the full set metadata, and tags
     #' for a specified file.
@@ -221,7 +221,8 @@ File <- R6::R6Class(
     #' @importFrom glue glue
     update = function(name = NULL,
                       metadata = NULL,
-                      tags = NULL, ...) {
+                      tags = NULL,
+                      ...) {
       checkmate::assert_string(name, null.ok = TRUE)
       check_tags(tags)
       check_metadata(metadata)
@@ -246,7 +247,7 @@ File <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       # Reload object
       self$initialize(
@@ -256,7 +257,8 @@ File <- R6::R6Class(
         auth = self$auth
       )
       rlang::inform("File has been updated!")
-    }, # nocov end
+    },
+    # nocov end
 
     #' @description
     #' This method allows you to tag files on the Platform. You can tag your
@@ -298,7 +300,7 @@ File <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       # Add tags to object
       if (overwrite) {
@@ -306,7 +308,8 @@ File <- R6::R6Class(
       } else {
         self$tags <- unique(c(self$tags, tags))
       }
-    }, # nocov end
+    },
+    # nocov end
 
     #' @description
     #' This call copies the specified file to a new project. Files retain their
@@ -352,7 +355,7 @@ File <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       # Return newly created file
       return(asFile(res, auth = self$auth))
@@ -372,7 +375,7 @@ File <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       # Set url field
       self$url <- res$url
@@ -396,13 +399,15 @@ File <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       # Set url field
-      self$metadata <- DescTools::StripAttr(res, attr_names = "response")
+      self$metadata <-
+        DescTools::StripAttr(res, attr_names = "response")
 
       return(self$metadata)
-    }, # nocov end
+    },
+    # nocov end
 
     #' @description
     #' This call changes the metadata values for the specified file.
@@ -443,13 +448,15 @@ File <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       # Set new metadata fields
-      self$metadata <- DescTools::StripAttr(res, attr_names = "response")
+      self$metadata <-
+        DescTools::StripAttr(res, attr_names = "response")
 
       return(self$metadata)
-    }, # nocov end
+    },
+    # nocov end
 
     #' @description
     #' This call moves a file from one folder to another. Moving of files is
@@ -491,7 +498,7 @@ File <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       # Return newly created file
       return(asFile(res, auth = self$auth))
@@ -517,7 +524,7 @@ File <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       res$items <- asFileList(res, auth = self$auth)
 
@@ -539,16 +546,12 @@ File <- R6::R6Class(
         base_url = self$auth$url
       )
 
-      if (res$status_code == 204) {
-        rlang::inform(message = glue::glue(
-          "File {self$id} has been deleted."
-        ))
-        self$id <- NULL
-      } else if (res$status_code %in% c("401", "403", "404", "503")) {
-        msg <- httr::content(res, as = "parsed")$message
-        rlang::abort(glue::glue("HTTP Status {res$status_code} : {msg}"))
-      }
-    }, # nocov end
+
+
+      rlang::inform(message = glue::glue("File {self$id} has been deleted."))
+      self$id <- NULL
+    },
+    # nocov end
     #' @description Download method for File class. It allows download a
     #' platform file to your local computer. To specify the destination for
     #' your download, you should provide the path to the destination directory
@@ -565,10 +568,10 @@ File <- R6::R6Class(
     download = function(directory_path = getwd(),
                         filename = self$name,
                         method = "curl",
-                        retry_count = getOption("sevenbridges2")$default_retry_count, # nolint
-                        retry_timeout = getOption("sevenbridges2")$default_retry_timeout) { # nolint
-
-
+                        # nolint start
+                        retry_count = getOption("sevenbridges2")$default_retry_count,
+                        retry_timeout = getOption("sevenbridges2")$default_retry_timeout) {
+      # nolint end
       # get download url for the file if it was not generated previously
       if (is_missing(self$url)) {
         self$url <- self$get_download_url()
@@ -592,19 +595,31 @@ File <- R6::R6Class(
             download.file(self$url, destfile, method = method)
             # successful download
             # nolint start
-            rlang::inform(glue::glue_col("File {green {filename}} has been downloaded to the {green {directory_path}} directory."))
+            rlang::inform(
+              glue::glue_col(
+                "File {green {filename}} has been downloaded to the {green {directory_path}} directory."
+              )
+            )
             # nolint end
             break
           },
           error = function(e) {
             # failed download
             # nolint start
-            rlang::warn(glue::glue_col("Download attempt {green {i}} failed. Error message: {red {e$message}}"))
+            rlang::warn(
+              glue::glue_col(
+                "Download attempt {green {i}} failed. Error message: {red {e$message}}"
+              )
+            )
             # nolint end
             # failed download after last attempt
             if (i == retry_count) {
               # nolint start
-              rlang::abort(glue::glue_col("Download failed after maximum allowed number of attempts ({red {retry_count}})."))
+              rlang::abort(
+                glue::glue_col(
+                  "Download failed after maximum allowed number of attempts ({red {retry_count}})."
+                )
+              )
               # nolint end
             }
             # wait for 5 seconds before new attemt - print the countdown message
@@ -674,9 +689,12 @@ File <- R6::R6Class(
     #' like 'fields', etc.
     #'
     #' @return Export job object.
-    submit_export = function(destination_volume, destination_location,
-                             overwrite = FALSE, copy_only = FALSE,
-                             properties = NULL, ...) {
+    submit_export = function(destination_volume,
+                             destination_location,
+                             overwrite = FALSE,
+                             copy_only = FALSE,
+                             properties = NULL,
+                             ...) {
       self$auth$exports$submit_export(
         source_file = self,
         destination_volume = destination_volume,
@@ -687,8 +705,12 @@ File <- R6::R6Class(
         ...
       )
       # nolint start
-      rlang::inform(glue::glue_col("File {green {self$name}} has been exported to the {green {destination_volume}} volume.
-                                   Please, reload file object to fetch updated information."))
+      rlang::inform(
+        glue::glue_col(
+          "File {green {self$name}} has been exported to the {green {destination_volume}} volume.
+                                   Please, reload file object to fetch updated information."
+        )
+      )
       # nolint end
     }
   ),

@@ -218,7 +218,7 @@ Exports <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       export <- asExport(res, auth = self$auth)
 

@@ -167,7 +167,7 @@ Files <- R6::R6Class(
         "file_ids" = file_ids
       )
 
-      req <- sevenbridges2::api(
+      res <- sevenbridges2::api(
         path = glue::glue(self$URL[["copy"]]),
         method = "POST",
         body = body,
@@ -175,7 +175,7 @@ Files <- R6::R6Class(
         base_url = self$auth$url
       )
 
-      res <- status_check(req)
+
 
       result <- list()
       for (i in seq_len(length(res))) {
@@ -259,7 +259,7 @@ Files <- R6::R6Class(
         base_url = self$auth$url
       )
 
-      res <- status_check(res)
+
 
       if (attr(res, "response")$status_code == 201) {
         # nolint start

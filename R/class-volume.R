@@ -153,7 +153,7 @@ Volume <- R6::R6Class(
         advance_access = TRUE
       )
 
-      res <- status_check(res)
+
 
       self$initialize(
         res = res,
@@ -192,7 +192,7 @@ Volume <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       rlang::inform(glue::glue("The volume {self$name} has been ", glue::glue_col("{red deactivated}."))) # nolint
 
@@ -222,7 +222,7 @@ Volume <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       rlang::inform(glue::glue("The volume {self$name} has been ", glue::glue_col("{green reactivated}."))) # nolint
 
@@ -251,7 +251,7 @@ Volume <- R6::R6Class(
         base_url = self$auth$url,
         advance_access = TRUE
       )
-      res <- status_check(res)
+
 
       rlang::inform(glue::glue("The volume {self$name} has been ", glue::glue_col("{red deleted}."))) # nolint
 
@@ -311,7 +311,7 @@ Volume <- R6::R6Class(
         limit = limit,
         ...
       )
-      res <- status_check(res)
+
 
       return(asVolumeFileCollection(res, auth = self$auth))
     }, # nocov end
@@ -358,7 +358,7 @@ Volume <- R6::R6Class(
         advance_access = TRUE,
         ...
       )
-      res <- status_check(res)
+
 
       return(asVolumeFile(res, auth = self$auth))
       # nocov end
@@ -388,7 +388,7 @@ Volume <- R6::R6Class(
         offset = offset,
         ...
       )
-      res <- status_check(res)
+
 
       return(asMemberList(res, auth = self$auth))
       # nocov end
@@ -440,7 +440,7 @@ Volume <- R6::R6Class(
         base_url = self$auth$url,
         advance_access = TRUE
       )
-      res <- status_check(res)
+
 
       return(asMember(res, auth = self$auth))
       # nocov end
@@ -465,7 +465,7 @@ Volume <- R6::R6Class(
         base_url = self$auth$url,
         advance_access = TRUE
       )
-      res <- status_check(res)
+
 
       rlang::inform(glue_col("Member {green {username}} was successfully removed from the {green {id}} volume.")) # nolint
       # nocov end
@@ -494,7 +494,7 @@ Volume <- R6::R6Class(
         advance_access = TRUE,
         ...
       )
-      res <- status_check(res)
+
 
       return(asMember(res, auth = self$auth))
       # nocov end
@@ -547,7 +547,7 @@ Volume <- R6::R6Class(
         base_url = self$auth$url,
         advance_access = TRUE
       )
-      res <- status_check(res)
+
       rlang::inform(glue::glue_col("Member {green {username}}'s permissions have been {green updated} to:")) # nolint
 
       return(asPermission(res, auth = self$auth))

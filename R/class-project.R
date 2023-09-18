@@ -207,8 +207,10 @@ Project <- R6::R6Class(
       checkmate::assert_string(description, null.ok = TRUE)
       check_tags(tags)
       check_settings(settings)
-      billing_group <-
-        check_and_transform_id(billing_group, "Billing")
+      if (!is_missing(billing_group)) {
+        billing_group <-
+          check_and_transform_id(billing_group, "Billing")
+      }
       # nocov start
       body <- list(
         "name" = name,
@@ -232,7 +234,7 @@ Project <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       # Reload object
       self$initialize(
@@ -261,12 +263,9 @@ Project <- R6::R6Class(
         base_url = self$auth$url
       )
 
-      if (res$status_code == 204) {
-        rlang::inform(message = glue::glue("Project {self$id} has been deleted.")) # nolint
-      } else if (res$status_code %in% c("401", "403", "404", "503")) {
-        msg <- httr::content(res, as = "parsed")$message
-        rlang::abort(glue::glue("HTTP Status {res$status_code} : {msg}"))
-      }
+
+
+      rlang::inform(message = glue::glue("Project {self$id} has been deleted.")) # nolint
     },
     # nocov end
     # Project members ---------------------------------------------------------
@@ -292,7 +291,7 @@ Project <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
       res$items <- asMemberList(res, self$auth)
 
       return(asCollection(res, auth = self$auth))
@@ -370,7 +369,7 @@ Project <- R6::R6Class(
         "permissions" = permissions
       )
 
-      req <- sevenbridges2::api(
+      res <- sevenbridges2::api(
         path = glue::glue(self$URL[["members"]]),
         method = "POST",
         token = self$auth$get_token(),
@@ -379,7 +378,7 @@ Project <- R6::R6Class(
         base_url = self$auth$url
       )
 
-      res <- status_check(req)
+
 
       return(asMember(res, auth = self$auth))
     },
@@ -402,7 +401,7 @@ Project <- R6::R6Class(
         class_name = "Member",
         field_name = "username"
       )
-      req <- sevenbridges2::api(
+      res <- sevenbridges2::api(
         path = glue::glue(self$URL[["member"]]),
         method = "DELETE",
         token = self$auth$get_token(),
@@ -410,15 +409,15 @@ Project <- R6::R6Class(
         base_url = self$auth$url
       )
 
-      if (req$status_code == 204) {
-        rlang::inform(
-          message = glue::glue_col(
-            "User {green {username}} has been deleted
+
+
+      rlang::inform(
+        message = glue::glue_col(
+          "User {green {username}} has been deleted
           from the {green {self$id}} project.",
-            .literal = TRUE
-          )
+          .literal = TRUE
         )
-      }
+      )
     },
     # nocov end
     #' @description This method returns the information about the member of
@@ -438,7 +437,7 @@ Project <- R6::R6Class(
         class_name = "Member",
         field_name = "username"
       )
-      req <- sevenbridges2::api(
+      res <- sevenbridges2::api(
         path = glue::glue(self$URL[["member"]]),
         method = "GET",
         token = self$auth$get_token(),
@@ -446,7 +445,7 @@ Project <- R6::R6Class(
         ...
       )
 
-      res <- status_check(req)
+
 
       return(asMember(res, self$auth))
     },
@@ -504,7 +503,7 @@ Project <- R6::R6Class(
         rlang::abort("Please provide updated information.")
       }
 
-      req <- sevenbridges2::api(
+      res <- sevenbridges2::api(
         path = glue::glue(self$URL[["member_permissions"]]),
         method = "PATCH",
         token = self$auth$get_token(),
@@ -513,15 +512,11 @@ Project <- R6::R6Class(
         base_url = self$auth$url
       )
 
-      res <- status_check(req)
 
-      if (req$status_code == 200) {
-        rlang::inform(glue::glue_col("Permissions for {green {username}} have been changed.")) # nolint
-        return(asPermission(res, auth = self$auth))
-      } else {
-        rlang::abort("Oops, something went wrong. ")
-        res
-      }
+
+      rlang::inform(glue::glue_col("Permissions for {green {username}} have been changed.")) # nolint
+
+      return(asPermission(res, auth = self$auth))
     },
     # nocov end
     # Project files ---------------------------------------------------------
@@ -539,7 +534,7 @@ Project <- R6::R6Class(
                           offset = getOption("sevenbridges2")$offset,
                           ...) {
       # nocov start
-      req <- sevenbridges2::api(
+      res <- sevenbridges2::api(
         path = glue::glue(self$URL[["files"]]),
         method = "GET",
         token = self$auth$get_token(),
@@ -549,7 +544,7 @@ Project <- R6::R6Class(
         ...
       )
 
-      res <- status_check(req)
+
       res$items <- asFileList(res, self$auth)
 
       return(asCollection(res, auth = self$auth))
@@ -575,7 +570,7 @@ Project <- R6::R6Class(
         "type" = "FOLDER"
       )
 
-      req <- sevenbridges2::api(
+      res <- sevenbridges2::api(
         path = "files",
         method = "POST",
         body = body,
@@ -584,13 +579,10 @@ Project <- R6::R6Class(
         ...
       )
 
-      res <- status_check(req)
 
-      if (attr(res, "response")$status_code == 201) {
-        # nolint start
-        rlang::inform(glue::glue_col("New folder {green {name}} has been created."))
-        # nolint end
-      }
+
+      rlang::inform(glue::glue_col("New folder {green {name}} has been created.")) # nolint
+
       return(asFile(res, self$auth))
     },
     #' @description  Get project's root folder object

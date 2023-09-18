@@ -172,7 +172,7 @@ Projects <- R6::R6Class(
         base_url = self$auth$url,
         ...
       )
-      res <- status_check(res)
+
 
       rlang::inform(
         glue::glue_col(
