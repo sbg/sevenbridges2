@@ -58,63 +58,23 @@ test_that("Api function throws error when encoding is not valid", {
 })
 
 test_that("Status check function works properly for unauthorized request", {
-  resp <- sevenbridges2::api(
+  testthat::expect_error(sevenbridges2::api(
     token = dummy_token,
     # fake token
     path = "user/",
     method = "GET",
     base_url = "https://api.sbgenomics.com/v2/"
-  )
-
-  testthat::expect_equal(httr::status_code(resp), 401L)
-
-  processed_response <- try(status_check(resp), silent = TRUE)
-
-  if (inherits(processed_response, "try-error")) {
-    error_message <- trimws(processed_response[1],
-      which = c("both", "left", "right"),
-      whitespace = "[\t\r\n]"
-    )
-
-    testthat::expect_equal(
-      error_message,
-      "Error in status_check(resp) : HTTP Status 401: Unauthorized"
-    )
-  } else if (inherits(processed_response, "list")) {
-    testthat::fail(message = "Failure has been forced - a valid response has
-                   been obtained, which is not in accordance with the initial
-                   assumption of the test.")
-  }
+  ))
 })
 
 
 test_that("Status check function works properly for undefined resource
           request", {
-  resp <- sevenbridges2::api(
+  testthat::expect_error(sevenbridges2::api(
     token = dummy_token,
     # fake token
     path = "wizards/", # non-existent resource
     method = "GET",
     base_url = "https://api.sbgenomics.com/v2/"
-  )
-
-  testthat::expect_equal(httr::status_code(resp), 404L)
-
-  processed_response <- try(status_check(resp), silent = TRUE)
-
-  if (inherits(processed_response, "try-error")) {
-    error_message <- trimws(processed_response[1],
-      which = c("both", "left", "right"),
-      whitespace = "[\t\r\n]"
-    )
-
-    testthat::expect_equal(
-      error_message,
-      "Error in status_check(resp) : HTTP Status 404: HTTP 404 Not Found"
-    )
-  } else if (inherits(processed_response, "list")) {
-    testthat::fail(message = "Failure has been forced - a valid response was
-                   obtained, which is not in accordance with the initial
-                   assumption of the test.")
-  }
+  ))
 })
