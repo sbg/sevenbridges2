@@ -106,7 +106,6 @@ VolumeFile <- R6::R6Class(
         advance_access = TRUE,
         ...
       )
-      res <- status_check(res)
       if (is.null(res$volume)) {
         res$volume <- self$volume
       }
@@ -157,7 +156,6 @@ VolumeFile <- R6::R6Class(
         limit = limit,
         ...
       )
-      res <- status_check(res)
 
       return(asVolumeFileCollection(res, auth = self$auth))
     }, # nocov end
