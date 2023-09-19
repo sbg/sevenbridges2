@@ -1,44 +1,41 @@
 # nolint start
-#' @title R6 Class representing a VolumeFile
+#' @title R6 Class representing a VolumePrefix
 #'
 #' @description
-#' R6 Class representing a resource for managing VolumeFile objects.
+#' R6 Class representing a resource for managing VolumePrefix objects.
 #'
 #' @importFrom R6 R6Class
 #' @export
-VolumeFile <- R6::R6Class(
+VolumePrefix <- R6::R6Class(
   # nolint end
-  "VolumeFile",
+  "VolumePrefix",
   inherit = Item,
   portable = FALSE,
   public = list(
     #' @field URL URL endpoint fields
     URL = list(
-      "get" = "storage/volumes/{self$volume}/object"
+      "list" = "storage/volumes/{self$volume}/list"
     ),
-    #' @field location File location on the volume.
-    location = NULL,
-    #' @field type Type of storage (cloud provider). Can be one of:
-    #' 's3', 'gcs', 'azure', 'OSS'.
-    type = NULL,
+    #' @field prefix File/prefix name on the volume.
+    prefix = NULL,
     #' @field volume Volume id.
     volume = NULL,
-    #' @field metadata File's metadata if exists.
-    metadata = NULL,
-    #' @description Create a new VolumeFile object.
-    #' @param res Response containing VolumeFile object info.
+
+    #' @description Create a new VolumePrefix object.
+    #' @param res Response containing VolumePrefix object info.
     #' @param ... Other arguments.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
-
-      self$location <- res$location
-      self$type <- res$type
+      if (!is.null(res$prefix) && !endsWith(res$prefix, "/")) {
+        self$prefix <- paste0(res$prefix, "/")
+      } else {
+        self$prefix <- res$prefix
+      }
       self$volume <- res$volume
-      self$metadata <- res$metadata
     },
     # nocov start
-    #' @description Print method for VolumeFile class.
+    #' @description Print method for VolumePrefix class.
     #'
     #' @importFrom purrr discard
     #' @importFrom glue glue_col
@@ -61,7 +58,7 @@ VolumeFile <- R6::R6Class(
 
       string <- glue::glue_col("{green {names(x)}}: {x}")
 
-      cli::cli_h1("VolumeFile")
+      cli::cli_h1("VolumePrefix")
 
       cli::cli_li(string)
 
@@ -69,9 +66,9 @@ VolumeFile <- R6::R6Class(
       cli::cli_end()
     },
     #' @description
-    #' Reload VolumeFile.
+    #' Reload VolumePrefix.
     #' @param ... Other query parameters.
-    #' @return VolumeFile
+    #' @return VolumePrefix
     reload = function(...) {
       reload_url <- ""
       if (!is_missing(self$href)) {
@@ -83,11 +80,12 @@ VolumeFile <- R6::R6Class(
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
-        path = glue::glue(self$URL[["get"]]),
+        path = glue::glue(self$URL[["list"]]),
         query = list(
-          location = self$location
+          prefix = self$prefix
         ),
         advance_access = TRUE,
+        limit = 1,
         ...
       )
       if (is.null(res$volume)) {
@@ -100,7 +98,45 @@ VolumeFile <- R6::R6Class(
         response = attr(res, "response"),
         auth = self$auth
       )
-      rlang::inform("VolumeFile object is refreshed!")
+      rlang::inform("VolumePrefix object is refreshed!")
+    }, # nocov end
+    #' @description List volume folder contents
+    #' This call lists the contents of a specific volume folder.
+    #' @param limit Defines the number of items you want to get from your API
+    #' request. By default, `limit` is set to `50`. Maximum is `100`.
+    #' @param continuation_token Continuation token received to use for next
+    #' chunk of results. Behaves similarly like offset parameter.
+    #' @param ... Other parameters that can be passed to api() function, like
+    #' fields for example. With fields parameter you can specify a subset of
+    #' fields to include in the response. You can use: `href`, `location`,
+    #' `volume`, `type`, `metadata`, `_all`. Default: `_all`.
+    #' @return VolumeContentCollection object containing list of VolumeFile
+    #' objects.
+    list_files = function(limit = getOption("sevenbridges2")$limit,
+                          continuation_token = NULL,
+                          ...) {
+      checkmate::assert_character(continuation_token,
+        len = 1, null.ok = TRUE,
+        typed.missing = TRUE
+      )
+      # nocov start
+      path <- glue::glue(self$URL[["list"]])
+
+      res <- sevenbridges2::api(
+        path = path,
+        query = list(
+          prefix = self$prefix,
+          continuation_token = continuation_token
+        ),
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE,
+        limit = limit,
+        ...
+      )
+
+      return(asVolumeContentCollection(res, auth = self$auth))
     }, # nocov end
     # Start new import job -----------------------------------------------
     #' @description This call lets you queue a job to import this file or folder
@@ -140,6 +176,12 @@ VolumeFile <- R6::R6Class(
     #' with the same name already exists at the destination.
     #' Bear in mind that if used with folders import, the folder content will
     #' be renamed, not the whole folder.
+    #' @param preserve_folder_structure Boolean. Whether to keep the exact
+    #' source folder structure. The default value is true if the item being
+    #' imported is a folder. Should not be used if you are importing a file.
+    #' Bear in mind that if you use preserve_folder_structure = FALSE, that the
+    #' response will be the parent folder object containing imported files
+    #' alongside with other files if they exist.
     #'
     #' @param ... Other arguments that can be passed to api() function
     #' like 'fields', etc.
@@ -147,25 +189,26 @@ VolumeFile <- R6::R6Class(
     #' @return Import job object.
     import = function(destination_project = NULL, destination_parent = NULL,
                       name = NULL, overwrite = FALSE, autorename = FALSE,
-                      ...) {
+                      preserve_folder_structure = NULL, ...) {
       # nocov start
       self$auth$imports$submit_import(
         source_volume = self$volume,
-        source_location = self$location,
+        source_location = self$prefix,
         destination_project = destination_project,
         destination_parent = destination_parent,
         name = name,
         overwrite = overwrite,
         autorename = autorename,
+        preserve_folder_structure = preserve_folder_structure,
         ...
       ) # nocov end
     }
   )
 )
 
-# Helper function for creating VolumeFile objects
-asVolumeFile <- function(x = NULL, auth = NULL) {
-  VolumeFile$new(
+# Helper function for creating VolumePrefix objects
+asVolumePrefix <- function(x = NULL, auth = NULL) {
+  VolumePrefix$new(
     res = x,
     href = x$href,
     response = attr(x, "response"),
@@ -173,8 +216,8 @@ asVolumeFile <- function(x = NULL, auth = NULL) {
   )
 }
 
-# Helper function for creating a list of VolumeFile objects
-asVolumeFileList <- function(x, auth) {
-  obj <- lapply(x, asVolumeFile, auth = auth)
+# Helper function for creating a list of VolumePrefix objects
+asVolumePrefixList <- function(x, auth) {
+  obj <- lapply(x, asVolumePrefix, auth = auth)
   obj
 }
