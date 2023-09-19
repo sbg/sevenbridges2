@@ -64,21 +64,11 @@ Print method for VolumePrefix class.
 \if{html}{\out{<a id="method-VolumePrefix-reload"></a>}}
 \if{latex}{\out{\hypertarget{method-VolumePrefix-reload}{}}}
 \subsection{Method \code{reload()}}{
-Reload VolumePrefix.
+Reload VolumePrefix object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{VolumePrefix$reload(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{VolumePrefix$reload()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{Other query parameters.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-VolumePrefix
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VolumePrefix-list_files"></a>}}
@@ -112,7 +102,7 @@ fields to include in the response. You can use: \code{href}, \code{location},
 }
 \subsection{Returns}{
 VolumeContentCollection object containing list of VolumeFile
-objects.
+and VolumePrefix objects.
 }
 }
 \if{html}{\out{<hr>}}

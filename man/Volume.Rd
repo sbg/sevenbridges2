@@ -241,8 +241,8 @@ fields to include in the response. You can use: \code{href}, \code{location},
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-VolumeFileCollection object containing list of VolumeFile
-objects.
+VolumeContentCollection object containing list of VolumeFile
+and VolumePrefix objects.
 }
 }
 \if{html}{\out{<hr>}}

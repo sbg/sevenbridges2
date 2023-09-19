@@ -66,39 +66,11 @@ VolumePrefix <- R6::R6Class(
       cli::cli_end()
     },
     #' @description
-    #' Reload VolumePrefix.
-    #' @param ... Other query parameters.
-    #' @return VolumePrefix
-    reload = function(...) {
-      reload_url <- ""
-      if (!is_missing(self$href)) {
-        reload_url <- self$href
-      }
-
-      res <- sevenbridges2::api(
-        url = reload_url,
-        method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
-        path = glue::glue(self$URL[["list"]]),
-        query = list(
-          prefix = self$prefix
-        ),
-        advance_access = TRUE,
-        limit = 1,
-        ...
+    #' Reload VolumePrefix object.
+    reload = function() {
+      rlang::inform(
+        "Reload operation is not available for VolumePrefix objects."
       )
-      if (is.null(res$volume)) {
-        res$volume <- self$volume
-      }
-
-      self$initialize(
-        res = res,
-        href = res$href,
-        response = attr(res, "response"),
-        auth = self$auth
-      )
-      rlang::inform("VolumePrefix object is refreshed!")
     }, # nocov end
     #' @description List volume folder contents
     #' This call lists the contents of a specific volume folder.
@@ -111,7 +83,7 @@ VolumePrefix <- R6::R6Class(
     #' fields to include in the response. You can use: `href`, `location`,
     #' `volume`, `type`, `metadata`, `_all`. Default: `_all`.
     #' @return VolumeContentCollection object containing list of VolumeFile
-    #' objects.
+    #' and VolumePrefix objects.
     list_files = function(limit = getOption("sevenbridges2")$limit,
                           continuation_token = NULL,
                           ...) {
