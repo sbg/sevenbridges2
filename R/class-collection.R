@@ -88,7 +88,7 @@ Collection <- R6::R6Class(
             base_url = self$auth$url,
             ...
           )
-          res <- status_check(res)
+
 
           # Reload Collection object
           private$load(res, auth = self$auth)
@@ -119,7 +119,7 @@ Collection <- R6::R6Class(
             base_url = self$auth$url,
             ...
           )
-          res <- status_check(res)
+
 
           # Reload Collection object
           private$load(res, auth = self$auth)

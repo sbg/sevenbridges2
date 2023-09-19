@@ -351,7 +351,7 @@ Auth <- R6::R6Class(
                    offset = getOption("sevenbridges2")$"offset",
                    fields = NULL,
                    complete = FALSE) {
-      req <- sevenbridges2::api(
+      res <- sevenbridges2::api(
         self$get_token(),
         base_url = self$url,
         limit = limit,
@@ -360,7 +360,7 @@ Auth <- R6::R6Class(
         authorization = self$authorization,
         ...
       )
-      req <- status_check(req)
+
 
       if (complete) {
         # nocov start
@@ -380,7 +380,7 @@ Auth <- R6::R6Class(
           for (i in 1:(N %/% 100 + 1)) {
             .limit <- 100
             .offset <- (i - 1) * 100
-            req <- sevenbridges2::api(
+            res <- sevenbridges2::api(
               self$get_token(),
               base_url = self$url,
               limit = .limit,
@@ -396,11 +396,11 @@ Auth <- R6::R6Class(
           cat("\n")
           res$href <- NULL
         } else {
-          return(req)
+          return(res)
         }
         return(res)
       } else {
-        return(req)
+        return(res)
       }
     },
     # user ---------------------------------------------------------------------
@@ -409,7 +409,7 @@ Auth <- R6::R6Class(
     #' account information.
     user = function(username = NULL) {
       if (is.null(username)) {
-        req <- sevenbridges2::api(
+        res <- sevenbridges2::api(
           token = self$get_token(),
           path = "user/",
           method = "GET",
@@ -419,7 +419,7 @@ Auth <- R6::R6Class(
         rlang::inform("username not provided, showing the currently authenticated user information")
         # nolint end
       } else {
-        req <- sevenbridges2::api(
+        res <- sevenbridges2::api(
           token = self$get_token(),
           path = paste0("users/", username),
           method = "GET",
@@ -428,10 +428,10 @@ Auth <- R6::R6Class(
       }
 
       # Extract parsed contents of a request
-      req <- status_check(req)
+
 
       # Create User object
-      asUser(req, self)
+      asUser(res, self)
     },
     # rate limit --------------------------------------------------------------
     #' @description Get information about current rate limit \cr \cr
@@ -439,7 +439,7 @@ Auth <- R6::R6Class(
     #' number of API calls you can make in one hour. This call also returns
     #' information about your current instance limit.
     rate_limit = function() {
-      req <- sevenbridges2::api(
+      res <- sevenbridges2::api(
         path = "rate_limit",
         method = "GET",
         token = self$get_token(),
@@ -447,9 +447,9 @@ Auth <- R6::R6Class(
       )
 
       # Extract parsed contents of a request
-      req <- status_check(req)
 
-      asRate(req)
+
+      asRate(res)
     },
     # upload a single file
     #' @description This method allows you to upload a single file from your
@@ -568,7 +568,7 @@ Auth <- R6::R6Class(
         base_url = self$url
       )
 
-      res <- status_check(res)
+
 
       # Print information about ongoing uploads
       cli::cli_h1("Ongoing uploads")

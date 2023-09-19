@@ -258,7 +258,7 @@ Imports <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       import <- asImport(res, auth = self$auth)
 

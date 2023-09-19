@@ -80,7 +80,8 @@ Files <- R6::R6Class(
         metadata <- transform_metadata(metadata)
       }
       if (!is_missing(origin)) {
-        origin_task_id <- check_and_transform_id(origin, class_name = "Task")
+        origin_task_id <-
+          check_and_transform_id(origin, class_name = "Task")
       } else {
         origin_task_id <- NULL
       }
@@ -141,7 +142,8 @@ Files <- R6::R6Class(
         ...
       )
       return(asFile(res, auth = self$auth))
-    }, # nocov end
+    },
+    # nocov end
     #' @description  Copy file/files to the specified project. This call allows
     #'   you to copy files between projects. Unlike the call to copy a file
     #'   between projects, this call lets you batch the copy operation and copy
@@ -154,7 +156,9 @@ Files <- R6::R6Class(
     #' @importFrom glue glue_col
     copy = function(files, destination_project) {
       if (is_missing(files) || is_missing(destination_project)) {
-        rlang::abort("Parameter 'files' or 'destination_project' is missing. You need to provide both of them.") # nolint
+        rlang::abort(
+          "Parameter 'files' or 'destination_project' is missing. You need to provide both of them." # nolint
+        )
       }
       checkmate::assert_list(files, types = "File")
 
@@ -167,7 +171,7 @@ Files <- R6::R6Class(
         "file_ids" = file_ids
       )
 
-      req <- sevenbridges2::api(
+      res <- sevenbridges2::api(
         path = glue::glue(self$URL[["copy"]]),
         method = "POST",
         body = body,
@@ -175,7 +179,7 @@ Files <- R6::R6Class(
         base_url = self$auth$url
       )
 
-      res <- status_check(req)
+
 
       result <- list()
       for (i in seq_len(length(res))) {
@@ -203,7 +207,8 @@ Files <- R6::R6Class(
         cat("\n")
       }
       invisible(result)
-    }, # nocov end
+    },
+    # nocov end
     #' @description A method for creating a new folder. It allows you to create
     #'   a new folder on the Platform within the root folder of a specified
     #'   project or the provided parent folder. Remember that you should provide
@@ -259,14 +264,8 @@ Files <- R6::R6Class(
         base_url = self$auth$url
       )
 
-      res <- status_check(res)
-
-      if (attr(res, "response")$status_code == 201) {
-        # nolint start
-        rlang::inform(glue::glue_col("New folder {green {name}} has been created."))
-        # nolint end
-        return(asFile(res, self$auth))
-      } # nocov end
+      rlang::inform(glue::glue_col("New folder {green {name}} has been created.")) # nolint
+      # nocov end
     }
   )
 )

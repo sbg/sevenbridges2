@@ -126,7 +126,7 @@ Upload <- R6::R6Class(
         base_url = self$auth$url
       )
 
-      res <- status_check(res)
+
 
       self$upload_id <- res$upload_id
 
@@ -168,7 +168,7 @@ Upload <- R6::R6Class(
         token = self$auth$get_token(),
         base_url = self$auth$url
       )
-      res <- status_check(res)
+
 
       fields_to_show <- c(
         "upload_id", "project", "parent",
@@ -313,7 +313,7 @@ Upload <- R6::R6Class(
         token = self$auth$get_token(),
         base_url = self$auth$url
       )
-      res <- status_check(res)
+
       res
     } # nocov end
   )
@@ -429,7 +429,7 @@ Part <- R6::R6Class(
         base_url = self$auth$url
       )
 
-      res <- status_check(res)
+
 
       self$url <- res$url
       self$etag <- res$etag
@@ -459,8 +459,6 @@ Part <- R6::R6Class(
         token = self$auth$get_token(),
         base_url = self$auth$url
       )
-
-      res <- status_check(res)
     } # nocov end
   )
 )

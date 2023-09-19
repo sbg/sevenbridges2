@@ -11,8 +11,9 @@
 #' @noRd
 status_check <- function(req, as = "parsed", ...) {
   # nocov start
+
+  # If request is successful return response
   if (httr::status_code(req) %in% c("200", "201", "202", "204")) {
-    # Check this !!!
     if (!is.null(req$request$headers["X-SBG-Auth-Token"])) {
       req$request$headers["X-SBG-Auth-Token"] <- "<your_auth_token>"
     }
@@ -21,33 +22,35 @@ status_check <- function(req, as = "parsed", ...) {
       attr(res, "response") <- req
     }
     return(res)
-  } else if (httr::status_code(req) %in% c("401", "403", "404", "503")) {
+  }
+
+  # If request is not successful return error message for standard error
+  # messages
+  if (httr::status_code(req) %in% c("401", "403", "404", "503")) {
     msg <- httr::content(req, as = as, ...)$message
     rlang::abort(paste0("HTTP Status ", httr::status_code(req), ": ", msg))
-  } else {
-    if ("message" %in% names(content(req, as = as, ...))) {
-      msg <- httr::content(req, as = as, ...)$message
-    } else {
-      msg <- NULL
-    }
+  }
 
-    if (is.null(msg)) {
-      if (httr::status_code(req) %in% names(codes)) {
-        msg <- codes[[httr::status_code(req)]]
-      }
-      if (is.null(msg)) {
-        print(content(req, as = as, ...))
-        rlang::abort(paste(
-          "Error of unknown type occured",
-          httr::status_code(req)
-        ))
-      } else {
-        rlang::abort(paste0("HTTP Status ", httr::status_code(req), ": ", msg))
-      }
-    } else {
-      rlang::abort(paste0("HTTP Status ", httr::status_code(req), ": ", msg))
-    }
-  } # nocov end
+  # If request is not successful return error message for non-standard error
+  # messages
+  if (!is.null(httr::content(req, as = as, ...)$message)) {
+    msg <- httr::content(req, as = as, ...)$message
+    rlang::abort(paste0("HTTP Status ", httr::status_code(req), ": ", msg))
+  }
+
+  if (httr::status_code(req) %in% names(codes)) {
+    msg <- codes[[httr::status_code(req)]]
+    rlang::abort(paste0("HTTP Status ", httr::status_code(req), ": ", msg))
+  }
+
+
+  print(content(req, as = as, ...))
+  rlang::abort(paste(
+    "Error of unknown type occured: ",
+    httr::status_code(req)
+  ))
+
+  # nocov end
 }
 
 #' Check if input value is missing
@@ -502,7 +505,8 @@ check_volume_params <- function(args,
 transform_configuration_param <- function(configuration) {
   if (checkmate::test_list(configuration, min.len = 1, null.ok = FALSE) &&
     !is_missing(names(configuration))) {
-    config_json_string <- as.character(jsonlite::toJSON(configuration, auto_unbox = TRUE, pretty = TRUE)) # nolint
+    config_json_string <-
+      as.character(jsonlite::toJSON(configuration, auto_unbox = TRUE, pretty = TRUE)) # nolint
   } else if (checkmate::test_character(
     configuration,
     len = 1,

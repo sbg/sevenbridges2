@@ -48,7 +48,7 @@ VolumeFileCollection <- R6::R6Class(
             advance_access = TRUE,
             ...
           )
-          res <- status_check(res)
+
           private$load(res, auth = self$auth)
         }
       }

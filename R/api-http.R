@@ -114,7 +114,7 @@ api <- function(token = NULL, path = NULL,
   # setup body
   body <- setup_body(method = method, body = body)
 
-  switch(method,
+  req <- switch(method,
     GET = {
       GET2(url,
         httr::add_headers(.headers = headers),
@@ -150,4 +150,8 @@ api <- function(token = NULL, path = NULL,
     }
     # nocov end
   )
+
+  res <- status_check(req)
+
+  return(res)
 }

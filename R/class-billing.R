@@ -131,7 +131,7 @@ Billing <- R6::R6Class(
         date_to <- check_and_transform_datetime(date_to)
       }
 
-      req <- sevenbridges2::api(
+      res <- sevenbridges2::api(
         path = glue::glue(self$URL[["breakdown_analysis"]]),
         method = "GET",
         token = self$auth$get_token(),
@@ -143,11 +143,11 @@ Billing <- R6::R6Class(
         date_to = date_to,
         ...
       )
-      req <- status_check(req)
+
       # asAnalysisBreakdownList(req)
       # req_as_json <- jsonlite::toJSON(req, pretty = TRUE)
       # cat(req_as_json)
-      return(req)
+      return(res)
     },
     #' @description Method for getting a storage breakdown for a billing group.
     #'
@@ -185,7 +185,7 @@ Billing <- R6::R6Class(
         date_to <- check_and_transform_datetime(date_to)
       }
 
-      req <- sevenbridges2::api(
+      res <- sevenbridges2::api(
         path = glue::glue(self$URL[["storage_breakdown"]]),
         method = "GET",
         token = self$auth$get_token(),
@@ -197,8 +197,8 @@ Billing <- R6::R6Class(
         date_to = date_to,
         ...
       )
-      req <- status_check(req)
-      return(req)
+
+      return(res)
     },
     #' @description Method for getting a egress breakdown for a billing group.
     #'
@@ -236,7 +236,7 @@ Billing <- R6::R6Class(
         date_to <- check_and_transform_datetime(date_to)
       }
 
-      req <- sevenbridges2::api(
+      res <- sevenbridges2::api(
         path = glue::glue(self$URL[["egress_breakdown"]]),
         method = "GET",
         token = self$auth$get_token(),
@@ -248,8 +248,8 @@ Billing <- R6::R6Class(
         date_to = date_to,
         ...
       )
-      req <- status_check(req)
-      return(req)
+
+      return(res)
     } # nocov end
   )
 )

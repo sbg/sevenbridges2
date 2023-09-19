@@ -211,7 +211,7 @@ Task <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
 
       rlang::inform(
         glue::glue_col(
@@ -250,7 +250,7 @@ Task <- R6::R6Class(
         base_url = self$auth$url,
         ...
       )
-      res <- status_check(res)
+
 
       rlang::inform(
         glue::glue_col(
@@ -298,7 +298,7 @@ Task <- R6::R6Class(
         query = params,
         ...
       )
-      res <- status_check(res)
+
       rlang::inform(
         glue::glue_col(
           "New cloned draft task with id {green {res$id}} has been created."
@@ -337,7 +337,7 @@ Task <- R6::R6Class(
         base_url = self$auth$url,
         ...
       )
-      res <- status_check(res)
+
 
       if (self$batch) {
         rlang::inform("Execution details can be seen on each child task.")
@@ -436,7 +436,7 @@ Task <- R6::R6Class(
         base_url = self$auth$url,
         ...
       )
-      res <- status_check(res)
+
 
       rlang::inform(
         glue::glue_col(
@@ -583,7 +583,7 @@ Task <- R6::R6Class(
         ...
       )
 
-      res <- status_check(res)
+
       rlang::inform(
         glue::glue_col(
           "Task {green {self$name}} has been updated."

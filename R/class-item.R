@@ -57,7 +57,7 @@ Item <- R6::R6Class(
         path = glue::glue(cls$URL[["get"]]),
         ...
       )
-      res <- status_check(res)
+
 
       cls$initialize(
         res = res,

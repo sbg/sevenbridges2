@@ -175,7 +175,7 @@ Apps <- R6::R6Class(
 
       path <- glue::glue(self$URL[["copy"]])
 
-      req <- sevenbridges2::api(
+      res <- sevenbridges2::api(
         path = path,
         method = "POST",
         body = body,
@@ -184,7 +184,7 @@ Apps <- R6::R6Class(
         ...
       )
 
-      res <- status_check(req)
+
 
       return(asApp(res, auth = self$auth)) # nocov end
     },
@@ -262,7 +262,7 @@ Apps <- R6::R6Class(
       id <- glue::glue("{project_id}/{name}")
       path <- glue::glue(self$URL[["raw"]])
 
-      req <- sevenbridges2::api(
+      res <- sevenbridges2::api(
         path = path,
         method = "POST",
         body = body,
@@ -271,7 +271,7 @@ Apps <- R6::R6Class(
         ...
       )
 
-      res <- status_check(req)
+
 
       app <- self$get(res$`sbg:id`)
 

@@ -187,7 +187,7 @@ Volumes <- R6::R6Class(
         advance_access = TRUE
       )
 
-      res <- status_check(res)
+
 
       return(asVolume(res, auth = self$auth)) # nocov end
     },
@@ -310,7 +310,7 @@ Volumes <- R6::R6Class(
         advance_access = TRUE
       )
 
-      res <- status_check(res)
+
 
       return(asVolume(res, auth = self$auth)) # nocov end
     },
@@ -417,7 +417,7 @@ Volumes <- R6::R6Class(
         advance_access = TRUE
       )
 
-      res <- status_check(res)
+
 
       return(asVolume(res, auth = self$auth)) # nocov end
     },
@@ -524,7 +524,7 @@ Volumes <- R6::R6Class(
         advance_access = TRUE
       )
 
-      res <- status_check(res)
+
 
       return(asVolume(res, auth = self$auth)) # nocov end
     },
@@ -642,7 +642,7 @@ Volumes <- R6::R6Class(
         advance_access = TRUE
       )
 
-      res <- status_check(res)
+
 
       return(asVolume(res, auth = self$auth)) # nocov end
     },
@@ -739,7 +739,7 @@ Volumes <- R6::R6Class(
         advance_access = TRUE
       )
 
-      res <- status_check(res)
+
 
       return(asVolume(res, auth = self$auth)) # nocov end
     }
