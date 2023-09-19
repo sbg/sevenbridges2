@@ -80,6 +80,10 @@ Auth <- R6::R6Class(
     #' platform.
     invoices = NULL,
 
+    #' @field billing_groups Billing_groups object, for accessing billing groups
+    #'  resources on the platform.
+    billing_groups = NULL,
+
     #' @description
     #' Create a new Auth object. All methods can be accessed through this
     #' object.
@@ -313,6 +317,9 @@ Auth <- R6::R6Class(
 
       # Invoices resource
       self$invoices <- Invoices$new(self)
+
+      # Billng_groups resousrce
+      self$billing_groups <- Billing_groups$new(self)
     },
     #' @description
     #' Returns the authentication token read from system environment variable.
@@ -443,86 +450,6 @@ Auth <- R6::R6Class(
 
 
       asRate(res)
-    },
-    # billing -----------------------------------------------------------------
-    #' @description Get list of paths used to access billing information via
-    #' the API
-    #' @param ... Other arguments passed to methods.
-    #' @importFrom purrr discard
-    #' @importFrom glue glue
-    #' @importFrom cli cli_h1 cli_li
-    billing = function(...) {
-      # list billing API paths
-      res <- sevenbridges2::api(
-        path = "billing",
-        method = "GET",
-        token = self$get_token(),
-        base_url = self$url,
-        ...
-      )
-
-
-
-      print_billing_api_paths <- function(x) {
-        # x <- as.list(self)
-        # x <- purrr::discard(x, .p = is.list)
-        x <- purrr::discard(x, .p = is.function)
-        x <- purrr::discard(x, .p = is.environment)
-        x <- purrr::discard(x, .p = is.null)
-        x <- purrr::discard(x, .p = ~ .x == "")
-        string <- glue::glue("{names(x)}: {x}")
-        names(string) <- rep("*", times = length(string))
-
-        cli::cli_h1("Billing API paths")
-        cli::cli_li(string)
-      }
-      print_billing_api_paths(res)
-      invisible(res)
-    },
-    # billing groups ----------------------------------------------------------
-    #' @description Get billing group information
-    #' @param id Billing group identifier as ID string or Billing object.
-    #' @param limit Defines the number of items you want to get from your API
-    #' request. By default, `limit` is set to `50`. Maximum is `100`.
-    #' @param offset Defines where the retrieved items started.
-    #' By default, `offset` is set to `0`.
-    #' @param ... Other arguments passed to methods.
-    billing_groups = function(id = NULL,
-                              limit = getOption("sevenbridges2")$limit,
-                              offset = getOption("sevenbridges2")$offset,
-                              ...) {
-      if (is.null(id)) {
-        # list billing API paths
-        res <- sevenbridges2::api(
-          path = "billing/groups",
-          method = "GET",
-          token = self$get_token(),
-          base_url = self$url,
-          limit = limit,
-          offset = offset,
-          ...
-        )
-
-
-
-        billing_list <- asBillingList(res, self)
-        billing_list
-      } else {
-        id <- check_and_transform_id(id, "Billing")
-        res <- sevenbridges2::api(
-          path = paste0("billing/groups/", id),
-          method = "GET",
-          token = self$get_token(),
-          base_url = self$url,
-          limit = limit,
-          offset = offset,
-          ...
-        )
-
-
-
-        asBilling(res, auth = self)
-      }
     },
     # upload a single file
     #' @description This method allows you to upload a single file from your
