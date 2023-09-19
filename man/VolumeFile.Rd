@@ -12,6 +12,8 @@ R6 Class representing a resource for managing VolumeFile objects.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
+\item{\code{URL}}{URL endpoint fields}
+
 \item{\code{location}}{File/prefix location on the volume.}
 
 \item{\code{type}}{Type of resource - can be either FILE or PREFIX.}
@@ -31,6 +33,7 @@ R6 Class representing a resource for managing VolumeFile objects.
 \item \href{#method-VolumeFile-new}{\code{VolumeFile$new()}}
 \item \href{#method-VolumeFile-print}{\code{VolumeFile$print()}}
 \item \href{#method-VolumeFile-reload}{\code{VolumeFile$reload()}}
+\item \href{#method-VolumeFile-list_files}{\code{VolumeFile$list_files()}}
 \item \href{#method-VolumeFile-import}{\code{VolumeFile$import()}}
 \item \href{#method-VolumeFile-clone}{\code{VolumeFile$clone()}}
 }
@@ -70,9 +73,54 @@ Print method for VolumeFile class.
 \subsection{Method \code{reload()}}{
 Reload VolumeFile.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{VolumeFile$reload()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{VolumeFile$reload(...)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other query parameters.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+VolumeFile
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-VolumeFile-list_files"></a>}}
+\if{latex}{\out{\hypertarget{method-VolumeFile-list_files}{}}}
+\subsection{Method \code{list_files()}}{
+List volume folder contents
+This call lists the contents of a specific volume folder.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{VolumeFile$list_files(
+  limit = getOption("sevenbridges2")$limit,
+  continuation_token = NULL,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{limit}}{Defines the number of items you want to get from your API
+request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+
+\item{\code{continuation_token}}{Continuation token received to use for next
+chunk of results. Behaves similarly like offset parameter.}
+
+\item{\code{...}}{Other parameters that can be passed to api() function, like
+fields for example. With fields parameter you can specify a subset of
+fields to include in the response. You can use: \code{href}, \code{location},
+\code{volume}, \code{type}, \code{metadata}, \verb{_all}. Default: \verb{_all}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+VolumeFileCollection object containing list of VolumeFile
+objects.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VolumeFile-import"></a>}}

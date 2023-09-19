@@ -105,6 +105,7 @@ Volume <- R6::R6Class(
     reload = function(...) {
       super$reload(
         cls = self,
+        advance_access = TRUE,
         ...
       )
       rlang::inform("Volume object is refreshed!")
@@ -268,16 +269,15 @@ Volume <- R6::R6Class(
     #' the content of the parent directory on the current volume is listed.
     #' @param limit Defines the number of items you want to get from your API
     #' request. By default, `limit` is set to `50`. Maximum is `100`.
-    #' @param fields Selector specifying a subset of fields to include in the
-    #' response. You can use: `href`, `location`, `volume`, `type`,
-    #' `metadata`, `_all`. Default: `_all`.
     #' @param link Link to use in the next chunk of results. Contains limit and
     #' continuation_token. If provided it will overwrite other arguments'
     #' values passed.
     #' @param continuation_token Continuation token received to use for next
     #' chunk of results. Behaves similarly like offset parameter.
     #' @param ... Other parameters that can be passed to api() function, like
-    #' fields etc.
+    #' fields for example. With fields parameter you can specify a subset of
+    #' fields to include in the response. You can use: `href`, `location`,
+    #' `volume`, `type`, `metadata`, `_all`. Default: `_all`.
     #' @return VolumeFileCollection object containing list of VolumeFile
     #' objects.
     list_files = function(parent = NULL,

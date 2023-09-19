@@ -234,11 +234,9 @@ values passed.}
 chunk of results. Behaves similarly like offset parameter.}
 
 \item{\code{...}}{Other parameters that can be passed to api() function, like
-fields etc.}
-
-\item{\code{fields}}{Selector specifying a subset of fields to include in the
-response. You can use: \code{href}, \code{location}, \code{volume}, \code{type},
-\code{metadata}, \verb{_all}. Default: \verb{_all}.}
+fields for example. With fields parameter you can specify a subset of
+fields to include in the response. You can use: \code{href}, \code{location},
+\code{volume}, \code{type}, \code{metadata}, \verb{_all}. Default: \verb{_all}.}
 }
 \if{html}{\out{</div>}}
 }

@@ -12,6 +12,11 @@ VolumeFile <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
+    #' @field URL URL endpoint fields
+    URL = list(
+      "list" = "storage/volumes/{self$volume}/list",
+      "get" = "storage/volumes/{self$volume}/object"
+    ),
     #' @field location File/prefix location on the volume.
     location = NULL,
     #' @field type Type of resource - can be either FILE or PREFIX.
@@ -34,7 +39,8 @@ VolumeFile <- R6::R6Class(
         self$location <- NULL
       } else {
         self$location <- ifelse(length(res$prefix) > 0,
-          paste0(res$prefix, "/"), res$location
+          res$prefix,
+          res$location
         )
       }
       self$type <- ifelse(length(res$prefix) > 0, "PREFIX", "FILE")
@@ -75,8 +81,83 @@ VolumeFile <- R6::R6Class(
     },
     #' @description
     #' Reload VolumeFile.
-    reload = function() {
-      rlang::inform("Please, use get_file() method on the Volume object to reload the VolumeFile.") # nolint
+    #' @param ... Other query parameters.
+    #' @return VolumeFile
+    reload = function(...) {
+      if (!is_missing(self$href)) {
+        reload_url <- self$href
+      }
+
+      if (self$type == "PREFIX") {
+        path <- glue::glue(self$URL[["list"]])
+      } else {
+        path <- glue::glue(self$URL[["get"]])
+      }
+      res <- sevenbridges2::api(
+        url = reload_url,
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        path = path,
+        query = list(
+          location = self$location,
+          prefix = self$location
+        ),
+        advance_access = TRUE,
+        ...
+      )
+      if (is.null(res$volume)) {
+        res$volume <- self$volume
+      }
+
+      self$initialize(
+        res = res,
+        href = res$href,
+        response = attr(res, "response"),
+        auth = self$auth
+      )
+      rlang::inform("VolumeFile object is refreshed!")
+    }, # nocov end
+    #' @description List volume folder contents
+    #' This call lists the contents of a specific volume folder.
+    #' @param limit Defines the number of items you want to get from your API
+    #' request. By default, `limit` is set to `50`. Maximum is `100`.
+    #' @param continuation_token Continuation token received to use for next
+    #' chunk of results. Behaves similarly like offset parameter.
+    #' @param ... Other parameters that can be passed to api() function, like
+    #' fields for example. With fields parameter you can specify a subset of
+    #' fields to include in the response. You can use: `href`, `location`,
+    #' `volume`, `type`, `metadata`, `_all`. Default: `_all`.
+    #' @return VolumeFileCollection object containing list of VolumeFile
+    #' objects.
+    list_files = function(limit = getOption("sevenbridges2")$limit,
+                          continuation_token = NULL,
+                          ...) {
+      if (self$type != "PREFIX") {
+        rlang::abort("This is not a volume folder. Listing volume folder files is possible only on VolumeFile objects of type 'PREFIX'.") # nolint
+      }
+      checkmate::assert_character(continuation_token,
+        len = 1, null.ok = TRUE,
+        typed.missing = TRUE
+      )
+      # nocov start
+      path <- glue::glue(self$URL[["list"]])
+
+      res <- sevenbridges2::api(
+        path = path,
+        query = list(
+          prefix = self$location,
+          continuation_token = continuation_token
+        ),
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        advance_access = TRUE,
+        limit = limit,
+        ...
+      )
+
+      return(asVolumeFileCollection(res, auth = self$auth))
     }, # nocov end
     # Start new import job -----------------------------------------------
     #' @description This call lets you queue a job to import this file or folder
