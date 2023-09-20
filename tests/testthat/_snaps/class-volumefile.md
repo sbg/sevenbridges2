@@ -6,8 +6,7 @@
       
       -- VolumeFile ------------------------------------------------------------------
       * volume: my_s3_volume
-      * storage_type: s3
-      * type: FILE
+      * type: s3
       * location: my_new_file.txt
       * href: resource-href
 
