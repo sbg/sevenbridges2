@@ -546,10 +546,7 @@ File <- R6::R6Class(
         base_url = self$auth$url
       )
 
-
-
       rlang::inform(message = glue::glue("File {self$id} has been deleted."))
-      self$id <- NULL
     },
     # nocov end
     #' @description Download method for File class. It allows download a
