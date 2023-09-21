@@ -1,7 +1,7 @@
 # VolumeContentCollection print method works
 
     Code
-      setup_volcontent_collection_obj$print()
+      setup_volcont_collection_obj$print()
     Message <cliMessage>
       
       -- Volume files ----------------------------------------------------------------
