@@ -21,6 +21,7 @@ R6 Class representing a resource for managing volume files collections.
 \if{html}{\out{
 <details open><summary>Inherited methods</summary>
 <ul>
+<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Collection" data-id="all"><a href='../../sevenbridges2/html/Collection.html#method-Collection-all'><code>sevenbridges2::Collection$all()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Collection" data-id="print"><a href='../../sevenbridges2/html/Collection.html#method-Collection-print'><code>sevenbridges2::Collection$print()</code></a></span></li>
 </ul>
 </details>
