@@ -278,8 +278,8 @@ Volume <- R6::R6Class(
     #' fields for example. With fields parameter you can specify a subset of
     #' fields to include in the response. You can use: `href`, `location`,
     #' `volume`, `type`, `metadata`, `_all`. Default: `_all`.
-    #' @return VolumeFileCollection object containing list of VolumeFile
-    #' objects.
+    #' @return VolumeContentCollection object containing list of VolumeFile
+    #' and VolumePrefix objects.
     list_files = function(parent = NULL,
                           limit = getOption("sevenbridges2")$limit,
                           link = NULL,
@@ -313,7 +313,7 @@ Volume <- R6::R6Class(
       )
 
 
-      return(asVolumeFileCollection(res, auth = self$auth))
+      return(asVolumeContentCollection(res, auth = self$auth))
     }, # nocov end
     #' @description Get volume file information
     #' This function returns the specific Volume File.

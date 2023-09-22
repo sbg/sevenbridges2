@@ -137,8 +137,10 @@ urlencoded
 vayu
 VCFtools
 VignetteBuilder
+VolumeContentCollection
 VolumeFile
 VolumeFileCollection
+VolumePrefix
 withr
 www
 yaml
