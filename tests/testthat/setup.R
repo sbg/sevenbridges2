@@ -240,7 +240,7 @@ setup_collection_obj <- Collection$new(
   auth = setup_auth_object
 )
 
-# VolumeFile object type file
+# VolumeFile object
 volume_file_res <- list(
   location = "my_new_file.txt",
   type = "s3",
@@ -252,35 +252,32 @@ setup_volume_file_obj <- asVolumeFile(
   x = volume_file_res,
   auth = setup_auth_object
 )
-# VolumeFile object type folder
-volume_file_folder_res <- list(
+# VolumePrefix object
+volume_prefix_res <- list(
   prefix = "my_new_folder",
-  type = "s3",
   volume = "my_s3_volume",
-  metadata = NULL
+  href = "resource-href"
 )
-setup_volume_file_dir_obj <- asVolumeFile(
-  x = volume_file_folder_res,
+setup_volume_prefix_obj <- asVolumePrefix(
+  x = volume_prefix_res,
   auth = setup_auth_object
 )
 
 # VolumeFileCollection object
-vol_file_collection_res <- list(
+vol_content_collection_res <- list(
   href = "some-href",
   items = list(
     list(
       href = "resource-href",
       location = "my_new_file1.txt",
-      type = "FILE",
-      storage_type = "s3",
+      type = "s3",
       volume = "my_s3_volume",
       metadata = list(metadata_field = "metadata-value")
     ),
     list(
       href = "resource-href",
       location = "my_new_file2.txt",
-      type = "FILE",
-      storage_type = "s3",
+      type = "s3",
       volume = "my_s3_volume",
       metadata = list(metadata_field = "metadata-value")
     )
@@ -293,8 +290,8 @@ vol_file_collection_res <- list(
   links = list(list("next" = "link-to-next-page")),
   response = list(raw = "raw-response-list")
 )
-setup_volfile_collection_obj <- asVolumeFileCollection(
-  x = vol_file_collection_res,
+setup_volcont_collection_obj <- asVolumeContentCollection(
+  x = vol_content_collection_res,
   auth = setup_auth_object
 )
 
