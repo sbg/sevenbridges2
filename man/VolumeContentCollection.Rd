@@ -23,6 +23,7 @@ R6 Class representing a resource for managing volume content collections.
 \item \href{#method-VolumeContentCollection-print}{\code{VolumeContentCollection$print()}}
 \item \href{#method-VolumeContentCollection-next_page}{\code{VolumeContentCollection$next_page()}}
 \item \href{#method-VolumeContentCollection-prev_page}{\code{VolumeContentCollection$prev_page()}}
+\item \href{#method-VolumeContentCollection-all}{\code{VolumeContentCollection$all()}}
 \item \href{#method-VolumeContentCollection-clone}{\code{VolumeContentCollection$clone()}}
 }
 }
@@ -89,6 +90,24 @@ Return previous page of results.
 \if{html}{\out{<div class="r">}}\preformatted{VolumeContentCollection$prev_page()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-VolumeContentCollection-all"></a>}}
+\if{latex}{\out{\hypertarget{method-VolumeContentCollection-all}{}}}
+\subsection{Method \code{all()}}{
+Fetches all available items.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{VolumeContentCollection$all(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other query or API parameters that can be passed to api()
+function like advance_access, fields etc.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VolumeContentCollection-clone"></a>}}

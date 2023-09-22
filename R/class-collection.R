@@ -129,7 +129,7 @@ Collection <- R6::R6Class(
           rlang::abort("You've reached the first page of results.")
         }
       }
-    },
+    }, # nocov end
     #' @description Fetches all available items.
     #' @param ... Other query or API parameters that can be passed to api()
     #' function like advance_access, fields etc.
@@ -138,6 +138,7 @@ Collection <- R6::R6Class(
       if (is.null(self$href)) {
         rlang::abort("Resource URL is empty or you've already fetched all results.") # nolint
       }
+      # nocov start
       # Reload current page again
       res <- sevenbridges2::api(
         url = self$href,
@@ -146,7 +147,6 @@ Collection <- R6::R6Class(
         base_url = self$auth$url,
         ...
       )
-      # should we save original/starting href and assign it at the end?
       # Reload Collection object
       private$load(res, auth = self$auth)
       all_items <- self$items
