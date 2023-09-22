@@ -1206,7 +1206,7 @@ the `project` and `visibility` arguments, while all other parameters are
 identical to those presented for `apps$query()`.
 
 ```{r}
-# List all apps in specified project
+# List apps in specified project
 p$list_apps(limit = 10)
 ```
 
@@ -1722,6 +1722,9 @@ aws_iam_user_volume$list_files(link = "link_to_next_results")
 
 # Or use VolumeContentCollection's object method next_page() for this:
 content_collection$next_page()
+
+# You can also fetch all results with all() method
+content_collection$all()
 ```
 
 Users can also list the content of a volume prefix/folder on the volume, by
@@ -1870,6 +1873,9 @@ imp_limit5 <- a$imports$list_imports(limit = 5)
 
 # Load next page of 5 results
 imp_limit5$next_page(advance_access = TRUE)
+
+# Load all results at once until last page
+imp_limit5$all(advance_access = TRUE)
 ```
 
 It is possible to use some query parameters as different criteria for filtering
@@ -1996,6 +2002,9 @@ exp_limit5 <- a$exports$list_exports(limit = 5)
 
 # Load next page of 5 results
 exp_limit5$next_page(advance_access = TRUE)
+
+# List all results until last page
+exp_limit5$all()
 ```
 
 It is possible to use some query parameters as different criteria for filtering
