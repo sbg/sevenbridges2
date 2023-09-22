@@ -135,6 +135,9 @@ Collection <- R6::R6Class(
     #' function like advance_access, fields etc.
     #' @importFrom rlang abort
     all = function(...) {
+      if (is.null(self$href)) {
+        rlang::abort("Resource URL is empty or you've already fetched all results.") # nolint
+      }
       # Reload current page again
       res <- sevenbridges2::api(
         url = self$href,

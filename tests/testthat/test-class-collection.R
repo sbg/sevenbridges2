@@ -67,3 +67,17 @@ test_that("Collection's pagination method prev_page() throws error when needed",
 test_that("Collection print method works", {
   testthat::expect_snapshot(setup_collection_obj$print())
 })
+
+test_that("Collection's method all() throws error when needed", {
+  collection_obj <- Collection$new(
+    href = NULL,
+    items = list("item1" = "item1", "item2" = "item2"),
+    links = list(),
+    response = list(raw = "raw-response-list"),
+    auth = setup_auth_object
+  )
+  testthat::expect_error(collection_obj$all(),
+    regexp = "Resource URL is empty or you've already fetched all results.", # nolint
+    fixed = TRUE
+  )
+})
