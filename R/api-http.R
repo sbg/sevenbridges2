@@ -151,6 +151,17 @@ api <- function(token = NULL, path = NULL,
     # nocov end
   )
 
+  while (TRUE) {
+    for (error_handler in error_handlers) {
+      handled_response <- error_handler(req)
+      if (!setequal(req, handled_response)) {
+        req <- handled_response
+        break
+      }
+    }
+    break
+  }
+
   res <- status_check(req)
 
   return(res)
