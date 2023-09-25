@@ -122,17 +122,6 @@ VolumeContentCollection <- R6::R6Class(
         rlang::abort("Resource URL is empty or you've already fetched all results.") # nolint
       }
       # nocov start
-      # Reload current page again
-      res <- sevenbridges2::api(
-        url = self$href,
-        method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
-        advance_access = TRUE,
-        ...
-      )
-      # Reload Collection object
-      private$load(res, auth = self$auth)
       all_items <- self$items
       all_prefixes <- self$prefixes
       cond <- TRUE
