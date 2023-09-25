@@ -8,7 +8,7 @@ test_that("VolumePrefix initialization works", {
     classes = c("VolumePrefix"),
     public = c(
       "href", "URL", "prefix", "volume",
-      "import", "list_files"
+      "import", "list_contents"
     )
   )
   res_params1 <- list(
@@ -34,15 +34,15 @@ test_that("VolumePrefix print method works", {
   testthat::expect_snapshot(setup_volume_prefix_obj$print())
 })
 
-test_that("VolumePrefix list_file method throws error when expected", {
+test_that("VolumePrefix list_contents method throws error when expected", {
   # Pass non-string continuation_token
   testthat::expect_error(
-    setup_volume_prefix_obj$list_files(continuation_token = 1234),
+    setup_volume_prefix_obj$list_contents(continuation_token = 1234),
     regexp = "Assertion on 'continuation_token' failed: Must be of type 'character' (or 'NULL'), not 'double'.", # nolint
     fixed = TRUE
   )
   testthat::expect_error(
-    setup_volume_prefix_obj$list_files(continuation_token = NA),
+    setup_volume_prefix_obj$list_contents(continuation_token = NA),
     regexp = "Assertion on 'continuation_token' failed: Must be of type 'character' (or 'NULL'), not 'logical'.", # nolint
     fixed = TRUE
   )

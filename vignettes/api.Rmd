@@ -1646,7 +1646,7 @@ Within this volume you have following operations available to
 execute:
 
 * `update`: update volume information
-* `list_files` : list volume content
+* `list_contents` : list volume content
 * `get_file`: get single volume file info
 * `deactivate` : deactivate volume
 * `reactivate` : reactivate previously deactivated volume
@@ -1703,22 +1703,22 @@ info.
 
 ```{r}
 # List all files in root bucket directory
-content_collection <- aws_iam_user_volume$list_files(limit = 20)
+content_collection <- aws_iam_user_volume$list_contents(limit = 20)
 
 # Print collection
 content_collection
 
 # List all files specific directory on the bucket
-folder_files_collection <- aws_iam_user_volume$list_files(parent = "dir_name")
+folder_files_collection <- aws_iam_user_volume$list_contents(prefix = "dir_name")
 
 # Get next group of results by setting the continuation token
-content_collection <- aws_iam_user_volume$list_files(
+content_collection <- aws_iam_user_volume$list_contents(
   limit = 20,
   continuation_token = "continuation_token"
 )
 
 # Get next group of results by setting the link parameter
-aws_iam_user_volume$list_files(link = "link_to_next_results")
+aws_iam_user_volume$list_contents(link = "link_to_next_results")
 
 # Or use VolumeContentCollection's object method next_page() for this:
 content_collection$next_page()
@@ -1728,14 +1728,14 @@ content_collection$all()
 ```
 
 Users can also list the content of a volume prefix/folder on the volume, by
-calling list_files() directly on the VolumePrefix object.
+calling list_contents() directly on the VolumePrefix object.
 
 ```{r}
 ## Select one of the volume folders to list its content
 volume_folder <- content_collection$prefixes[[1]]
 
 # List content
-volume_folder$list_files()
+volume_folder$list_contents()
 ```
 
 ### Get Volume file info
@@ -1743,7 +1743,7 @@ volume_folder$list_files()
 This operation returns a single volume file information. The input parameter 
 can be file's id which is represented as location on the bucket 
 (`location)`, or a link to that file resource. The link is a `href` field 
-of desired file received from response when returning list of volume files with `list_files()`.
+of desired file received from response when returning list of volume content with `list_contents()`.
 Empty arguments are not allowed along with setting both parameters together.
 ```{r}
 # Get single volume file info - by setting file_location
@@ -1927,7 +1927,7 @@ vol1 <- a$volumes$get(id = "volumes_test_division/volume-name")
 test_proj <- a$projects$get("my-project-id")
 
 ## list all volume's files
-vol1_content <- vol1$list_files()
+vol1_content <- vol1$list_contents()
 
 ## select one of the volume files
 volume_file_import <- vol1_content$items[[3]]
