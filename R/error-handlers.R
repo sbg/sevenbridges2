@@ -76,7 +76,6 @@ maintenance_sleeper <- function(req, sleep = 300) {
 #' @noRd
 general_error_sleeper <- function(req, sleep = 300) {
   while (req$status_code >= 500) {
-    # Inform user about rate limit reached and amount of time they will wait
     rlang::inform(
       glue::glue_col(
         "Caught {green {req$status_code}} status code!
