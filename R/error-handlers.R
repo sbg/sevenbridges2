@@ -22,7 +22,8 @@ rate_limit_sleeper <- function(req) {
     sleep <- max(diff, 0)
 
     # Inform user about rate limit reached and amount of time they will wait
-    rlang::inform(glue::glue_col("Rate limit reached! Waiting for {green {sleep}s}.")) # nolint
+    rlang::inform(glue::glue_col("Rate limit reached!
+                                 Waiting for {green {sleep}s}."))
     Sys.sleep(sleep)
 
     req <- httr::rerequest(req)
@@ -45,7 +46,8 @@ rate_limit_sleeper <- function(req) {
 #' @noRd
 maintenance_sleeper <- function(req, sleep = 300) {
   while (req$status_code == 503) {
-    rlang::inform(glue::glue_col("Service unavailable: Response={green {req}}.")) # nolint
+    rlang::inform(glue::glue_col("Service unavailable!
+                                 Response: {green {req}}"))
 
     response_body <- httr::content(req)
 
