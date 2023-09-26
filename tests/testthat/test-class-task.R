@@ -88,6 +88,10 @@ test_that("Task method update() throws error when expected", {
     list(
       inputs = 1
     )
+  test_bad_output_loc <-
+    list(
+      output_location = 1
+    )
   test_bad_batch <-
     list(
       batch = 1
@@ -116,6 +120,9 @@ test_that("Task method update() throws error when expected", {
 
   # Test bad inputs parameter
   testthat::expect_error(do.call(setup_task_obj$update, test_bad_inputs))
+
+  # Test bad output_location parameter
+  testthat::expect_error(do.call(setup_task_obj$update, test_bad_output_loc))
 
   # Test bad batch parameter
   testthat::expect_error(do.call(setup_task_obj$update, test_bad_batch))
