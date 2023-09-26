@@ -140,18 +140,18 @@ Collection <- R6::R6Class(
       }
       # nocov start
       all_items <- self$items
-      cond <- TRUE
-      while (cond) {
-        tryCatch(
+      while (TRUE) {
+        result <- tryCatch(
           expr = {
             self$next_page()
             page_items <- self$items
-            all_items <- append(all_items, page_items)
           },
           error = function(e) {
-            cond <<- FALSE
+            e <- base::simpleError("You've reached the last page of results.")
           }
         )
+        if (inherits(result, "error")) break
+        all_items <- append(all_items, result)
       }
       self$items <- all_items
       self$href <- NULL

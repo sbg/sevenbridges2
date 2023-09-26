@@ -124,9 +124,8 @@ VolumeContentCollection <- R6::R6Class(
       # nocov start
       all_items <- self$items
       all_prefixes <- self$prefixes
-      cond <- TRUE
-      while (cond) {
-        tryCatch(
+      while (TRUE) {
+        result <- tryCatch(
           expr = {
             self$next_page()
             page_items <- self$items
@@ -135,9 +134,10 @@ VolumeContentCollection <- R6::R6Class(
             all_prefixes <- append(all_prefixes, page_prefixes)
           },
           error = function(e) {
-            cond <<- FALSE
+            e <- base::simpleError("You've reached the last page of results.")
           }
         )
+        if (inherits(result, "error")) break
       }
       self$items <- all_items
       self$prefixes <- all_prefixes
