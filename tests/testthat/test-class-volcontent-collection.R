@@ -51,6 +51,15 @@ test_that("VolumeContentCollection's pagination methods throw error when needed"
   )
 })
 
+test_that("VolumeContentCollection's method all() throws error when needed", {
+  collection_obj <- setup_volcont_collection_obj$clone()
+  collection_obj$href <- NULL
+  testthat::expect_error(collection_obj$all(),
+    regexp = "Resource URL is empty or you've already fetched all results.", # nolint
+    fixed = TRUE
+  )
+})
+
 test_that("VolumeContentCollection print method works", {
   testthat::expect_snapshot(setup_volcont_collection_obj$print())
 })
