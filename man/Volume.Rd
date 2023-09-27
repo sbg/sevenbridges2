@@ -52,7 +52,7 @@ set to FALSE.}
 \item \href{#method-Volume-deactivate}{\code{Volume$deactivate()}}
 \item \href{#method-Volume-reactivate}{\code{Volume$reactivate()}}
 \item \href{#method-Volume-delete}{\code{Volume$delete()}}
-\item \href{#method-Volume-list_files}{\code{Volume$list_files()}}
+\item \href{#method-Volume-list_contents}{\code{Volume$list_contents()}}
 \item \href{#method-Volume-get_file}{\code{Volume$get_file()}}
 \item \href{#method-Volume-list_members}{\code{Volume$list_members()}}
 \item \href{#method-Volume-add_member}{\code{Volume$add_member()}}
@@ -202,14 +202,14 @@ the volume.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Volume-list_files"></a>}}
-\if{latex}{\out{\hypertarget{method-Volume-list_files}{}}}
-\subsection{Method \code{list_files()}}{
+\if{html}{\out{<a id="method-Volume-list_contents"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-list_contents}{}}}
+\subsection{Method \code{list_contents()}}{
 List volume contents
 This call lists the contents of a specific volume.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Volume$list_files(
-  parent = NULL,
+\if{html}{\out{<div class="r">}}\preformatted{Volume$list_contents(
+  prefix = NULL,
   limit = getOption("sevenbridges2")$limit,
   link = NULL,
   continuation_token = NULL,
@@ -220,7 +220,7 @@ This call lists the contents of a specific volume.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{parent}}{This is prefix parameter in volume context. If specified,
+\item{\code{prefix}}{This is parent parameter in volume context. If specified,
 the content of the parent directory on the current volume is listed.}
 
 \item{\code{limit}}{Defines the number of items you want to get from your API
@@ -241,8 +241,8 @@ fields to include in the response. You can use: \code{href}, \code{location},
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-VolumeFileCollection object containing list of VolumeFile
-objects.
+VolumeContentCollection object containing list of VolumeFile
+and VolumePrefix objects.
 }
 }
 \if{html}{\out{<hr>}}

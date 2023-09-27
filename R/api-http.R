@@ -162,7 +162,9 @@ api <- function(token = NULL, path = NULL,
     break
   }
 
+  total_items <- req$headers[["x-total-matching-query"]]
   res <- status_check(req)
+  res$total <- total_items
 
   return(res)
 }

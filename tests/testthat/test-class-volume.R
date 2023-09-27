@@ -8,7 +8,7 @@ test_that("Volume initialization works", {
     classes = c("Item", "Volume"),
     public = c(
       "URL", "id", "name", "service", "access_mode", "active", "created_on",
-      "modified_on", "get_file", "list_files",
+      "modified_on", "get_file", "list_contents",
       "delete", "reactivate", "deactivate", "update",
       "list_members", "get_member", "add_member", "remove_member",
       "modify_member_permissions", "list_imports", "reload"
@@ -88,38 +88,38 @@ test_that("Volume deletion method throws error when expected", {
   )
 })
 
-test_that("Volume list_file method throws error when expected", {
-  # Pass non-string parent
+test_that("Volume list_contents method throws error when expected", {
+  # Pass non-string prefix
   testthat::expect_error(
-    setup_s3_volume_obj$list_files(parent = 1234),
-    regexp = "Assertion on 'parent' failed: Must be of type 'character' (or 'NULL'), not 'double'.", # nolint
+    setup_s3_volume_obj$list_contents(prefix = 1234),
+    regexp = "Assertion on 'prefix' failed: Must be of type 'character' (or 'NULL'), not 'double'.", # nolint
     fixed = TRUE
   )
-  # Pass invalid parent
+  # Pass invalid prefix
   testthat::expect_error(
-    setup_s3_volume_obj$list_files(parent = NA),
-    regexp = "Assertion on 'parent' failed: Must be of type 'character' (or 'NULL'), not 'logical'.", # nolint
+    setup_s3_volume_obj$list_contents(prefix = NA),
+    regexp = "Assertion on 'prefix' failed: Must be of type 'character' (or 'NULL'), not 'logical'.", # nolint
     fixed = TRUE
   )
   # Pass non-string link
   testthat::expect_error(
-    setup_s3_volume_obj$list_files(link = 1234),
+    setup_s3_volume_obj$list_contents(link = 1234),
     regexp = "Assertion on 'link' failed: Must be of type 'character' (or 'NULL'), not 'double'.", # nolint
     fixed = TRUE
   )
   testthat::expect_error(
-    setup_s3_volume_obj$list_files(link = NA),
+    setup_s3_volume_obj$list_contents(link = NA),
     regexp = "Assertion on 'link' failed: Must be of type 'character' (or 'NULL'), not 'logical'.", # nolint
     fixed = TRUE
   )
   # Pass non-string continuation_token
   testthat::expect_error(
-    setup_s3_volume_obj$list_files(continuation_token = 1234),
+    setup_s3_volume_obj$list_contents(continuation_token = 1234),
     regexp = "Assertion on 'continuation_token' failed: Must be of type 'character' (or 'NULL'), not 'double'.", # nolint
     fixed = TRUE
   )
   testthat::expect_error(
-    setup_s3_volume_obj$list_files(continuation_token = NA),
+    setup_s3_volume_obj$list_contents(continuation_token = NA),
     regexp = "Assertion on 'continuation_token' failed: Must be of type 'character' (or 'NULL'), not 'logical'.", # nolint
     fixed = TRUE
   )

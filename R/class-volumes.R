@@ -38,7 +38,8 @@ Volumes <- R6::R6Class(
         advance_access = TRUE,
         ...
       ) # nocov end
-      return(asVolumeList(res, auth = self$auth))
+      res$items <- asVolumeList(res, auth = self$auth)
+      return(asCollection(res, auth = self$auth))
     },
 
     # Get single volume -------------------------------------------------------

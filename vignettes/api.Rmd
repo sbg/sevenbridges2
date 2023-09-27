@@ -1206,7 +1206,7 @@ the `project` and `visibility` arguments, while all other parameters are
 identical to those presented for `apps$query()`.
 
 ```{r}
-# List all apps in specified project
+# List apps in specified project
 p$list_apps(limit = 10)
 ```
 
@@ -1646,7 +1646,7 @@ Within this volume you have following operations available to
 execute:
 
 * `update`: update volume information
-* `list_files` : list volume content
+* `list_contents` : list volume content
 * `get_file`: get single volume file info
 * `deactivate` : deactivate volume
 * `reactivate` : reactivate previously deactivated volume
@@ -1689,52 +1689,77 @@ aws_iam_user_volume$reload()
 This operation lists all volume files in the root directory of the bucket, 
 unless `parent` parameter is specified. In that case, it lists the content of 
 that directory on the bucket. 
+The output is a `VolumeContentCollection` collection object, that contains 
+two fields `items` for storing list of VolumeFile objects (files on the volume) 
+and `prefixes` for storing list of VolumePrefix objects or folders on the 
+volume.
 You can also specify the `limit` parameter to control the number of results 
-returned. 
-The output is a `VolumeFilesCollection` collection object, that contains the 
-information about the `continuation token` that can be used to fetch next chunk 
-of results. 
-Alternatively, you can use the `link` parameter for this too. 
+returned.
+Users can navigate through pages of results by using `continuation token` 
+parameter or `link` to fetch next chunk of results. 
 If you use `link` parameter, it will overwrite all other parameters if set 
 together with it, since it already contains the `limit` and `continuation_token` 
 info.
+
 ```{r}
 # List all files in root bucket directory
-files_collection <- aws_iam_user_volume$list_files(limit = 20)
+content_collection <- aws_iam_user_volume$list_contents(limit = 20)
 
 # Print collection
-files_collection
+content_collection
 
 # List all files specific directory on the bucket
-folder_files_collection <- aws_iam_user_volume$list_files(parent = "dir_name")
+folder_files_collection <- aws_iam_user_volume$list_contents(prefix = "dir_name")
 
 # Get next group of results by setting the continuation token
-files_collection <- aws_iam_user_volume$list_files(
+content_collection <- aws_iam_user_volume$list_contents(
   limit = 20,
   continuation_token = "continuation_token"
 )
 
 # Get next group of results by setting the link parameter
-aws_iam_user_volume$list_files(link = "link_to_next_results")
+aws_iam_user_volume$list_contents(link = "link_to_next_results")
 
-# Or use VolumeFileCollection's object method next_page() for this:
-files_collection$next_page()
+# Or use VolumeContentCollection's object method next_page() for this:
+content_collection$next_page()
+
+# You can also fetch all results with all() method
+content_collection$all()
+```
+
+Users can also list the content of a volume prefix/folder on the volume, by
+calling list_contents() directly on the VolumePrefix object.
+
+```{r}
+## Select one of the volume folders to list its content
+volume_folder <- content_collection$prefixes[[1]]
+
+# List content
+volume_folder$list_contents()
 ```
 
 ### Get Volume file info
 
 This operation returns a single volume file information. The input parameter 
 can be file's id which is represented as location on the bucket 
-(`file_location)`, or a link to that file resource. The link is a `href` field 
-of desired file received from response when returning list of volume files 
-with `list_files()`.
+(`location)`, or a link to that file resource. The link is a `href` field 
+of desired file received from response when returning list of volume content with `list_contents()`.
 Empty arguments are not allowed along with setting both parameters together.
 ```{r}
 # Get single volume file info - by setting file_location
-aws_iam_user_volume$get_file(file_location = "file_location_on_bucket")
+vol_file1 <- aws_iam_user_volume$get_file(location = "file_location_on_bucket")
 
 # Get single volume file info - by setting link
-aws_iam_user_volume$get_file(link = "full/request/link/to/file")
+vol_file1 <- aws_iam_user_volume$get_file(link = "full/request/link/to/file")
+```
+
+## Reload VolumeFile object
+
+To keep your local VolumeFile object up to date with the volume file on the 
+platform, you can always call the `reload()` function:
+
+```{r}
+vol_file1$reload()
 ```
 
 ### Deactivate and reactivate the volume
@@ -1848,6 +1873,9 @@ imp_limit5 <- a$imports$list_imports(limit = 5)
 
 # Load next page of 5 results
 imp_limit5$next_page(advance_access = TRUE)
+
+# Load all results at once until last page
+imp_limit5$all(advance_access = TRUE)
 ```
 
 It is possible to use some query parameters as different criteria for filtering
@@ -1899,14 +1927,20 @@ vol1 <- a$volumes$get(id = "volumes_test_division/volume-name")
 test_proj <- a$projects$get("my-project-id")
 
 ## list all volume's files
-vol1_content <- vol1$list_files()
+vol1_content <- vol1$list_contents()
 
 ## select one of the volume files
-volume_file_import <- vol1_content[[3]]
+volume_file_import <- vol1_content$items[[3]]
 
 ## make file import
 imp_job1 <- a$imports$submit_import(
   source_location = volume_file_import,
+  destination_project = test_proj,
+  autorename = TRUE
+)
+
+# alternatively you can also call import() directly on the VolumeFile object
+imp_job1 <- volume_file_import$import(
   destination_project = test_proj,
   autorename = TRUE
 )
@@ -1920,7 +1954,7 @@ preserve or not to preserve folder structure:
 
 ```{r}
 ## select one of the volume folders to import
-volume_folder_import <- vol1_content[[4]]
+volume_folder_import <- vol1_content$prefixes[[1]]
 
 # print import job info
 print(imp_job1)
@@ -1928,6 +1962,13 @@ print(imp_job1)
 ## make folder import
 imp_job2 <- a$imports$submit_import(
   source_location = volume_folder_import,
+  destination_project = test_proj,
+  overwrite = TRUE,
+  preserve_folder_structure = TRUE
+)
+
+# alternatively you can also call import() directly on the VolumePrefix object
+imp_job2 <- volume_folder_import$import(
   destination_project = test_proj,
   overwrite = TRUE,
   preserve_folder_structure = TRUE
@@ -1961,6 +2002,9 @@ exp_limit5 <- a$exports$list_exports(limit = 5)
 
 # Load next page of 5 results
 exp_limit5$next_page(advance_access = TRUE)
+
+# List all results until last page
+exp_limit5$all()
 ```
 
 It is possible to use some query parameters as different criteria for filtering

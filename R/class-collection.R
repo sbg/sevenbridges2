@@ -20,6 +20,8 @@ Collection <- R6::R6Class(
     items = NULL,
     #' @field links List of links (hrefs) for next page resources.
     links = NULL,
+    #' @field total Total number of items.
+    total = NULL,
     #' @field response Save raw API response.
     response = NULL,
     #' @field auth Seven Bridges Auth object.
@@ -29,13 +31,15 @@ Collection <- R6::R6Class(
     #' @param href API request URL.
     #' @param items Items returned in API response.
     #' @param links List of links (hrefs) for next page resources.
+    #' @param total Total number of items.
     #' @param response Raw API response.
     #' @param auth Seven Bridges Auth object.
-    initialize = function(href = NA, items = NA, links = NA, response = NA,
-                          auth = NA) {
+    initialize = function(href = NA, items = NA, links = NA, total = NA,
+                          response = NA, auth = NA) {
       self$href <- href
       self$items <- items
       self$links <- links
+      self$total <- total
       self$response <- response
       self$auth <- auth
     },
@@ -88,8 +92,6 @@ Collection <- R6::R6Class(
             base_url = self$auth$url,
             ...
           )
-
-
           # Reload Collection object
           private$load(res, auth = self$auth)
           break
@@ -119,8 +121,6 @@ Collection <- R6::R6Class(
             base_url = self$auth$url,
             ...
           )
-
-
           # Reload Collection object
           private$load(res, auth = self$auth)
           break
@@ -129,6 +129,33 @@ Collection <- R6::R6Class(
           rlang::abort("You've reached the first page of results.")
         }
       }
+    }, # nocov end
+    #' @description Fetches all available items.
+    #' @param ... Other query or API parameters that can be passed to api()
+    #' function like advance_access, fields etc.
+    #' @importFrom rlang abort
+    all = function(...) {
+      if (is.null(self$href)) {
+        rlang::abort("Resource URL is empty or you've already fetched all results.") # nolint
+      }
+      # nocov start
+      all_items <- self$items
+      while (TRUE) {
+        result <- tryCatch(
+          expr = {
+            self$next_page()
+            page_items <- self$items
+          },
+          error = function(e) {
+            e <- base::simpleError("You've reached the last page of results.")
+          }
+        )
+        if (inherits(result, "error")) break
+        all_items <- append(all_items, result)
+      }
+      self$items <- all_items
+      self$href <- NULL
+      self$links <- NULL
     }
   ), # nocov end
   private = list(
@@ -155,6 +182,7 @@ Collection <- R6::R6Class(
         href = res$href,
         items = res$items,
         links = res$links,
+        total = res$total,
         auth = auth,
         response = attr(res, "response")
       )
@@ -170,6 +198,7 @@ asCollection <- function(x, auth = NULL) {
     href = x$href,
     items = x$items,
     links = x$links,
+    total = x$total,
     auth = auth,
     response = attr(x, "response")
   )
