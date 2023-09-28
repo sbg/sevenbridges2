@@ -151,6 +151,19 @@ api <- function(token = NULL, path = NULL,
     # nocov end
   )
 
+  while (TRUE) {
+    count <- 0
+    for (i in seq_along(error_handlers)) {
+      handled_response <- error_handlers[[i]](req)
+      if (!setequal(req, handled_response)) {
+        req <- handled_response
+        break
+      }
+      count <- count + 1
+    }
+    if (count == 3) break
+  }
+
   total_items <- req$headers[["x-total-matching-query"]]
   res <- status_check(req)
   res$total <- total_items
