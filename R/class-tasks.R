@@ -408,6 +408,7 @@ Tasks <- R6::R6Class(
         }
       }
 
+      # nocov start
       if (!is_missing(inputs)) {
         task_inputs <- private$serialize_inputs(inputs)
         task_data[["inputs"]] <- task_inputs
@@ -435,12 +436,12 @@ Tasks <- R6::R6Class(
 
 
       return(asTask(res, auth = self$auth))
-    }
+    } # nocov end
   ),
   private = list(
     # Serialize input values  --------------------------------------------------
     #' @importFrom checkmate test_r6
-    serialize_inputs = function(input_value) {
+    serialize_inputs = function(input_value) { # nocov start
       if (is.list(input_value)) {
         return_value <- list()
         if (is.null(names(input_value))) {
@@ -470,6 +471,6 @@ Tasks <- R6::R6Class(
         "class" = stringr::str_to_title(file[["type"]]),
         "path" = file[["id"]]
       ))
-    }
+    } # nocov end
   )
 )

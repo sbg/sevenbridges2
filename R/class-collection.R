@@ -89,7 +89,6 @@ Collection <- R6::R6Class(
             ...
           )
 
-
           # Reload Collection object
           private$load(res, auth = self$auth)
           break
@@ -119,7 +118,6 @@ Collection <- R6::R6Class(
             base_url = self$auth$url,
             ...
           )
-
 
           # Reload Collection object
           private$load(res, auth = self$auth)

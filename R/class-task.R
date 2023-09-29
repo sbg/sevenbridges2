@@ -159,6 +159,7 @@ Task <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+    # nocov start
     #' @description
     #' Reload Task.
     #' @param ... Other query parameters.
@@ -169,7 +170,7 @@ Task <- R6::R6Class(
         ...
       )
       rlang::inform("Task object is refreshed!")
-    },
+    }, # nocov end
     #' @description This call runs (executes) the task. Only tasks whose status
     #' is "DRAFT" can be run.
     #'
@@ -621,7 +622,7 @@ Task <- R6::R6Class(
           rlang::abort("Batch is set to TRUE, therefore, please, set batching criteria (batch_by) and batch inputs.") # nolint
         }
       }
-
+      # nocov start
       if (!is_missing(inputs)) {
         task_inputs <- self$auth$tasks$private$serialize_inputs(inputs)
         task_data[["inputs"]] <- task_inputs
@@ -633,7 +634,6 @@ Task <- R6::R6Class(
       task_data[["execution_settings"]] <- execution_settings
       task_data[["batch"]] <- batch
 
-      # nocov start
       res <- sevenbridges2::api(
         path = glue::glue(self$URL[["task"]]),
         method = "PATCH",

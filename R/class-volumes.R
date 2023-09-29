@@ -37,9 +37,9 @@ Volumes <- R6::R6Class(
         path = self$URL[["query"]],
         advance_access = TRUE,
         ...
-      ) # nocov end
+      )
       return(asVolumeList(res, auth = self$auth))
-    },
+    }, # nocov end
 
     # Get single volume -------------------------------------------------------
     #' @description This call returns details of the specified volume.

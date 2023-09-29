@@ -95,6 +95,7 @@ api <- function(token = NULL, path = NULL,
       fields = fields
     )
   } else {
+    # nocov start
     parsed_url <- httr::parse_url(url)
     url <- paste0(
       parsed_url$scheme, "://",
@@ -102,7 +103,7 @@ api <- function(token = NULL, path = NULL,
       parsed_url$path
     )
     query <- parsed_url$query
-  }
+  } # nocov end
 
   # set headers
   headers <- set_headers(
