@@ -342,10 +342,11 @@ Volume <- R6::R6Class(
       if (is_missing(location) && is_missing(link)) {
         rlang::abort("Empty arguments are not allowed. Please, provide either location or link.") # nolint
       }
+      # nocov start
       if (!is_missing(link)) {
         link <- glue::glue(link, "&fields=_all")
       }
-      # nocov start
+
       path <- glue::glue(self$URL[["volume_file"]])
 
       res <- sevenbridges2::api(
@@ -534,9 +535,9 @@ Volume <- R6::R6Class(
         empty.ok = FALSE,
         choices = c("read", "copy", "write", "admin")
       )
+      # nocov start
       body <- flatten_query(permissions)
 
-      # nocov start
       path <- glue::glue(self$URL[["member_permissions"]])
 
       res <- sevenbridges2::api(
@@ -552,7 +553,7 @@ Volume <- R6::R6Class(
 
       return(asPermission(res, auth = self$auth))
       # nocov end
-    },
+    }, # nocov start
     #' @description This call lists import jobs initiated by particular user
     #' from this volume.
     #'
@@ -617,7 +618,7 @@ Volume <- R6::R6Class(
         offset = offset,
         ...
       )
-    }
+    } # nocov end
   )
 )
 

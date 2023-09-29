@@ -117,6 +117,12 @@ test_that("Tasks create() throws error when needed", {
       app = setup_app_obj,
       inputs = 1
     )
+  test_bad_output_loc <-
+    list(
+      project = setup_project_obj,
+      app = setup_app_obj,
+      output_location = 1
+    )
   test_bad_batch <-
     list(
       project = setup_project_obj,
@@ -180,6 +186,9 @@ test_that("Tasks create() throws error when needed", {
 
   # Test bad inputs parameter
   testthat::expect_error(do.call(setup_tasks_obj$create, test_bad_inputs))
+
+  # Test bad output_location parameter
+  testthat::expect_error(do.call(setup_tasks_obj$create, test_bad_output_loc))
 
   # Test bad batch parameter
   testthat::expect_error(do.call(setup_tasks_obj$create, test_bad_batch))
