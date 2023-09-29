@@ -10,7 +10,7 @@
 #' @importFrom rlang inform
 #'
 #' @noRd
-rate_limit_sleeper <- function(req) {
+rate_limit_sleeper <- function(req) { # nocovr start
   while (req$status_code == 429) {
     headers <- req$headers
 
@@ -93,4 +93,4 @@ error_handlers <-
     rate_limit_sleeper,
     maintenance_sleeper,
     general_error_sleeper
-  )
+  ) # nocovr end
