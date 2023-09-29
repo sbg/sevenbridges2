@@ -18,6 +18,8 @@ the total number of entries available in on the server and resource href.
 
 \item{\code{links}}{List of links (hrefs) for next page resources.}
 
+\item{\code{total}}{Total number of items.}
+
 \item{\code{response}}{Save raw API response.}
 
 \item{\code{auth}}{Seven Bridges Auth object.}
@@ -31,6 +33,7 @@ the total number of entries available in on the server and resource href.
 \item \href{#method-Collection-print}{\code{Collection$print()}}
 \item \href{#method-Collection-next_page}{\code{Collection$next_page()}}
 \item \href{#method-Collection-prev_page}{\code{Collection$prev_page()}}
+\item \href{#method-Collection-all}{\code{Collection$all()}}
 \item \href{#method-Collection-clone}{\code{Collection$clone()}}
 }
 }
@@ -40,7 +43,14 @@ the total number of entries available in on the server and resource href.
 \subsection{Method \code{new()}}{
 Create a new Collection object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Collection$new(href = NA, items = NA, links = NA, response = NA, auth = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Collection$new(
+  href = NA,
+  items = NA,
+  links = NA,
+  total = NA,
+  response = NA,
+  auth = NA
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -51,6 +61,8 @@ Create a new Collection object.
 \item{\code{items}}{Items returned in API response.}
 
 \item{\code{links}}{List of links (hrefs) for next page resources.}
+
+\item{\code{total}}{Total number of items.}
 
 \item{\code{response}}{Raw API response.}
 
@@ -101,6 +113,24 @@ function like advance_access, fields etc.}
 Return previous page of results.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Collection$prev_page(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other query or API parameters that can be passed to api()
+function like advance_access, fields etc.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Collection-all"></a>}}
+\if{latex}{\out{\hypertarget{method-Collection-all}{}}}
+\subsection{Method \code{all()}}{
+Fetches all available items.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Collection$all(...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

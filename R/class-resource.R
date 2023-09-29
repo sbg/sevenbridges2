@@ -102,8 +102,6 @@ Resource <- R6::R6Class(
         ...
       )
 
-
-
       return(res)
       # nocov end
     },

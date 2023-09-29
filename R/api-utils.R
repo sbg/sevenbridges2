@@ -10,14 +10,20 @@
 #' @return index of the matched element from the data provided
 #'
 #' @noRd
-m.fun <- function(x, y, exact = TRUE, ignore.case = TRUE, ...) {
+m.fun <- function(x,
+                  y,
+                  exact = TRUE,
+                  ignore.case = TRUE,
+                  ...) {
   if (exact) {
     res <- pmatch(x, y, ...)
   } else {
     res <- unlist(sapply(x, function(i) {
       grep(i, y, ignore.case = ignore.case)
     }))
-    if (is.matrix(res)) res <- res[, 1]
+    if (is.matrix(res)) {
+      res <- res[, 1]
+    }
   }
 
   res
@@ -38,9 +44,12 @@ m.fun <- function(x, y, exact = TRUE, ignore.case = TRUE, ...) {
 #'
 #' @noRd
 m.match <- function(obj,
-                    id = NULL, name = NULL,
-                    .id = "id", .name = "name",
-                    exact = TRUE, ignore.case = TRUE) {
+                    id = NULL,
+                    name = NULL,
+                    .id = "id",
+                    .name = "name",
+                    exact = TRUE,
+                    ignore.case = TRUE) {
   # if no match, return whole list
   if (is.null(id)) {
     if (is.null(name)) {
@@ -51,7 +60,9 @@ m.match <- function(obj,
       }
     } else {
       # id is null, use name
-      nms <- sapply(obj, function(x) x[[.name]])
+      nms <- sapply(obj, function(x) {
+        x[[.name]]
+      })
       if (ignore.case) {
         name <- tolower(name)
         nms <- tolower(nms)
@@ -63,7 +74,9 @@ m.match <- function(obj,
     }
   } else {
     # id is not NULL
-    ids <- sapply(obj, function(x) x[[.id]])
+    ids <- sapply(obj, function(x) {
+      x[[.id]]
+    })
     index <- m.fun(id, ids,
       exact = exact,
       ignore.case = ignore.case
@@ -91,21 +104,24 @@ m.match <- function(obj,
 #' milliseconds (default is FALSE)
 #'
 #' @noRd
-parse_time <- function(reset_time_as_unix_epoch, origin = "1970-01-01",
-                       time_zone = "", use_milliseconds = FALSE) {
-  if (is_missing(reset_time_as_unix_epoch)) {
-    return("unknown")
+parse_time <-
+  function(reset_time_as_unix_epoch,
+           origin = "1970-01-01",
+           time_zone = "",
+           use_milliseconds = FALSE) {
+    if (is_missing(reset_time_as_unix_epoch)) {
+      return("unknown")
+    }
+    if (use_milliseconds) {
+      reset_time_as_unix_epoch <- reset_time_as_unix_epoch / 1000
+    }
+    reset_time_as_posixlt <- as.POSIXlt(reset_time_as_unix_epoch,
+      origin = "1970-01-01", tz = time_zone
+    )
+    reset_date_time <- as.character(reset_time_as_posixlt)
+    reset_time_zone <- reset_time_as_posixlt$zone
+    return(paste0(reset_date_time, " ", reset_time_zone))
   }
-  if (use_milliseconds) {
-    reset_time_as_unix_epoch <- reset_time_as_unix_epoch / 1000
-  }
-  reset_time_as_posixlt <- as.POSIXlt(reset_time_as_unix_epoch,
-    origin = "1970-01-01", tz = time_zone
-  )
-  reset_date_time <- as.character(reset_time_as_posixlt)
-  reset_time_zone <- reset_time_as_posixlt$zone
-  return(paste0(reset_date_time, " ", reset_time_zone))
-}
 
 #' Customize underlying http logic for handle_url2
 #'
@@ -120,8 +136,12 @@ handle_url2 <- function(handle = NULL, url = NULL, ...) {
   if (is.null(url) && is.null(handle)) {
     rlang::abort("Must specify at least one of url or handle")
   }
-  if (is.null(handle)) handle <- httr::handle_find(url)
-  if (is.null(url)) url <- handle$url
+  if (is.null(handle)) {
+    handle <- httr::handle_find(url)
+  }
+  if (is.null(url)) {
+    url <- handle$url
+  }
   # workaround to bypass `:::` checks
   new <- eval(parse(text = "httr:::named(list(...))"))
   if (length(new) > 0 || eval(parse(text = "httr:::is.url(url)"))) {
@@ -168,13 +188,28 @@ build_url2 <- function(url) {
     rlang::abort("Cannot set password without username")
   }
 
-  paste0(scheme, "://", url$username, if (!is.null(url$password)) {
-    ":"
-  }, url$password, if (!is.null(url$username)) {
-    "@"
-  }, hostname, port, "/", path, params, query, if (!is.null(url$fragment)) {
-    "#"
-  }, url$fragment)
+  paste0(
+    scheme,
+    "://",
+    url$username,
+    if (!is.null(url$password)) {
+      ":"
+    },
+    url$password,
+    if (!is.null(url$username)) {
+      "@"
+    },
+    hostname,
+    port,
+    "/",
+    path,
+    params,
+    query,
+    if (!is.null(url$fragment)) {
+      "#"
+    },
+    url$fragment
+  )
 }
 
 #' Customize underlying http logic for GET2
@@ -185,12 +220,18 @@ build_url2 <- function(url) {
 #' @param ... additional args to pass
 #'
 #' @noRd
-GET2 <- function(url = NULL, config = list(), ..., handle = NULL) {
+GET2 <- function(url = NULL,
+                 config = list(),
+                 ...,
+                 handle = NULL) {
   # nocov start
   hu <- handle_url2(handle, url, ...)
-  req <- eval(parse(text = 'httr:::request_build("GET", hu$url, config, ...)'))
+  req <-
+    eval(parse(text = 'httr:::request_build("GET", hu$url, config, ...)'))
 
-  return(eval(parse(text = "httr:::request_perform(req, hu$handle$handle)")))
+  return(eval(
+    parse(text = "httr:::request_perform(req, hu$handle$handle)")
+  ))
   # nocov end
 }
 
@@ -204,16 +245,24 @@ GET2 <- function(url = NULL, config = list(), ..., handle = NULL) {
 #' @param ... additional args to pass
 #'
 #' @noRd
-POST2 <- function(url = NULL, config = list(), ...,
-                  body = NULL, encode = c("json", "form", "multipart"),
+POST2 <- function(url = NULL,
+                  config = list(),
+                  ...,
+                  body = NULL,
+                  encode = c("json", "form", "multipart"),
                   handle = NULL) {
   # nocov start
 
   encode <- match.arg(encode)
   hu <- handle_url2(handle, url, ...)
-  req <- eval(parse(text = 'httr:::request_build("POST", hu$url, httr:::body_config(body, encode), config, ...)'))
+  req <-
+    eval(
+      parse(text = 'httr:::request_build("POST", hu$url, httr:::body_config(body, encode), config, ...)')
+    )
 
-  return(eval(parse(text = "httr:::request_perform(req, hu$handle$handle)")))
+  return(eval(
+    parse(text = "httr:::request_perform(req, hu$handle$handle)")
+  ))
   # nocov end
 }
 
@@ -232,14 +281,24 @@ POST2 <- function(url = NULL, config = list(), ...,
 #'
 #' @noRd
 flatten_query <- function(x) {
-  if (all(sapply(x, checkmate::test_atomic)) && all(lengths(x) <= 1)) {
+  if (all(sapply(x, checkmate::test_atomic)) &&
+    all(lengths(x) <= 1)) {
     return(x)
   }
-  do.call("c", mapply(function(name, val) {
-    x <- as.list(val)
-    names(x) <- rep(name, length(val))
-    x
-  }, names(x), x, USE.NAMES = FALSE, SIMPLIFY = FALSE))
+  do.call(
+    "c",
+    mapply(
+      function(name, val) {
+        x <- as.list(val)
+        names(x) <- rep(name, length(val))
+        x
+      },
+      names(x),
+      x,
+      USE.NAMES = FALSE,
+      SIMPLIFY = FALSE
+    )
+  )
 }
 
 
@@ -259,28 +318,34 @@ flatten_query <- function(x) {
 #' @importFrom checkmate assert_logical
 #' @return A named vector with headers for an API request.
 #' @noRd
-set_headers <- function(authorization = FALSE, token = NULL, advance_access = getOption("sevenbridges2")$advance_access) {
-  if (is_missing(token)) {
-    rlang::abort("Token is missing.")
+set_headers <-
+  function(authorization = FALSE,
+           token = NULL,
+           advance_access = getOption("sevenbridges2")$advance_access) {
+    if (is_missing(token)) {
+      rlang::abort("Token is missing.")
+    }
+    checkmate::assert_logical(authorization, len = 1, null.ok = FALSE)
+    checkmate::assert_logical(advance_access, len = 1, null.ok = FALSE)
+
+    if (authorization) {
+      headers <-
+        c("Authorization" = paste("Bearer", token, sep = " ")) # nocov
+    } else {
+      headers <- c(
+        "X-SBG-Auth-Token" = token,
+        "Accept" = "application/json",
+        "Content-Type" = "application/json"
+      )
+    }
+
+    # add optional advance access flag
+    if (advance_access) {
+      headers <- c(headers, "X-SBG-advance-access" = "advance")
+    }
+
+    return(headers)
   }
-  checkmate::assert_logical(authorization, len = 1, null.ok = FALSE)
-  checkmate::assert_logical(advance_access, len = 1, null.ok = FALSE)
-
-  if (authorization) {
-    headers <- c("Authorization" = paste("Bearer", token, sep = " ")) # nocov
-  } else {
-    headers <- c(
-      "X-SBG-Auth-Token" = token,
-      "Accept" = "application/json",
-      "Content-Type" = "application/json"
-    )
-  }
-
-  # add optional advance access flag
-  if (advance_access) headers <- c(headers, "X-SBG-advance-access" = "advance")
-
-  return(headers)
-}
 
 
 #' Setup query parameters for API request
@@ -297,19 +362,29 @@ set_headers <- function(authorization = FALSE, token = NULL, advance_access = ge
 #'
 #' @return List of query parameters.
 #' @noRd
-setup_query <- function(query = NULL, limit = getOption("sevenbridges2")$limit, offset = getOption("sevenbridges2")$offset, fields = NULL) {
-  # flatten and append query parameters
-  query <- c(flatten_query(query), limit = as.integer(limit), offset = as.integer(offset), flatten_query(list(fields = fields)))
+setup_query <-
+  function(query = NULL,
+           limit = getOption("sevenbridges2")$limit,
+           offset = getOption("sevenbridges2")$offset,
+           fields = NULL) {
+    # flatten and append query parameters
+    query <-
+      c(
+        flatten_query(query),
+        limit = as.integer(limit),
+        offset = as.integer(offset),
+        flatten_query(list(fields = fields))
+      )
 
-  idx <- !sapply(query, is.null)
-  if (any(idx)) {
-    query <- query[idx]
-  } else {
-    query <- NULL
+    idx <- !sapply(query, is.null)
+    if (any(idx)) {
+      query <- query[idx]
+    } else {
+      query <- NULL
+    }
+
+    return(query)
   }
-
-  return(query)
-}
 
 #' Setup body parameters for API request
 #' @description This function prepares body parameters for API request.
@@ -347,23 +422,25 @@ setup_body <- function(method, body = list()) {
 #'
 #' @importFrom checkmate assert_r6 assert_character
 #' @noRd
-check_and_transform_id <- function(x, class_name, field_name = "id") {
-  if (inherits(x, "R6")) {
-    checkmate::assert_r6(x,
-      classes = class_name,
-      null.ok = TRUE,
-      .var.name = checkmate::vname(x)
-    )
-    id <- x[[field_name]]
-  } else {
-    checkmate::assert_character(x,
-      null.ok = FALSE,
-      .var.name = checkmate::vname(x)
-    )
-    id <- x
+check_and_transform_id <-
+  function(x, class_name, field_name = "id") {
+    if (inherits(x, "R6")) {
+      checkmate::assert_r6(
+        x,
+        classes = class_name,
+        null.ok = TRUE,
+        .var.name = checkmate::vname(x)
+      )
+      id <- x[[field_name]]
+    } else {
+      checkmate::assert_character(x,
+        null.ok = FALSE,
+        .var.name = checkmate::vname(x)
+      )
+      id <- x
+    }
+    return(id)
   }
-  return(id)
-}
 
 extract_common_query_params <- function(args, param_name) {
   if (!is_missing(args[[param_name]])) {
