@@ -174,6 +174,17 @@ setup_folder_obj <- asFile(
   auth = setup_auth_object
 )
 
+# Setup Upload test object
+setup_upload_object <- Upload$new(
+  path = testthat::test_path("test_data"),
+  filename = "new_name.txt",
+  overwrite = TRUE,
+  parent = "parent-id",
+  file_size = 50 * 1024^2,
+  part_size = 7 * 1024^2,
+  auth = setup_auth_object
+)
+
 # Load raw cwl app
 setup_app_path <- testthat::test_path(
   "test_data",
