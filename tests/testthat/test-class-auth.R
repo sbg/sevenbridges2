@@ -1,3 +1,21 @@
+test_that("Auth initialization works", {
+  # Auth object creation works
+  testthat::expect_no_error(Auth$new(token = "rand_token", url = "random_url"))
+
+  # Auth object class and methods are set
+  checkmate::assert_r6(
+    setup_auth_object,
+    classes = c("Auth"),
+    public = c(
+      "from", "platform", "url", "sysenv_url", "sysenv_token",
+      "config_file", "profile_name", "fs", "authorization", "projects",
+      "files", "apps", "volumes", "tasks", "imports", "exports",
+      "invoices", "billing_groups", "projects", "files", "apps", "volumes",
+      "tasks", "imports", "exports", "invoices", "billing_groups"
+    )
+  )
+})
+
 testthat::test_that("Init authentication works", {
   # Generate dummy token
   test_token <- stringi::stri_rand_strings(1, 32, pattern = "[a-z0-9]")

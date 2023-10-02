@@ -22,6 +22,9 @@ credentials_path <- testthat::test_path(
   "sbg_credentials_test_file"
 )
 
+# Generate dummy token
+test_token <- stringi::stri_rand_strings(1, 32, pattern = "[a-z0-9]")
+
 # Auth object
 setup_auth_object <-
   Auth$new(from = "file", config_file = credentials_path)
