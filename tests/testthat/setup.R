@@ -26,6 +26,14 @@ credentials_path <- testthat::test_path(
 setup_auth_object <-
   Auth$new(from = "file", config_file = credentials_path)
 
+# Item object
+setup_item_object <-
+  Item$new(
+    href = "resource-item-url",
+    response = list("raw-response"),
+    auth = setup_auth_object
+  )
+
 # Rate limit object
 rate_limit_res <- list(
   rate = list(
