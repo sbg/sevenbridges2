@@ -27,6 +27,13 @@ test_that("Volumes get() throws error when needed", {
   testthat::expect_error(do.call(setup_volumes_obj$get, test_bad_id))
 })
 
+test_that("Volumes delete() throws error when needed", {
+  # Delete fails
+  testthat::expect_message(setup_volumes_obj$delete(),
+    regexp = "Deleting volumes is possible to perform on the specific instance of class Volume." # nolint
+  )
+})
+
 test_that("Creating AWS volumes with IAM User type throws error when needed", {
   # Pass no args
   testthat::expect_error(setup_volumes_obj$create_s3_using_iam_user())

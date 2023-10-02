@@ -84,9 +84,9 @@ VolumePrefix <- R6::R6Class(
     #' `volume`, `type`, `metadata`, `_all`. Default: `_all`.
     #' @return VolumeContentCollection object containing list of VolumeFile
     #' and VolumePrefix objects.
-    list_files = function(limit = getOption("sevenbridges2")$limit,
-                          continuation_token = NULL,
-                          ...) {
+    list_contents = function(limit = getOption("sevenbridges2")$limit,
+                             continuation_token = NULL,
+                             ...) {
       checkmate::assert_character(continuation_token,
         len = 1, null.ok = TRUE,
         typed.missing = TRUE

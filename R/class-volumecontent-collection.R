@@ -112,8 +112,39 @@ VolumeContentCollection <- R6::R6Class(
     #' @importFrom rlang abort
     prev_page = function() {
       rlang::abort("Cannot paginate backwards.")
+    },
+    #' @description Fetches all available items.
+    #' @param ... Other query or API parameters that can be passed to api()
+    #' function like advance_access, fields etc.
+    #' @importFrom rlang abort
+    all = function(...) {
+      if (is.null(self$href)) {
+        rlang::abort("Resource URL is empty or you've already fetched all results.") # nolint
+      }
+      # nocov start
+      all_items <- self$items
+      all_prefixes <- self$prefixes
+      while (TRUE) {
+        result <- tryCatch(
+          expr = {
+            self$next_page()
+            page_items <- self$items
+            page_prefixes <- self$prefixes
+            all_items <- append(all_items, page_items)
+            all_prefixes <- append(all_prefixes, page_prefixes)
+          },
+          error = function(e) {
+            e <- base::simpleError("You've reached the last page of results.")
+          }
+        )
+        if (inherits(result, "error")) break
+      }
+      self$items <- all_items
+      self$prefixes <- all_prefixes
+      self$href <- NULL
+      self$links <- NULL
     }
-  ),
+  ), # nocov end
   private = list(
     # Reload object to get new results
     # nocov start
