@@ -1,4 +1,4 @@
-testthat::test_that("Utility function parse_time works (seconds)", {
+testthat::test_that("Utility function parse_time works", {
   # unix timestamp doesn't contain the information about milliseconds
   test_unix_timestamp <- 1489700093
 
@@ -10,9 +10,7 @@ testthat::test_that("Utility function parse_time works (seconds)", {
   testthat::expect_equal(human_readable_date, "2017-03-16 21:34:53 ",
     label = "Epoch conversion to human-readable date went wrong."
   )
-})
 
-testthat::test_that("Utility function parse_time works (milliseconds)", {
   # unix timestamp contains the information about milliseconds
   test_unix_timestamp <- 2555971200000
 
@@ -24,9 +22,7 @@ testthat::test_that("Utility function parse_time works (milliseconds)", {
   testthat::expect_equal(human_readable_date, "2050-12-30 ",
     label = "Epoch conversion to human-readable date went wrong."
   )
-})
 
-testthat::test_that("Utility function parse_time works (unknown)", {
   # unix timestamp is missing
   test_unix_timestamp <- NA
 
@@ -37,6 +33,45 @@ testthat::test_that("Utility function parse_time works (unknown)", {
 
   testthat::expect_equal(human_readable_date, "unknown",
     label = "Epoch conversion to human-readable date went wrong."
+  )
+
+
+  # Setup test params for testing
+  bad_reset_time_as_unix_epoch <- list(reset_time_as_unix_epoch = "bad")
+  bad_origin <- list(
+    reset_time_as_unix_epoch = 2555971200000,
+    origin = FALSE
+  )
+  bad_time_zone <- list(
+    reset_time_as_unix_epoch = 2555971200000,
+    origin = "string",
+    time_zone = 1
+  )
+  bad_use_milliseconds <- list(
+    reset_time_as_unix_epoch = 2555971200000,
+    origin = "string",
+    time_zone = "string",
+    use_milliseconds = "bad"
+  )
+
+  # Test with bad_reset_time_as_unix_epoch
+  testthat::expect_error(
+    do.call(parse_time, bad_reset_time_as_unix_epoch)
+  )
+
+  # Test with bad_origin
+  testthat::expect_error(
+    do.call(parse_time, bad_origin)
+  )
+
+  # Test with bad_time_zone
+  testthat::expect_error(
+    do.call(parse_time, bad_time_zone)
+  )
+
+  # Test with bad_use_milliseconds
+  testthat::expect_error(
+    do.call(parse_time, bad_use_milliseconds)
   )
 })
 
@@ -117,25 +152,6 @@ testthat::test_that("Utility function handle_url2 works", {
     result$url,
     "https://api.sbgenomics.com/v2/user/?limit=50&offset=50"
   )
-
-  # nolint start
-
-  # Load auth object
-  # loaded_handle_obj <- readRDS(testthat::test_path("test_data", "handle_object.RDS"))
-  #
-  # result <- handle_url2(handle = loaded_handle_obj, query = list(limit = 50, offset = 50))
-  #
-  # testthat::expect_true(!is.null(result$handle))
-  # testthat::expect_true(checkmate::test_class(result$handle,
-  #                                             classes = c("handle")
-  # ))
-  # testthat::expect_true(checkmate::test_class(result$handle$handle,
-  #                                             classes = c("curl_handle")
-  # ))
-  # testthat::expect_true(!is.null(result$url))
-  # testthat::expect_equal(result$url, "https://api.sbgenomics.com/?limit=50&offset=50")
-
-  # nolint end
 })
 
 testthat::test_that("Utility function build_url2 works", {

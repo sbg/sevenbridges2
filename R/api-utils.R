@@ -96,6 +96,12 @@ parse_time <- function(reset_time_as_unix_epoch, origin = "1970-01-01",
   if (is_missing(reset_time_as_unix_epoch)) {
     return("unknown")
   }
+
+  checkmate::assert_number(reset_time_as_unix_epoch)
+  checkmate::assert_string(origin)
+  checkmate::assert_string(time_zone)
+  checkmate::assert_logical(use_milliseconds)
+
   if (use_milliseconds) {
     reset_time_as_unix_epoch <- reset_time_as_unix_epoch / 1000
   }
@@ -298,6 +304,9 @@ set_headers <- function(authorization = FALSE, token = NULL, advance_access = ge
 #' @return List of query parameters.
 #' @noRd
 setup_query <- function(query = NULL, limit = getOption("sevenbridges2")$limit, offset = getOption("sevenbridges2")$offset, fields = NULL) {
+  checkmate::test_list(query, null.ok = TRUE)
+  checkmate::test_string(fields)
+
   # flatten and append query parameters
   query <- c(flatten_query(query), limit = as.integer(limit), offset = as.integer(offset), flatten_query(list(fields = fields)))
 
@@ -365,6 +374,15 @@ check_and_transform_id <- function(x, class_name, field_name = "id") {
   return(id)
 }
 
+
+#' Extract common query parameters
+#'
+#' Extract default values for common query params like limit, offset, etc.
+#' If they don't exist in the provided list of params or return the found value.
+#'
+#' @return Parameter value.
+#'
+#' @noRd
 extract_common_query_params <- function(args, param_name) {
   if (!is_missing(args[[param_name]])) {
     param_value <- args[[param_name]]
