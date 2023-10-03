@@ -26,7 +26,7 @@ R6 Class representing a resource for managing VolumePrefix objects.
 \item \href{#method-VolumePrefix-new}{\code{VolumePrefix$new()}}
 \item \href{#method-VolumePrefix-print}{\code{VolumePrefix$print()}}
 \item \href{#method-VolumePrefix-reload}{\code{VolumePrefix$reload()}}
-\item \href{#method-VolumePrefix-list_files}{\code{VolumePrefix$list_files()}}
+\item \href{#method-VolumePrefix-list_contents}{\code{VolumePrefix$list_contents()}}
 \item \href{#method-VolumePrefix-import}{\code{VolumePrefix$import()}}
 \item \href{#method-VolumePrefix-clone}{\code{VolumePrefix$clone()}}
 }
@@ -71,13 +71,13 @@ Reload VolumePrefix object.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-VolumePrefix-list_files"></a>}}
-\if{latex}{\out{\hypertarget{method-VolumePrefix-list_files}{}}}
-\subsection{Method \code{list_files()}}{
+\if{html}{\out{<a id="method-VolumePrefix-list_contents"></a>}}
+\if{latex}{\out{\hypertarget{method-VolumePrefix-list_contents}{}}}
+\subsection{Method \code{list_contents()}}{
 List volume folder contents
 This call lists the contents of a specific volume folder.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{VolumePrefix$list_files(
+\if{html}{\out{<div class="r">}}\preformatted{VolumePrefix$list_contents(
   limit = getOption("sevenbridges2")$limit,
   continuation_token = NULL,
   ...

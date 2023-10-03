@@ -265,7 +265,7 @@ Volume <- R6::R6Class(
     }, # nocov end
     #' @description List volume contents
     #' This call lists the contents of a specific volume.
-    #' @param parent This is prefix parameter in volume context. If specified,
+    #' @param prefix This is parent parameter in volume context. If specified,
     #' the content of the parent directory on the current volume is listed.
     #' @param limit Defines the number of items you want to get from your API
     #' request. By default, `limit` is set to `50`. Maximum is `100`.
@@ -280,12 +280,12 @@ Volume <- R6::R6Class(
     #' `volume`, `type`, `metadata`, `_all`. Default: `_all`.
     #' @return VolumeContentCollection object containing list of VolumeFile
     #' and VolumePrefix objects.
-    list_files = function(parent = NULL,
-                          limit = getOption("sevenbridges2")$limit,
-                          link = NULL,
-                          continuation_token = NULL,
-                          ...) {
-      checkmate::assert_character(parent,
+    list_contents = function(prefix = NULL,
+                             limit = getOption("sevenbridges2")$limit,
+                             link = NULL,
+                             continuation_token = NULL,
+                             ...) {
+      checkmate::assert_character(prefix,
         len = 1, null.ok = TRUE,
         typed.missing = TRUE
       )
@@ -303,7 +303,7 @@ Volume <- R6::R6Class(
       res <- sevenbridges2::api(
         url = link,
         path = path,
-        query = list(prefix = parent, continuation_token = continuation_token),
+        query = list(prefix = prefix, continuation_token = continuation_token),
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
@@ -342,10 +342,11 @@ Volume <- R6::R6Class(
       if (is_missing(location) && is_missing(link)) {
         rlang::abort("Empty arguments are not allowed. Please, provide either location or link.") # nolint
       }
+      # nocov start
       if (!is_missing(link)) {
         link <- glue::glue(link, "&fields=_all")
       }
-      # nocov start
+
       path <- glue::glue(self$URL[["volume_file"]])
 
       res <- sevenbridges2::api(
@@ -534,9 +535,9 @@ Volume <- R6::R6Class(
         empty.ok = FALSE,
         choices = c("read", "copy", "write", "admin")
       )
+      # nocov start
       body <- flatten_query(permissions)
 
-      # nocov start
       path <- glue::glue(self$URL[["member_permissions"]])
 
       res <- sevenbridges2::api(
@@ -552,7 +553,7 @@ Volume <- R6::R6Class(
 
       return(asPermission(res, auth = self$auth))
       # nocov end
-    },
+    }, # nocov start
     #' @description This call lists import jobs initiated by particular user
     #' from this volume.
     #'
@@ -617,7 +618,7 @@ Volume <- R6::R6Class(
         offset = offset,
         ...
       )
-    }
+    } # nocov end
   )
 )
 

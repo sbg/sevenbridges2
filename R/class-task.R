@@ -159,6 +159,7 @@ Task <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+    # nocov start
     #' @description
     #' Reload Task.
     #' @param ... Other query parameters.
@@ -169,7 +170,7 @@ Task <- R6::R6Class(
         ...
       )
       rlang::inform("Task object is refreshed!")
-    },
+    }, # nocov end
     #' @description This call runs (executes) the task. Only tasks whose status
     #' is "DRAFT" can be run.
     #'
@@ -515,7 +516,62 @@ Task <- R6::R6Class(
     #'      "input_record_field_integer" = 42
     #'     )
     #'    )
-    #'  ````
+    #'  ```
+    #' @param output_location The output_location dictionary allows you to
+    #' define the exact location where your task outputs will be stored.
+    #' The location can either be defined for the entire project using the
+    #' main_location parameter, or individually per each output node, by
+    #' setting the nodes_override parameter to true and defining individual
+    #' output node locations within nodes_location.
+    #' See below for more details.
+    #' \itemize{
+    #'    \item `main_location` - String. Defines the output location for all
+    #'    output nodes in the task. Can be a path within the project in which
+    #'    the task is created, for example '/Analysis/<task_id>_<task_name>/'
+    #'    or a path on an attached volume, such as
+    #'    "volumes://volume_name/<project_id>/html".
+    #'    Parts of the path enclosed in angle brackets <> are tokens that are
+    #'    dynamically replaced with corresponding values during task execution.
+    #'    \item `main_location_alias`: String. The location (path) in the
+    #'    project that will point to the actual location where the outputs are
+    #'    stored. Used if main_location is defined as a volume path (starting
+    #'    with volumes://), to provide an easy way of accessing output data
+    #'    directly from project files.
+    #'    \item `nodes_override`: Boolean. Enables defining of output locations
+    #'    for output nodes individually through nodes_location (see below).
+    #'    Set to true to be able to define individual locations per output node.
+    #'    Default: false. Even if nodes_override is set to true, it is not
+    #'    necessary to define output locations for each of the output nodes
+    #'    individually. Data from those output nodes that don't have their
+    #'    locations explicitly defined through nodes_location is either placed
+    #'    in main_location (if defined) or at the project files root if a main
+    #'    output location is not defined for the task.
+    #'    \item `nodes_location`: List. Contains output paths for individual
+    #'    task output nodes in the following format for each output node:
+    #'    <output-node-id> = list(
+    #'      "output_location" = "<output-path>",
+    #'      "output_location_alias" = "<alias-path>"
+    #'    )
+    #'    ```{r}
+    #'     b64html = list(
+    #'     "output_location" = "volumes://outputs/tasks/mar-19",
+    #'     "output_location_alias" = "/rfranklin/tasks/picard"
+    #'    )
+    #'    ```
+    #'    In the example above, b64html is the ID of the output node for which
+    #'    you want to define the output location, while the parameters are
+    #'    defined as follows:
+    #'    \itemize{
+    #'      \item `output_location` - Can be a path within the project in which
+    #'      the task is created, for example '/Analysis/<task_id>_<task_name>/'
+    #'      or a path on an attached volume, such as
+    #'      "volumes://volume_name/<project_id>/html". Also accepts tokens.
+    #'      \item `output_location_alias` - The location (path) in the project
+    #'      that will point to the exact location where the output is stored.
+    #'      Used if output_location is defined as a volume path
+    #'      (starting with volumes://).
+    #'    }
+    #' }
     #' @param batch Boolean. This is set to `FALSE` by default. Set to `TRUE` to
     #' create a batch task and specify the `batch_input` and `batch-by`
     #' criteria as described below.
@@ -536,6 +592,7 @@ Task <- R6::R6Class(
                       description = NULL,
                       execution_settings = NULL,
                       inputs = NULL,
+                      output_location = NULL,
                       batch = NULL,
                       batch_input = NULL,
                       batch_by = NULL,
@@ -544,6 +601,7 @@ Task <- R6::R6Class(
       checkmate::assert_string(description, null.ok = TRUE)
       check_execution_settings(execution_settings)
       checkmate::assert_list(inputs, null.ok = TRUE)
+      checkmate::assert_list(output_location, null.ok = TRUE)
       checkmate::assert_logical(batch, null.ok = TRUE)
       checkmate::assert_string(batch_input, null.ok = TRUE)
       checkmate::assert_list(batch_by, null.ok = TRUE)
@@ -564,16 +622,18 @@ Task <- R6::R6Class(
           rlang::abort("Batch is set to TRUE, therefore, please, set batching criteria (batch_by) and batch inputs.") # nolint
         }
       }
-
+      # nocov start
       if (!is_missing(inputs)) {
         task_inputs <- self$auth$tasks$private$serialize_inputs(inputs)
         task_data[["inputs"]] <- task_inputs
+      }
+      if (!is_missing(output_location)) {
+        task_data[["output_location"]] <- output_location
       }
 
       task_data[["execution_settings"]] <- execution_settings
       task_data[["batch"]] <- batch
 
-      # nocov start
       res <- sevenbridges2::api(
         path = glue::glue(self$URL[["task"]]),
         method = "PATCH",
