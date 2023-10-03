@@ -104,24 +104,29 @@ m.match <- function(obj,
 #' milliseconds (default is FALSE)
 #'
 #' @noRd
-parse_time <-
-  function(reset_time_as_unix_epoch,
-           origin = "1970-01-01",
-           time_zone = "",
-           use_milliseconds = FALSE) {
-    if (is_missing(reset_time_as_unix_epoch)) {
-      return("unknown")
-    }
-    if (use_milliseconds) {
-      reset_time_as_unix_epoch <- reset_time_as_unix_epoch / 1000
-    }
-    reset_time_as_posixlt <- as.POSIXlt(reset_time_as_unix_epoch,
-      origin = "1970-01-01", tz = time_zone
-    )
-    reset_date_time <- as.character(reset_time_as_posixlt)
-    reset_time_zone <- reset_time_as_posixlt$zone
-    return(paste0(reset_date_time, " ", reset_time_zone))
+parse_time <- function(reset_time_as_unix_epoch,
+                       origin = "1970-01-01",
+                       time_zone = "",
+                       use_milliseconds = FALSE) {
+  if (is_missing(reset_time_as_unix_epoch)) {
+    return("unknown")
   }
+
+  checkmate::assert_number(reset_time_as_unix_epoch)
+  checkmate::assert_string(origin)
+  checkmate::assert_string(time_zone)
+  checkmate::assert_logical(use_milliseconds)
+
+  if (use_milliseconds) {
+    reset_time_as_unix_epoch <- reset_time_as_unix_epoch / 1000
+  }
+  reset_time_as_posixlt <- as.POSIXlt(reset_time_as_unix_epoch,
+    origin = "1970-01-01", tz = time_zone
+  )
+  reset_date_time <- as.character(reset_time_as_posixlt)
+  reset_time_zone <- reset_time_as_posixlt$zone
+  return(paste0(reset_date_time, " ", reset_time_zone))
+}
 
 #' Customize underlying http logic for handle_url2
 #'
@@ -144,7 +149,8 @@ handle_url2 <- function(handle = NULL, url = NULL, ...) {
   }
   # workaround to bypass `:::` checks
   new <- eval(parse(text = "httr:::named(list(...))"))
-  if (length(new) > 0 || eval(parse(text = "httr:::is.url(url)"))) {
+  if (length(new) > 0 ||
+    eval(parse(text = "httr:::is.url(url)"))) {
     old <- httr::parse_url(url)
     url <- build_url2(utils::modifyList(old, new))
   }
@@ -301,9 +307,6 @@ flatten_query <- function(x) {
   )
 }
 
-
-
-
 #' Set headers for API request
 #' @description This function returns headers for API request,
 #' depending on the value of the authorization parameter.
@@ -318,34 +321,33 @@ flatten_query <- function(x) {
 #' @importFrom checkmate assert_logical
 #' @return A named vector with headers for an API request.
 #' @noRd
-set_headers <-
-  function(authorization = FALSE,
-           token = NULL,
-           advance_access = getOption("sevenbridges2")$advance_access) {
-    if (is_missing(token)) {
-      rlang::abort("Token is missing.")
-    }
-    checkmate::assert_logical(authorization, len = 1, null.ok = FALSE)
-    checkmate::assert_logical(advance_access, len = 1, null.ok = FALSE)
-
-    if (authorization) {
-      headers <-
-        c("Authorization" = paste("Bearer", token, sep = " ")) # nocov
-    } else {
-      headers <- c(
-        "X-SBG-Auth-Token" = token,
-        "Accept" = "application/json",
-        "Content-Type" = "application/json"
-      )
-    }
-
-    # add optional advance access flag
-    if (advance_access) {
-      headers <- c(headers, "X-SBG-advance-access" = "advance")
-    }
-
-    return(headers)
+set_headers <- function(authorization = FALSE,
+                        token = NULL,
+                        advance_access = getOption("sevenbridges2")$advance_access) {
+  if (is_missing(token)) {
+    rlang::abort("Token is missing.")
   }
+  checkmate::assert_logical(authorization, len = 1, null.ok = FALSE)
+  checkmate::assert_logical(advance_access, len = 1, null.ok = FALSE)
+
+  if (authorization) {
+    headers <-
+      c("Authorization" = paste("Bearer", token, sep = " ")) # nocov
+  } else {
+    headers <- c(
+      "X-SBG-Auth-Token" = token,
+      "Accept" = "application/json",
+      "Content-Type" = "application/json"
+    )
+  }
+
+  # add optional advance access flag
+  if (advance_access) {
+    headers <- c(headers, "X-SBG-advance-access" = "advance")
+  }
+
+  return(headers)
+}
 
 
 #' Setup query parameters for API request
@@ -362,29 +364,31 @@ set_headers <-
 #'
 #' @return List of query parameters.
 #' @noRd
-setup_query <-
-  function(query = NULL,
-           limit = getOption("sevenbridges2")$limit,
-           offset = getOption("sevenbridges2")$offset,
-           fields = NULL) {
-    # flatten and append query parameters
-    query <-
-      c(
-        flatten_query(query),
-        limit = as.integer(limit),
-        offset = as.integer(offset),
-        flatten_query(list(fields = fields))
-      )
+setup_query <- function(query = NULL,
+                        limit = getOption("sevenbridges2")$limit,
+                        offset = getOption("sevenbridges2")$offset,
+                        fields = NULL) {
+  checkmate::test_list(query, null.ok = TRUE)
+  checkmate::test_string(fields)
 
-    idx <- !sapply(query, is.null)
-    if (any(idx)) {
-      query <- query[idx]
-    } else {
-      query <- NULL
-    }
+  # flatten and append query parameters
+  query <-
+    c(
+      flatten_query(query),
+      limit = as.integer(limit),
+      offset = as.integer(offset),
+      flatten_query(list(fields = fields))
+    )
 
-    return(query)
+  idx <- !sapply(query, is.null)
+  if (any(idx)) {
+    query <- query[idx]
+  } else {
+    query <- NULL
   }
+
+  return(query)
+}
 
 #' Setup body parameters for API request
 #' @description This function prepares body parameters for API request.
@@ -403,7 +407,8 @@ setup_body <- function(method, body = list()) {
       # Specific handling of POST with emtpy body
       return("{}")
     }
-    body <- jsonlite::toJSON(body, auto_unbox = TRUE, null = "null")
+    body <-
+      jsonlite::toJSON(body, auto_unbox = TRUE, null = "null")
   }
   return(body)
 }
@@ -442,6 +447,15 @@ check_and_transform_id <-
     return(id)
   }
 
+
+#' Extract common query parameters
+#'
+#' Extract default values for common query params like limit, offset, etc.
+#' If they don't exist in the provided list of params or return the found value.
+#'
+#' @return Parameter value.
+#'
+#' @noRd
 extract_common_query_params <- function(args, param_name) {
   if (!is_missing(args[[param_name]])) {
     param_value <- args[[param_name]]

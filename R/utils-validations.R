@@ -436,6 +436,23 @@ check_volume_params <- function(args,
     typed.missing = TRUE
   )
 
+  if (volume_type %in% c("s3", "gcs", "OSS")) {
+    checkmate::assert_character(args[["bucket"]],
+      len = 1,
+      null.ok = FALSE,
+      typed.missing = TRUE
+    )
+  }
+
+  # Azure specific check
+  if (volume_type == "azure") {
+    checkmate::assert_character(args[["container"]],
+      len = 1,
+      null.ok = FALSE,
+      typed.missing = TRUE
+    )
+  }
+
   checkmate::assert_character(args[["access_mode"]], len = 1, null.ok = TRUE)
 
   if (!is_missing(args[["access_mode"]]) &&
@@ -454,23 +471,6 @@ check_volume_params <- function(args,
     typed.missing = TRUE,
     null.ok = TRUE
   )
-
-  if (volume_type %in% c("s3", "gcs", "OSS")) {
-    checkmate::assert_character(args[["bucket"]],
-      len = 1,
-      null.ok = FALSE,
-      typed.missing = TRUE
-    )
-  }
-
-  # Azure specific check
-  if (volume_type == "azure") {
-    checkmate::assert_character(args[["container"]],
-      len = 1,
-      null.ok = FALSE,
-      typed.missing = TRUE
-    )
-  }
 
   checkmate::assert_list(args[["properties"]], null.ok = TRUE)
 

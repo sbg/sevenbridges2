@@ -428,9 +428,6 @@ Part <- R6::R6Class(
         token = self$auth$get_token(),
         base_url = self$auth$url
       )
-
-
-
       self$url <- res$url
       self$etag <- res$etag
       self$expires <- res$expires

@@ -22,9 +22,20 @@ credentials_path <- testthat::test_path(
   "sbg_credentials_test_file"
 )
 
+# Generate dummy token
+test_token <- stringi::stri_rand_strings(1, 32, pattern = "[a-z0-9]")
+
 # Auth object
 setup_auth_object <-
   Auth$new(from = "file", config_file = credentials_path)
+
+# Item object
+setup_item_object <-
+  Item$new(
+    href = "resource-item-url",
+    response = list("raw-response"),
+    auth = setup_auth_object
+  )
 
 # Rate limit object
 rate_limit_res <- list(
@@ -163,6 +174,17 @@ folder_res <- list(
 )
 setup_folder_obj <- asFile(
   x = folder_res,
+  auth = setup_auth_object
+)
+
+# Setup Upload test object
+setup_upload_object <- Upload$new(
+  path = testthat::test_path("test_data"),
+  filename = "new_name.txt",
+  overwrite = TRUE,
+  parent = "parent-id",
+  file_size = 50 * 1024^2,
+  part_size = 7 * 1024^2,
   auth = setup_auth_object
 )
 

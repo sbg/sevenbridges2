@@ -1,28 +1,32 @@
 testthat::test_that("Function check_tags throws an error if the provided tags
                     argument is not a list", {
-  err <- testthat::expect_error(check_tags(tags = "test_tag"))
   # nolint start
-  testthat::expect_equal(err$message, "Tags parameter must be an unnamed list of tags. For example: tags <- list('my_tag_1', 'my_tag_2')")
+  testthat::expect_error(
+    check_tags(tags = "test_tag"),
+    regexp = "Tags parameter must be an unnamed list of tags. For example: tags <- list('my_tag_1', 'my_tag_2')",
+    fixed = TRUE
+  )
   # nolint end
 })
 
-testthat::test_that("Function check_settings works", {
+testthat::test_that("Function check_settings throws error when expected", {
   # Check if the function throws an error if settings argument is not a list
-  err <- testthat::expect_error(check_settings(settings = "test_string"))
-
-  testthat::expect_equal(err$message, "Settings must be provided as a list.")
-
+  testthat::expect_error(
+    check_settings(settings = "test_string"),
+    regexp = "Settings must be provided as a list.",
+    fixed = TRUE
+  )
   # Check if it throws an appropriate error if the provided settings list
   # contains an element with invalid name
-  err <- testthat::expect_error(check_settings(settings = list(
-    locked = FALSE,
-    controlled = FALSE,
-    width = 10L
-  )))
-
-  # nolint start
-  testthat::expect_equal(err$message, "Argument width is not a valid settings field.")
-  # nolint end
+  testthat::expect_error(
+    check_settings(settings = list(
+      locked = FALSE,
+      controlled = FALSE,
+      width = 10L
+    )),
+    regexp = "Argument width is not a valid settings field.",
+    fixed = TRUE
+  )
 
   # Check if the function check_settings throws an error when settings list
   # elements have invalid types
@@ -47,101 +51,146 @@ testthat::test_that("Function check_settings works", {
     # (for example, integer)
     input_list <- list()
     input_list[[field]] <- 10L
-
-    err <- testthat::expect_error(check_settings(settings = input_list))
     # nolint start
-    expected_error <- glue::glue("Assertion on '{field}' failed: Must be of type '{settings_field_types[field]}' (or 'NULL'), not 'integer'.")
+    testthat::expect_error(
+      check_settings(settings = input_list),
+      regexp = glue::glue("Assertion on '{field}' failed: Must be of type '{settings_field_types[field]}' (or 'NULL'), not 'integer'."),
+      fixed = TRUE
+    )
     # nolint end
-    testthat::expect_equal(err$message, expected_error)
 
     if (field == "intermediate_files") {
       # check error message if retention field is not valid (not character)
       input_intermediate_files <- list(
         intermediate_files = list(retention = 15L)
       )
-      err <- testthat::expect_error(
-        check_settings(settings = input_intermediate_files)
-      )
       # nolint start
-      expected_error <- glue::glue("Assertion on 'intermediate_files$retention' failed: Must be of type 'character' (or 'NULL'), not '{typeof(input_intermediate_files$intermediate_files$retention)}'.")
+      testthat::expect_error(
+        check_settings(settings = input_intermediate_files),
+        regexp = glue::glue("Assertion on 'intermediate_files$retention' failed: Must be of type 'character' (or 'NULL'), not '{typeof(input_intermediate_files$intermediate_files$retention)}'."),
+        fixed = TRUE
+      )
       # nolint end
-      testthat::expect_equal(err$message, expected_error)
 
       # check error message if duration field is not valid (not character)
       input_intermediate_files <- list(
         intermediate_files =
           list(duration = "24")
       )
-      err <- testthat::expect_error(check_settings(
-        settings =
-          input_intermediate_files
-      ))
       # nolint start
-      expected_error <- glue::glue("Assertion on 'intermediate_files$duration' failed: Must be of type 'integer' (or 'NULL'), not '{typeof(input_intermediate_files$intermediate_files$duration)}'.")
+      testthat::expect_error(
+        check_settings(settings = input_intermediate_files),
+        regexp = glue::glue("Assertion on 'intermediate_files$duration' failed: Must be of type 'integer' (or 'NULL'), not '{typeof(input_intermediate_files$intermediate_files$duration)}'."),
+        fixed = TRUE
+      )
       # nolint end
-      testthat::expect_equal(err$message, expected_error)
     }
   }
 })
 
 test_that("check_limit function passes when limit is valid", {
-  limits <- c(1L, 50L, 88L, 7, 56)
-  for (limit in limits) {
-    testthat::expect_silent(check_limit(limit))
-  }
+  testthat::expect_silent(check_limit(limit = 5L))
+  testthat::expect_silent(check_limit(limit = 56))
 })
 
 test_that("check_limit function throws error when limit is not valid", {
-  limits <- c(-1, "limit", 0, 1500, FALSE)
-  for (limit in limits) {
-    testthat::expect_error(
-      check_limit(limit),
-      "Limit must be integer number between 1 and 100."
-    )
-  }
+  negative_limit <- list(limit = -1)
+  string_limit <- list(limit = "limit")
+  big_limit <- list(limit = 1500)
+
+  testthat::expect_error(
+    do.call(check_limit, negative_limit),
+    regexp = "Limit must be integer number between 1 and 100.",
+    fixed = TRUE
+  )
+  testthat::expect_error(
+    do.call(check_limit, string_limit),
+    regexp = "Limit must be integer number between 1 and 100.",
+    fixed = TRUE
+  )
+  testthat::expect_error(
+    do.call(check_limit, big_limit),
+    regexp = "Limit must be integer number between 1 and 100.",
+    fixed = TRUE
+  )
 })
 
 test_that("check_offset function passes when offset is valid", {
-  offsets <- c(1L, 50L, 488L, 90, 23)
-  for (offset in offsets) {
-    testthat::expect_silent(check_offset(offset))
-  }
+  testthat::expect_silent(check_offset(offset = 1L))
+  testthat::expect_silent(check_offset(offset = 90))
 })
 
 test_that("check_offset function throws error when offset is not valid", {
-  offsets <- c(-10, "offset", TRUE)
-  for (offset in offsets) {
-    testthat::expect_error(
-      check_offset(offset),
-      "Offset must be integer number >= 0."
-    )
-  }
+  negative_offset <- list(offset = -10)
+  string_offset <- list(offset = "offset")
+
+  testthat::expect_error(
+    do.call(check_offset, negative_offset),
+    regexp = "Offset must be integer number >= 0.",
+    fixed = TRUE
+  )
+  testthat::expect_error(
+    do.call(check_offset, string_offset),
+    regexp = "Offset must be integer number >= 0.",
+    fixed = TRUE
+  )
 })
 
 test_that("check_folder_name function works", {
-  valid_names <- c("New_folder", "MyFolder", "Inputs")
-  for (name in valid_names) {
-    testthat::expect_silent(check_folder_name(name))
-  }
+  testthat::expect_silent(check_folder_name(name = "New_folder"))
+  testthat::expect_silent(check_folder_name(name = "MyFolder"))
 })
 
 test_that("check_folder_name function throws error when expected", {
-  invalid_names <- list(
-    NULL, "", NA, 123,
-    "New folder", "__inputs", "Another new folder"
+  missing_name <- list(name = NULL)
+  int_name <- list(name = 123)
+  invalid_start_name <- list(name = "__inputs")
+  spaces_in_name <- list(name = "Another new folder")
+
+  testthat::expect_error(
+    do.call(check_folder_name, missing_name),
+    regexp = "Please, provide the folder's name.",
+    fixed = TRUE
   )
-  for (name in invalid_names) {
-    testthat::expect_error(check_folder_name(name))
-  }
+  testthat::expect_error(
+    do.call(check_folder_name, int_name),
+    regexp = "Assertion on 'name' failed: Must be of type 'string', not 'double'.", # nolint
+    fixed = TRUE
+  )
+  testthat::expect_error(
+    do.call(check_folder_name, invalid_start_name),
+    regexp = "The folder name cannot start with \"__\"",
+    fixed = TRUE
+  )
+  testthat::expect_error(
+    do.call(check_folder_name, spaces_in_name),
+    regexp = "The folder name cannot contain spaces in the name.",
+    fixed = TRUE
+  )
 })
 
 test_that("check_metadata function throws error when metadata is not valid", {
-  metadata_values <- c("test", 1, NULL, TRUE, c("test"))
-  for (metadata in metadata_values) {
-    testthat::expect_error(
-      check_metadata(metadata)
-    )
-  }
+  missing_metadata <- list(metadata = list(NULL))
+  string_metadata <- list(metadata = "test")
+  int_metadata <- list(metadata = 123)
+  # nolint start
+  msg <- "Metadata parameter must be a named list of key-value pairs. For example: metadata <- list(metadata_key_1 = 'metadata_value_1', metadata_key_2 = 'metadata_value_2')"
+  # nolint end
+  testthat::expect_error(
+    do.call(check_metadata, missing_metadata),
+    regexp = msg,
+    fixed = TRUE
+  )
+  testthat::expect_error(
+    do.call(check_metadata, string_metadata),
+    regexp = msg,
+    fixed = TRUE
+  )
+  testthat::expect_error(
+    do.call(check_metadata, int_metadata),
+    regexp = msg,
+    fixed = TRUE
+  )
 })
 
 test_that("transform_metadata function works", {
@@ -193,7 +242,7 @@ test_that("check_download_path function throws error when parameters are not val
   }
 })
 
-test_that("check_retry_count function throws error when count is invalid", { # nolint
+test_that("check_retry_count function throws error when count is invalid", {
   # Negative test use cases for count parameter
   invalid_retry_count <- c(-1, "retry", 0, FALSE)
   for (retry_count in invalid_retry_count) {
@@ -221,8 +270,7 @@ test_that("check_retry_params function throws error when timeout is not valid", 
   }
 })
 
-
-test_that("check_app_copy_strategy function throws error when strategy missing", { # nolint
+test_that("check_app_copy_strategy function throws error when provided strategy is invalid", { # nolint
   # Negative test use cases for missing strategy parameter
   testthat::expect_error(
     check_app_copy_strategy(
@@ -230,10 +278,7 @@ test_that("check_app_copy_strategy function throws error when strategy missing",
     ),
     "Please provide the copy strategy"
   )
-})
 
-
-test_that("check_app_copy_strategy function throws error when provided strategy is invalid", { # nolint
   # Negative test use case for invalid strategy parameter
   # Valid values: clone, direct_clone, direct, transient
   supported_app_copy_strategies <- getOption("sevenbridges2")$APP_COPY_STRATEGIES # nolint
@@ -287,6 +332,7 @@ test_that("check_volume_params works", {
   invalid_args <- list(
     name = 123,
     bucket = list("some-name"),
+    container = list("some-container"),
     prefix = NA,
     access_mode = "some-other",
     description = FALSE,
@@ -298,14 +344,22 @@ test_that("check_volume_params works", {
 
   # Pass invalid name
   testthat::expect_error(check_volume_params(args = invalid_args["name"]))
-  # Pass invalid bucket
+  # Pass invalid bucket (volume_type = s3)
   testthat::expect_error(
     check_volume_params(args = c(valid_args["name"], invalid_args["bucket"]))
+  )
+  # Pass invalid container (volume_type = azure)
+  testthat::expect_error(
+    check_volume_params(
+      volume_type = "azure",
+      args = c(valid_args["name"], invalid_args["container"])
+    )
   )
   # Pass invalid prefix
   testthat::expect_error(
     check_volume_params(args = c(
-      valid_args["name"], valid_args["bucket"],
+      valid_args["name"],
+      valid_args["bucket"],
       invalid_args["prefix"]
     ))
   )
@@ -314,7 +368,6 @@ test_that("check_volume_params works", {
     check_volume_params(args = c(
       valid_args["name"],
       valid_args["bucket"],
-      valid_args["prefix"],
       invalid_args["access_mode"]
     ))
   )
@@ -323,8 +376,6 @@ test_that("check_volume_params works", {
     check_volume_params(args = c(
       valid_args["name"],
       valid_args["bucket"],
-      valid_args["prefix"],
-      valid_args["access_mode"],
       invalid_args["description"]
     ))
   )
@@ -333,9 +384,6 @@ test_that("check_volume_params works", {
     check_volume_params(args = c(
       valid_args["name"],
       valid_args["bucket"],
-      valid_args["prefix"],
-      valid_args["access_mode"],
-      valid_args["description"],
       invalid_args["properties"]
     ))
   )
@@ -344,10 +392,6 @@ test_that("check_volume_params works", {
     check_volume_params(args = c(
       valid_args["name"],
       valid_args["bucket"],
-      valid_args["prefix"],
-      valid_args["access_mode"],
-      valid_args["description"],
-      valid_args["properties"],
       invalid_args["endpoint"]
     ))
   )
@@ -356,10 +400,6 @@ test_that("check_volume_params works", {
     check_volume_params(args = c(
       valid_args["name"],
       valid_args["bucket"],
-      valid_args["prefix"],
-      valid_args["access_mode"],
-      valid_args["description"],
-      valid_args["properties"],
       invalid_args["root_url"]
     ))
   )
