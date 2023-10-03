@@ -217,22 +217,11 @@ testthat::test_that("Init authentication from config file works", {
 
 testthat::test_that("Calling the api method with no arguments returns a list of
                     all API paths", {
-  # Generate dummy token
-  dummy_token <-
-    stringi::stri_rand_strings(1, 32, pattern = "[a-z0-9]") # fake token
-
-  # Create dummy authentication object
-  auth <- suppressMessages(
-    sevenbridges2::Auth$new(
-      from = "direct",
-      platform = "aws-us",
-      token = dummy_token
-    )
+  testthat::expect_true(
+    checkmate::test_class(setup_auth_object, classes = "Auth")
   )
 
-  testthat::expect_true(checkmate::test_class(auth, classes = "Auth"))
-
-  api_paths <- auth$api()
+  api_paths <- setup_auth_object$api()
 
   testthat::expect_equal(is.list(api_paths), TRUE)
   testthat::expect_equal(length(api_paths), 12L)
@@ -249,36 +238,20 @@ testthat::test_that("Calling the api method with no arguments returns a list of
 })
 
 testthat::test_that("Method upload throws error when needed", {
-  # Generate dummy token
-  dummy_token <-
-    stringi::stri_rand_strings(1, 32, pattern = "[a-z0-9]") # fake token
-
-  # Create dummy authentication object
-  auth <- suppressMessages(
-    sevenbridges2::Auth$new(
-      from = "direct",
-      platform = "aws-us",
-      token = dummy_token
-    )
-  )
-
   # Negative cases for various parameters
 
   # Invalid path
   testthat::expect_error(
-    auth$upload(path = "non-existing-path/file.txt"),
+    setup_auth_object$upload(path = "non-existing-path/file.txt"),
     "There is no file at the specified path."
   )
 
-  test_upload_file_path <- testthat::test_path(
-    "test_data",
-    "file_object.RDS"
-  )
+  test_upload_file_path <- testthat::test_path("test_data")
 
   # project and parent both missing
   # nolint start
   testthat::expect_error(
-    auth$upload(path = test_upload_file_path),
+    setup_auth_object$upload(path = test_upload_file_path),
     "Both the project name and parent folder ID are missing. You need to provide one of them."
   )
   # nolint end
@@ -286,7 +259,7 @@ testthat::test_that("Method upload throws error when needed", {
   # project and parent both provided
   # nolint start
   testthat::expect_error(
-    auth$upload(
+    setup_auth_object$upload(
       path = test_upload_file_path,
       project = "luna_lovegood/nargles-project",
       parent = "parent_folder_id"
@@ -299,13 +272,13 @@ testthat::test_that("Method upload throws error when needed", {
   invalid_parent_param <- c("", NULL, list(), 232424, NA)
   for (id in invalid_parent_param) {
     testthat::expect_error(
-      auth$upload(path = test_path, parent = id)
+      setup_auth_object$upload(path = test_path, parent = id)
     )
   }
 
   # Invalid parent param - File object (type File instead of Folder)
   testthat::expect_error(
-    auth$upload(
+    setup_auth_object$upload(
       path = test_upload_file_path,
       parent = setup_file_obj
     ),
@@ -316,7 +289,7 @@ testthat::test_that("Method upload throws error when needed", {
   invalid_project_obj <- c("", NULL, list(), 232424, NA, setup_file_obj)
   for (id in invalid_project_obj) {
     testthat::expect_error(
-      auth$upload(
+      setup_auth_object$upload(
         path = test_upload_file_path,
         project = id
       )
@@ -329,7 +302,7 @@ testthat::test_that("Method upload throws error when needed", {
   # nolint start
   for (filename in invalid_filenames) {
     testthat::expect_error(
-      auth$upload(
+      setup_auth_object$upload(
         path = test_upload_file_path,
         project = "luna_lovegood/nargles-project",
         filename = filename

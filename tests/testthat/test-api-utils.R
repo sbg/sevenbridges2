@@ -77,10 +77,15 @@ testthat::test_that("Utility function parse_time works", {
 
 testthat::test_that("Utility function flatten_query works", {
   # Load predefined unflattened query params list
-  unflattened_query_params_list <- readRDS(testthat::test_path(
-    "test_data",
-    "query_params_list.RDS"
-  ))
+  unflattened_query_params_list <- list(
+    limit = 50,
+    offset = 0,
+    fields = list(
+      "created_by",
+      "name",
+      "id"
+    )
+  )
 
   # Use the flatten_query function
   flattened_query_params_list <- flatten_query(unflattened_query_params_list)
@@ -443,60 +448,35 @@ testthat::test_that("Utility function check_and_transform_id from objects works"
   # nolint end
   ## Project class -----
   # Check if function extract ID of instance
-  project_obj <- testthat::test_path(
-    "test_data",
-    "luna_lovegood_project_obj.RDS"
-  )
-  test_project <- readRDS(project_obj)
-
-  test_project_id <- check_and_transform_id(test_project, "Project")
+  test_project_id <- check_and_transform_id(setup_project_obj, "Project")
   # Is returned id a character vector
   testthat::expect_vector(test_project_id, ptype = character())
   # throws an error if Project instance tried to treat as File
   testthat::expect_error(
-    check_and_transform_id(test_project, "File"),
+    check_and_transform_id(setup_project_obj, "File"),
     "Must inherit from class 'File', but has classes 'Project','Item','R6'."
   )
 
   ## File class -----
   # Check if function extract ID of instance
-  file_obj <- testthat::test_path(
-    "test_data",
-    "file_object.RDS"
-  )
-  test_file <- readRDS(file_obj)
-
-  test_file_id <- check_and_transform_id(test_file, "File")
+  test_file_id <- check_and_transform_id(setup_file_obj, "File")
   # Is returned id a character vector
   testthat::expect_vector(test_file_id, ptype = character())
   # throws an error if File instance tried to treat as a wrong class
   testthat::expect_error(
-    check_and_transform_id(test_file, "Project"),
+    check_and_transform_id(setup_file_obj, "Project"),
     "Must inherit from class 'Project', but has classes 'File','Item','R6"
   )
 
   ## Upload class -----
   # authentication obstacles
   ## Billing class -----
-  # Load auth object
-  test_auth_obj <- readRDS(testthat::test_path("test_data", "auth.RDS"))
-
-  # Load predefined response needed for creating a billing group object
-  test_billing_group_response <-
-    readRDS(testthat::test_path("test_data", "ravenclaw_test_resp.RDS"))
-
-  # Create billing group object
-  test_billing_group <- asBilling(
-    x = test_billing_group_response,
-    auth = test_auth_obj
-  )
-
-  test_biling_id <- check_and_transform_id(test_billing_group, "Billing")
+  test_biling_id <- check_and_transform_id(setup_billing_obj, "Billing")
   # Is returned id a character vector
   testthat::expect_vector(test_biling_id, ptype = character())
   # throws an error if billing instance tried to treat as a wrong class
   testthat::expect_error(
-    check_and_transform_id(test_billing_group, "Project"),
+    check_and_transform_id(setup_billing_obj, "Project"),
     "Must inherit from class 'Project', but has classes 'Billing','Item','R6'."
   )
 })
