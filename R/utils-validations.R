@@ -436,24 +436,6 @@ check_volume_params <- function(args,
     typed.missing = TRUE
   )
 
-  checkmate::assert_character(args[["access_mode"]], len = 1, null.ok = TRUE)
-
-  if (!is_missing(args[["access_mode"]]) && !(args[["access_mode"]] %in% c("RW", "RO"))) { # nolint
-    rlang::abort("Access mode must be RW or RO.")
-  }
-
-  checkmate::assert_character(args[["prefix"]],
-    len = 1,
-    typed.missing = TRUE,
-    null.ok = TRUE
-  )
-
-  checkmate::assert_character(args[["description"]],
-    len = 1,
-    typed.missing = TRUE,
-    null.ok = TRUE
-  )
-
   if (volume_type %in% c("s3", "gcs", "OSS")) {
     checkmate::assert_character(args[["bucket"]],
       len = 1,
@@ -470,6 +452,25 @@ check_volume_params <- function(args,
       typed.missing = TRUE
     )
   }
+
+  checkmate::assert_character(args[["access_mode"]], len = 1, null.ok = TRUE)
+
+  if (!is_missing(args[["access_mode"]]) &&
+    !(args[["access_mode"]] %in% c("RW", "RO"))) {
+    rlang::abort("Access mode must be RW or RO.")
+  }
+
+  checkmate::assert_character(args[["prefix"]],
+    len = 1,
+    typed.missing = TRUE,
+    null.ok = TRUE
+  )
+
+  checkmate::assert_character(args[["description"]],
+    len = 1,
+    typed.missing = TRUE,
+    null.ok = TRUE
+  )
 
   checkmate::assert_list(args[["properties"]], null.ok = TRUE)
 
