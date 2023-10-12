@@ -150,11 +150,3 @@ sbg_platform_lookup <- function(baseurl) {
   x <- which(unlist(sbg_baseurl) == normalize_url(baseurl))
   if (length(x) > 0L) names(x) else NULL
 }
-
-#' Extract response from httr request
-#'
-#' @param request request
-#' @noRd
-sbg_get_response <- function(request) {
-  return(attr(request, "response"))
-}

@@ -258,8 +258,6 @@ Upload <- R6::R6Class(
         base_url = self$auth$url
       )
 
-      status_check(res)
-
       rlang::inform(
         glue::glue_col("The upload process with the following ID {green {upload_id}} has been aborted.") # nolint
       )

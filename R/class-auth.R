@@ -343,14 +343,10 @@ Auth <- R6::R6Class(
     #' when listing resources (e.g., all your projects) or getting details of a
     #' specific resource (e.g., a given project).
     #' @param ... Other arguments passed to core api function.
-    #' @param complete Parameter for API request that allows you to search and
-    #'  list all items. By default, it is set to `FALSE`.
-    #' @importFrom httr headers
     api = function(...,
                    limit = getOption("sevenbridges2")$"limit",
                    offset = getOption("sevenbridges2")$"offset",
-                   fields = NULL,
-                   complete = FALSE) {
+                   fields = NULL) {
       res <- sevenbridges2::api(
         self$get_token(),
         base_url = self$url,
@@ -360,48 +356,7 @@ Auth <- R6::R6Class(
         authorization = self$authorization,
         ...
       )
-
-
-      if (complete) {
-        # nocov start
-        N <- as.numeric(httr::headers(sbg_get_response(req))
-        [["x-total-matching-query"]])
-        if (length(N)) {
-          .item <- length(req$items)
-        }
-        if (.item < N) {
-          pb <- txtProgressBar(
-            min = 1,
-            max = N %/% 100 + 1,
-            style = 3
-          )
-          res <- NULL
-
-          for (i in 1:(N %/% 100 + 1)) {
-            .limit <- 100
-            .offset <- (i - 1) * 100
-            res <- sevenbridges2::api(
-              self$get_token(),
-              base_url = self$url,
-              limit = .limit,
-              offset = .offset,
-              fields = fields,
-              authorization = self$authorization,
-              ...
-            )
-            req <- status_check(req)
-            res$items <- c(res$items, req$items)
-            setTxtProgressBar(pb, i)
-          }
-          cat("\n")
-          res$href <- NULL
-        } else {
-          return(res)
-        }
-        return(res)
-      } else {
-        return(res)
-      }
+      return(res)
     },
     # user ---------------------------------------------------------------------
     #' @description Get details about the authenticated user
@@ -427,9 +382,6 @@ Auth <- R6::R6Class(
         )
       }
 
-      # Extract parsed contents of a request
-
-
       # Create User object
       asUser(res, self)
     },
@@ -445,9 +397,6 @@ Auth <- R6::R6Class(
         token = self$get_token(),
         base_url = self$url
       )
-
-      # Extract parsed contents of a request
-
 
       asRate(res)
     },
@@ -609,14 +558,52 @@ Auth <- R6::R6Class(
         base_url = self$url
       )
 
-      status_check(res)
-
       rlang::inform(
         glue::glue_col(
           "The upload process with the following ID {green {upload_id}} has been aborted." # nolint
         )
       )
-    }
-    # nocov end
+    }, # nocov end
+    #' @description Send feedback to Seven Bridges
+    #' Send feedback on ideas, thoughts, and problems via the sevenbridges2 API
+    #' package with three available types: "idea", "thought", and "problem".
+    #' You can send one feedback item per minute.
+    #' @param text Specifies the content for the feedback i.e. feedback text.
+    #' @param type Specifies the type of feedback. The following are available:
+    #' "idea", "thought" and "problem".
+    #' @param referrer The name of the person submitting the feedback.
+    #' @param ... Additional query parameters if applicable.
+    #' @importFrom rlang inform
+    #' @importFrom checkmate assert_string
+    send_feedback = function(text,
+                             type = c("idea", "thought", "problem"),
+                             referrer = NULL,
+                             ...) {
+      checkmate::assert_string(text, null.ok = FALSE)
+      type <- match.arg(type)
+      checkmate::assert_string(referrer, null.ok = TRUE)
+      if (is.null(referrer)) {
+        referrer <- suppressMessages(self$user()[["username"]])
+      }
+      # nocov start
+      body <- list(
+        text = text,
+        type = type,
+        referrer = referrer
+      )
+
+      res <- sevenbridges2::api(
+        path = "action/notifications/feedback",
+        method = "POST",
+        body = body,
+        token = self$get_token(),
+        base_url = self$url,
+        ...
+      )
+
+      rlang::inform(
+        "Thank you for your feedback!"
+      )
+    } # nocov end
   )
 )
