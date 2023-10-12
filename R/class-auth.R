@@ -472,17 +472,15 @@ Auth <- R6::R6Class(
         rlang::abort("The file name cannot contain spaces or backslashes.") # nolint
       }
 
-      # Check size and part_size params
-      check_upload_params(size = file_size, part_size = part_size)
-
       # Check init param
       checkmate::assert_logical(init)
 
       # Check overwrite param
       checkmate::assert_logical(overwrite)
 
-      # Check init param
-      checkmate::assert_logical(init)
+      # nocov start
+      # Check size and part_size params
+      check_upload_params(size = file_size, part_size = part_size)
 
       # Create Upload object
       u <- Upload$new(
@@ -510,7 +508,6 @@ Auth <- R6::R6Class(
     #' @importFrom cli cli_h1 cli_li cli_end
     #' @importFrom glue glue
     list_ongoing_uploads = function() {
-      # nocov start
       # Run API call based on id parameter
       res <- sevenbridges2::api(
         path = paste0("upload/multipart"),
@@ -584,10 +581,11 @@ Auth <- R6::R6Class(
       checkmate::assert_string(text, null.ok = FALSE)
       type <- match.arg(type)
       checkmate::assert_string(referrer, null.ok = TRUE)
+      # nocov start
       if (is.null(referrer)) {
         referrer <- suppressMessages(self$user()[["username"]])
       }
-      # nocov start
+
       body <- list(
         text = text,
         type = type,

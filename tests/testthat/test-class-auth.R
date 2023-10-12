@@ -307,6 +307,26 @@ testthat::test_that("Method upload throws error when needed", {
       "The file name cannot contain spaces or backslashes."
     )
   }
+
+  # Test invalid init param
+  bad_init <- "init"
+  testthat::expect_error(
+    setup_auth_object$upload(
+      path = test_upload_file_path,
+      project = "luna_lovegood/nargles-project",
+      init = bad_init
+    )
+  )
+
+  # Test invalid overwrite param
+  bad_overwrite <- "overwrite"
+  testthat::expect_error(
+    setup_auth_object$upload(
+      path = test_upload_file_path,
+      project = "luna_lovegood/nargles-project",
+      overwrite = bad_overwrite
+    )
+  )
 })
 
 testthat::test_that("Method send_feedback throws error when needed", {
