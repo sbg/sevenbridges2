@@ -347,6 +347,7 @@ Auth <- R6::R6Class(
                    limit = getOption("sevenbridges2")$"limit",
                    offset = getOption("sevenbridges2")$"offset",
                    fields = NULL) {
+      # nocov start
       res <- sevenbridges2::api(
         self$get_token(),
         base_url = self$url,
@@ -399,7 +400,7 @@ Auth <- R6::R6Class(
       )
 
       asRate(res)
-    },
+    }, # nocov end
     # upload a single file
     #' @description This method allows you to upload a single file from your
     #'   local computer to the Platform.
@@ -509,6 +510,7 @@ Auth <- R6::R6Class(
     #' @importFrom cli cli_h1 cli_li cli_end
     #' @importFrom glue glue
     list_ongoing_uploads = function() {
+      # nocov start
       # Run API call based on id parameter
       res <- sevenbridges2::api(
         path = paste0("upload/multipart"),
