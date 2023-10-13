@@ -77,6 +77,7 @@ resources on the platform.}
 \item \href{#method-Auth-upload}{\code{Auth$upload()}}
 \item \href{#method-Auth-list_ongoing_uploads}{\code{Auth$list_ongoing_uploads()}}
 \item \href{#method-Auth-upload_abort}{\code{Auth$upload_abort()}}
+\item \href{#method-Auth-send_feedback}{\code{Auth$send_feedback()}}
 \item \href{#method-Auth-clone}{\code{Auth$clone()}}
 }
 }
@@ -177,8 +178,7 @@ function.
   ...,
   limit = getOption("sevenbridges2")$limit,
   offset = getOption("sevenbridges2")$offset,
-  fields = NULL,
-  complete = FALSE
+  fields = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -197,9 +197,6 @@ By default, \code{offset} is set to \code{0}.}
 This parameter enables you to specify the fields you want to be returned
 when listing resources (e.g., all your projects) or getting details of a
 specific resource (e.g., a given project).}
-
-\item{\code{complete}}{Parameter for API request that allows you to search and
-list all items. By default, it is set to \code{FALSE}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -316,6 +313,38 @@ This call aborts an ongoing multipart upload.
 \describe{
 \item{\code{upload_id}}{Upload object or ID of the upload process that you want
 to abort.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Auth-send_feedback"></a>}}
+\if{latex}{\out{\hypertarget{method-Auth-send_feedback}{}}}
+\subsection{Method \code{send_feedback()}}{
+Send feedback to Seven Bridges
+Send feedback on ideas, thoughts, and problems via the sevenbridges2 API
+package with three available types: "idea", "thought", and "problem".
+You can send one feedback item per minute.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Auth$send_feedback(
+  text,
+  type = c("idea", "thought", "problem"),
+  referrer = NULL,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{text}}{Specifies the content for the feedback i.e. feedback text.}
+
+\item{\code{type}}{Specifies the type of feedback. The following are available:
+"idea", "thought" and "problem".}
+
+\item{\code{referrer}}{The name of the person submitting the feedback.}
+
+\item{\code{...}}{Additional query parameters if applicable.}
 }
 \if{html}{\out{</div>}}
 }

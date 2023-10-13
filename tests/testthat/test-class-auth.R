@@ -257,7 +257,6 @@ testthat::test_that("Method upload throws error when needed", {
   # nolint end
 
   # project and parent both provided
-  # nolint start
   testthat::expect_error(
     setup_auth_object$upload(
       path = test_upload_file_path,
@@ -266,7 +265,6 @@ testthat::test_that("Method upload throws error when needed", {
     ),
     "You should specify a project or a parent folder, not both."
   )
-  # nolint end
 
   # Invalid parent param
   invalid_parent_param <- c("", NULL, list(), 232424, NA)
@@ -299,7 +297,6 @@ testthat::test_that("Method upload throws error when needed", {
   # Invalid filename param
   invalid_filenames <- list("test file.txt", "test\file.txt")
 
-  # nolint start
   for (filename in invalid_filenames) {
     testthat::expect_error(
       setup_auth_object$upload(
@@ -310,5 +307,54 @@ testthat::test_that("Method upload throws error when needed", {
       "The file name cannot contain spaces or backslashes."
     )
   }
-  # nolint end
+
+  # Test invalid init param
+  bad_init <- "init"
+  testthat::expect_error(
+    setup_auth_object$upload(
+      path = test_upload_file_path,
+      project = "luna_lovegood/nargles-project",
+      init = bad_init
+    )
+  )
+
+  # Test invalid overwrite param
+  bad_overwrite <- "overwrite"
+  testthat::expect_error(
+    setup_auth_object$upload(
+      path = test_upload_file_path,
+      project = "luna_lovegood/nargles-project",
+      overwrite = bad_overwrite
+    )
+  )
+})
+
+testthat::test_that("Method send_feedback throws error when needed", {
+  bad_text <- 123
+  bad_type <- "something-else"
+  bad_referrer <- 123
+
+  # Test with invalid feedback text
+  testthat::expect_error(
+    setup_auth_object$send_feedback(
+      text = bad_text
+    )
+  )
+
+  # Test with invalid feedback type
+  testthat::expect_error(
+    setup_auth_object$send_feedback(
+      text = "All ok",
+      type = bad_type
+    )
+  )
+
+  # Test with invalid refferer
+  testthat::expect_error(
+    setup_auth_object$send_feedback(
+      text = "All ok",
+      type = "idea",
+      referrer = bad_referrer
+    )
+  )
 })
