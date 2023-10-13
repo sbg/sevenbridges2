@@ -307,6 +307,34 @@ flatten_query <- function(x) {
   )
 }
 
+#' Set client info for API request header (User-Agent data)
+#' @description This function returns client info that will be stored
+#' in headers for API requests, in order to track logs better.
+#' @importFrom utils packageDescription
+#' @noRd
+setup_client_info <- function() {
+  # Fill client data
+  package_version <- paste0(suppressWarnings(
+    utils::packageDescription("sevenbridges2", fields = c("Package", "Version"))
+  ), collapse = "/")
+  client_session_info <- sessionInfo()
+  client_os <- client_session_info$running
+  client_platform <- client_session_info$platform
+  client_r <- client_session_info$R.version$version.string
+
+  client_info_list <- list(
+    package_version = package_version,
+    client_os = client_os,
+    client_platform = client_platform,
+    R = client_r
+  )
+  client_info_string <- glue::glue_collapse(
+    glue::glue("{client_info_list}"),
+    sep = "; "
+  )
+  return(client_info_string)
+}
+
 #' Set headers for API request
 #' @description This function returns headers for API request,
 #' depending on the value of the authorization parameter.
@@ -317,13 +345,15 @@ flatten_query <- function(x) {
 #' Seven Bridges single sign-on.
 #' @param advance_access Enable advance access features?
 #' Default is `FALSE`.
+#' @param client_info Client info that will be send in the header.
 #'
 #' @importFrom checkmate assert_logical
 #' @return A named vector with headers for an API request.
 #' @noRd
 set_headers <- function(authorization = FALSE,
                         token = NULL,
-                        advance_access = getOption("sevenbridges2")$advance_access) {
+                        advance_access = getOption("sevenbridges2")$advance_access,
+                        client_info = NULL) {
   if (is_missing(token)) {
     rlang::abort("Token is missing.")
   }
@@ -337,7 +367,8 @@ set_headers <- function(authorization = FALSE,
     headers <- c(
       "X-SBG-Auth-Token" = token,
       "Accept" = "application/json",
-      "Content-Type" = "application/json"
+      "Content-Type" = "application/json",
+      "User-Agent" = client_info
     )
   }
 
