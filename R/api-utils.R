@@ -323,14 +323,17 @@ setup_client_info <- function() {
   client_r <- client_session_info$R.version$version.string
 
   client_info_list <- list(
-    package_version = package_version,
     client_os = client_os,
     client_platform = client_platform,
     R = client_r
   )
-  client_info_string <- glue::glue_collapse(
-    glue::glue("{client_info_list}"),
-    sep = "; "
+  client_info_string <- glue::glue(
+    "{package_version} (",
+    glue::glue_collapse(
+      glue::glue("{client_info_list}"),
+      sep = "; "
+    ),
+    ")"
   )
   return(client_info_string)
 }
