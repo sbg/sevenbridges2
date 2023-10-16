@@ -112,7 +112,7 @@ parse_time <- function(reset_time_as_unix_epoch,
     return("unknown")
   }
 
-  checkmate::assert_number(reset_time_as_unix_epoch)
+  checkmate::assert_numeric(reset_time_as_unix_epoch)
   checkmate::assert_string(origin)
   checkmate::assert_string(time_zone)
   checkmate::assert_logical(use_milliseconds)
