@@ -2,16 +2,16 @@
 #' @title R6 Class Representing Authentication Object
 #'
 #' @description Authentication object with methods to access API endpoints.
-#' Every object could be requested from this Auth object and any action
-#' could start from this object using cascading style. Please check
-#' `vignette("api")` for more information.
+#'  Every object could be requested from this Auth object and any action
+#'  could start from this object using cascading style. Please check
+#'  `vignette("api")` for more information.
 #'
 #' @importFrom R6 R6Class
 #' @importFrom  rlang abort warn inform
 #'
 #' @details
-#' This is the main object for authentication to platforms powered by
-#' Seven Bridges.
+#'  This is the main object for authentication to platforms powered by
+#'  Seven Bridges.
 #'
 #' @export
 Auth <- R6::R6Class(
@@ -28,11 +28,11 @@ Auth <- R6::R6Class(
     url = NULL,
 
     #' @field sysenv_url Name of the system environment variable storing
-    #' the API base URL.
+    #'  the API base URL.
     sysenv_url = NULL,
 
     #' @field sysenv_token Name of the system environment variable storing
-    #' the auth token.
+    #'  the auth token.
     sysenv_token = NULL,
 
     #' @field config_file Location of the user configuration file.
@@ -41,43 +41,43 @@ Auth <- R6::R6Class(
     #' @field profile_name Profile name in the user configuration file.
     profile_name = NULL,
 
-    #' @field fs FS object, for mount and unmount file system.
+    #' @field fs FS (FileSystem) object, for mount and unmount file system.
     fs = NULL,
 
     #' @field authorization Logical. Is the `token` an API
-    #' auth token (`FALSE`) or an access token from the
-    #' Seven Bridges single sign-on (`TRUE`)?
+    #'  authentication token (`FALSE`) or an access token from the
+    #'  Seven Bridges single sign-on (`TRUE`)?
     authorization = NULL,
 
     #' @field projects Projects object, for accessing projects resources on the
-    #' platform.
+    #'  platform.
     projects = NULL,
 
     #' @field files Files object, for accessing files resources on the
-    #' platform.
+    #'  platform.
     files = NULL,
 
     #' @field apps Apps object, for accessing apps resources on the platform.
     apps = NULL,
 
     #' @field volumes Volumes object, for accessing volumes resources on the
-    #' platform.
+    #'  platform.
     volumes = NULL,
 
     #' @field tasks Tasks object, for accessing volumes resources on the
-    #' platform.
+    #'  platform.
     tasks = NULL,
 
     #' @field imports Storage imports object, for accessing volume imports
-    #' resources on the platform.
+    #'  resources on the platform.
     imports = NULL,
 
     #' @field exports Storage exports object, for accessing volume exports
-    #' resources on the platform.
+    #'  resources on the platform.
     exports = NULL,
 
     #' @field invoices Invoices object, for accessing invoice resources on the
-    #' platform.
+    #'  platform.
     invoices = NULL,
 
     #' @field billing_groups Billing_groups object, for accessing billing groups
@@ -85,51 +85,55 @@ Auth <- R6::R6Class(
     billing_groups = NULL,
 
     #' @description
-    #' Create a new Auth object. All methods can be accessed through this
-    #' object.
+    #'  Create a new Seven Bridges API Authentication object.
+    #'  All methods can be accessed through this object.
     #'
-    #' @param from Authentication method. Could be `"direct"`
-    #' (pass the credential information to the arguments directly),
-    #' `"env"` (read from pre-set system environment variables),
-    #' or `"file"` (read configurations from a credentials file).
-    #' Default is `"direct"`.
+    #' @param from Authentication method. Could be:
+    #'  \itemize{
+    #'    \item `"direct"` - pass the credential information to the arguments
+    #'      directly,
+    #'    \item `"env"` - read from pre-set system environment variables, or
+    #'    \item `"file"` - read configurations from a credentials file.
+    #'    }
+    #'  Default is `"direct"`.
     #'
     #' @param platform The platform to use.
-    #' If `platform` and `url` are both not specified,
-    #' the default is `"aws-us"` (Seven Bridges Platform - US).
-    #' Other possible values include
-    #' `"aws-eu"` (Seven Bridges Platform - EU),
-    #' `"cgc"` (Cancer Genomics Cloud),
-    #' `"ali-cn"` (Seven Bridges Platform - China),
-    #' `"cavatica"` (Cavatica), and
-    #' `"f4c"` (BioData Catalyst Powered by Seven Bridges).
-    #'
+    #'  If `platform` and `url` are both not specified,
+    #'  the default is `"aws-us"` (Seven Bridges Platform - US).
+    #'  Other possible values include:
+    #'  \itemize{
+    #'    \item `"aws-eu"` - Seven Bridges Platform - EU,
+    #'    \item`"cgc"` - Cancer Genomics Cloud,
+    #'    \item`"ali-cn"` - Seven Bridges Platform - China,
+    #'    \item`"cavatica"` - Cavatica, and
+    #'    \item`"f4c"` - BioData Catalyst Powered by Seven Bridges.
+    #'  }
     #' @param url Base URL for API. Please only use this when you
-    #' want to specify a platform that is not in the `platform` list
-    #' above, and also leaving `platform` unspecified.
+    #'  want to specify a platform that is not in the `platform` list
+    #'  above, and also leaving `platform` unspecified.
     #'
     #' @param token Your authentication token.
     #'
     #' @param sysenv_url Name of the system environment variable storing
-    #' the API base URL. By default: `"SB_API_ENDPOINT"`.
+    #'  the API base URL. By default: `"SB_API_ENDPOINT"`.
     #'
     #' @param sysenv_token Name of the system environment variable storing
-    #' the auth token. By default: `"SB_AUTH_TOKEN"`.
+    #'  the auth token. By default: `"SB_AUTH_TOKEN"`.
     #'
     #' @param config_file Location of the user configuration file.
-    #' By default: `"~/.sevenbridges/credentials"`.
+    #'  By default: `"~/.sevenbridges/credentials"`.
     #'
     #' @param profile_name Profile name in the user configuration file.
-    #' The default value is `"default"`.
+    #'  The default value is `"default"`.
     #'
-    #' @param fs FS object, for mount and unmount file system.
+    #' @param fs FS (FileSystem) object, for mount and unmount file system.
     #'
     #' @param authorization Logical. Is the `token` an API
-    #' auth token (`FALSE`) or an access token from the
-    #' Seven Bridges single sign-on (`TRUE`)?
+    #'  authentication token (`FALSE`) or an access token from the
+    #'  Seven Bridges single sign-on (`TRUE`)?
     #'
     #' @param ... Other arguments passed to methods.
-    #' @return A new `Auth` object.
+    #' @return `Auth` class object.
     initialize = function(from = c("direct", "env", "file"),
                           platform = NA,
                           url = NA,
@@ -141,8 +145,8 @@ Auth <- R6::R6Class(
                           fs = NA,
                           authorization = FALSE,
                           ...) {
-      self$fs <- fs
       self$from <- match.arg(from)
+      self$fs <- fs
       self$authorization <- authorization
 
       # There are three options for authentication
@@ -322,7 +326,7 @@ Auth <- R6::R6Class(
       self$billing_groups <- Billing_groups$new(self)
     },
     #' @description
-    #' Returns the authentication token read from system environment variable.
+    #'  Returns the authentication token read from system environment variable.
     #' @return An API authentication token in form of a string.
     get_token = function() {
       if (self$from == "env" || self$from == "file") {
@@ -332,17 +336,19 @@ Auth <- R6::R6Class(
       }
     },
     #' @description
-    #' This method returns all API paths and pass arguments to core `api()`
+    #'  This method returns all API paths and pass arguments to core `api()`
     #'  function.
-    #' @param limit Defines the number of items you want to get from your API
-    #' request. By default, `limit` is set to `50`. Maximum is `100`.
-    #' @param offset Defines where the retrieved items started.
-    #' By default, `offset` is set to `0`.
-    #' @param fields All API calls take the optional query parameter fields.
-    #' This parameter enables you to specify the fields you want to be returned
-    #' when listing resources (e.g., all your projects) or getting details of a
-    #' specific resource (e.g., a given project).
-    #' @param ... Other arguments passed to core api function.
+    #' @param limit The maximum number of collection items to return for a
+    #'  single request. Minimum value is `1`. The maximum value is `100` and the
+    #'  default value is `50`.
+    #'  This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection of
+    #'  the first item to return. The default value is `0`.
+    #'  This is a pagination-specific attribute.
+    #' @param fields Selector specifying a subset of fields to include in the
+    #'  response when listing resources (e.g., all your projects) or getting
+    #'  details of a specific resource (e.g., a given project).
+    #' @param ... Other arguments passed to core `api()` function.
     api = function(...,
                    limit = getOption("sevenbridges2")$"limit",
                    offset = getOption("sevenbridges2")$"offset",
@@ -359,10 +365,11 @@ Auth <- R6::R6Class(
       )
       return(res)
     },
-    # user ---------------------------------------------------------------------
     #' @description Get details about the authenticated user
-    #' @param username The user name of a user for whom you want to get basic
-    #' account information.
+    #' @param username The username of a user for whom you want to get basic
+    #'  account information. If not provided, information about the currently
+    #'  authenticated user will be returned.
+    #' @return `User` class object
     user = function(username = NULL) {
       if (is.null(username)) {
         res <- sevenbridges2::api(
@@ -372,7 +379,7 @@ Auth <- R6::R6Class(
           base_url = self$url
         )
         # nolint start
-        rlang::inform("username not provided, showing the currently authenticated user information")
+        rlang::inform("Username not provided, showing the currently authenticated user information.")
         # nolint end
       } else {
         res <- sevenbridges2::api(
@@ -384,13 +391,12 @@ Auth <- R6::R6Class(
       }
 
       # Create User object
-      asUser(res, self)
+      return(asUser(res, auth = self))
     },
-    # rate limit --------------------------------------------------------------
     #' @description Get information about current rate limit \cr \cr
-    #' This call returns information about your current rate limit. This is the
-    #' number of API calls you can make in one hour. This call also returns
-    #' information about your current instance limit.
+    #'  This call returns information about your current rate limit. This is the
+    #'  number of API calls you can make in one hour. This call also returns
+    #'  information about your current instance limit.
     rate_limit = function() {
       res <- sevenbridges2::api(
         path = "rate_limit",
@@ -399,37 +405,38 @@ Auth <- R6::R6Class(
         base_url = self$url
       )
 
-      asRate(res)
+      return(asRate(res, auth = self))
     }, # nocov end
-    # upload a single file
     #' @description This method allows you to upload a single file from your
-    #'   local computer to the Platform.
+    #'  local computer to the Platform.
+    #'
     #' @param path File path on local disk.
-    #' @param project Project object or its ID. Project should not be used
-    #'   together with parent. If parent is used, the call will upload the file
-    #'   to the specified Platform folder, within the project to which the
-    #'   folder belongs. If project is used, the call will upload the file to
-    #'   the root of the project's files.
-    #' @param parent Parent folder object or its ID. Should not be used together
-    #'   with project. If parent is used, the call will upload the file to the
-    #'   specified Platform folder, within the project to which the folder
-    #'   belongs. If project is used, the call will upload the file to the root
-    #'   of the project's files.
+    #' @param project `Project` object or its ID. Project should not be used
+    #'  together with parent. If parent is used, the call will upload the file
+    #'  to the specified Platform folder, within the project to which the
+    #'  folder belongs. If project is used, the call will upload the file to
+    #'  the root of the project's files.
+    #' @param parent Parent folder object (of `File` class) or its ID.
+    #'  Should not be used together with project. If parent is used, the call
+    #'  will upload the file to the
+    #'  specified Platform folder, within the project to which the folder
+    #'  belongs. If project is used, the call will upload the file to the root
+    #'  of the project's files.
     #' @param filename Optional new file name. By default the uploaded file will
-    #'   have the same name as the original file provided with the `path`
-    #'   parameter. If its name will not change, omit this key.
+    #'  have the same name as the original file provided with the `path`
+    #'  parameter. If its name will not change, omit this key.
     #' @param overwrite In case there is already a file with the same name in
-    #'   the selected platform project/folder, this option allows you to control
-    #'   whether that file will be overwritten or not. If overwrite is set to
-    #'   `TRUE` and a file already exists under the name specified in the
-    #'   request, the existing file will be deleted and a new one created in its
-    #'   place.
+    #'  the selected platform project/folder, this option allows you to control
+    #'  whether that file will be overwritten or not. If overwrite is set to
+    #'  `TRUE` and a file already exists under the name specified in the
+    #'  request, the existing file will be deleted and a new one created in its
+    #'  place.
     #' @param part_size The preferred size for upload parts in bytes. If omitted
-    #'   or set to a value that is incompatible with the cloud storage provider,
-    #'   a default value will be used.
+    #'  or set to a value that is incompatible with the cloud storage provider,
+    #'  a default value will be used.
     #' @param init If `TRUE`, the method will initialize and return the Upload
-    #'   object and stop. If `FALSE`, the method will return the Upload object
-    #'   and start the upload process immediately.
+    #'  object and stop. If `FALSE`, the method will return the Upload object
+    #'  and start the upload process immediately.
     #' @importFrom checkmate test_r6 test_class assert_logical
     #' @importFrom rlang abort
     upload = function(path,
@@ -503,20 +510,17 @@ Auth <- R6::R6Class(
         u$init()$start()
       }
     },
-    # list all ongoing uploads
     #' @description This method returns the list of all ongoing uploads.
     #' @importFrom cli cli_h1 cli_li cli_end
     #' @importFrom glue glue
     list_ongoing_uploads = function() {
       # Run API call based on id parameter
       res <- sevenbridges2::api(
-        path = paste0("upload/multipart"),
+        path = "upload/multipart",
         method = "GET",
         token = self$get_token(),
         base_url = self$url
       )
-
-
 
       # Print information about ongoing uploads
       cli::cli_h1("Ongoing uploads")
@@ -540,10 +544,9 @@ Auth <- R6::R6Class(
 
       invisible(res)
     },
-    # abort multipart upload
     #' @description This call aborts an ongoing multipart upload.
     #' @param upload_id Upload object or ID of the upload process that you want
-    #'   to abort.
+    #'  to abort.
     #' @importFrom rlang abort inform
     #' @importFrom checkmate assert_character
     #' @importFrom glue glue_col
@@ -551,7 +554,7 @@ Auth <- R6::R6Class(
       upload_id <- check_and_transform_id(upload_id, "Upload")
 
       res <- sevenbridges2::api(
-        path = paste0("upload/multipart/", upload_id),
+        path = glue::glue("upload/multipart/{upload_id}"),
         method = "DELETE",
         token = self$get_token(),
         base_url = self$url
@@ -563,13 +566,13 @@ Auth <- R6::R6Class(
         )
       )
     }, # nocov end
-    #' @description Send feedback to Seven Bridges
-    #' Send feedback on ideas, thoughts, and problems via the sevenbridges2 API
-    #' package with three available types: "idea", "thought", and "problem".
-    #' You can send one feedback item per minute.
+    #' @description Send feedback to Seven Bridges.
+    #'  Send feedback on ideas, thoughts, and problems via the sevenbridges2 API
+    #'  package with three available types: `idea`, `thought`, and `problem`.
+    #'  You can send one feedback item per minute.
     #' @param text Specifies the content for the feedback i.e. feedback text.
     #' @param type Specifies the type of feedback. The following are available:
-    #' "idea", "thought" and "problem".
+    #'  `idea`, `thought` and `problem`.
     #' @param referrer The name of the person submitting the feedback.
     #' @param ... Additional query parameters if applicable.
     #' @importFrom rlang inform

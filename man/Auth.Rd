@@ -32,10 +32,10 @@ the auth token.}
 
 \item{\code{profile_name}}{Profile name in the user configuration file.}
 
-\item{\code{fs}}{FS object, for mount and unmount file system.}
+\item{\code{fs}}{FS (FileSystem) object, for mount and unmount file system.}
 
 \item{\code{authorization}}{Logical. Is the \code{token} an API
-auth token (\code{FALSE}) or an access token from the
+authentication token (\code{FALSE}) or an access token from the
 Seven Bridges single sign-on (\code{TRUE})?}
 
 \item{\code{projects}}{Projects object, for accessing projects resources on the
@@ -85,8 +85,8 @@ resources on the platform.}
 \if{html}{\out{<a id="method-Auth-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new Auth object. All methods can be accessed through this
-object.
+Create a new Seven Bridges API Authentication object.
+All methods can be accessed through this object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$new(
   from = c("direct", "env", "file"),
@@ -106,21 +106,26 @@ object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{from}}{Authentication method. Could be \code{"direct"}
-(pass the credential information to the arguments directly),
-\code{"env"} (read from pre-set system environment variables),
-or \code{"file"} (read configurations from a credentials file).
+\item{\code{from}}{Authentication method. Could be:
+\itemize{
+\item \code{"direct"} - pass the credential information to the arguments
+directly,
+\item \code{"env"} - read from pre-set system environment variables, or
+\item \code{"file"} - read configurations from a credentials file.
+}
 Default is \code{"direct"}.}
 
 \item{\code{platform}}{The platform to use.
 If \code{platform} and \code{url} are both not specified,
 the default is \code{"aws-us"} (Seven Bridges Platform - US).
-Other possible values include
-\code{"aws-eu"} (Seven Bridges Platform - EU),
-\code{"cgc"} (Cancer Genomics Cloud),
-\code{"ali-cn"} (Seven Bridges Platform - China),
-\code{"cavatica"} (Cavatica), and
-\code{"f4c"} (BioData Catalyst Powered by Seven Bridges).}
+Other possible values include:
+\itemize{
+\item \code{"aws-eu"} - Seven Bridges Platform - EU,
+\item\code{"cgc"} - Cancer Genomics Cloud,
+\item\code{"ali-cn"} - Seven Bridges Platform - China,
+\item\code{"cavatica"} - Cavatica, and
+\item\code{"f4c"} - BioData Catalyst Powered by Seven Bridges.
+}}
 
 \item{\code{url}}{Base URL for API. Please only use this when you
 want to specify a platform that is not in the \code{platform} list
@@ -140,10 +145,10 @@ By default: \code{"~/.sevenbridges/credentials"}.}
 \item{\code{profile_name}}{Profile name in the user configuration file.
 The default value is \code{"default"}.}
 
-\item{\code{fs}}{FS object, for mount and unmount file system.}
+\item{\code{fs}}{FS (FileSystem) object, for mount and unmount file system.}
 
 \item{\code{authorization}}{Logical. Is the \code{token} an API
-auth token (\code{FALSE}) or an access token from the
+authentication token (\code{FALSE}) or an access token from the
 Seven Bridges single sign-on (\code{TRUE})?}
 
 \item{\code{...}}{Other arguments passed to methods.}
@@ -151,7 +156,7 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new \code{Auth} object.
+\code{Auth} class object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -185,18 +190,20 @@ function.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments passed to core api function.}
+\item{\code{...}}{Other arguments passed to core \code{api()} function.}
 
-\item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+\item{\code{limit}}{The maximum number of collection items to return for a
+single request. Minimum value is \code{1}. The maximum value is \code{100} and the
+default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{Defines where the retrieved items started.
-By default, \code{offset} is set to \code{0}.}
+\item{\code{offset}}{The zero-based starting index in the entire collection of
+the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
-\item{\code{fields}}{All API calls take the optional query parameter fields.
-This parameter enables you to specify the fields you want to be returned
-when listing resources (e.g., all your projects) or getting details of a
-specific resource (e.g., a given project).}
+\item{\code{fields}}{Selector specifying a subset of fields to include in the
+response when listing resources (e.g., all your projects) or getting
+details of a specific resource (e.g., a given project).}
 }
 \if{html}{\out{</div>}}
 }
@@ -213,10 +220,14 @@ Get details about the authenticated user
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{username}}{The user name of a user for whom you want to get basic
-account information.}
+\item{\code{username}}{The username of a user for whom you want to get basic
+account information. If not provided, information about the currently
+authenticated user will be returned.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{User} class object
 }
 }
 \if{html}{\out{<hr>}}
@@ -255,14 +266,15 @@ local computer to the Platform.
 \describe{
 \item{\code{path}}{File path on local disk.}
 
-\item{\code{project}}{Project object or its ID. Project should not be used
+\item{\code{project}}{\code{Project} object or its ID. Project should not be used
 together with parent. If parent is used, the call will upload the file
 to the specified Platform folder, within the project to which the
 folder belongs. If project is used, the call will upload the file to
 the root of the project's files.}
 
-\item{\code{parent}}{Parent folder object or its ID. Should not be used together
-with project. If parent is used, the call will upload the file to the
+\item{\code{parent}}{Parent folder object (of \code{File} class) or its ID.
+Should not be used together with project. If parent is used, the call
+will upload the file to the
 specified Platform folder, within the project to which the folder
 belongs. If project is used, the call will upload the file to the root
 of the project's files.}
@@ -321,9 +333,9 @@ to abort.}
 \if{html}{\out{<a id="method-Auth-send_feedback"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-send_feedback}{}}}
 \subsection{Method \code{send_feedback()}}{
-Send feedback to Seven Bridges
+Send feedback to Seven Bridges.
 Send feedback on ideas, thoughts, and problems via the sevenbridges2 API
-package with three available types: "idea", "thought", and "problem".
+package with three available types: \code{idea}, \code{thought}, and \code{problem}.
 You can send one feedback item per minute.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$send_feedback(
@@ -340,7 +352,7 @@ You can send one feedback item per minute.
 \item{\code{text}}{Specifies the content for the feedback i.e. feedback text.}
 
 \item{\code{type}}{Specifies the type of feedback. The following are available:
-"idea", "thought" and "problem".}
+\code{idea}, \code{thought} and \code{problem}.}
 
 \item{\code{referrer}}{The name of the person submitting the feedback.}
 
