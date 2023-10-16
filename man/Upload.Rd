@@ -2,7 +2,7 @@
 % Please edit documentation in R/class-upload.R
 \name{Upload}
 \alias{Upload}
-\title{R6 Class representing an upload job}
+\title{R6 Class representing an Upload job}
 \description{
 R6 Class representing a resource for managing files' uploads.
 }
@@ -23,7 +23,7 @@ Should not be used together with 'project'.}
 \item{\code{filename}}{File name. By default it will be the same as the name of
 the file you want to upload. However, it can be changed to new name.}
 
-\item{\code{overwrite}}{If true will overwrite file on the server.}
+\item{\code{overwrite}}{If \code{TRUE} will overwrite file on the server.}
 
 \item{\code{file_size}}{File size.}
 
@@ -31,9 +31,9 @@ the file you want to upload. However, it can be changed to new name.}
 
 \item{\code{part_length}}{Number of parts to upload.}
 
-\item{\code{parts}}{List of parts to be uploaded (class Part).}
+\item{\code{parts}}{List of parts to be uploaded (class \code{Part}).}
 
-\item{\code{initialized}}{If TRUE, upload has been initialized.}
+\item{\code{initialized}}{If \code{TRUE}, upload has been initialized.}
 
 \item{\code{auth}}{Authentication object.}
 }
@@ -87,7 +87,7 @@ Create a new Upload object.
 
 \item{\code{part_size}}{Size of a single part in bytes.}
 
-\item{\code{initialized}}{If TRUE, upload has been initialized.}
+\item{\code{initialized}}{If \code{TRUE}, upload has been initialized.}
 
 \item{\code{auth}}{Authentication object.}
 }
@@ -126,7 +126,7 @@ Get the details of an active multipart upload.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{list_parts}}{If TRUE, also return a list of parts
+\item{\code{list_parts}}{If \code{TRUE}, also return a list of parts
 that have been reported as completed for this multipart upload.
 Please, bear in mind that the output could be heavy for printing if
 there are lot of parts.}
