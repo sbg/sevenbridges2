@@ -3,7 +3,7 @@
 #'
 #' Check request status
 #' @param req API request
-#' @param as desired type output (contents of a request): raw, text or parsed
+#' @param as Desired type output (contents of a request): raw, text or parsed
 #'
 #' @return request content or the message
 #' @importFrom httr status_code
@@ -43,7 +43,6 @@ status_check <- function(req, as = "parsed", ...) {
     rlang::abort(paste0("HTTP Status ", httr::status_code(req), ": ", msg))
   }
 
-
   print(content(req, as = as, ...))
   rlang::abort(paste(
     "Error of unknown type occured: ",
@@ -56,13 +55,13 @@ status_check <- function(req, as = "parsed", ...) {
 #' Check if input value is missing
 #'
 #' @description This function checks whether the input
-#' value is a vector of minimum length 1, with no empty
-#' value and no all missing values.
-#' If the input value is not a vector, it checks only if
-#' the value is set at all (original meaning of 'missing' function)
-#' in order to be able to use it with other object types.
+#'  value is a vector of minimum length 1, with no empty
+#'  value and no all missing values.
+#'  If the input value is not a vector, it checks only if
+#'  the value is set at all (original meaning of 'missing' function)
+#'  in order to be able to use it with other object types.
 #'
-#' @param input value to check
+#' @param input Value to check
 #' @importFrom checkmate test_vector
 #' @noRd
 is_missing <- function(input) {
@@ -84,7 +83,7 @@ is_missing <- function(input) {
 
 #' Check limit parameter
 #'
-#' @param limit limit value
+#' @param limit Limit value
 #' @noRd
 check_limit <- function(limit) {
   msg <- "Limit must be integer number between 1 and 100."
@@ -102,7 +101,7 @@ check_limit <- function(limit) {
 
 #' Check offset parameter
 #'
-#' @param offset offset value
+#' @param offset Offset value
 #' @importFrom rlang abort
 #' @importFrom glue glue
 #' @noRd
@@ -122,8 +121,8 @@ check_offset <- function(offset) {
 
 #' Check tag parameters
 #'
-#' @param tags tag values
-#' @importFrom checkmate test_list assert_logical assert_character assert_list
+#' @param tags Tag values
+#' @importFrom checkmate test_list
 #' @importFrom rlang abort
 #'
 #' @noRd
@@ -247,7 +246,7 @@ check_folder_name <- function(name) {
 }
 #' Check metadata
 #'
-#' @param metadata metadata named list
+#' @param metadata Metadata named list
 #' @importFrom checkmate test_list
 #' @importFrom rlang abort
 #' @noRd
@@ -270,7 +269,7 @@ check_metadata <- function(metadata) {
 #' Transform metadata input
 #' Transform metadata input to be in API acceptable form.
 #'
-#' @param metadata metadata named list
+#' @param metadata Metadata named list
 #' @noRd
 transform_metadata <- function(metadata) {
   metadata_names <- paste0("metadata.", names(metadata))
@@ -284,8 +283,8 @@ transform_metadata <- function(metadata) {
 
 #' Check file download destination
 #'
-#' @param directory_path directory path string
-#' @param filename file name (base name)
+#' @param directory_path Directory path, string.
+#' @param filename File name (base name)
 #' @noRd
 check_download_path <- function(directory_path, filename) {
   if (dir.exists(directory_path)) {
@@ -302,7 +301,7 @@ check_download_path <- function(directory_path, filename) {
 #' Check retry parameters
 #'
 #' @description This function validates provided retry parameter
-#' used within the `download()` method of a `File` object.
+#'  used within the `download()` method of a `File` object.
 #' @param input Value to check.
 #' @param parameter_to_validate Retry parameter to be validated.
 #' @noRd
@@ -377,7 +376,7 @@ check_upload_params <- function(size, part_size) {
 #' Check app copy strategy
 #'
 #' @description This function checks if the provided strategy for app copy is
-#' valid.
+#'  valid.
 #' @param strategy Strategy for app copy.
 #' @importFrom rlang abort
 #' @importFrom glue glue_col
@@ -403,7 +402,7 @@ check_app_copy_strategy <- function(strategy) {
 #' Check file path
 #'
 #' @description This function checks if the file with the provided path exists
-#' on the local disk.
+#'  on the local disk.
 #' @param file_path File path on the local disk.
 #' @importFrom rlang abort
 #' @importFrom glue glue_col
@@ -416,12 +415,12 @@ check_file_path <- function(file_path) {
 
 #' Check all volume params when creating a volume
 #'
-#' @description This function checks parameters needed for value creation/update
+#' @description This function checks parameters needed for
+#'  value creation/update.
 #' @param args Input parameters to check
 #' @param volume_type Storage type, can be one of: s3, gcs, azure, oss
 #'
-#' @importFrom checkmate assert_list
-#' @importFrom checkmate assert_character
+#' @importFrom checkmate assert_list assert_string
 #' @importFrom rlang abort
 #' @importFrom glue glue_col
 #' @noRd
@@ -430,75 +429,45 @@ check_volume_params <- function(args,
   checkmate::assert_list(args, null.ok = FALSE)
   volume_type <- match.arg(volume_type)
 
-  checkmate::assert_character(args[["name"]],
-    len = 1,
-    null.ok = FALSE,
-    typed.missing = TRUE
-  )
+  checkmate::assert_string(args[["name"]], null.ok = FALSE)
 
   if (volume_type %in% c("s3", "gcs", "OSS")) {
-    checkmate::assert_character(args[["bucket"]],
-      len = 1,
-      null.ok = FALSE,
-      typed.missing = TRUE
-    )
+    checkmate::assert_string(args[["bucket"]], null.ok = FALSE)
   }
 
   # Azure specific check
   if (volume_type == "azure") {
-    checkmate::assert_character(args[["container"]],
-      len = 1,
-      null.ok = FALSE,
-      typed.missing = TRUE
-    )
+    checkmate::assert_string(args[["container"]], null.ok = FALSE)
   }
 
-  checkmate::assert_character(args[["access_mode"]], len = 1, null.ok = TRUE)
+  checkmate::assert_string(args[["access_mode"]], null.ok = TRUE)
 
   if (!is_missing(args[["access_mode"]]) &&
     !(args[["access_mode"]] %in% c("RW", "RO"))) {
     rlang::abort("Access mode must be RW or RO.")
   }
 
-  checkmate::assert_character(args[["prefix"]],
-    len = 1,
-    typed.missing = TRUE,
-    null.ok = TRUE
-  )
-
-  checkmate::assert_character(args[["description"]],
-    len = 1,
-    typed.missing = TRUE,
-    null.ok = TRUE
-  )
-
+  checkmate::assert_string(args[["prefix"]], null.ok = TRUE)
+  checkmate::assert_string(args[["description"]], null.ok = TRUE)
   checkmate::assert_list(args[["properties"]], null.ok = TRUE)
 
   if (!is_missing(args[["endpoint"]])) {
-    checkmate::assert_character(args[["endpoint"]],
-      len = 1,
-      typed.missing = TRUE,
-      null.ok = TRUE
-    )
+    checkmate::assert_string(args[["endpoint"]], null.ok = TRUE)
   } else if (!is_missing(args[["root_url"]])) {
-    checkmate::assert_character(args[["root_url"]],
-      len = 1,
-      typed.missing = TRUE,
-      null.ok = TRUE
-    )
+    checkmate::assert_string(args[["root_url"]], null.ok = TRUE)
   }
 }
 
 #' Transform configuration parameter in GC (IAM Role) volume creation
 #'
 #' @description This function checks whether provided configuration parameter
-#' is a named list or a file path to the configuration JSON file.
+#'  is a named list or a file path to the configuration JSON file.
 #' @param configuration Path to JSON file or named list containing configuration
-#' parameters values for creating GC volume using IAM Role.
+#'  parameters values for creating GC volume using IAM Role.
 #'
 #' @importFrom rlang abort
 #' @importFrom checkmate test_list
-#' @importFrom checkmate test_character
+#' @importFrom checkmate test_string
 #' @importFrom jsonlite toJSON
 #' @importFrom readr read_file
 #' @noRd
@@ -507,12 +476,7 @@ transform_configuration_param <- function(configuration) {
     !is_missing(names(configuration))) {
     config_json_string <-
       as.character(jsonlite::toJSON(configuration, auto_unbox = TRUE, pretty = TRUE)) # nolint
-  } else if (checkmate::test_character(
-    configuration,
-    len = 1,
-    null.ok = FALSE,
-    typed.missing = TRUE
-  )) {
+  } else if (checkmate::test_string(configuration, null.ok = FALSE)) {
     # nolint
     config_json_string <- readr::read_file(configuration)
   } else {
