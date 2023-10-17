@@ -333,7 +333,7 @@ to abort.}
 \if{html}{\out{<a id="method-Auth-send_feedback"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-send_feedback}{}}}
 \subsection{Method \code{send_feedback()}}{
-Send feedback to Seven Bridges.
+Send feedback to Seven Bridges. \cr \cr
 Send feedback on ideas, thoughts, and problems via the sevenbridges2 API
 package with three available types: \code{idea}, \code{thought}, and \code{problem}.
 You can send one feedback item per minute.

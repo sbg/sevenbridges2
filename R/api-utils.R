@@ -1,13 +1,13 @@
 # nolint start
 #' Match results by criteria
 #'
-#' Get results by criteria
-#' @param x value(s) to find
-#' @param y data input to search through
-#' @param exact should it be an exact match or partial, default TRUE
-#' @param ignore.case should it ignore cases, or not, default TRUE
+#' Get results by criteria.
+#' @param x Value(s) to find.
+#' @param y Data input to search through.
+#' @param exact Should it be an exact match or partial, default TRUE.
+#' @param ignore.case Should it ignore cases, or not, default TRUE.
 #'
-#' @return index of the matched element from the data provided
+#' @return Index of the matched element from the data provided.
 #'
 #' @noRd
 m.fun <- function(x,
@@ -31,16 +31,16 @@ m.fun <- function(x,
 
 #' Match results by id and/or name
 #'
-#' Get results by id and/or name
-#' @param obj results list
-#' @param id id of the resource
-#' @param name name of the resource
-#' @param .id name of the 'id' argument, set to 'id'
-#' @param .name name of the 'name' argument, set to 'name'
-#' @param exact should it be an exact match or partial, default TRUE
-#' @param ignore.case should it ignore cases, or not, default TRUE
+#' Get results by id and/or name.
+#' @param obj Results list.
+#' @param id Id of the resource.
+#' @param name Name of the resource.
+#' @param .id Name of the 'id' argument, set to 'id'.
+#' @param .name Name of the 'name' argument, set to 'name'.
+#' @param exact Should it be an exact match or partial, default TRUE.
+#' @param ignore.case Should it ignore cases, or not, default TRUE.
 #'
-#' @return subset of the result matching id or name
+#' @return Subset of the result matching id or name.
 #'
 #' @noRd
 m.match <- function(obj,
@@ -84,7 +84,7 @@ m.match <- function(obj,
   }
 
   if (length(index) == 1 && is.na(index)) {
-    message("sorry, no matching ")
+    message("Sorry, no matching.")
     return(NULL)
   } else {
     if (length(index) == 1) {
@@ -97,12 +97,12 @@ m.match <- function(obj,
 
 #' Parse time to POSIXlt for rate limit expiration datetime
 #'
-#' @param reset_time_as_unix_epoch time received from response
-#' @param origin origin time as reference, default to "1970-01-01"
-#' @param time_zone time_zone as reference
-#' @param use_milliseconds does unix timestamp contain information about
-#' milliseconds (default is FALSE)
-#'
+#' @param reset_time_as_unix_epoch Time received from response.
+#' @param origin Origin time as reference, default to "1970-01-01"
+#' @param time_zone Time zone as reference.
+#' @param use_milliseconds Does unix timestamp contain information about
+#' milliseconds (default is FALSE).
+#' @importFrom rlang abort
 #' @noRd
 parse_time <- function(reset_time_as_unix_epoch,
                        origin = "1970-01-01",
@@ -130,16 +130,16 @@ parse_time <- function(reset_time_as_unix_epoch,
 
 #' Customize underlying http logic for handle_url2
 #'
-#' @param handle handle
-#' @param url url
-#' @param ... additional arguments to pass
+#' @param handle Handle.
+#' @param url URL.
+#' @param ... Additional arguments to pass.
 #' @importFrom utils modifyList
 #' @importFrom rlang abort
 #'
 #' @noRd
 handle_url2 <- function(handle = NULL, url = NULL, ...) {
   if (is.null(url) && is.null(handle)) {
-    rlang::abort("Must specify at least one of url or handle")
+    rlang::abort("Must specify at least one of url or handle.")
   }
   if (is.null(handle)) {
     handle <- httr::handle_find(url)
@@ -160,7 +160,7 @@ handle_url2 <- function(handle = NULL, url = NULL, ...) {
 
 #' Customize underlying http logic for build_url2
 #'
-#' @param url url
+#' @param url URL.
 #'
 #' @noRd
 build_url2 <- function(url) {
@@ -220,10 +220,10 @@ build_url2 <- function(url) {
 
 #' Customize underlying http logic for GET2
 #'
-#' @param url url
-#' @param config config params
-#' @param handle how to handle url
-#' @param ... additional args to pass
+#' @param url URL.
+#' @param config Configuration parameters.
+#' @param handle How to handle URL.
+#' @param ... Additional arguments to pass.
 #'
 #' @noRd
 GET2 <- function(url = NULL,
@@ -243,12 +243,12 @@ GET2 <- function(url = NULL,
 
 #' Customize underlying http logic for POST2
 #'
-#' @param url url
-#' @param config config params
-#' @param handle how to handle url
-#' @param body request body
-#' @param encode encoding, can be one of: "json", "form", "multipart"
-#' @param ... additional args to pass
+#' @param url URL.
+#' @param config Configuration parameters.
+#' @param handle How to handle URL.
+#' @param body Request body.
+#' @param encode Encoding, can be one of: "json", "form", "multipart".
+#' @param ... Additional arguments to pass.
 #'
 #' @noRd
 POST2 <- function(url = NULL,
@@ -258,7 +258,6 @@ POST2 <- function(url = NULL,
                   encode = c("json", "form", "multipart"),
                   handle = NULL) {
   # nocov start
-
   encode <- match.arg(encode)
   hu <- handle_url2(handle, url, ...)
   req <-
@@ -276,9 +275,9 @@ POST2 <- function(url = NULL,
 #' Flatten query parameters
 #'
 #' @description A httr query parameter can only have one value per name.
-#' This function takes any values that contain lenght > 1 vectors/lists
-#' and splits them up such that, for example, list(x=1:2, y="a") becomes
-#' list(x=1, x=2, y="a").
+#'  This function takes any values that contain length > 1 vectors/lists
+#'  and splits them up such that, for example, list(x = 1:2, y= "a") becomes
+#'  list(x = 1, x = 2, y = "a").
 #'
 #' @param x List of query parameters.
 #' @return Flattened query params list.
@@ -309,21 +308,21 @@ flatten_query <- function(x) {
 
 #' Set headers for API request
 #' @description This function returns headers for API request,
-#' depending on the value of the authorization parameter.
+#'  depending on the value of the authorization parameter.
 #' @param authorization Logical. Is the `token` an API
-#' auth token (`FALSE`) or an access token from the
-#' Seven Bridges single sign-on (`TRUE`)?
+#'  auth token (`FALSE`) or an access token from the
+#'  Seven Bridges single sign-on (`TRUE`)?
 #' @param token API auth token or `access_token` for
-#' Seven Bridges single sign-on.
+#'  Seven Bridges single sign-on.
 #' @param advance_access Enable advance access features?
-#' Default is `FALSE`.
+#'  Default is `FALSE`.
 #'
 #' @importFrom checkmate assert_logical
 #' @return A named vector with headers for an API request.
 #' @noRd
 set_headers <- function(authorization = FALSE,
                         token = NULL,
-                        advance_access = getOption("sevenbridges2")$advance_access) {
+                        advance_access = getOption("sevenbridges2")$advance_access) { # nolint
   if (is_missing(token)) {
     rlang::abort("Token is missing.")
   }
@@ -349,18 +348,24 @@ set_headers <- function(authorization = FALSE,
   return(headers)
 }
 
-
 #' Setup query parameters for API request
 #' @description This function prepares query parameters for API request.
 #' @param query Passed to httr package GET/POST call
-#' @param limit How many results to return
-#' @param offset The point at which to start displaying them
-#' @param fields All API calls take the optional query parameter fields.
-#' This parameter enables you to specify the fields you want to be returned
-#' when listing resources (e.g. all your projects) or getting details of a
-#' specific resource (e.g. a given project). For example, fields="id,name,size"
-#' to return the fields id, name and size for files. More details please check
-#' <https://docs.sevenbridges.com/docs/the-api#section-general-api-information>
+#' @param limit The maximum number of collection items to return
+#'  for a single request. Minimum value is `1`.
+#'  The maximum value is `100` and the default value is `50`.
+#'  This is a pagination-specific attribute.
+#' @param offset The zero-based starting index in the entire collection
+#'  of the first item to return. The default value is `0`.
+#'  This is a pagination-specific attribute.
+#' @param fields Selector specifying a subset of fields to include in the
+#'  response. All API calls take the optional query parameter fields.
+#'  This parameter enables you to specify the fields you want to be returned
+#'  when listing resources (e.g. all your projects) or getting details of a
+#'  specific resource (e.g. a given project).
+#'  For example, fields="id,name,size"
+#'  to return the fields id, name and size for files. More details please check
+#'  <https://docs.sevenbridges.com/docs/the-api#section-general-api-information>
 #'
 #' @return List of query parameters.
 #' @noRd
@@ -399,7 +404,6 @@ setup_query <- function(query = NULL,
 #' @noRd
 setup_body <- function(method, body = list()) {
   if (method %in% c("POST", "PATCH", "PUT")) {
-    # stopifnot(is.list(body))
     if (!is.list(body)) {
       rlang::abort("Body should be a list.")
     }
@@ -446,7 +450,6 @@ check_and_transform_id <-
     }
     return(id)
   }
-
 
 #' Extract common query parameters
 #'

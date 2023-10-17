@@ -7,7 +7,7 @@ test_that("Api function throws error when token is not provided", {
         method = "GET",
         base_url = "https://api.sbgenomics.com/v2/"
       ),
-      "token must be provided"
+      "Token must be provided."
     )
   }
   lapply(bad_tokens, test_function)
