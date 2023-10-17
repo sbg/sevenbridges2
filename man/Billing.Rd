@@ -57,7 +57,7 @@ Create a new Billing object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{res}}{Response containing File object information.}
+\item{\code{res}}{Response containing Billing object information.}
 
 \item{\code{...}}{Other arguments.}
 }
@@ -127,12 +127,14 @@ spending breakdown is returned.}
 \item{\code{fields}}{Selector specifying a subset of fields to include in the
 response.}
 
-\item{\code{limit}}{An integer representing the maximum number of collection
-items to return for a single request. The default value is 50, while
-maximum is 100.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{The zero-based starting index in the entire collection of
-the first item to return. The default value is 0.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
 \item{\code{...}}{Other arguments.}
 }
@@ -172,12 +174,14 @@ spending breakdown is returned.}
 \item{\code{fields}}{Selector specifying a subset of fields to include in the
 response.}
 
-\item{\code{limit}}{An integer representing the maximum number of collection
-items to return for a single request. The default value is 50, while
-maximum is 100.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{The zero-based starting index in the entire collection of
-the first item to return. The default value is 0.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
 \item{\code{...}}{Other arguments.}
 }
@@ -217,12 +221,14 @@ spending breakdown is returned.}
 \item{\code{fields}}{Selector specifying a subset of fields to include in the
 response.}
 
-\item{\code{limit}}{An integer representing the maximum number of collection
-items to return for a single request. The default value is 50, while
-maximum is 100.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{The zero-based starting index in the entire collection of
-the first item to return. The default value is 0.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
 \item{\code{...}}{Other arguments.}
 }
