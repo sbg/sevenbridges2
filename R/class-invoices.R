@@ -12,7 +12,7 @@ Invoices <- R6::R6Class(
   inherit = Resource,
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "query" = "billing/invoices",
       "get" = "billing/invoices/{id}"

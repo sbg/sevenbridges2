@@ -15,7 +15,7 @@ This is main object for Billing
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 
 \item{\code{id}}{Billing group identifier.}
 

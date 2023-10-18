@@ -10,7 +10,7 @@ User <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields.
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "get" = "user"
     ),

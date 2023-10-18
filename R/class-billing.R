@@ -13,7 +13,7 @@ Billing <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "get" = "billing/groups/{id}",
       "breakdown_analysis" = "billing/groups/{self$id}/breakdown/analysis",

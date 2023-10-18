@@ -16,7 +16,7 @@ including the costs for analysis and storage, and the invoice period.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 
 \item{\code{id}}{Invoice identifier.}
 

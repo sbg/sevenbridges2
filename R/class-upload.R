@@ -11,7 +11,7 @@ Upload <- R6::R6Class(
   "Upload",
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "init" = "upload/multipart",
       "upload_job" = "upload/multipart/{self$upload_id}",
@@ -335,7 +335,7 @@ Part <- R6::R6Class(
   "Part",
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "part_info" = "upload/multipart/{upload_id}/part/{self$part_number}",
       "complete_part" = "upload/multipart/{upload_id}/part"
