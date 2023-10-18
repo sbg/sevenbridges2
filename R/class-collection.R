@@ -1,11 +1,12 @@
 # nolint start
-#' @title R6 Class representing a Collection
+#' @title R6 Class representing a Collection of objects
 #'
 #' @description
 #' R6 Class representing a resource for managing collections.
-#' Wrapper for SevenBridges pageable resources.
+#' Wrapper for Seven Bridges pageable resources.
 #' Among the actual collection items it contains information regarding
-#' the total number of entries available in on the server and resource href.
+#' the total number of entries available on the server and
+#' resource API request URL (href).
 #'
 #' @importFrom R6 R6Class
 #' @export
@@ -20,20 +21,20 @@ Collection <- R6::R6Class(
     items = NULL,
     #' @field links List of links (hrefs) for next page resources.
     links = NULL,
-    #' @field total Total number of items.
+    #' @field total Total number of items available on the server.
     total = NULL,
-    #' @field response Save raw API response.
+    #' @field response Raw API response.
     response = NULL,
-    #' @field auth Seven Bridges Auth object.
+    #' @field auth Seven Bridges Authentication object.
     auth = NULL,
 
     #' @description Create a new Collection object.
     #' @param href API request URL.
     #' @param items Items returned in API response.
     #' @param links List of links (hrefs) for next page resources.
-    #' @param total Total number of items.
+    #' @param total Total number of items available on the server.
     #' @param response Raw API response.
-    #' @param auth Seven Bridges Auth object.
+    #' @param auth Seven Bridges Authentication object.
     initialize = function(href = NA, items = NA, links = NA, total = NA,
                           response = NA, auth = NA) {
       self$href <- href
@@ -73,8 +74,8 @@ Collection <- R6::R6Class(
       }
     }, # nocov end
     #' @description Return next page of results.
-    #' @param ... Other query or API parameters that can be passed to api()
-    #' function like advance_access, fields etc.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'advanced_access', 'fields', etc.
     #' @importFrom rlang abort
     next_page = function(...) {
       checkmate::assert_list(self$links, null.ok = TRUE)
@@ -102,8 +103,8 @@ Collection <- R6::R6Class(
       }
     }, # nocov end
     #' @description Return previous page of results.
-    #' @param ... Other query or API parameters that can be passed to api()
-    #' function like advance_access, fields etc.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'advanced_access', 'fields', etc.
     #' @importFrom rlang abort
     prev_page = function(...) {
       checkmate::assert_list(self$links, null.ok = TRUE)
@@ -131,8 +132,8 @@ Collection <- R6::R6Class(
       }
     }, # nocov end
     #' @description Fetches all available items.
-    #' @param ... Other query or API parameters that can be passed to api()
-    #' function like advance_access, fields etc.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'advanced_access', 'fields', etc.
     #' @importFrom rlang abort
     all = function(...) {
       if (is.null(self$href)) {

@@ -5,20 +5,16 @@
 \title{R6 Class Representing an Item}
 \description{
 Base class for describing a set of objects:
-Project, Task, Pipeline, Files, etc.
-}
-\details{
-This is a base class for describing a set of objects:
-User, Project, Task, etc.
+Project, Task, App, Files, etc.
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{response}}{save the raw response from a request.}
+\item{\code{response}}{Raw response from the request.}
 
-\item{\code{href}}{API href.}
+\item{\code{href}}{Item's API request URL.}
 
-\item{\code{auth}}{Seven Bridges Auth object.}
+\item{\code{auth}}{Seven Bridges Authentication object.}
 }
 \if{html}{\out{</div>}}
 }
@@ -42,11 +38,11 @@ Create a new Item object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{href}}{API request URL.}
+\item{\code{href}}{Item's API request URL.}
 
-\item{\code{response}}{API response.}
+\item{\code{response}}{Raw API response.}
 
-\item{\code{auth}}{Seven Bridges Auth object.}
+\item{\code{auth}}{Seven Bridges Authentication object.}
 }
 \if{html}{\out{</div>}}
 }
@@ -65,7 +61,8 @@ Reload the Item (resource).
 \describe{
 \item{\code{cls}}{Item class object.}
 
-\item{\code{...}}{Other query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
