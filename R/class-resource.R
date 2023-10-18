@@ -3,28 +3,25 @@
 #' @description
 #' Base class for describing a resource.
 #'
-#' @details
-#' This is a base class for describing a resource on the platform:
-#' Projects, Tasks, Pipelines, Filess, Apps etc.
+#' @details This is a base class for describing a resource on the platform:
+#'  Projects, Tasks, Volumes, Files, Apps etc.
 #'
 #' @importFrom R6 R6Class
 Resource <- R6::R6Class(
   "Resource",
   portable = FALSE,
   public = list(
-    #' @field auth Seven Bridges Auth object
+    #' @field auth Seven Bridges Authentication object.
     auth = NULL,
 
-    #' @description
-    #' Create a new Resource object.
-    #' @param auth Seven Bridges Auth object.
+    #' @description Create a new Resource object.
+    #' @param auth Seven Bridges Authentication object.
     initialize = function(auth = NA) {
       self$auth <- auth
     },
 
-    #' @description
-    #' Generic query implementation that is used by the resources.
-    #' @param ... Query parameters
+    #' @description Generic query implementation that is used by the resources.
+    #' @param ... Parameters that will be passed to core `api()` function.
     query = function(...) {
       args <- list(...)
 
@@ -56,21 +53,18 @@ Resource <- R6::R6Class(
         fields = fields
       )
 
-
-
-      return(res)
-      # nocov end
+      return(res) # nocov end
     },
-
-    #' @description
-    #' Generic query implementation that fetches the resource from the server.
-    #' @param cls Resource Class object.
-    #' @param id Object id
-    #' @param ... Additional parameters for api(), like fields,
-    #' advance_access etc.
+    #' @description Generic query implementation that fetches the resource
+    #'  from the server.
+    #' @param cls Resource class object.
+    #' @param id Object id.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'limit', 'offset', 'fields', etc.
     #'
     #' @importFrom rlang abort
     #' @importFrom glue glue
+    #' @importFrom checkmate assert_string
     get = function(cls, id, ...) {
       if (is_missing(cls)) {
         rlang::abort("Please provide cls parameter!")
@@ -78,7 +72,7 @@ Resource <- R6::R6Class(
       if (is_missing(id)) {
         rlang::abort("Please provide id parameter!")
       } else {
-        checkmate::assert_character(id, len = 1, null.ok = FALSE)
+        checkmate::assert_string(id, null.ok = FALSE)
       }
 
       if (is.null(cls[["auth"]])) {
@@ -102,16 +96,14 @@ Resource <- R6::R6Class(
         ...
       )
 
-      return(res)
-      # nocov end
+      return(res) # nocov end
     },
-
-    #' @description
-    #' Generic query implementation that deletes the resource from the server.
-    #' @param cls Resource Class object.
-    #' @param id Object id
-    #' @param ... Additional parameters for api(), like fields,
-    #' advance_access etc.
+    #' @description Generic query implementation that deletes the resource
+    #'  from the server.
+    #' @param cls Resource class object.
+    #' @param id Object id.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'limit', 'offset', 'fields', etc.
     #'
     #' @importFrom rlang abort
     #' @importFrom glue glue
@@ -142,8 +134,6 @@ Resource <- R6::R6Class(
         base_url = url,
         ...
       )
-
-
 
       return(res)
       # nocov end

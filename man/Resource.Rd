@@ -8,12 +8,12 @@ Base class for describing a resource.
 }
 \details{
 This is a base class for describing a resource on the platform:
-Projects, Tasks, Pipelines, Filess, Apps etc.
+Projects, Tasks, Volumes, Files, Apps etc.
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{auth}}{Seven Bridges Auth object}
+\item{\code{auth}}{Seven Bridges Authentication object.}
 }
 \if{html}{\out{</div>}}
 }
@@ -39,7 +39,7 @@ Create a new Resource object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{auth}}{Seven Bridges Auth object.}
+\item{\code{auth}}{Seven Bridges Authentication object.}
 }
 \if{html}{\out{</div>}}
 }
@@ -56,7 +56,7 @@ Generic query implementation that is used by the resources.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Query parameters}
+\item{\code{...}}{Parameters that will be passed to core \code{api()} function.}
 }
 \if{html}{\out{</div>}}
 }
@@ -65,7 +65,8 @@ Generic query implementation that is used by the resources.
 \if{html}{\out{<a id="method-Resource-get"></a>}}
 \if{latex}{\out{\hypertarget{method-Resource-get}{}}}
 \subsection{Method \code{get()}}{
-Generic query implementation that fetches the resource from the server.
+Generic query implementation that fetches the resource
+from the server.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Resource$get(cls, id, ...)}\if{html}{\out{</div>}}
 }
@@ -73,12 +74,12 @@ Generic query implementation that fetches the resource from the server.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{cls}}{Resource Class object.}
+\item{\code{cls}}{Resource class object.}
 
-\item{\code{id}}{Object id}
+\item{\code{id}}{Object id.}
 
-\item{\code{...}}{Additional parameters for api(), like fields,
-advance_access etc.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -87,7 +88,8 @@ advance_access etc.}
 \if{html}{\out{<a id="method-Resource-delete"></a>}}
 \if{latex}{\out{\hypertarget{method-Resource-delete}{}}}
 \subsection{Method \code{delete()}}{
-Generic query implementation that deletes the resource from the server.
+Generic query implementation that deletes the resource
+from the server.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Resource$delete(cls, id, ...)}\if{html}{\out{</div>}}
 }
@@ -95,12 +97,12 @@ Generic query implementation that deletes the resource from the server.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{cls}}{Resource Class object.}
+\item{\code{cls}}{Resource class object.}
 
-\item{\code{id}}{Object id}
+\item{\code{id}}{Object id.}
 
-\item{\code{...}}{Additional parameters for api(), like fields,
-advance_access etc.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }

@@ -89,7 +89,7 @@ Create a new Upload object.
 
 \item{\code{initialized}}{If \code{TRUE}, upload has been initialized.}
 
-\item{\code{auth}}{Authentication object.}
+\item{\code{auth}}{Seven Bridges Authentication object.}
 }
 \if{html}{\out{</div>}}
 }

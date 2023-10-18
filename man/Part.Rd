@@ -91,7 +91,7 @@ the HTTP part upload request that should be recognized as success.}
 
 \item{\code{etag}}{ETag received after starting a part upload.}
 
-\item{\code{auth}}{Authentication object.}
+\item{\code{auth}}{Seven Bridges Authentication object.}
 }
 \if{html}{\out{</div>}}
 }

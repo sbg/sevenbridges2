@@ -53,7 +53,7 @@ Upload <- R6::R6Class(
     #' @param file_size File size.
     #' @param part_size Size of a single part in bytes.
     #' @param initialized If `TRUE`, upload has been initialized.
-    #' @param auth Authentication object.
+    #' @param auth Seven Bridges Authentication object.
     initialize = function(path = NA, project = NA, parent = NA,
                           filename = NA, overwrite = FALSE, file_size = NA,
                           part_size = getOption("sevenbridges2")$RECOMMENDED_PART_SIZE, # nolint
@@ -380,7 +380,7 @@ Part <- R6::R6Class(
     #'  the HTTP part upload request that should be recognized as success.
     #' @param report Report object.
     #' @param etag ETag received after starting a part upload.
-    #' @param auth Authentication object.
+    #' @param auth Seven Bridges Authentication object.
     initialize = function(part_number = NA, part_size = NA,
                           url = NA, expires = NA, headers = NA,
                           success_codes = NA, report = NA,
