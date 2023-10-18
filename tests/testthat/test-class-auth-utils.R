@@ -46,7 +46,7 @@ test_that("Utility function sbg_parse_config works", {
   expected_error <- paste0(
     "User config file: ",
     "test_data/non_existing_config_file",
-    " does not exist"
+    " does not exist."
   )
   testthat::expect_equal(err$message, expected_error)
 
@@ -56,7 +56,7 @@ test_that("Utility function sbg_parse_config works", {
     "invalid_credentials_test_file"
   )
   err <- testthat::expect_error(sbg_parse_config(invalid_config_file))
-  testthat::expect_equal(err$message, "User config file format is incorrect")
+  testthat::expect_equal(err$message, "User config file format is incorrect.")
 })
 
 testthat::test_that("Utility function sbg_set_env works", {
@@ -93,7 +93,7 @@ testthat::test_that("Utility function sbg_set_env works", {
     sysenv_url_name = test_sysenv_url_name,
     sysenv_token_name = test_sysenv_token_name
   ))
-  expected_error <- "url and token must be both specified"
+  expected_error <- "URL and token must be both specified."
   testthat::expect_equal(err$message, expected_error)
 
   # Check if the sbg_set_env throws an error if token is not provided
@@ -102,7 +102,7 @@ testthat::test_that("Utility function sbg_set_env works", {
     sysenv_url_name = test_sysenv_url_name,
     sysenv_token_name = test_sysenv_token_name
   ))
-  expected_error <- "url and token must be both specified"
+  expected_error <- "URL and token must be both specified."
   testthat::expect_equal(err$message, expected_error)
 })
 

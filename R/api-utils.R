@@ -98,7 +98,7 @@ m.match <- function(obj,
 #' Parse time to POSIXlt for rate limit expiration datetime
 #'
 #' @param reset_time_as_unix_epoch Time received from response.
-#' @param origin Origin time as reference, default to "1970-01-01"
+#' @param origin Origin time as reference, default to "1970-01-01".
 #' @param time_zone Time zone as reference.
 #' @param use_milliseconds Does unix timestamp contain information about
 #' milliseconds (default is FALSE).
