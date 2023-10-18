@@ -1,7 +1,7 @@
 # nolint start
-#' Match results by criteria
+#' @title Match results by criteria
 #'
-#' Get results by criteria.
+#' @description Get results by criteria.
 #' @param x Value(s) to find.
 #' @param y Data input to search through.
 #' @param exact Should it be an exact match or partial, default TRUE.
@@ -29,9 +29,9 @@ m.fun <- function(x,
   res
 }
 
-#' Match results by id and/or name
+#' @title Match results by id and/or name
 #'
-#' Get results by id and/or name.
+#' @description Get results by id and/or name.
 #' @param obj Results list.
 #' @param id Id of the resource.
 #' @param name Name of the resource.
@@ -95,7 +95,7 @@ m.match <- function(obj,
   }
 }
 
-#' Parse time to POSIXlt for rate limit expiration datetime
+#' @description Parse time to POSIXlt for rate limit expiration datetime.
 #'
 #' @param reset_time_as_unix_epoch Time received from response.
 #' @param origin Origin time as reference, default to "1970-01-01".
@@ -128,7 +128,7 @@ parse_time <- function(reset_time_as_unix_epoch,
   return(paste0(reset_date_time, " ", reset_time_zone))
 }
 
-#' Customize underlying http logic for handle_url2
+#' @description Customize underlying http logic for handle_url2.
 #'
 #' @param handle Handle.
 #' @param url URL.
@@ -158,7 +158,7 @@ handle_url2 <- function(handle = NULL, url = NULL, ...) {
   list(handle = handle, url = url)
 }
 
-#' Customize underlying http logic for build_url2
+#' @description Customize underlying http logic for build_url2.
 #'
 #' @param url URL.
 #'
@@ -218,7 +218,7 @@ build_url2 <- function(url) {
   )
 }
 
-#' Customize underlying http logic for GET2
+#' @description Customize underlying http logic for GET2.
 #'
 #' @param url URL.
 #' @param config Configuration parameters.
@@ -241,7 +241,7 @@ GET2 <- function(url = NULL,
   # nocov end
 }
 
-#' Customize underlying http logic for POST2
+#' @description Customize underlying http logic for POST2.
 #'
 #' @param url URL.
 #' @param config Configuration parameters.
@@ -272,7 +272,7 @@ POST2 <- function(url = NULL,
 }
 
 
-#' Flatten query parameters
+#' @title Flatten query parameters
 #'
 #' @description A httr query parameter can only have one value per name.
 #'  This function takes any values that contain length > 1 vectors/lists
@@ -306,7 +306,7 @@ flatten_query <- function(x) {
   )
 }
 
-#' Set headers for API request
+#' @title Set headers for API request
 #' @description This function returns headers for API request,
 #'  depending on the value of the authorization parameter.
 #' @param authorization Logical. Is the `token` an API
@@ -348,7 +348,7 @@ set_headers <- function(authorization = FALSE,
   return(headers)
 }
 
-#' Setup query parameters for API request
+#' @title Setup query parameters for API request
 #' @description This function prepares query parameters for API request.
 #' @param query Passed to httr package GET/POST call
 #' @param limit The maximum number of collection items to return
@@ -398,7 +398,7 @@ setup_query <- function(query = NULL,
   return(query)
 }
 
-#' Setup body parameters for API request
+#' @title Setup body parameters for API request
 #' @description This function prepares body parameters for API request.
 #' @param method HTTP method to be used in the request.
 #' @param body  HTTP request body - passed to httr package GET/POST/PUT/DELETE/PATCH call.
@@ -421,11 +421,12 @@ setup_body <- function(method, body = list()) {
 }
 # nolint end
 
-#' Check and transform id.
+#' @title Check and transform id.
 #'
-#' Generic way to check if the supplied argument is an instance of a given class
-#' or ID is directly specified as a string. In the first case, ID is extracted
-#' from specified field of object and returned as string.
+#' @description Generic way to check if the supplied argument is an instance
+#'  of a given class or ID is directly specified as a string.
+#'  In the first case, ID is extracted from specified field
+#'  of object and returned as string.
 #'
 #' @param x String with id or an instance of specified class.
 #' @param class_name Expected class of instance from which ID will be extracted.
@@ -454,10 +455,11 @@ check_and_transform_id <-
     return(id)
   }
 
-#' Extract common query parameters
+#' @title Extract common query parameters
 #'
-#' Extract default values for common query params like limit, offset, etc.
-#' If they don't exist in the provided list of params or return the found value.
+#' @description Extract default values for common query params like
+#'  limit, offset, etc. If they don't exist in the provided list of params
+#'  or return the found value.
 #'
 #' @return Parameter value.
 #'

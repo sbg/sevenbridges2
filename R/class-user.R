@@ -4,14 +4,13 @@
 #' User object containing user information.
 #'
 #' @importFrom R6 R6Class
-#' @details
-#' This is main object for Users.
+#' @details This is main object for Users.
 User <- R6::R6Class(
   "User",
   inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL URL endpoint fields.
     URL = list(
       "get" = "user"
     ),
@@ -24,7 +23,7 @@ User <- R6::R6Class(
     #' @field last_name User's last name.
     last_name = NULL,
     #' @field affiliation The company or the institute the user is affiliated
-    #' with.
+    #'  with.
     affiliation = NULL,
     #' @field phone User's phone number.
     phone = NULL,
@@ -43,8 +42,7 @@ User <- R6::R6Class(
     #' @field tags Platform tags associated with the user.
     tags = NULL,
 
-    #' @description
-    #' Create a new User object.
+    #' @description Create a new User object.
     #' @param res Response containing User object information.
     #' @param ... Other arguments.
     #' @return A new User object.
@@ -67,8 +65,7 @@ User <- R6::R6Class(
       self$tags <- res$tags
     },
     # nocov start
-    #' @description
-    #' Print user information as bullet list
+    #' @description Print user information as bullet list.
     #' @importFrom purrr discard
     #' @importFrom glue glue glue_col
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end
@@ -110,8 +107,7 @@ User <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
-    #' @description
-    #' Reload User
+    #' @description Reload User object information.
     #' @param ... Other query parameters.
     #' @return User
     reload = function(...) {
