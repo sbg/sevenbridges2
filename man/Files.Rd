@@ -65,7 +65,9 @@ Note that this call lists both files and subdirectories in the
 specified project or directory within a project, but not the contents
 of the subdirectories. \cr
 To list the contents of a subdirectory, make a new call
-and specify the subdirectory ID as the \code{parent} parameter.
+and specify the subdirectory ID as the \code{parent} parameter. \cr
+More information you can find in our
+\href{https://docs.sevenbridges.com/reference/list-files-primary-method}{API documentation}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Files$query(
   project = NULL,

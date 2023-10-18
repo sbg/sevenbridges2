@@ -34,7 +34,11 @@ Files <- R6::R6Class(
     #'  specified project or directory within a project, but not the contents
     #'  of the subdirectories. \cr
     #'  To list the contents of a subdirectory, make a new call
-    #'  and specify the subdirectory ID as the `parent` parameter.
+    #'  and specify the subdirectory ID as the `parent` parameter. \cr
+    #'  More information you can find in our
+    # nolint start
+    #'  [API documentation](https://docs.sevenbridges.com/reference/list-files-primary-method).
+    # nolint end
     #' @param project Project identifier (ID) as string or a Project object.
     #'  Project should not be used together with parent.
     #'  If parent is used, the call will list the content of the specified
@@ -68,6 +72,7 @@ Files <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  as 'fields', etc.
+    #'
     #' @importFrom checkmate assert_string assert_character
     #' @importFrom rlang abort
     query = function(project = NULL,

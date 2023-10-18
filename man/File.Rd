@@ -2,9 +2,9 @@
 % Please edit documentation in R/class-file.R
 \name{File}
 \alias{File}
-\title{R6 Class representing a file}
+\title{R6 Class representing a File}
 \description{
-R6 Class representing a resource for managing files.
+R6 Class representing a resource for managing files and folders.
 }
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{File}
@@ -12,35 +12,35 @@ R6 Class representing a resource for managing files.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 
-\item{\code{id}}{Character used as a file ID.}
+\item{\code{id}}{String used as a file ID.}
 
 \item{\code{name}}{String used as a file name.}
 
 \item{\code{size}}{File size.}
 
-\item{\code{project}}{Project ID if any, when returned by an API call.}
+\item{\code{project}}{Project ID if any, where file/folder is located.}
 
-\item{\code{created_on}}{Date created on.}
+\item{\code{created_on}}{Date file/folder was created on.}
 
-\item{\code{modified_on}}{Date modified on.}
+\item{\code{modified_on}}{Date file/folder was modified on.}
 
-\item{\code{storage}}{List as storage type.}
+\item{\code{storage}}{File/folder's storage type.}
 
-\item{\code{origin}}{List as origin.}
+\item{\code{origin}}{Task ID if file/folder is produced by some task execution.}
 
-\item{\code{tags}}{List as tags.}
+\item{\code{tags}}{List of tags associated with the file.}
 
 \item{\code{metadata}}{List for metadata associated with the file.}
 
-\item{\code{url}}{File download url.}
+\item{\code{url}}{File download URL.}
 
 \item{\code{parent}}{Parent folder ID.}
 
-\item{\code{type}}{This can be of type \code{File} or \code{Folder}.}
+\item{\code{type}}{This can be of type \code{file} or \code{folder}.}
 
-\item{\code{secondary_files}}{Secondary files}
+\item{\code{secondary_files}}{Secondary files linked to the file if exist.}
 }
 \if{html}{\out{</div>}}
 }
@@ -79,7 +79,7 @@ Create a new File object.
 \describe{
 \item{\code{res}}{Response containing File object information.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -108,7 +108,7 @@ The call returns the file's name, its tags, and all of its
 metadata. Apart from regular file fields there are some additional
 fields:
 \itemize{
-\item \strong{\code{storage}} field denotes the type of storage for the file
+\item \code{storage} field denotes the type of storage for the file
 which can be either PLATFORM or VOLUME depending on where the file is
 stored.
 \item \code{origin} field denotes the task that produced the file, if it
@@ -126,7 +126,7 @@ on the Platform.
 \if{html}{\out{<a id="method-File-reload"></a>}}
 \if{latex}{\out{\hypertarget{method-File-reload}{}}}
 \subsection{Method \code{reload()}}{
-Reload File.
+Reload File object information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{File$reload(...)}\if{html}{\out{</div>}}
 }
@@ -134,7 +134,8 @@ Reload File.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -165,23 +166,25 @@ strings.}
 \item{\code{tags}}{The tags you want to update, represented as unnamed list of
 values to add as tags.}
 
-\item{\code{...}}{Additional parameters that can be passed to the method.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\code{File} or \code{Folder}
+Updated File object.
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-add_tag"></a>}}
 \if{latex}{\out{\hypertarget{method-File-add_tag}{}}}
 \subsection{Method \code{add_tag()}}{
-This method allows you to tag files on the Platform. You can tag your
-files on the Platform with keywords to make it easier to identify and
-organize files you’ve imported from public datasets or copied between
-projects.
-.
+This method allows you to tag files on the Platform.
+You can tag your files on the Platform with keywords to make it easier
+to identify and organize files you’ve imported from public datasets
+or copied between projects. \cr
+More details on how to use this call can be found
+\href{https://docs.sevenbridges.com/reference/add-tags-to-a-file}{here}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{File$add_tag(tags, overwrite = FALSE, ...)}\if{html}{\out{</div>}}
 }
@@ -192,8 +195,8 @@ projects.
 \item{\code{tags}}{The tags you want to update, represented as unnamed list of
 values to add as tags.}
 
-\item{\code{overwrite}}{Set to TRUE if you want to ovewrite existing tags.
-Default: FALSE.}
+\item{\code{overwrite}}{Set to \code{TRUE} if you want to overwrite existing tags.
+Default: \code{FALSE}.}
 
 \item{\code{...}}{Additional parameters that can be passed to the method.}
 }
@@ -204,15 +207,15 @@ Default: FALSE.}
 \if{html}{\out{<a id="method-File-copy_to"></a>}}
 \if{latex}{\out{\hypertarget{method-File-copy_to}{}}}
 \subsection{Method \code{copy_to()}}{
-This call copies the specified file to a new project. Files retain their
-metadata when copied, but may be assigned new names in their target
-project. To make this call, you should have
+This call copies the specified file to a new project.
+Files retain their metadata when copied, but may be assigned new names
+in their target project. To make this call, you should have
 \href{https://docs.sevenbridges.com/docs/set-permissions}{copy permission}
-within the project you are copying from. Note: If you want to copy
+within the project you are copying from. \cr Note: If you want to copy
 multiple files, the recommended way is to do it in bulk considering the
 API rate limit
-(\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).You can
-do that using \code{Auth$copy_files()} operation.
+(\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).
+You can do that using \code{Auth$copy_files()} operation.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{File$copy_to(project, name = NULL, ...)}\if{html}{\out{</div>}}
 }
@@ -221,26 +224,26 @@ do that using \code{Auth$copy_files()} operation.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{project}}{The ID of the project or a Project object where you want
-to copy the file to. Project name should be specified in the
-\verb{<username>/<project-name>} format, e.g. \code{rfranklin/my-project}.}
+to copy the file to.}
 
 \item{\code{name}}{The new name the file will have in the target project.
 If its name will not change, omit this key.}
 
-\item{\code{...}}{Additional parameters that can be passed to the method.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\code{File} or \code{Folder}
+Copied File object.
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-get_download_url"></a>}}
 \if{latex}{\out{\hypertarget{method-File-get_download_url}{}}}
 \subsection{Method \code{get_download_url()}}{
-This method returns a URL that you can use to download the specified
-file.
+This method returns a URL that you can use to download
+the specified file.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{File$get_download_url(...)}\if{html}{\out{</div>}}
 }
@@ -248,7 +251,8 @@ file.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Additional parameters that can be passed to the method.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -257,7 +261,8 @@ file.
 \if{html}{\out{<a id="method-File-get_metadata"></a>}}
 \if{latex}{\out{\hypertarget{method-File-get_metadata}{}}}
 \subsection{Method \code{get_metadata()}}{
-This call returns the metadata values for the specified file.
+This call returns the metadata values for the specified
+file.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{File$get_metadata(...)}\if{html}{\out{</div>}}
 }
@@ -265,7 +270,8 @@ This call returns the metadata values for the specified file.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Additional parameters that can be passed to the method.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -274,7 +280,10 @@ This call returns the metadata values for the specified file.
 \if{html}{\out{<a id="method-File-set_metadata"></a>}}
 \if{latex}{\out{\hypertarget{method-File-set_metadata}{}}}
 \subsection{Method \code{set_metadata()}}{
-This call changes the metadata values for the specified file.
+This call changes the metadata values for the specified
+file. \cr
+More details about how to modify metadata, you can find in the
+\href{https://docs.sevenbridges.com/reference/modify-a-files-metadata}{API documentation}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{File$set_metadata(metadata_fields, overwrite = FALSE, ...)}\if{html}{\out{</div>}}
 }
@@ -283,12 +292,13 @@ This call changes the metadata values for the specified file.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{metadata_fields}}{Enter a list of key-value pairs of metadata fields
-and metadata values}
+and metadata values.}
 
-\item{\code{overwrite}}{Set to TRUE if you want to ovewrite existing tags.
-Default: FALSE.}
+\item{\code{overwrite}}{Set to \code{TRUE} if you want to overwrite existing tags.
+Default: \code{FALSE}.}
 
-\item{\code{...}}{Additional parameters that can be passed to the method.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -297,10 +307,10 @@ Default: FALSE.}
 \if{html}{\out{<a id="method-File-move_to_folder"></a>}}
 \if{latex}{\out{\hypertarget{method-File-move_to_folder}{}}}
 \subsection{Method \code{move_to_folder()}}{
-This call moves a file from one folder to another. Moving of files is
-only allowed within the same project.
+This call moves a file from one folder to another.
+Moving of files is only allowed within the same project.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{File$move_to_folder(parent, name = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{File$move_to_folder(parent, name = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -309,12 +319,13 @@ only allowed within the same project.
 \item{\code{parent}}{The ID string of target folder or a File object which must
 be of type \code{FOLDER}.}
 
-\item{\code{name}}{Specifies a new name for a file in case you want to rename it
-. If you want to use the same name, omit this key.}
-
-\item{\code{...}}{Additional parameters that can be passed to the method.}
+\item{\code{name}}{Specify a new name for a file in case you want to rename it.
+If you want to use the same name, omit this key.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Moved File object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -333,13 +344,17 @@ List folder contents.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{Defines where the retrieved items started.
-By default, \code{offset} is set to \code{0}.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
-\item{\code{...}}{Additional parameters that can be passed to the method.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -348,7 +363,7 @@ By default, \code{offset} is set to \code{0}.}
 \if{html}{\out{<a id="method-File-delete"></a>}}
 \if{latex}{\out{\hypertarget{method-File-delete}{}}}
 \subsection{Method \code{delete()}}{
-Delete method for File class.
+Delete method for File objects.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{File$delete()}\if{html}{\out{</div>}}
 }
@@ -358,7 +373,7 @@ Delete method for File class.
 \if{html}{\out{<a id="method-File-download"></a>}}
 \if{latex}{\out{\hypertarget{method-File-download}{}}}
 \subsection{Method \code{download()}}{
-Download method for File class. It allows download a
+Download method for File objects. It allows download a
 platform file to your local computer. To specify the destination for
 your download, you should provide the path to the destination directory
 as \code{directory_path} parameter.
@@ -409,7 +424,10 @@ be deleted from the Platform and, if no more copies of this file exist,
 it will no longer count towards your total storage price on the Platform.
 In summary, once you export a file from the Platform to a volume, it is
 no longer part of the storage on the Platform and cannot be exported
-again.
+again. \cr
+
+Read more about this operation in our documentation
+\href{https://docs.sevenbridges.com/reference/start-an-export-job-v2}{here}.
 
 If you want to export multiple files, the recommended way is to do it
 in bulk considering the API rate limit (\link{learn more}
@@ -436,16 +454,17 @@ file will be exported.
 This location should be recognizable to the underlying cloud service as
 a valid key or path to a new file. Please note that if this volume has
 been configured with a prefix parameter, the value of prefix will be
-prepended to location before attempting to create the file on the volume.
+prepended to location before attempting to create the file on the
+volume.
 
 If you would like to export the file into some folder on the volume,
 please add folder name as prefix before file name in form
 \verb{<folder-name>/<file-name>}.}
 
-\item{\code{overwrite}}{Boolean. Whether to overwrite the item if another one
-with the same name already exists at the destination.}
+\item{\code{overwrite}}{Set to \code{TRUE} of you want to overwrite the item that
+already exists at the destination. Default: \code{FALSE}.}
 
-\item{\code{copy_only}}{Boolean. If true, file will be copied to a volume but
+\item{\code{copy_only}}{If \code{TRUE}, file will be copied to a volume but
 source file will remain on the Platform.}
 
 \item{\code{properties}}{Named list of additional volume properties, like:
@@ -463,7 +482,7 @@ on during export. Supported values: any one of S3 canned ACLs;
 null (do not apply canned ACLs). Default: null.
 }}
 
-\item{\code{...}}{Other arguments that can be passed to api() function
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
