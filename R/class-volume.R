@@ -175,6 +175,7 @@ Volume <- R6::R6Class(
     #' all files which have been imported from the volume to the Platform.
     #'
     #' @param ... Other query parameters like 'force'.
+    #'  Use it within query parameter, like `query = list(force = TRUE)`.
     deactivate = function(...) {
       if (!self$active) {
         rlang::abort(
@@ -205,6 +206,7 @@ Volume <- R6::R6Class(
     #' This function reactivates the previously deactivated volume by updating
     #' the 'active' field of the volume to TRUE.
     #' @param ... Other query parameters like 'force'.
+    #'  Use it within query parameter, like `query = list(force = TRUE)`.
     reactivate = function(...) {
       if (self$active) {
         rlang::abort(

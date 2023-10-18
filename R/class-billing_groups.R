@@ -18,7 +18,7 @@ Billing_groups <- R6::R6Class(
       "get" = "billing/groups/{id}"
     ),
     #' @description Create a new Billing_groups object.
-    #' @param ... Other arguments.
+    #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
@@ -32,8 +32,8 @@ Billing_groups <- R6::R6Class(
     #' @param offset The zero-based starting index in the entire collection
     #'  of the first item to return. The default value is `0`.
     #'  This is a pagination-specific attribute.
-    #' @param ... Other arguments that can be passed to this method. Such as
-    #'  query parameters.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like query parameters, 'fields', etc.
     #' @return Collection of billing groups (Billing class objects).
     query = function(limit = getOption("sevenbridges2")$limit,
                      offset = getOption("sevenbridges2")$offset,
@@ -49,9 +49,7 @@ Billing_groups <- R6::R6Class(
       res$items <- asBillingList(res, auth = self$auth)
 
       return(asCollection(res, auth = self$auth))
-    },
-    # nocov end
-
+    }, # nocov end
     #' @description Retrieve a single billing group, specified by its id.
     #'  To find the `billing_group`, use the call [Billing_groups$query()]
     #'  to list all your billing groups. The information returned
@@ -59,7 +57,7 @@ Billing_groups <- R6::R6Class(
     #'  the billing group (pending or confirmed).
     #'
     #' @param id The ID of the billing group you are querying.
-    #' @param ... Other arguments that can be passed to `api()` function
+    #' @param ... Other arguments that can be passed to core `api()` function
     #' like 'fields', etc.
     #'
     #' @return Billing object.

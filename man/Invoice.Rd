@@ -57,7 +57,7 @@ Create new Invoice object.
 \describe{
 \item{\code{res}}{Response containing Invoice object information.}
 
-\item{\code{...}}{Other arguments passed to methods.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -84,7 +84,8 @@ Reload Invoice.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }

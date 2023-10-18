@@ -22,7 +22,7 @@ Member <- R6::R6Class(
 
     #' @description Create a new Member object.
     #' @param res Response containing Member object information.
-    #' @param ... Other arguments.
+    #' @param ... Other response arguments.
     #' @return A new Member object.
     initialize = function(res = NA, ...) {
       # Initialize Item class

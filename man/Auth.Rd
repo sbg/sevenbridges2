@@ -98,8 +98,7 @@ All methods can be accessed through this object.
   config_file = NA,
   profile_name = NA,
   fs = NA,
-  authorization = FALSE,
-  ...
+  authorization = FALSE
 )}\if{html}{\out{</div>}}
 }
 
@@ -150,8 +149,6 @@ The default value is \code{"default"}.}
 \item{\code{authorization}}{Logical. Is the \code{token} an API
 authentication token (\code{FALSE}) or an access token from the
 Seven Bridges single sign-on (\code{TRUE})?}
-
-\item{\code{...}}{Other arguments passed to methods.}
 }
 \if{html}{\out{</div>}}
 }
@@ -163,7 +160,8 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \if{html}{\out{<a id="method-Auth-get_token"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-get_token}{}}}
 \subsection{Method \code{get_token()}}{
-Returns the authentication token read from system environment variable.
+Returns the authentication token read from
+system environment variable.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$get_token()}\if{html}{\out{</div>}}
 }
@@ -176,8 +174,8 @@ An API authentication token in form of a string.
 \if{html}{\out{<a id="method-Auth-api"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-api}{}}}
 \subsection{Method \code{api()}}{
-This method returns all API paths and pass arguments to core \code{api()}
-function.
+This method returns all API paths and
+pass arguments to core \code{api()} function.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$api(
   ...,
@@ -190,7 +188,8 @@ function.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments passed to core \code{api()} function.}
+\item{\code{...}}{Other arguments passed to core \code{api()} function, like \code{path},
+\code{query} parameters or full \code{url} to some resource.}
 
 \item{\code{limit}}{The maximum number of collection items to return for a
 single request. Minimum value is \code{1}. The maximum value is \code{100} and the
@@ -219,7 +218,7 @@ More details please check
 \if{html}{\out{<a id="method-Auth-user"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-user}{}}}
 \subsection{Method \code{user()}}{
-Get details about the authenticated user
+Get details about the authenticated user.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$user(username = NULL)}\if{html}{\out{</div>}}
 }
@@ -234,14 +233,14 @@ authenticated user will be returned.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\code{User} class object
+\code{User} class object.
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Auth-rate_limit"></a>}}
 \if{latex}{\out{\hypertarget{method-Auth-rate_limit}{}}}
 \subsection{Method \code{rate_limit()}}{
-Get information about current rate limit \cr \cr
+Get information about current rate limit. \cr \cr
 This call returns information about your current rate limit. This is the
 number of API calls you can make in one hour. This call also returns
 information about your current instance limit.
@@ -348,8 +347,7 @@ You can send one feedback item per minute.
 \if{html}{\out{<div class="r">}}\preformatted{Auth$send_feedback(
   text,
   type = c("idea", "thought", "problem"),
-  referrer = NULL,
-  ...
+  referrer = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -362,8 +360,6 @@ You can send one feedback item per minute.
 \code{idea}, \code{thought} and \code{problem}.}
 
 \item{\code{referrer}}{The name of the person submitting the feedback.}
-
-\item{\code{...}}{Additional query parameters if applicable.}
 }
 \if{html}{\out{</div>}}
 }

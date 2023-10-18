@@ -5,8 +5,8 @@
 #'
 #' @importFrom R6 R6Class
 #' @details
-#' This object contains information about a selected invoice,
-#' including the costs for analysis and storage, and the invoice period.
+#'  This object contains information about a selected invoice,
+#'  including the costs for analysis and storage, and the invoice period.
 #'
 Invoice <- R6::R6Class(
   "Invoice",
@@ -34,7 +34,7 @@ Invoice <- R6::R6Class(
 
     #' @description Create new Invoice object.
     #' @param res Response containing Invoice object information.
-    #' @param ... Other arguments passed to methods.
+    #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
@@ -122,7 +122,8 @@ Invoice <- R6::R6Class(
       cli::cli_end()
     },
     #' @description Reload Invoice.
-    #' @param ... Other query parameters.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     #' @return Invoice
     reload = function(...) {
       super$reload(

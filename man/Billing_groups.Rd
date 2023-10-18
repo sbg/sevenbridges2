@@ -44,7 +44,7 @@ Create a new Billing_groups object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -75,8 +75,8 @@ This is a pagination-specific attribute.}
 of the first item to return. The default value is \code{0}.
 This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments that can be passed to this method. Such as
-query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like query parameters, 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -102,7 +102,7 @@ the billing group (pending or confirmed).
 \describe{
 \item{\code{id}}{The ID of the billing group you are querying.}
 
-\item{\code{...}}{Other arguments that can be passed to \code{api()} function
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}

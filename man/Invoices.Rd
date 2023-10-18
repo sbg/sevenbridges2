@@ -44,7 +44,7 @@ Create a new Invoices object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -81,8 +81,8 @@ This is a pagination-specific attribute.}
 of the first item to return. The default value is \code{0}.
 This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments that can be passed to this method, such as
-query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like query parameters or 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -107,7 +107,7 @@ specified billing group.
 \describe{
 \item{\code{id}}{The ID of the invoice you are querying.}
 
-\item{\code{...}}{Other arguments that can be passed to api() function
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}

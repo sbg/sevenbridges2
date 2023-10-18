@@ -162,7 +162,8 @@ all files which have been imported from the volume to the Platform.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query parameters like 'force'.}
+\item{\code{...}}{Other query parameters like 'force'.
+Use it within query parameter, like \code{query = list(force = TRUE)}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -181,7 +182,8 @@ the 'active' field of the volume to TRUE.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query parameters like 'force'.}
+\item{\code{...}}{Other query parameters like 'force'.
+Use it within query parameter, like \code{query = list(force = TRUE)}.}
 }
 \if{html}{\out{</div>}}
 }

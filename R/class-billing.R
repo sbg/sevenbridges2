@@ -37,7 +37,7 @@ Billing <- R6::R6Class(
 
     #' @description Create a new Billing object.
     #' @param res Response containing Billing object information.
-    #' @param ... Other arguments.
+    #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
@@ -83,7 +83,8 @@ Billing <- R6::R6Class(
       cli::cli_end()
     },
     #' @description Reload Billing group object.
-    #' @param ... Other query parameters.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'limit', 'offset', 'fields', etc.
     #' @return Billing
     reload = function(...) {
       super$reload(
@@ -110,7 +111,7 @@ Billing <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param fields Selector specifying a subset of fields to include in the
     #'  response.
-    #' @param ... Other arguments.
+    #' @param ... Other arguments that can be passed to core `api()` function.
     analysis_breakdown = function(date_from = NULL,
                                   date_to = NULL,
                                   invoice = NULL,
@@ -135,11 +136,14 @@ Billing <- R6::R6Class(
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
+        query = list(
+          invoice_id = invoice,
+          date_from = date_from,
+          date_to = date_to
+        ),
         limit = limit,
-        invoice_id = invoice,
         offset = offset,
-        date_from = date_from,
-        date_to = date_to,
+        fields = fields,
         ...
       )
 
@@ -163,7 +167,7 @@ Billing <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param fields Selector specifying a subset of fields to include in the
     #'  response.
-    #' @param ... Other arguments.
+    #' @param ... Other arguments that can be passed to core `api()` function.
     storage_breakdown = function(date_from = NULL,
                                  date_to = NULL,
                                  invoice = NULL,
@@ -188,11 +192,14 @@ Billing <- R6::R6Class(
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
+        query = list(
+          invoice_id = invoice,
+          date_from = date_from,
+          date_to = date_to
+        ),
         limit = limit,
-        invoice_id = invoice,
         offset = offset,
-        date_from = date_from,
-        date_to = date_to,
+        fields = fields,
         ...
       )
 
@@ -216,7 +223,7 @@ Billing <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param fields Selector specifying a subset of fields to include in the
     #'  response.
-    #' @param ... Other arguments.
+    #' @param ... Other arguments that can be passed to core `api()` function.
     egress_breakdown = function(date_from = NULL,
                                 date_to = NULL,
                                 invoice = NULL,
@@ -241,11 +248,14 @@ Billing <- R6::R6Class(
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
+        query = list(
+          invoice_id = invoice,
+          date_from = date_from,
+          date_to = date_to
+        ),
         limit = limit,
-        invoice_id = invoice,
         offset = offset,
-        date_from = date_from,
-        date_to = date_to,
+        fields = fields,
         ...
       )
 

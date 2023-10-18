@@ -59,7 +59,7 @@ Create a new Billing object.
 \describe{
 \item{\code{res}}{Response containing Billing object information.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -86,7 +86,8 @@ Reload Billing group object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -136,7 +137,7 @@ This is a pagination-specific attribute.}
 of the first item to return. The default value is \code{0}.
 This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function.}
 }
 \if{html}{\out{</div>}}
 }
@@ -183,7 +184,7 @@ This is a pagination-specific attribute.}
 of the first item to return. The default value is \code{0}.
 This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function.}
 }
 \if{html}{\out{</div>}}
 }
@@ -230,7 +231,7 @@ This is a pagination-specific attribute.}
 of the first item to return. The default value is \code{0}.
 This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function.}
 }
 \if{html}{\out{</div>}}
 }

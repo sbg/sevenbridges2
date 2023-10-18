@@ -47,7 +47,7 @@ Create a new Member object.
 \describe{
 \item{\code{res}}{Response containing Member object information.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }

@@ -38,7 +38,7 @@ Permission <- R6::R6Class(
     #'  They also have all of the above permissions. Set value to `TRUE` to
     #'  assign the user admin permission. Set to `FALSE` to remove admin
     #'  permission.
-    #' @param ... Other arguments.
+    #' @param ... Other response arguments.
     initialize = function(read = TRUE, copy = FALSE, write = FALSE,
                           execute = FALSE, admin = FALSE, ...) {
       # Initialize Item class

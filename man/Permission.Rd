@@ -75,7 +75,7 @@ They also have all of the above permissions. Set value to \code{TRUE} to
 assign the user admin permission. Set to \code{FALSE} to remove admin
 permission.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
