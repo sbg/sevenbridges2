@@ -32,8 +32,7 @@ Invoice <- R6::R6Class(
     #' @field total Total costs.
     total = NULL,
 
-    #' @description
-    #' Create a new Invoice object.
+    #' @description Create new Invoice object.
     #' @param res Response containing Invoice object information.
     #' @param ... Other arguments passed to methods.
     initialize = function(res = NA, ...) {
@@ -49,8 +48,7 @@ Invoice <- R6::R6Class(
       self$total <- res$total
     },
     # nocov start
-    #' @description
-    #' Print invoice information as a bullet list.
+    #' @description Print invoice information as a bullet list.
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_ul cli_li
@@ -123,8 +121,7 @@ Invoice <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
-    #' @description
-    #' Reload Invoice.
+    #' @description Reload Invoice.
     #' @param ... Other query parameters.
     #' @return Invoice
     reload = function(...) {

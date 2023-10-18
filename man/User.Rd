@@ -15,7 +15,7 @@ This is main object for Users.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{URL endpoint fields.}
 
 \item{\code{username}}{User name.}
 
@@ -81,7 +81,7 @@ A new User object.
 \if{html}{\out{<a id="method-User-print"></a>}}
 \if{latex}{\out{\hypertarget{method-User-print}{}}}
 \subsection{Method \code{print()}}{
-Print user information as bullet list
+Print user information as bullet list.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{User$print()}\if{html}{\out{</div>}}
 }
@@ -91,7 +91,7 @@ Print user information as bullet list
 \if{html}{\out{<a id="method-User-reload"></a>}}
 \if{latex}{\out{\hypertarget{method-User-reload}{}}}
 \subsection{Method \code{reload()}}{
-Reload User
+Reload User object information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{User$reload(...)}\if{html}{\out{</div>}}
 }

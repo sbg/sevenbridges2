@@ -47,7 +47,7 @@ including the costs for analysis and storage, and the invoice period.
 \if{html}{\out{<a id="method-Invoice-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Invoice-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new Invoice object.
+Create new Invoice object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Invoice$new(res = NA, ...)}\if{html}{\out{</div>}}
 }

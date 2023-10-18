@@ -51,6 +51,9 @@ Create a new Member object.
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+A new Member object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Member-print"></a>}}
@@ -66,7 +69,7 @@ Print method for Member class.
 \if{html}{\out{<a id="method-Member-reload"></a>}}
 \if{latex}{\out{\hypertarget{method-Member-reload}{}}}
 \subsection{Method \code{reload()}}{
-Reload Member.
+Reload Member object information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Member$reload()}\if{html}{\out{</div>}}
 }
