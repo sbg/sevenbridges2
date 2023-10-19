@@ -627,8 +627,8 @@ File <- R6::R6Class(
     #' [here](https://docs.sevenbridges.com/reference/start-an-export-job-v2).
     #'
     #' If you want to export multiple files, the recommended way is to do it
-    #' in bulk considering the API rate limit ([learn more]
-    #' (https://docs.sevenbridges.com/docs/api-rate-limit)).
+    #' in bulk considering the API rate limit
+    #' ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).
     #'
     #' @param destination_volume String volume id or Volume object you want to
     #'  export files into. Required.
@@ -649,15 +649,15 @@ File <- R6::R6Class(
     #'  source file will remain on the Platform.
     #' @param properties Named list of additional volume properties, like:
     #' \itemize{
-    #'    \item `sse_algorithm` - String. S3 server-side encryption to use when
+    #'    \item `sse_algorithm` - S3 server-side encryption to use when
     #'    exporting to this bucket. Supported values:
-    #'    AES256 (SSE-S3 encryption), aws:kms, null (no server-side encryption).
-    #'    Default: AES256.
-    #'    \item `sse_aws_kms_key_Id`: String. Applies to type: s3.
+    #'    `AES256` (SSE-S3 encryption), `aws:kms`, `null`
+    #'    (no server-side encryption). Default: `AES256`.
+    #'    \item `sse_aws_kms_key_Id`: Applies to type: `s3`.
     #'    If AWS KMS encryption is used, this should be set to the required KMS
-    #'    key. If not set and aws:kms is set as sse_algorithm, default KMS key
-    #'    is used.
-    #'    \item `aws_canned_acl`: String. S3 canned ACL to apply on the object
+    #'    key. If not set and `aws:kms` is set as `sse_algorithm`,
+    #'    default KMS key is used.
+    #'    \item `aws_canned_acl`: S3 canned ACL to apply on the object
     #'    on during export. Supported values: any one of S3 canned ACLs;
     #'    null (do not apply canned ACLs). Default: null.
     #' }

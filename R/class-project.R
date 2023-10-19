@@ -798,9 +798,9 @@ Project <- R6::R6Class(
     #'
     #' @param app The ID string of an app or an App object you want to run.
     #'  Recall that apps are specified by their projects, in the form
-    #'  `{project_owner}/{project}/{app_name}`
+    #'  `{project_owner}/{project}/{app_name}`.
     #' @param revision The app
-    #'  [revision (version)] (https://docs.sevenbridges.com/docs/app-versions)
+    #'  [revision (version)](https://docs.sevenbridges.com/docs/app-versions)
     #'  number.
     #' @param name The name of the task.
     #' @param description An optional description of the task.

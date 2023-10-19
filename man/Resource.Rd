@@ -65,7 +65,7 @@ Generic query implementation that is used by the resources.
 \if{html}{\out{<a id="method-Resource-get"></a>}}
 \if{latex}{\out{\hypertarget{method-Resource-get}{}}}
 \subsection{Method \code{get()}}{
-Generic query implementation that fetches the resource
+Generic get implementation that fetches single resource
 from the server.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Resource$get(cls, id, ...)}\if{html}{\out{</div>}}
@@ -79,7 +79,7 @@ from the server.
 \item{\code{id}}{Object id.}
 
 \item{\code{...}}{Other arguments that can be passed to core \code{api()} function
-like 'limit', 'offset', 'fields', etc.}
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -88,7 +88,7 @@ like 'limit', 'offset', 'fields', etc.}
 \if{html}{\out{<a id="method-Resource-delete"></a>}}
 \if{latex}{\out{\hypertarget{method-Resource-delete}{}}}
 \subsection{Method \code{delete()}}{
-Generic query implementation that deletes the resource
+Generic implementation that deletes the resource
 from the server.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Resource$delete(cls, id, ...)}\if{html}{\out{</div>}}
@@ -101,8 +101,7 @@ from the server.
 
 \item{\code{id}}{Object id.}
 
-\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
-like 'limit', 'offset', 'fields', etc.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function.}
 }
 \if{html}{\out{</div>}}
 }

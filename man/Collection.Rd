@@ -17,7 +17,8 @@ resource API request URL (href).
 
 \item{\code{items}}{Items returned in API response.}
 
-\item{\code{links}}{List of links (hrefs) for next page resources.}
+\item{\code{links}}{List of links (hrefs) for next and/or previous page
+resources.}
 
 \item{\code{total}}{Total number of items available on the server.}
 
@@ -61,7 +62,8 @@ Create a new Collection object.
 
 \item{\code{items}}{Items returned in API response.}
 
-\item{\code{links}}{List of links (hrefs) for next page resources.}
+\item{\code{links}}{List of links (hrefs) for next and/or previous page
+resources.}
 
 \item{\code{total}}{Total number of items available on the server.}
 
@@ -129,7 +131,8 @@ like 'advanced_access', 'fields', etc.}
 \if{html}{\out{<a id="method-Collection-all"></a>}}
 \if{latex}{\out{\hypertarget{method-Collection-all}{}}}
 \subsection{Method \code{all()}}{
-Fetches all available items.
+Fetches all available items by iterating through all pages.
+Please, be aware of the API rate limit for your request.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Collection$all(...)}\if{html}{\out{</div>}}
 }

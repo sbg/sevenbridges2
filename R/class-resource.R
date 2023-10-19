@@ -55,12 +55,12 @@ Resource <- R6::R6Class(
 
       return(res) # nocov end
     },
-    #' @description Generic query implementation that fetches the resource
+    #' @description Generic get implementation that fetches single resource
     #'  from the server.
     #' @param cls Resource class object.
     #' @param id Object id.
     #' @param ... Other arguments that can be passed to core `api()` function
-    #'  like 'limit', 'offset', 'fields', etc.
+    #'  like 'fields', etc.
     #'
     #' @importFrom rlang abort
     #' @importFrom glue glue
@@ -98,12 +98,11 @@ Resource <- R6::R6Class(
 
       return(res) # nocov end
     },
-    #' @description Generic query implementation that deletes the resource
+    #' @description Generic implementation that deletes the resource
     #'  from the server.
     #' @param cls Resource class object.
     #' @param id Object id.
-    #' @param ... Other arguments that can be passed to core `api()` function
-    #'  like 'limit', 'offset', 'fields', etc.
+    #' @param ... Other arguments that can be passed to core `api()` function.
     #'
     #' @importFrom rlang abort
     #' @importFrom glue glue

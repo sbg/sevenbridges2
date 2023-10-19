@@ -4,8 +4,8 @@
 \alias{Item}
 \title{R6 Class Representing an Item}
 \description{
-Base class for describing a set of objects:
-Project, Task, App, Files, etc.
+Base class for describing objects:
+Project, Task, App, File, etc.
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}

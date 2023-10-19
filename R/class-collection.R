@@ -19,7 +19,8 @@ Collection <- R6::R6Class(
     href = NULL,
     #' @field items Items returned in API response.
     items = NULL,
-    #' @field links List of links (hrefs) for next page resources.
+    #' @field links List of links (hrefs) for next and/or previous page
+    #'  resources.
     links = NULL,
     #' @field total Total number of items available on the server.
     total = NULL,
@@ -31,7 +32,8 @@ Collection <- R6::R6Class(
     #' @description Create a new Collection object.
     #' @param href API request URL.
     #' @param items Items returned in API response.
-    #' @param links List of links (hrefs) for next page resources.
+    #' @param links List of links (hrefs) for next and/or previous page
+    #'  resources.
     #' @param total Total number of items available on the server.
     #' @param response Raw API response.
     #' @param auth Seven Bridges Authentication object.
@@ -131,7 +133,8 @@ Collection <- R6::R6Class(
         }
       }
     }, # nocov end
-    #' @description Fetches all available items.
+    #' @description Fetches all available items by iterating through all pages.
+    #'  Please, be aware of the API rate limit for your request.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'advanced_access', 'fields', etc.
     #' @importFrom rlang abort

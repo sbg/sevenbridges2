@@ -713,10 +713,10 @@ for more details on batching criteria.
 \describe{
 \item{\code{app}}{The ID string of an app or an App object you want to run.
 Recall that apps are specified by their projects, in the form
-\code{{project_owner}/{project}/{app_name}}}
+\code{{project_owner}/{project}/{app_name}}.}
 
 \item{\code{revision}}{The app
-\link{revision (version)} (https://docs.sevenbridges.com/docs/app-versions)
+\href{https://docs.sevenbridges.com/docs/app-versions}{revision (version)}
 number.}
 
 \item{\code{name}}{The name of the task.}

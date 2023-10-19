@@ -430,8 +430,8 @@ Read more about this operation in our documentation
 \href{https://docs.sevenbridges.com/reference/start-an-export-job-v2}{here}.
 
 If you want to export multiple files, the recommended way is to do it
-in bulk considering the API rate limit (\link{learn more}
-(https://docs.sevenbridges.com/docs/api-rate-limit)).
+in bulk considering the API rate limit
+(\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{File$submit_export(
   destination_volume,
@@ -469,15 +469,15 @@ source file will remain on the Platform.}
 
 \item{\code{properties}}{Named list of additional volume properties, like:
 \itemize{
-\item \code{sse_algorithm} - String. S3 server-side encryption to use when
+\item \code{sse_algorithm} - S3 server-side encryption to use when
 exporting to this bucket. Supported values:
-AES256 (SSE-S3 encryption), aws:kms, null (no server-side encryption).
-Default: AES256.
-\item \code{sse_aws_kms_key_Id}: String. Applies to type: s3.
+\code{AES256} (SSE-S3 encryption), \code{aws:kms}, \code{null}
+(no server-side encryption). Default: \code{AES256}.
+\item \code{sse_aws_kms_key_Id}: Applies to type: \code{s3}.
 If AWS KMS encryption is used, this should be set to the required KMS
-key. If not set and aws:kms is set as sse_algorithm, default KMS key
-is used.
-\item \code{aws_canned_acl}: String. S3 canned ACL to apply on the object
+key. If not set and \code{aws:kms} is set as \code{sse_algorithm},
+default KMS key is used.
+\item \code{aws_canned_acl}: S3 canned ACL to apply on the object
 on during export. Supported values: any one of S3 canned ACLs;
 null (do not apply canned ACLs). Default: null.
 }}
