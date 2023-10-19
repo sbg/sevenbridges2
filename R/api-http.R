@@ -5,6 +5,11 @@
 #'
 #' @param token API authentication token or `access_token` for
 #'  Seven Bridges single sign-on.
+#'  Authentication token uniquely identifies you on the
+#'  ⁨Seven Bridges⁩ Platform and has all your data access, app management
+#'  and task execution permissions. Read more about the its usage
+#'  [here](https://docs.sevenbridges.com/docs/get-your-authentication-token).
+#'
 #' @param path Path connected with `base_url`.
 #' @param method One of `"GET"`, `"POST"`, `"PUT"`, `"DELETE"`, or `"PATCH"`.
 #' @param query Query parameters passed to httr package GET/POST call.

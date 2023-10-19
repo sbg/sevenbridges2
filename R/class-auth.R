@@ -113,6 +113,10 @@ Auth <- R6::R6Class(
     #'  above, and also leaving `platform` unspecified.
     #'
     #' @param token Your authentication token.
+    #'  Authentication token uniquely identifies you on the
+    #'  ⁨Seven Bridges⁩ Platform and has all your data access, app management
+    #'  and task execution permissions. Read more about the its usage
+    #' [here](https://docs.sevenbridges.com/docs/get-your-authentication-token).
     #'
     #' @param sysenv_url Name of the system environment variable storing
     #'  the API base URL. By default: `"SB_API_ENDPOINT"`.

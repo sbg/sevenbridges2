@@ -130,7 +130,11 @@ Other possible values include:
 want to specify a platform that is not in the \code{platform} list
 above, and also leaving \code{platform} unspecified.}
 
-\item{\code{token}}{Your authentication token.}
+\item{\code{token}}{Your authentication token.
+Authentication token uniquely identifies you on the
+⁨Seven Bridges⁩ Platform and has all your data access, app management
+and task execution permissions. Read more about the its usage
+\href{https://docs.sevenbridges.com/docs/get-your-authentication-token}{here}.}
 
 \item{\code{sysenv_url}}{Name of the system environment variable storing
 the API base URL. By default: \code{"SB_API_ENDPOINT"}.}
