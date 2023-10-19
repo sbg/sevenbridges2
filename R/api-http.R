@@ -113,11 +113,15 @@ api <- function(token = NULL, path = NULL,
     query <- parsed_url$query
   } # nocov end
 
+  # setup client info
+  client_info <- setup_client_info()
+
   # set headers
   headers <- set_headers(
     authorization = authorization,
     token = token,
-    advance_access = advance_access
+    advance_access = advance_access,
+    client_info = client_info
   )
 
   # setup body
