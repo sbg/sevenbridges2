@@ -12,7 +12,7 @@ R6 Class representing a resource for managing apps.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 
 \item{\code{id}}{Character used as an app ID - short app name.}
 
@@ -58,7 +58,7 @@ Create a new App object.
 \describe{
 \item{\code{res}}{Response containing App object information.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -77,7 +77,7 @@ Print method for App class.
 \if{html}{\out{<a id="method-App-reload"></a>}}
 \if{latex}{\out{\hypertarget{method-App-reload}{}}}
 \subsection{Method \code{reload()}}{
-Reload App.
+Reload App object information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App$reload(...)}\if{html}{\out{</div>}}
 }
@@ -85,19 +85,21 @@ Reload App.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-App.
+App object.
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-App-copy"></a>}}
 \if{latex}{\out{\hypertarget{method-App-copy}{}}}
 \subsection{Method \code{copy()}}{
-A method that copies the current app.
+A method that copies the current app to the
+specified project.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App$copy(project, name = NULL, strategy = "clone", use_revision = FALSE, ...)}\if{html}{\out{</div>}}
 }
@@ -107,7 +109,8 @@ A method that copies the current app.
 \describe{
 \item{\code{project}}{Project object or project ID. If you opt for the latter,
 remember that the project ID should be specified in
-\verb{<username>/<project-name>} format, e.g. \code{rfranklin/my-project}.}
+\verb{<project_owner>/<project-name>} format, e.g. \code{rfranklin/my-project},
+or as \verb{<division>/<project-name>} depending on the account type.}
 
 \item{\code{name}}{The new name the app will have in the target project.
 Optional.}
@@ -120,28 +123,27 @@ the copied app (default)
 \item \code{clone_direct}: copy all revisions; get updates from the copied
 app
 \item \code{transient}: copy latest revision; get updates from the same
-app as the copied app
+app as the copied app.
 }}
 
 \item{\code{use_revision}}{Parameter specifying which app's revision should be
 copied. If set to \code{FALSE} (default), the latest revision of the app will
 be copied.}
 
-\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
-a subset of fields to include in the response.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Details}{
-The method copies the current app to the specified project.
+\subsection{Returns}{
+Copied App object.
 }
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-App-get_revision"></a>}}
 \if{latex}{\out{\hypertarget{method-App-get_revision}{}}}
 \subsection{Method \code{get_revision()}}{
-Get app's revision
+Get app's revision.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App$get_revision(revision = self$revision, in_place = FALSE, ...)}\if{html}{\out{</div>}}
 }
@@ -151,11 +153,11 @@ Get app's revision
 \describe{
 \item{\code{revision}}{Integer denoting the revision of the app.}
 
-\item{\code{in_place}}{If TRUE, replace current app object with new for
+\item{\code{in_place}}{If \code{TRUE}, replace current app object with new for
 specified app revision.}
 
-\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
-a subset of fields to include in the response.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -164,6 +166,9 @@ This call allows you to obtain a particular revision of an
 app, which is not necessarily the most recent version.
 }
 
+\subsection{Returns}{
+App object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-App-create_revision"></a>}}
@@ -198,11 +203,11 @@ parameter should not be used together with the \code{file_path} parameter.}
 
 \item{\code{raw_format}}{The type of format used (JSON or YAML).}
 
-\item{\code{in_place}}{If TRUE, replace current app object with
-newly created revision.}
+\item{\code{in_place}}{If \code{TRUE}, replace current app object with newly
+created revision.}
 
-\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
-a subset of fields to include in the response.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -210,9 +215,14 @@ a subset of fields to include in the response.}
 This call creates a new revision for an existing app. It adds a new CWL
 app description, and stores it as the named revision for the specified
 app. The revision number must not already exist and should follow the
-sequence of previously created revisions.
+sequence of previously created revisions. \cr \cr
+More documentation about how to create the app via API can be found
+\href{https://docs.sevenbridges.com/reference/add-an-app-using-raw-cwl}{here}
 }
 
+\subsection{Returns}{
+App object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-App-sync"></a>}}
@@ -226,8 +236,8 @@ Synchronize a copied app with its parent app
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
-a subset of fields to include in the response.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -270,26 +280,26 @@ for more details on batching criteria.
 \item{\code{project}}{The ID string of a project or a Project object where you
 want to create the task in.}
 
-\item{\code{revision}}{Numeric. The app
+\item{\code{revision}}{The app
 \href{https://docs.sevenbridges.com/docs/app-versions}{revision (version)}
 number.}
 
-\item{\code{name}}{String. The name of the task.}
+\item{\code{name}}{The string name of the task.}
 
-\item{\code{description}}{String. An optional description of the task.}
+\item{\code{description}}{An optional string description of the task.}
 
 \item{\code{execution_settings}}{Named list with detailed task execution
 parameters. Detailed task execution parameters:
 \itemize{
-\item \code{instance_type}: String. Possible value is the specific instance type,
-e.g. \code{"instance_type" = "c4.2xlarge;ebs-gp2;2000"}.
-\item \code{max_parallel_instances}: Integer. Maximum number of instances
-running at the same time. Takes any integer value equal to or greater
-than 1, e.g. \code{"max_parallel_instances" = 2.}
-\item \code{use_memoization}: Boolean. Set to \code{FALSE} by default. Set to \code{TRUE}
+\item \code{instance_type}: Possible value is the specific instance type,
+e.g. \code{"instance_type" = "c4.2xlarge;ebs-gp2;2000"};
+\item \code{max_parallel_instances}: Maximum number of instances
+running at the same time. Takes any integer value equal to or
+greater than 1, e.g. \code{"max_parallel_instances" = 2.};
+\item \code{use_memoization}: Set to \code{FALSE} by default. Set to \code{TRUE}
 to enable
-\href{https://docs.sevenbridges.com/docs/about-memoization}{memoization}.
-\item \code{use_elastic_disk}: Boolean. Set to \code{TRUE} to enable
+\href{https://docs.sevenbridges.com/docs/about-memoization}{memoization};
+\item \code{use_elastic_disk}: Set to \code{TRUE} to enable
 \href{https://docs.sevenbridges.com/page/elastic-disk}{Elastic Disk}.
 }
 
@@ -326,26 +336,29 @@ various input types:
   )
 }\if{html}{\out{</div>}}}
 
-\item{\code{batch}}{Boolean. This is set to \code{FALSE} by default. Set to \code{TRUE} to
+\item{\code{batch}}{This is set to \code{FALSE} by default. Set to \code{TRUE} to
 create a batch task and specify the \code{batch_input} and \code{batch-by}
 criteria as described below.}
 
-\item{\code{batch_input}}{String. The ID of the input on which you wish to
-batch. You would typically batch on the input consisting of a list of
-files. If this parameter is omitted, the default batching criteria
-defined for the app will be used.}
+\item{\code{batch_input}}{The ID of the input on which you wish to batch.
+You would typically batch on the input consisting of a list of files.
+If this parameter is omitted, the default batching criteria defined for
+the app will be used.}
 
-\item{\code{use_interruptible_instances}}{Boolean. This field can be \code{TRUE} or
-\code{FALSE}. Set this field to \code{TRUE} to allow the use of
+\item{\code{use_interruptible_instances}}{This field can be \code{TRUE} or \code{FALSE}.
+Set this field to \code{TRUE} to allow the use of
 \href{https://docs.sevenbridges.com/docs/about-spot-instances}{spot instances}.}
 
-\item{\code{action}}{String. If set to \code{run}, the task will be run immediately
-upon creation.}
+\item{\code{action}}{If set to \code{run}, the task will be run immediately upon
+creation.}
 
-\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
-a subset of fields to include in the response.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Task object.
 }
 }
 \if{html}{\out{<hr>}}
