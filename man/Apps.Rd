@@ -4,7 +4,7 @@
 \alias{Apps}
 \title{R6 Class representing apps endpoint}
 \description{
-R6 Class representing apps resource endpoint
+R6 Class representing apps resource endpoint.
 }
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Apps}
@@ -12,7 +12,7 @@ R6 Class representing apps resource endpoint
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 }
 \if{html}{\out{</div>}}
 }
@@ -45,7 +45,7 @@ R6 Class representing apps resource endpoint
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -70,27 +70,34 @@ This call lists all the apps available to you.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{project}}{The name of the project in which the app is located.}
+\item{\code{project}}{Project ID string in the form
+{project_owner}/{project_short_name} or
+{division_name}/{project_short_name} or Project object, to restrict
+the results to apps from that project only.}
 
-\item{\code{visibility}}{Set this to public to see all public apps on the Seven
-Bridges Platform.}
+\item{\code{visibility}}{Set this to \code{public} to see all public apps on
+the Seven Bridges Platform.}
 
 \item{\code{query_terms}}{Enter one or more search terms to query apps.}
 
 \item{\code{id}}{Use this parameter to query apps based on their ID.}
 
-\item{\code{limit}}{The maximum number of collection items to return for a
-single request. Minimum value is 1. The maximum value is 100 and the
-default value is 50. This is a pagination-specific attribute.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{The zero-based starting index in the entire collection of
-the first item to return. The default value is 0. This is a
-pagination-specific attribute.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
-a subset of fields to include in the response.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like other query parameters or 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Collection containing App objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -98,9 +105,12 @@ a subset of fields to include in the response.}
 \if{latex}{\out{\hypertarget{method-Apps-get}{}}}
 \subsection{Method \code{get()}}{
 This call returns information about the specified app.
-The app should be one in a project that you can access; this could be an
-app that has been uploaded to the Seven Bridges Platform by a project
-member, or a publicly available app that has been copied to the project.
+The app should be one in a project that you can access;
+this could be an app that has been uploaded to the Seven Bridges
+Platform by a project member, or a publicly available app that has
+been copied to the project. \cr
+More about this operation you can find in our
+\href{https://docs.sevenbridges.com/reference/get-details-of-an-app}{API documentation}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Apps$get(id, revision = NULL, ...)}\if{html}{\out{</div>}}
 }
@@ -108,16 +118,19 @@ member, or a publicly available app that has been copied to the project.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{The full {project_owner}/{project}/{app_short_name}
+\item{\code{id}}{The full {project_id}/{app_short_name}
 path for this API call is known as App ID. You can also get the App ID
 for an app by making the call to list all apps available to you.}
 
 \item{\code{revision}}{The number of the app revision you want to get.}
 
-\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
-a subset of fields to include in the response.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+App object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -146,22 +159,32 @@ Optionally, to copy a specific revision of the app, use the
 \code{{app_short_name}/{revision_number}} format, for example
 \code{rfranklin/my-project/bamtools-index-2-4-0/1}}
 
-\item{\code{project}}{The project or project ID you want to copy the app to.}
+\item{\code{project}}{The Project object or project ID you want to copy the app
+to.}
 
 \item{\code{name}}{The new name the app will have in the target project.
 If its name will not change, omit this key.}
 
-\item{\code{strategy}}{The method for copying the app \code{clone} : copy all
-revisions; get updates from the same app as the copied app (default)
-\code{direct}: copy latest revision; get updates from the copied app
-\code{clone_direct}: copy all revisions; get updates from the copied app
-\code{transient}: copy latest revision; get updates from the same app as the
-copied app}
+\item{\code{strategy}}{The method for copying the app. Can be one of:
+\itemize{
+\item \code{clone} : copy all revisions; get updates from the same app
+as the copied app (default);
+\item \code{direct}: copy latest revision; get updates from the copied app;
+\item \code{clone_direct}: copy all revisions; get updates from the
+copied app;
+\item \code{transient}: copy latest revision; get updates from the same
+app as the copied app.
+}
+Read more about the strategies
+\href{https://docs.sevenbridges.com/reference/copy-an-app#methods-for-copying-an-app}{here}.}
 
-\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
-a subset of fields to include in the response.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Copied App object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -191,18 +214,21 @@ your projects. Shouldn't be used together with \code{from_path} parameter.}
 \item{\code{from_path}}{File containing CWL app description. Shouldn't be used
 together with raw parameter.}
 
-\item{\code{project}}{The name of the project in which you want to store the
-app.}
+\item{\code{project}}{String project ID or Project object in which you want to
+store the app.}
 
 \item{\code{name}}{A short name for the app (without any non-alphanumeric
 characters or spaces)}
 
 \item{\code{raw_format}}{The type of format used (\code{JSON} or \code{YAML}).}
 
-\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
-a subset of fields to include in the response.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+App object.
 }
 }
 \if{html}{\out{<hr>}}

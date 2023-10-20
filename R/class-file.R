@@ -53,6 +53,7 @@ File <- R6::R6Class(
     secondary_files = NULL,
 
     #' @description Create a new File object.
+    #'
     #' @param res Response containing File object information.
     #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {

@@ -12,13 +12,13 @@ R6 Class representing a resource for managing tasks.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 
-\item{\code{id}}{String. The ID of the task.}
+\item{\code{id}}{The string ID of the task.}
 
-\item{\code{name}}{String. The name of the task.}
+\item{\code{name}}{The name of the task.}
 
-\item{\code{status}}{String. Task status (different from execution_status).
+\item{\code{status}}{Task status (different from execution_status).
 Allowed values:
 \itemize{
 \item QUEUED
@@ -29,61 +29,61 @@ Allowed values:
 \item FAILED
 }}
 
-\item{\code{description}}{String. An optional description of a task.}
+\item{\code{description}}{An optional description of a task.}
 
-\item{\code{project}}{String. Identifier of the project that
+\item{\code{project}}{Identifier of the project that
 the task is located in.}
 
-\item{\code{app}}{String. The identifier of the app that was used for the task.}
+\item{\code{app}}{The identifier of the app that was used for the task.}
 
-\item{\code{created_by}}{String. Username of the task creator.}
+\item{\code{created_by}}{Username of the task creator.}
 
-\item{\code{executed_by}}{String. Username of the task executor.}
+\item{\code{executed_by}}{Username of the task executor.}
 
-\item{\code{created_on}}{String. The time when the task was created.}
+\item{\code{created_on}}{The time in form of string when the task was created.}
 
-\item{\code{start_time}}{String. Task start time.}
+\item{\code{start_time}}{Task start time in form of string.}
 
-\item{\code{end_time}}{String. Task end time.}
+\item{\code{end_time}}{Task end time in form of string .}
 
-\item{\code{origin}}{String. Id of the entity that created the task, e.g.
+\item{\code{origin}}{Id of the entity that created the task, e.g.
 automation run, if task was created by an automation run.}
 
-\item{\code{use_interruptable_instances}}{Boolean. This field can be TRUE or
-FALSE. Set this field to TRUE to allow the use of spot instances.}
+\item{\code{use_interruptable_instances}}{This field can be \code{TRUE} or
+\code{FALSE}. Set this field to \code{TRUE} to allow the use of spot instances.}
 
-\item{\code{batch}}{Boolean. TRUE for batch tasks, FALSE for regular & child
-tasks (batch this task; if FALSE, will not create a batch task).}
+\item{\code{batch}}{\code{TRUE} for batch tasks, \code{FALSE} for regular and child
+tasks (batch this task; if \code{FALSE}, will not create a batch task).}
 
-\item{\code{batch_by}}{List. Batching criteria.}
+\item{\code{batch_by}}{Batching criteria (list).}
 
-\item{\code{batch_group}}{List. Batch group for a batch task. Represents the
+\item{\code{batch_group}}{Batch group for a batch task (list). Represents the
 group that is assigned to the child task from the batching criteria that
 was used when the task was started.}
 
-\item{\code{batch_input}}{String. Input identifier on to which to apply
-batching.}
+\item{\code{batch_input}}{Input identifier on to which to apply batching.}
 
-\item{\code{batch_parent}}{String. Parent task for a batch child. (batch task
+\item{\code{batch_parent}}{Parent task ID for a batch child. (batch task
 which is the parent of this task).}
 
-\item{\code{execution_settings}}{List. Execution settings for the task.}
+\item{\code{execution_settings}}{Execution settings list for the task.}
 
-\item{\code{execution_status}}{List. Task execution status. (info about current
-execution status)}
+\item{\code{execution_status}}{Task execution status list - info about current
+execution status.}
 
-\item{\code{errors}}{List. Validations errors stored as a high-level errors
+\item{\code{errors}}{Validations errors list stored as a high-level errors
 array property in the API response.}
 
-\item{\code{warnings}}{List. Validation warnings from API response.}
+\item{\code{warnings}}{Validation warnings list from API response.}
 
-\item{\code{price}}{List. Task cost. (contains amount and currency)}
+\item{\code{price}}{Task cost (list) - contains amount and currency.}
 
-\item{\code{inputs}}{List. Inputs that were submitted to the task.}
+\item{\code{inputs}}{List of inputs that were submitted to the task.}
 
-\item{\code{outputs}}{List. Generated outputs from the task.}
+\item{\code{outputs}}{List of generated outputs from the task.}
 
-\item{\code{output_location}}{List. Location where task outputs will be stored.}
+\item{\code{output_location}}{List of locations where task outputs will be
+stored.}
 }
 \if{html}{\out{</div>}}
 }
@@ -108,7 +108,7 @@ array property in the API response.}
 \if{html}{\out{<a id="method-Task-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Task-new}{}}}
 \subsection{Method \code{new()}}{
-Initialize Task class
+Create new Task object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Task$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
@@ -118,7 +118,7 @@ Initialize Task class
 \describe{
 \item{\code{res}}{Response containing Task object information.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -137,7 +137,7 @@ Print method for Task class.
 \if{html}{\out{<a id="method-Task-reload"></a>}}
 \if{latex}{\out{\hypertarget{method-Task-reload}{}}}
 \subsection{Method \code{reload()}}{
-Reload Task.
+Reload Task object information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Task$reload(...)}\if{html}{\out{</div>}}
 }
@@ -145,12 +145,13 @@ Reload Task.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Task
+Task object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -158,7 +159,7 @@ Task
 \if{latex}{\out{\hypertarget{method-Task-run}{}}}
 \subsection{Method \code{run()}}{
 This call runs (executes) the task. Only tasks whose status
-is "DRAFT" can be run.
+is \code{DRAFT} can be run.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Task$run(
   batch = NULL,
@@ -171,22 +172,25 @@ is "DRAFT" can be run.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{batch}}{Boolean. Set this to FALSE to disable the default batching
+\item{\code{batch}}{Set this to \code{FALSE} to disable the default batching
 for this task. Running a batch task is a recommended way to run multiple
 tasks considering the API rate limit
 (\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).}
 
-\item{\code{use_interruptible_instances}}{Boolean. This field can be TRUE or
-FALSE. Set this field to TRUE to allow the use of
-\href{https://docs.sevenbridges.com/docs/about-spot-instances}{spot instances}}
+\item{\code{use_interruptible_instances}}{This field can be \code{TRUE} or
+\code{FALSE}. Set this field to \code{TRUE} to allow the use of
+\href{https://docs.sevenbridges.com/docs/about-spot-instances}{spot instances}.}
 
-\item{\code{in_place}}{Boolean. Default TRUE. Should the new object of
+\item{\code{in_place}}{Default \code{TRUE}. Should the new object of
 Task class be returned or the current to be reinitialized.}
 
-\item{\code{...}}{Other parameters that can be passed to api() function like
-fields etc.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Task object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -202,13 +206,16 @@ status is \code{RUNNING} or \code{QUEUED} may be aborted.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{in_place}}{Boolean. Default TRUE. Should the new object of
+\item{\code{in_place}}{Default \code{TRUE}. Should the new object of
 Task class be returned or the current to be reinitialized.}
 
-\item{\code{...}}{Other parameters that can be passed to api() function like
-fields etc.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Task object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -216,7 +223,7 @@ fields etc.}
 \if{latex}{\out{\hypertarget{method-Task-clone_task}{}}}
 \subsection{Method \code{clone_task()}}{
 This call clones the specified task. Once cloned, the task
-can either be in \code{draft} mode or immediately ran, by setting the \code{run}
+can either be in \code{DRAFT} mode or immediately ran, by setting the \code{run}
 parameter to \code{TRUE}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Task$clone_task(run = FALSE, ...)}\if{html}{\out{</div>}}
@@ -225,13 +232,16 @@ parameter to \code{TRUE}.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{run}}{Boolean. Set this to \code{TRUE} in order to create a draft task
+\item{\code{run}}{Set this to \code{TRUE} in order to create a draft task
 and execute it immediately. Default: \code{FALSE}.}
 
-\item{\code{...}}{Other parameters that can be passed to api() function like
-fields etc.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Task object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -255,8 +265,8 @@ The task execution details include the following information:
 including the provider ID, the type of instance used and the cloud
 service provider
 \item A link that can be used to download the standard error logs for the
-job
-\item SHA hash of the Docker image ('checksum')
+job.
+\item SHA hash of the Docker image ('checksum').
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Task$get_execution_details(...)}\if{html}{\out{</div>}}
@@ -265,10 +275,13 @@ job
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other parameters that can be passed to api() function like
-fields etc.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+List.
 }
 }
 \if{html}{\out{<hr>}}
@@ -299,56 +312,67 @@ a batch task.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{status}}{String. You can filter the returned tasks by their status.
-Set the value of status to one of the following values: \code{QUEUED},
-\code{DRAFT}, \code{RUNNING}, \code{COMPLETED}, \code{ABORTED}, \code{FAILED}.}
+\item{\code{status}}{You can filter the returned tasks by their status.
+Set the value of status to one of the following values:
+\itemize{
+\item QUEUED
+\item DRAFT
+\item RUNNING
+\item COMPLETED
+\item ABORTED
+\item FAILED.
+}}
 
-\item{\code{project}}{Provide the project ID or project object you wish to list
+\item{\code{project}}{Provide the project ID or Project object you wish to list
 the tasks from.}
 
-\item{\code{created_from}}{String. Enter the starting date for querying tasks
+\item{\code{created_from}}{Enter the starting date string for querying tasks
 created on the specified date and onwards.}
 
-\item{\code{created_to}}{String. Enter the ending date for querying tasks
+\item{\code{created_to}}{Enter the ending date string for querying tasks
 created until the specified date. You can use it in combination with
 \code{created_from} to specify a time interval.}
 
-\item{\code{started_from}}{String. Enter the starting date for querying tasks
+\item{\code{started_from}}{Enter the starting date string for querying tasks
 started on the specified date and onwards.}
 
-\item{\code{started_to}}{String. Enter the ending date for querying tasks
+\item{\code{started_to}}{Enter the ending date string for querying tasks
 started until the specified date.}
 
-\item{\code{ended_from}}{String. Enter the starting date for querying tasks
+\item{\code{ended_from}}{Enter the starting date string for querying tasks
 that ended on a specified date.}
 
-\item{\code{ended_to}}{String. Enter the ending date for querying tasks that
+\item{\code{ended_to}}{Enter the ending date string for querying tasks that
 ended until a specified date.}
 
-\item{\code{order_by}}{String. Order returned results by the specified field.
+\item{\code{order_by}}{Order returned results by the specified field.
 Allowed values: \code{created_time}, \code{start_time}, \code{name}, \code{end_time} and
 \code{created_by}. Sort can be done only by one column. The default value is
 \code{created_time}.}
 
-\item{\code{order}}{String. Sort results in ascending or descending order by
+\item{\code{order}}{Sort results in ascending or descending order by
 specifying \code{asc} or \code{desc}, respectively. Only taken into account if
 \code{order_by} is explicitly specified. The default value is \code{asc}.}
 
-\item{\code{origin_id}}{String. Enter an automation run ID to list all tasks
+\item{\code{origin_id}}{Enter an automation run ID to list all tasks
 created from the specified automation run.}
 
-\item{\code{limit}}{The maximum number of collection items to return for a
-single request. Minimum value is 1. The maximum value is 100 and the
-default value is 50. This is a pagination-specific attribute.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{The zero-based starting index in the entire collection of
-the first item to return. The default value is 0. This is a
-pagination-specific attribute.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
-a subset of fields to include in the response.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Collection containing Task objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -365,8 +389,8 @@ you can access.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
-a subset of fields to include in the response.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -383,10 +407,13 @@ This call reruns (executes) the specified task.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
-a subset of fields to include in the response.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Task object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -395,10 +422,10 @@ a subset of fields to include in the response.}
 \subsection{Method \code{update()}}{
 Change the details of the specified task, including its
 name, description, and inputs. Note that you can only modify tasks with
-a task status of DRAFT. Tasks which are RUNNING, QUEUED, ABORTED,
-COMPLETED or FAILED cannot be modified in order to enable the
-reproducibility of analyses which have been queued for execution or
-has initiated executing.
+a task status of \code{DRAFT}. Tasks which are \code{RUNNING}, \code{QUEUED},
+\code{ABORTED}, \code{COMPLETED} or \code{FAILED} cannot be modified in order to
+enable the reproducibility of analyses which have been queued for
+execution or has initiated executing.
 There are two things to note if you are editing a batch task:
 \itemize{
 \item \code{1} If you want to change the input on which to batch and
@@ -432,15 +459,15 @@ to NULL.
 \item{\code{execution_settings}}{Named list with detailed task execution
 parameters. Detailed task execution parameters:
 \itemize{
-\item \code{instance_type}: String. Possible value is the specific instance type,
-e.g. \code{"instance_type" = "c4.2xlarge;ebs-gp2;2000"}.
-\item \code{max_parallel_instances}: Integer. Maximum number of instances
-running at the same time. Takes any integer value equal to or greater
-than 1, e.g. \code{"max_parallel_instances" = 2.}
-\item \code{use_memoization}: Boolean. Set to \code{FALSE} by default. Set to \code{TRUE}
+\item \code{instance_type}: Possible value is the specific instance type,
+e.g. \code{"instance_type" = "c4.2xlarge;ebs-gp2;2000"};
+\item \code{max_parallel_instances}: Maximum number of instances
+running at the same time. Takes any integer value equal to or
+greater than 1, e.g. \code{"max_parallel_instances" = 2.};
+\item \code{use_memoization}: Set to \code{FALSE} by default. Set to \code{TRUE}
 to enable
-\href{https://docs.sevenbridges.com/docs/about-memoization}{memoization}.
-\item \code{use_elastic_disk}: Boolean. Set to \code{TRUE} to enable
+\href{https://docs.sevenbridges.com/docs/about-memoization}{memoization};
+\item \code{use_elastic_disk}: Set to \code{TRUE} to enable
 \href{https://docs.sevenbridges.com/page/elastic-disk}{Elastic Disk}.
 }
 
@@ -477,7 +504,7 @@ various input types:
   )
 }\if{html}{\out{</div>}}}
 
-\item{\code{output_location}}{The output_location dictionary allows you to
+\item{\code{output_location}}{The output location list allows you to
 define the exact location where your task outputs will be stored.
 The location can either be defined for the entire project using the
 main_location parameter, or individually per each output node, by
@@ -485,48 +512,46 @@ setting the nodes_override parameter to true and defining individual
 output node locations within nodes_location.
 See below for more details.
 \itemize{
-\item \code{main_location} - String. Defines the output location for all
-output nodes in the task. Can be a path within the project in which
-the task is created, for example '/Analysis/<task_id>_<task_name>/'
+\item \code{main_location} - Defines the output location for all
+output nodes in the task. Can be a string path within the project in
+which the task is created, for example
+\verb{/Analysis/<task_id>_<task_name>/}
 or a path on an attached volume, such as
-"volumes://volume_name/<project_id>/html".
+\verb{volumes://volume_name/<project_id>/html}.
 Parts of the path enclosed in angle brackets <> are tokens that are
-dynamically replaced with corresponding values during task execution.
-\item \code{main_location_alias}: String. The location (path) in the
+dynamically replaced with corresponding values during task
+execution.
+\item \code{main_location_alias}: The string location (path) in the
 project that will point to the actual location where the outputs are
 stored. Used if main_location is defined as a volume path (starting
 with volumes://), to provide an easy way of accessing output data
 directly from project files.
-\item \code{nodes_override}: Boolean. Enables defining of output locations
+\item \code{nodes_override}: Enables defining of output locations
 for output nodes individually through nodes_location (see below).
-Set to true to be able to define individual locations per output node.
-Default: false. Even if nodes_override is set to true, it is not
-necessary to define output locations for each of the output nodes
-individually. Data from those output nodes that don't have their
-locations explicitly defined through nodes_location is either placed
-in main_location (if defined) or at the project files root if a main
+Set to \code{TRUE} to be able to define individual locations per output
+node. Default: \code{FALSE}.
+Even if nodes_override is set to \code{TRUE}, it is not necessary to
+define output locations for each of the output nodes individually.
+Data from those output nodes that don't have their locations
+explicitly defined through nodes_location is either placed in
+main_location (if defined) or at the project files root if a main
 output location is not defined for the task.
-\item \code{nodes_location}: List. Contains output paths for individual
+\item \code{nodes_location}: List of output paths for individual
 task output nodes in the following format for each output node:
 \if{html}{\out{<output-node-id>}} = list(
 "output_location" = "\if{html}{\out{<output-path>}}",
 "output_location_alias" = "\if{html}{\out{<alias-path>}}"
 )
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{ b64html = list(
- "output_location" = "volumes://outputs/tasks/mar-19",
- "output_location_alias" = "/rfranklin/tasks/picard"
-)
-}\if{html}{\out{</div>}}
-
+\verb{\{r\} b64html = list( "output_location" = "volumes://outputs/tasks/mar-19", "output_location_alias" = "/rfranklin/tasks/picard" ) }
 In the example above, b64html is the ID of the output node for which
 you want to define the output location, while the parameters are
 defined as follows:
 \itemize{
 \item \code{output_location} - Can be a path within the project in which
-the task is created, for example '/Analysis/<task_id>_<task_name>/'
+the task is created, for example
+\verb{/Analysis/<task_id>_<task_name>/}
 or a path on an attached volume, such as
-"volumes://volume_name/<project_id>/html". Also accepts tokens.
+\verb{volumes://volume_name/<project_id>/html}. Also accepts tokens.
 \item \code{output_location_alias} - The location (path) in the project
 that will point to the exact location where the output is stored.
 Used if output_location is defined as a volume path
@@ -534,27 +559,30 @@ Used if output_location is defined as a volume path
 }
 }}
 
-\item{\code{batch}}{Boolean. This is set to \code{FALSE} by default. Set to \code{TRUE} to
+\item{\code{batch}}{This is set to \code{FALSE} by default. Set to \code{TRUE} to
 create a batch task and specify the \code{batch_input} and \code{batch-by}
 criteria as described below.}
 
-\item{\code{batch_input}}{String. The ID of the input on which you wish to
-batch. You would typically batch on the input consisting of a list of
-files. If this parameter is omitted, the default batching criteria
-defined for the app will be used.}
+\item{\code{batch_input}}{The ID of the input on which you wish to batch.
+You would typically batch on the input consisting of a list of files.
+If this parameter is omitted, the default batching criteria defined for
+the app will be used.}
 
-\item{\code{batch_by}}{List. Batching criteria. For example:
+\item{\code{batch_by}}{Batching criteria in form of list. For example:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{batch_by = list(
- type = "CRITERIA",
- criteria = list("metadata.condition")
+  type = "CRITERIA",
+  criteria = list("metadata.condition")
 )
 }\if{html}{\out{</div>}}}
 
-\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
-a subset of fields to include in the response.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Task object.
 }
 }
 \if{html}{\out{<hr>}}
