@@ -22,8 +22,8 @@ Volume <- R6::R6Class(
       "member_username" = "storage/volumes/{self$id}/members/{username}",
       "member_permissions" = "storage/volumes/{self$id}/members/{username}/permissions" # nolint
     ),
-    #' @field id Volume ID, constructed from {division}/{volume_name}
-    #'  or {volume_owner}/{volume_name}.
+    #' @field id Volume ID, constructed from `{division}/{volume_name}`
+    #'  or `{volume_owner}/{volume_name}`.
     id = NULL,
     #' @field name The name of the volume. It must be unique from all
     #'  other volumes for this user. Required if `from_path` parameter

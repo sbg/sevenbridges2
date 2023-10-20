@@ -161,12 +161,15 @@ Exports <- R6::R6Class(
     #'      exporting to this bucket. Supported values:
     #'      `AES256` (SSE-S3 encryption), `aws:kms`, `null`
     #'      (no server-side encryption). Default: `AES256`.
-    #'    \item `sse_aws_kms_key_Id`: Applies to type: `s3`.
+    #'    \item `sse_aws_kms_key_id`: Applies to type: `s3`.
     #'      If AWS KMS encryption is used, this should be set to the required
-    #'      KMS key. If not set and aws:kms is set as sse_algorithm,
+    #'      KMS key. If not set and `aws:kms` is set as `sse_algorithm`,
     #'      default KMS key is used.
     #'    \item `aws_canned_acl`: S3 canned ACL to apply on the object
-    #'      on during export. Supported values: `any one of S3 canned ACLs`;
+    #'      on during export. Supported values: any one of
+    # nolint start
+    #'      [S3 canned ACLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl);
+    # nolint end
     #'      `null` (do not apply canned ACLs). Default: `null`.
     #'  }
     #' @param ... Other arguments that can be passed to core `api()` function

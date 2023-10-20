@@ -14,8 +14,8 @@ R6 Class representing a resource for managing volumes.
 \describe{
 \item{\code{URL}}{List of URL endpoints for this resource.}
 
-\item{\code{id}}{Volume ID, constructed from {division}/{volume_name}
-or {volume_owner}/{volume_name}.}
+\item{\code{id}}{Volume ID, constructed from \code{{division}/{volume_name}}
+or \code{{volume_owner}/{volume_name}}.}
 
 \item{\code{name}}{The name of the volume. It must be unique from all
 other volumes for this user. Required if \code{from_path} parameter

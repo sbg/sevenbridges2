@@ -475,13 +475,14 @@ source file will remain on the Platform.}
 exporting to this bucket. Supported values:
 \code{AES256} (SSE-S3 encryption), \code{aws:kms}, \code{null}
 (no server-side encryption). Default: \code{AES256}.
-\item \code{sse_aws_kms_key_Id}: Applies to type: \code{s3}.
-If AWS KMS encryption is used, this should be set to the required KMS
-key. If not set and \code{aws:kms} is set as \code{sse_algorithm},
+\item \code{sse_aws_kms_key_id}: Applies to type: \code{s3}.
+If AWS KMS encryption is used, this should be set to the required
+KMS key. If not set and \code{aws:kms} is set as \code{sse_algorithm},
 default KMS key is used.
 \item \code{aws_canned_acl}: S3 canned ACL to apply on the object
-on during export. Supported values: any one of S3 canned ACLs;
-null (do not apply canned ACLs). Default: null.
+on during export. Supported values: any one of
+\href{https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl}{S3 canned ACLs};
+\code{null} (do not apply canned ACLs). Default: \code{null}.
 }}
 
 \item{\code{...}}{Other arguments that can be passed to core \code{api()} function

@@ -651,19 +651,22 @@ File <- R6::R6Class(
     #' @param copy_only If `TRUE`, file will be copied to a volume but
     #'  source file will remain on the Platform.
     #' @param properties Named list of additional volume properties, like:
-    #' \itemize{
+    #'  \itemize{
     #'    \item `sse_algorithm` - S3 server-side encryption to use when
-    #'    exporting to this bucket. Supported values:
-    #'    `AES256` (SSE-S3 encryption), `aws:kms`, `null`
-    #'    (no server-side encryption). Default: `AES256`.
-    #'    \item `sse_aws_kms_key_Id`: Applies to type: `s3`.
-    #'    If AWS KMS encryption is used, this should be set to the required KMS
-    #'    key. If not set and `aws:kms` is set as `sse_algorithm`,
-    #'    default KMS key is used.
+    #'      exporting to this bucket. Supported values:
+    #'      `AES256` (SSE-S3 encryption), `aws:kms`, `null`
+    #'      (no server-side encryption). Default: `AES256`.
+    #'    \item `sse_aws_kms_key_id`: Applies to type: `s3`.
+    #'      If AWS KMS encryption is used, this should be set to the required
+    #'      KMS key. If not set and `aws:kms` is set as `sse_algorithm`,
+    #'      default KMS key is used.
     #'    \item `aws_canned_acl`: S3 canned ACL to apply on the object
-    #'    on during export. Supported values: any one of S3 canned ACLs;
-    #'    null (do not apply canned ACLs). Default: null.
-    #' }
+    #'      on during export. Supported values: any one of
+    # nolint start
+    #'      [S3 canned ACLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl);
+    # nolint end
+    #'      `null` (do not apply canned ACLs). Default: `null`.
+    #'  }
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
