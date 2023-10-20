@@ -12,11 +12,11 @@ R6 Class representing a resource for managing volume import jobs.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 
-\item{\code{id}}{String. Import job identifier.}
+\item{\code{id}}{Import job string identifier.}
 
-\item{\code{state}}{String. The state of the import job. Possible values are:
+\item{\code{state}}{The state of the import job. Possible values are:
 \itemize{
 \item \code{PENDING}: the import is queued;
 \item \code{RUNNING}: the import is running;
@@ -24,15 +24,15 @@ R6 Class representing a resource for managing volume import jobs.
 \item \code{FAILED}: the import has failed.
 }}
 
-\item{\code{overwrite}}{Boolean. Whether the imported file/folder name was
+\item{\code{overwrite}}{Whether the imported file/folder name was
 overwritten or not, if another one with the same name had already
 existed.}
 
-\item{\code{autorename}}{Boolean. Whether the imported file/folder name was
+\item{\code{autorename}}{Whether the imported file/folder name was
 automatically renamed (by prefixing its name with an underscore and
 number) if another one with the same name had already existed.}
 
-\item{\code{preserve_folder_structure}}{Boolean. Whether the imported folder
+\item{\code{preserve_folder_structure}}{Whether the imported folder
 structure was preserved or not.}
 
 \item{\code{source}}{List containing source volume id and source location of the
@@ -76,7 +76,7 @@ Create a new Import object.
 \describe{
 \item{\code{res}}{Response containing Import object information.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -95,7 +95,7 @@ Print method for Import class.
 \if{html}{\out{<a id="method-Import-reload"></a>}}
 \if{latex}{\out{\hypertarget{method-Import-reload}{}}}
 \subsection{Method \code{reload()}}{
-Reload Import.
+Reload Import object information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Import$reload(...)}\if{html}{\out{</div>}}
 }
@@ -103,12 +103,13 @@ Reload Import.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Import
+Import object.
 }
 }
 \if{html}{\out{<hr>}}

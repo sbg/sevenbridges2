@@ -12,51 +12,51 @@ Import <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "get" = "storage/imports/{id}"
     ),
-    #' @field id String. Import job identifier.
+    #' @field id Import job string identifier.
     id = NULL,
-    #' @field state String. The state of the import job. Possible values are:
-    #' \itemize{
+    #' @field state The state of the import job. Possible values are:
+    #'  \itemize{
     #'    \item `PENDING`: the import is queued;
     #'    \item `RUNNING`: the import is running;
     #'    \item `COMPLETED`: the import has completed successfully;
     #'    \item `FAILED`: the import has failed.
-    #' }
+    #'  }
     state = NULL,
-    #' @field overwrite Boolean. Whether the imported file/folder name was
-    #' overwritten or not, if another one with the same name had already
-    #' existed.
+    #' @field overwrite Whether the imported file/folder name was
+    #'  overwritten or not, if another one with the same name had already
+    #'  existed.
     overwrite = NULL,
-    #' @field autorename Boolean. Whether the imported file/folder name was
-    #' automatically renamed (by prefixing its name with an underscore and
-    #' number) if another one with the same name had already existed.
+    #' @field autorename Whether the imported file/folder name was
+    #'  automatically renamed (by prefixing its name with an underscore and
+    #'  number) if another one with the same name had already existed.
     autorename = NULL,
-    #' @field preserve_folder_structure Boolean. Whether the imported folder
-    #' structure was preserved or not.
+    #' @field preserve_folder_structure Whether the imported folder
+    #'  structure was preserved or not.
     preserve_folder_structure = NULL,
     #' @field source List containing source volume id and source location of the
-    #' file/folder is being imported to the platform.
+    #'  file/folder is being imported to the platform.
     source = NULL,
     #' @field destination List containing destination project id or parent
-    #' directory id where the file/folder is being imported, together with its
-    #' name.
+    #'  directory id where the file/folder is being imported, together with its
+    #'  name.
     destination = NULL,
     #' @field started_on Time when the import job started.
     started_on = NULL,
     #' @field finished_on Time when the import job ended.
     finished_on = NULL,
     #' @field error In case of error in the import job, standard API error is
-    #' returned here.
+    #'  returned here.
     error = NULL,
     #' @field result File object that was imported.
     result = NULL,
 
     #' @description Create a new Import object.
     #' @param res Response containing Import object information.
-    #' @param ... Other arguments.
+    #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
@@ -75,6 +75,7 @@ Import <- R6::R6Class(
         self$result <- asFile(res$result, self$auth)
       }
     },
+
     # nocov start
     #' @description Print method for Import class.
     #'
@@ -107,10 +108,11 @@ Import <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
-    #' @description
-    #' Reload Import.
-    #' @param ... Other query parameters.
-    #' @return Import
+
+    #' @description Reload Import object information.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #' @return Import object.
     reload = function(...) {
       super$reload(
         cls = self,

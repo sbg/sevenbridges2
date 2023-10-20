@@ -608,28 +608,30 @@ File <- R6::R6Class(
       }
     },
     #' @description This call lets you queue a job to export this file from a
-    #' project on the Platform into a volume. The file selected for export must
-    #' not be a public file or an alias. Aliases are objects stored in your
-    #' cloud storage bucket which have been made available on the Platform.
-    #' The volume you are exporting to must be configured for read-write access.
-    #' To do this, set the `access_mode` parameter to `RW` when creating or
-    #' modifying a volume.
+    #'  project on the Platform into a volume. The file selected for export must
+    #'  not be a public file or an alias. Aliases are objects stored in your
+    #'  cloud storage bucket which have been made available on the Platform.
+    #'  The volume you are exporting to must be configured for read-write
+    #'  access. To do this, set the `access_mode` parameter to `RW` when
+    #'  creating or modifying a volume.  \cr
     #'
-    #' Essentially, the call writes to your cloud storage bucket via the volume.
-    #' If this call is successful, the original project file will become an
-    #' alias to the newly exported object on the volume. The source file will
-    #' be deleted from the Platform and, if no more copies of this file exist,
-    #' it will no longer count towards your total storage price on the Platform.
-    #' In summary, once you export a file from the Platform to a volume, it is
-    #' no longer part of the storage on the Platform and cannot be exported
-    #' again. \cr
+    #'  Essentially, the call writes to your cloud storage bucket via the
+    #'  volume. If this call is successful, the original project file will
+    #'  become an alias to the newly exported object on the volume. The source
+    #'  file will be deleted from the Platform and, if no more copies of this
+    #'  file exist, it will no longer count towards your total storage price
+    #'  on the Platform.  \cr
+    #'  In summary, once you export a file from the Platform to a volume,
+    #'  it is no longer part of the storage on the Platform and
+    #'  cannot be exported again. \cr
     #'
-    #' Read more about this operation in our documentation
-    #' [here](https://docs.sevenbridges.com/reference/start-an-export-job-v2).
-    #'
-    #' If you want to export multiple files, the recommended way is to do it
-    #' in bulk considering the API rate limit
-    #' ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).
+    #'  Read more about this operation in our documentation
+    #'  [here](https://docs.sevenbridges.com/reference/start-an-export-job-v2).
+    #'  \cr
+    #'  If you want to export multiple files, the recommended way is to do it
+    #'  in bulk considering the API rate limit
+    #'  ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit))
+    #'  (bulk operations will be implemented in next releases).
     #'
     #' @param destination_volume String volume id or Volume object you want to
     #'  export files into. Required.
@@ -649,19 +651,22 @@ File <- R6::R6Class(
     #' @param copy_only If `TRUE`, file will be copied to a volume but
     #'  source file will remain on the Platform.
     #' @param properties Named list of additional volume properties, like:
-    #' \itemize{
+    #'  \itemize{
     #'    \item `sse_algorithm` - S3 server-side encryption to use when
-    #'    exporting to this bucket. Supported values:
-    #'    `AES256` (SSE-S3 encryption), `aws:kms`, `null`
-    #'    (no server-side encryption). Default: `AES256`.
-    #'    \item `sse_aws_kms_key_Id`: Applies to type: `s3`.
-    #'    If AWS KMS encryption is used, this should be set to the required KMS
-    #'    key. If not set and `aws:kms` is set as `sse_algorithm`,
-    #'    default KMS key is used.
+    #'      exporting to this bucket. Supported values:
+    #'      `AES256` (SSE-S3 encryption), `aws:kms`, `null`
+    #'      (no server-side encryption). Default: `AES256`.
+    #'    \item `sse_aws_kms_key_id`: Applies to type: `s3`.
+    #'      If AWS KMS encryption is used, this should be set to the required
+    #'      KMS key. If not set and `aws:kms` is set as `sse_algorithm`,
+    #'      default KMS key is used.
     #'    \item `aws_canned_acl`: S3 canned ACL to apply on the object
-    #'    on during export. Supported values: any one of S3 canned ACLs;
-    #'    null (do not apply canned ACLs). Default: null.
-    #' }
+    #'      on during export. Supported values: any one of
+    # nolint start
+    #'      [S3 canned ACLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl);
+    # nolint end
+    #'      `null` (do not apply canned ACLs). Default: `null`.
+    #'  }
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
