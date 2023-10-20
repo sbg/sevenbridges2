@@ -144,6 +144,7 @@ again. \cr
 
 If you want to export multiple files, the recommended way is to do it
 in bulk considering the API rate limit (\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).
+(bulk operations will be implemented in next releases).
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Exports$submit_export(
   source_file,

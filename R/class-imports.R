@@ -2,7 +2,7 @@
 #' @title R6 Class representing storage imports endpoints
 #'
 #' @description
-#' R6 Class representing storage imports resource endpoints
+#' R6 Class representing storage imports resource endpoints.
 #'
 #' @importFrom R6 R6Class
 #' @export
@@ -12,50 +12,57 @@ Imports <- R6::R6Class(
   inherit = Resource,
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "query" = "storage/imports",
       "get" = "storage/imports/{id}",
       "create" = "storage/imports"
     ),
+
     #' @description Create a new Imports object.
-    #' @param ... Other arguments.
+    #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
+
     # List all import jobs --------------------------------------
     #' @description This call lists import jobs initiated by particular user.
-    #' Note that when you import a file from your volume on your cloud storage
-    #' provider (Amazon Web Services or Google Cloud Storage), you are
-    #' creating an alias on the Platform which points to the file in your
-    #' cloud storage bucket. Aliases appear as files on the Platform and can
-    #' be copied, executed, and modified as such. They refer back to the
-    #' respective file on the given volume.
+    #'  Note that when you import a file from your volume on your cloud storage
+    #'  provider (Amazon Web Services or Google Cloud Storage), you are
+    #'  creating an alias on the Platform which points to the file in your
+    #'  cloud storage bucket. Aliases appear as files on the Platform and can
+    #'  be copied, executed, and modified as such. They refer back to the
+    #'  respective file on the given volume.
     #'
     #' @param volume String volume id or Volume object. List all imports
-    #' from this particular volume. Optional.
+    #'  from this particular volume. Optional.
     #' @param project String project id or Project object. List all volume
-    #' imports to this particular project. Optional.
-    #' @param state String. The state of the import job. Possible values are:
-    #' \itemize{
+    #'  imports to this particular project. Optional.
+    #' @param state The state of the import job. Possible values are:
+    #'  \itemize{
     #'    \item `PENDING`: the import is queued;
     #'    \item `RUNNING`: the import is running;
     #'    \item `COMPLETED`: the import has completed successfully;
     #'    \item `FAILED`: the import has failed.
-    #' }
+    #'  }
     #' Example:
     #' ```{r}
     #' state = c("RUNNING", "FAILED")
     #' ```
-    #' @param limit Defines the number of items you want to get from your API
-    #' request. By default, `limit` is set to `50`. Maximum is `100`.
-    #' @param offset Defines where the retrieved items started.
-    #' By default, `offset` is set to `0`.
-    #' @param ... Other arguments that can be passed to api() function
-    #' like 'fields', etc.
+    #' @param limit The maximum number of collection items to return
+    #' for a single request. Minimum value is `1`.
+    #' The maximum value is `100` and the default value is `50`.
+    #' This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection
+    #' of the first item to return. The default value is `0`.
+    #' This is a pagination-specific attribute.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
     #' @importFrom checkmate assert_character assert_subset
-    #' @return Collection of import jobs (Import class objects).
+    #'
+    #' @return Collection containing Import jobs (Import class objects).
     query = function(volume = NULL, project = NULL, state = NULL,
                      limit = getOption("sevenbridges2")$limit,
                      offset = getOption("sevenbridges2")$offset,
@@ -94,11 +101,11 @@ Imports <- R6::R6Class(
     # Get import job details -----------------------------------------------
     #' @description This call will return the details of an import job.
     #'
-    #' @param id The import job identifier (id)
-    #' @param ... Other arguments that can be passed to api() function
-    #' like 'fields', etc.
+    #' @param id The import job identifier (id).
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     #'
-    #' @return Import job object.
+    #' @return Import object.
     get = function(id, ...) {
       # nocov start
       res <- super$get(
@@ -112,66 +119,69 @@ Imports <- R6::R6Class(
 
     # Start new import job -----------------------------------------------
     #' @description This call lets you queue a job to import a file or folder
-    #' from a volume into a project on the Platform.
-    #' Essentially, you are importing an item from your cloud storage provider
-    #' (Amazon Web Services, Google Cloud Storage, Azure or Ali Cloud) via the
-    #' volume onto the Platform.
-    #' If successful, an alias will be created on the Platform. Aliases appear
-    #' on the Platform and can be copied, executed, and modified as such.
-    #' They refer back to the respective item on the given volume.
+    #'  from a volume into a project on the Platform.
+    #'  Essentially, you are importing an item from your cloud storage provider
+    #'  (Amazon Web Services, Google Cloud Storage, Azure or Ali Cloud) via the
+    #'  volume onto the Platform. \cr
+    #'  If successful, an alias will be created on the Platform. Aliases appear
+    #'  on the Platform and can be copied, executed, and modified as such.
+    #'  They refer back to the respective item on the given volume. \cr
     #'
-    #' If you want to import multiple files, the recommended way is to do it
-    #' in bulk considering the API rate limit (bulk operations will be
-    #' implemented in next releases).
+    #'  If you want to import multiple files, the recommended way is to do it
+    # nolint start
+    #'  in bulk considering the API rate limit ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).
+    # nolint end
+    #'  (bulk operations will be implemented in next releases).
     #'
     #' @param source_volume String volume id or Volume object you want to import
-    #' files or folders from. Required if `source_location` parameter is
-    #' provided as a string.
+    #'  files or folders from. Required if `source_location` parameter is
+    #'  provided as a string.
     #' @param source_location String file/folder location name on the volume or
-    #' VolumeFile object you would like to import into some project/folder on
-    #' the platform. Required.
+    #'  VolumeFile object you would like to import into some project/folder on
+    #'  the platform.
     #' @param destination_project String destination project id or Project
-    #' object. Not required, but either `destination_project` or
-    #' `destination_parent` directory must be provided.
+    #'  object. Not required, but either `destination_project` or
+    #'  `destination_parent` directory must be provided.
     #' @param destination_parent String folder id or File object
-    #' (with type = 'FOLDER'). Not required, but either `destination_project`
-    #' or `destination_parent` directory must be provided.
+    #'  (with `type = 'FOLDER'`). Not required, but either `destination_project`
+    #'  or `destination_parent` directory must be provided.
     #' @param name The name of the alias to create. This name should be unique
-    #' to the project.
-    #' If the name is already in use in the project, you should
-    #' use the `overwrite` query parameter in this call to force any item with
-    #' that name to be deleted before the alias is created.
-    #' If name is omitted, the alias name will default to the last segment of
-    #' the complete location (including the prefix) on the volume.
+    #'  to the project. \cr
+    #'  If the name is already in use in the project, you should
+    #'  use the `overwrite` query parameter in this call to force any item with
+    #'  that name to be deleted before the alias is created.
+    #'  If name is omitted, the alias name will default to the last segment of
+    #'  the complete location (including the prefix) on the volume. \cr
     #'
-    #' Segments are considered to be separated with forward slashes /.
-    #' Allowed characters in file names are all alphanumeric and special
-    #' characters except forward slash /, while folder names can contain
-    #' alphanumeric and special characters _, - and ..
+    #'  Segments are considered to be separated with forward slashes /.
+    #'  Allowed characters in file names are all alphanumeric and special
+    #'  characters except forward slash /, while folder names can contain
+    #'  alphanumeric and special characters _, - and ..
     #'
-    #' @param overwrite Boolean. Whether to overwrite the item if another one
-    #' with the same name already exists at the destination.
-    #' Bear in mind that if used with folders import, the folder's content
-    #' (files with the same name) will be overwritten, not the whole folder.
-    #' @param autorename Boolean. Whether to automatically rename the item
-    #' (by prefixing its name with an underscore and number) if another one
-    #' with the same name already exists at the destination.
-    #' Bear in mind that if used with folders import, the folder content will
-    #' be renamed, not the whole folder.
-    #' @param preserve_folder_structure Boolean. Whether to keep the exact
-    #' source folder structure. The default value is true if the item being
-    #' imported is a folder. Should not be used if you are importing a file.
-    #' Bear in mind that if you use preserve_folder_structure = FALSE, that the
-    #' response will be the parent folder object containing imported files
-    #' alongside with other files if they exist.
+    #' @param overwrite Set to `TRUE` if you want to overwrite the item if
+    #'  another one with the same name already exists at the destination.
+    #'  Bear in mind that if used with folders import, the folder's content
+    #'  (files with the same name) will be overwritten, not the whole folder.
+    #' @param autorename Set to `TRUE` if you want to automatically rename the
+    #'  item (by prefixing its name with an underscore and number) if another
+    #'  one with the same name already exists at the destination.
+    #'  Bear in mind that if used with folders import, the folder content will
+    #'  be renamed, not the whole folder.
+    #' @param preserve_folder_structure Set to `TRUE` if you want to keep the
+    #'  exact source folder structure. The default value is `TRUE` if the item
+    #'  being imported is a folder. Should not be used if you are importing a
+    #'  file. Bear in mind that if you use `preserve_folder_structure = FALSE`,
+    #'  that the response will be the parent folder object containing imported
+    #'  files alongside with other files if they exist.
     #'
-    #' @param ... Other arguments that can be passed to api() function
-    #' like 'fields', etc.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     #'
     #' @importFrom checkmate test_r6 assert_string assert_logical
     #' @importFrom glue glue
     #' @importFrom rlang abort
-    #' @return Import job object.
+    #'
+    #' @return Import object.
     submit_import = function(source_volume = NULL, source_location,
                              destination_project = NULL,
                              destination_parent = NULL,
@@ -258,14 +268,13 @@ Imports <- R6::R6Class(
         ...
       )
 
-
-
       import <- asImport(res, auth = self$auth)
 
       rlang::inform(glue::glue_col("New import with id {green {import$id} } has started!")) # nolint
 
       return(import)
     },
+
     # Delete import job ----------------------------------------------------
     #' @description Deleting import jobs is not possible.
     #' @importFrom rlang inform

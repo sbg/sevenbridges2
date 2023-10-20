@@ -128,8 +128,9 @@ Exports <- R6::R6Class(
     #'
     #'  If you want to export multiple files, the recommended way is to do it
     # nolint start
-    #' in bulk considering the API rate limit ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).
+    #'  in bulk considering the API rate limit ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).
     # nolint end
+    #'  (bulk operations will be implemented in next releases).
     #'
     #' @param source_file String file id or File object you want to export to
     #'  the volume.
