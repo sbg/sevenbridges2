@@ -12,29 +12,29 @@ Export <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "get" = "storage/exports/{id}"
     ),
-    #' @field id String. Export job identifier.
+    #' @field id Export job string identifier.
     id = NULL,
-    #' @field state String. The state of the export job. Possible values are:
-    #' \itemize{
+    #' @field state The state of the export job. Possible values are:
+    #'  \itemize{
     #'    \item `PENDING`: the export is queued;
     #'    \item `RUNNING`: the export is running;
     #'    \item `COMPLETED`: the export has completed successfully;
     #'    \item `FAILED`: the export has failed.
-    #' }
+    #'  }
     state = NULL,
     #' @field source List containing source file id that is being exported to
-    #' the volume.
+    #'  the volume.
     source = NULL,
     #' @field destination List containing destination volume id and location
-    #' (file name) on the volume where the file is being exported.
+    #'  (file name) on the volume where the file is being exported.
     destination = NULL,
-    #' @field overwrite Boolean. Whether the exported file name was
-    #' overwritten or not, if another one with the same name had already
-    #' existed on the volume.
+    #' @field overwrite Whether the exported file name was
+    #'  overwritten or not, if another one with the same name had already
+    #'  existed on the volume.
     overwrite = NULL,
     #' @field started_on Time when the export job started.
     started_on = NULL,
@@ -43,14 +43,14 @@ Export <- R6::R6Class(
     #' @field properties List of volume properties set.
     properties = NULL,
     #' @field error In case of error in the export job, standard API error is
-    #' returned here.
+    #'  returned here.
     error = NULL,
     #' @field result File object that was exported.
     result = NULL,
 
     #' @description Create a new Export object.
     #' @param res Response containing Export job information.
-    #' @param ... Other arguments.
+    #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
@@ -68,6 +68,7 @@ Export <- R6::R6Class(
         self$result <- asFile(res$result, self$auth)
       }
     },
+
     # nocov start
     #' @description Print method for Export class.
     #'
@@ -102,10 +103,10 @@ Export <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
-    #' @description
-    #' Reload Export.
-    #' @param ... Other query parameters.
-    #' @return Export
+    #' @description Reload Export object information.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #' @return Export object.
     reload = function(...) {
       super$reload(
         cls = self,

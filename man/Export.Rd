@@ -12,11 +12,11 @@ R6 Class representing a resource for managing volume export jobs.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 
-\item{\code{id}}{String. Export job identifier.}
+\item{\code{id}}{Export job string identifier.}
 
-\item{\code{state}}{String. The state of the export job. Possible values are:
+\item{\code{state}}{The state of the export job. Possible values are:
 \itemize{
 \item \code{PENDING}: the export is queued;
 \item \code{RUNNING}: the export is running;
@@ -30,7 +30,7 @@ the volume.}
 \item{\code{destination}}{List containing destination volume id and location
 (file name) on the volume where the file is being exported.}
 
-\item{\code{overwrite}}{Boolean. Whether the exported file name was
+\item{\code{overwrite}}{Whether the exported file name was
 overwritten or not, if another one with the same name had already
 existed on the volume.}
 
@@ -70,7 +70,7 @@ Create a new Export object.
 \describe{
 \item{\code{res}}{Response containing Export job information.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -89,7 +89,7 @@ Print method for Export class.
 \if{html}{\out{<a id="method-Export-reload"></a>}}
 \if{latex}{\out{\hypertarget{method-Export-reload}{}}}
 \subsection{Method \code{reload()}}{
-Reload Export.
+Reload Export object information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Export$reload(...)}\if{html}{\out{</div>}}
 }
@@ -97,12 +97,13 @@ Reload Export.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Export
+Export object.
 }
 }
 \if{html}{\out{<hr>}}
