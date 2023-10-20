@@ -142,6 +142,10 @@ In summary, once you export a file from the Platform to a volume, it is
 no longer part of the storage on the Platform and cannot be exported
 again. \cr
 
+Read more about this operation in our documentation
+\href{https://docs.sevenbridges.com/reference/start-an-export-job-v2}{here}.
+\cr
+
 If you want to export multiple files, the recommended way is to do it
 in bulk considering the API rate limit (\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).
 (bulk operations will be implemented in next releases).

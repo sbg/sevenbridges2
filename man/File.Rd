@@ -413,25 +413,27 @@ This call lets you queue a job to export this file from a
 project on the Platform into a volume. The file selected for export must
 not be a public file or an alias. Aliases are objects stored in your
 cloud storage bucket which have been made available on the Platform.
-The volume you are exporting to must be configured for read-write access.
-To do this, set the \code{access_mode} parameter to \code{RW} when creating or
-modifying a volume.
+The volume you are exporting to must be configured for read-write
+access. To do this, set the \code{access_mode} parameter to \code{RW} when
+creating or modifying a volume.  \cr
 
-Essentially, the call writes to your cloud storage bucket via the volume.
-If this call is successful, the original project file will become an
-alias to the newly exported object on the volume. The source file will
-be deleted from the Platform and, if no more copies of this file exist,
-it will no longer count towards your total storage price on the Platform.
-In summary, once you export a file from the Platform to a volume, it is
-no longer part of the storage on the Platform and cannot be exported
-again. \cr
+Essentially, the call writes to your cloud storage bucket via the
+volume. If this call is successful, the original project file will
+become an alias to the newly exported object on the volume. The source
+file will be deleted from the Platform and, if no more copies of this
+file exist, it will no longer count towards your total storage price
+on the Platform.  \cr
+In summary, once you export a file from the Platform to a volume,
+it is no longer part of the storage on the Platform and
+cannot be exported again. \cr
 
 Read more about this operation in our documentation
 \href{https://docs.sevenbridges.com/reference/start-an-export-job-v2}{here}.
-
+\cr
 If you want to export multiple files, the recommended way is to do it
 in bulk considering the API rate limit
-(\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).
+(\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more})
+(bulk operations will be implemented in next releases).
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{File$submit_export(
   destination_volume,

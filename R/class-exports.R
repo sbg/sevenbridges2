@@ -126,6 +126,10 @@ Exports <- R6::R6Class(
     #'  no longer part of the storage on the Platform and cannot be exported
     #'  again. \cr
     #'
+    #'  Read more about this operation in our documentation
+    #'  [here](https://docs.sevenbridges.com/reference/start-an-export-job-v2).
+    #'  \cr
+    #'
     #'  If you want to export multiple files, the recommended way is to do it
     # nolint start
     #'  in bulk considering the API rate limit ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).

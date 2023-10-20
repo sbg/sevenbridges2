@@ -12,33 +12,33 @@ R6 Class representing a resource for managing volumes.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 
-\item{\code{id}}{String. Volume ID, constructed from {division}/{volume_name}
-or {volume_owner}/{volume_name}}
+\item{\code{id}}{Volume ID, constructed from {division}/{volume_name}
+or {volume_owner}/{volume_name}.}
 
-\item{\code{name}}{String. The name of the volume. It must be unique from all
-other volumes for this user. Required if from_path parameter
+\item{\code{name}}{The name of the volume. It must be unique from all
+other volumes for this user. Required if \code{from_path} parameter
 is not provided.}
 
-\item{\code{description}}{String. The description of the volume.}
+\item{\code{description}}{The description of the volume.}
 
-\item{\code{access_mode}}{String. Signifies whether this volume should be used
+\item{\code{access_mode}}{Signifies whether this volume should be used
 for read-write (RW) or read-only (RO) operations. The access mode is
 consulted independently of the credentials granted to Seven Bridges
 when the volume was created, so it is possible to use a read-write
 credentials to register both read-write and read-only volumes using it.
 Default: \code{"RW"}.}
 
-\item{\code{service}}{String. This object more closely describes the mapping of
-the volume to the cloud service where the data is stored.}
+\item{\code{service}}{This object in form of string more closely describes the
+mapping of the volume to the cloud service where the data is stored.}
 
 \item{\code{created_on}}{The date and time this volume was created.}
 
 \item{\code{modified_on}}{The date and time this volume was last modified.}
 
-\item{\code{active}}{Boolean. If a volume is deactivated, this field will be
-set to FALSE.}
+\item{\code{active}}{If a volume is deactivated, this field will be
+set to \code{FALSE}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -78,7 +78,7 @@ Create a new Volume object.
 \describe{
 \item{\code{res}}{Response containing Volume object info.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -97,7 +97,7 @@ Print method for Volume class.
 \if{html}{\out{<a id="method-Volume-reload"></a>}}
 \if{latex}{\out{\hypertarget{method-Volume-reload}{}}}
 \subsection{Method \code{reload()}}{
-Reload Volume
+Reload Volume object information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$reload(...)}\if{html}{\out{</div>}}
 }
@@ -105,12 +105,13 @@ Reload Volume
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Volume
+Volume object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -126,30 +127,33 @@ This function updates the details of a specific volume.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{description}}{String. The description of the volume.}
+\item{\code{description}}{The new description of the volume.}
 
-\item{\code{access_mode}}{String. Signifies whether this volume should be used
+\item{\code{access_mode}}{Signifies whether this volume should be used
 for read-write (RW) or read-only (RO) operations. The access mode is
 consulted independently of the credentials granted to Seven Bridges
 when the volume was created, so it is possible to use a read-write
 credentials to register both read-write and read-only volumes using it.
 Default: \code{"RW"}.}
 
-\item{\code{service}}{String. This object more closely describes the mapping of
-the volume to the cloud service where the data is stored.}
+\item{\code{service}}{This object in form of string more closely describes the
+mapping of the volume to the cloud service where the data is stored.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Volume object.
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-deactivate"></a>}}
 \if{latex}{\out{\hypertarget{method-Volume-deactivate}{}}}
 \subsection{Method \code{deactivate()}}{
-Deactivate volume
+Deactivate volume.
 Once deactivated, you cannot import from, export to, or browse within a
 volume. As such, the content of the files imported from this volume will
 no longer be accessible on the Platform. However, you can update the
-volume and manage members.
+volume and manage members. \cr
 Note that you cannot deactivate the volume if you have running imports
 or exports unless you force the operation using the query parameter
 force=TRUE.
@@ -162,7 +166,8 @@ all files which have been imported from the volume to the Platform.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query parameters like 'force'.
+\item{\code{...}}{Other query parameters or arguments that can be passed to
+core \code{api()} function like 'force'.
 Use it within query parameter, like \code{query = list(force = TRUE)}.}
 }
 \if{html}{\out{</div>}}
@@ -172,9 +177,9 @@ Use it within query parameter, like \code{query = list(force = TRUE)}.}
 \if{html}{\out{<a id="method-Volume-reactivate"></a>}}
 \if{latex}{\out{\hypertarget{method-Volume-reactivate}{}}}
 \subsection{Method \code{reactivate()}}{
-Reactivate volume
+Reactivate volume.
 This function reactivates the previously deactivated volume by updating
-the 'active' field of the volume to TRUE.
+the \code{active} field of the volume to \code{TRUE}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$reactivate(...)}\if{html}{\out{</div>}}
 }
@@ -182,7 +187,8 @@ the 'active' field of the volume to TRUE.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query parameters like 'force'.
+\item{\code{...}}{Other query parameters or arguments that can be passed to
+core \code{api()} function like 'force'.
 Use it within query parameter, like \code{query = list(force = TRUE)}.}
 }
 \if{html}{\out{</div>}}
@@ -192,7 +198,7 @@ Use it within query parameter, like \code{query = list(force = TRUE)}.}
 \if{html}{\out{<a id="method-Volume-delete"></a>}}
 \if{latex}{\out{\hypertarget{method-Volume-delete}{}}}
 \subsection{Method \code{delete()}}{
-Delete volume
+Delete volume.
 This call deletes a volume you've created to refer to storage on
 Amazon Web Services, Google Cloud Storage, Azure or Ali cloud.
 To be able to delete a volume, you first need to deactivate it and then
@@ -207,7 +213,7 @@ the volume.
 \if{html}{\out{<a id="method-Volume-list_contents"></a>}}
 \if{latex}{\out{\hypertarget{method-Volume-list_contents}{}}}
 \subsection{Method \code{list_contents()}}{
-List volume contents
+List volume contents.
 This call lists the contents of a specific volume.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$list_contents(
@@ -225,8 +231,10 @@ This call lists the contents of a specific volume.
 \item{\code{prefix}}{This is parent parameter in volume context. If specified,
 the content of the parent directory on the current volume is listed.}
 
-\item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
 \item{\code{link}}{Link to use in the next chunk of results. Contains limit and
 continuation_token. If provided it will overwrite other arguments'
@@ -235,10 +243,11 @@ values passed.}
 \item{\code{continuation_token}}{Continuation token received to use for next
 chunk of results. Behaves similarly like offset parameter.}
 
-\item{\code{...}}{Other parameters that can be passed to api() function, like
-fields for example. With fields parameter you can specify a subset of
-fields to include in the response. You can use: \code{href}, \code{location},
-\code{volume}, \code{type}, \code{metadata}, \verb{_all}. Default: \verb{_all}.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields' for example. With fields parameter you can specify a
+subset of fields to include in the response.
+You can use: \code{href}, \code{location}, \code{volume}, \code{type}, \code{metadata}, \verb{_all}.
+Default: \verb{_all}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -251,7 +260,7 @@ and VolumePrefix objects.
 \if{html}{\out{<a id="method-Volume-get_file"></a>}}
 \if{latex}{\out{\hypertarget{method-Volume-get_file}{}}}
 \subsection{Method \code{get_file()}}{
-Get volume file information
+Get volume file information.
 This function returns the specific Volume File.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$get_file(location = NULL, link = NULL, ...)}\if{html}{\out{</div>}}
@@ -266,8 +275,8 @@ location.}
 \item{\code{link}}{Link to the file resource received from listing volume's
 contents. Cannot be used together with location.}
 
-\item{\code{...}}{Other parameters that can be passed to api() function, like
-fields etc.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -279,7 +288,7 @@ VolumeFile object.
 \if{html}{\out{<a id="method-Volume-list_members"></a>}}
 \if{latex}{\out{\hypertarget{method-Volume-list_members}{}}}
 \subsection{Method \code{list_members()}}{
-List members of a volume
+List members of a volume.
 This function returns the members of a specific volume.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$list_members(
@@ -292,26 +301,29 @@ This function returns the members of a specific volume.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{Defines where the retrieved items started.
-By default, \code{offset} is set to \code{0}.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other parameters that can be passed to api() function like
-fields etc.}
+\item{\code{...}}{Other parameters that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-List of Member class objects.
+Collection containing list of Member objects.
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-add_member"></a>}}
 \if{latex}{\out{\hypertarget{method-Volume-add_member}{}}}
 \subsection{Method \code{add_member()}}{
-Add member to a volume
+Add member to a volume.
 This function adds members to the specified volume.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$add_member(
@@ -330,11 +342,15 @@ user's username.}
 \item{\code{permissions}}{List of permissions granted to the user being added.
 Permissions include listing the contents of a volume, importing files
 from the volume to the Platform, exporting files from the Platform to
-the volume, and admin privileges.
+the volume, and admin privileges. \cr
 It can contain fields: 'read', 'copy', 'write' and 'admin' with
 logical fields - TRUE if certain permission is allowed to the user, or
 FALSE if it's not.
-Example: list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)}
+Example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{  permissions = list(read = TRUE, copy = TRUE, write = FALSE,
+  admin = FALSE)
+}\if{html}{\out{</div>}}}
 }
 \if{html}{\out{</div>}}
 }
@@ -346,7 +362,7 @@ Member object.
 \if{html}{\out{<a id="method-Volume-remove_member"></a>}}
 \if{latex}{\out{\hypertarget{method-Volume-remove_member}{}}}
 \subsection{Method \code{remove_member()}}{
-Remove member from a volume
+Remove member from a volume.
 This function removes members from the specified volume.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$remove_member(user)}\if{html}{\out{</div>}}
@@ -366,7 +382,7 @@ user's username.}
 \if{html}{\out{<a id="method-Volume-get_member"></a>}}
 \if{latex}{\out{\hypertarget{method-Volume-get_member}{}}}
 \subsection{Method \code{get_member()}}{
-Get member's info
+Get member's details.
 This function returns member's information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$get_member(user, ...)}\if{html}{\out{</div>}}
@@ -379,7 +395,7 @@ This function returns member's information.
 you want to get information about or object of class Member containing
 user's username.}
 
-\item{\code{...}}{Other arguments that can be passed to api() function
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
@@ -392,7 +408,7 @@ Member object.
 \if{html}{\out{<a id="method-Volume-modify_member_permissions"></a>}}
 \if{latex}{\out{\hypertarget{method-Volume-modify_member_permissions}{}}}
 \subsection{Method \code{modify_member_permissions()}}{
-Modify a volume member's permission
+Modify a volume member's permission.
 This function modifies the permissions for a member of a specific
 volume. Note that this does not overwrite all previously set permissions
 for the member.
@@ -418,7 +434,11 @@ the volume, and admin privileges.
 It can contain fields: 'read', 'copy', 'write' and 'admin' with
 logical fields - TRUE if certain permission is allowed to the user, or
 FALSE if it's not.
-Example: list(read = TRUE, copy = TRUE)}
+Example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{  permissions = list(read = TRUE, copy = TRUE, write = FALSE,
+  admin = FALSE)
+}\if{html}{\out{</div>}}}
 }
 \if{html}{\out{</div>}}
 }
@@ -455,21 +475,24 @@ imports to this project. Optional.}
 \item \code{COMPLETED}: the import has completed successfully;
 \item \code{FAILED}: the import has failed.
 }
-Example: state = c("RUNNING", "FAILED")}
+Example: \code{state = c("RUNNING", "FAILED")}}
 
-\item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{Defines where the retrieved items started.
-By default, \code{offset} is set to \code{0}.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments that can be passed to api() function
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection of import jobs (Import class objects).
+Collection containing list of Import jobs (Import class objects).
 }
 }
 \if{html}{\out{<hr>}}
@@ -492,28 +515,31 @@ volume, you write to your cloud storage bucket.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{state}}{String. The state of the export job. Possible values are:
+\item{\code{state}}{The state of the export job. Possible values are:
 \itemize{
 \item \code{PENDING}: the export is queued;
 \item \code{RUNNING}: the export is running;
 \item \code{COMPLETED}: the export has completed successfully;
 \item \code{FAILED}: the export has failed.
 }
-Example: state = c("RUNNING", "FAILED")}
+Example: \code{state = c("RUNNING", "FAILED")}}
 
-\item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{Defines where the retrieved items started.
-By default, \code{offset} is set to \code{0}.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments that can be passed to api() function
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection of export jobs (Export class objects).
+Collection containing list of export jobs (Export class objects).
 }
 }
 \if{html}{\out{<hr>}}
