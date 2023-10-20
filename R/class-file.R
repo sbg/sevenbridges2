@@ -1,8 +1,8 @@
 # nolint start
-#' @title R6 Class representing a file
+#' @title R6 Class representing a File
 #'
 #' @description
-#' R6 Class representing a resource for managing files.
+#' R6 Class representing a resource for managing files and folders.
 #'
 #' @importFrom R6 R6Class
 #' @export
@@ -12,7 +12,7 @@ File <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "get" = "files/{id}",
       "file" = "files/{self$id}",
@@ -23,38 +23,38 @@ File <- R6::R6Class(
       "move" = "files/{self$id}/actions/move",
       "content" = "files/{self$id}/list"
     ),
-    #' @field id Character used as a file ID.
+    #' @field id String used as a file ID.
     id = NULL,
     #' @field name String used as a file name.
     name = NULL,
     #' @field size File size.
     size = NULL,
-    #' @field project Project ID if any, when returned by an API call.
+    #' @field project Project ID if any, where file/folder is located.
     project = NULL,
-    #' @field created_on Date created on.
+    #' @field created_on Date file/folder was created on.
     created_on = NULL,
-    #' @field modified_on Date modified on.
+    #' @field modified_on Date file/folder was modified on.
     modified_on = NULL,
-    #' @field storage List as storage type.
+    #' @field storage File/folder's storage type.
     storage = NULL,
-    #' @field origin List as origin.
+    #' @field origin Task ID if file/folder is produced by some task execution.
     origin = NULL,
-    #' @field tags List as tags.
+    #' @field tags List of tags associated with the file.
     tags = NULL,
     #' @field metadata List for metadata associated with the file.
     metadata = NULL,
-    #' @field url File download url.
+    #' @field url File download URL.
     url = NULL,
     #' @field parent Parent folder ID.
     parent = NULL,
-    #' @field type This can be of type `File` or `Folder`.
+    #' @field type This can be of type `file` or `folder`.
     type = NULL,
-    #' @field secondary_files Secondary files
+    #' @field secondary_files Secondary files linked to the file if exist.
     secondary_files = NULL,
 
     #' @description Create a new File object.
     #' @param res Response containing File object information.
-    #' @param ... Other arguments.
+    #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
@@ -106,7 +106,7 @@ File <- R6::R6Class(
     #' metadata. Apart from regular file fields there are some additional
     #' fields:
     #' \itemize{
-    #'   \item **`storage`** field denotes the type of storage for the file
+    #'   \item `storage` field denotes the type of storage for the file
     #'   which can be either PLATFORM or VOLUME depending on where the file is
     #'   stored.
     #'   \item `origin` field denotes the task that produced the file, if it
@@ -192,9 +192,9 @@ File <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
-    #' @description
-    #' Reload File.
-    #' @param ... Other query parameters.
+    #' @description Reload File object information.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     #' @return File
     reload = function(...) {
       super$reload(
@@ -202,23 +202,24 @@ File <- R6::R6Class(
         ...
       )
       rlang::inform("File object is refreshed!")
-    },
-    # nocov end
-    #' @description
-    #' Updates the name, the full set metadata, and tags
+    }, # nocov end
+    #' @description Updates the name, the full set metadata, and tags
     #' for a specified file.
     #' .
     #' @param name The new name of the file.
     #' @param metadata The metadata fields and their values that you want to
-    #' update. This is a named list of key-value pairs. The keys and values are
-    #' strings.
+    #'  update. This is a named list of key-value pairs. The keys and values are
+    #'  strings.
     #' @param tags The tags you want to update, represented as unnamed list of
-    #' values to add as tags.
-    #' @param ... Additional parameters that can be passed to the method.
-    #' @return `File` or `Folder`
+    #'  values to add as tags.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'limit', 'offset', 'fields', etc.
+    #'
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #' @importFrom glue glue
+    #'
+    #' @return Updated File object.
     update = function(name = NULL,
                       metadata = NULL,
                       tags = NULL,
@@ -247,8 +248,6 @@ File <- R6::R6Class(
         ...
       )
 
-
-
       # Reload object
       self$initialize(
         res = res,
@@ -257,19 +256,18 @@ File <- R6::R6Class(
         auth = self$auth
       )
       rlang::inform("File has been updated!")
-    },
-    # nocov end
-
-    #' @description
-    #' This method allows you to tag files on the Platform. You can tag your
-    #' files on the Platform with keywords to make it easier to identify and
-    #' organize files you’ve imported from public datasets or copied between
-    #' projects.
-    #' .
+    }, # nocov end
+    #' @description This method allows you to tag files on the Platform.
+    #'  You can tag your files on the Platform with keywords to make it easier
+    #'  to identify and organize files you’ve imported from public datasets
+    #'  or copied between projects. \cr
+    #'  More details on how to use this call can be found
+    #'  [here](https://docs.sevenbridges.com/reference/add-tags-to-a-file).
+    #'
     #' @param tags The tags you want to update, represented as unnamed list of
-    #' values to add as tags.
-    #' @param overwrite Set to TRUE if you want to ovewrite existing tags.
-    #' Default: FALSE.
+    #'  values to add as tags.
+    #' @param overwrite Set to `TRUE` if you want to overwrite existing tags.
+    #'  Default: `FALSE`.
     #' @param ... Additional parameters that can be passed to the method.
     #'
     #' @importFrom checkmate assert_logical
@@ -300,40 +298,34 @@ File <- R6::R6Class(
         ...
       )
 
-
-
       # Add tags to object
       if (overwrite) {
         self$tags <- tags
       } else {
         self$tags <- unique(c(self$tags, tags))
       }
-    },
-    # nocov end
-
-    #' @description
-    #' This call copies the specified file to a new project. Files retain their
-    #' metadata when copied, but may be assigned new names in their target
-    #' project. To make this call, you should have
-    #' [copy permission](https://docs.sevenbridges.com/docs/set-permissions)
-    #' within the project you are copying from. Note: If you want to copy
-    #' multiple files, the recommended way is to do it in bulk considering the
-    #' API rate limit
-    #' ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).You can
-    #' do that using `Auth$copy_files()` operation.
+    }, # nocov end
+    #' @description This call copies the specified file to a new project.
+    #'  Files retain their metadata when copied, but may be assigned new names
+    #'  in their target project. To make this call, you should have
+    #'  [copy permission](https://docs.sevenbridges.com/docs/set-permissions)
+    #'  within the project you are copying from. \cr Note: If you want to copy
+    #'  multiple files, the recommended way is to do it in bulk considering the
+    #'  API rate limit
+    #'  ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).
+    #'  You can do that using `Auth$copy_files()` operation.
     #'
     #' @param project The ID of the project or a Project object where you want
-    #'   to copy the file to. Project name should be specified in the
-    #'   `<username>/<project-name>` format, e.g. `rfranklin/my-project`.
+    #'   to copy the file to.
     #' @param name The new name the file will have in the target project.
-    #' If its name will not change, omit this key.
-    #' @param ... Additional parameters that can be passed to the method.
-    #'
-    #' @importFrom checkmate assert_r6 assert_string
+    #'  If its name will not change, omit this key.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #' @importFrom glue glue
     #'
-    #' @return `File` or `Folder`
+    #' @return Copied File object.
     copy_to = function(project, name = NULL, ...) {
       if (is_missing(project)) {
         rlang::abort("Project parameter is missing. You need to provide one.")
@@ -355,17 +347,14 @@ File <- R6::R6Class(
         ...
       )
 
-
-
       # Return newly created file
       return(asFile(res, auth = self$auth))
     },
-
-    #' @description
-    #' This method returns a URL that you can use to download the specified
-    #' file.
+    #' @description This method returns a URL that you can use to download
+    #'  the specified file.
     #' @importFrom glue glue
-    #' @param ... Additional parameters that can be passed to the method.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     get_download_url = function(...) {
       res <- sevenbridges2::api(
         path = glue::glue(self$URL[["download_url"]]),
@@ -374,19 +363,16 @@ File <- R6::R6Class(
         base_url = self$auth$url,
         ...
       )
-
-
-
       # Set url field
       self$url <- res$url
 
       # Return download url
       return(self$url)
     },
-
-    #' @description
-    #' This call returns the metadata values for the specified file.
-    #' @param ... Additional parameters that can be passed to the method.
+    #' @description This call returns the metadata values for the specified
+    #'  file.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     #'
     #' @importFrom DescTools StripAttr
     #' @importFrom glue glue
@@ -398,25 +384,24 @@ File <- R6::R6Class(
         base_url = self$auth$url,
         ...
       )
-
-
-
       # Set url field
       self$metadata <-
         DescTools::StripAttr(res, attr_names = "response")
 
       return(self$metadata)
-    },
-    # nocov end
-
-    #' @description
-    #' This call changes the metadata values for the specified file.
-    #'
+    }, # nocov end
+    #' @description This call changes the metadata values for the specified
+    #'  file. \cr
+    #'  More details about how to modify metadata, you can find in the
+    # nolint start
+    #'  [API documentation](https://docs.sevenbridges.com/reference/modify-a-files-metadata).
+    # nolint end
     #' @param metadata_fields Enter a list of key-value pairs of metadata fields
-    #' and metadata values
-    #' @param overwrite Set to TRUE if you want to ovewrite existing tags.
-    #' Default: FALSE.
-    #' @param ... Additional parameters that can be passed to the method.
+    #'  and metadata values.
+    #' @param overwrite Set to `TRUE` if you want to overwrite existing tags.
+    #' Default: `FALSE`.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     #'
     #' @importFrom DescTools StripAttr
     #' @importFrom checkmate assert_logical
@@ -448,30 +433,25 @@ File <- R6::R6Class(
         ...
       )
 
-
-
       # Set new metadata fields
       self$metadata <-
         DescTools::StripAttr(res, attr_names = "response")
 
       return(self$metadata)
-    },
-    # nocov end
-
-    #' @description
-    #' This call moves a file from one folder to another. Moving of files is
-    #' only allowed within the same project.
+    }, # nocov end
+    #' @description This call moves a file from one folder to another.
+    #'  Moving of files is only allowed within the same project.
     #'
     #' @param parent The ID string of target folder or a File object which must
-    #'   be of type `FOLDER`.
-    #' @param name Specifies a new name for a file in case you want to rename it
-    #' . If you want to use the same name, omit this key.
-    #' @param ... Additional parameters that can be passed to the method.
+    #'  be of type `FOLDER`.
+    #' @param name Specify a new name for a file in case you want to rename it.
+    #'  If you want to use the same name, omit this key.
     #'
-    #' @importFrom checkmate assert_r6 assert_string
+    #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #' @importFrom glue glue
-    move_to_folder = function(parent, name = NULL, ...) {
+    #' @return Moved File object.
+    move_to_folder = function(parent, name = NULL) {
       if (is_missing(parent)) {
         # nolint start
         rlang::abort("Parent folder is missing. You need to provide one.")
@@ -494,23 +474,22 @@ File <- R6::R6Class(
         method = "POST",
         body = body,
         token = self$auth$get_token(),
-        base_url = self$auth$url,
-        ...
+        base_url = self$auth$url
       )
-
-
 
       # Return newly created file
       return(asFile(res, auth = self$auth))
     },
-
-    #' @description
-    #' List folder contents.
-    #' @param limit Defines the number of items you want to get from your API
-    #' request. By default, `limit` is set to `50`. Maximum is `100`.
-    #' @param offset Defines where the retrieved items started.
-    #' By default, `offset` is set to `0`.
-    #' @param ... Additional parameters that can be passed to the method.
+    #' @description List folder contents.
+    #' @param limit The maximum number of collection items to return
+    #'  for a single request. Minimum value is `1`.
+    #'  The maximum value is `100` and the default value is `50`.
+    #'  This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection
+    #'  of the first item to return. The default value is `0`.
+    #'  This is a pagination-specific attribute.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     list_contents = function(limit = getOption("sevenbridges2")$"limit",
                              offset = getOption("sevenbridges2")$"offset",
                              ...) {
@@ -524,15 +503,12 @@ File <- R6::R6Class(
         ...
       )
 
-
-
       res$items <- asFileList(res, auth = self$auth)
 
       # Return folder contents as Collection
       return(asCollection(res, auth = self$auth))
     },
-
-    #' @description Delete method for File class.
+    #' @description Delete method for File objects.
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end cli_bullets
@@ -547,17 +523,16 @@ File <- R6::R6Class(
       )
 
       rlang::inform(message = glue::glue("File {self$id} has been deleted."))
-    },
-    # nocov end
-    #' @description Download method for File class. It allows download a
-    #' platform file to your local computer. To specify the destination for
-    #' your download, you should provide the path to the destination directory
-    #' as `directory_path` parameter.
+    }, # nocov end
+    #' @description Download method for File objects. It allows download a
+    #'  platform file to your local computer. To specify the destination for
+    #'  your download, you should provide the path to the destination directory
+    #'  as `directory_path` parameter.
     #' @param directory_path Path to the destination directory of a new file.
     #' @param filename Full name for the new file, including its extension. By
-    #' default, the name field of File object will be used.
+    #'  default, the name field of File object will be used.
     #' @param method Method to be used for downloading files. By default, this
-    #' parameter is set to `curl`.
+    #'  parameter is set to `curl`.
     #' @param retry_count Number of retries if error occurs during download.
     #' @param retry_timeout Number of seconds between two retries.
     #' @importFrom rlang inform warn abort
@@ -646,44 +621,48 @@ File <- R6::R6Class(
     #' it will no longer count towards your total storage price on the Platform.
     #' In summary, once you export a file from the Platform to a volume, it is
     #' no longer part of the storage on the Platform and cannot be exported
-    #' again.
+    #' again. \cr
+    #'
+    #' Read more about this operation in our documentation
+    #' [here](https://docs.sevenbridges.com/reference/start-an-export-job-v2).
     #'
     #' If you want to export multiple files, the recommended way is to do it
-    #' in bulk considering the API rate limit ([learn more]
-    #' (https://docs.sevenbridges.com/docs/api-rate-limit)).
+    #' in bulk considering the API rate limit
+    #' ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).
     #'
     #' @param destination_volume String volume id or Volume object you want to
-    #' export files into. Required.
+    #'  export files into. Required.
     #' @param destination_location String volume-specific location to which the
-    #' file will be exported.
-    #' This location should be recognizable to the underlying cloud service as
-    #' a valid key or path to a new file. Please note that if this volume has
-    #' been configured with a prefix parameter, the value of prefix will be
-    #' prepended to location before attempting to create the file on the volume.
+    #'  file will be exported.
+    #'  This location should be recognizable to the underlying cloud service as
+    #'  a valid key or path to a new file. Please note that if this volume has
+    #'  been configured with a prefix parameter, the value of prefix will be
+    #'  prepended to location before attempting to create the file on the
+    #'  volume.
     #'
-    #' If you would like to export the file into some folder on the volume,
-    #' please add folder name as prefix before file name in form
-    #' `<folder-name>/<file-name>`.
-    #' @param overwrite Boolean. Whether to overwrite the item if another one
-    #' with the same name already exists at the destination.
-    #' @param copy_only Boolean. If true, file will be copied to a volume but
-    #' source file will remain on the Platform.
+    #'  If you would like to export the file into some folder on the volume,
+    #'  please add folder name as prefix before file name in form
+    #'  `<folder-name>/<file-name>`.
+    #' @param overwrite Set to `TRUE` of you want to overwrite the item that
+    #'  already exists at the destination. Default: `FALSE`.
+    #' @param copy_only If `TRUE`, file will be copied to a volume but
+    #'  source file will remain on the Platform.
     #' @param properties Named list of additional volume properties, like:
     #' \itemize{
-    #'    \item `sse_algorithm` - String. S3 server-side encryption to use when
+    #'    \item `sse_algorithm` - S3 server-side encryption to use when
     #'    exporting to this bucket. Supported values:
-    #'    AES256 (SSE-S3 encryption), aws:kms, null (no server-side encryption).
-    #'    Default: AES256.
-    #'    \item `sse_aws_kms_key_Id`: String. Applies to type: s3.
+    #'    `AES256` (SSE-S3 encryption), `aws:kms`, `null`
+    #'    (no server-side encryption). Default: `AES256`.
+    #'    \item `sse_aws_kms_key_Id`: Applies to type: `s3`.
     #'    If AWS KMS encryption is used, this should be set to the required KMS
-    #'    key. If not set and aws:kms is set as sse_algorithm, default KMS key
-    #'    is used.
-    #'    \item `aws_canned_acl`: String. S3 canned ACL to apply on the object
+    #'    key. If not set and `aws:kms` is set as `sse_algorithm`,
+    #'    default KMS key is used.
+    #'    \item `aws_canned_acl`: S3 canned ACL to apply on the object
     #'    on during export. Supported values: any one of S3 canned ACLs;
     #'    null (do not apply canned ACLs). Default: null.
     #' }
-    #' @param ... Other arguments that can be passed to api() function
-    #' like 'fields', etc.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     #'
     #' @return Export job object.
     submit_export = function(destination_volume,

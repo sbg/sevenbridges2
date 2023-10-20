@@ -12,7 +12,7 @@ R6 Class representing Projects resource.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 }
 \if{html}{\out{</div>}}
 }
@@ -44,7 +44,7 @@ R6 Class representing Projects resource.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -54,10 +54,15 @@ R6 Class representing Projects resource.
 \if{latex}{\out{\hypertarget{method-Projects-query}{}}}
 \subsection{Method \code{query()}}{
 A method to list all projects available to particular user.
-if the username is not provided, all projects available to the currently
-authenticated user will be listed. Otherwise, projects will be listed
-for the user whose username is provided. Please keep in mind that this
-way you will only be able to list projects you are a member of.
+If the username is not provided, all projects available to the
+currently authenticated user will be listed.
+Otherwise, projects will be listed for the user whose username
+is provided.
+Please keep in mind that this way you will only be able to list
+projects you are a member of. \cr \cr
+More details on how to query projects, you can find in our
+documentation:
+\url{https://docs.sevenbridges.com/reference/list-all-your-projects}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Projects$query(
   name = NULL,
@@ -78,23 +83,29 @@ way you will only be able to list projects you are a member of.
 
 \item{\code{tags}}{The list of project tags.}
 
-\item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{Defines where the retrieved items started.
-By default, \code{offset} is set to \code{0}.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments that can be passed to this method.
-Such as query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like other query parameters or 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Collection with list of Project objects.
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Projects-get"></a>}}
 \if{latex}{\out{\hypertarget{method-Projects-get}{}}}
 \subsection{Method \code{get()}}{
-This call creates an object containing the details
+This call creates Project object containing the details
 of a specified project.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Projects$get(id, ...)}\if{html}{\out{</div>}}
@@ -105,18 +116,14 @@ of a specified project.
 \describe{
 \item{\code{id}}{Project ID. It consists of project owner's username or
 if you are using Enterprise, then the Division name and project's
-short name in form of <owner_username>/\if{html}{\out{<project-short-name>}} or
-\if{html}{\out{<division-name>}}/\if{html}{\out{<project-short-name>}}.}
+short name in form of \verb{<owner_username>/<project-short-name>} or
+\verb{<division-name>/<project-short-name>}.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Details}{
-For full details of identifying objects using the API, please see the
-API overview.
-}
-
 \subsection{Returns}{
 Project object.
 }
@@ -155,37 +162,44 @@ the project.}
 
 \item{\code{tags}}{The list of project tags.}
 
-\item{\code{locked}}{(boolean) Set this field to true to lock down a project.
+\item{\code{locked}}{Set this field to \code{TRUE} to lock down a project.
 Locking down a project prevents any Seven Bridges team member from
 viewing any information about the task.}
 
-\item{\code{controlled}}{Set this field to true to define this project as
-controlled i.e. one which will contain controlled data. Set false to
+\item{\code{controlled}}{Set this field to \code{TRUE} to define this project as
+controlled i.e. one which will contain controlled data. Set \code{FALSE} to
 define the project as open i.e. one which will contain open data.}
 
 \item{\code{location}}{Specify the location for this project:
-aws:us-east-1 or aws:us-west-2}
+\code{aws:us-east-1} or \code{aws:us-west-2}.}
 
-\item{\code{use_interruptible_instances}}{Defines the use of spot instances.}
+\item{\code{use_interruptible_instances}}{Defines the use of
+\href{https://docs.sevenbridges.com/docs/about-spot-instances}{spot instances}.}
 
-\item{\code{use_memoization}}{Set to false by default. Set to true to enable
-memoization.}
+\item{\code{use_memoization}}{Set to \code{FALSE} by default. Set to \code{TRUE} to enable
+\href{https://docs.sevenbridges.com/docs/about-memoization}{memoization}.}
 
-\item{\code{use_elastic_disk}}{Set to true to enable Elastic disk.}
+\item{\code{use_elastic_disk}}{Set to \code{TRUE} to enable
+\href{https://docs.sevenbridges.com/page/elastic-disk}{Elastic disk}.}
 
 \item{\code{intermediate_files}}{A list defining the retention period for
 intermediate files. Expected elements:
 \itemize{
-\item retention - Specifies that intermediate files should be retained
-for a limited amount of time. The value is always LIMITED.
-\item duration - Specifies intermediate files retention period in hours.
-The minimum value is 1. The maximum value is 120 and the default value
-is 24.
+\item \code{retention} - Specifies that intermediate files should be
+retained for a limited amount of time.
+The value is always \code{LIMITED}.
+\item \code{duration} - Specifies intermediate files retention period in
+hours. The minimum value is \code{1}. The maximum value is \code{120} and the
+default value is \code{24}.
 }}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Project object.
 }
 }
 \if{html}{\out{<hr>}}

@@ -6,18 +6,18 @@
 \description{
 R6 Class representing a central resource for managing projects.
 }
-\details{
-This is main object for Projects
-}
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{Project}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 
-\item{\code{id}}{Project's ID.}
+\item{\code{id}}{Project identifier. It consists of project owner's username or
+if you are using Enterprise, then the Division name and project's
+short name in form of \verb{<owner_username>/<project-short-name>} or
+\verb{<division-name>/<project-short-name>}.}
 
 \item{\code{name}}{Project's name.}
 
@@ -32,21 +32,28 @@ This is main object for Projects
 \item{\code{settings}}{A list which contains detailed project settings.
 The following fields are part of the settings object:
 \itemize{
-\item locked (boolean) Set this field to true to lock down a project.
+\item \code{locked} - If set \code{TRUE}, the project is locked down.
 Locking down a project prevents any Seven Bridges team member from
 viewing any information about the task.
-\item use_interruptible_instances (boolean) Defines the use of spot
-instances. If not included in the request, spot instances are enabled
-by default.
-\item use_memoization (boolean) Set to false by default. Set to true
-to enable memoization.
-\item use_elastic_disk (boolean) Set to true to enable Elastic disk.
-\item intermediate_files (list) Contains the following two sub fields:
-retention - Specifies that intermediate files should be retained for a
-limited amount of time. The value is always LIMITED.
-duration - Specifies intermediate files retention period in hours.
-The minimum value is 1. The maximum value is 120 and the default value
-is 24.
+\item \code{use_interruptible_instances} - Defines the use of
+\href{https://docs.sevenbridges.com/docs/about-spot-instances}{spot instances}.
+If not included in the request, spot instances are enabled by
+default.
+\item \code{use_memoization} - Set to \code{FALSE} by default. If set to \code{TRUE}
+\href{https://docs.sevenbridges.com/docs/about-memoization}{memoization}
+is enabled.
+\item \code{use_elastic_disk} - If set to \code{TRUE}
+\href{https://docs.sevenbridges.com/page/elastic-disk}{Elastic disk} is
+enabled.
+\item \code{intermediate_files} (list) - Contains the following subfields:
+\itemize{
+\item \code{retention} - Specifies that intermediate files should be
+retained for a limited amount of time.
+The value is always \code{LIMITED}.
+\item \code{duration} - Specifies intermediate files retention period
+in hours. The minimum value is \code{1}. The maximum value is \code{120}
+and the default value is \code{24}.
+}
 }}
 
 \item{\code{root_folder}}{ID for of the project's root folder.}
@@ -61,7 +68,7 @@ last modified.}
 \item{\code{permissions}}{An object containing the information about user's
 permissions within the project.}
 
-\item{\code{category}}{Project's category. By default projects are PRIVATE.}
+\item{\code{category}}{Project's category. By default projects are \code{PRIVATE}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -104,7 +111,7 @@ Create a new Project object.
 \describe{
 \item{\code{res}}{Response containing Project object information.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -138,7 +145,7 @@ Project object more descriptively.
 \if{html}{\out{<a id="method-Project-reload"></a>}}
 \if{latex}{\out{\hypertarget{method-Project-reload}{}}}
 \subsection{Method \code{reload()}}{
-Reload Project.
+Reload Project object information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Project$reload(...)}\if{html}{\out{</div>}}
 }
@@ -146,12 +153,13 @@ Reload Project.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Project
+Project object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -159,9 +167,10 @@ Project
 \if{latex}{\out{\hypertarget{method-Project-update}{}}}
 \subsection{Method \code{update()}}{
 Method that allows you to edit an already existing project.
-As a project Admin you can use it to change the name, settings,
-tags or billing group of the project. Users with write permissions in
-the project can change the project description.
+As a project Admin you can use it to change the \code{name}, \code{settings},
+\code{tags} or \verb{billing group} of the project.
+Users with write permissions in the project can change the project
+\code{description}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Project$update(
   name = NULL,
@@ -176,18 +185,20 @@ the project can change the project description.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{The name of the project you are creating.}
+\item{\code{name}}{New name of the project you are updating.}
 
-\item{\code{description}}{Description of the project.}
+\item{\code{description}}{New description of the project you are updating.}
 
 \item{\code{billing_group}}{Billing object or ID of a particular billing
-group for the project.}
+group you want to set to the project.}
 
-\item{\code{settings}}{Contains detailed project settings.}
+\item{\code{settings}}{Contains detailed project settings as explained in
+previous methods. Check our API documentation:
+\url{https://docs.sevenbridges.com/reference/edit-a-project}.}
 
-\item{\code{tags}}{The list of project tags.}
+\item{\code{tags}}{The list of project tags you want to update.}
 
-\item{\code{...}}{Other arguments that can be passed to api() function
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
@@ -199,7 +210,7 @@ like 'limit', 'offset', 'fields', etc.}
 \subsection{Method \code{delete()}}{
 Method that allows you to delete project from a platform.
 It can only be successfully made if you have admin status for the
-project.
+project. \cr
 Please be careful when using this method and note that calling it will
 permanently delete the project from the platform.
 \subsection{Usage}{
@@ -223,18 +234,22 @@ Method for listing all the project members.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{Defines where the retrieved items started.
-By default, \code{offset} is set to \code{0}.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-List of Member class objects.
+Collection containing list of Member objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -265,18 +280,26 @@ project. This has to be the email address that the person used when
 registering for an account on the Seven Bridges Platform.}
 
 \item{\code{permissions}}{List of permissions that will be associated with the
-project's member. It can contain fields: 'read', 'copy', 'write',
-'execute' and 'admin' with logical fields - TRUE if certain permission
-is allowed to the user, or FALSE if it's not.
+project's member. It can contain fields: \code{read}, \code{copy}, \code{write},
+\code{execute} and \code{admin} with logical fields - \code{TRUE} if certain permission
+is allowed to the user, or \code{FALSE} if it's not.
 Requests to add a project member must include the key permissions.
 However, if you do not include a value for some permission, it will be
-set to FALSE by default. The exception to this rule is the 'read'
+set to \code{FALSE} by default. The exception to this rule is the \code{read}
 permission, which is the default permission on a project. It enables a
 user to read project data, including file names, but access file
 contents.
 
-Example: list(read = TRUE, copy = TRUE, write = FALSE, execute = FALSE,
-admin = FALSE)}
+Example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{permissions = list(
+  read = TRUE,
+  copy = TRUE,
+  write = FALSE,
+  execute = FALSE,
+  admin = FALSE
+)
+}\if{html}{\out{</div>}}}
 }
 \if{html}{\out{</div>}}
 }
@@ -321,7 +344,8 @@ the specified project.
 you want to get information about or object of class Member containing
 user's username.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -348,11 +372,20 @@ has admin permissions in the project.
 you want to modify permissions on the volume for or object of class
 Member containing user's username.}
 
-\item{\code{permissions}}{List of permissions that will be updated for the
-user. It can contain fields: 'read', 'copy', 'execute', 'write' and
-'admin' with logical values - TRUE if certain permission is allowed to
-the user, or FALSE if it's not.
-Example: list(read = TRUE, copy = TRUE)}
+\item{\code{permissions}}{List of permissions that will be associated with the
+project's member. It can contain fields: \code{read}, \code{copy}, \code{write},
+\code{execute} and \code{admin} with logical fields - \code{TRUE} if certain permission
+is allowed to the user, or \code{FALSE} if it's not.
+Requests to add a project member must include the key permissions.
+However, if you do not include a value for some permission, it will be
+set to \code{FALSE} by default. The exception to this rule is the \code{read}
+permission, which is the default permission on a project. It enables a
+user to read project data, including file names, but access file
+contents.\cr \cr
+Example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{permissions = list(read = TRUE, copy = TRUE)
+}\if{html}{\out{</div>}}}
 }
 \if{html}{\out{</div>}}
 }
@@ -376,18 +409,22 @@ List all project's files and folders.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{limit}}{The maximum number of collection items to return for a
-single request. Minimum value is 1. The maximum value is 100 and the
-default value is 50. This is a pagination-specific attribute.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{The zero-based starting index in the entire collection of
-the first item to return. The default value is 0. This is a
-pagination-specific attribute.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments that can be passed to api() function
-like 'limit', 'offset', 'fields', etc.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Collection containing File objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -400,18 +437,18 @@ by a root folder which contains all the files associated
 with a particular project. You can create first level folders
 within this root folder by using this function.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Project$create_folder(name, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Project$create_folder(name)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{name}}{Folder name.}
-
-\item{\code{...}}{Other arguments that can be passed to api() function
-like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+File object of type 'FOLDER'.
 }
 }
 \if{html}{\out{<hr>}}
@@ -447,18 +484,22 @@ apps.}
 
 \item{\code{id}}{Use this parameter to query Project's apps based on their ID.}
 
-\item{\code{limit}}{The maximum number of collection items to return for a
-single request. Minimum value is 1. The maximum value is 100 and the
-default value is 50. This is a pagination-specific attribute.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{The zero-based starting index in the entire collection of
-the first item to return. The default value is 0. This is a
-pagination-specific attribute.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments that can be passed to this method.
-Such as query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like other query parameters or 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Collection containing Apps objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -494,12 +535,17 @@ characters or spaces).}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+App object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-list_tasks"></a>}}
 \if{latex}{\out{\hypertarget{method-Project-list_tasks}{}}}
 \subsection{Method \code{list_tasks()}}{
-This call lists all tasks from project you can access.
+This call lists all tasks from project you can access. \cr
+Read more about how to use query parameters properly
+\href{https://docs.sevenbridges.com/reference/list-tasks-you-can-access}{here}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Project$list_tasks(
   status = NULL,
@@ -522,60 +568,65 @@ This call lists all tasks from project you can access.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{status}}{String. You can filter the returned tasks by their status.
-Set the value of status to one of the following values: \code{QUEUED}, \code{DRAFT}
-, \code{RUNNING}, \code{COMPLETED}, \code{ABORTED}, \code{FAILED}.}
+\item{\code{status}}{You can filter the returned tasks by their status.
+Set the value of status to one of the following values:
+\code{QUEUED}, \code{DRAFT}, \code{RUNNING}, \code{COMPLETED}, \code{ABORTED}, \code{FAILED}.}
 
-\item{\code{parent}}{Provide task ID or task object of the parent task to return
-all child tasks from that parent. A parent task is a task that specifies
-criteria by which to batch its inputs into a series of further sub-tasks,
-called child tasks. See the documentation on
+\item{\code{parent}}{Provide task ID or task object of the parent task to
+return all child tasks from that parent.
+A parent task is a task that specifies the criteria by which to
+batch its inputs into a series of further sub-tasks, called child tasks.
+See the documentation on
 \href{https://docs.sevenbridges.com/docs/about-batch-analyses}{batching tasks}
 for more details on how to run tasks in batches.}
 
-\item{\code{created_from}}{String. Enter the starting date for querying tasks
+\item{\code{created_from}}{Enter the starting date string for querying tasks
 created on the specified date and onwards.}
 
-\item{\code{created_to}}{String. Enter the ending date for querying tasks
+\item{\code{created_to}}{Enter the ending date string for querying tasks
 created until the specified date. You can use it in combination with
 \code{created_from} to specify a time interval.}
 
-\item{\code{started_from}}{String. Enter the starting date for querying tasks
+\item{\code{started_from}}{Enter the starting date string for querying tasks
 started on the specified date and onwards.}
 
-\item{\code{started_to}}{String. Enter the ending date for querying tasks
+\item{\code{started_to}}{Enter the ending date string for querying tasks
 started until the specified date.}
 
-\item{\code{ended_from}}{String. Enter the starting date for querying tasks
+\item{\code{ended_from}}{Enter the starting date string for querying tasks
 that ended on a specified date.}
 
-\item{\code{ended_to}}{String. Enter the ending date for querying tasks that
+\item{\code{ended_to}}{Enter the ending date string for querying tasks that
 ended until a specified date.}
 
-\item{\code{order_by}}{String. Order returned results by the specified field.
+\item{\code{order_by}}{Order returned results by the specified field.
 Allowed values: \code{created_time}, \code{start_time}, \code{name}, \code{end_time} and
 \code{created_by}. Sort can be done only by one column. The default value is
 \code{created_time}.}
 
-\item{\code{order}}{String. Sort results in ascending or descending order by
+\item{\code{order}}{Sort results in ascending or descending order by
 specifying \code{asc} or \code{desc}, respectively. Only taken into account if
 \code{order_by} is explicitly specified. The default value is \code{asc}.}
 
-\item{\code{origin_id}}{String. Enter an automation run ID to list all tasks
+\item{\code{origin_id}}{Enter an automation run ID to list all tasks
 created from the specified automation run.}
 
-\item{\code{limit}}{The maximum number of collection items to return for a
-single request. Minimum value is 1. The maximum value is 100 and the
-default value is 50. This is a pagination-specific attribute.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{The zero-based starting index in the entire collection of
-the first item to return. The default value is 0. This is a
-pagination-specific attribute.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
-a subset of fields to include in the response.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Collection containing Task objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -600,28 +651,34 @@ into this destination project.
 \item{\code{volume}}{String volume id or Volume object. List all imports
 from particular volume. Optional.}
 
-\item{\code{state}}{String. The state of the import job. Possible values are:
+\item{\code{state}}{The state of the import job. Possible values are:
 \itemize{
 \item \code{PENDING}: the import is queued;
 \item \code{RUNNING}: the import is running;
 \item \code{COMPLETED}: the import has completed successfully;
 \item \code{FAILED}: the import has failed.
 }
-Example: state = c("RUNNING", "FAILED")}
+Example:
 
-\item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{state = c("RUNNING", "FAILED")
+}\if{html}{\out{</div>}}}
 
-\item{\code{offset}}{Defines where the retrieved items started.
-By default, \code{offset} is set to \code{0}.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments that can be passed to api() function
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
+
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection of import jobs (Import class objects).
+Collection containing Import objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -656,28 +713,28 @@ for more details on batching criteria.
 \describe{
 \item{\code{app}}{The ID string of an app or an App object you want to run.
 Recall that apps are specified by their projects, in the form
-\code{{project_owner}/{project}/{app_name}}}
+\code{{project_owner}/{project}/{app_name}}.}
 
-\item{\code{revision}}{Numeric. The app
-\link{revision (version)} (https://docs.sevenbridges.com/docs/app-versions)
+\item{\code{revision}}{The app
+\href{https://docs.sevenbridges.com/docs/app-versions}{revision (version)}
 number.}
 
-\item{\code{name}}{String. The name of the task.}
+\item{\code{name}}{The name of the task.}
 
-\item{\code{description}}{String. An optional description of the task.}
+\item{\code{description}}{An optional description of the task.}
 
 \item{\code{execution_settings}}{Named list with detailed task execution
 parameters. Detailed task execution parameters:
 \itemize{
-\item \code{instance_type}: String. Possible value is the specific instance type,
-e.g. \code{"instance_type" = "c4.2xlarge;ebs-gp2;2000"}.
-\item \code{max_parallel_instances}: Integer. Maximum number of instances
-running at the same time. Takes any integer value equal to or greater
-than 1, e.g. \code{"max_parallel_instances" = 2.}
-\item \code{use_memoization}: Boolean. Set to \code{FALSE} by default. Set to \code{TRUE}
+\item \code{instance_type}: Possible value is the specific instance type,
+e.g. \code{"instance_type" = "c4.2xlarge;ebs-gp2;2000"};
+\item \code{max_parallel_instances}: Maximum number of instances
+running at the same time. Takes any integer value equal to or
+greater than 1, e.g. \code{"max_parallel_instances" = 2.};
+\item \code{use_memoization}: Set to \code{FALSE} by default. Set to \code{TRUE}
 to enable
-\href{https://docs.sevenbridges.com/docs/about-memoization}{memoization}.
-\item \code{use_elastic_disk}: Boolean. Set to \code{TRUE} to enable
+\href{https://docs.sevenbridges.com/docs/about-memoization}{memoization};
+\item \code{use_elastic_disk}: Set to \code{TRUE} to enable
 \href{https://docs.sevenbridges.com/page/elastic-disk}{Elastic Disk}.
 }
 
@@ -714,26 +771,29 @@ various input types:
   )
 }\if{html}{\out{</div>}}}
 
-\item{\code{batch}}{Boolean. This is set to \code{FALSE} by default. Set to \code{TRUE} to
+\item{\code{batch}}{This is set to \code{FALSE} by default. Set to \code{TRUE} to
 create a batch task and specify the \code{batch_input} and \code{batch-by}
 criteria as described below.}
 
-\item{\code{batch_input}}{String. The ID of the input on which you wish to
-batch. You would typically batch on the input consisting of a list of
-files. If this parameter is omitted, the default batching criteria
-defined for the app will be used.}
+\item{\code{batch_input}}{The ID of the input on which you wish to batch.
+You would typically batch on the input consisting of a list of files.
+If this parameter is omitted, the default batching criteria defined for
+the app will be used.}
 
-\item{\code{use_interruptible_instances}}{Boolean. This field can be \code{TRUE} or
-\code{FALSE}. Set this field to \code{TRUE} to allow the use of
+\item{\code{use_interruptible_instances}}{This field can be \code{TRUE} or \code{FALSE}.
+Set this field to \code{TRUE} to allow the use of
 \href{https://docs.sevenbridges.com/docs/about-spot-instances}{spot instances}.}
 
-\item{\code{action}}{String. If set to \code{run}, the task will be run immediately
-upon creation.}
+\item{\code{action}}{If set to \code{run}, the task will be run immediately upon
+creation.}
 
-\item{\code{...}}{Other arguments such as \code{fields} which can be used to specify
-a subset of fields to include in the response.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Task object.
 }
 }
 \if{html}{\out{<hr>}}
