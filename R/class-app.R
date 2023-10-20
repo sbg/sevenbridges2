@@ -343,17 +343,17 @@ App <- R6::R6Class(
     #'  specifies criteria by which to batch its inputs into a series of further
     #'  sub-tasks, called child tasks. the documentation on
     # nolint start
-    #' [batching tasks] (https://docs.sevenbridges.com/docs/about-batch-analyses)
+    #'  [batching tasks] (https://docs.sevenbridges.com/docs/about-batch-analyses)
     # nolint end
-    #' for more details on batching criteria.
+    #'  for more details on batching criteria.
     #'
     #' @param project The ID string of a project or a Project object where you
     #'  want to create the task in.
     #' @param revision The app
     #'  [revision (version)](https://docs.sevenbridges.com/docs/app-versions)
     #'  number.
-    #' @param name The string name of the task.
-    #' @param description An optional string description of the task.
+    #' @param name The name of the task.
+    #' @param description An optional description of the task.
     #' @param execution_settings Named list with detailed task execution
     #'  parameters. Detailed task execution parameters:
     #'  \itemize{
@@ -402,6 +402,65 @@ App <- R6::R6Class(
     #'     )
     #'    )
     #'  ```
+    #' @param output_location The output location list allows you to
+    #'  define the exact location where your task outputs will be stored.
+    #'  The location can either be defined for the entire project using the
+    #'  main_location parameter, or individually per each output node, by
+    #'  setting the nodes_override parameter to true and defining individual
+    #'  output node locations within nodes_location.
+    #'  See below for more details.
+    #'  \itemize{
+    #'    \item `main_location` - Defines the output location for all
+    #'      output nodes in the task. Can be a string path within the project in
+    #'      which the task is created, for example
+    #'      `/Analysis/<task_id>_<task_name>/`
+    #'      or a path on an attached volume, such as
+    #'      `volumes://volume_name/<project_id>/html`.
+    #'      Parts of the path enclosed in angle brackets <> are tokens that are
+    #'      dynamically replaced with corresponding values during task
+    #'      execution.
+    #'    \item `main_location_alias`: The string location (path) in the
+    #'      project that will point to the actual location where the outputs are
+    #'      stored. Used if main_location is defined as a volume path (starting
+    #'      with volumes://), to provide an easy way of accessing output data
+    #'      directly from project files.
+    #'    \item `nodes_override`: Enables defining of output locations
+    #'      for output nodes individually through nodes_location (see below).
+    #'      Set to `TRUE` to be able to define individual locations per output
+    #'      node. Default: `FALSE`.
+    #'      Even if nodes_override is set to `TRUE`, it is not necessary to
+    #'      define output locations for each of the output nodes individually.
+    #'      Data from those output nodes that don't have their locations
+    #'      explicitly defined through nodes_location is either placed in
+    #'      main_location (if defined) or at the project files root if a main
+    #'      output location is not defined for the task.
+    #'    \item `nodes_location`: List of output paths for individual
+    #'      task output nodes in the following format for each output node:
+    #'      <output-node-id> = list(
+    #'        "output_location" = "<output-path>",
+    #'        "output_location_alias" = "<alias-path>"
+    #'      )
+    #'      ```{r}
+    #'      b64html = list(
+    #'      "output_location" = "volumes://outputs/tasks/mar-19",
+    #'      "output_location_alias" = "/rfranklin/tasks/picard"
+    #'      )
+    #'      ```
+    #'      In the example above, b64html is the ID of the output node for which
+    #'      you want to define the output location, while the parameters are
+    #'      defined as follows:
+    #'    \itemize{
+    #'      \item `output_location` - Can be a path within the project in which
+    #'        the task is created, for example
+    #'        `/Analysis/<task_id>_<task_name>/`
+    #'        or a path on an attached volume, such as
+    #'        `volumes://volume_name/<project_id>/html`. Also accepts tokens.
+    #'      \item `output_location_alias` - The location (path) in the project
+    #'        that will point to the exact location where the output is stored.
+    #'        Used if output_location is defined as a volume path
+    #'        (starting with volumes://).
+    #'      }
+    #' }
     #' @param batch This is set to `FALSE` by default. Set to `TRUE` to
     #'  create a batch task and specify the `batch_input` and `batch-by`
     #'  criteria as described below.
@@ -409,6 +468,13 @@ App <- R6::R6Class(
     #'  You would typically batch on the input consisting of a list of files.
     #'  If this parameter is omitted, the default batching criteria defined for
     #'  the app will be used.
+    #' @param batch_by Batching criteria in form of list. For example:
+    #'  ```{r}
+    #'  batch_by = list(
+    #'    type = "CRITERIA",
+    #'    criteria = list("metadata.condition")
+    #'  )
+    #'  ```
     #' @param use_interruptible_instances This field can be `TRUE` or `FALSE`.
     #'  Set this field to `TRUE` to allow the use of
     # nolint start
@@ -418,8 +484,10 @@ App <- R6::R6Class(
     #'  creation.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
+    #'
     #' @return Task object.
     create_task = function(project,
                            revision = NULL,
@@ -427,8 +495,10 @@ App <- R6::R6Class(
                            description = NULL,
                            execution_settings = NULL,
                            inputs = NULL,
+                           output_location = output_location,
                            batch = NULL,
                            batch_input = NULL,
+                           batch_by = NULL,
                            use_interruptible_instances = NULL,
                            action = NULL,
                            ...) {
@@ -440,8 +510,10 @@ App <- R6::R6Class(
         description = description,
         execution_settings = execution_settings,
         inputs = inputs,
+        output_location = output_location,
         batch = batch,
         batch_input = batch_input,
+        batch_by = batch_by,
         use_interruptible_instances = use_interruptible_instances,
         action = action,
         ...

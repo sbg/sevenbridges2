@@ -37,6 +37,7 @@ R6 Class representing Projects resource.
 \if{html}{\out{<a id="method-Projects-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Projects-new}{}}}
 \subsection{Method \code{new()}}{
+Create new Projects resource object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Projects$new(...)}\if{html}{\out{</div>}}
 }

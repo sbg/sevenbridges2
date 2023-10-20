@@ -19,6 +19,7 @@ Projects <- R6::R6Class(
       "create" = "projects"
     ),
 
+    #' @description Create new Projects resource object.
     #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
