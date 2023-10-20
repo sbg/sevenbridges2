@@ -29,13 +29,13 @@ be reset.
 instance limit. It consists of the following fields:
 \itemize{
 \item \code{limit} Indicates the total number of instances available
-to the user. For the first few months, instance limits are unlimited.
-This is indicated by a special limit of -1. Correspondingly, the
-remaining value is high.
+to the user. For the first few months, instance limits are
+unlimited. This is indicated by a special limit of -1.
+Correspondingly, the remaining value is high.
 \item \code{remaining} Indicates the number of the instances that are
-available at the moment. For the first few months, instance limits are
-unlimited. This is indicated by a high remaining value. Correspondingly,
-the limit is set to a special value of -1.
+available at the moment. For the first few months, instance limits
+are unlimited. This is indicated by a high remaining value.
+Correspondingly, the limit is set to a special value of -1.
 }}
 }
 \if{html}{\out{</div>}}
@@ -59,7 +59,7 @@ the limit is set to a special value of -1.
 \if{html}{\out{<a id="method-Rate-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Rate-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new rate limit object.
+Create a new Rate limit object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Rate$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
@@ -69,7 +69,7 @@ Create a new rate limit object.
 \describe{
 \item{\code{res}}{Response containing Rate limit object info.}
 
-\item{\code{...}}{Other arguments passed to methods.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }

@@ -157,7 +157,6 @@ Imports <- R6::R6Class(
     #'  Allowed characters in file names are all alphanumeric and special
     #'  characters except forward slash /, while folder names can contain
     #'  alphanumeric and special characters _, - and ..
-    #'
     #' @param overwrite Set to `TRUE` if you want to overwrite the item if
     #'  another one with the same name already exists at the destination.
     #'  Bear in mind that if used with folders import, the folder's content
@@ -173,7 +172,6 @@ Imports <- R6::R6Class(
     #'  file. Bear in mind that if you use `preserve_folder_structure = FALSE`,
     #'  that the response will be the parent folder object containing imported
     #'  files alongside with other files if they exist.
-    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'

@@ -12,12 +12,12 @@ R6 Class representing a resource for managing VolumeFile objects.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 
 \item{\code{location}}{File location on the volume.}
 
 \item{\code{type}}{Type of storage (cloud provider). Can be one of:
-'s3', 'gcs', 'azure', 'OSS'.}
+\code{s3}, \code{gcs}, \code{azure}, \code{OSS}.}
 
 \item{\code{volume}}{Volume id.}
 
@@ -49,7 +49,7 @@ Create a new VolumeFile object.
 \describe{
 \item{\code{res}}{Response containing VolumeFile object info.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -68,7 +68,7 @@ Print method for VolumeFile class.
 \if{html}{\out{<a id="method-VolumeFile-reload"></a>}}
 \if{latex}{\out{\hypertarget{method-VolumeFile-reload}{}}}
 \subsection{Method \code{reload()}}{
-Reload VolumeFile.
+Reload VolumeFile object information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{VolumeFile$reload(...)}\if{html}{\out{</div>}}
 }
@@ -76,12 +76,13 @@ Reload VolumeFile.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-VolumeFile
+VolumeFile object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -89,10 +90,10 @@ VolumeFile
 \if{latex}{\out{\hypertarget{method-VolumeFile-import}{}}}
 \subsection{Method \code{import()}}{
 This call lets you queue a job to import this file or folder
-from a volume into a project on the Platform.
+from a volume into a project on the Platform. \cr
 Essentially, you are importing an item from your cloud storage provider
 (Amazon Web Services, Google Cloud Storage, Azure or Ali Cloud) via the
-volume onto the Platform.
+volume onto the Platform. \cr
 If successful, an alias will be created on the Platform. Aliases appear
 on the Platform and can be copied, executed, and modified as such.
 They refer back to the respective item on the given volume.
@@ -115,40 +116,40 @@ object. Not required, but either \code{destination_project} or
 \code{destination_parent} directory must be provided.}
 
 \item{\code{destination_parent}}{String folder id or File object
-(with type = 'FOLDER'). Not required, but either \code{destination_project}
+(with \code{type = 'FOLDER'}). Not required, but either \code{destination_project}
 or \code{destination_parent} directory must be provided.}
 
 \item{\code{name}}{The name of the alias to create. This name should be unique
-to the project.
+to the project. \cr
 If the name is already in use in the project, you should
 use the \code{overwrite} query parameter in this call to force any item with
 that name to be deleted before the alias is created.
 If name is omitted, the alias name will default to the last segment of
-the complete location (including the prefix) on the volume.
+the complete location (including the prefix) on the volume. \cr
 
 Segments are considered to be separated with forward slashes /.
 Allowed characters in file names are all alphanumeric and special
 characters except forward slash /, while folder names can contain
 alphanumeric and special characters _, - and ..}
 
-\item{\code{overwrite}}{Boolean. Whether to overwrite the item if another one
-with the same name already exists at the destination.
+\item{\code{overwrite}}{Set to \code{TRUE} if you want to overwrite the item if
+another one with the same name already exists at the destination.
 Bear in mind that if used with folders import, the folder's content
 (files with the same name) will be overwritten, not the whole folder.}
 
-\item{\code{autorename}}{Boolean. Whether to automatically rename the item
-(by prefixing its name with an underscore and number) if another one
-with the same name already exists at the destination.
+\item{\code{autorename}}{Set to \code{TRUE} if you want to automatically rename the
+item (by prefixing its name with an underscore and number) if another
+one with the same name already exists at the destination.
 Bear in mind that if used with folders import, the folder content will
 be renamed, not the whole folder.}
 
-\item{\code{...}}{Other arguments that can be passed to api() function
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Import job object.
+Import object.
 }
 }
 \if{html}{\out{<hr>}}
