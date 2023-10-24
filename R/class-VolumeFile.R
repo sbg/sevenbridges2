@@ -12,22 +12,24 @@ VolumeFile <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "get" = "storage/volumes/{self$volume}/object"
     ),
     #' @field location File location on the volume.
     location = NULL,
     #' @field type Type of storage (cloud provider). Can be one of:
-    #' 's3', 'gcs', 'azure', 'OSS'.
+    #'  `s3`, `gcs`, `azure`, `OSS`.
     type = NULL,
     #' @field volume Volume id.
     volume = NULL,
     #' @field metadata File's metadata if exists.
     metadata = NULL,
+
     #' @description Create a new VolumeFile object.
+    #'
     #' @param res Response containing VolumeFile object info.
-    #' @param ... Other arguments.
+    #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
@@ -37,6 +39,7 @@ VolumeFile <- R6::R6Class(
       self$volume <- res$volume
       self$metadata <- res$metadata
     },
+
     # nocov start
     #' @description Print method for VolumeFile class.
     #'
@@ -68,10 +71,13 @@ VolumeFile <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
-    #' @description
-    #' Reload VolumeFile.
-    #' @param ... Other query parameters.
-    #' @return VolumeFile
+
+    #' @description Reload VolumeFile object information.
+    #'
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
+    #' @return VolumeFile object.
     reload = function(...) {
       reload_url <- ""
       if (!is_missing(self$href)) {
@@ -102,49 +108,48 @@ VolumeFile <- R6::R6Class(
       )
       rlang::inform("VolumeFile object is refreshed!")
     }, # nocov end
+
     # Start new import job -----------------------------------------------
     #' @description This call lets you queue a job to import this file or folder
-    #' from a volume into a project on the Platform.
-    #' Essentially, you are importing an item from your cloud storage provider
-    #' (Amazon Web Services, Google Cloud Storage, Azure or Ali Cloud) via the
-    #' volume onto the Platform.
-    #' If successful, an alias will be created on the Platform. Aliases appear
-    #' on the Platform and can be copied, executed, and modified as such.
-    #' They refer back to the respective item on the given volume.
+    #'  from a volume into a project on the Platform. \cr
+    #'  Essentially, you are importing an item from your cloud storage provider
+    #'  (Amazon Web Services, Google Cloud Storage, Azure or Ali Cloud) via the
+    #'  volume onto the Platform. \cr
+    #'  If successful, an alias will be created on the Platform. Aliases appear
+    #'  on the Platform and can be copied, executed, and modified as such.
+    #'  They refer back to the respective item on the given volume.
     #'
     #' @param destination_project String destination project id or Project
-    #' object. Not required, but either `destination_project` or
-    #' `destination_parent` directory must be provided.
+    #'  object. Not required, but either `destination_project` or
+    #'  `destination_parent` directory must be provided.
     #' @param destination_parent String folder id or File object
-    #' (with type = 'FOLDER'). Not required, but either `destination_project`
-    #' or `destination_parent` directory must be provided.
+    #'  (with `type = 'FOLDER'`). Not required, but either `destination_project`
+    #'  or `destination_parent` directory must be provided.
     #' @param name The name of the alias to create. This name should be unique
-    #' to the project.
-    #' If the name is already in use in the project, you should
-    #' use the `overwrite` query parameter in this call to force any item with
-    #' that name to be deleted before the alias is created.
-    #' If name is omitted, the alias name will default to the last segment of
-    #' the complete location (including the prefix) on the volume.
+    #'  to the project. \cr
+    #'  If the name is already in use in the project, you should
+    #'  use the `overwrite` query parameter in this call to force any item with
+    #'  that name to be deleted before the alias is created.
+    #'  If name is omitted, the alias name will default to the last segment of
+    #'  the complete location (including the prefix) on the volume. \cr
     #'
-    #' Segments are considered to be separated with forward slashes /.
-    #' Allowed characters in file names are all alphanumeric and special
-    #' characters except forward slash /, while folder names can contain
-    #' alphanumeric and special characters _, - and ..
+    #'  Segments are considered to be separated with forward slashes /.
+    #'  Allowed characters in file names are all alphanumeric and special
+    #'  characters except forward slash /, while folder names can contain
+    #'  alphanumeric and special characters _, - and ..
+    #' @param overwrite Set to `TRUE` if you want to overwrite the item if
+    #'  another one with the same name already exists at the destination.
+    #'  Bear in mind that if used with folders import, the folder's content
+    #'  (files with the same name) will be overwritten, not the whole folder.
+    #' @param autorename Set to `TRUE` if you want to automatically rename the
+    #'  item (by prefixing its name with an underscore and number) if another
+    #'  one with the same name already exists at the destination.
+    #'  Bear in mind that if used with folders import, the folder content will
+    #'  be renamed, not the whole folder.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     #'
-    #' @param overwrite Boolean. Whether to overwrite the item if another one
-    #' with the same name already exists at the destination.
-    #' Bear in mind that if used with folders import, the folder's content
-    #' (files with the same name) will be overwritten, not the whole folder.
-    #' @param autorename Boolean. Whether to automatically rename the item
-    #' (by prefixing its name with an underscore and number) if another one
-    #' with the same name already exists at the destination.
-    #' Bear in mind that if used with folders import, the folder content will
-    #' be renamed, not the whole folder.
-    #'
-    #' @param ... Other arguments that can be passed to api() function
-    #' like 'fields', etc.
-    #'
-    #' @return Import job object.
+    #' @return Import object.
     import = function(destination_project = NULL, destination_parent = NULL,
                       name = NULL, overwrite = FALSE, autorename = FALSE,
                       ...) {

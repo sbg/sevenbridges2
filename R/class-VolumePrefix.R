@@ -12,7 +12,7 @@ VolumePrefix <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "list" = "storage/volumes/{self$volume}/list"
     ),
@@ -22,8 +22,9 @@ VolumePrefix <- R6::R6Class(
     volume = NULL,
 
     #' @description Create a new VolumePrefix object.
+    #'
     #' @param res Response containing VolumePrefix object info.
-    #' @param ... Other arguments.
+    #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
@@ -34,6 +35,7 @@ VolumePrefix <- R6::R6Class(
       }
       self$volume <- res$volume
     },
+
     # nocov start
     #' @description Print method for VolumePrefix class.
     #'
@@ -65,23 +67,29 @@ VolumePrefix <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
-    #' @description
-    #' Reload VolumePrefix object.
+
+    #' @description Reload VolumePrefix object information.
     reload = function() {
       rlang::inform(
         "Reload operation is not available for VolumePrefix objects."
       )
     }, # nocov end
-    #' @description List volume folder contents
-    #' This call lists the contents of a specific volume folder.
-    #' @param limit Defines the number of items you want to get from your API
-    #' request. By default, `limit` is set to `50`. Maximum is `100`.
+
+    #' @description List volume folder contents.
+    #'  This call lists the contents of a specific volume folder.
+    #'
+    #' @param limit The maximum number of collection items to return
+    #' for a single request. Minimum value is `1`.
+    #' The maximum value is `100` and the default value is `50`.
+    #' This is a pagination-specific attribute.
     #' @param continuation_token Continuation token received to use for next
     #' chunk of results. Behaves similarly like offset parameter.
-    #' @param ... Other parameters that can be passed to api() function, like
-    #' fields for example. With fields parameter you can specify a subset of
-    #' fields to include in the response. You can use: `href`, `location`,
-    #' `volume`, `type`, `metadata`, `_all`. Default: `_all`.
+    #' @param ... Other arguments that can be passed to core `api()` function,
+    #'  like 'fields' for example.
+    #'  With fields parameter you can specify a subset of fields to include in
+    #'  the response. You can use: `href`, `location`, `volume`, `type`,
+    #'  `metadata`, `_all`. Default: `_all`.
+    #'
     #' @return VolumeContentCollection object containing list of VolumeFile
     #' and VolumePrefix objects.
     list_contents = function(limit = getOption("sevenbridges2")$limit,
@@ -110,55 +118,55 @@ VolumePrefix <- R6::R6Class(
 
       return(asVolumeContentCollection(res, auth = self$auth))
     }, # nocov end
+
     # Start new import job -----------------------------------------------
     #' @description This call lets you queue a job to import this file or folder
-    #' from a volume into a project on the Platform.
-    #' Essentially, you are importing an item from your cloud storage provider
-    #' (Amazon Web Services, Google Cloud Storage, Azure or Ali Cloud) via the
-    #' volume onto the Platform.
-    #' If successful, an alias will be created on the Platform. Aliases appear
-    #' on the Platform and can be copied, executed, and modified as such.
-    #' They refer back to the respective item on the given volume.
+    #'  from a volume into a project on the Platform. \cr
+    #'  Essentially, you are importing an item from your cloud storage provider
+    #'  (Amazon Web Services, Google Cloud Storage, Azure or Ali Cloud) via the
+    #'  volume onto the Platform. \cr
+    #'  If successful, an alias will be created on the Platform. Aliases appear
+    #'  on the Platform and can be copied, executed, and modified as such.
+    #'  They refer back to the respective item on the given volume.
     #'
     #' @param destination_project String destination project id or Project
-    #' object. Not required, but either `destination_project` or
-    #' `destination_parent` directory must be provided.
+    #'  object. Not required, but either `destination_project` or
+    #'  `destination_parent` directory must be provided.
     #' @param destination_parent String folder id or File object
-    #' (with type = 'FOLDER'). Not required, but either `destination_project`
-    #' or `destination_parent` directory must be provided.
+    #'  (with `type = 'FOLDER'`). Not required, but either `destination_project`
+    #'  or `destination_parent` directory must be provided.
     #' @param name The name of the alias to create. This name should be unique
-    #' to the project.
-    #' If the name is already in use in the project, you should
-    #' use the `overwrite` query parameter in this call to force any item with
-    #' that name to be deleted before the alias is created.
-    #' If name is omitted, the alias name will default to the last segment of
-    #' the complete location (including the prefix) on the volume.
+    #'  to the project.
+    #'  If the name is already in use in the project, you should
+    #'  use the `overwrite` query parameter in this call to force any item with
+    #'  that name to be deleted before the alias is created.
+    #'  If name is omitted, the alias name will default to the last segment of
+    #'  the complete location (including the prefix) on the volume. \cr
     #'
-    #' Segments are considered to be separated with forward slashes /.
-    #' Allowed characters in file names are all alphanumeric and special
-    #' characters except forward slash /, while folder names can contain
-    #' alphanumeric and special characters _, - and ..
+    #'  Segments are considered to be separated with forward slashes /.
+    #'  Allowed characters in file names are all alphanumeric and special
+    #'  characters except forward slash /, while folder names can contain
+    #'  alphanumeric and special characters _, - and ..
     #'
-    #' @param overwrite Boolean. Whether to overwrite the item if another one
-    #' with the same name already exists at the destination.
-    #' Bear in mind that if used with folders import, the folder's content
-    #' (files with the same name) will be overwritten, not the whole folder.
-    #' @param autorename Boolean. Whether to automatically rename the item
-    #' (by prefixing its name with an underscore and number) if another one
-    #' with the same name already exists at the destination.
-    #' Bear in mind that if used with folders import, the folder content will
-    #' be renamed, not the whole folder.
-    #' @param preserve_folder_structure Boolean. Whether to keep the exact
-    #' source folder structure. The default value is true if the item being
-    #' imported is a folder. Should not be used if you are importing a file.
-    #' Bear in mind that if you use preserve_folder_structure = FALSE, that the
-    #' response will be the parent folder object containing imported files
-    #' alongside with other files if they exist.
+    #' @param overwrite Set to `TRUE` if you want to overwrite the item if
+    #'  another one with the same name already exists at the destination.
+    #'  Bear in mind that if used with folders import, the folder's content
+    #'  (files with the same name) will be overwritten, not the whole folder.
+    #' @param autorename Set to `TRUE` if you want to automatically rename the
+    #'  item (by prefixing its name with an underscore and number) if another
+    #'  one with the same name already exists at the destination.
+    #'  Bear in mind that if used with folders import, the folder content will
+    #'  be renamed, not the whole folder.
+    #' @param preserve_folder_structure Set to `TRUE` if you want to keep the
+    #'  exact source folder structure. The default value is `TRUE` if the item
+    #'  being imported is a folder. Should not be used if you are importing a
+    #'  file. Bear in mind that if you use `preserve_folder_structure = FALSE`,
+    #'  that the response will be the parent folder object containing imported
+    #'  files alongside with other files if they exist.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     #'
-    #' @param ... Other arguments that can be passed to api() function
-    #' like 'fields', etc.
-    #'
-    #' @return Import job object.
+    #' @return Import object.
     import = function(destination_project = NULL, destination_parent = NULL,
                       name = NULL, overwrite = FALSE, autorename = FALSE,
                       preserve_folder_structure = NULL, ...) {

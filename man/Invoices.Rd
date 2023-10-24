@@ -12,7 +12,7 @@ R6 Class representing invoice resource endpoints
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 }
 \if{html}{\out{</div>}}
 }
@@ -44,7 +44,7 @@ Create a new Invoices object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -69,19 +69,20 @@ invoice incurred by that billing group only.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{billing_group}}{ID of a billing group or billing group object for
-which you want to list invoices. Optional.}
+\item{\code{billing_group}}{ID of a billing group or billing group object
+you want to list invoices for. Optional.}
 
-\item{\code{limit}}{The maximum number of collection items to return for a
-single request. Minimum value is 1. The maximum value is 100 and the
-default value is 50. This is a pagination-specific attribute.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{The zero-based starting index in the entire collection of
-the first item to return. The default value is 0. This is a
-pagination-specific attribute.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments that can be passed to this method. Such as
-query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like query parameters or 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -94,9 +95,9 @@ Collection of invoices (Invoice class objects).
 \if{latex}{\out{\hypertarget{method-Invoices-get}{}}}
 \subsection{Method \code{get()}}{
 This call retrieves information about a selected invoice,
-including the costs for analysis and storage, and the invoice period. Use
-the call to list invoices to retrieve the \code{invoice_id}s for a specified
-billing group.
+including the costs for analysis and storage, and the invoice period.
+Use the call to list invoices to retrieve the \code{invoice_id}s for a
+specified billing group.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Invoices$get(id, ...)}\if{html}{\out{</div>}}
 }
@@ -106,7 +107,7 @@ billing group.
 \describe{
 \item{\code{id}}{The ID of the invoice you are querying.}
 
-\item{\code{...}}{Other arguments that can be passed to api() function
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}

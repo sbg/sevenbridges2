@@ -16,9 +16,11 @@ VolumeContentCollection <- R6::R6Class(
     prefixes = NULL,
 
     #' @description Create new VolumeContentCollection object.
-    #' @importFrom checkmate assert_list
+    #'
     #' @param res Response containing VolumeContentCollection object fields.
-    #' @param ... Other arguments.
+    #' @param ... Other response arguments.
+    #'
+    #' @importFrom checkmate assert_list
     initialize = function(res = NA, ...) {
       # Initialize Collection class
       super$initialize(...)
@@ -29,6 +31,7 @@ VolumeContentCollection <- R6::R6Class(
       self$items <- asVolumeFileList(x = res$items, auth = self$auth)
       self$prefixes <- asVolumePrefixList(x = res$prefixes, auth = self$auth)
     },
+
     # nocov start
     #' @description Print method for VolumeContentCollection class.
     #' @param n Number of items to print in console.
@@ -83,9 +86,12 @@ VolumeContentCollection <- R6::R6Class(
         }
       }
     }, # nocov end
+
     #' @description Return next page of results.
-    #' @param ... Other query or API parameters that can be passed to api()
-    #' function like advance_access, fields etc.
+    #'
+    #' @param ... Other arguments or query parameters that can be passed to
+    #'  core `api()` function like 'advance_access', 'fields' etc.
+    #'
     #' @importFrom rlang abort
     next_page = function(...) {
       checkmate::assert_list(self$links, null.ok = TRUE)
@@ -108,14 +114,18 @@ VolumeContentCollection <- R6::R6Class(
         }
       }
     }, # nocov end
+
     #' @description Return previous page of results.
     #' @importFrom rlang abort
     prev_page = function() {
       rlang::abort("Cannot paginate backwards.")
     },
+
     #' @description Fetches all available items.
-    #' @param ... Other query or API parameters that can be passed to api()
-    #' function like advance_access, fields etc.
+    #'
+    #' @param ... Other arguments or query parameters that can be passed to
+    #'  core `api()` function like 'advance_access', 'fields' etc.
+    #'
     #' @importFrom rlang abort
     all = function(...) {
       if (is.null(self$href)) {

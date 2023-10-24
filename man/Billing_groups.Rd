@@ -4,7 +4,7 @@
 \alias{Billing_groups}
 \title{R6 Class representing billing groups endpoints}
 \description{
-R6 Class representing billing groups resource endpoints
+R6 Class representing billing groups resource endpoints.
 }
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Billing_groups}
@@ -12,7 +12,7 @@ R6 Class representing billing groups resource endpoints
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 }
 \if{html}{\out{</div>}}
 }
@@ -36,7 +36,7 @@ R6 Class representing billing groups resource endpoints
 \if{html}{\out{<a id="method-Billing_groups-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Billing_groups-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new Billing groups object.
+Create a new Billing_groups object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Billing_groups$new(...)}\if{html}{\out{</div>}}
 }
@@ -44,7 +44,7 @@ Create a new Billing groups object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -53,7 +53,7 @@ Create a new Billing groups object.
 \if{html}{\out{<a id="method-Billing_groups-query"></a>}}
 \if{latex}{\out{\hypertarget{method-Billing_groups-query}{}}}
 \subsection{Method \code{query()}}{
-This call lists all your billing groups, including groups
+List all your billing groups, including groups
 that are pending or have been disabled.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Billing_groups$query(
@@ -66,16 +66,17 @@ that are pending or have been disabled.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{limit}}{The maximum number of collection items to return for a
-single request. Minimum value is 1. The maximum value is 100 and the
-default value is 50. This is a pagination-specific attribute.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{The zero-based starting index in the entire collection of
-the first item to return. The default value is 0. This is a
-pagination-specific attribute.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments that can be passed to this method. Such as
-query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like query parameters, 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -87,9 +88,9 @@ Collection of billing groups (Billing class objects).
 \if{html}{\out{<a id="method-Billing_groups-get"></a>}}
 \if{latex}{\out{\hypertarget{method-Billing_groups-get}{}}}
 \subsection{Method \code{get()}}{
-This call retrieves a single billing group, specified by
-\code{{billing_group}}. To find the \code{billing_group}, use the call list
-billing groups to list all your billing groups. The information returned
+Retrieve a single billing group, specified by its id.
+To find the \code{billing_group}, use the call \code{\link[=Billing_groups$query]{Billing_groups$query()}}
+to list all your billing groups. The information returned
 includes the billing group owner, the total balance, and the status of
 the billing group (pending or confirmed).
 \subsection{Usage}{
@@ -101,7 +102,7 @@ the billing group (pending or confirmed).
 \describe{
 \item{\code{id}}{The ID of the billing group you are querying.}
 
-\item{\code{...}}{Other arguments that can be passed to api() function
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}

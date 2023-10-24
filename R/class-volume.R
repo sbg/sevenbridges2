@@ -12,7 +12,7 @@ Volume <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "get" = "storage/volumes/{id}",
       "volume" = "storage/volumes/{self$id}",
@@ -22,35 +22,36 @@ Volume <- R6::R6Class(
       "member_username" = "storage/volumes/{self$id}/members/{username}",
       "member_permissions" = "storage/volumes/{self$id}/members/{username}/permissions" # nolint
     ),
-    #' @field id String. Volume ID, constructed from {division}/{volume_name}
-    #' or {volume_owner}/{volume_name}
+    #' @field id Volume ID, constructed from `{division}/{volume_name}`
+    #'  or `{volume_owner}/{volume_name}`.
     id = NULL,
-    #' @field name String. The name of the volume. It must be unique from all
-    #' other volumes for this user. Required if from_path parameter
-    #' is not provided.
+    #' @field name The name of the volume. It must be unique from all
+    #'  other volumes for this user. Required if `from_path` parameter
+    #'  is not provided.
     name = NULL,
-    #' @field description String. The description of the volume.
+    #' @field description The description of the volume.
     description = NULL,
-    #' @field access_mode String. Signifies whether this volume should be used
-    #' for read-write (RW) or read-only (RO) operations. The access mode is
-    #' consulted independently of the credentials granted to Seven Bridges
-    #' when the volume was created, so it is possible to use a read-write
-    #' credentials to register both read-write and read-only volumes using it.
-    #' Default: `"RW"`.
+    #' @field access_mode Signifies whether this volume should be used
+    #'  for read-write (RW) or read-only (RO) operations. The access mode is
+    #'  consulted independently of the credentials granted to Seven Bridges
+    #'  when the volume was created, so it is possible to use a read-write
+    #'  credentials to register both read-write and read-only volumes using it.
+    #'  Default: `"RW"`.
     access_mode = NULL,
-    #' @field service String. This object more closely describes the mapping of
-    #' the volume to the cloud service where the data is stored.
+    #' @field service This object in form of string more closely describes the
+    #'  mapping of the volume to the cloud service where the data is stored.
     service = NULL,
     #' @field created_on The date and time this volume was created.
     created_on = NULL,
     #' @field modified_on The date and time this volume was last modified.
     modified_on = NULL,
-    #' @field active Boolean. If a volume is deactivated, this field will be
-    #' set to FALSE.
+    #' @field active If a volume is deactivated, this field will be
+    #'  set to `FALSE`.
     active = NULL,
+
     #' @description Create a new Volume object.
     #' @param res Response containing Volume object info.
-    #' @param ... Other arguments.
+    #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
@@ -98,10 +99,11 @@ Volume <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
-    #' @description
-    #' Reload Volume
-    #' @param ... Other query parameters.
-    #' @return Volume
+
+    #' @description Reload Volume object information.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #' @return Volume object.
     reload = function(...) {
       super$reload(
         cls = self,
@@ -110,19 +112,23 @@ Volume <- R6::R6Class(
       )
       rlang::inform("Volume object is refreshed!")
     },
+
     # nocov end
     #' @description Update a volume.
-    #' This function updates the details of a specific volume.
-    #' @param description String. The description of the volume.
-    #' @param access_mode String. Signifies whether this volume should be used
-    #' for read-write (RW) or read-only (RO) operations. The access mode is
-    #' consulted independently of the credentials granted to Seven Bridges
-    #' when the volume was created, so it is possible to use a read-write
-    #' credentials to register both read-write and read-only volumes using it.
-    #' Default: `"RW"`.
-    #' @param service String. This object more closely describes the mapping of
-    #' the volume to the cloud service where the data is stored.
+    #'  This function updates the details of a specific volume.
+    #' @param description The new description of the volume.
+    #' @param access_mode Signifies whether this volume should be used
+    #'  for read-write (RW) or read-only (RO) operations. The access mode is
+    #'  consulted independently of the credentials granted to Seven Bridges
+    #'  when the volume was created, so it is possible to use a read-write
+    #'  credentials to register both read-write and read-only volumes using it.
+    #'  Default: `"RW"`.
+    #' @param service This object in form of string more closely describes the
+    #'  mapping of the volume to the cloud service where the data is stored.
+    #'
     #' @importFrom checkmate assert_character assert_list
+    #'
+    #' @return Volume object.
     update = function(description = NULL, access_mode = NULL,
                       service = NULL) {
       checkmate::assert_character(description, null.ok = TRUE)
@@ -154,8 +160,6 @@ Volume <- R6::R6Class(
         advance_access = TRUE
       )
 
-
-
       self$initialize(
         res = res,
         href = res$href,
@@ -163,18 +167,24 @@ Volume <- R6::R6Class(
         response = attr(res, "response")
       )
     }, # nocov end
-    #' @description Deactivate volume
-    #' Once deactivated, you cannot import from, export to, or browse within a
-    #' volume. As such, the content of the files imported from this volume will
-    #' no longer be accessible on the Platform. However, you can update the
-    #' volume and manage members.
-    #' Note that you cannot deactivate the volume if you have running imports
-    #' or exports unless you force the operation using the query parameter
-    #' force=TRUE.
-    #' Note that to delete a volume, first you must deactivate it and delete
-    #' all files which have been imported from the volume to the Platform.
+
+    #' @description Deactivate volume.
+    #'  Once deactivated, you cannot import from, export to, or browse within a
+    #'  volume. As such, the content of the files imported from this volume will
+    #'  no longer be accessible on the Platform. However, you can update the
+    #'  volume and manage members. \cr
+    #'  Note that you cannot deactivate the volume if you have running imports
+    #'  or exports unless you force the operation using the query parameter
+    #'  force=TRUE.
+    #'  Note that to delete a volume, first you must deactivate it and delete
+    #'  all files which have been imported from the volume to the Platform.
     #'
-    #' @param ... Other query parameters like 'force'.
+    #' @param ... Other query parameters or arguments that can be passed to
+    #'  core `api()` function like 'force'.
+    #'  Use it within query parameter, like `query = list(force = TRUE)`.
+    #'
+    #' @importFrom rlang abort inform
+    #' @importFrom glue glue glue_col
     deactivate = function(...) {
       if (!self$active) {
         rlang::abort(
@@ -193,18 +203,22 @@ Volume <- R6::R6Class(
         ...
       )
 
-
-
       rlang::inform(glue::glue("The volume {self$name} has been ", glue::glue_col("{red deactivated}."))) # nolint
 
       self$active <- FALSE
 
       return(self)
     }, # nocov end
-    #' @description Reactivate volume
-    #' This function reactivates the previously deactivated volume by updating
-    #' the 'active' field of the volume to TRUE.
-    #' @param ... Other query parameters like 'force'.
+
+    #' @description Reactivate volume.
+    #'  This function reactivates the previously deactivated volume by updating
+    #'  the `active` field of the volume to `TRUE`.
+    #' @param ... Other query parameters or arguments that can be passed to
+    #'  core `api()` function like 'force'.
+    #'  Use it within query parameter, like `query = list(force = TRUE)`.
+    #'
+    #' @importFrom rlang abort inform
+    #' @importFrom glue glue glue_col
     reactivate = function(...) {
       if (self$active) {
         rlang::abort(
@@ -223,20 +237,22 @@ Volume <- R6::R6Class(
         ...
       )
 
-
-
       rlang::inform(glue::glue("The volume {self$name} has been ", glue::glue_col("{green reactivated}."))) # nolint
 
       self$active <- TRUE
 
       return(self)
     }, # nocov end
-    #' @description Delete volume
-    #' This call deletes a volume you've created to refer to storage on
-    #' Amazon Web Services, Google Cloud Storage, Azure or Ali cloud.
-    #' To be able to delete a volume, you first need to deactivate it and then
-    #' delete all files on the Platform that were previously imported from
-    #' the volume.
+
+    #' @description Delete volume.
+    #'  This call deletes a volume you've created to refer to storage on
+    #'  Amazon Web Services, Google Cloud Storage, Azure or Ali cloud.
+    #'  To be able to delete a volume, you first need to deactivate it and then
+    #'  delete all files on the Platform that were previously imported from
+    #'  the volume.
+    #'
+    #' @importFrom rlang abort inform
+    #' @importFrom glue glue glue_col
     delete = function() {
       if (self$active) {
         rlang::abort(
@@ -263,21 +279,29 @@ Volume <- R6::R6Class(
         response = attr(res, "response")
       )
     }, # nocov end
-    #' @description List volume contents
-    #' This call lists the contents of a specific volume.
+
+    #' @description List volume contents.
+    #'  This call lists the contents of a specific volume.
     #' @param prefix This is parent parameter in volume context. If specified,
-    #' the content of the parent directory on the current volume is listed.
-    #' @param limit Defines the number of items you want to get from your API
-    #' request. By default, `limit` is set to `50`. Maximum is `100`.
+    #'  the content of the parent directory on the current volume is listed.
+    #' @param limit The maximum number of collection items to return
+    #'  for a single request. Minimum value is `1`.
+    #'  The maximum value is `100` and the default value is `50`.
+    #'  This is a pagination-specific attribute.
     #' @param link Link to use in the next chunk of results. Contains limit and
-    #' continuation_token. If provided it will overwrite other arguments'
-    #' values passed.
+    #'  continuation_token. If provided it will overwrite other arguments'
+    #'  values passed.
     #' @param continuation_token Continuation token received to use for next
-    #' chunk of results. Behaves similarly like offset parameter.
-    #' @param ... Other parameters that can be passed to api() function, like
-    #' fields for example. With fields parameter you can specify a subset of
-    #' fields to include in the response. You can use: `href`, `location`,
-    #' `volume`, `type`, `metadata`, `_all`. Default: `_all`.
+    #'  chunk of results. Behaves similarly like offset parameter.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields' for example. With fields parameter you can specify a
+    #'  subset of fields to include in the response.
+    #'  You can use: `href`, `location`, `volume`, `type`, `metadata`, `_all`.
+    #'  Default: `_all`.
+    #'
+    #' @importFrom checkmate assert_character
+    #' @importFrom glue glue
+    #'
     #' @return VolumeContentCollection object containing list of VolumeFile
     #' and VolumePrefix objects.
     list_contents = function(prefix = NULL,
@@ -312,20 +336,23 @@ Volume <- R6::R6Class(
         ...
       )
 
-
       return(asVolumeContentCollection(res, auth = self$auth))
     }, # nocov end
-    #' @description Get volume file information
-    #' This function returns the specific Volume File.
+
+    #' @description Get volume file information.
+    #'  This function returns the specific Volume File.
+    #'
     #' @param location Volume file id, which is represented as file
-    #' location.
+    #'  location.
     #' @param link Link to the file resource received from listing volume's
-    #' contents. Cannot be used together with location.
-    #' @param ... Other parameters that can be passed to api() function, like
-    #' fields etc.
+    #'  contents. Cannot be used together with location.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
     #' @importFrom checkmate assert_character
     #' @importFrom rlang abort
     #' @importFrom glue glue
+    #'
     #' @return VolumeFile object.
     get_file = function(location = NULL, link = NULL, ...) {
       checkmate::assert_character(location,
@@ -360,19 +387,26 @@ Volume <- R6::R6Class(
         ...
       )
 
-
       return(asVolumeFile(res, auth = self$auth))
       # nocov end
     },
-    #' @description List members of a volume
-    #' This function returns the members of a specific volume.
-    #' @param limit Defines the number of items you want to get from your API
-    #' request. By default, `limit` is set to `50`. Maximum is `100`.
-    #' @param offset Defines where the retrieved items started.
-    #' By default, `offset` is set to `0`.
-    #' @param ... Other parameters that can be passed to api() function like
-    #' fields etc.
-    #' @return List of Member class objects.
+
+    #' @description List members of a volume.
+    #'  This function returns the members of a specific volume.
+    #'
+    #' @param limit The maximum number of collection items to return
+    #'  for a single request. Minimum value is `1`.
+    #'  The maximum value is `100` and the default value is `50`.
+    #'  This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection
+    #'  of the first item to return. The default value is `0`.
+    #'  This is a pagination-specific attribute.
+    #' @param ... Other parameters that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
+    #' @importFrom glue glue
+    #'
+    #' @return Collection containing list of Member objects.
     list_members = function(limit = getOption("sevenbridges2")$limit,
                             offset = getOption("sevenbridges2")$offset,
                             ...) {
@@ -390,23 +424,33 @@ Volume <- R6::R6Class(
         ...
       )
 
+      res$items <- asMemberList(res, auth = self$auth)
 
-      return(asMemberList(res, auth = self$auth))
+      return(asCollection(res, auth = self$auth))
       # nocov end
     },
-    #' @description Add member to a volume
-    #' This function adds members to the specified volume.
+
+    #' @description Add member to a volume.
+    #'  This function adds members to the specified volume.
+    #'
     #' @param user The Seven Bridges Platform username of the person
-    #' you want to add to the volume or object of class Member containing
-    #' user's username.
+    #'  you want to add to the volume or object of class Member containing
+    #'  user's username.
     #' @param permissions List of permissions granted to the user being added.
-    #' Permissions include listing the contents of a volume, importing files
-    #' from the volume to the Platform, exporting files from the Platform to
-    #' the volume, and admin privileges.
-    #' It can contain fields: 'read', 'copy', 'write' and 'admin' with
-    #' logical fields - TRUE if certain permission is allowed to the user, or
-    #' FALSE if it's not.
-    #' Example: list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)
+    #'  Permissions include listing the contents of a volume, importing files
+    #'  from the volume to the Platform, exporting files from the Platform to
+    #'  the volume, and admin privileges. \cr
+    #'  It can contain fields: 'read', 'copy', 'write' and 'admin' with
+    #'  logical fields - TRUE if certain permission is allowed to the user, or
+    #'  FALSE if it's not.
+    #'  Example:
+    #'  ```{r}
+    #'    permissions = list(read = TRUE, copy = TRUE, write = FALSE,
+    #'    admin = FALSE)
+    #'  ```
+    #' @importFrom checkmate assert_list assert_subset
+    #' @importFrom glue glue
+    #'
     #' @return Member object.
     add_member = function(user, permissions = list(
                             read = TRUE,
@@ -442,15 +486,18 @@ Volume <- R6::R6Class(
         advance_access = TRUE
       )
 
-
       return(asMember(res, auth = self$auth))
       # nocov end
     },
-    #' @description Remove member from a volume
-    #' This function removes members from the specified volume.
+
+    #' @description Remove member from a volume.
+    #'  This function removes members from the specified volume.
+    #'
     #' @param user The Seven Bridges Platform username of the person
-    #' you want to remove from the volume or object of class Member containing
-    #' user's username.
+    #'  you want to remove from the volume or object of class Member containing
+    #'  user's username.
+    #'
+    #' @importFrom glue glue glue_col
     remove_member = function(user) {
       username <- check_and_transform_id(user,
         class_name = "Member",
@@ -467,17 +514,21 @@ Volume <- R6::R6Class(
         advance_access = TRUE
       )
 
-
       rlang::inform(glue_col("Member {green {username}} was successfully removed from the {green {id}} volume.")) # nolint
       # nocov end
     },
-    #' @description Get member's info
-    #' This function returns member's information.
+
+    #' @description Get member's details.
+    #'  This function returns member's information.
+    #'
     #' @param user The Seven Bridges Platform username of the person
-    #' you want to get information about or object of class Member containing
-    #' user's username.
-    #' @param ... Other arguments that can be passed to api() function
-    #' like 'fields', etc.
+    #'  you want to get information about or object of class Member containing
+    #'  user's username.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
+    #' @importFrom glue glue
+    #'
     #' @return Member object.
     get_member = function(user, ...) {
       username <- check_and_transform_id(user,
@@ -496,26 +547,34 @@ Volume <- R6::R6Class(
         ...
       )
 
-
       return(asMember(res, auth = self$auth))
       # nocov end
     },
-    #' @description Modify a volume member's permission
-    #' This function modifies the permissions for a member of a specific
-    #' volume. Note that this does not overwrite all previously set permissions
-    #' for the member.
+
+    #' @description Modify a volume member's permission.
+    #'  This function modifies the permissions for a member of a specific
+    #'  volume. Note that this does not overwrite all previously set permissions
+    #'  for the member.
     #' @param user The Seven Bridges Platform username of the person
-    #' you want to modify permissions for or object of class Member containing
-    #' user's username.
+    #'  you want to modify permissions for or object of class Member containing
+    #'  user's username.
     #' @param permissions List of specific (or all) permissions you want to
-    #' update for the member of the volume.
-    #' Permissions include listing the contents of a volume, importing files
-    #' from the volume to the Platform, exporting files from the Platform to
-    #' the volume, and admin privileges.
-    #' It can contain fields: 'read', 'copy', 'write' and 'admin' with
-    #' logical fields - TRUE if certain permission is allowed to the user, or
-    #' FALSE if it's not.
-    #' Example: list(read = TRUE, copy = TRUE)
+    #'  update for the member of the volume.
+    #'  Permissions include listing the contents of a volume, importing files
+    #'  from the volume to the Platform, exporting files from the Platform to
+    #'  the volume, and admin privileges.
+    #'  It can contain fields: 'read', 'copy', 'write' and 'admin' with
+    #'  logical fields - TRUE if certain permission is allowed to the user, or
+    #'  FALSE if it's not.
+    #'  Example:
+    #'  ```{r}
+    #'    permissions = list(read = TRUE, copy = TRUE, write = FALSE,
+    #'    admin = FALSE)
+    #'  ```
+    #'
+    #' @importFrom checkmate assert_list
+    #' @importFrom glue glue glue_col
+    #'
     #' @return Permission object.
     modify_member_permissions = function(user, permissions = list(
                                            read = TRUE,
@@ -553,27 +612,32 @@ Volume <- R6::R6Class(
 
       return(asPermission(res, auth = self$auth))
       # nocov end
-    }, # nocov start
+    },
+    # nocov start
     #' @description This call lists import jobs initiated by particular user
-    #' from this volume.
+    #'  from this volume.
     #'
     #' @param project String project id or Project object. List all volume
-    #' imports to this project. Optional.
+    #'  imports to this project. Optional.
     #' @param state String. The state of the import job. Possible values are:
-    #' \itemize{
+    #'  \itemize{
     #'    \item `PENDING`: the import is queued;
     #'    \item `RUNNING`: the import is running;
     #'    \item `COMPLETED`: the import has completed successfully;
     #'    \item `FAILED`: the import has failed.
-    #' }
-    #' Example: state = c("RUNNING", "FAILED")
-    #' @param limit Defines the number of items you want to get from your API
-    #' request. By default, `limit` is set to `50`. Maximum is `100`.
-    #' @param offset Defines where the retrieved items started.
-    #' By default, `offset` is set to `0`.
-    #' @param ... Other arguments that can be passed to api() function
-    #' like 'fields', etc.
-    #' @return Collection of import jobs (Import class objects).
+    #'  }
+    #'  Example: `state = c("RUNNING", "FAILED")`
+    #' @param limit The maximum number of collection items to return
+    #'  for a single request. Minimum value is `1`.
+    #'  The maximum value is `100` and the default value is `50`.
+    #'  This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection
+    #'  of the first item to return. The default value is `0`.
+    #'  This is a pagination-specific attribute.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
+    #' @return Collection containing list of Import jobs (Import class objects).
     list_imports = function(project = NULL, state = NULL,
                             limit = getOption("sevenbridges2")$limit,
                             offset = getOption("sevenbridges2")$offset,
@@ -587,26 +651,31 @@ Volume <- R6::R6Class(
         ...
       )
     },
+
     #' @description This call lists export jobs initiated by a user into this
-    #' volume.
-    #' Note that when you export a file from a project on the Platform into a
-    #' volume, you write to your cloud storage bucket.
+    #'  volume.
+    #'  Note that when you export a file from a project on the Platform into a
+    #'  volume, you write to your cloud storage bucket.
     #'
-    #' @param state String. The state of the export job. Possible values are:
-    #' \itemize{
+    #' @param state The state of the export job. Possible values are:
+    #'  \itemize{
     #'    \item `PENDING`: the export is queued;
     #'    \item `RUNNING`: the export is running;
     #'    \item `COMPLETED`: the export has completed successfully;
     #'    \item `FAILED`: the export has failed.
-    #' }
-    #' Example: state = c("RUNNING", "FAILED")
-    #' @param limit Defines the number of items you want to get from your API
-    #' request. By default, `limit` is set to `50`. Maximum is `100`.
-    #' @param offset Defines where the retrieved items started.
-    #' By default, `offset` is set to `0`.
-    #' @param ... Other arguments that can be passed to api() function
-    #' like 'fields', etc.
-    #' @return Collection of export jobs (Export class objects).
+    #'  }
+    #'  Example: `state = c("RUNNING", "FAILED")`
+    #' @param limit The maximum number of collection items to return
+    #'  for a single request. Minimum value is `1`.
+    #'  The maximum value is `100` and the default value is `50`.
+    #'  This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection
+    #'  of the first item to return. The default value is `0`.
+    #'  This is a pagination-specific attribute.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
+    #' @return Collection containing list of export jobs (Export class objects).
     list_exports = function(state = NULL,
                             limit = getOption("sevenbridges2")$limit,
                             offset = getOption("sevenbridges2")$offset,

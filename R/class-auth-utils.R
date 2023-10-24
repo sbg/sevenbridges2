@@ -1,6 +1,8 @@
-#' Get authentication environment variables for Seven Bridges API
+#' @title Get environment variables
 #'
-#' @param x Name of the system environment variable
+#' @description Get authentication environment variables for Seven Bridges API.
+#'
+#' @param x Name of the system environment variable.
 #'
 #' @return A value of the environment variable.
 #'
@@ -50,7 +52,7 @@ sbg_set_env <- function(url = NULL, token = NULL,
                         sysenv_url_name = sbg_default_sysenv_url,
                         sysenv_token_name = sbg_default_sysenv_token) {
   if (is.null(url) || is.null(token)) {
-    rlang::abort("url and token must be both specified")
+    rlang::abort("URL and token must be both specified.")
   }
 
   args <- list(url, token)
@@ -61,10 +63,11 @@ sbg_set_env <- function(url = NULL, token = NULL,
   do.call(Sys.setenv, args)
 }
 
-#' Read ini format file
-#' @param file character string, path to ini file
+#' @title Read ini format file
 #'
-#' @return Nested list keeping the hierarchical structure of the ini file
+#' @param file Character string, path to ini file.
+#'
+#' @return Nested list keeping the hierarchical structure of the ini file.
 #'
 #' @importFrom stringr str_trim
 #' @noRd
@@ -107,7 +110,8 @@ read_ini <- function(file) {
   cfg
 }
 
-#' Parse Seven Bridges user config file into a nested list
+#' @title Parse Seven Bridges user config file into a nested list
+#'
 #' @param file character string, path to config file
 #'
 #' @importFrom rlang abort
@@ -119,18 +123,18 @@ sbg_parse_config <- function(file) {
   if (file.exists(f)) {
     res <- try(read_ini(f), silent = TRUE)
     if (inherits(res, "try-error")) {
-      rlang::abort("User config file format is incorrect")
+      rlang::abort("User config file format is incorrect.")
     }
   } else {
-    rlang::abort(paste0("User config file: ", f, " does not exist"))
+    rlang::abort(paste0("User config file: ", f, " does not exist."))
   }
   res
 }
 
-#' Normalise URL
+#' @title Normalise URL
 #'
-#' Add `/` to url ends
-#' @param x string; url
+#' @description Add `/` to url ends.
+#' @param x String, URL.
 #'
 #' @noRd
 normalize_url <- function(x) {
@@ -141,9 +145,9 @@ normalize_url <- function(x) {
   }
 }
 
-#' Platform name reverse lookup
+#' @title Platform name reverse lookup
 #'
-#' @param baseurl string; base url
+#' @param baseurl String; Base URL.
 #'
 #' @noRd
 sbg_platform_lookup <- function(baseurl) {

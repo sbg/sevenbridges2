@@ -1,5 +1,5 @@
 # nolint start
-#' @title R6 Class representing a files endpoints.
+#' @title R6 Class representing files endpoints.
 #'
 #' @description
 #' R6 Class representing Files resource.
@@ -12,56 +12,67 @@ Files <- R6::R6Class(
   inherit = Resource,
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "query" = "files",
       "get" = "files/{id}",
       "copy" = "action/files/copy"
     ),
-
-    #' @param ... Other arguments.
+    #' @description Create new Files resource object.
+    #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
     #' @description This call returns a list of files and subdirectories in a
-    #'   specified project or directory within a project, with specified
-    #'   properties that you can access. The project or directory whose contents
-    #'   you want to list is specified as a query parameter in the call. Further
-    #'   properties to filter by can also be specified as query parameters. Note
-    #'   that this call lists both files and subdirectories in the specified
-    #'   project or directory within a project, but not the contents of the
-    #'   subdirectories. To list the contents of a subdirectory, make a new call
-    #'   and specify the subdirectory ID as the parent parameter.
-    #' @param project The ID string of project or a Project object. Project
-    #'   should not be used together with parent. If parent is used, the call
-    #'   will list the content of the specified folder, within the project to
-    #'   which the folder belongs. If project is used, the call will list the
-    #'   content at the root of the project's files.
-    #' @param parent The ID string of parent folder or a File object which must
-    #'   be of type `FOLDER`. Should not be used together with project. If
-    #'   parent is used, the call will list the content of the specified folder,
-    #'   within the project to which the folder belongs. If project is used, the
-    #'   call will list the content at the root of the project's files.
+    #'  specified project or directory within a project, with specified
+    #'  properties that you can access. The project or directory whose contents
+    #'  you want to list is specified as a query parameter in the call. Further
+    #'  properties to filter by can also be specified as query parameters.
+    #'  \cr \cr
+    #'  Note that this call lists both files and subdirectories in the
+    #'  specified project or directory within a project, but not the contents
+    #'  of the subdirectories. \cr
+    #'  To list the contents of a subdirectory, make a new call
+    #'  and specify the subdirectory ID as the `parent` parameter. \cr
+    #'  More information you can find in our
+    # nolint start
+    #'  [API documentation](https://docs.sevenbridges.com/reference/list-files-primary-method).
+    # nolint end
+    #' @param project Project identifier (ID) as string or a Project object.
+    #'  Project should not be used together with parent.
+    #'  If parent is used, the call will list the content of the specified
+    #'  folder, within the project to which the folder belongs.
+    #'  If project is used, the call will list the content at the root of
+    #'  the project's files.
+    #' @param parent The parent folder identifier as string or a File object
+    #'  which must be of type `FOLDER`.
+    #'  Should not be used together with project.
+    #'  If parent is used, the call will list the content of the specified
+    #'  folder, within the project to which the folder belongs.
+    #'  If project is used, the call will list the content at the root of
+    #'  the project's files.
     #' @param name Name of the file. List file with this name. Note that the
-    #'   name must be an exact complete string for the results to match.
-    #'   Multiple names can be represented as a vector.
+    #'  name must be an exact complete string for the results to match.
+    #'  Multiple names can be represented as a vector.
     #' @param metadata List file with this metadata field values. List only
-    #'   files that have the specified value in metadata field. Different
-    #'   metadata fields are represented as a named list. You can also define
-    #'   multiple instances of the same metadata field.
+    #'  files that have the specified value in metadata field. Different
+    #'  metadata fields are represented as a named list. You can also define
+    #'  multiple instances of the same metadata field.
     #' @param origin Task object. List only files produced by task.
     #' @param tag List files containing this tag. Note that the tag must be an
-    #'   exact complete string for the results to match. Multiple tags can be
-    #'   represented by vector of values.
-    #' @param limit The maximum number of collection items to return for a
-    #'   single request. Minimum value is 1. The maximum value is 100 and the
-    #'   default value is 50. This is a pagination-specific attribute.
-    #' @param offset The zero-based starting index in the entire collection of
-    #'   the first item to return. The default value is 0. This is a
-    #'   pagination-specific attribute.
-    #' @param ... Other arguments that can be passed to this method. Such as
-    #'   query parameters.
+    #'  exact complete string for the results to match. Multiple tags can be
+    #'  represented by vector of values.
+    #' @param limit The maximum number of collection items to return
+    #'  for a single request. Minimum value is `1`.
+    #'  The maximum value is `100` and the default value is `50`.
+    #'  This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection
+    #'  of the first item to return. The default value is `0`.
+    #'  This is a pagination-specific attribute.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  as 'fields', etc.
+    #'
     #' @importFrom checkmate assert_string assert_character
     #' @importFrom rlang abort
     query = function(project = NULL,
@@ -127,14 +138,14 @@ Files <- R6::R6Class(
 
       return(asCollection(res, auth = self$auth))
     },
-    #' @description This call returns a single file object with its details
+    #' @description This call returns a single File object with its details.
     #' The call returns the file's name, its tags, and all of its metadata.
     #' Files are specified by their IDs, which you can obtain by making
     #' the API call to list all files in a project.
     #'
     #' @param id The file ID string.
-    #' @param ... Other arguments that can be passed to this method.
-    #' @importFrom checkmate assert_character
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #' as 'fields', etc.
     get = function(id, ...) {
       res <- super$get(
         cls = self,
@@ -142,17 +153,19 @@ Files <- R6::R6Class(
         ...
       )
       return(asFile(res, auth = self$auth))
-    },
-    # nocov end
+    }, # nocov end
     #' @description  Copy file/files to the specified project. This call allows
-    #'   you to copy files between projects. Unlike the call to copy a file
-    #'   between projects, this call lets you batch the copy operation and copy
-    #'   a list of files at a time.
-    #'
-    #' @param files The list of files IDs or list of File object to copy.
-    #' @param destination_project Project object or project ID string in form of
-    #'   <project_owner>/<project-name> where you want to copy files into.
-    #' @importFrom checkmate assert_list test_atomic assert_character assert_r6
+    #'  you to copy files between projects. Unlike the call to copy a file
+    #'  between projects, this call lets you batch the copy operation and copy
+    #'  a list of files at a time. \cr
+    #'  More information you may find in the
+    # nolint start
+    #'  \url{https://docs.sevenbridges.com/reference/copy-files-between-projects}.
+    # nolint end
+    #' @param files The list of files' IDs or list of File object to copy.
+    #' @param destination_project Project object or project ID string
+    #'  where you want to copy files into.
+    #' @importFrom checkmate assert_list
     #' @importFrom glue glue_col
     copy = function(files, destination_project) {
       if (is_missing(files) || is_missing(destination_project)) {
@@ -178,8 +191,6 @@ Files <- R6::R6Class(
         token = self$auth$get_token(),
         base_url = self$auth$url
       )
-
-
 
       result <- list()
       for (i in seq_len(length(res))) {
@@ -207,21 +218,21 @@ Files <- R6::R6Class(
         cat("\n")
       }
       invisible(result)
-    },
-    # nocov end
+    }, # nocov end
     #' @description A method for creating a new folder. It allows you to create
-    #'   a new folder on the Platform within the root folder of a specified
-    #'   project or the provided parent folder. Remember that you should provide
-    #'   either the destination project (as the `project` parameter) or the
-    #'   destination folder (as the `parent` parameter), not both.
+    #'  a new folder on the Platform within the root folder of a specified
+    #'  project or the provided parent folder. Remember that you should provide
+    #'  either the destination project (as the `project` parameter) or the
+    #'  destination folder (as the `parent` parameter), not both. \cr
+    #'  More information you may find on
+    #'  \url{https://docs.sevenbridges.com/reference/create-a-folder}.
     #'
     #' @param name The name of the folder you are about to create.
     #' @param parent The ID string of the parent destination folder or a File
-    #'   object which must be of type `FOLDER`.
+    #'  object which must be of type `FOLDER`.
     #' @param project The ID of the destination project, or a Project object.
     #' @importFrom rlang abort inform
     #' @importFrom glue glue_col
-    #' @importFrom checkmate test_r6 test_class
     create_folder = function(name,
                              parent = NULL,
                              project = NULL) {

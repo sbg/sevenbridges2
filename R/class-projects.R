@@ -12,34 +12,45 @@ Projects <- R6::R6Class(
   inherit = Resource,
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "query" = "projects",
       "get" = "projects/{id}",
       "create" = "projects"
     ),
 
-    #' @param ... Other arguments.
+    #' @description Create new Projects resource object.
+    #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
-    # list all projects -------------------------------------------------------
     #' @description A method to list all projects available to particular user.
-    #' if the username is not provided, all projects available to the currently
-    #' authenticated user will be listed. Otherwise, projects will be listed
-    #' for the user whose username is provided. Please keep in mind that this
-    #' way you will only be able to list projects you are a member of.
+    #'  If the username is not provided, all projects available to the
+    #'  currently authenticated user will be listed.
+    #'  Otherwise, projects will be listed for the user whose username
+    #'  is provided.
+    #'  Please keep in mind that this way you will only be able to list
+    #'  projects you are a member of. \cr \cr
+    #'  More details on how to query projects, you can find in our
+    #'  documentation:
+    #'  \url{https://docs.sevenbridges.com/reference/list-all-your-projects}.
+    #'
     #' @param name Project's name.
     #' @param owner The username of the owner whose projects you want to query.
     #' @param tags The list of project tags.
-    #' @param limit Defines the number of items you want to get from your API
-    #' request. By default, `limit` is set to `50`. Maximum is `100`.
-    #' @param offset Defines where the retrieved items started.
-    #' By default, `offset` is set to `0`.
-    #' @param ... Other arguments that can be passed to this method.
-    #' Such as query parameters.
+    #' @param limit The maximum number of collection items to return
+    #'  for a single request. Minimum value is `1`.
+    #'  The maximum value is `100` and the default value is `50`.
+    #'  This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection
+    #'  of the first item to return. The default value is `0`.
+    #'  This is a pagination-specific attribute.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like other query parameters or 'fields', etc.
     #' @importFrom checkmate assert_string
+    #'
+    #' @return Collection with list of Project objects.
     query = function(name = NULL,
                      owner = NULL,
                      tags = NULL,
@@ -62,18 +73,16 @@ Projects <- R6::R6Class(
 
       return(asCollection(res, auth = self$auth))
     },
-    # get specific project ----------------------------------------------------
-    #' @description This call creates an object containing the details
-    #' of a specified project.
+    #' @description This call creates Project object containing the details
+    #'  of a specified project.
     #' @param id Project ID. It consists of project owner's username or
-    #' if you are using Enterprise, then the Division name and project's
-    #' short name in form of <owner_username>/<project-short-name> or
-    #' <division-name>/<project-short-name>.
+    #'  if you are using Enterprise, then the Division name and project's
+    #'  short name in form of `<owner_username>/<project-short-name>` or
+    #'  `<division-name>/<project-short-name>`.
     #'
-    #' @details
-    #' For full details of identifying objects using the API, please see the
-    #' API overview.
-    #' @param ... Other arguments.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
     #' @return Project object.
     get = function(id, ...) {
       res <- super$get(
@@ -83,39 +92,45 @@ Projects <- R6::R6Class(
       )
       return(asProject(res, auth = self$auth))
     }, # nocov end
-    # create new project
     #' @description A method for creating a new project.
     #'
     #' @param name The name of the project you are creating.
     #' @param billing_group The Billing object or ID of the billing group for
-    #'   the project.
+    #'  the project.
     #' @param description Description of the project.
     #' @param tags The list of project tags.
-    #' @param locked (boolean) Set this field to true to lock down a project.
-    #'    Locking down a project prevents any Seven Bridges team member from
-    #'    viewing any information about the task.
-    #' @param controlled Set this field to true to define this project as
-    #' controlled i.e. one which will contain controlled data. Set false to
-    #' define the project as open i.e. one which will contain open data.
+    #' @param locked Set this field to `TRUE` to lock down a project.
+    #'  Locking down a project prevents any Seven Bridges team member from
+    #'  viewing any information about the task.
+    #' @param controlled Set this field to `TRUE` to define this project as
+    #'  controlled i.e. one which will contain controlled data. Set `FALSE` to
+    #'  define the project as open i.e. one which will contain open data.
     #' @param location Specify the location for this project:
-    #' aws:us-east-1 or aws:us-west-2
-    #' @param use_interruptible_instances Defines the use of spot instances.
-    #' @param use_memoization Set to false by default. Set to true to enable
-    #' memoization.
-    #' @param use_elastic_disk Set to true to enable Elastic disk.
+    #'  `aws:us-east-1` or `aws:us-west-2`.
+    #' @param use_interruptible_instances Defines the use of
+    # nolint start
+    #'  [spot instances](https://docs.sevenbridges.com/docs/about-spot-instances).
+    # nolint end
+    #' @param use_memoization Set to `FALSE` by default. Set to `TRUE` to enable
+    #'  [memoization](https://docs.sevenbridges.com/docs/about-memoization).
+    #' @param use_elastic_disk Set to `TRUE` to enable
+    #'  [Elastic disk](https://docs.sevenbridges.com/page/elastic-disk).
     #' @param intermediate_files A list defining the retention period for
-    #' intermediate files. Expected elements:
-    #' \itemize{
-    #' \item retention - Specifies that intermediate files should be retained
-    #' for a limited amount of time. The value is always LIMITED.
-    #' \item duration - Specifies intermediate files retention period in hours.
-    #' The minimum value is 1. The maximum value is 120 and the default value
-    #' is 24.
-    #' }
-    #' @param ... Other arguments.
+    #'  intermediate files. Expected elements:
+    #'  \itemize{
+    #'    \item `retention` - Specifies that intermediate files should be
+    #'      retained for a limited amount of time.
+    #'      The value is always `LIMITED`.
+    #'    \item `duration` - Specifies intermediate files retention period in
+    #'      hours. The minimum value is `1`. The maximum value is `120` and the
+    #'      default value is `24`.
+    #'  }
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     #' @importFrom rlang inform abort
     #' @importFrom glue glue
     #' @importFrom checkmate assert_string test_character
+    #' @return Project object.
     create = function(name,
                       billing_group = NULL,
                       description = name,
@@ -172,7 +187,6 @@ Projects <- R6::R6Class(
         base_url = self$auth$url,
         ...
       )
-
 
       rlang::inform(
         glue::glue_col(

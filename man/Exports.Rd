@@ -4,7 +4,7 @@
 \alias{Exports}
 \title{R6 Class representing storage exports endpoints}
 \description{
-R6 Class representing storage exports resource endpoints
+R6 Class representing storage exports resource endpoints.
 }
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Exports}
@@ -12,7 +12,7 @@ R6 Class representing storage exports resource endpoints
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 }
 \if{html}{\out{</div>}}
 }
@@ -39,7 +39,7 @@ Create a new Exports object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -67,7 +67,7 @@ volume, you write to your cloud storage bucket.
 \item{\code{volume}}{String volume id or Volume object. List all exports
 into this particular volume. Optional.}
 
-\item{\code{state}}{String. The state of the export job. Possible values are:
+\item{\code{state}}{The state of the export job. Possible values are:
 \itemize{
 \item \code{PENDING}: the export is queued;
 \item \code{RUNNING}: the export is running;
@@ -79,19 +79,22 @@ Example:
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{state = c("RUNNING", "FAILED")
 }\if{html}{\out{</div>}}}
 
-\item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{Defines where the retrieved items started.
-By default, \code{offset} is set to \code{0}.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments that can be passed to api() function
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection of export jobs (Export class objects).
+Collection of Export jobs (Export class objects).
 }
 }
 \if{html}{\out{<hr>}}
@@ -106,15 +109,15 @@ This call will return the details of an export job.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{The export job identifier (id)}
+\item{\code{id}}{The export job identifier (id).}
 
-\item{\code{...}}{Other arguments that can be passed to api() function
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Export job object.
+Export object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -125,21 +128,27 @@ This call lets you queue a job to export a file from a
 project on the Platform into a volume. The file selected for export must
 not be a public file or an alias. Aliases are objects stored in your
 cloud storage bucket which have been made available on the Platform.
-The volume you are exporting to must be configured for read-write access.
-To do this, set the \code{access_mode} parameter to \code{RW} when creating or
-modifying a volume.
+The volume you are exporting to must be configured for
+read-write access. To do this, set the \code{access_mode} parameter to
+\code{RW} when creating or modifying a volume. \cr
 
-Essentially, the call writes to your cloud storage bucket via the volume.
-If this call is successful, the original project file will become an
-alias to the newly exported object on the volume. The source file will
-be deleted from the Platform and, if no more copies of this file exist,
-it will no longer count towards your total storage price on the Platform.
+Essentially, the call writes to your cloud storage bucket via the
+volume. If this call is successful, the original project file will
+become an alias to the newly exported object on the volume.
+The source file will be deleted from the Platform and, if no more
+copies of this file exist, it will no longer count towards your total
+storage price on the Platform. \cr
 In summary, once you export a file from the Platform to a volume, it is
 no longer part of the storage on the Platform and cannot be exported
-again.
+again. \cr
+
+Read more about this operation in our documentation
+\href{https://docs.sevenbridges.com/reference/start-an-export-job-v2}{here}.
+\cr
 
 If you want to export multiple files, the recommended way is to do it
 in bulk considering the API rate limit (\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).
+(bulk operations will be implemented in next releases).
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Exports$submit_export(
   source_file,
@@ -156,50 +165,52 @@ in bulk considering the API rate limit (\href{https://docs.sevenbridges.com/docs
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{source_file}}{String file id or File object you want to export to
-the volume. Required.}
+the volume.}
 
 \item{\code{destination_volume}}{String volume id or Volume object you want to
-export files into. Required.}
+export files into.}
 
 \item{\code{destination_location}}{String volume-specific location to which the
 file will be exported.
 This location should be recognizable to the underlying cloud service as
 a valid key or path to a new file. Please note that if this volume has
 been configured with a prefix parameter, the value of prefix will be
-prepended to location before attempting to create the file on the volume.
+prepended to location before attempting to create the file on the
+volume.
 
 If you would like to export the file into some folder on the volume,
 please add folder name as prefix before file name in form
 \verb{<folder-name>/<file-name>}.}
 
-\item{\code{overwrite}}{Boolean. Whether to overwrite the item if another one
-with the same name already exists at the destination.}
+\item{\code{overwrite}}{Set to \code{TRUE} if you want to overwrite the item
+if another one with the same name already exists at the destination.}
 
-\item{\code{copy_only}}{Boolean. If true, file will be copied to a volume but
+\item{\code{copy_only}}{If \code{TRUE}, file will be copied to a volume but
 source file will remain on the Platform.}
 
 \item{\code{properties}}{Named list of additional volume properties, like:
 \itemize{
-\item \code{sse_algorithm} - String. S3 server-side encryption to use when
+\item \code{sse_algorithm} - S3 server-side encryption to use when
 exporting to this bucket. Supported values:
-AES256 (SSE-S3 encryption), aws:kms, null (no server-side encryption).
-Default: AES256.
-\item \code{sse_aws_kms_key_Id}: String. Applies to type: s3.
-If AWS KMS encryption is used, this should be set to the required KMS
-key. If not set and aws:kms is set as sse_algorithm, default KMS key
-is used.
-\item \code{aws_canned_acl}: String. S3 canned ACL to apply on the object
-on during export. Supported values: any one of S3 canned ACLs;
-null (do not apply canned ACLs). Default: null.
+\code{AES256} (SSE-S3 encryption), \code{aws:kms}, \code{null}
+(no server-side encryption). Default: \code{AES256}.
+\item \code{sse_aws_kms_key_id}: Applies to type: \code{s3}.
+If AWS KMS encryption is used, this should be set to the required
+KMS key. If not set and \code{aws:kms} is set as \code{sse_algorithm},
+default KMS key is used.
+\item \code{aws_canned_acl}: S3 canned ACL to apply on the object
+on during export. Supported values: any one of
+\href{https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl}{S3 canned ACLs};
+\code{null} (do not apply canned ACLs). Default: \code{null}.
 }}
 
-\item{\code{...}}{Other arguments that can be passed to api() function
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Export job object.
+Export object.
 }
 }
 \if{html}{\out{<hr>}}

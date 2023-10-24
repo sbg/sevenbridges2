@@ -9,7 +9,7 @@ R6 Class representing a resource for managing parts of the files' uploads.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 
 \item{\code{part_number}}{Part number.}
 
@@ -91,7 +91,7 @@ the HTTP part upload request that should be recognized as success.}
 
 \item{\code{etag}}{ETag received after starting a part upload.}
 
-\item{\code{auth}}{Authentication object.}
+\item{\code{auth}}{Seven Bridges Authentication object.}
 }
 \if{html}{\out{</div>}}
 }

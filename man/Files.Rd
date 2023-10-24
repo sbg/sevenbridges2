@@ -2,7 +2,7 @@
 % Please edit documentation in R/class-files.R
 \name{Files}
 \alias{Files}
-\title{R6 Class representing a files endpoints.}
+\title{R6 Class representing files endpoints.}
 \description{
 R6 Class representing Files resource.
 }
@@ -12,7 +12,7 @@ R6 Class representing Files resource.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 }
 \if{html}{\out{</div>}}
 }
@@ -38,6 +38,7 @@ R6 Class representing Files resource.
 \if{html}{\out{<a id="method-Files-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Files-new}{}}}
 \subsection{Method \code{new()}}{
+Create new Files resource object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Files$new(...)}\if{html}{\out{</div>}}
 }
@@ -45,7 +46,7 @@ R6 Class representing Files resource.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -58,11 +59,15 @@ This call returns a list of files and subdirectories in a
 specified project or directory within a project, with specified
 properties that you can access. The project or directory whose contents
 you want to list is specified as a query parameter in the call. Further
-properties to filter by can also be specified as query parameters. Note
-that this call lists both files and subdirectories in the specified
-project or directory within a project, but not the contents of the
-subdirectories. To list the contents of a subdirectory, make a new call
-and specify the subdirectory ID as the parent parameter.
+properties to filter by can also be specified as query parameters.
+\cr \cr
+Note that this call lists both files and subdirectories in the
+specified project or directory within a project, but not the contents
+of the subdirectories. \cr
+To list the contents of a subdirectory, make a new call
+and specify the subdirectory ID as the \code{parent} parameter. \cr
+More information you can find in our
+\href{https://docs.sevenbridges.com/reference/list-files-primary-method}{API documentation}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Files$query(
   project = NULL,
@@ -80,17 +85,20 @@ and specify the subdirectory ID as the parent parameter.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{project}}{The ID string of project or a Project object. Project
-should not be used together with parent. If parent is used, the call
-will list the content of the specified folder, within the project to
-which the folder belongs. If project is used, the call will list the
-content at the root of the project's files.}
+\item{\code{project}}{Project identifier (ID) as string or a Project object.
+Project should not be used together with parent.
+If parent is used, the call will list the content of the specified
+folder, within the project to which the folder belongs.
+If project is used, the call will list the content at the root of
+the project's files.}
 
-\item{\code{parent}}{The ID string of parent folder or a File object which must
-be of type \code{FOLDER}. Should not be used together with project. If
-parent is used, the call will list the content of the specified folder,
-within the project to which the folder belongs. If project is used, the
-call will list the content at the root of the project's files.}
+\item{\code{parent}}{The parent folder identifier as string or a File object
+which must be of type \code{FOLDER}.
+Should not be used together with project.
+If parent is used, the call will list the content of the specified
+folder, within the project to which the folder belongs.
+If project is used, the call will list the content at the root of
+the project's files.}
 
 \item{\code{name}}{Name of the file. List file with this name. Note that the
 name must be an exact complete string for the results to match.
@@ -107,16 +115,17 @@ multiple instances of the same metadata field.}
 exact complete string for the results to match. Multiple tags can be
 represented by vector of values.}
 
-\item{\code{limit}}{The maximum number of collection items to return for a
-single request. Minimum value is 1. The maximum value is 100 and the
-default value is 50. This is a pagination-specific attribute.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{\code{offset}}{The zero-based starting index in the entire collection of
-the first item to return. The default value is 0. This is a
-pagination-specific attribute.}
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments that can be passed to this method. Such as
-query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+as 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -125,7 +134,7 @@ query parameters.}
 \if{html}{\out{<a id="method-Files-get"></a>}}
 \if{latex}{\out{\hypertarget{method-Files-get}{}}}
 \subsection{Method \code{get()}}{
-This call returns a single file object with its details
+This call returns a single File object with its details.
 The call returns the file's name, its tags, and all of its metadata.
 Files are specified by their IDs, which you can obtain by making
 the API call to list all files in a project.
@@ -138,7 +147,8 @@ the API call to list all files in a project.
 \describe{
 \item{\code{id}}{The file ID string.}
 
-\item{\code{...}}{Other arguments that can be passed to this method.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+as 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -150,7 +160,9 @@ the API call to list all files in a project.
 Copy file/files to the specified project. This call allows
 you to copy files between projects. Unlike the call to copy a file
 between projects, this call lets you batch the copy operation and copy
-a list of files at a time.
+a list of files at a time. \cr
+More information you may find in the
+\url{https://docs.sevenbridges.com/reference/copy-files-between-projects}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Files$copy(files, destination_project)}\if{html}{\out{</div>}}
 }
@@ -158,10 +170,10 @@ a list of files at a time.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{files}}{The list of files IDs or list of File object to copy.}
+\item{\code{files}}{The list of files' IDs or list of File object to copy.}
 
-\item{\code{destination_project}}{Project object or project ID string in form of
-<project_owner>/\if{html}{\out{<project-name>}} where you want to copy files into.}
+\item{\code{destination_project}}{Project object or project ID string
+where you want to copy files into.}
 }
 \if{html}{\out{</div>}}
 }
@@ -174,7 +186,9 @@ A method for creating a new folder. It allows you to create
 a new folder on the Platform within the root folder of a specified
 project or the provided parent folder. Remember that you should provide
 either the destination project (as the \code{project} parameter) or the
-destination folder (as the \code{parent} parameter), not both.
+destination folder (as the \code{parent} parameter), not both. \cr
+More information you may find on
+\url{https://docs.sevenbridges.com/reference/create-a-folder}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Files$create_folder(name, parent = NULL, project = NULL)}\if{html}{\out{</div>}}
 }

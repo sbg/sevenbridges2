@@ -41,7 +41,7 @@ Create new VolumeContentCollection object.
 \describe{
 \item{\code{res}}{Response containing VolumeContentCollection object fields.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -75,8 +75,8 @@ Return next page of results.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query or API parameters that can be passed to api()
-function like advance_access, fields etc.}
+\item{\code{...}}{Other arguments or query parameters that can be passed to
+core \code{api()} function like 'advance_access', 'fields' etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -103,8 +103,8 @@ Fetches all available items.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query or API parameters that can be passed to api()
-function like advance_access, fields etc.}
+\item{\code{...}}{Other arguments or query parameters that can be passed to
+core \code{api()} function like 'advance_access', 'fields' etc.}
 }
 \if{html}{\out{</div>}}
 }

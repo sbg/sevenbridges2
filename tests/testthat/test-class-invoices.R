@@ -34,7 +34,7 @@ test_that("Invoices get() throws error when expected", {
   # Get fails when id param is invalid
   testthat::expect_error(
     do.call(setup_invoices_obj$get, test_bad_id),
-    regexp = "Assertion on 'id' failed: Must be of type 'character', not 'double'.", # nolint
+    regexp = "Assertion on 'id' failed: Must be of type 'string', not 'double'.", # nolint
     fixed = TRUE
   )
   testthat::expect_error(

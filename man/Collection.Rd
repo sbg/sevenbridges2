@@ -2,12 +2,13 @@
 % Please edit documentation in R/class-collection.R
 \name{Collection}
 \alias{Collection}
-\title{R6 Class representing a Collection}
+\title{R6 Class representing a Collection of objects}
 \description{
 R6 Class representing a resource for managing collections.
-Wrapper for SevenBridges pageable resources.
+Wrapper for Seven Bridges pageable resources.
 Among the actual collection items it contains information regarding
-the total number of entries available in on the server and resource href.
+the total number of entries available on the server and
+resource API request URL (href).
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -16,13 +17,14 @@ the total number of entries available in on the server and resource href.
 
 \item{\code{items}}{Items returned in API response.}
 
-\item{\code{links}}{List of links (hrefs) for next page resources.}
+\item{\code{links}}{List of links (hrefs) for next and/or previous page
+resources.}
 
-\item{\code{total}}{Total number of items.}
+\item{\code{total}}{Total number of items available on the server.}
 
-\item{\code{response}}{Save raw API response.}
+\item{\code{response}}{Raw API response.}
 
-\item{\code{auth}}{Seven Bridges Auth object.}
+\item{\code{auth}}{Seven Bridges Authentication object.}
 }
 \if{html}{\out{</div>}}
 }
@@ -60,13 +62,14 @@ Create a new Collection object.
 
 \item{\code{items}}{Items returned in API response.}
 
-\item{\code{links}}{List of links (hrefs) for next page resources.}
+\item{\code{links}}{List of links (hrefs) for next and/or previous page
+resources.}
 
-\item{\code{total}}{Total number of items.}
+\item{\code{total}}{Total number of items available on the server.}
 
 \item{\code{response}}{Raw API response.}
 
-\item{\code{auth}}{Seven Bridges Auth object.}
+\item{\code{auth}}{Seven Bridges Authentication object.}
 }
 \if{html}{\out{</div>}}
 }
@@ -100,8 +103,8 @@ Return next page of results.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query or API parameters that can be passed to api()
-function like advance_access, fields etc.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'advanced_access', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -118,8 +121,8 @@ Return previous page of results.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query or API parameters that can be passed to api()
-function like advance_access, fields etc.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'advanced_access', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -128,7 +131,8 @@ function like advance_access, fields etc.}
 \if{html}{\out{<a id="method-Collection-all"></a>}}
 \if{latex}{\out{\hypertarget{method-Collection-all}{}}}
 \subsection{Method \code{all()}}{
-Fetches all available items.
+Fetches all available items by iterating through all pages.
+Please, be aware of the API rate limit for your request.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Collection$all(...)}\if{html}{\out{</div>}}
 }
@@ -136,8 +140,8 @@ Fetches all available items.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query or API parameters that can be passed to api()
-function like advance_access, fields etc.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'advanced_access', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }

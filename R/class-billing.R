@@ -13,7 +13,7 @@ Billing <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "get" = "billing/groups/{id}",
       "breakdown_analysis" = "billing/groups/{self$id}/breakdown/analysis",
@@ -35,10 +35,9 @@ Billing <- R6::R6Class(
     #' @field balance Billing group balance.
     balance = NULL,
 
-    #' @description
-    #' Create a new Billing object.
-    #' @param res Response containing File object information.
-    #' @param ... Other arguments.
+    #' @description Create a new Billing object.
+    #' @param res Response containing Billing object information.
+    #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
@@ -52,8 +51,7 @@ Billing <- R6::R6Class(
       self$balance <- res$balance
     },
     # nocov start
-    #' @description
-    #' Print billing group information as a bullet list.
+    #' @description Print billing group information as a bullet list.
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul
@@ -84,9 +82,9 @@ Billing <- R6::R6Class(
       )
       cli::cli_end()
     },
-    #' @description
-    #' Reload Billing group object.
-    #' @param ... Other query parameters.
+    #' @description Reload Billing group object.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'limit', 'offset', 'fields', etc.
     #' @return Billing
     reload = function(...) {
       super$reload(
@@ -97,21 +95,23 @@ Billing <- R6::R6Class(
     },
     #' @description Method for getting a analysis breakdown for a billing group.
     #'
-    #' @param offset The zero-based starting index in the entire collection of
-    #' the first item to return. The default value is 0.
+    #' @param offset The zero-based starting index in the entire collection
+    #'  of the first item to return. The default value is `0`.
+    #'  This is a pagination-specific attribute.
     #' @param date_from A string representing the starting date for retrieving
-    #' transactions analysis in the following format: mm-dd-yyyy.
+    #'  transactions analysis in the following format: mm-dd-yyyy.
     #' @param date_to A string representing the ending date for retrieving
-    #' transactions analysis in the following format: mm-dd-yyyy.
+    #'  transactions analysis in the following format: mm-dd-yyyy.
     #' @param invoice A string representing invoice ID or Invoice object to
-    #'   show a breakdown for the specific invoice. If omitted, the current
-    #'   spending breakdown is returned.
-    #' @param limit An integer representing the maximum number of collection
-    #' items to return for a single request. The default value is 50, while
-    #' maximum is 100.
+    #'  show a breakdown for the specific invoice. If omitted, the current
+    #'  spending breakdown is returned.
+    #' @param limit The maximum number of collection items to return
+    #'  for a single request. Minimum value is `1`.
+    #'  The maximum value is `100` and the default value is `50`.
+    #'  This is a pagination-specific attribute.
     #' @param fields Selector specifying a subset of fields to include in the
-    #' response.
-    #' @param ... Other arguments.
+    #'  response.
+    #' @param ... Other arguments that can be passed to core `api()` function.
     analysis_breakdown = function(date_from = NULL,
                                   date_to = NULL,
                                   invoice = NULL,
@@ -136,36 +136,38 @@ Billing <- R6::R6Class(
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
+        query = list(
+          invoice_id = invoice,
+          date_from = date_from,
+          date_to = date_to
+        ),
         limit = limit,
-        invoice_id = invoice,
         offset = offset,
-        date_from = date_from,
-        date_to = date_to,
+        fields = fields,
         ...
       )
 
-      # asAnalysisBreakdownList(req)
-      # req_as_json <- jsonlite::toJSON(req, pretty = TRUE)
-      # cat(req_as_json)
       return(res)
     },
     #' @description Method for getting a storage breakdown for a billing group.
     #'
-    #' @param offset The zero-based starting index in the entire collection of
-    #' the first item to return. The default value is 0.
+    #' @param offset The zero-based starting index in the entire collection
+    #'  of the first item to return. The default value is `0`.
+    #'  This is a pagination-specific attribute.
     #' @param date_from A string representing the starting date for retrieving
-    #' storage analysis in the following format: mm-dd-yyyy.
+    #'  storage analysis in the following format: mm-dd-yyyy.
     #' @param date_to A string representing the ending date for retrieving
-    #' storage analysis in the following format: mm-dd-yyyy.
+    #'  storage analysis in the following format: mm-dd-yyyy.
     #' @param invoice A string representing invoice ID or Invoice object to
-    #'   show a breakdown for the specific invoice. If omitted, the current
-    #'   spending breakdown is returned.
-    #' @param limit An integer representing the maximum number of collection
-    #' items to return for a single request. The default value is 50, while
-    #' maximum is 100.
+    #'  show a breakdown for the specific invoice. If omitted, the current
+    #'  spending breakdown is returned.
+    #' @param limit The maximum number of collection items to return
+    #'  for a single request. Minimum value is `1`.
+    #'  The maximum value is `100` and the default value is `50`.
+    #'  This is a pagination-specific attribute.
     #' @param fields Selector specifying a subset of fields to include in the
-    #' response.
-    #' @param ... Other arguments.
+    #'  response.
+    #' @param ... Other arguments that can be passed to core `api()` function.
     storage_breakdown = function(date_from = NULL,
                                  date_to = NULL,
                                  invoice = NULL,
@@ -190,11 +192,14 @@ Billing <- R6::R6Class(
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
+        query = list(
+          invoice_id = invoice,
+          date_from = date_from,
+          date_to = date_to
+        ),
         limit = limit,
-        invoice_id = invoice,
         offset = offset,
-        date_from = date_from,
-        date_to = date_to,
+        fields = fields,
         ...
       )
 
@@ -202,21 +207,23 @@ Billing <- R6::R6Class(
     },
     #' @description Method for getting a egress breakdown for a billing group.
     #'
-    #' @param offset The zero-based starting index in the entire collection of
-    #' the first item to return. The default value is 0.
+    #' @param offset The zero-based starting index in the entire collection
+    #'  of the first item to return. The default value is `0`.
+    #'  This is a pagination-specific attribute.
     #' @param date_from A string representing the starting date for retrieving
-    #' egress analysis in the following format: mm-dd-yyyy.
+    #'  egress analysis in the following format: mm-dd-yyyy.
     #' @param date_to A string representing the ending date for retrieving
-    #' egress analysis in the following format: mm-dd-yyyy.
+    #'  egress analysis in the following format: mm-dd-yyyy.
     #' @param invoice A string representing invoice ID or Invoice object to
-    #'   show a breakdown for the specific invoice. If omitted, the current
-    #'   spending breakdown is returned.
-    #' @param limit An integer representing the maximum number of collection
-    #' items to return for a single request. The default value is 50, while
-    #' maximum is 100.
+    #'  show a breakdown for the specific invoice. If omitted, the current
+    #'  spending breakdown is returned.
+    #' @param limit The maximum number of collection items to return
+    #'  for a single request. Minimum value is `1`.
+    #'  The maximum value is `100` and the default value is `50`.
+    #'  This is a pagination-specific attribute.
     #' @param fields Selector specifying a subset of fields to include in the
-    #' response.
-    #' @param ... Other arguments.
+    #'  response.
+    #' @param ... Other arguments that can be passed to core `api()` function.
     egress_breakdown = function(date_from = NULL,
                                 date_to = NULL,
                                 invoice = NULL,
@@ -241,11 +248,14 @@ Billing <- R6::R6Class(
         method = "GET",
         token = self$auth$get_token(),
         base_url = self$auth$url,
+        query = list(
+          invoice_id = invoice,
+          date_from = date_from,
+          date_to = date_to
+        ),
         limit = limit,
-        invoice_id = invoice,
         offset = offset,
-        date_from = date_from,
-        date_to = date_to,
+        fields = fields,
         ...
       )
 

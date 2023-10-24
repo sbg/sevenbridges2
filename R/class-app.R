@@ -12,7 +12,7 @@ App <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "get" = "apps/{id}/{revision}",
       "get_revision" = "apps/{self$id}/{revision}",
@@ -36,7 +36,7 @@ App <- R6::R6Class(
     raw = NULL,
     #' @description Create a new App object.
     #' @param res Response containing App object information.
-    #' @param ... Other arguments.
+    #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
@@ -82,10 +82,10 @@ App <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
-    #' @description
-    #' Reload App.
-    #' @param ... Other query parameters.
-    #' @return App.
+    #' @description Reload App object information.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #' @return App object.
     reload = function(...) {
       super$reload(
         cls = self,
@@ -93,16 +93,15 @@ App <- R6::R6Class(
       )
       rlang::inform("App object is refreshed!")
     }, # nocov end
-    #' @description A method that copies the current app.
-    #'
-    #' @details
-    #' The method copies the current app to the specified project.
+    #' @description A method that copies the current app to the
+    #'  specified project.
     #'
     #' @param project Project object or project ID. If you opt for the latter,
-    #' remember that the project ID should be specified in
-    #' `<username>/<project-name>` format, e.g. `rfranklin/my-project`.
+    #'  remember that the project ID should be specified in
+    #'  `<project_owner>/<project-name>` format, e.g. `rfranklin/my-project`,
+    #'  or as `<division>/<project-name>` depending on the account type.
     #' @param name The new name the app will have in the target project.
-    #' Optional.
+    #'  Optional.
     #' @param strategy The method for copying the app. Supported strategies:
     #' \itemize{
     #'    \item `clone` - copy all revisions; get updates from the same app as
@@ -111,16 +110,17 @@ App <- R6::R6Class(
     #'    \item `clone_direct`: copy all revisions; get updates from the copied
     #'    app
     #'    \item `transient`: copy latest revision; get updates from the same
-    #'    app as the copied app
+    #'    app as the copied app.
     #' }
     #' @param use_revision Parameter specifying which app's revision should be
-    #' copied. If set to `FALSE` (default), the latest revision of the app will
-    #' be copied.
-    #' @param ... Other arguments such as `fields` which can be used to specify
-    #' a subset of fields to include in the response.
+    #'  copied. If set to `FALSE` (default), the latest revision of the app will
+    #'  be copied.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     #' @importFrom rlang abort
     #' @importFrom checkmate assert_string assert_logical
     #' @importFrom glue glue
+    #' @return Copied App object.
     copy = function(project, name = NULL, strategy = "clone", use_revision = FALSE, ...) { # nolint
       if (is_missing(project)) {
         rlang::abort("Project parameter must be provided!")
@@ -166,27 +166,26 @@ App <- R6::R6Class(
         ...
       )
 
-
-
       rlang::inform(glue::glue_col("App {green {self$name}} has been copied to {green {project}} project.")) # nolint
 
       # Return newly created app
       return(asApp(res, auth = self$auth))
       # nocov end
     },
-    #' @description Get app's revision
+    #' @description Get app's revision.
     #'
     #' @details
     #' This call allows you to obtain a particular revision of an
     #' app, which is not necessarily the most recent version.
     #'
     #' @param revision Integer denoting the revision of the app.
-    #' @param in_place If TRUE, replace current app object with new for
-    #' specified app revision.
-    #' @param ... Other arguments such as `fields` which can be used to specify
-    #' a subset of fields to include in the response.
+    #' @param in_place If `TRUE`, replace current app object with new for
+    #'  specified app revision.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     #' @importFrom checkmate assert_numeric assert_logical
     #' @importFrom glue glue
+    #' @return App object.
     get_revision = function(revision = self$revision, in_place = FALSE, ...) {
       # Check if revision is positive number and convert it to integer
       checkmate::assert_numeric(revision, lower = 0, len = 1)
@@ -206,8 +205,6 @@ App <- R6::R6Class(
         ...
       )
 
-
-
       if (in_place) {
         self$initialize(
           res = res,
@@ -223,26 +220,28 @@ App <- R6::R6Class(
     #' @description Create a new app revision.
     #'
     #' @details
-    #' This call creates a new revision for an existing app. It adds a new CWL
-    #' app description, and stores it as the named revision for the specified
-    #' app. The revision number must not already exist and should follow the
-    #' sequence of previously created revisions.
+    #'  This call creates a new revision for an existing app. It adds a new CWL
+    #'  app description, and stores it as the named revision for the specified
+    #'  app. The revision number must not already exist and should follow the
+    #'  sequence of previously created revisions. \cr \cr
+    #'  More documentation about how to create the app via API can be found
+    #'  [here](https://docs.sevenbridges.com/reference/add-an-app-using-raw-cwl)
     #' @param raw A list containing a raw CWL for the app revision you are
-    #' about to create. To generate such a list, you might want to load some
-    #' existing JSON / YAML file. In case that your CWL file is in JSON format,
-    #' please use the `fromJSON` function from the `jsonlite` package to
-    #' minimize potential problems with parsing the JSON file. If you want to
-    #' load a CWL file in YAML format, it is highly recommended to use the
-    #' `read_yaml` function from the `yaml` package. Keep in mind that this
-    #' parameter should not be used together with the `file_path` parameter.
+    #'  about to create. To generate such a list, you might want to load some
+    #'  existing JSON / YAML file. In case that your CWL file is in JSON format,
+    #'  please use the `fromJSON` function from the `jsonlite` package to
+    #'  minimize potential problems with parsing the JSON file. If you want to
+    #'  load a CWL file in YAML format, it is highly recommended to use the
+    #'  `read_yaml` function from the `yaml` package. Keep in mind that this
+    #'  parameter should not be used together with the `file_path` parameter.
     #' @param from_path A path to a file containing the raw CWL for the app
-    #' (JSON or YAML). This parameter should not be used together with the
-    #' `raw` parameter.
+    #'  (JSON or YAML). This parameter should not be used together with the
+    #'  `raw` parameter.
     #' @param raw_format The type of format used (JSON or YAML).
-    #' @param in_place If TRUE, replace current app object with
-    #' newly created revision.
-    #' @param ... Other arguments such as `fields` which can be used to specify
-    #' a subset of fields to include in the response.
+    #' @param in_place If `TRUE`, replace current app object with newly
+    #'  created revision.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     #' @importFrom rlang abort
     #' @importFrom glue glue glue_col
     #' @importFrom checkmate assert_list assert_character
@@ -251,6 +250,7 @@ App <- R6::R6Class(
     #' @importFrom jsonlite validate fromJSON
     #' @importFrom yaml yaml.load
     #' @importFrom readr read_file
+    #' @return App object.
     create_revision = function(raw = NULL, from_path = NULL, raw_format = c("JSON", "YAML"), in_place = FALSE, ...) { # nolint
       if (is_missing(raw) && is_missing(from_path)) {
         rlang::abort(glue::glue_col("Both parameters {magenta raw} and {magenta from_path} are missing. Please provide one of them.")) # nolint
@@ -304,8 +304,6 @@ App <- R6::R6Class(
         ...
       )
 
-
-
       rlang::inform(glue::glue_col("New {green {self$name}} app revision with number {green {self$latest_revision + 1}} has been created.")) # nolint
 
       # Return new or reload current object with newly created revision
@@ -316,8 +314,8 @@ App <- R6::R6Class(
     #' @details
     #' This call synchronizes a copied app with the source app from which it
     #' has been copied.
-    #' @param ... Other arguments such as `fields` which can be used to specify
-    #' a subset of fields to include in the response.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     #' @importFrom glue glue
     sync = function(...) {
       path <- glue::glue(self$URL[["sync"]])
@@ -329,8 +327,6 @@ App <- R6::R6Class(
         ...
       )
 
-
-
       rlang::inform(glue::glue_col("App {green {self$name}} has been updated.")) # nolint
 
       # Reload object
@@ -341,37 +337,37 @@ App <- R6::R6Class(
         auth = self$auth
       )
     },
-
-    # Create a new draft task using this app -----------------------------------
     #' @description This call creates a new task. You can create either a single
     #'  task or a batch task by using the app's default batching, override
     #'  batching, or disable batching completely. A parent task is a task that
     #'  specifies criteria by which to batch its inputs into a series of further
     #'  sub-tasks, called child tasks. the documentation on
     # nolint start
-    #' [batching tasks] (https://docs.sevenbridges.com/docs/about-batch-analyses)
+    #'  [batching tasks] (https://docs.sevenbridges.com/docs/about-batch-analyses)
     # nolint end
-    #' for more details on batching criteria.
+    #'  for more details on batching criteria.
     #'
     #' @param project The ID string of a project or a Project object where you
-    #' want to create the task in.
-    #' @param revision Numeric. The app
-    #' [revision (version)](https://docs.sevenbridges.com/docs/app-versions)
+    #'  want to create the task in.
+    #' @param revision The app
+    #'  [revision (version)](https://docs.sevenbridges.com/docs/app-versions)
     #'  number.
-    #' @param name String. The name of the task.
-    #' @param description String. An optional description of the task.
+    #' @param name The name of the task.
+    #' @param description An optional description of the task.
     #' @param execution_settings Named list with detailed task execution
-    #' parameters. Detailed task execution parameters:
-    #' * `instance_type`: String. Possible value is the specific instance type,
-    #' e.g. `"instance_type" = "c4.2xlarge;ebs-gp2;2000"`.
-    #' * `max_parallel_instances`: Integer. Maximum number of instances
-    #' running at the same time. Takes any integer value equal to or greater
-    #' than 1, e.g. `"max_parallel_instances" = 2.`
-    #' * `use_memoization`: Boolean. Set to `FALSE` by default. Set to `TRUE`
-    #' to enable
-    #' [memoization](https://docs.sevenbridges.com/docs/about-memoization).
-    #' * `use_elastic_disk`: Boolean. Set to `TRUE` to enable
-    #' [Elastic Disk](https://docs.sevenbridges.com/page/elastic-disk).
+    #'  parameters. Detailed task execution parameters:
+    #'  \itemize{
+    #'    \item `instance_type`: Possible value is the specific instance type,
+    #'      e.g. `"instance_type" = "c4.2xlarge;ebs-gp2;2000"`;
+    #'    \item `max_parallel_instances`: Maximum number of instances
+    #'      running at the same time. Takes any integer value equal to or
+    #'      greater than 1, e.g. `"max_parallel_instances" = 2.`;
+    #'    \item `use_memoization`: Set to `FALSE` by default. Set to `TRUE`
+    #'      to enable
+    #'      [memoization](https://docs.sevenbridges.com/docs/about-memoization);
+    #'    \item `use_elastic_disk`: Set to `TRUE` to enable
+    #'      [Elastic Disk](https://docs.sevenbridges.com/page/elastic-disk).
+    #'  }
     #'
     #' Here is an example:
     #' ```{r}
@@ -384,7 +380,7 @@ App <- R6::R6Class(
     #' ```
     #' @param inputs List of objects. See the section on
     # nolint start
-    #' [specifying task inputs](https://docs.sevenbridges.com/docs/the-api#section-inputs)
+    #'  [specifying task inputs](https://docs.sevenbridges.com/docs/the-api#section-inputs)
     # nolint end
     #'  for information on creating task input objects. Here is an example with
     #'  various input types:
@@ -405,33 +401,104 @@ App <- R6::R6Class(
     #'      "input_record_field_integer" = 42
     #'     )
     #'    )
-    #'  ````
-    #' @param batch Boolean. This is set to `FALSE` by default. Set to `TRUE` to
-    #' create a batch task and specify the `batch_input` and `batch-by`
-    #' criteria as described below.
-    #' @param batch_input String. The ID of the input on which you wish to
-    #' batch. You would typically batch on the input consisting of a list of
-    #' files. If this parameter is omitted, the default batching criteria
-    #' defined for the app will be used.
-    #' @param use_interruptible_instances Boolean. This field can be `TRUE` or
-    #' `FALSE`. Set this field to `TRUE` to allow the use of
+    #'  ```
+    #' @param output_location The output location list allows you to
+    #'  define the exact location where your task outputs will be stored.
+    #'  The location can either be defined for the entire project using the
+    #'  main_location parameter, or individually per each output node, by
+    #'  setting the nodes_override parameter to true and defining individual
+    #'  output node locations within nodes_location.
+    #'  See below for more details.
+    #'  \itemize{
+    #'    \item `main_location` - Defines the output location for all
+    #'      output nodes in the task. Can be a string path within the project in
+    #'      which the task is created, for example
+    #'      `/Analysis/<task_id>_<task_name>/`
+    #'      or a path on an attached volume, such as
+    #'      `volumes://volume_name/<project_id>/html`.
+    #'      Parts of the path enclosed in angle brackets <> are tokens that are
+    #'      dynamically replaced with corresponding values during task
+    #'      execution.
+    #'    \item `main_location_alias`: The string location (path) in the
+    #'      project that will point to the actual location where the outputs are
+    #'      stored. Used if main_location is defined as a volume path (starting
+    #'      with volumes://), to provide an easy way of accessing output data
+    #'      directly from project files.
+    #'    \item `nodes_override`: Enables defining of output locations
+    #'      for output nodes individually through nodes_location (see below).
+    #'      Set to `TRUE` to be able to define individual locations per output
+    #'      node. Default: `FALSE`.
+    #'      Even if nodes_override is set to `TRUE`, it is not necessary to
+    #'      define output locations for each of the output nodes individually.
+    #'      Data from those output nodes that don't have their locations
+    #'      explicitly defined through nodes_location is either placed in
+    #'      main_location (if defined) or at the project files root if a main
+    #'      output location is not defined for the task.
+    #'    \item `nodes_location`: List of output paths for individual
+    #'      task output nodes in the following format for each output node:
+    #'      <output-node-id> = list(
+    #'        "output_location" = "<output-path>",
+    #'        "output_location_alias" = "<alias-path>"
+    #'      )
+    #'      ```{r}
+    #'      b64html = list(
+    #'      "output_location" = "volumes://outputs/tasks/mar-19",
+    #'      "output_location_alias" = "/rfranklin/tasks/picard"
+    #'      )
+    #'      ```
+    #'      In the example above, b64html is the ID of the output node for which
+    #'      you want to define the output location, while the parameters are
+    #'      defined as follows:
+    #'    \itemize{
+    #'      \item `output_location` - Can be a path within the project in which
+    #'        the task is created, for example
+    #'        `/Analysis/<task_id>_<task_name>/`
+    #'        or a path on an attached volume, such as
+    #'        `volumes://volume_name/<project_id>/html`. Also accepts tokens.
+    #'      \item `output_location_alias` - The location (path) in the project
+    #'        that will point to the exact location where the output is stored.
+    #'        Used if output_location is defined as a volume path
+    #'        (starting with volumes://).
+    #'      }
+    #' }
+    #' @param batch This is set to `FALSE` by default. Set to `TRUE` to
+    #'  create a batch task and specify the `batch_input` and `batch-by`
+    #'  criteria as described below.
+    #' @param batch_input The ID of the input on which you wish to batch.
+    #'  You would typically batch on the input consisting of a list of files.
+    #'  If this parameter is omitted, the default batching criteria defined for
+    #'  the app will be used.
+    #' @param batch_by Batching criteria in form of list. For example:
+    #'  ```{r}
+    #'  batch_by = list(
+    #'    type = "CRITERIA",
+    #'    criteria = list("metadata.condition")
+    #'  )
+    #'  ```
+    #' @param use_interruptible_instances This field can be `TRUE` or `FALSE`.
+    #'  Set this field to `TRUE` to allow the use of
     # nolint start
     #' [spot instances](https://docs.sevenbridges.com/docs/about-spot-instances).
     # nolint end
-    #' @param action String. If set to `run`, the task will be run immediately
-    #' upon creation.
-    #' @param ... Other arguments such as `fields` which can be used to specify
-    #' a subset of fields to include in the response.
+    #' @param action If set to `run`, the task will be run immediately upon
+    #'  creation.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
+    #'
+    #' @return Task object.
     create_task = function(project,
                            revision = NULL,
                            name = NULL,
                            description = NULL,
                            execution_settings = NULL,
                            inputs = NULL,
+                           output_location = output_location,
                            batch = NULL,
                            batch_input = NULL,
+                           batch_by = NULL,
                            use_interruptible_instances = NULL,
                            action = NULL,
                            ...) {
@@ -443,8 +510,10 @@ App <- R6::R6Class(
         description = description,
         execution_settings = execution_settings,
         inputs = inputs,
+        output_location = output_location,
         batch = batch,
         batch_input = batch_input,
+        batch_by = batch_by,
         use_interruptible_instances = use_interruptible_instances,
         action = action,
         ...

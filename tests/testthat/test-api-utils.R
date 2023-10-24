@@ -35,7 +35,6 @@ testthat::test_that("Utility function parse_time works", {
     label = "Epoch conversion to human-readable date went wrong."
   )
 
-
   # Setup test params for testing
   bad_reset_time_as_unix_epoch <- list(reset_time_as_unix_epoch = "bad")
   bad_origin <- list(
@@ -137,7 +136,7 @@ testthat::test_that("Utility function handle_url2 works", {
   err <- testthat::expect_error(handle_url2(url = NULL, handle = NULL))
   testthat::expect_equal(
     err$message,
-    "Must specify at least one of url or handle"
+    "Must specify at least one of url or handle."
   )
 
   # Test output - url provided

@@ -12,7 +12,7 @@ R6 Class representing a resource for managing VolumePrefix objects.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 
 \item{\code{prefix}}{File/prefix name on the volume.}
 
@@ -45,7 +45,7 @@ Create a new VolumePrefix object.
 \describe{
 \item{\code{res}}{Response containing VolumePrefix object info.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -64,7 +64,7 @@ Print method for VolumePrefix class.
 \if{html}{\out{<a id="method-VolumePrefix-reload"></a>}}
 \if{latex}{\out{\hypertarget{method-VolumePrefix-reload}{}}}
 \subsection{Method \code{reload()}}{
-Reload VolumePrefix object.
+Reload VolumePrefix object information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{VolumePrefix$reload()}\if{html}{\out{</div>}}
 }
@@ -74,7 +74,7 @@ Reload VolumePrefix object.
 \if{html}{\out{<a id="method-VolumePrefix-list_contents"></a>}}
 \if{latex}{\out{\hypertarget{method-VolumePrefix-list_contents}{}}}
 \subsection{Method \code{list_contents()}}{
-List volume folder contents
+List volume folder contents.
 This call lists the contents of a specific volume folder.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{VolumePrefix$list_contents(
@@ -87,16 +87,19 @@ This call lists the contents of a specific volume folder.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{limit}}{Defines the number of items you want to get from your API
-request. By default, \code{limit} is set to \code{50}. Maximum is \code{100}.}
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
 \item{\code{continuation_token}}{Continuation token received to use for next
 chunk of results. Behaves similarly like offset parameter.}
 
-\item{\code{...}}{Other parameters that can be passed to api() function, like
-fields for example. With fields parameter you can specify a subset of
-fields to include in the response. You can use: \code{href}, \code{location},
-\code{volume}, \code{type}, \code{metadata}, \verb{_all}. Default: \verb{_all}.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function,
+like 'fields' for example.
+With fields parameter you can specify a subset of fields to include in
+the response. You can use: \code{href}, \code{location}, \code{volume}, \code{type},
+\code{metadata}, \verb{_all}. Default: \verb{_all}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -110,10 +113,10 @@ and VolumePrefix objects.
 \if{latex}{\out{\hypertarget{method-VolumePrefix-import}{}}}
 \subsection{Method \code{import()}}{
 This call lets you queue a job to import this file or folder
-from a volume into a project on the Platform.
+from a volume into a project on the Platform. \cr
 Essentially, you are importing an item from your cloud storage provider
 (Amazon Web Services, Google Cloud Storage, Azure or Ali Cloud) via the
-volume onto the Platform.
+volume onto the Platform. \cr
 If successful, an alias will be created on the Platform. Aliases appear
 on the Platform and can be copied, executed, and modified as such.
 They refer back to the respective item on the given volume.
@@ -137,7 +140,7 @@ object. Not required, but either \code{destination_project} or
 \code{destination_parent} directory must be provided.}
 
 \item{\code{destination_parent}}{String folder id or File object
-(with type = 'FOLDER'). Not required, but either \code{destination_project}
+(with \code{type = 'FOLDER'}). Not required, but either \code{destination_project}
 or \code{destination_parent} directory must be provided.}
 
 \item{\code{name}}{The name of the alias to create. This name should be unique
@@ -146,38 +149,38 @@ If the name is already in use in the project, you should
 use the \code{overwrite} query parameter in this call to force any item with
 that name to be deleted before the alias is created.
 If name is omitted, the alias name will default to the last segment of
-the complete location (including the prefix) on the volume.
+the complete location (including the prefix) on the volume. \cr
 
 Segments are considered to be separated with forward slashes /.
 Allowed characters in file names are all alphanumeric and special
 characters except forward slash /, while folder names can contain
 alphanumeric and special characters _, - and ..}
 
-\item{\code{overwrite}}{Boolean. Whether to overwrite the item if another one
-with the same name already exists at the destination.
+\item{\code{overwrite}}{Set to \code{TRUE} if you want to overwrite the item if
+another one with the same name already exists at the destination.
 Bear in mind that if used with folders import, the folder's content
 (files with the same name) will be overwritten, not the whole folder.}
 
-\item{\code{autorename}}{Boolean. Whether to automatically rename the item
-(by prefixing its name with an underscore and number) if another one
-with the same name already exists at the destination.
+\item{\code{autorename}}{Set to \code{TRUE} if you want to automatically rename the
+item (by prefixing its name with an underscore and number) if another
+one with the same name already exists at the destination.
 Bear in mind that if used with folders import, the folder content will
 be renamed, not the whole folder.}
 
-\item{\code{preserve_folder_structure}}{Boolean. Whether to keep the exact
-source folder structure. The default value is true if the item being
-imported is a folder. Should not be used if you are importing a file.
-Bear in mind that if you use preserve_folder_structure = FALSE, that the
-response will be the parent folder object containing imported files
-alongside with other files if they exist.}
+\item{\code{preserve_folder_structure}}{Set to \code{TRUE} if you want to keep the
+exact source folder structure. The default value is \code{TRUE} if the item
+being imported is a folder. Should not be used if you are importing a
+file. Bear in mind that if you use \code{preserve_folder_structure = FALSE},
+that the response will be the parent folder object containing imported
+files alongside with other files if they exist.}
 
-\item{\code{...}}{Other arguments that can be passed to api() function
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Import job object.
+Import object.
 }
 }
 \if{html}{\out{<hr>}}

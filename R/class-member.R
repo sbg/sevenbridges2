@@ -19,9 +19,11 @@ Member <- R6::R6Class(
     type = NULL,
     #' @field permissions Member's permissions.
     permissions = NULL,
+
     #' @description Create a new Member object.
     #' @param res Response containing Member object information.
-    #' @param ... Other arguments.
+    #' @param ... Other response arguments.
+    #' @return A new Member object.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
@@ -71,8 +73,7 @@ Member <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
-    #' @description
-    #' Reload Member.
+    #' @description Reload Member object information.
     reload = function() {
       rlang::inform("Reloading Member objects is not possible.")
     }

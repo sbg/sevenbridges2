@@ -5,15 +5,15 @@
 #'
 #' @importFrom R6 R6Class
 #' @details
-#' This object contains information about a selected invoice,
-#' including the costs for analysis and storage, and the invoice period.
+#'  This object contains information about a selected invoice,
+#'  including the costs for analysis and storage, and the invoice period.
 #'
 Invoice <- R6::R6Class(
   "Invoice",
   inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "get" = "billing/invoices/{id}"
     ),
@@ -32,10 +32,9 @@ Invoice <- R6::R6Class(
     #' @field total Total costs.
     total = NULL,
 
-    #' @description
-    #' Create a new Invoice object.
+    #' @description Create new Invoice object.
     #' @param res Response containing Invoice object information.
-    #' @param ... Other arguments passed to methods.
+    #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
@@ -49,8 +48,7 @@ Invoice <- R6::R6Class(
       self$total <- res$total
     },
     # nocov start
-    #' @description
-    #' Print invoice information as a bullet list.
+    #' @description Print invoice information as a bullet list.
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_ul cli_li
@@ -123,9 +121,9 @@ Invoice <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
-    #' @description
-    #' Reload Invoice.
-    #' @param ... Other query parameters.
+    #' @description Reload Invoice.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     #' @return Invoice
     reload = function(...) {
       super$reload(

@@ -1,5 +1,5 @@
 # nolint start
-#' @title R6 Class representing an upload job
+#' @title R6 Class representing an Upload job
 #'
 #' @description
 #' R6 Class representing a resource for managing files' uploads.
@@ -11,7 +11,7 @@ Upload <- R6::R6Class(
   "Upload",
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "init" = "upload/multipart",
       "upload_job" = "upload/multipart/{self$upload_id}",
@@ -29,7 +29,7 @@ Upload <- R6::R6Class(
     #' @field filename File name. By default it will be the same as the name of
     #' the file you want to upload. However, it can be changed to new name.
     filename = NULL,
-    #' @field overwrite If true will overwrite file on the server.
+    #' @field overwrite If `TRUE` will overwrite file on the server.
     overwrite = NULL,
     #' @field file_size File size.
     file_size = NULL,
@@ -37,9 +37,9 @@ Upload <- R6::R6Class(
     part_size = NULL,
     #' @field part_length Number of parts to upload.
     part_length = NULL,
-    #' @field parts List of parts to be uploaded (class Part).
+    #' @field parts List of parts to be uploaded (class `Part`).
     parts = NULL,
-    #' @field initialized If TRUE, upload has been initialized.
+    #' @field initialized If `TRUE`, upload has been initialized.
     initialized = NULL,
     #' @field auth Authentication object.
     auth = NULL,
@@ -52,8 +52,8 @@ Upload <- R6::R6Class(
     #' @param overwrite If true will overwrite file on the server.
     #' @param file_size File size.
     #' @param part_size Size of a single part in bytes.
-    #' @param initialized If TRUE, upload has been initialized.
-    #' @param auth Authentication object.
+    #' @param initialized If `TRUE`, upload has been initialized.
+    #' @param auth Seven Bridges Authentication object.
     initialize = function(path = NA, project = NA, parent = NA,
                           filename = NA, overwrite = FALSE, file_size = NA,
                           part_size = getOption("sevenbridges2")$RECOMMENDED_PART_SIZE, # nolint
@@ -101,6 +101,7 @@ Upload <- R6::R6Class(
 
     #' @description Initialize new multipart file upload.
     #' @importFrom glue glue glue_col
+    #' @importFrom rlang abort
     init = function() {
       if (self$initialized) {
         rlang::abort("Upload has already been initialized.")
@@ -126,12 +127,14 @@ Upload <- R6::R6Class(
         base_url = self$auth$url
       )
 
-
-
       self$upload_id <- res$upload_id
 
       if (self$part_size != res$part_size) {
-        rlang::inform(glue::glue_col("Part size has been set to {blue {res$part_size}} bytes.")) # nolint
+        rlang::inform(
+          glue::glue_col(
+            "Part size has been set to {blue {res$part_size}} bytes."
+          )
+        )
       }
       self$part_size <- res$part_size
       check_upload_params(size = self$file_size, part_size = self$part_size)
@@ -144,11 +147,15 @@ Upload <- R6::R6Class(
       self$parts <- private$generate_parts()
       self$initialized <- TRUE
 
-      rlang::inform(glue::glue_col("New upload job is initialized with upload_id:\n {green {self$upload_id}}.")) # nolint
+      rlang::inform(
+        glue::glue_col(
+          "New upload job is initialized with upload_id:\n {green {self$upload_id}}." # nolint
+        )
+      )
       return(self)
     }, # nocov end
     #' @description Get the details of an active multipart upload.
-    #' @param list_parts If TRUE, also return a list of parts
+    #' @param list_parts If `TRUE`, also return a list of parts
     #' that have been reported as completed for this multipart upload.
     #' Please, bear in mind that the output could be heavy for printing if
     #' there are lot of parts.
@@ -186,7 +193,6 @@ Upload <- R6::R6Class(
         to_print
       }
     }, # nocov end
-
     #' @description Start the file upload
     #' @importFrom rlang abort
     #' @importFrom httr PUT
@@ -197,8 +203,6 @@ Upload <- R6::R6Class(
       # nocov start
       N <- self$part_length
       pb <- txtProgressBar(min = 0, max = N, style = 3)
-
-
       .start <- Sys.time()
       con <- file(self$path, "rb")
 
@@ -270,7 +274,7 @@ Upload <- R6::R6Class(
     } # nocov end
   ),
   private = list(
-    # Helper method that returns list of objects of class Part
+    # Helper method that returns list of objects of class `Part`.
     generate_parts = function() {
       if (self$part_length > 1) {
         # nolint start
@@ -331,7 +335,7 @@ Part <- R6::R6Class(
   "Part",
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "part_info" = "upload/multipart/{upload_id}/part/{self$part_number}",
       "complete_part" = "upload/multipart/{upload_id}/part"
@@ -343,17 +347,17 @@ Part <- R6::R6Class(
     #' @field url The URL to which to make the HTTP part upload request.
     url = NULL,
     #' @field expires ISO 8601 combined date and time representation
-    #' in Coordinated Universal Time (UTC) by when the HTTP
-    #' part upload request should be made.
+    #'  in Coordinated Universal Time (UTC) by when the HTTP
+    #'  part upload request should be made.
     expires = NULL,
     #' @field headers A map of headers and values that should be
-    #' set when making the HTTP part upload request.
+    #'  set when making the HTTP part upload request.
     headers = NULL,
     #' @field success_codes A list of status codes returned by
-    #' the HTTP part upload request that should be recognized as success.
-    #' A successful part upload request should be reported back
-    #' to the API in a call to report an uploaded file part by
-    #' passing the information collected from the report object.
+    #'  the HTTP part upload request that should be recognized as success.
+    #'  A successful part upload request should be reported back
+    #'  to the API in a call to report an uploaded file part by
+    #'  passing the information collected from the report object.
     success_codes = NULL,
     #' @field report Report object.
     report = NULL,
@@ -369,14 +373,14 @@ Part <- R6::R6Class(
     #' @param part_size Part size.
     #' @param url The URL to which to make the HTTP part upload request.
     #' @param expires Combined date and time representation
-    #' in UTC by when the HTTP part upload request should be made.
+    #'  in UTC by when the HTTP part upload request should be made.
     #' @param headers A map of headers and values that should be
-    #' set when making the HTTP part upload request.
+    #'  set when making the HTTP part upload request.
     #' @param success_codes A list of status codes returned by
-    #' the HTTP part upload request that should be recognized as success.
+    #'  the HTTP part upload request that should be recognized as success.
     #' @param report Report object.
     #' @param etag ETag received after starting a part upload.
-    #' @param auth Authentication object.
+    #' @param auth Seven Bridges Authentication object.
     initialize = function(part_number = NA, part_size = NA,
                           url = NA, expires = NA, headers = NA,
                           success_codes = NA, report = NA,
@@ -414,8 +418,7 @@ Part <- R6::R6Class(
 
     #' @description Get upload part info
     #' @param upload_id Upload object or ID of the upload process that part
-    #'   belongs to.
-    #' @importFrom checkmate assert_character
+    #'  belongs to.
     #' @importFrom glue glue
     upload_info_part = function(upload_id) {
       upload_id <- check_and_transform_id(upload_id, "Upload")
@@ -437,8 +440,8 @@ Part <- R6::R6Class(
     }, # nocov end
     #' @description Report an uploaded part
     #' @param upload_id Upload object or ID of the upload process that part
-    #'   belongs to.
-    #' @importFrom checkmate assert_character
+    #'  belongs to.
+    #' @importFrom glue glue
     upload_complete_part = function(upload_id) {
       upload_id <- check_and_transform_id(upload_id, "Upload")
       # nocov start

@@ -21,24 +21,24 @@ Permission <- R6::R6Class(
     admin = NULL,
     #' @description Create a new Permission object.
     #' @param read User can view file names, metadata, and workflows.
-    #' They cannot view file contents. All members of a project have read
-    #' permissions by default. Even if you try setting read permissions to
-    #' `FALSE`, they will still default to `TRUE`
+    #'  They cannot view file contents. All members of a project have read
+    #'  permissions by default. Even if you try setting read permissions to
+    #'  `FALSE`, they will still default to `TRUE`
     #' @param copy User can view file content, copy, and download files from a
-    #' project. Set value to `TRUE` to assign the user copy permission.
-    #' Set to `FALSE` to remove copy permission.
+    #'  project. Set value to `TRUE` to assign the user copy permission.
+    #'  Set to `FALSE` to remove copy permission.
     #' @param write User can add, modify, and remove files and workflows in a
-    #' project. Set value to `TRUE` to assign the user write permission.
-    #' Set to `FALSE` to remove write permission.
+    #'  project. Set value to `TRUE` to assign the user write permission.
+    #'  Set to `FALSE` to remove write permission.
     #' @param execute User can execute workflows and abort tasks in a project.
-    #' Set value to `TRUE` to assign the user execute permission.
-    #' Set to `FALSE` to remove execute permission.
+    #'  Set value to `TRUE` to assign the user execute permission.
+    #'  Set to `FALSE` to remove execute permission.
     #' @param admin User can modify another user's permissions on a project,
-    #' add or remove people from the project and manage funding sources.
-    #' They also have all of the above permissions. Set value to `TRUE` to
-    #' assign the user admin permission. Set to `FALSE` to remove admin
-    #' permission.
-    #' @param ... Other arguments.
+    #'  add or remove people from the project and manage funding sources.
+    #'  They also have all of the above permissions. Set value to `TRUE` to
+    #'  assign the user admin permission. Set to `FALSE` to remove admin
+    #'  permission.
+    #' @param ... Other response arguments.
     initialize = function(read = TRUE, copy = FALSE, write = FALSE,
                           execute = FALSE, admin = FALSE, ...) {
       # Initialize Item class
@@ -72,8 +72,7 @@ Permission <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
-    #' @description
-    #' Reload Permission.
+    #' @description Reload Permission object information.
     reload = function() {
       rlang::inform("Reloading Permission objects is not possible.")
     } # nocov end

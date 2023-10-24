@@ -75,7 +75,7 @@ They also have all of the above permissions. Set value to \code{TRUE} to
 assign the user admin permission. Set to \code{FALSE} to remove admin
 permission.}
 
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -94,7 +94,7 @@ Print method for Permission class.
 \if{html}{\out{<a id="method-Permission-reload"></a>}}
 \if{latex}{\out{\hypertarget{method-Permission-reload}{}}}
 \subsection{Method \code{reload()}}{
-Reload Permission.
+Reload Permission object information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Permission$reload()}\if{html}{\out{</div>}}
 }

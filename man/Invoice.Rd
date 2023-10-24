@@ -16,7 +16,7 @@ including the costs for analysis and storage, and the invoice period.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 
 \item{\code{id}}{Invoice identifier.}
 
@@ -47,7 +47,7 @@ including the costs for analysis and storage, and the invoice period.
 \if{html}{\out{<a id="method-Invoice-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Invoice-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new Invoice object.
+Create new Invoice object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Invoice$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
@@ -57,7 +57,7 @@ Create a new Invoice object.
 \describe{
 \item{\code{res}}{Response containing Invoice object information.}
 
-\item{\code{...}}{Other arguments passed to methods.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -84,7 +84,8 @@ Reload Invoice.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other query parameters.}
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }

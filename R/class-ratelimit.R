@@ -12,32 +12,32 @@ Rate <- R6::R6Class(
   portable = FALSE,
   public = list(
     #' @field rate A list containing the information about user's current rate
-    #' limit. It consists of the following fields:
-    #' \itemize{
-    #' \item `limit` Indicates how many requests can be made in five
-    #' minutes.
-    #' \item `remaining` Indicates how many requests remain.
-    #' \item `reset` Indicates the time when the request rate limit will
-    #' be reset.
-    #' }
+    #'  limit. It consists of the following fields:
+    #'  \itemize{
+    #'    \item `limit` Indicates how many requests can be made in five
+    #'      minutes.
+    #'    \item `remaining` Indicates how many requests remain.
+    #'    \item `reset` Indicates the time when the request rate limit will
+    #'      be reset.
+    #'  }
     rate = NULL,
     #' @field instance A list containing the information about user's current
-    #' instance limit. It consists of the following fields:
-    #' \itemize{
-    #' \item `limit` Indicates the total number of instances available
-    #' to the user. For the first few months, instance limits are unlimited.
-    #' This is indicated by a special limit of -1. Correspondingly, the
-    #' remaining value is high.
-    #' \item `remaining` Indicates the number of the instances that are
-    #' available at the moment. For the first few months, instance limits are
-    #' unlimited. This is indicated by a high remaining value. Correspondingly,
-    #' the limit is set to a special value of -1.
-    #' }
+    #'  instance limit. It consists of the following fields:
+    #'  \itemize{
+    #'    \item `limit` Indicates the total number of instances available
+    #'      to the user. For the first few months, instance limits are
+    #'      unlimited. This is indicated by a special limit of -1.
+    #'      Correspondingly, the remaining value is high.
+    #'    \item `remaining` Indicates the number of the instances that are
+    #'      available at the moment. For the first few months, instance limits
+    #'      are unlimited. This is indicated by a high remaining value.
+    #'      Correspondingly, the limit is set to a special value of -1.
+    #'  }
     instance = NULL,
-    #' @description
-    #' Create a new rate limit object.
+
+    #' @description Create a new Rate limit object.
     #' @param res Response containing Rate limit object info.
-    #' @param ... Other arguments passed to methods.
+    #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
@@ -51,9 +51,9 @@ Rate <- R6::R6Class(
       self$instance$limit <- res$instance$limit
       self$instance$remaining <- res$instance$remaining
     },
+
     # nocov start
-    #' @description
-    #' Print rate limit information as a bullet list.
+    #' @description Print rate limit information as a bullet list.
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end

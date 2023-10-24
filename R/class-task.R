@@ -12,7 +12,7 @@ Task <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field URL URL endpoint fields
+    #' @field URL List of URL endpoints for this resource.
     URL = list(
       "get" = "tasks/{id}",
       "run" = "tasks/{self$id}/actions/run",
@@ -21,11 +21,11 @@ Task <- R6::R6Class(
       "execution_details" = "tasks/{self$id}/execution_details",
       "task" = "tasks/{self$id}"
     ),
-    #' @field id String. The ID of the task.
+    #' @field id The string ID of the task.
     id = NULL,
-    #' @field name String. The name of the task.
+    #' @field name The name of the task.
     name = NULL,
-    #' @field status String. Task status (different from execution_status).
+    #' @field status Task status (different from execution_status).
     #' Allowed values:
     #' * QUEUED
     #' * DRAFT
@@ -34,66 +34,66 @@ Task <- R6::R6Class(
     #' * ABORTED
     #' * FAILED
     status = NULL,
-    #' @field description String. An optional description of a task.
+    #' @field description An optional description of a task.
     description = NULL,
-    #' @field project String. Identifier of the project that
-    #' the task is located in.
+    #' @field project Identifier of the project that
+    #'  the task is located in.
     project = NULL,
-    #' @field app String. The identifier of the app that was used for the task.
+    #' @field app The identifier of the app that was used for the task.
     app = NULL,
-    #' @field created_by String. Username of the task creator.
+    #' @field created_by Username of the task creator.
     created_by = NULL,
-    #' @field executed_by String. Username of the task executor.
+    #' @field executed_by Username of the task executor.
     executed_by = NULL,
-    #' @field created_on String. The time when the task was created.
+    #' @field created_on The time in form of string when the task was created.
     created_on = NULL,
-    #' @field start_time String. Task start time.
+    #' @field start_time Task start time in form of string.
     start_time = NULL,
-    #' @field end_time String. Task end time.
+    #' @field end_time Task end time in form of string .
     end_time = NULL,
-    #' @field origin String. Id of the entity that created the task, e.g.
-    #' automation run, if task was created by an automation run.
+    #' @field origin Id of the entity that created the task, e.g.
+    #'  automation run, if task was created by an automation run.
     origin = NULL,
-    #' @field use_interruptable_instances Boolean. This field can be TRUE or
-    #' FALSE. Set this field to TRUE to allow the use of spot instances.
+    #' @field use_interruptable_instances This field can be `TRUE` or
+    #'  `FALSE`. Set this field to `TRUE` to allow the use of spot instances.
     use_interruptable_instances = NULL,
-    #' @field batch Boolean. TRUE for batch tasks, FALSE for regular & child
-    #' tasks (batch this task; if FALSE, will not create a batch task).
+    #' @field batch `TRUE` for batch tasks, `FALSE` for regular and child
+    #' tasks (batch this task; if `FALSE`, will not create a batch task).
     batch = NULL,
-    #' @field batch_by List. Batching criteria.
+    #' @field batch_by Batching criteria (list).
     batch_by = NULL,
-    #' @field batch_group List. Batch group for a batch task. Represents the
-    #' group that is assigned to the child task from the batching criteria that
+    #' @field batch_group Batch group for a batch task (list). Represents the
+    #'  group that is assigned to the child task from the batching criteria that
     #'  was used when the task was started.
     batch_group = NULL,
-    #' @field batch_input String. Input identifier on to which to apply
-    #' batching.
+    #' @field batch_input Input identifier on to which to apply batching.
     batch_input = NULL,
-    #' @field batch_parent String. Parent task for a batch child. (batch task
-    #' which is the parent of this task).
+    #' @field batch_parent Parent task ID for a batch child. (batch task
+    #'  which is the parent of this task).
     batch_parent = NULL,
-    #' @field execution_settings List. Execution settings for the task.
+    #' @field execution_settings Execution settings list for the task.
     execution_settings = NULL,
-    #' @field execution_status List. Task execution status. (info about current
-    #' execution status)
+    #' @field execution_status Task execution status list - info about current
+    #'  execution status.
     execution_status = NULL,
-    #' @field errors List. Validations errors stored as a high-level errors
+    #' @field errors Validations errors list stored as a high-level errors
     #' array property in the API response.
     errors = NULL,
-    #' @field warnings List. Validation warnings from API response.
+    #' @field warnings Validation warnings list from API response.
     warnings = NULL,
-    #' @field price List. Task cost. (contains amount and currency)
+    #' @field price Task cost (list) - contains amount and currency.
     price = NULL,
-    #' @field inputs List. Inputs that were submitted to the task.
+    #' @field inputs List of inputs that were submitted to the task.
     inputs = NULL,
-    #' @field outputs List. Generated outputs from the task.
+    #' @field outputs List of generated outputs from the task.
     outputs = NULL,
-    #' @field output_location List. Location where task outputs will be stored.
+    #' @field output_location List of locations where task outputs will be
+    #'  stored.
     output_location = NULL,
     #'
-    #' @description Initialize Task class
+    #' @description Create new Task object.
     #' @param res Response containing Task object information.
-    #' @param ... Other arguments.
+    #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
@@ -160,10 +160,10 @@ Task <- R6::R6Class(
       cli::cli_end()
     },
     # nocov start
-    #' @description
-    #' Reload Task.
-    #' @param ... Other query parameters.
-    #' @return Task
+    #' @description Reload Task object information.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #' @return Task object.
     reload = function(...) {
       super$reload(
         cls = self,
@@ -171,21 +171,27 @@ Task <- R6::R6Class(
       )
       rlang::inform("Task object is refreshed!")
     }, # nocov end
+
     #' @description This call runs (executes) the task. Only tasks whose status
-    #' is "DRAFT" can be run.
+    #' is `DRAFT` can be run.
     #'
-    #' @param batch Boolean. Set this to FALSE to disable the default batching
-    #' for this task. Running a batch task is a recommended way to run multiple
-    #' tasks considering the API rate limit
+    #' @param batch Set this to `FALSE` to disable the default batching
+    #'  for this task. Running a batch task is a recommended way to run multiple
+    #'  tasks considering the API rate limit
     #' ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).
-    #' @param use_interruptible_instances Boolean. This field can be TRUE or
-    #' FALSE. Set this field to TRUE to allow the use of
-    #' [spot instances](https://docs.sevenbridges.com/docs/about-spot-instances)
-    #' @param in_place Boolean. Default TRUE. Should the new object of
-    #' Task class be returned or the current to be reinitialized.
-    #' @param ... Other parameters that can be passed to api() function like
-    #' fields etc.
+    #' @param use_interruptible_instances This field can be `TRUE` or
+    #'  `FALSE`. Set this field to `TRUE` to allow the use of
+    # nolint start
+    #'  [spot instances](https://docs.sevenbridges.com/docs/about-spot-instances).
+    # nolint end
+    #' @param in_place Default `TRUE`. Should the new object of
+    #'  Task class be returned or the current to be reinitialized.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
     #' @importFrom checkmate assert_logical
+    #'
+    #' @return Task object.
     run = function(batch = NULL,
                    use_interruptible_instances = NULL,
                    in_place = TRUE,
@@ -212,8 +218,6 @@ Task <- R6::R6Class(
         ...
       )
 
-
-
       rlang::inform(
         glue::glue_col(
           "Execution of task {green {self$name}} has started."
@@ -230,14 +234,20 @@ Task <- R6::R6Class(
       } else {
         return(asTask(res, auth = self$auth))
       }
-    },
-    # nocov end
+    }, # nocov end
+
     #' @description This call aborts the specified task. Only tasks whose
-    #' status is `RUNNING` or `QUEUED` may be aborted.
-    #' @param in_place Boolean. Default TRUE. Should the new object of
-    #' Task class be returned or the current to be reinitialized.
-    #' @param ... Other parameters that can be passed to api() function like
-    #' fields etc.
+    #'  status is `RUNNING` or `QUEUED` may be aborted.
+    #' @param in_place Default `TRUE`. Should the new object of
+    #'  Task class be returned or the current to be reinitialized.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
+    #' @importFrom checkmate assert_logical
+    #' @importFrom glue glue glue_col
+    #' @importFrom rlang inform
+    #'
+    #' @return Task object.
     abort = function(in_place = TRUE, ...) {
       checkmate::assert_logical(in_place, null.ok = FALSE)
 
@@ -251,7 +261,6 @@ Task <- R6::R6Class(
         base_url = self$auth$url,
         ...
       )
-
 
       rlang::inform(
         glue::glue_col(
@@ -269,16 +278,21 @@ Task <- R6::R6Class(
       } else {
         return(asTask(res, auth = self$auth))
       }
-    },
-    # nocov end
+    }, # nocov end
+
     #' @description This call clones the specified task. Once cloned, the task
-    #' can either be in `draft` mode or immediately ran, by setting the `run`
-    #' parameter to `TRUE`.
-    #' @param run Boolean. Set this to `TRUE` in order to create a draft task
-    #' and execute it immediately. Default: `FALSE`.
-    #' @param ... Other parameters that can be passed to api() function like
-    #' fields etc.
+    #'  can either be in `DRAFT` mode or immediately ran, by setting the `run`
+    #'  parameter to `TRUE`.
+    #' @param run Set this to `TRUE` in order to create a draft task
+    #'  and execute it immediately. Default: `FALSE`.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
     #' @importFrom checkmate assert_logical
+    #' @importFrom glue glue glue_col
+    #' @importFrom rlang inform
+    #'
+    #' @return Task object.
     clone_task = function(run = FALSE, ...) {
       # nocov start
       action <- NULL
@@ -291,6 +305,7 @@ Task <- R6::R6Class(
       path <- glue::glue(self$URL[["clone"]])
 
       params <- list("action" = action)
+
       res <- sevenbridges2::api(
         path = path,
         method = "POST",
@@ -305,28 +320,36 @@ Task <- R6::R6Class(
           "New cloned draft task with id {green {res$id}} has been created."
         )
       )
+
       return(asTask(res, auth = self$auth))
     }, # nocov end
+
     #' @description This call returns execution details of the specified task.
-    #' The task is referred to by its ID, which you can obtain by making the
-    #' call to list all tasks you can access. The call breaks down the
-    #' information into the task's distinct jobs. A job is a single subprocess
-    #' carried out in a task. The information returned by this call is broadly
-    #' similar to that which can be found in the task stats and logs provided
-    #' on the Platform.
-    #' The task execution details include the following information:
-    #' *  The name of the command line job that executed
-    #' *  The start time of the job
-    #' *  End time of the job (if it completed)
-    #' *  The status of the job (`DONE`, `FAILED`, or `RUNNING`)
-    #' *  Information on the computational instance that the job was run on,
-    #' including the provider ID, the type of instance used and the cloud
-    #' service provider
-    #' *  A link that can be used to download the standard error logs for the
-    #' job
-    #' *  SHA hash of the Docker image ('checksum')
-    #' @param ... Other parameters that can be passed to api() function like
-    #' fields etc.
+    #'  The task is referred to by its ID, which you can obtain by making the
+    #'  call to list all tasks you can access. The call breaks down the
+    #'  information into the task's distinct jobs. A job is a single subprocess
+    #'  carried out in a task. The information returned by this call is broadly
+    #'  similar to that which can be found in the task stats and logs provided
+    #'  on the Platform.
+    #'  The task execution details include the following information:
+    #'  *  The name of the command line job that executed
+    #'  *  The start time of the job
+    #'  *  End time of the job (if it completed)
+    #'  *  The status of the job (`DONE`, `FAILED`, or `RUNNING`)
+    #'  *  Information on the computational instance that the job was run on,
+    #'  including the provider ID, the type of instance used and the cloud
+    #'  service provider
+    #'  *  A link that can be used to download the standard error logs for the
+    #'    job.
+    #'  *  SHA hash of the Docker image ('checksum').
+    #'
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
+    #' @importFrom glue glue
+    #' @importFrom rlang inform
+    #'
+    #' @return List.
     get_execution_details = function(...) {
       # nocov start
       path <- glue::glue(self$URL[["execution_details"]])
@@ -346,43 +369,54 @@ Task <- R6::R6Class(
 
       return(res)
     }, # nocov end
+
     #' @description This call retrieves batch child tasks for this task if its
-    #' a batch task.
-    #' @param status String. You can filter the returned tasks by their status.
-    #' Set the value of status to one of the following values: `QUEUED`,
-    #' `DRAFT`, `RUNNING`, `COMPLETED`, `ABORTED`, `FAILED`.
-    #' @param project Provide the project ID or project object you wish to list
+    #'  a batch task.
+    #' @param status You can filter the returned tasks by their status.
+    #'  Set the value of status to one of the following values:
+    #'  * QUEUED
+    #'  * DRAFT
+    #'  * RUNNING
+    #'  * COMPLETED
+    #'  * ABORTED
+    #'  * FAILED.
+    #' @param project Provide the project ID or Project object you wish to list
     #'  the tasks from.
-    #' @param created_from String. Enter the starting date for querying tasks
-    #' created on the specified date and onwards.
-    #' @param created_to String. Enter the ending date for querying tasks
-    #' created until the specified date. You can use it in combination with
-    #' `created_from` to specify a time interval.
-    #' @param started_from String. Enter the starting date for querying tasks
-    #' started on the specified date and onwards.
-    #' @param started_to String. Enter the ending date for querying tasks
-    #' started until the specified date.
-    #' @param ended_from String. Enter the starting date for querying tasks
-    #' that ended on a specified date.
-    #' @param ended_to String. Enter the ending date for querying tasks that
-    #' ended until a specified date.
-    #' @param order_by String. Order returned results by the specified field.
-    #' Allowed values: `created_time`, `start_time`, `name`, `end_time` and
-    #' `created_by`. Sort can be done only by one column. The default value is
-    #' `created_time`.
-    #' @param order String. Sort results in ascending or descending order by
-    #' specifying `asc` or `desc`, respectively. Only taken into account if
-    #' `order_by` is explicitly specified. The default value is `asc`.
-    #' @param origin_id String. Enter an automation run ID to list all tasks
-    #' created from the specified automation run.
-    #' @param limit The maximum number of collection items to return for a
-    #' single request. Minimum value is 1. The maximum value is 100 and the
-    #' default value is 50. This is a pagination-specific attribute.
-    #' @param offset The zero-based starting index in the entire collection of
-    #' the first item to return. The default value is 0. This is a
-    #' pagination-specific attribute.
-    #' @param ... Other arguments such as `fields` which can be used to specify
-    #' a subset of fields to include in the response.
+    #' @param created_from Enter the starting date string for querying tasks
+    #'  created on the specified date and onwards.
+    #' @param created_to Enter the ending date string for querying tasks
+    #'  created until the specified date. You can use it in combination with
+    #'  `created_from` to specify a time interval.
+    #' @param started_from Enter the starting date string for querying tasks
+    #'  started on the specified date and onwards.
+    #' @param started_to Enter the ending date string for querying tasks
+    #'  started until the specified date.
+    #' @param ended_from Enter the starting date string for querying tasks
+    #'  that ended on a specified date.
+    #' @param ended_to Enter the ending date string for querying tasks that
+    #'  ended until a specified date.
+    #' @param order_by Order returned results by the specified field.
+    #'  Allowed values: `created_time`, `start_time`, `name`, `end_time` and
+    #'  `created_by`. Sort can be done only by one column. The default value is
+    #'  `created_time`.
+    #' @param order Sort results in ascending or descending order by
+    #'  specifying `asc` or `desc`, respectively. Only taken into account if
+    #'  `order_by` is explicitly specified. The default value is `asc`.
+    #' @param origin_id Enter an automation run ID to list all tasks
+    #'  created from the specified automation run.
+    #' @param limit The maximum number of collection items to return
+    #'  for a single request. Minimum value is `1`.
+    #'  The maximum value is `100` and the default value is `50`.
+    #'  This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection
+    #'  of the first item to return. The default value is `0`.
+    #'  This is a pagination-specific attribute.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
+    #' @importFrom rlang abort
+    #'
+    #' @return Collection containing Task objects.
     list_batch_children = function(status = NULL,
                                    project = NULL,
                                    created_from = NULL,
@@ -421,11 +455,15 @@ Task <- R6::R6Class(
         ...
       )
     }, # nocov end
+
     #' @description This call deletes the specified task. The task is referred
-    #' to by its ID, which you can obtain by making the call to list all tasks
-    #' you can access.
-    #' @param ... Other arguments such as `fields` which can be used to specify
-    #' a subset of fields to include in the response.
+    #'  to by its ID, which you can obtain by making the call to list all tasks
+    #'  you can access.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
+    #' @importFrom glue glue glue_col
+    #' @importFrom rlang inform
     delete = function(...) {
       # nocov start
       path <- glue::glue(self$URL[["task"]])
@@ -445,23 +483,30 @@ Task <- R6::R6Class(
         )
       )
     }, # nocov end
+
     #' @description This call reruns (executes) the specified task.
-    #' @param ... Other arguments such as `fields` which can be used to specify
-    #' a subset of fields to include in the response.
+    #'
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
+    #' @importFrom glue glue
+    #'
+    #' @return Task object.
     rerun = function(...) {
       # nocov start
       path <- glue::glue(self$URL[["clone"]])
 
       self$clone_task(run = TRUE)
     }, # nocov end
+
     #' @description Change the details of the specified task, including its
-    #' name, description, and inputs. Note that you can only modify tasks with
-    #' a task status of DRAFT. Tasks which are RUNNING, QUEUED, ABORTED,
-    #' COMPLETED or FAILED cannot be modified in order to enable the
-    #' reproducibility of analyses which have been queued for execution or
-    #' has initiated executing.
-    #' There are two things to note if you are editing a batch task:
-    #' \itemize{
+    #'  name, description, and inputs. Note that you can only modify tasks with
+    #'  a task status of `DRAFT`. Tasks which are `RUNNING`, `QUEUED`,
+    #'  `ABORTED`, `COMPLETED` or `FAILED` cannot be modified in order to
+    #'  enable the reproducibility of analyses which have been queued for
+    #'  execution or has initiated executing.
+    #'  There are two things to note if you are editing a batch task:
+    #'  \itemize{
     #'    \item `1` If you want to change the input on which to batch and
     #'    the batch criteria, you need to specify the batch_input and batch_by
     #'    parameters together in the same function call.
@@ -472,17 +517,19 @@ Task <- R6::R6Class(
     #' @param name The name of the task.
     #' @param description An optional description of the task.
     #' @param execution_settings Named list with detailed task execution
-    #' parameters. Detailed task execution parameters:
-    #' * `instance_type`: String. Possible value is the specific instance type,
-    #' e.g. `"instance_type" = "c4.2xlarge;ebs-gp2;2000"`.
-    #' * `max_parallel_instances`: Integer. Maximum number of instances
-    #' running at the same time. Takes any integer value equal to or greater
-    #' than 1, e.g. `"max_parallel_instances" = 2.`
-    #' * `use_memoization`: Boolean. Set to `FALSE` by default. Set to `TRUE`
-    #' to enable
-    #' [memoization](https://docs.sevenbridges.com/docs/about-memoization).
-    #' * `use_elastic_disk`: Boolean. Set to `TRUE` to enable
-    #' [Elastic Disk](https://docs.sevenbridges.com/page/elastic-disk).
+    #'  parameters. Detailed task execution parameters:
+    #'  \itemize{
+    #'    \item `instance_type`: Possible value is the specific instance type,
+    #'      e.g. `"instance_type" = "c4.2xlarge;ebs-gp2;2000"`;
+    #'    \item `max_parallel_instances`: Maximum number of instances
+    #'      running at the same time. Takes any integer value equal to or
+    #'      greater than 1, e.g. `"max_parallel_instances" = 2.`;
+    #'    \item `use_memoization`: Set to `FALSE` by default. Set to `TRUE`
+    #'      to enable
+    #'      [memoization](https://docs.sevenbridges.com/docs/about-memoization);
+    #'    \item `use_elastic_disk`: Set to `TRUE` to enable
+    #'      [Elastic Disk](https://docs.sevenbridges.com/page/elastic-disk).
+    #'  }
     #'
     #' Here is an example:
     #' ```{r}
@@ -517,77 +564,87 @@ Task <- R6::R6Class(
     #'     )
     #'    )
     #'  ```
-    #' @param output_location The output_location dictionary allows you to
-    #' define the exact location where your task outputs will be stored.
-    #' The location can either be defined for the entire project using the
-    #' main_location parameter, or individually per each output node, by
-    #' setting the nodes_override parameter to true and defining individual
-    #' output node locations within nodes_location.
-    #' See below for more details.
-    #' \itemize{
-    #'    \item `main_location` - String. Defines the output location for all
-    #'    output nodes in the task. Can be a path within the project in which
-    #'    the task is created, for example '/Analysis/<task_id>_<task_name>/'
-    #'    or a path on an attached volume, such as
-    #'    "volumes://volume_name/<project_id>/html".
-    #'    Parts of the path enclosed in angle brackets <> are tokens that are
-    #'    dynamically replaced with corresponding values during task execution.
-    #'    \item `main_location_alias`: String. The location (path) in the
-    #'    project that will point to the actual location where the outputs are
-    #'    stored. Used if main_location is defined as a volume path (starting
-    #'    with volumes://), to provide an easy way of accessing output data
-    #'    directly from project files.
-    #'    \item `nodes_override`: Boolean. Enables defining of output locations
-    #'    for output nodes individually through nodes_location (see below).
-    #'    Set to true to be able to define individual locations per output node.
-    #'    Default: false. Even if nodes_override is set to true, it is not
-    #'    necessary to define output locations for each of the output nodes
-    #'    individually. Data from those output nodes that don't have their
-    #'    locations explicitly defined through nodes_location is either placed
-    #'    in main_location (if defined) or at the project files root if a main
-    #'    output location is not defined for the task.
-    #'    \item `nodes_location`: List. Contains output paths for individual
-    #'    task output nodes in the following format for each output node:
-    #'    <output-node-id> = list(
-    #'      "output_location" = "<output-path>",
-    #'      "output_location_alias" = "<alias-path>"
-    #'    )
-    #'    ```{r}
-    #'     b64html = list(
-    #'     "output_location" = "volumes://outputs/tasks/mar-19",
-    #'     "output_location_alias" = "/rfranklin/tasks/picard"
-    #'    )
-    #'    ```
-    #'    In the example above, b64html is the ID of the output node for which
-    #'    you want to define the output location, while the parameters are
-    #'    defined as follows:
+    #' @param output_location The output location list allows you to
+    #'  define the exact location where your task outputs will be stored.
+    #'  The location can either be defined for the entire project using the
+    #'  main_location parameter, or individually per each output node, by
+    #'  setting the nodes_override parameter to true and defining individual
+    #'  output node locations within nodes_location.
+    #'  See below for more details.
+    #'  \itemize{
+    #'    \item `main_location` - Defines the output location for all
+    #'      output nodes in the task. Can be a string path within the project in
+    #'      which the task is created, for example
+    #'      `/Analysis/<task_id>_<task_name>/`
+    #'      or a path on an attached volume, such as
+    #'      `volumes://volume_name/<project_id>/html`.
+    #'      Parts of the path enclosed in angle brackets <> are tokens that are
+    #'      dynamically replaced with corresponding values during task
+    #'      execution.
+    #'    \item `main_location_alias`: The string location (path) in the
+    #'      project that will point to the actual location where the outputs are
+    #'      stored. Used if main_location is defined as a volume path (starting
+    #'      with volumes://), to provide an easy way of accessing output data
+    #'      directly from project files.
+    #'    \item `nodes_override`: Enables defining of output locations
+    #'      for output nodes individually through nodes_location (see below).
+    #'      Set to `TRUE` to be able to define individual locations per output
+    #'      node. Default: `FALSE`.
+    #'      Even if nodes_override is set to `TRUE`, it is not necessary to
+    #'      define output locations for each of the output nodes individually.
+    #'      Data from those output nodes that don't have their locations
+    #'      explicitly defined through nodes_location is either placed in
+    #'      main_location (if defined) or at the project files root if a main
+    #'      output location is not defined for the task.
+    #'    \item `nodes_location`: List of output paths for individual
+    #'      task output nodes in the following format for each output node:
+    #'      <output-node-id> = list(
+    #'        "output_location" = "<output-path>",
+    #'        "output_location_alias" = "<alias-path>"
+    #'      )
+    #'      ```{r}
+    #'      b64html = list(
+    #'      "output_location" = "volumes://outputs/tasks/mar-19",
+    #'      "output_location_alias" = "/rfranklin/tasks/picard"
+    #'      )
+    #'      ```
+    #'      In the example above, b64html is the ID of the output node for which
+    #'      you want to define the output location, while the parameters are
+    #'      defined as follows:
     #'    \itemize{
     #'      \item `output_location` - Can be a path within the project in which
-    #'      the task is created, for example '/Analysis/<task_id>_<task_name>/'
-    #'      or a path on an attached volume, such as
-    #'      "volumes://volume_name/<project_id>/html". Also accepts tokens.
+    #'        the task is created, for example
+    #'        `/Analysis/<task_id>_<task_name>/`
+    #'        or a path on an attached volume, such as
+    #'        `volumes://volume_name/<project_id>/html`. Also accepts tokens.
     #'      \item `output_location_alias` - The location (path) in the project
-    #'      that will point to the exact location where the output is stored.
-    #'      Used if output_location is defined as a volume path
-    #'      (starting with volumes://).
-    #'    }
+    #'        that will point to the exact location where the output is stored.
+    #'        Used if output_location is defined as a volume path
+    #'        (starting with volumes://).
+    #'      }
     #' }
-    #' @param batch Boolean. This is set to `FALSE` by default. Set to `TRUE` to
-    #' create a batch task and specify the `batch_input` and `batch-by`
-    #' criteria as described below.
-    #' @param batch_input String. The ID of the input on which you wish to
-    #' batch. You would typically batch on the input consisting of a list of
-    #' files. If this parameter is omitted, the default batching criteria
-    #' defined for the app will be used.
-    #' @param batch_by List. Batching criteria. For example:
-    #' ```{r}
-    #' batch_by = list(
-    #'  type = "CRITERIA",
-    #'  criteria = list("metadata.condition")
-    #' )
-    #' ```
-    #' @param ... Other arguments such as `fields` which can be used to specify
-    #' a subset of fields to include in the response.
+    #' @param batch This is set to `FALSE` by default. Set to `TRUE` to
+    #'  create a batch task and specify the `batch_input` and `batch-by`
+    #'  criteria as described below.
+    #' @param batch_input The ID of the input on which you wish to batch.
+    #'  You would typically batch on the input consisting of a list of files.
+    #'  If this parameter is omitted, the default batching criteria defined for
+    #'  the app will be used.
+    #' @param batch_by Batching criteria in form of list. For example:
+    #'  ```{r}
+    #'  batch_by = list(
+    #'    type = "CRITERIA",
+    #'    criteria = list("metadata.condition")
+    #'  )
+    #'  ```
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
+    #' @importFrom checkmate assert_string assert_list assert_logical
+    #' @importFrom rlang abort
+    #' @importFrom glue glue glue_col
+    #'
+    #' @return Task object.
     update = function(name = NULL,
                       description = NULL,
                       execution_settings = NULL,
@@ -642,7 +699,6 @@ Task <- R6::R6Class(
         base_url = self$auth$url,
         ...
       )
-
 
       rlang::inform(
         glue::glue_col(

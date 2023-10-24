@@ -2,9 +2,9 @@
 % Please edit documentation in R/class-volumes.R
 \name{Volumes}
 \alias{Volumes}
-\title{R6 Class representing volumes endpoint}
+\title{R6 Class representing volumes endpoints}
 \description{
-R6 Class representing volumes resource endpoint
+R6 Class representing volumes resource endpoints.
 }
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Volumes}
@@ -12,7 +12,7 @@ R6 Class representing volumes resource endpoint
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{URL}}{URL endpoint fields}
+\item{\code{URL}}{List of URL endpoints for this resource.}
 }
 \if{html}{\out{</div>}}
 }
@@ -36,6 +36,7 @@ R6 Class representing volumes resource endpoint
 \if{html}{\out{<a id="method-Volumes-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Volumes-new}{}}}
 \subsection{Method \code{new()}}{
+Create a new Volumes object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volumes$new(...)}\if{html}{\out{</div>}}
 }
@@ -43,7 +44,7 @@ R6 Class representing volumes resource endpoint
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments.}
+\item{\code{...}}{Other response arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -60,10 +61,13 @@ This call lists all the volumes you've registered.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments that can be passed to api() function
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Collection containing list of Volume objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -81,12 +85,15 @@ making the call to list all the volumes you've registered.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{id}}{The Volume ID consists of volume owner's name (for enterprise
-users) and volume name in form {volume_owner}/{volume_name},
+users) and volume name in form \code{{volume_owner}/{volume_name}},
 or division name (if user belongs to some division) and volume
-name in form {division}/{volume_name}. You can also get the Volume ID
+name in form \code{{division}/{volume_name}}. You can also get the Volume ID
 for a volume by making the call to list all volumes you've registered.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Volume object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -107,7 +114,10 @@ Create new volume to connect to your s3 bucket on AWS cloud.
 Volumes authorize the Platform to access and query objects on a
 specified cloud storage (Amazon Web Services, Google Cloud Storage,
 Azure or Ali cloud) on your behalf. This function uses
-IAM User credentials to connect to your s3 bucket.
+IAM User credentials to connect to your s3 bucket. \cr \cr
+
+Read more about volume creation in our
+\href{https://docs.sevenbridges.com/reference/create-a-volume-v2}{API documentation}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volumes$create_s3_using_iam_user(
   name = NULL,
@@ -126,57 +136,58 @@ IAM User credentials to connect to your s3 bucket.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{String. The name of the volume. It must be unique from all
+\item{\code{name}}{The name of the volume. It must be unique from all
 other volumes for this user. Required if from_path parameter
 is not provided.}
 
-\item{\code{access_mode}}{String. Signifies whether this volume should be used
+\item{\code{access_mode}}{Signifies whether this volume should be used
 for read-write (RW) or read-only (RO) operations. The access mode is
 consulted independently of the credentials granted to Seven Bridges
 when the volume was created, so it is possible to use a read-write
 credentials to register both read-write and read-only volumes using it.
 Default: \code{"RW"}.}
 
-\item{\code{description}}{String. An optional description of this volume.}
+\item{\code{description}}{An optional description of this volume.}
 
-\item{\code{prefix}}{String. A service-specific prefix to append to all objects
+\item{\code{prefix}}{A service-specific string prefix to append to all objects
 created in this volume. If the service supports folders, and this prefix
 includes them, the API will attempt to create any missing folders
 when it outputs a file.}
 
-\item{\code{bucket}}{String. The name of the AWS S3 bucket you wish to register
-as a volume. Required if from_path parameter is not provided.}
+\item{\code{bucket}}{The name of the AWS S3 bucket you wish to register
+as a volume. Required if \code{from_path} parameter is not provided.}
 
-\item{\code{endpoint}}{String. AWS API endpoint to use when accessing this
-bucket. Default: s3.amazonaws.com}
+\item{\code{endpoint}}{AWS API endpoint to use when accessing this
+bucket. Default: \code{s3.amazonaws.com}.}
 
-\item{\code{access_key_id}}{String. AWS access key ID of the IAM user shared
-with Seven Bridges to access this bucket. Required if from_path parameter
-is not provided.}
+\item{\code{access_key_id}}{AWS access key ID in form of string of the IAM user
+shared with Seven Bridges to access this bucket.
+Required if \code{from_path} parameter is not provided.}
 
-\item{\code{secret_access_key}}{String. AWS secret access key of the IAM user
-shared with Seven Bridges to access this bucket. Required if from_path
-parameter is not provided.}
+\item{\code{secret_access_key}}{AWS secret access key in form of string of the
+IAM user shared with Seven Bridges to access this bucket.
+Required if \code{from_path} parameter is not provided.}
 
 \item{\code{properties}}{Named list containing the properties of a specific
-service. These values set the defaults for operations performed with this
-volume. Individual operations can override these defaults by providing a
-custom properties object. For AWS S3, there are:
+service. These values set the defaults for operations performed with
+this volume. Individual operations can override these defaults by
+providing a custom properties object. For AWS S3, there are:
 \itemize{
-\item \code{sse_algorithm} - String. S3 server-side encryption to use when
+\item \code{sse_algorithm} - S3 server-side encryption to use when
 exporting to this bucket. Supported values:
-AES256 (SSE-S3 encryption), aws:kms, null (no server-side encryption).
-Default: AES256.
-\item \code{sse_aws_kms_key_Id}: String. Applies to type: s3.
-If AWS KMS encryption is used, this should be set to the required KMS
-key. If not set and aws:kms is set as sse_algorithm, default KMS key
-is used.
-\item \code{aws_canned_acl}: String. S3 canned ACL to apply on the object
-on during export. Supported values: any one of S3 canned ACLs;
-null (do not apply canned ACLs). Default: null.
+\code{AES256} (SSE-S3 encryption), \code{aws:kms}, \code{null}
+(no server-side encryption). Default: \code{AES256}.
+\item \code{sse_aws_kms_key_id}: Applies to type: \code{s3}.
+If AWS KMS encryption is used, this should be set to the required
+KMS key. If not set and \code{aws:kms} is set as \code{sse_algorithm},
+default KMS key is used.
+\item \code{aws_canned_acl}: S3 canned ACL to apply on the object
+on during export. Supported values: any one of
+\href{https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl}{S3 canned ACLs};
+\code{null} (do not apply canned ACLs). Default: \code{null}.
 }}
 
-\item{\code{from_path}}{String. Path to JSON configuration file containing all
+\item{\code{from_path}}{Path to JSON configuration file containing all
 required information for registering a volume. If provided, it will
 overwrite all previous parameters set.}
 }
@@ -196,7 +207,10 @@ specified cloud storage (Amazon Web Services, Google Cloud Storage,
 Azure or Ali cloud) on your behalf. This function uses
 IAM Role credentials to connect to your s3 bucket.
 In order to use these credentials, user must have specific user tag
-enabled by Support team.
+enabled by Support team. \cr \cr
+
+Read more about volume creation in our
+\href{https://docs.sevenbridges.com/reference/create-a-volume-v2}{API documentation}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volumes$create_s3_using_iam_role(
   name = NULL,
@@ -215,58 +229,59 @@ enabled by Support team.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{String. The name of the volume. It must be unique from all
+\item{\code{name}}{The name of the volume. It must be unique from all
 other volumes for this user. Required if from_path parameter
 is not provided.}
 
-\item{\code{access_mode}}{String. Signifies whether this volume should be used
+\item{\code{access_mode}}{Signifies whether this volume should be used
 for read-write (RW) or read-only (RO) operations. The access mode is
 consulted independently of the credentials granted to Seven Bridges
 when the volume was created, so it is possible to use a read-write
 credentials to register both read-write and read-only volumes using it.
 Default: \code{"RW"}.}
 
-\item{\code{description}}{String. An optional description of this volume.}
+\item{\code{description}}{An optional description of this volume.}
 
-\item{\code{prefix}}{String. A service-specific prefix to append to all objects
+\item{\code{prefix}}{A service-specific string prefix to append to all objects
 created in this volume. If the service supports folders, and this prefix
 includes them, the API will attempt to create any missing folders
 when it outputs a file.}
 
-\item{\code{bucket}}{String. The name of the AWS S3 bucket you wish to register
-as a volume. Required if from_path parameter is not provided.}
+\item{\code{bucket}}{The name of the AWS S3 bucket you wish to register
+as a volume. Required if \code{from_path} parameter is not provided.}
 
-\item{\code{endpoint}}{String. AWS API endpoint to use when accessing this
-bucket. Default: s3.amazonaws.com}
+\item{\code{endpoint}}{AWS API endpoint to use when accessing this
+bucket. Default: \code{s3.amazonaws.com}.}
 
-\item{\code{role_arn}}{String. The ARN (Amazon Resource Name) of your role that
+\item{\code{role_arn}}{The ARN (Amazon Resource Name) of your role that
 is used to connect your S3 bucket.
-Required if from_path parameter is not provided.}
+Required if \code{from_path} parameter is not provided.}
 
-\item{\code{external_id}}{String. Optional information that you can use in an
+\item{\code{external_id}}{Optional information that you can use in an
 IAM role trust policy to designate who can assume the role.
 Must be provided if it is configured in your role trust policy on AWS.
-Required if from_path parameter is not provided.}
+Required if \code{from_path} parameter is not provided.}
 
 \item{\code{properties}}{Named list containing the properties of a specific
-service. These values set the defaults for operations performed with this
-volume. Individual operations can override these defaults by providing a
-custom properties object. For AWS S3, there are:
+service. These values set the defaults for operations performed with
+this volume. Individual operations can override these defaults by
+providing a custom properties object. For AWS S3, there are:
 \itemize{
-\item \code{sse_algorithm} - String. S3 server-side encryption to use when
+\item \code{sse_algorithm} - S3 server-side encryption to use when
 exporting to this bucket. Supported values:
-AES256 (SSE-S3 encryption), aws:kms, null (no server-side encryption).
-Default: AES256.
-\item \code{sse_aws_kms_key_Id}: String. Applies to type: s3.
-If AWS KMS encryption is used, this should be set to the required KMS
-key. If not set and aws:kms is set as sse_algorithm, default KMS key
-is used.
-\item \code{aws_canned_acl}: String. S3 canned ACL to apply on the object
-on during export. Supported values: any one of S3 canned ACLs;
-null (do not apply canned ACLs). Default: null.
+\code{AES256} (SSE-S3 encryption), \code{aws:kms}, \code{null}
+(no server-side encryption). Default: \code{AES256}.
+\item \code{sse_aws_kms_key_id}: Applies to type: \code{s3}.
+If AWS KMS encryption is used, this should be set to the required
+KMS key. If not set and \code{aws:kms} is set as \code{sse_algorithm},
+default KMS key is used.
+\item \code{aws_canned_acl}: S3 canned ACL to apply on the object
+on during export. Supported values: any one of
+\href{https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl}{S3 canned ACLs};
+\code{null} (do not apply canned ACLs). Default: \code{null}.
 }}
 
-\item{\code{from_path}}{String. Path to JSON configuration file containing all
+\item{\code{from_path}}{Path to JSON configuration file containing all
 required information for registering a volume. If provided, it will
 overwrite all previous parameters set.}
 }
@@ -284,7 +299,9 @@ Create new volume to connect to your bucket on GCS.
 Volumes authorize the Platform to access and query objects on a
 specified cloud storage (Amazon Web Services, Google Cloud Storage,
 Azure or Ali cloud) on your behalf. This function uses
-IAM User credentials to connect with your s3 bucket.
+IAM User credentials to connect with your GCS bucket. \cr \cr
+Read more about volume creations in our
+\href{https://docs.sevenbridges.com/reference/create-a-volume-v2}{API documentation}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volumes$create_google_using_iam_user(
   name = NULL,
@@ -303,44 +320,44 @@ IAM User credentials to connect with your s3 bucket.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{String. The name of the volume. It must be unique from all
-other volumes for this user. Required if from_path parameter
+\item{\code{name}}{The name of the volume. It must be unique from all
+other volumes for this user. Required if \code{from_path} parameter
 is not provided.}
 
-\item{\code{access_mode}}{String. Signifies whether this volume should be used
+\item{\code{access_mode}}{Signifies whether this volume should be used
 for read-write (RW) or read-only (RO) operations. The access mode is
 consulted independently of the credentials granted to Seven Bridges
 when the volume was created, so it is possible to use a read-write
 credentials to register both read-write and read-only volumes using it.
 Default: \code{"RW"}.}
 
-\item{\code{description}}{String. An optional description of this volume.}
+\item{\code{description}}{An optional description of this volume.}
 
-\item{\code{prefix}}{String. A service-specific prefix to append to all objects
+\item{\code{prefix}}{A service-specific string prefix to append to all objects
 created in this volume. If the service supports folders, and this prefix
 includes them, the API will attempt to create any missing folders
 when it outputs a file.}
 
-\item{\code{bucket}}{String. The name of the GCS bucket you wish to register
-as a volume. Required if from_path parameter is not provided.}
+\item{\code{bucket}}{The name of the GCS bucket you wish to register
+as a volume. Required if \code{from_path} parameter is not provided.}
 
-\item{\code{root_url}}{String. Google Cloud Storage API endpoint for accessing
-this bucket. Default: https://www.googleapis.com.}
+\item{\code{root_url}}{Google Cloud Storage API endpoint for accessing
+this bucket. Default: \verb{https://www.googleapis.com}.}
 
-\item{\code{client_email}}{String. The client email address for the Google Cloud
+\item{\code{client_email}}{The client email address for the Google Cloud
 service account to use for operations on this bucket. This can be found
 in the JSON containing your service account credentials.
-Required if from_path parameter is not provided.}
+Required if \code{from_path} parameter is not provided.}
 
-\item{\code{private_key}}{String. Google Cloud Platform private key.
-Required if from_path parameter is not provided.}
+\item{\code{private_key}}{Google Cloud Platform private key.
+Required if \code{from_path} parameter is not provided.}
 
 \item{\code{properties}}{Named list containing the properties of a specific
-service. These values set the defaults for operations performed with this
-volume. Individual operations can override these defaults by providing a
-custom properties object. Check out our API documentation.}
+service. These values set the defaults for operations performed with
+this volume. Individual operations can override these defaults by
+providing a custom properties object.}
 
-\item{\code{from_path}}{String. Path to JSON configuration file containing all
+\item{\code{from_path}}{Path to JSON configuration file containing all
 required information for registering a volume. If provided, it will
 overwrite all previous parameters set.}
 }
@@ -360,7 +377,9 @@ specified cloud storage (Amazon Web Services, Google Cloud Storage,
 Azure or Ali cloud) on your behalf. This function uses
 IAM Role credentials to connect to your GCS bucket.
 In order to use these credentials, user must have specific user tag
-enabled by Support team.
+enabled by Support team. \cr \cr
+Read more about volume creations in our
+\href{https://docs.sevenbridges.com/reference/create-a-volume-v2}{API documentation}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volumes$create_google_using_iam_role(
   name = NULL,
@@ -378,29 +397,29 @@ enabled by Support team.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{String. The name of the volume. It must be unique from all
+\item{\code{name}}{The name of the volume. It must be unique from all
 other volumes for this user. Required if from_path parameter
 is not provided.}
 
-\item{\code{access_mode}}{String. Signifies whether this volume should be used
+\item{\code{access_mode}}{Signifies whether this volume should be used
 for read-write (RW) or read-only (RO) operations. The access mode is
 consulted independently of the credentials granted to Seven Bridges
 when the volume was created, so it is possible to use a read-write
 credentials to register both read-write and read-only volumes using it.
 Default: \code{"RW"}.}
 
-\item{\code{description}}{String. An optional description of this volume.}
+\item{\code{description}}{An optional description of this volume.}
 
-\item{\code{prefix}}{String. A service-specific prefix to append to all objects
+\item{\code{prefix}}{A service-specific string prefix to append to all objects
 created in this volume. If the service supports folders, and this prefix
 includes them, the API will attempt to create any missing folders
 when it outputs a file.}
 
-\item{\code{bucket}}{String. The name of the GCS bucket you wish to register
-as a volume. Required if from_path parameter is not provided.}
+\item{\code{bucket}}{The name of the GCS bucket you wish to register
+as a volume. Required if \code{from_path} parameter is not provided.}
 
-\item{\code{root_url}}{String. Google Cloud Storage API endpoint for accessing
-this bucket. Default: https://www.googleapis.com.}
+\item{\code{root_url}}{Google Cloud Storage API endpoint for accessing
+this bucket. Default: \verb{https://www.googleapis.com}.}
 
 \item{\code{configuration}}{Connection configuration parameters in JSON format
 downloaded from the Google Cloud Console once prerequisites have been
@@ -408,11 +427,11 @@ set up. Could be provided as a named list, or as path to the downloaded
 JSON file.}
 
 \item{\code{properties}}{Named list containing the properties of a specific
-service. These values set the defaults for operations performed with this
-volume. Individual operations can override these defaults by providing a
-custom properties object. Check out our API documentation.}
+service. These values set the defaults for operations performed with
+this volume. Individual operations can override these defaults by
+providing a custom properties object.}
 
-\item{\code{from_path}}{String. Path to JSON configuration file containing all
+\item{\code{from_path}}{Path to JSON configuration file containing all
 required information for registering a volume. If provided, it will
 overwrite all previous parameters set.}
 }
@@ -447,34 +466,33 @@ Azure storage container to the Platform.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{String. The name of the volume. It must be unique from all
-other volumes for this user. Required if from_path parameter
+\item{\code{name}}{The name of the volume. It must be unique from all
+other volumes for this user. Required if \code{from_path} parameter
 is not provided.}
 
-\item{\code{description}}{String. An optional description of this volume.}
+\item{\code{description}}{An optional description of this volume.}
 
-\item{\code{endpoint}}{String. Specify a Microsoft Azure endpoint, only if you
+\item{\code{endpoint}}{Specify a Microsoft Azure endpoint, only if you
 are using an endpoint that is different from the default one
-https://(serviceaccount).blob.core.windows.net. To make a non-default
+\verb{https://(serviceaccount).blob.core.windows.net}. To make a non-default
 endpoint work with the Platform, please first make sure it is supported
 by Seven Bridges.}
 
-\item{\code{storage_account}}{String. The name of the storage account that
-holds the container you want to attach as a volume.}
+\item{\code{storage_account}}{The name of the storage account that holds the
+container you want to attach as a volume.}
 
-\item{\code{container}}{String. The name of the container that you want to
-attach as a Volume.}
+\item{\code{container}}{The name of the container that you want to attach as
+a Volume.}
 
-\item{\code{prefix}}{String. A service-specific prefix to append to all objects
+\item{\code{prefix}}{A service-specific string prefix to append to all objects
 created in this volume. If the service supports folders, and this prefix
 includes them, the API will attempt to create any missing folders
 when it outputs a file.}
 
-\item{\code{tenant_id}}{String. Directory (tenant) ID of the
-application you created on the Azure Portal for the purpose of attaching
-your storage container.}
+\item{\code{tenant_id}}{Directory (tenant) ID of the application you created
+on the Azure Portal for the purpose of attaching your storage container.}
 
-\item{\code{client_id}}{String. Application (client) ID of the application you
+\item{\code{client_id}}{Application (client) ID of the application you
 created on the Azure Portal for the purpose of attaching your storage
 container.}
 
@@ -499,7 +517,7 @@ Volume object.
 \if{latex}{\out{\hypertarget{method-Volumes-create_ali_oss}{}}}
 \subsection{Method \code{create_ali_oss()}}{
 Create new volume to connect to your bucket on ALI (OSS)
-platform
+platform.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volumes$create_ali_oss(
   name = NULL,
@@ -523,28 +541,28 @@ is not provided.}
 
 \item{\code{description}}{An optional description of this volume.}
 
-\item{\code{endpoint}}{String. Specify an Ali Cloud endpoint.}
+\item{\code{endpoint}}{Specify an Ali Cloud endpoint.}
 
 \item{\code{bucket}}{The name of the ALI(OSS) bucket you wish to register
-as a volume. Required if from_path parameter is not provided.}
+as a volume. Required if \code{from_path} parameter is not provided.}
 
-\item{\code{prefix}}{A service-specific prefix to append to all objects created
-in this volume. If the service supports folders, and this prefix
-includes them, the API will attempt to create any missing folders
+\item{\code{prefix}}{A service-specific string prefix to append to all objects
+created in this volume. If the service supports folders, and this
+prefix includes them, the API will attempt to create any missing folders
 when it outputs a file.}
 
-\item{\code{access_key_id}}{String. ALI(OSS) access key ID of the user shared
-with Seven Bridges to access this bucket. Required if from_path parameter
-is not provided.}
+\item{\code{access_key_id}}{ALI(OSS) access key ID of the user shared
+with Seven Bridges to access this bucket.
+Required if \code{from_path} parameter is not provided.}
 
-\item{\code{secret_access_key}}{String. ALI(OSS) secret access key of the user
-shared with Seven Bridges to access this bucket. Required if from_path
-parameter is not provided.}
+\item{\code{secret_access_key}}{ALI(OSS) secret access key of the user
+shared with Seven Bridges to access this bucket.
+Required if \code{from_path} parameter is not provided.}
 
 \item{\code{properties}}{Named list containing the properties of a specific
-service. These values set the defaults for operations performed with this
-volume. Individual operations can override these defaults by providing a
-custom properties object. Check out our API documentation.}
+service. These values set the defaults for operations performed with
+this volume. Individual operations can override these defaults by
+providing a custom properties object.}
 
 \item{\code{from_path}}{JSON configuration file containing all required
 information for registering a volume.}

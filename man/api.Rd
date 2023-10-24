@@ -22,17 +22,21 @@ api(
 )
 }
 \arguments{
-\item{token}{API auth token or \code{access_token} for
-Seven Bridges single sign-on.}
+\item{token}{API authentication token or \code{access_token} for
+Seven Bridges single sign-on.
+Authentication token uniquely identifies you on the
+⁨Seven Bridges⁩ Platform and has all your data access, app management
+and task execution permissions. Read more about the its usage
+\href{https://docs.sevenbridges.com/docs/get-your-authentication-token}{here}.}
 
-\item{path}{path connected with \code{base_url}.}
+\item{path}{Path connected with \code{base_url}.}
 
-\item{method}{one of \code{"GET"}, \code{"POST"},
-\code{"PUT"}, \code{"DELETE"}, or \code{"PATCH"}.}
+\item{method}{One of \code{"GET"}, \code{"POST"}, \code{"PUT"}, \code{"DELETE"}, or \code{"PATCH"}.}
 
-\item{query}{Passed to httr package GET/POST call.}
+\item{query}{Query parameters passed to httr package GET/POST call.}
 
-\item{body}{Passed to httr package GET/POST/PUT/DELETE/PATCH call.}
+\item{body}{Body content passed to httr package GET/POST/PUT/DELETE/PATCH
+call.}
 
 \item{encode}{If the body is a named list, how should it be
 encoded? Can be one of \code{"json"} (application/json),
@@ -47,36 +51,44 @@ For \code{"json"}, parameters are automatically "unboxed"
 (i.e. length 1 vectors are converted to scalars). To preserve
 a length 1 vector as a vector, wrap in \code{I()}.}
 
-\item{limit}{How many results to return}
+\item{limit}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
 
-\item{offset}{The point at which to start displaying them}
+\item{offset}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
 
 \item{advance_access}{Enable advance access features?
 Default is \code{FALSE}.}
 
 \item{authorization}{Logical. Is the \code{token} an API
-auth token (\code{FALSE}) or an access token from the
+authentication token (\code{FALSE}) or an access token from the
 Seven Bridges single sign-on (\code{TRUE})?}
 
-\item{fields}{All API calls take the optional query parameter fields.
+\item{fields}{Selector specifying a subset of fields to include in the
+response. All API calls take this optional query parameter.
 This parameter enables you to specify the fields you want to be returned
 when listing resources (e.g. all your projects) or getting details of a
-specific resource (e.g. a given project). For example, fields="id,name,size"
-to return the fields id, name and size for files. Default value is set to
-'_all', so all fields are always returned for each resource.
+specific resource (e.g. a given project). \cr \cr
+For example, \code{fields="id,name,size"} to return the fields
+id, name and size for files. Default value is set to
+\verb{_all}, so all fields are always returned for each resource.
 More details please check
 \url{https://docs.sevenbridges.com/docs/the-api#section-general-\n
-api-information}}
+ api-information}}
 
-\item{base_url}{platform URL, default is NULL.}
+\item{base_url}{Platform URL, default is NULL.}
 
-\item{url}{Full url of the resource. If \code{url} is provided, other parameters
-like base_url, path, query, limit, offset and fields will be ignored.}
+\item{url}{Full url of the resource. If \code{url} is provided,
+other parameters like \code{base_url}, \code{path}, \code{query}, \code{limit},
+\code{offset} and \code{fields} will be ignored.}
 
 \item{...}{Other arguments passed to GET/POST/PUT/DELETE/PATCH call.}
 }
 \value{
-returned request list of httr
+Response in form of a list.
 }
 \description{
 Used for advanced users and the core method for higher level API
