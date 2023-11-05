@@ -1,6 +1,11 @@
 # sevenbridges2 <!-- omit in toc -->
 
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/sevenbridges2)](https://CRAN.R-project.org/package=sevenbridges2)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
+  <!-- badges: end -->
+  
 
 ## Overview <!-- omit in toc -->
 

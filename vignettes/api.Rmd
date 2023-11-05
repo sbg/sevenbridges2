@@ -11,8 +11,8 @@ output:
     highlight: "textmate"
     css: "sevenbridges.css"
 vignette: >
-  %\VignetteIndexEntry{Complete Guide for Seven Bridges API R Client}
   %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Complete Guide for Seven Bridges API R Client}
   %\VignetteEncoding{UTF-8}
 ---
 

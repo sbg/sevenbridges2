@@ -17,11 +17,14 @@ aws
 bamtools
 bg
 BioData
+bioinformatic
+bioinformatics
 calledchild
 Cavatica
 CGC
 cli
 cloneable
+colocalizing
 Config
 CONST
 copyOf
@@ -75,6 +78,8 @@ knitr
 LazyData
 len
 li
+lifecycle
+Lifecycle
 lovegood
 luna
 mageddon
@@ -96,6 +101,7 @@ outputBinding
 ovewrite
 pageable
 param
+pkgdown
 pre
 projectKey
 projectName
@@ -114,6 +120,7 @@ RW
 sbg
 sbgenomics
 sbgstaff
+scalable
 serviceaccount
 setenv
 sevenbridges
@@ -129,6 +136,7 @@ subfields
 subprocess
 Sys
 sysenv
+TCGA
 testthat
 thevalue
 trifunovic
