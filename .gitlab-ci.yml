@@ -27,7 +27,7 @@ before_script:
   - apt-get -y install ${APT_DEPS}
   - apt-get install -y nodejs
   - apt-get install -y npm
-  - R -e "install.packages(c('remotes', 'devtools', 'covr'))"
+  - R -e "install.packages(c('remotes', 'devtools', 'covr'), repos='http://cran.us.r-project.org')"
   - R -e "if (!requireNamespace('renv', quietly = TRUE)) remotes::install_version('renv', version = '0.16')"
   - R -e "renv::restore(lockfile = 'renv.lock')"
 
