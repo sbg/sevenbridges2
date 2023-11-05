@@ -9,14 +9,6 @@
 #' @importFrom rlang abort
 #' @importFrom glue glue
 #'
-#' @examples
-#' \dontrun{
-#' # set and get two environment variables for aws-us platform
-#' token <- "your_token"
-#' sbg_set_env("https://api.sbgenomics.com/v2/", token)
-#' sbg_get_env("SB_API_ENDPOINT")
-#' sbg_get_env("SB_AUTH_TOKEN")
-#' }
 #' @noRd
 sbg_get_env <- function(x) {
   res <- Sys.getenv(x)
@@ -39,14 +31,6 @@ sbg_get_env <- function(x) {
 #' The default value is `r toString(sbg_default_sysenv_token)`.
 #' @importFrom rlang abort
 #'
-#' @examples
-#' \dontrun{
-#' # set and get two environment variables for aws-us platform
-#' token <- "your_token"
-#' sbg_set_env("https://api.sbgenomics.com/v2/", token)
-#' sbg_get_env("SB_API_ENDPOINT")
-#' sbg_get_env("SB_AUTH_TOKEN")
-#' }
 #' @noRd
 sbg_set_env <- function(url = NULL, token = NULL,
                         sysenv_url_name = sbg_default_sysenv_url,
