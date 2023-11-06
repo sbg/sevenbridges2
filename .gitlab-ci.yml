@@ -85,7 +85,8 @@ pages:
   before_script: []
   script:
   - apt-get update && apt-get install -y pandoc
-  - R -e "install.packages(c('rmarkdown','pkgdown'))"
+  - R -e 'devtools::build(binary = TRUE, vignettes = FALSE)'
+  - R -e "install.packages('pkgdown')"
   - R -e "pkgdown::build_site()"
   artifacts:
     paths:
