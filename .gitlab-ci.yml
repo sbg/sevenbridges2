@@ -84,7 +84,7 @@ pages:
   stage: deploy
   before_script: []
   script:
-  - sudo apt-get install pandoc
+  - apt-get install pandoc
   - R -e "install.packages(c('rmarkdown','pkgdown'))"
   - R -e "pkgdown::build_site()"
   artifacts:
