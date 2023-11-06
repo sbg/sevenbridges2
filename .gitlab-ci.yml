@@ -82,6 +82,7 @@ sonar:
 
 pages:
   stage: deploy
+  before_script: []
   script:
   - R -e "install.packages('pkgdown')"
   - R -e "pkgdown::build_site()"
