@@ -82,7 +82,6 @@ variables:
 
 pages:
   stage: deploy
-  before_script: []
   script:
   - apt-get update && apt-get install -y pandoc
   - R -e 'devtools::build(binary = TRUE, vignettes = FALSE)'
