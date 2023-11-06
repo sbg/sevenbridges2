@@ -31,54 +31,54 @@ before_script:
   - R -e "install.packages(c('remotes', 'devtools', 'covr'), repos='http://cran.us.r-project.org')"
   - R -e "if (!requireNamespace('renv', quietly = TRUE)) remotes::install_version('renv', version = '0.16')"
   - R -e "renv::restore(lockfile = 'renv.lock')"
-#
-# buildbinary:
-#   stage: build
-#   script:
-#     - R -e 'devtools::build(binary = TRUE, vignettes = FALSE)'
-#
-# documentation:
-#   stage: document
-#   script:
-#     - R -e 'devtools::document()'
-#
-# lintr:
-#   stage: check
-#   script:
-#     # redirect lintr stdout and stderr to file
-#     - R -e "install.packages('lintr')"
-#     - CI="" Rscript -e "lintr::lint_package()" &> lint_output.txt
-#     # fail if file is not empty
-#     - if [ -s "lint_output.txt" ]; then exit 1; fi
-#   artifacts:
-#     when: on_failure
-#     paths:
-#       - lint_output.txt
-#
-# coverage:
-#   stage: check
-#   rules:
-#     - when: always
-#   script:
-#     - Rscript -e "devtools::install(dependencies = FALSE)"
-#     - Rscript run_cov.R
-#   artifacts:
-#     paths:
-#       - covr_sonarqube.xml
-#
-# sonar:
-#   stage: sonar
-#   dependencies:
-#      - coverage
-#   image: emeraldsquad/sonar-scanner:2.2.0
-#   before_script: []
-#   script:
-#     - infinity sonar scanner
-#   allow_failure: true
-#   only:
-#     - merge_requests
-#     - master
-#     - develop
+
+buildbinary:
+  stage: build
+  script:
+    - R -e 'devtools::build(binary = TRUE, vignettes = FALSE)'
+
+documentation:
+  stage: document
+  script:
+    - R -e 'devtools::document()'
+
+lintr:
+  stage: check
+  script:
+    # redirect lintr stdout and stderr to file
+    - R -e "install.packages('lintr')"
+    - CI="" Rscript -e "lintr::lint_package()" &> lint_output.txt
+    # fail if file is not empty
+    - if [ -s "lint_output.txt" ]; then exit 1; fi
+  artifacts:
+    when: on_failure
+    paths:
+      - lint_output.txt
+
+coverage:
+  stage: check
+  rules:
+    - when: always
+  script:
+    - Rscript -e "devtools::install(dependencies = FALSE)"
+    - Rscript run_cov.R
+  artifacts:
+    paths:
+      - covr_sonarqube.xml
+
+sonar:
+  stage: sonar
+  dependencies:
+     - coverage
+  image: emeraldsquad/sonar-scanner:2.2.0
+  before_script: []
+  script:
+    - infinity sonar scanner
+  allow_failure: true
+  only:
+    - merge_requests
+    - master
+    - develop
 
 pages:
   stage: deploy
