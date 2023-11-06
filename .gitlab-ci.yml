@@ -16,21 +16,21 @@ variables:
   RENV_CONFIG_REPOS_OVERRIDE: http://cran.r-project.org
   LIBRARY_NAME: examplePackage
 
-# cache:
-#   key: $CI_JOB_NAME
-#   paths:
-#     - ${RENV_PATHS_CACHE}
-#     - ${RENV_PATHS_LIBRARY}
-#
-# before_script:
-#   - mkdir -p ${RENV_PATHS_CACHE} ${RENV_PATHS_LIBRARY}
-#   - apt-get -qq update;
-#   - apt-get -y install ${APT_DEPS}
-#   - apt-get install -y nodejs
-#   - apt-get install -y npm
-#   - R -e "install.packages(c('remotes', 'devtools', 'covr'), repos='http://cran.us.r-project.org')"
-#   - R -e "if (!requireNamespace('renv', quietly = TRUE)) remotes::install_version('renv', version = '0.16')"
-#   - R -e "renv::restore(lockfile = 'renv.lock')"
+cache:
+  key: $CI_JOB_NAME
+  paths:
+    - ${RENV_PATHS_CACHE}
+    - ${RENV_PATHS_LIBRARY}
+
+before_script:
+  - mkdir -p ${RENV_PATHS_CACHE} ${RENV_PATHS_LIBRARY}
+  - apt-get -qq update;
+  - apt-get -y install ${APT_DEPS}
+  - apt-get install -y nodejs
+  - apt-get install -y npm
+  - R -e "install.packages(c('remotes', 'devtools', 'covr'), repos='http://cran.us.r-project.org')"
+  - R -e "if (!requireNamespace('renv', quietly = TRUE)) remotes::install_version('renv', version = '0.16')"
+  - R -e "renv::restore(lockfile = 'renv.lock')"
 #
 # buildbinary:
 #   stage: build
