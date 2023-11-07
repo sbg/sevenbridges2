@@ -354,8 +354,9 @@ Auth <- R6::R6Class(
     #'  id, name and size for files. Default value is set to
     #'  `_all`, so all fields are always returned for each resource.
     #'  More details please check
-    #'  \url{https://docs.sevenbridges.com/docs/the-api#section-general-\n
-    #'  api-information}
+    # nolint start
+    #'  \url{https://docs.sevenbridges.com/docs/the-api#section-general-api-information}
+    # nolint end
     #' @param ... Other arguments passed to core `api()` function, like `path`,
     #'  `query` parameters or full `url` to some resource.
     api = function(...,

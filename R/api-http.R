@@ -48,8 +48,9 @@
 #'  id, name and size for files. Default value is set to
 #'  `_all`, so all fields are always returned for each resource.
 #'  More details please check
-#'  \url{https://docs.sevenbridges.com/docs/the-api#section-general-\n
-#'  api-information}
+# nolint start
+#'  \url{https://docs.sevenbridges.com/docs/the-api#section-general-api-information}
+# nolint end
 #'
 #' @param base_url Platform URL, default is NULL.
 #' @param url Full url of the resource. If `url` is provided,

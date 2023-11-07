@@ -1,6 +1,11 @@
 # sevenbridges2 <!-- omit in toc -->
 
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/sevenbridges2)](https://CRAN.R-project.org/package=sevenbridges2)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
+  <!-- badges: end -->
+  
 
 ## Overview <!-- omit in toc -->
 
@@ -11,3 +16,7 @@ The [Seven Bridges Platform](https://www.sevenbridges.com/) is a cloud-based env
 The [Cancer Genomics Cloud (CGC)](https://www.cancergenomicscloud.org/), powered by [Seven Bridges](https://www.sevenbridges.com/), is also a cloud-based computation environment. It was built as one of three pilot systems funded by the [National Cancer Institute](https://www.cancer.gov) to explore the paradigm of colocalizing massive genomics datasets, like The [Cancer Genomics Atlas (TCGA)](https://cancergenome.nih.gov), alongside secure and scalable computational resources to analyze them. The CGC makes more than a petabyte of multi-dimensional data available immediately to authorized researchers. You can add your data to analyze alongside TCGA using predefined analytical workflows or your own tools.
 
 [Cavatica](http://www.cavatica.org/), powered by [Seven Bridges](https://www.sevenbridges.com), is a data analysis and sharing platform designed to accelerate discovery in a scalable, cloud-based compute environment where data, results, and workflows are shared among the world's research community. Cavatica is built in collaboration with the Children Hospital of Philadelphia and it is focused on pediatric data.
+
+## Documentation
+
+[Docs website](https://r-stack.pages.sbgenomics.com/sevenbridges2/)

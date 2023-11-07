@@ -1,0 +1,5 @@
+title: "sevenbridges2"
+
+destination: public
+template:
+  bootstrap: 5

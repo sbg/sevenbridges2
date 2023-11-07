@@ -6,6 +6,7 @@ stages:
   - check
   - sonar
   - publish
+  - deploy
 
 variables:
   APT_DEPS: "git libssl-dev libcurl4-openssl-dev  libcurl4-openssl-dev libssl-dev  libfreetype6-dev libfribidi-dev libharfbuzz-dev git libxml2-dev libfontconfig1-dev libgit2-dev libssl-dev pandoc libicu-dev libz-dev libcurl4-openssl-dev libjpeg-dev libpng-dev libtiff-dev make zlib1g-dev  git libgit2-dev libssl-dev libcurl4-openssl-dev  git  libicu-dev pandoc make  make zlib1g-dev  libssl-dev libcurl4-openssl-dev  pandoc  libssl-dev  libfreetype6-dev libfribidi-dev libharfbuzz-dev libxml2-dev libfontconfig1-dev libssl-dev pandoc libicu-dev libcurl4-openssl-dev libjpeg-dev libpng-dev libtiff-dev make  libfreetype6-dev libfribidi-dev libharfbuzz-dev libfontconfig1-dev libjpeg-dev libpng-dev libtiff-dev  libxml2-dev libicu-dev pandoc make  libxml2-dev libcurl4-openssl-dev libssl-dev  libicu-dev  libfontconfig1-dev libfreetype6-dev  libfreetype6-dev libfribidi-dev libharfbuzz-dev libfontconfig1-dev  git libgit2-dev libssl-dev libcurl4-openssl-dev make  libxml2-dev"
@@ -27,7 +28,7 @@ before_script:
   - apt-get -y install ${APT_DEPS}
   - apt-get install -y nodejs
   - apt-get install -y npm
-  - R -e "install.packages(c('remotes', 'devtools', 'covr'))"
+  - R -e "install.packages(c('remotes', 'devtools', 'covr'), repos='http://cran.us.r-project.org')"
   - R -e "if (!requireNamespace('renv', quietly = TRUE)) remotes::install_version('renv', version = '0.16')"
   - R -e "renv::restore(lockfile = 'renv.lock')"
 
@@ -78,3 +79,14 @@ sonar:
     - merge_requests
     - master
     - develop
+
+pages:
+  stage: deploy
+  script:
+  - apt-get update && apt-get install -y pandoc
+  - R -e 'devtools::build(binary = TRUE, vignettes = FALSE)'
+  - R -e "install.packages('pkgdown')"
+  - R -e "pkgdown::build_site()"
+  artifacts:
+    paths:
+    - public
