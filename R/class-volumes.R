@@ -5,6 +5,7 @@
 #' R6 Class representing volumes resource endpoints.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 Volumes <- R6::R6Class(
   "Volumes",
@@ -20,6 +21,7 @@ Volumes <- R6::R6Class(
     ),
 
     #' @description Create a new Volumes object.
+    #'
     #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
@@ -74,7 +76,8 @@ Volumes <- R6::R6Class(
     }, # nocov end
 
     # Delete volume -------------------------------------------------------
-    #' @description Please, use delete() operation on the exact Volume object.
+    #' @description Please, use `delete()` operation on the exact Volume object.
+    #'
     #' @importFrom rlang inform
     delete = function() {
       rlang::inform("Deleting volumes is possible to perform on the specific instance of class Volume.") # nolint

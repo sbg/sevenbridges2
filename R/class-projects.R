@@ -5,6 +5,7 @@
 #' R6 Class representing Projects resource.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 Projects <- R6::R6Class(
   # nolint end
@@ -48,6 +49,7 @@ Projects <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like other query parameters or 'fields', etc.
+    #'
     #' @importFrom checkmate assert_string
     #'
     #' @return Collection with list of Project objects.
@@ -75,6 +77,7 @@ Projects <- R6::R6Class(
     },
     #' @description This call creates Project object containing the details
     #'  of a specified project.
+    #'
     #' @param id Project ID. It consists of project owner's username or
     #'  if you are using Enterprise, then the Division name and project's
     #'  short name in form of `<owner_username>/<project-short-name>` or
@@ -127,9 +130,11 @@ Projects <- R6::R6Class(
     #'  }
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom rlang inform abort
     #' @importFrom glue glue
     #' @importFrom checkmate assert_string test_character
+    #'
     #' @return Project object.
     create = function(name,
                       billing_group = NULL,

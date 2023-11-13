@@ -44,7 +44,7 @@ Auth <- R6::R6Class(
     #' @field fs FS (FileSystem) object, for mount and unmount file system.
     fs = NULL,
 
-    #' @field authorization Logical. Is the `token` an API
+    #' @field authorization Is the `token` an API
     #'  authentication token (`FALSE`) or an access token from the
     #'  Seven Bridges single sign-on (`TRUE`)?
     authorization = NULL,
@@ -132,7 +132,7 @@ Auth <- R6::R6Class(
     #'
     #' @param fs FS (FileSystem) object, for mount and unmount file system.
     #'
-    #' @param authorization Logical. Is the `token` an API
+    #' @param authorization Is the `token` an API
     #'  authentication token (`FALSE`) or an access token from the
     #'  Seven Bridges single sign-on (`TRUE`)?
     #'
@@ -329,6 +329,7 @@ Auth <- R6::R6Class(
     },
     #' @description Returns the authentication token read from
     #'  system environment variable.
+    #'
     #' @return An API authentication token in form of a string.
     get_token = function() {
       if (self$from == "env" || self$from == "file") {
@@ -339,6 +340,7 @@ Auth <- R6::R6Class(
     },
     #' @description This method returns all API paths and
     #'  pass arguments to core `api()` function.
+    #'
     #' @param limit The maximum number of collection items to return for a
     #'  single request. Minimum value is `1`. The maximum value is `100` and the
     #'  default value is `50`.

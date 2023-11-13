@@ -18,13 +18,13 @@ R6 Class representing a resource for managing apps.
 
 \item{\code{project}}{Project ID if any, when returned by an API call.}
 
-\item{\code{name}}{String used as an app name.}
+\item{\code{name}}{App name.}
 
-\item{\code{revision}}{Integer representing app's revision.}
+\item{\code{revision}}{App's revision number.}
 
 \item{\code{copy_of}}{The original application of which this is a copy.}
 
-\item{\code{latest_revision}}{Integer representing app's latest revision.}
+\item{\code{latest_revision}}{App's latest revision number.}
 
 \item{\code{raw}}{App's raw CWL (JSON or YAML).}
 }
@@ -151,7 +151,7 @@ Get app's revision.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{revision}}{Integer denoting the revision of the app.}
+\item{\code{revision}}{Revision of the app.}
 
 \item{\code{in_place}}{If \code{TRUE}, replace current app object with new for
 specified app revision.}

@@ -100,7 +100,7 @@ Volume object.
 \if{html}{\out{<a id="method-Volumes-delete"></a>}}
 \if{latex}{\out{\hypertarget{method-Volumes-delete}{}}}
 \subsection{Method \code{delete()}}{
-Please, use delete() operation on the exact Volume object.
+Please, use \code{delete()} operation on the exact Volume object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volumes$delete()}\if{html}{\out{</div>}}
 }

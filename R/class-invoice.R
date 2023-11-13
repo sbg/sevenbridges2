@@ -4,6 +4,7 @@
 #' R6 Class representing invoice information.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @details
 #'  This object contains information about a selected invoice,
 #'  including the costs for analysis and storage, and the invoice period.
@@ -49,6 +50,7 @@ Invoice <- R6::R6Class(
     },
     # nocov start
     #' @description Print invoice information as a bullet list.
+    #'
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_ul cli_li
@@ -122,8 +124,10 @@ Invoice <- R6::R6Class(
       cli::cli_end()
     },
     #' @description Reload Invoice.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @return Invoice
     reload = function(...) {
       super$reload(

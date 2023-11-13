@@ -14,9 +14,9 @@ R6 Class representing a resource for managing files and folders.
 \describe{
 \item{\code{URL}}{List of URL endpoints for this resource.}
 
-\item{\code{id}}{String used as a file ID.}
+\item{\code{id}}{File ID.}
 
-\item{\code{name}}{String used as a file name.}
+\item{\code{name}}{File name.}
 
 \item{\code{size}}{File size.}
 
@@ -316,7 +316,7 @@ Moving of files is only allowed within the same project.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{parent}}{The ID string of target folder or a File object which must
+\item{\code{parent}}{The ID of target folder or a File object which must
 be of type \code{FOLDER}.}
 
 \item{\code{name}}{Specify a new name for a file in case you want to rename it.
@@ -448,10 +448,10 @@ in bulk considering the API rate limit
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{destination_volume}}{String volume id or Volume object you want to
+\item{\code{destination_volume}}{Volume id or Volume object you want to
 export files into. Required.}
 
-\item{\code{destination_location}}{String volume-specific location to which the
+\item{\code{destination_location}}{Volume-specific location to which the
 file will be exported.
 This location should be recognizable to the underlying cloud service as
 a valid key or path to a new file. Please note that if this volume has

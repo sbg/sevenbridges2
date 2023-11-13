@@ -5,6 +5,7 @@
 #' R6 Class representing a resource for managing VolumeFile objects.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 VolumeFile <- R6::R6Class(
   # nolint end

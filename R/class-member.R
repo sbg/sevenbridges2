@@ -21,8 +21,10 @@ Member <- R6::R6Class(
     permissions = NULL,
 
     #' @description Create a new Member object.
+    #'
     #' @param res Response containing Member object information.
     #' @param ... Other response arguments.
+    #'
     #' @return A new Member object.
     initialize = function(res = NA, ...) {
       # Initialize Item class
@@ -35,6 +37,7 @@ Member <- R6::R6Class(
       self$permissions <- res$permissions
     },
     #' @description Print method for Member class.
+    #'
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end

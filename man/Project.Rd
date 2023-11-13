@@ -655,7 +655,7 @@ into this destination project.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{volume}}{String volume id or Volume object. List all imports
+\item{\code{volume}}{Volume id or Volume object. List all imports
 from particular volume. Optional.}
 
 \item{\code{state}}{The state of the import job. Possible values are:
@@ -720,7 +720,7 @@ for more details on batching criteria.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{app}}{The ID string of an app or an App object you want to run.
+\item{\code{app}}{The ID of an app or an App object you want to run.
 Recall that apps are specified by their projects, in the form
 \code{{project_id}/{app_name}}.}
 

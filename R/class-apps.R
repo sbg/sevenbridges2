@@ -5,6 +5,7 @@
 #' R6 Class representing apps resource endpoint.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 Apps <- R6::R6Class(
   "Apps",
@@ -49,6 +50,7 @@ Apps <- R6::R6Class(
     #'  like other query parameters or 'fields', etc.
     #'
     #' @importFrom checkmate assert_list
+    #'
     #' @return Collection containing App objects.
     query = function(project = NULL,
                      visibility = c("private", "public"),
@@ -100,14 +102,17 @@ Apps <- R6::R6Class(
     # nolint start
     #'  [API documentation](https://docs.sevenbridges.com/reference/get-details-of-an-app).
     # nolint end
+
     #' @param id The full {project_id}/{app_short_name}
     #'  path for this API call is known as App ID. You can also get the App ID
     #'  for an app by making the call to list all apps available to you.
     #' @param revision The number of the app revision you want to get.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom checkmate assert_int
     #' @importFrom rlang abort
+    #'
     #' @return App object.
     get = function(id, revision = NULL, ...) {
       if (is_missing(id)) {
@@ -155,9 +160,11 @@ Apps <- R6::R6Class(
     # nolint end
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #' @importFrom glue glue
+    #'
     #' @return Copied App object.
     copy = function(app,
                     project,
@@ -215,10 +222,12 @@ Apps <- R6::R6Class(
     #' @param raw_format The type of format used (`JSON` or `YAML`).
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom checkmate assert_string
     #' @importFrom jsonlite validate fromJSON
     #' @importFrom rlang abort
     #' @importFrom readr read_file
+    #'
     #' @return App object.
     create = function(raw = NULL,
                       from_path = NULL,

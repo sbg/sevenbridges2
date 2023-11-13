@@ -69,10 +69,10 @@ respective file on the given volume.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{volume}}{String volume id or Volume object. List all imports
+\item{\code{volume}}{Volume id or Volume object. List all imports
 from this particular volume. Optional.}
 
-\item{\code{project}}{String project id or Project object. List all volume
+\item{\code{project}}{Project id or Project object. List all volume
 imports to this particular project. Optional.}
 
 \item{\code{state}}{The state of the import job. Possible values are:
@@ -161,19 +161,19 @@ in bulk considering the API rate limit (\href{https://docs.sevenbridges.com/docs
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{source_volume}}{String volume id or Volume object you want to import
+\item{\code{source_volume}}{Volume id or Volume object you want to import
 files or folders from. Required if \code{source_location} parameter is
 provided as a string.}
 
-\item{\code{source_location}}{String file/folder location name on the volume or
+\item{\code{source_location}}{File/folder location name on the volume or
 VolumeFile object you would like to import into some project/folder on
 the platform.}
 
-\item{\code{destination_project}}{String destination project id or Project
+\item{\code{destination_project}}{Destination project id or Project
 object. Not required, but either \code{destination_project} or
 \code{destination_parent} directory must be provided.}
 
-\item{\code{destination_parent}}{String folder id or File object
+\item{\code{destination_parent}}{Folder id or File object
 (with \code{type = 'FOLDER'}). Not required, but either \code{destination_project}
 or \code{destination_parent} directory must be provided.}
 

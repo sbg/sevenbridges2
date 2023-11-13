@@ -6,6 +6,7 @@
 #' @param as Desired type output (contents of a request): raw, text or parsed
 #'
 #' @return request content or the message
+#'
 #' @importFrom httr status_code
 #'
 #' @noRd
@@ -62,7 +63,9 @@ status_check <- function(req, as = "parsed", ...) {
 #'  in order to be able to use it with other object types.
 #'
 #' @param input Value to check
+#'
 #' @importFrom checkmate test_vector
+#'
 #' @noRd
 is_missing <- function(input) {
   if (missing(input)) {
@@ -84,6 +87,7 @@ is_missing <- function(input) {
 #' Check limit parameter
 #'
 #' @param limit Limit value
+#'
 #' @noRd
 check_limit <- function(limit) {
   msg <- "Limit must be integer number between 1 and 100."
@@ -102,8 +106,10 @@ check_limit <- function(limit) {
 #' Check offset parameter
 #'
 #' @param offset Offset value
+#'
 #' @importFrom rlang abort
 #' @importFrom glue glue
+#'
 #' @noRd
 check_offset <- function(offset) {
   msg <- "Offset must be integer number >= 0."
@@ -122,6 +128,7 @@ check_offset <- function(offset) {
 #' Check tag parameters
 #'
 #' @param tags Tag values
+#'
 #' @importFrom checkmate test_list
 #' @importFrom rlang abort
 #'
@@ -144,9 +151,11 @@ check_tags <- function(tags) {
 #'
 #' @param settings settings named list
 # nolint start
+
 #' @importFrom checkmate assert_logical assert_list assert_character assert_integer
 # nolint end
 #' @importFrom rlang abort
+#'
 #' @noRd
 check_settings <- function(settings) {
   if (!is.null(settings)) {
@@ -230,7 +239,9 @@ check_settings <- function(settings) {
 #' Check folder name
 #'
 #' @description This function checks if the provided folder name is valid.
+#'
 #' @param name Name of the folder.
+#'
 #' @noRd
 check_folder_name <- function(name) {
   if (is_missing(name)) {
@@ -247,8 +258,10 @@ check_folder_name <- function(name) {
 #' Check metadata
 #'
 #' @param metadata Metadata named list
+#'
 #' @importFrom checkmate test_list
 #' @importFrom rlang abort
+#'
 #' @noRd
 check_metadata <- function(metadata) {
   if (!checkmate::test_list(
@@ -270,6 +283,7 @@ check_metadata <- function(metadata) {
 #' Transform metadata input to be in API acceptable form.
 #'
 #' @param metadata Metadata named list
+#'
 #' @noRd
 transform_metadata <- function(metadata) {
   metadata_names <- paste0("metadata.", names(metadata))
@@ -285,6 +299,7 @@ transform_metadata <- function(metadata) {
 #'
 #' @param directory_path Directory path, string.
 #' @param filename File name (base name)
+#'
 #' @noRd
 check_download_path <- function(directory_path, filename) {
   if (dir.exists(directory_path)) {
@@ -302,8 +317,10 @@ check_download_path <- function(directory_path, filename) {
 #'
 #' @description This function validates provided retry parameter
 #'  used within the `download()` method of a `File` object.
+#'
 #' @param input Value to check.
 #' @param parameter_to_validate Retry parameter to be validated.
+#'
 #' @noRd
 check_retry_params <- function(input, parameter_to_validate) {
   if (parameter_to_validate == "count") {
@@ -328,8 +345,10 @@ check_retry_params <- function(input, parameter_to_validate) {
 #'
 #' @param size File size
 #' @param part_size Part size
+#'
 #' @importFrom rlang abort
 #' @importFrom checkmate assert_numeric
+#'
 #' @noRd
 check_upload_params <- function(size, part_size) {
   checkmate::assert_numeric(
@@ -377,9 +396,12 @@ check_upload_params <- function(size, part_size) {
 #'
 #' @description This function checks if the provided strategy for app copy is
 #'  valid.
+#'
 #' @param strategy Strategy for app copy.
+#'
 #' @importFrom rlang abort
 #' @importFrom glue glue_col
+#'
 #' @noRd
 check_app_copy_strategy <- function(strategy) {
   if (is_missing(strategy)) {
@@ -403,9 +425,12 @@ check_app_copy_strategy <- function(strategy) {
 #'
 #' @description This function checks if the file with the provided path exists
 #'  on the local disk.
+#'
 #' @param file_path File path on the local disk.
+#'
 #' @importFrom rlang abort
 #' @importFrom glue glue_col
+#'
 #' @noRd
 check_file_path <- function(file_path) {
   if (!file.exists(file_path)) {
@@ -417,12 +442,14 @@ check_file_path <- function(file_path) {
 #'
 #' @description This function checks parameters needed for
 #'  value creation/update.
+#'
 #' @param args Input parameters to check
 #' @param volume_type Storage type, can be one of: s3, gcs, azure, oss
 #'
 #' @importFrom checkmate assert_list assert_string
 #' @importFrom rlang abort
 #' @importFrom glue glue_col
+#'
 #' @noRd
 check_volume_params <- function(args,
                                 volume_type = c("s3", "gcs", "azure", "OSS")) {
@@ -462,6 +489,7 @@ check_volume_params <- function(args,
 #'
 #' @description This function checks whether provided configuration parameter
 #'  is a named list or a file path to the configuration JSON file.
+#'
 #' @param configuration Path to JSON file or named list containing configuration
 #'  parameters values for creating GC volume using IAM Role.
 #'
@@ -470,6 +498,7 @@ check_volume_params <- function(args,
 #' @importFrom checkmate test_string
 #' @importFrom jsonlite toJSON
 #' @importFrom readr read_file
+#'
 #' @noRd
 transform_configuration_param <- function(configuration) {
   if (checkmate::test_list(configuration, min.len = 1, null.ok = FALSE) &&
@@ -490,11 +519,13 @@ transform_configuration_param <- function(configuration) {
 #' Convert date to string
 #'
 #' @description This function converts date data type to string.
+#'
 #' @param datetime Object to convert.
 #'
 #' @importFrom rlang abort
 #' @importFrom checkmate test_posixct
 #' @importFrom checkmate test_character
+#'
 #' @noRd
 check_and_transform_datetime <- function(datetime) {
   if (missing(datetime)) {
@@ -512,9 +543,11 @@ check_and_transform_datetime <- function(datetime) {
 #' Check execution settings parameters
 #'
 #' @description Check execution settings parameters.
+#'
 #' @param execution_settings List of execution settings parameters.
 #'
 #' @importFrom checkmate assert_list assert_string assert_int assert_logical
+#'
 #' @noRd
 check_execution_settings <- function(execution_settings = NULL) {
   checkmate::assert_list(

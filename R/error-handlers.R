@@ -71,6 +71,7 @@ maintenance_sleeper <- function(req, sleep = 300) {
 #' @param req API request
 #'
 #' @return request Response object
+#'
 #' @importFrom httr status_code
 #'
 #' @noRd

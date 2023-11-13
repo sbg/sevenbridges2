@@ -43,8 +43,10 @@ User <- R6::R6Class(
     tags = NULL,
 
     #' @description Create a new User object.
+    #'
     #' @param res Response containing User object information.
     #' @param ... Other response arguments.
+    #'
     #' @return A new User object.
     initialize = function(res = NA, ...) {
       # Initialize Item class
@@ -66,6 +68,7 @@ User <- R6::R6Class(
     },
     # nocov start
     #' @description Print user information as bullet list.
+    #'
     #' @importFrom purrr discard
     #' @importFrom glue glue glue_col
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end
@@ -108,8 +111,10 @@ User <- R6::R6Class(
       cli::cli_end()
     },
     #' @description Reload User object information.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @return User
     reload = function(...) {
       super$reload(

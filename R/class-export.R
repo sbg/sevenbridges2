@@ -5,6 +5,7 @@
 #' R6 Class representing a resource for managing volume export jobs.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 Export <- R6::R6Class(
   # nolint end
@@ -49,6 +50,7 @@ Export <- R6::R6Class(
     result = NULL,
 
     #' @description Create a new Export object.
+    #'
     #' @param res Response containing Export job information.
     #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
@@ -104,8 +106,10 @@ Export <- R6::R6Class(
       cli::cli_end()
     },
     #' @description Reload Export object information.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @return Export object.
     reload = function(...) {
       super$reload(

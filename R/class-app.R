@@ -5,6 +5,7 @@
 #' R6 Class representing a resource for managing apps.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 App <- R6::R6Class(
   # nolint end
@@ -24,13 +25,13 @@ App <- R6::R6Class(
     id = NULL,
     #' @field project Project ID if any, when returned by an API call.
     project = NULL,
-    #' @field name String used as an app name.
+    #' @field name App name.
     name = NULL,
-    #' @field revision Integer representing app's revision.
+    #' @field revision App's revision number.
     revision = NULL,
     #' @field copy_of The original application of which this is a copy.
     copy_of = NULL,
-    #' @field latest_revision Integer representing app's latest revision.
+    #' @field latest_revision App's latest revision number.
     latest_revision = NULL,
     #' @field raw App's raw CWL (JSON or YAML).
     raw = NULL,
@@ -83,8 +84,10 @@ App <- R6::R6Class(
       cli::cli_end()
     },
     #' @description Reload App object information.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @return App object.
     reload = function(...) {
       super$reload(
@@ -117,9 +120,11 @@ App <- R6::R6Class(
     #'  be copied.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom rlang abort
     #' @importFrom checkmate assert_string assert_logical
     #' @importFrom glue glue
+    #'
     #' @return Copied App object.
     copy = function(project, name = NULL, strategy = "clone", use_revision = FALSE, ...) { # nolint
       if (is_missing(project)) {
@@ -178,13 +183,15 @@ App <- R6::R6Class(
     #' This call allows you to obtain a particular revision of an
     #' app, which is not necessarily the most recent version.
     #'
-    #' @param revision Integer denoting the revision of the app.
+    #' @param revision Revision of the app.
     #' @param in_place If `TRUE`, replace current app object with new for
     #'  specified app revision.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom checkmate assert_numeric assert_logical
     #' @importFrom glue glue
+    #'
     #' @return App object.
     get_revision = function(revision = self$revision, in_place = FALSE, ...) {
       # Check if revision is positive number and convert it to integer
@@ -242,6 +249,7 @@ App <- R6::R6Class(
     #'  created revision.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom rlang abort
     #' @importFrom glue glue glue_col
     #' @importFrom checkmate assert_list assert_character
@@ -250,6 +258,7 @@ App <- R6::R6Class(
     #' @importFrom jsonlite validate fromJSON
     #' @importFrom yaml yaml.load
     #' @importFrom readr read_file
+    #'
     #' @return App object.
     create_revision = function(raw = NULL, from_path = NULL, raw_format = c("JSON", "YAML"), in_place = FALSE, ...) { # nolint
       if (is_missing(raw) && is_missing(from_path)) {
@@ -314,8 +323,10 @@ App <- R6::R6Class(
     #' @details
     #' This call synchronizes a copied app with the source app from which it
     #' has been copied.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom glue glue
     sync = function(...) {
       path <- glue::glue(self$URL[["sync"]])

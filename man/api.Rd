@@ -63,7 +63,7 @@ This is a pagination-specific attribute.}
 \item{advance_access}{Enable advance access features?
 Default is \code{FALSE}.}
 
-\item{authorization}{Logical. Is the \code{token} an API
+\item{authorization}{Is the \code{token} an API
 authentication token (\code{FALSE}) or an access token from the
 Seven Bridges single sign-on (\code{TRUE})?}
 

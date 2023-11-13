@@ -20,6 +20,7 @@ Permission <- R6::R6Class(
     #' @field admin Admin permission.
     admin = NULL,
     #' @description Create a new Permission object.
+    #'
     #' @param read User can view file names, metadata, and workflows.
     #'  They cannot view file contents. All members of a project have read
     #'  permissions by default. Even if you try setting read permissions to
@@ -52,8 +53,10 @@ Permission <- R6::R6Class(
     },
     # nocov start
     #' @description Print method for Permission class.
+    #'
     #' @importFrom purrr discard
     #' @importFrom glue glue
+    #'
     #' @importFrom cli cli_h1 cli_li cli_end
     print = function() {
       x <- as.list(self)

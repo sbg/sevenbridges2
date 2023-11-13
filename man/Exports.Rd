@@ -64,7 +64,7 @@ volume, you write to your cloud storage bucket.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{volume}}{String volume id or Volume object. List all exports
+\item{\code{volume}}{Volume id or Volume object. List all exports
 into this particular volume. Optional.}
 
 \item{\code{state}}{The state of the export job. Possible values are:
@@ -164,13 +164,13 @@ in bulk considering the API rate limit (\href{https://docs.sevenbridges.com/docs
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{source_file}}{String file id or File object you want to export to
+\item{\code{source_file}}{File id or File object you want to export to
 the volume.}
 
-\item{\code{destination_volume}}{String volume id or Volume object you want to
+\item{\code{destination_volume}}{Volume id or Volume object you want to
 export files into.}
 
-\item{\code{destination_location}}{String volume-specific location to which the
+\item{\code{destination_location}}{Volume-specific location to which the
 file will be exported.
 This location should be recognizable to the underlying cloud service as
 a valid key or path to a new file. Please note that if this volume has

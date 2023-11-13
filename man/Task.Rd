@@ -14,7 +14,7 @@ R6 Class representing a resource for managing tasks.
 \describe{
 \item{\code{URL}}{List of URL endpoints for this resource.}
 
-\item{\code{id}}{The string ID of the task.}
+\item{\code{id}}{The ID of the task.}
 
 \item{\code{name}}{The name of the task.}
 

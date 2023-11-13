@@ -5,6 +5,7 @@
 #' R6 Class representing invoice resource endpoints
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 Invoices <- R6::R6Class(
   "Invoices",
@@ -39,6 +40,7 @@ Invoices <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like query parameters or 'fields', etc.
+    #'
     #' @return Collection of invoices (Invoice class objects).
     query = function(billing_group = NULL,
                      limit = getOption("sevenbridges2")$limit,

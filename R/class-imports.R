@@ -35,9 +35,9 @@ Imports <- R6::R6Class(
     #'  be copied, executed, and modified as such. They refer back to the
     #'  respective file on the given volume.
     #'
-    #' @param volume String volume id or Volume object. List all imports
+    #' @param volume Volume id or Volume object. List all imports
     #'  from this particular volume. Optional.
-    #' @param project String project id or Project object. List all volume
+    #' @param project Project id or Project object. List all volume
     #'  imports to this particular project. Optional.
     #' @param state The state of the import job. Possible values are:
     #'  \itemize{
@@ -133,16 +133,16 @@ Imports <- R6::R6Class(
     # nolint end
     #'  (bulk operations will be implemented in next releases).
     #'
-    #' @param source_volume String volume id or Volume object you want to import
+    #' @param source_volume Volume id or Volume object you want to import
     #'  files or folders from. Required if `source_location` parameter is
     #'  provided as a string.
-    #' @param source_location String file/folder location name on the volume or
+    #' @param source_location File/folder location name on the volume or
     #'  VolumeFile object you would like to import into some project/folder on
     #'  the platform.
-    #' @param destination_project String destination project id or Project
+    #' @param destination_project Destination project id or Project
     #'  object. Not required, but either `destination_project` or
     #'  `destination_parent` directory must be provided.
-    #' @param destination_parent String folder id or File object
+    #' @param destination_parent Folder id or File object
     #'  (with `type = 'FOLDER'`). Not required, but either `destination_project`
     #'  or `destination_parent` directory must be provided.
     #' @param name The name of the alias to create. This name should be unique
@@ -275,6 +275,7 @@ Imports <- R6::R6Class(
 
     # Delete import job ----------------------------------------------------
     #' @description Deleting import jobs is not possible.
+    #'
     #' @importFrom rlang inform
     delete = function() {
       rlang::inform("Deleting import jobs is not possible.")

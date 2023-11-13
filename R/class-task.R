@@ -21,7 +21,7 @@ Task <- R6::R6Class(
       "execution_details" = "tasks/{self$id}/execution_details",
       "task" = "tasks/{self$id}"
     ),
-    #' @field id The string ID of the task.
+    #' @field id The ID of the task.
     id = NULL,
     #' @field name The name of the task.
     name = NULL,

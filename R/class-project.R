@@ -181,8 +181,10 @@ Project <- R6::R6Class(
       cli::cli_end()
     },
     #' @description Reload Project object information.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @return Project object.
     reload = function(...) {
       super$reload(
@@ -196,6 +198,7 @@ Project <- R6::R6Class(
     #'  `tags` or `billing group` of the project.
     #'  Users with write permissions in the project can change the project
     #'  `description`.
+    #'
     #' @param name New name of the project you are updating.
     #' @param description New description of the project you are updating.
     #' @param billing_group Billing object or ID of a particular billing
@@ -206,6 +209,7 @@ Project <- R6::R6Class(
     #' @param tags The list of project tags you want to update.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'limit', 'offset', 'fields', etc.
+    #'
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #' @importFrom glue glue
@@ -260,6 +264,7 @@ Project <- R6::R6Class(
     #' project. \cr
     #' Please be careful when using this method and note that calling it will
     #' permanently delete the project from the platform.
+    #'
     #' @importFrom rlang abort inform
     #' @importFrom httr content
     #' @importFrom glue glue
@@ -278,6 +283,7 @@ Project <- R6::R6Class(
     },
     # nocov end
     #' @description Method for listing all the project members.
+    #'
     #' @param limit The maximum number of collection items to return
     #'  for a single request. Minimum value is `1`.
     #'  The maximum value is `100` and the default value is `50`.
@@ -287,7 +293,9 @@ Project <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom glue glue
+    #'
     #' @return Collection containing list of Member objects.
     list_members = function(limit = getOption("sevenbridges2")$limit,
                             offset = getOption("sevenbridges2")$offset,
@@ -311,6 +319,7 @@ Project <- R6::R6Class(
     #' @description Method for adding new members to a specified project.
     #'  The call can only be successfully made by a user who has admin
     #'  permissions in the project.
+    #'
     #' @param user The Seven Bridges Platform username of the person
     #'  you want to add to the project or object of class Member containing
     #'  user's username.
@@ -341,6 +350,7 @@ Project <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom glue glue glue_col
     #' @importFrom checkmate assert_character assert_list assert_subset
+    #'
     #' @return Member object.
     add_member = function(user = NULL,
                           email = NULL,
@@ -402,9 +412,11 @@ Project <- R6::R6Class(
     # nocov end
     #' @description A method for removing members from the project. It can only
     #'  be successfully run by a user who has admin privileges in the project.
+    #'
     #' @param user The Seven Bridges Platform username of the person
     #'  you want to remove from the project or object of class Member containing
     #'  user's username.
+    #'
     #' @importFrom rlang abort inform
     #' @importFrom glue glue glue_col
     remove_member = function(user) {
@@ -437,13 +449,16 @@ Project <- R6::R6Class(
     # nocov end
     #' @description This method returns the information about the member of
     #'  the specified project.
+    #'
     #' @param user The Seven Bridges Platform username of the project member
     #'  you want to get information about or object of class Member containing
     #'  user's username.
-    #' @importFrom rlang abort
-    #' @importFrom glue glue
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @importFrom rlang abort
+    #' @importFrom glue glue
+
     get_member = function(user, ...) {
       if (is_missing(user)) {
         rlang::abort("Please provide a username or Member object.")
@@ -467,6 +482,7 @@ Project <- R6::R6Class(
     #' @description This method can be used to edit a user's permissions in a
     #'  specified  project. It can only be successfully made by a user who
     #'  has admin permissions in the project.
+    #'
     #' @param user The Seven Bridges Platform username of the person
     #'  you want to modify permissions on the volume for or object of class
     #'  Member containing user's username.
@@ -487,6 +503,7 @@ Project <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom glue glue glue_col
     #' @importFrom checkmate assert_list assert_subset
+    #'
     #' @return Permission object.
     modify_member_permissions = function(user = NULL,
                                          permissions = list(
@@ -541,6 +558,7 @@ Project <- R6::R6Class(
     },
     # nocov end
     #' @description  List all project's files and folders.
+    #'
     #' @param limit The maximum number of collection items to return
     #'  for a single request. Minimum value is `1`.
     #'  The maximum value is `100` and the default value is `50`.
@@ -550,7 +568,9 @@ Project <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom glue glue
+    #'
     #' @return Collection containing File objects.
     list_files = function(limit = getOption("sevenbridges2")$limit,
                           offset = getOption("sevenbridges2")$offset,
@@ -578,8 +598,10 @@ Project <- R6::R6Class(
     #'  within this root folder by using this function.
     #'
     #' @param name Folder name.
+    #'
     #' @importFrom glue glue_col
     #' @importFrom rlang inform
+    #'
     #' @return File object of type 'FOLDER'.
     create_folder = function(name) {
       check_folder_name(name)
@@ -620,6 +642,7 @@ Project <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like other query parameters or 'fields', etc.
+    #'
     #' @return Collection containing Apps objects.
     list_apps = function(query_terms = NULL,
                          id = NULL,
@@ -648,6 +671,7 @@ Project <- R6::R6Class(
     #' @param name A short name for the app (without any non-alphanumeric
     #'  characters or spaces).
     #' @param raw_format The type of format used (`JSON` or `YAML`).
+    #'
     #' @return App object.
     create_app = function(raw = NULL,
                           from_path = NULL,
@@ -715,6 +739,7 @@ Project <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @return Collection containing Task objects.
     list_tasks = function(status = NULL,
                           parent = NULL,
@@ -754,7 +779,7 @@ Project <- R6::R6Class(
     #' @description This call lists imports initiated by particular user
     #'  into this destination project.
     #'
-    #' @param volume String volume id or Volume object. List all imports
+    #' @param volume Volume id or Volume object. List all imports
     #'  from particular volume. Optional.
     #' @param state The state of the import job. Possible values are:
     #'  \itemize{
@@ -776,6 +801,7 @@ Project <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @return Collection containing Import objects.
     list_imports = function(volume = NULL,
                             state = NULL,
@@ -801,7 +827,7 @@ Project <- R6::R6Class(
     # nolint end
     #'  for more details on batching criteria.
     #'
-    #' @param app The ID string of an app or an App object you want to run.
+    #' @param app The ID of an app or an App object you want to run.
     #'  Recall that apps are specified by their projects, in the form
     #'  `{project_id}/{app_name}`.
     #' @param revision The app

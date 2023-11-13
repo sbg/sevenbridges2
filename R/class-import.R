@@ -5,6 +5,7 @@
 #' R6 Class representing a resource for managing volume import jobs.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 Import <- R6::R6Class(
   # nolint end
@@ -55,6 +56,7 @@ Import <- R6::R6Class(
     result = NULL,
 
     #' @description Create a new Import object.
+    #'
     #' @param res Response containing Import object information.
     #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
@@ -110,8 +112,10 @@ Import <- R6::R6Class(
     },
 
     #' @description Reload Import object information.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @return Import object.
     reload = function(...) {
       super$reload(

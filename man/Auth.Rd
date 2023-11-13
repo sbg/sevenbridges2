@@ -34,7 +34,7 @@ the auth token.}
 
 \item{\code{fs}}{FS (FileSystem) object, for mount and unmount file system.}
 
-\item{\code{authorization}}{Logical. Is the \code{token} an API
+\item{\code{authorization}}{Is the \code{token} an API
 authentication token (\code{FALSE}) or an access token from the
 Seven Bridges single sign-on (\code{TRUE})?}
 
@@ -150,7 +150,7 @@ The default value is \code{"default"}.}
 
 \item{\code{fs}}{FS (FileSystem) object, for mount and unmount file system.}
 
-\item{\code{authorization}}{Logical. Is the \code{token} an API
+\item{\code{authorization}}{Is the \code{token} an API
 authentication token (\code{FALSE}) or an access token from the
 Seven Bridges single sign-on (\code{TRUE})?}
 }

@@ -23,9 +23,9 @@ File <- R6::R6Class(
       "move" = "files/{self$id}/actions/move",
       "content" = "files/{self$id}/list"
     ),
-    #' @field id String used as a file ID.
+    #' @field id File ID.
     id = NULL,
-    #' @field name String used as a file name.
+    #' @field name File name.
     name = NULL,
     #' @field size File size.
     size = NULL,
@@ -322,6 +322,7 @@ File <- R6::R6Class(
     #'  If its name will not change, omit this key.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #' @importFrom glue glue
@@ -353,7 +354,9 @@ File <- R6::R6Class(
     },
     #' @description This method returns a URL that you can use to download
     #'  the specified file.
+    #'
     #' @importFrom glue glue
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     get_download_url = function(...) {
@@ -372,6 +375,7 @@ File <- R6::R6Class(
     },
     #' @description This call returns the metadata values for the specified
     #'  file.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
@@ -397,6 +401,7 @@ File <- R6::R6Class(
     # nolint start
     #'  [API documentation](https://docs.sevenbridges.com/reference/modify-a-files-metadata).
     # nolint end
+    #'
     #' @param metadata_fields Enter a list of key-value pairs of metadata fields
     #'  and metadata values.
     #' @param overwrite Set to `TRUE` if you want to overwrite existing tags.
@@ -443,7 +448,7 @@ File <- R6::R6Class(
     #' @description This call moves a file from one folder to another.
     #'  Moving of files is only allowed within the same project.
     #'
-    #' @param parent The ID string of target folder or a File object which must
+    #' @param parent The ID of target folder or a File object which must
     #'  be of type `FOLDER`.
     #' @param name Specify a new name for a file in case you want to rename it.
     #'  If you want to use the same name, omit this key.
@@ -451,6 +456,7 @@ File <- R6::R6Class(
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #' @importFrom glue glue
+    #'
     #' @return Moved File object.
     move_to_folder = function(parent, name = NULL) {
       if (is_missing(parent)) {
@@ -482,6 +488,7 @@ File <- R6::R6Class(
       return(asFile(res, auth = self$auth))
     },
     #' @description List folder contents.
+    #'
     #' @param limit The maximum number of collection items to return
     #'  for a single request. Minimum value is `1`.
     #'  The maximum value is `100` and the default value is `50`.
@@ -510,6 +517,7 @@ File <- R6::R6Class(
       return(asCollection(res, auth = self$auth))
     },
     #' @description Delete method for File objects.
+    #'
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end cli_bullets
@@ -529,6 +537,7 @@ File <- R6::R6Class(
     #'  platform file to your local computer. To specify the destination for
     #'  your download, you should provide the path to the destination directory
     #'  as `directory_path` parameter.
+    #'
     #' @param directory_path Path to the destination directory of a new file.
     #' @param filename Full name for the new file, including its extension. By
     #'  default, the name field of File object will be used.
@@ -536,6 +545,7 @@ File <- R6::R6Class(
     #'  parameter is set to `curl`.
     #' @param retry_count Number of retries if error occurs during download.
     #' @param retry_timeout Number of seconds between two retries.
+    #'
     #' @importFrom rlang inform warn abort
     #' @importFrom glue glue_col
     download = function(directory_path = getwd(),
@@ -633,9 +643,9 @@ File <- R6::R6Class(
     #'  ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit))
     #'  (bulk operations will be implemented in next releases).
     #'
-    #' @param destination_volume String volume id or Volume object you want to
+    #' @param destination_volume Volume id or Volume object you want to
     #'  export files into. Required.
-    #' @param destination_location String volume-specific location to which the
+    #' @param destination_location Volume-specific location to which the
     #'  file will be exported.
     #'  This location should be recognizable to the underlying cloud service as
     #'  a valid key or path to a new file. Please note that if this volume has

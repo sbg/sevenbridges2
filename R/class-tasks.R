@@ -5,6 +5,7 @@
 #' R6 Class representing tasks resource endpoints.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 Tasks <- R6::R6Class(
   "Tasks",
@@ -222,9 +223,9 @@ Tasks <- R6::R6Class(
     # nolint end
     #' for more details on batching criteria.
     #'
-    #' @param project The ID string of a project or a Project object where you
+    #' @param project The ID of a project or a Project object where you
     #'  want to create the task in.
-    #' @param app The ID string of an app or an App object you want to run.
+    #' @param app The ID of an app or an App object you want to run.
     #'  Recall that apps are specified by their projects, in the form
     #'  `{project_id}/{app_name}`.
     #' @param revision The app

@@ -4,6 +4,7 @@
 #' R6 Class representing a central resource for managing billing groups.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @details
 #' This is main object for Billing
 # nolint start
@@ -36,6 +37,7 @@ Billing <- R6::R6Class(
     balance = NULL,
 
     #' @description Create a new Billing object.
+    #'
     #' @param res Response containing Billing object information.
     #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
@@ -52,6 +54,7 @@ Billing <- R6::R6Class(
     },
     # nocov start
     #' @description Print billing group information as a bullet list.
+    #'
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul
@@ -83,8 +86,10 @@ Billing <- R6::R6Class(
       cli::cli_end()
     },
     #' @description Reload Billing group object.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'limit', 'offset', 'fields', etc.
+    #'
     #' @return Billing
     reload = function(...) {
       super$reload(

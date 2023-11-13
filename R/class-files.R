@@ -143,7 +143,7 @@ Files <- R6::R6Class(
     #' Files are specified by their IDs, which you can obtain by making
     #' the API call to list all files in a project.
     #'
-    #' @param id The file ID string.
+    #' @param id The file ID.
     #' @param ... Other arguments that can be passed to core `api()` function
     #' as 'fields', etc.
     get = function(id, ...) {
@@ -162,9 +162,11 @@ Files <- R6::R6Class(
     # nolint start
     #'  \url{https://docs.sevenbridges.com/reference/copy-files-between-projects}.
     # nolint end
+    #'
     #' @param files The list of files' IDs or list of File object to copy.
-    #' @param destination_project Project object or project ID string
+    #' @param destination_project Project object or project ID.
     #'  where you want to copy files into.
+    #'
     #' @importFrom checkmate assert_list
     #' @importFrom glue glue_col
     copy = function(files, destination_project) {
@@ -228,9 +230,10 @@ Files <- R6::R6Class(
     #'  \url{https://docs.sevenbridges.com/reference/create-a-folder}.
     #'
     #' @param name The name of the folder you are about to create.
-    #' @param parent The ID string of the parent destination folder or a File
+    #' @param parent The ID of the parent destination folder or a File
     #'  object which must be of type `FOLDER`.
     #' @param project The ID of the destination project, or a Project object.
+    #'
     #' @importFrom rlang abort inform
     #' @importFrom glue glue_col
     create_folder = function(name,

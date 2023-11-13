@@ -5,6 +5,7 @@
 #' R6 Class representing a resource for managing volume content collections.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 VolumeContentCollection <- R6::R6Class(
   # nolint end
@@ -34,7 +35,9 @@ VolumeContentCollection <- R6::R6Class(
 
     # nocov start
     #' @description Print method for VolumeContentCollection class.
+    #'
     #' @param n Number of items to print in console.
+    #'
     #' @importFrom cli cli_text cli_h2
     #' @importFrom checkmate test_atomic
     #' @importFrom glue glue_col
@@ -116,6 +119,7 @@ VolumeContentCollection <- R6::R6Class(
     }, # nocov end
 
     #' @description Return previous page of results.
+    #'
     #' @importFrom rlang abort
     prev_page = function() {
       rlang::abort("Cannot paginate backwards.")

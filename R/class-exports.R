@@ -31,7 +31,7 @@ Exports <- R6::R6Class(
     #'  Note that when you export a file from a project on the Platform into a
     #'  volume, you write to your cloud storage bucket.
     #'
-    #' @param volume String volume id or Volume object. List all exports
+    #' @param volume Volume id or Volume object. List all exports
     #'  into this particular volume. Optional.
     #' @param state The state of the export job. Possible values are:
     #'  \itemize{
@@ -136,11 +136,11 @@ Exports <- R6::R6Class(
     # nolint end
     #'  (bulk operations will be implemented in next releases).
     #'
-    #' @param source_file String file id or File object you want to export to
+    #' @param source_file File id or File object you want to export to
     #'  the volume.
-    #' @param destination_volume String volume id or Volume object you want to
+    #' @param destination_volume Volume id or Volume object you want to
     #'  export files into.
-    #' @param destination_location String volume-specific location to which the
+    #' @param destination_location Volume-specific location to which the
     #'  file will be exported.
     #'  This location should be recognizable to the underlying cloud service as
     #'  a valid key or path to a new file. Please note that if this volume has
@@ -245,6 +245,7 @@ Exports <- R6::R6Class(
 
     # Delete export job ----------------------------------------------------
     #' @description Deleting export jobs is not possible.
+    #'
     #' @importFrom rlang inform
     delete = function() {
       rlang::inform("Deleting export jobs is not possible.")

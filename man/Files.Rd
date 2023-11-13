@@ -145,7 +145,7 @@ the API call to list all files in a project.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{The file ID string.}
+\item{\code{id}}{The file ID.}
 
 \item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 as 'fields', etc.}
@@ -172,7 +172,7 @@ More information you may find in the
 \describe{
 \item{\code{files}}{The list of files' IDs or list of File object to copy.}
 
-\item{\code{destination_project}}{Project object or project ID string
+\item{\code{destination_project}}{Project object or project ID.
 where you want to copy files into.}
 }
 \if{html}{\out{</div>}}
@@ -198,7 +198,7 @@ More information you may find on
 \describe{
 \item{\code{name}}{The name of the folder you are about to create.}
 
-\item{\code{parent}}{The ID string of the parent destination folder or a File
+\item{\code{parent}}{The ID of the parent destination folder or a File
 object which must be of type \code{FOLDER}.}
 
 \item{\code{project}}{The ID of the destination project, or a Project object.}

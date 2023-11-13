@@ -5,6 +5,7 @@
 #' R6 Class representing a resource for managing VolumePrefix objects.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 VolumePrefix <- R6::R6Class(
   # nolint end

@@ -9,6 +9,7 @@
 #' resource API request URL (href).
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 Collection <- R6::R6Class(
   # nolint end
@@ -30,6 +31,7 @@ Collection <- R6::R6Class(
     auth = NULL,
 
     #' @description Create a new Collection object.
+    #'
     #' @param href API request URL.
     #' @param items Items returned in API response.
     #' @param links List of links (hrefs) for next and/or previous page
@@ -48,7 +50,9 @@ Collection <- R6::R6Class(
     },
     # nocov start
     #' @description Print method for Collection class.
+    #'
     #' @param n Number of items to print in console.
+    #'
     #' @importFrom cli cli_text cli_h2
     #' @importFrom checkmate test_atomic
     #' @importFrom glue glue_col
@@ -76,8 +80,10 @@ Collection <- R6::R6Class(
       }
     }, # nocov end
     #' @description Return next page of results.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'advanced_access', 'fields', etc.
+    #'
     #' @importFrom rlang abort
     next_page = function(...) {
       checkmate::assert_list(self$links, null.ok = TRUE)
@@ -105,8 +111,10 @@ Collection <- R6::R6Class(
       }
     }, # nocov end
     #' @description Return previous page of results.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'advanced_access', 'fields', etc.
+    #'
     #' @importFrom rlang abort
     prev_page = function(...) {
       checkmate::assert_list(self$links, null.ok = TRUE)
@@ -135,8 +143,10 @@ Collection <- R6::R6Class(
     }, # nocov end
     #' @description Fetches all available items by iterating through all pages.
     #'  Please, be aware of the API rate limit for your request.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'advanced_access', 'fields', etc.
+    #'
     #' @importFrom rlang abort
     all = function(...) {
       if (is.null(self$href)) {
