@@ -98,7 +98,7 @@ read_ini <- function(file) {
 
 #' @title Parse Seven Bridges user config file into a nested list
 #'
-#' @param file path to config file
+#' @param file Path to config file
 #'
 #' @importFrom rlang abort
 #'

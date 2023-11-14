@@ -460,7 +460,6 @@ Project <- R6::R6Class(
     #'
     #' @importFrom rlang abort
     #' @importFrom glue glue
-
     get_member = function(user, ...) {
       if (is_missing(user)) {
         rlang::abort("Please provide a username or Member object.")

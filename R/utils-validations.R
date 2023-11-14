@@ -62,7 +62,7 @@ status_check <- function(req, as = "parsed", ...) {
 #'  the value is set at all (original meaning of 'missing' function)
 #'  in order to be able to use it with other object types.
 #'
-#' @param input Value to check
+#' @param input Value to check.
 #'
 #' @importFrom checkmate test_vector
 #'
@@ -86,7 +86,7 @@ is_missing <- function(input) {
 
 #' Check limit parameter
 #'
-#' @param limit Limit value
+#' @param limit Limit value.
 #'
 #' @noRd
 check_limit <- function(limit) {
@@ -105,7 +105,7 @@ check_limit <- function(limit) {
 
 #' Check offset parameter
 #'
-#' @param offset Offset value
+#' @param offset Offset value.
 #'
 #' @importFrom rlang abort
 #' @importFrom glue glue
@@ -127,7 +127,7 @@ check_offset <- function(offset) {
 
 #' Check tag parameters
 #'
-#' @param tags Tag values
+#' @param tags Tag values.
 #'
 #' @importFrom checkmate test_list
 #' @importFrom rlang abort
@@ -149,7 +149,7 @@ check_tags <- function(tags) {
 
 #' Check project settings
 #'
-#' @param settings settings named list
+#' @param settings Settings named list.
 # nolint start
 
 #' @importFrom checkmate assert_logical assert_list assert_character assert_integer
@@ -257,7 +257,7 @@ check_folder_name <- function(name) {
 }
 #' Check metadata
 #'
-#' @param metadata Metadata named list
+#' @param metadata Metadata named list.
 #'
 #' @importFrom checkmate test_list
 #' @importFrom rlang abort
@@ -282,7 +282,7 @@ check_metadata <- function(metadata) {
 #' Transform metadata input
 #' Transform metadata input to be in API acceptable form.
 #'
-#' @param metadata Metadata named list
+#' @param metadata Metadata named list.
 #'
 #' @noRd
 transform_metadata <- function(metadata) {
@@ -298,7 +298,7 @@ transform_metadata <- function(metadata) {
 #' Check file download destination
 #'
 #' @param directory_path Directory path, string.
-#' @param filename File name (base name)
+#' @param filename File name (base name).
 #'
 #' @noRd
 check_download_path <- function(directory_path, filename) {
@@ -343,8 +343,8 @@ check_retry_params <- function(input, parameter_to_validate) {
 
 #' Check size, part_size and part_length params for uploads
 #'
-#' @param size File size
-#' @param part_size Part size
+#' @param size File size.
+#' @param part_size Part size.
 #'
 #' @importFrom rlang abort
 #' @importFrom checkmate assert_numeric

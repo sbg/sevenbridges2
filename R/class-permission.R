@@ -56,7 +56,6 @@ Permission <- R6::R6Class(
     #'
     #' @importFrom purrr discard
     #' @importFrom glue glue
-    #'
     #' @importFrom cli cli_h1 cli_li cli_end
     print = function() {
       x <- as.list(self)
