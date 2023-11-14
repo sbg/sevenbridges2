@@ -143,7 +143,7 @@ They refer back to the respective item on the given volume. \cr
 
 If you want to import multiple files, the recommended way is to do it
 in bulk considering the API rate limit (\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).
-(bulk operations will be implemented in next releases).
+Bulk operations will be implemented in next releases.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Imports$submit_import(
   source_volume = NULL,

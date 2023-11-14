@@ -158,9 +158,9 @@ Files <- R6::R6Class(
     #'  you to copy files between projects. Unlike the call to copy a file
     #'  between projects, this call lets you batch the copy operation and copy
     #'  a list of files at a time. \cr
-    #'  More information you may find in the
+    #'  More information you may find
     # nolint start
-    #'  \url{https://docs.sevenbridges.com/reference/copy-files-between-projects}.
+    #'  [here](https://docs.sevenbridges.com/reference/copy-files-between-projects).
     # nolint end
     #'
     #' @param files The list of files' IDs or list of File object to copy.
@@ -226,8 +226,8 @@ Files <- R6::R6Class(
     #'  project or the provided parent folder. Remember that you should provide
     #'  either the destination project (as the `project` parameter) or the
     #'  destination folder (as the `parent` parameter), not both. \cr
-    #'  More information you may find on
-    #'  \url{https://docs.sevenbridges.com/reference/create-a-folder}.
+    #'  More information you may find
+    #'  [here](https://docs.sevenbridges.com/reference/create-a-folder).
     #'
     #' @param name The name of the folder you are about to create.
     #' @param parent The ID of the parent destination folder or a File

@@ -204,8 +204,10 @@ Project <- R6::R6Class(
     #' @param billing_group Billing object or ID of a particular billing
     #'  group you want to set to the project.
     #' @param settings Contains detailed project settings as explained in
-    #'  previous methods. Check our API documentation:
-    #'  \url{https://docs.sevenbridges.com/reference/edit-a-project}.
+    #'  previous methods. Check our
+    # nolint start
+    #'  [API documentation](https://docs.sevenbridges.com/reference/edit-a-project).
+    # nolint end
     #' @param tags The list of project tags you want to update.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'limit', 'offset', 'fields', etc.

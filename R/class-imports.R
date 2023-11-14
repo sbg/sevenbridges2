@@ -131,7 +131,7 @@ Imports <- R6::R6Class(
     # nolint start
     #'  in bulk considering the API rate limit ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).
     # nolint end
-    #'  (bulk operations will be implemented in next releases).
+    #'  Bulk operations will be implemented in next releases.
     #'
     #' @param source_volume Volume id or Volume object you want to import
     #'  files or folders from. Required if `source_location` parameter is

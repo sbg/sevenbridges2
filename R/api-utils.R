@@ -414,7 +414,7 @@ set_headers <- function(authorization = FALSE,
 #'  id, name and size for files. Default value is set to
 #'  `_all`, so all fields are always returned for each resource.
 #'  More details please check
-#'  \url{https://docs.sevenbridges.com/docs/the-api#section-general-api-information}
+#'  [here](https://docs.sevenbridges.com/docs/the-api#section-general-api-information)
 #'
 #' @return List of query parameters.
 #'

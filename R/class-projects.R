@@ -34,8 +34,9 @@ Projects <- R6::R6Class(
     #'  Please keep in mind that this way you will only be able to list
     #'  projects you are a member of. \cr \cr
     #'  More details on how to query projects, you can find in our
-    #'  documentation:
-    #'  \url{https://docs.sevenbridges.com/reference/list-all-your-projects}.
+    # nolint start
+    #'  [documentation](https://docs.sevenbridges.com/reference/list-all-your-projects).
+    # nolint end
     #'
     #' @param name Project's name.
     #' @param owner The username of the owner whose projects you want to query.

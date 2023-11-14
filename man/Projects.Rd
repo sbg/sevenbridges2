@@ -62,8 +62,7 @@ is provided.
 Please keep in mind that this way you will only be able to list
 projects you are a member of. \cr \cr
 More details on how to query projects, you can find in our
-documentation:
-\url{https://docs.sevenbridges.com/reference/list-all-your-projects}.
+\href{https://docs.sevenbridges.com/reference/list-all-your-projects}{documentation}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Projects$query(
   name = NULL,

@@ -161,8 +161,8 @@ Copy file/files to the specified project. This call allows
 you to copy files between projects. Unlike the call to copy a file
 between projects, this call lets you batch the copy operation and copy
 a list of files at a time. \cr
-More information you may find in the
-\url{https://docs.sevenbridges.com/reference/copy-files-between-projects}.
+More information you may find
+\href{https://docs.sevenbridges.com/reference/copy-files-between-projects}{here}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Files$copy(files, destination_project)}\if{html}{\out{</div>}}
 }
@@ -187,8 +187,8 @@ a new folder on the Platform within the root folder of a specified
 project or the provided parent folder. Remember that you should provide
 either the destination project (as the \code{project} parameter) or the
 destination folder (as the \code{parent} parameter), not both. \cr
-More information you may find on
-\url{https://docs.sevenbridges.com/reference/create-a-folder}.
+More information you may find
+\href{https://docs.sevenbridges.com/reference/create-a-folder}{here}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Files$create_folder(name, parent = NULL, project = NULL)}\if{html}{\out{</div>}}
 }

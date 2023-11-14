@@ -232,7 +232,7 @@ App <- R6::R6Class(
     #'  app. The revision number must not already exist and should follow the
     #'  sequence of previously created revisions. \cr \cr
     #'  More documentation about how to create the app via API can be found
-    #'  [here](https://docs.sevenbridges.com/reference/add-an-app-using-raw-cwl)
+    #' [here](https://docs.sevenbridges.com/reference/add-an-app-using-raw-cwl).
     #' @param raw A list containing a raw CWL for the app revision you are
     #'  about to create. To generate such a list, you might want to load some
     #'  existing JSON / YAML file. In case that your CWL file is in JSON format,
@@ -354,7 +354,7 @@ App <- R6::R6Class(
     #'  specifies criteria by which to batch its inputs into a series of further
     #'  sub-tasks, called child tasks. the documentation on
     # nolint start
-    #'  [batching tasks] (https://docs.sevenbridges.com/docs/about-batch-analyses)
+    #'  [batching tasks](https://docs.sevenbridges.com/docs/about-batch-analyses)
     # nolint end
     #'  for more details on batching criteria.
     #'

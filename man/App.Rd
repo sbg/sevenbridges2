@@ -217,7 +217,7 @@ app description, and stores it as the named revision for the specified
 app. The revision number must not already exist and should follow the
 sequence of previously created revisions. \cr \cr
 More documentation about how to create the app via API can be found
-\href{https://docs.sevenbridges.com/reference/add-an-app-using-raw-cwl}{here}
+\href{https://docs.sevenbridges.com/reference/add-an-app-using-raw-cwl}{here}.
 }
 
 \subsection{Returns}{
@@ -256,7 +256,7 @@ task or a batch task by using the app's default batching, override
 batching, or disable batching completely. A parent task is a task that
 specifies criteria by which to batch its inputs into a series of further
 sub-tasks, called child tasks. the documentation on
-\link{batching tasks} (https://docs.sevenbridges.com/docs/about-batch-analyses)
+\href{https://docs.sevenbridges.com/docs/about-batch-analyses}{batching tasks}
 for more details on batching criteria.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App$create_task(

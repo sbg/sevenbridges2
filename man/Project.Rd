@@ -193,8 +193,8 @@ Users with write permissions in the project can change the project
 group you want to set to the project.}
 
 \item{\code{settings}}{Contains detailed project settings as explained in
-previous methods. Check our API documentation:
-\url{https://docs.sevenbridges.com/reference/edit-a-project}.}
+previous methods. Check our
+\href{https://docs.sevenbridges.com/reference/edit-a-project}{API documentation}.}
 
 \item{\code{tags}}{The list of project tags you want to update.}
 

@@ -49,7 +49,7 @@
 #'  `_all`, so all fields are always returned for each resource.
 #'  More details please check
 # nolint start
-#'  \url{https://docs.sevenbridges.com/docs/the-api#section-general-api-information}
+#'  [here](https://docs.sevenbridges.com/docs/the-api#section-general-api-information).
 # nolint end
 #'
 #' @param base_url Platform URL, default is NULL.
