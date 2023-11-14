@@ -352,7 +352,7 @@ App <- R6::R6Class(
     #'  task or a batch task by using the app's default batching, override
     #'  batching, or disable batching completely. A parent task is a task that
     #'  specifies criteria by which to batch its inputs into a series of further
-    #'  sub-tasks, called child tasks. the documentation on
+    #'  sub-tasks, called child tasks. The documentation on
     # nolint start
     #'  [batching tasks](https://docs.sevenbridges.com/docs/about-batch-analyses)
     # nolint end

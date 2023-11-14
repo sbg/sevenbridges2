@@ -212,7 +212,7 @@ For example, \code{fields="id,name,size"} to return the fields
 id, name and size for files. Default value is set to
 \verb{_all}, so all fields are always returned for each resource.
 More details please check
-\href{https://docs.sevenbridges.com/docs/the-api#section-general-api-information}{general API documentation}}
+\href{https://docs.sevenbridges.com/docs/the-api#section-general-api-information}{general API documentation}.}
 }
 \if{html}{\out{</div>}}
 }
