@@ -17,6 +17,7 @@ Auth
 aws
 bamtools
 bbb
+BDC
 bg
 BioData
 bioinformatic
@@ -73,6 +74,7 @@ GCS
 gcs
 geometricPrecision
 getenv
+Github
 GitLab
 gitlab
 googleapis

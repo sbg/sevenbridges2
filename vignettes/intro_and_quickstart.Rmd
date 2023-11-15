@@ -1,0 +1,2363 @@
+---
+title: "Introduction and Quickstart for Seven Bridges API R Client"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    number_sections: true
+    theme: "flatly"
+    highlight: "textmate"
+    css: "sevenbridges.css"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Introduction and Quickstart for Seven Bridges API R Client}
+  %\VignetteEncoding{UTF-8}
+---
+
+<a name="top"></a>
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+
+`Important note:` This is a work-in-progress project to update the `sevenbridges2` package. Accordingly, this vignette will also change as new features are implemented.
+
+# Introduction
+
+`sevenbridges2` is an R package that provides an interface for Seven Bridges public API. The supported platforms includes the [Seven Bridges Platform](https://igor.sbgenomics.com/), [Cancer Genomics Cloud (CGC)](https://www.cancergenomicscloud.org), [BioData Catalyst (BDC)](https://platform.sb.biodatacatalyst.nhlbi.nih.gov/) and [Cavatica](https://cavatica.sbgenomics.com).
+
+Learn more from our documentation on the [Seven Bridges Platform](https://docs.sevenbridges.com/page/api), the [Cancer Genomics Cloud (CGC)](http://docs.cancergenomicscloud.org/v1.0/page/the-cgc-api), 
+[BioData Catalyst (BDC)](https://sb-biodatacatalyst.readme.io/reference/new-1)
+and [Cavatica](https://docs.cavatica.org/reference/the-api).
+
+Unlike the current `sevenbridges` package that is built on top of reference classes, the `sevenbridges2` package is based on more modern and lightweight R6 classes. However, the basic idea and way of constructing API requests is largely preserved.
+
+## R Client for Seven Bridges API
+
+The `sevenbridges2` package only supports v2+ versions of the API, since versions prior to V2 are not compatible with the Common Workflow Language (CWL). This package provides a simple interface for accessing and trying out various methods.
+
+There are two ways of constructing API calls. For instance, you can use low-level API calls which use arguments like `path`, `query`, and `body`. These are documented in the API reference libraries for the [Seven Bridges Platform](https://docs.sevenbridges.com/reference#list-all-api-paths) and the [CGC](http://docs.cancergenomicscloud.org/docs/new-1). An example of a low-level request to "list all projects" is shown below. In this request, you can also pass `query` and `body` as a list.
+
+```{r}
+library("sevenbridges2")
+a <- Auth$new(token = "<your_token>", platform = "aws-us")
+a$api(path = "projects", method = "GET")
+```
+
+***(Advanced user option)*** The second way of constructing an API request is to directly use the `httr` package to make your API calls.
+
+
+## API General Information
+
+The `sevenbridges2` package is organized by main resources from the Seven Bridges API reference. 
+There we have groups of endpoints for: projects, files, apps, tasks, invoices, volumes etc.
+For each group of resources the set of operations is available like `query()`, `get()` and `delete()` as common and other custom operations. 
+
+
+Before we start, keep in mind the following:
+
+__`Collection`__
+
+Every API call that returns as a result some list of items (usually the output from 
+`query()` operations), like fetching projects, files, apps etc, wraps the results into a general Collection class object containing `items` field from which users may access the items returned. 
+Additional options that Collection class is offering are possibilities to 
+navigate between pages of results, for example, to load next or previous page of results 
+by calling methods `next_page()` and `prev_page()`.
+
+Lastly, users are able to fetch all results using Collection's method `all()` which is a 
+shortcut to send multiple API calls for each next page and collect all results. 
+Keep in mind the limit used as well as the API rate limit.
+
+__`offset` and `limit`__
+
+Almost every API call accepts two arguments named `offset` and `limit`.
+
+- Offset defines where the retrieved items started.
+- Limit defines the number of items you want to get.
+
+By default, `offset` is set to `0` and `limit` is set to `50`. As such, your API request returns the __first 50 items__ when you list items or search for items by name. To search and list all items, use `complete = TRUE` if you use core `api()` function in your API request, or `all()`
+operation within the Collection object you've received as result. 
+
+
+__Search by ID__
+
+When searching by ID (usually it's the resource's `get()` operation), your request will return your exact resource as it is unique. As such, you do not have to set `offset` and `limit` manually. It is a good practice to find your resources by their ID and pass this ID as an input to your task. You can find a resource's ID in the final part of the URL on the visual interface or via the API requests to list resources or get a resource's details.
+
+
+## Installation
+
+The `sevenbridges2` package is available on CRAN and Seven Bridges Github repository.
+
+To install it from `CRAN`, use simply:
+```{r}
+install.packages("sevenbridges2")
+```
+
+To install the development version from `develop` branch on our Github, use
+`remotes` package:
+
+```{r}
+remotes::install_github(
+  "sbg/sevenbridges-r2",
+  build_vignettes = TRUE, dependencies = TRUE
+)
+```
+If you have trouble with `pandoc` and do not want to install it, set `build_vignettes = FALSE` to avoid the vignettes build.
+
+# Quickstart
+
+
+## Create `Auth` Object
+
+Before you can access your account via the API, you have to provide your credentials. You can obtain your credentials in the form of an ["authentication token"](https://docs.sevenbridges.com/v1.0/docs/get-your-authentication-token) from the **Developer Tab** under **Account Settings** on the visual interface. Once you've obtained this, create an `Auth` object, so it remembers your authentication token and the path for the API. All subsequent requests will draw upon these two pieces of information.
+
+Let's load the package first:
+
+```{r, eval = TRUE, message = FALSE}
+library("sevenbridges2")
+```
+
+You have three different ways to provide your token. Choose from one method below:
+
+1. [Direct authentication.](#method1) Here you should provide your developer token and a base URL for the platform of interest (alternatively, you can provide the name of the platform - these are the available options `cgc`, `aws-us`, `aws-eu`, `ali-cn`, `cavatica`, `f4c` - the default platform is `aws-us`) as a function call arguments to `Auth()`. This will create the platform authentication object and temporarily set up your token and platform base URL as environment variables `SB_AUTH_TOKEN` and `SB_API_ENDPOINT`. This way, your token will not be directly stored in the Auth object, but you will still be able to access it by calling the `get_token()` method. Keep in mind that these environment variables are session-specific and are deleted when the session ends.
+
+2. [Authentication via system environment variables.](#method2) By default this will read the credential information from two existing system environment variables: `SB_API_ENDPOINT` and `SB_AUTH_TOKEN`. Of course, assuming that you have previously set these environment variables. Alternatively, you can specify the names of the system environment variables you want to be loaded using the `sysenv_token` and `sysenv_url` arguments.
+3. [Authentication via the user configuration file.](#method3) This file, by default `$HOME/.sevenbridges/credentials`, provides an organized way to collect and manage all your API authentication information for Seven Bridges platforms.
+
+
+If you need to be logged into multiple accounts at the same time (which can also be for different platforms), please use either the second or third method.
+
+<div style="margin-left:3em"><a name="method1"/>**Method 1: Direct authentication**
+
+This is the most common method to construct the `Auth` object. For example:
+
+```{r}
+(a <- Auth$new(platform = "aws-us", token = "<your-token>"))
+```
+
+<a name="method2"/>**Method 2: Environment variables**
+
+To set the two environment variables in your system, you could use
+the function `sbg_set_env()`. For example:
+
+```{r}
+sbg_set_env(url = "https://api.sbgenomics.com/v2/", token = "<your_token>")
+```
+
+Note that these environment variables are session-specific.
+
+Create an `Auth` object:
+
+```{r}
+a <- Auth$new(from = "env")
+```
+
+If you need to be logged into multiple accounts at the same time it is essential that you provide
+environment variables for each of the accounts. Of course, these variables must have different names.
+
+If you do not have pre-set environment variables, you can create them in the following way:
+
+```{r}
+# Set environment variables for the first account
+sevenbridges2:::sbg_set_env(
+  url = "https://api.sbgenomics.com/v2",
+  token = "<your_token>",
+  sysenv_url_name = "account_1_url",
+  sysenv_token_name = "account_1_token"
+)
+
+# Set environment variables for the second account
+sevenbridges2:::sbg_set_env(
+  url = "https://api.sb.biodatacatalyst.nhlbi.nih.gov/v2/",
+  token = "<your_token>",
+  sysenv_url_name = "account_2_url",
+  sysenv_token_name = "account_2_token"
+)
+```
+
+Now you are ready to create authentication object for these two accounts:
+
+```{r}
+a <- sevenbridges2::Auth$new(
+  from = "env",
+  sysenv_url = "account_1_url",
+  sysenv_token = "account_1_token"
+)
+
+b <- sevenbridges2::Auth$new(
+  from = "env",
+  sysenv_url = "account_2_url",
+  sysenv_token = "account_2_token"
+)
+```
+
+<a name="method3"/>***Method 3: User configuration file***
+
+Assume we have already created the configuration file named
+`credentials` under the directory `$HOME/.sevenbridges/`:
+
+```
+[aws-us-rfranklin]
+api_endpoint = https://api.sbgenomics.com/v2
+auth_token = token_for_this_user
+
+# This is a comment:
+# another user on the same platform
+[aws-us-rosalind-franklin]
+api_endpoint = https://api.sbgenomics.com/v2
+auth_token = token_for_this_user
+
+[default]
+api_endpoint = https://cgc-api.sbgenomics.com/v2
+auth_token = token_for_this_user
+
+[gcp]
+api_endpoint = https://gcp-api.sbgenomics.com/v2
+auth_token = token_for_this_user
+```
+
+To load the user profile `aws-us-rfranklin` from this configuration file, simply use:
+
+```{r}
+a <- sevenbridges2::Auth$new(from = "file", profile_name = "aws-us-rfranklin")
+```
+
+If `profile_name` is not specified, we will try to load the profile named `[default]`:
+
+```{r}
+a <- sevenbridges2::Auth$new(from = "file")
+```
+
+
+The option based on the use of a configuration file also enables simultaneous authentication from multiple accounts. 
+Assuming that we have a configuration file like the one listed above, and that we want to create authentication objects for two profiles (**default** and **aws-us-rfranklin**), we can achieve this in the following way:
+
+```{r}
+a <- sevenbridges2::Auth$new(from = "file", profile_name = "default")
+b <- sevenbridges2::Auth$new(from = "file", profile_name = "aws-us-rfranklin")
+```
+
+
+***Note:*** API paths (base URLs) differ for each Seven Bridges environment. Be sure to provide the correct path for the environment you are using. API paths for some of the environments are:
+
++-------------------------------------------+---------------------------------------------------+---------------+
+| Platform Name                             | API Base URL                                      | Short Name    |
++===========================================+===================================================+===============+
+| Seven Bridges Platform (US)               | `https://api.sbgenomics.com/v2`                   | `"aws-us"`    |
++-------------------------------------------+---------------------------------------------------+---------------+
+| Seven Bridges Platform (EU)               | `https://eu-api.sbgenomics.com/v2`                | `"aws-eu"`    |
++-------------------------------------------+---------------------------------------------------+---------------+
+| Seven Bridges Platform (China)            | `https://api.sevenbridges.cn/v2`                  | `"ali-cn"`    |
++-------------------------------------------+---------------------------------------------------+---------------+
+| Cancer Genomics Cloud (CGC)               | `https://cgc-api.sbgenomics.com/v2`               | `"cgc"`       |
++-------------------------------------------+---------------------------------------------------+---------------+
+| Cavatica                                  | `https://cavatica-api.sbgenomics.com/v2`          | `"cavatica"`  |
++-------------------------------------------+---------------------------------------------------+---------------+
+| BioData Catalyst Powered by Seven Bridges | `https://api.sb.biodatacatalyst.nhlbi.nih.gov/v2` | `"f4c"`       |
++-------------------------------------------+---------------------------------------------------+---------------+
+
+
+</div>
+
+<div align="right"><a href="#top">top</a></div>
+
+
+## Get User Information
+
+<a name="youruser"/>**Get your own information**
+
+This call returns information about your account.
+
+```{r}
+a$user()
+```
+
+```
+── User ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+• country: United States
+• affiliation: SBG
+• last_name: Franklin
+• first_name: Rosalind
+• email: rosalind.franklin@sbgenomics.com
+• username: RFranklin
+• href: https://cgc-api.sbgenomics.com/v2/users/RFranklin
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+
+**Get information about a user**
+
+This call returns information about the specified user. Note that currently you can view only your own user information, so this call is equivalent to the [call to get information about your account](#youruser).
+
+```{r}
+a$user(username = "RFranklin")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+
+## Rate Limit
+
+This call returns information about your current rate limit. This is the number of API calls you can make in five minutes. This call also returns information about your current instance limit.
+
+```{r}
+a$rate_limit()
+```
+
+```
+── Rate Limit ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+• rate
+  • limit: 1000
+  • remaining: 1000
+  • reset: 2022-12-26 11:31:01 CET
+• instance
+  • limit: 25
+  • remaining: 25
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Show Billing Information
+
+Each project must have a Billing Group associated with it. This Billing Group pays for the storage and computation in the project.
+
+For example, your first project(s) were created with the free funds from the Pilot Funds Billing Group assigned to each user at sign-up.
+
+To get a list of paths used to access billing information via the API:
+
+``` {r}
+# get paths used to access billing information
+a$billing()
+```
+
+To get information about your billing groups:
+
+```{r}
+# check your billing info
+a$billing_groups$query()
+```
+
+This call lists all your billing groups, including groups that are pending or have been disabled.
+
+To get information about your invoices:
+```{r}
+a$invoices$query()
+```
+
+The call returns information about all your available invoices, unless you use the \code{billing_group_id} query parameter to specify the ID of a particular billing group, in which case it will return the invoice incurred by that billing group only.
+
+To get a detailed information for a specific billing group, please use the billing_group method with the billing group ID. The information returned includes the billing group owner, the total balance, and the status of the billing group (pending, disabled,...). 
+
+```{r}
+a$billing_groups$get(id = "<billing_group_id>")
+```
+
+```
+── Billing group info ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+• disabled: FALSE
+• pending: FALSE
+• type: regular
+• name: My billing group
+• owner: <bg_owner's_username>
+• id: <billing_group_id>
+• href: https://api.sbgenomics.com/v2/billing/groups/<billing_group_id>
+• balance
+  • currency: USD
+  • amount: 221
+```
+
+Keep in mind that you can assign the output of the previous call to a variable, which will be an R6 environment:
+```{r}
+my_billing_group <- a$billing_groups$get(id = "<billing_group_id>")
+# you can still print the billing group info by calling the print method
+my_billing_group$print()
+```
+
+You can also get detailed information for a specific billing group,.The following options are available to you:
+\itemize{
+  \item analysis breakdown
+  \item storage breakdown
+  \item egress breakdown
+}
+
+To get an analysis breakdown for a billing group which contains information on both the tasks and Cruncher analysis, call:
+
+```{r}
+my_billing_group$analysis_breakdown()
+```
+
+To get a storage breakdown for a billing group, call:
+
+```{r}
+my_billing_group$storage_breakdown()
+```
+
+Finally, you may want to get an egress breakdown for a billing group:
+
+```{r}
+my_billing_group$egress_breakdown()
+```
+If something changes in the billing group, you can refresh your Billing
+object by reloading it with:
+
+```{r}
+my_billing_group$reload()
+```
+
+To retrieve information about a selected invoice, including the costs for analysis and storage, and the invoice period, you can use the invoice method with the id parameter set to the ID of the invoice you are querying.
+
+```{r}
+invoice <- a$invoices$get(id = "<invoice_id>")
+invoice
+```
+
+```
+── Invoice info ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+• approval_date: 2022-02-01T00:00:00Z
+• pending: FALSE
+• invoice_id: <your_invoice_id>
+• href: https://api.sbgenomics.com/v2/billing/invoices/<your_invoice_id>
+• invoice_period
+  • from: 2022-01-01T00:00:00Z
+  • to: 2022-01-31T23:59:59Z
+• analysis_costs
+  • currency: USD
+  • amount: 101.77
+• storage_costs
+  • currency: USD
+  • amount: 256.11
+• total
+  • currency: USD
+  • amount: 357.88
+```
+<div align="right"><a href="#top">top</a></div>
+
+Same applies for invoices, if something changes, you can refresh your Invoice object by reloading it with:
+
+```{r}
+invoice$reload()
+```
+
+## Create Project
+
+Projects are the core building blocks of the platform. Each project corresponds to a distinct scientific investigation, serving as a container for its data, analysis tools, results, and collaborators.
+
+Create a new project called "api testing" with the billing group `id` obtained above.
+
+```{r}
+# list all available billing groups for currently logged in user
+a$billing_groups$query()
+# set billing group for the new project
+bid <- "<billing_group_id>"
+# create new project
+p <- a$projects$create(
+  name = "api testing", billing_group = bid,
+  description = "Just a test"
+)
+```
+
+```
+── Project ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+• category: PRIVATE
+• root_folder: <root_folder_id>
+• type: v2
+• description: Just a test
+• billing_group: <billing_group_id>
+• name: new project
+• id: <your_username>/new-project
+• href: https://api.sbgenomics.com/v2/projects/<your_username>/new-project
+• settings
+  • locked: FALSE
+  • controlled: FALSE
+  • location: aws:us-east-1
+  • use_interruptible_instances: TRUE
+  • use_memoization: FALSE
+  • intermediate_files: list(duration = 24, retention = "LIMITED")
+  • allow_network_access: TRUE
+  • use_elastic_disk: FALSE
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+The **new project** is created on the platform. Notice also that the variable p is an R6 object with fields that contain information about the platform project. The facility also has several methods that allow you to perform basic platform operations on the project.
+
+
+## Get Details about Existing Project
+
+```{r}
+# list first 50 projects
+a$projects$query()
+# return all projects that contain the term "demo"
+a$projects$query(name = "demo")
+# return all projects tagged with "test_1"
+a$projects$query(tags = list("test_1"))
+```
+
+## Get Details of a Specified Project
+
+```{r}
+a$projects$get(project = "api-testing")
+```
+
+```
+── Project ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+• category: PRIVATE
+• modified_on: 2022-12-20T16:09:20Z
+• created_on: 2022-12-20T16:09:20Z
+• created_by: luna_lovegood
+• root_folder: 12a1ab12345a12345a12345a
+• type: v2
+• billing_group: ab12345a-123a-1234-1234-a1ab12a12ab1
+• name: nargles-project
+• id: luna_lovegood/nargles-project
+• href: https://api.sbgenomics.com/v2/projects/luna_lovegood/nargles-project
+• settings
+  • locked: FALSE
+  • controlled: FALSE
+  • location: aws:us-east-1
+  • use_interruptible_instances: TRUE
+  • use_memoization: FALSE
+  • intermediate_files: list(duration = 24, retention = "LIMITED")
+  • allow_network_access: FALSE
+  • use_elastic_disk: FALSE
+• permissions
+  • write: TRUE
+  • read: TRUE
+  • copy: TRUE
+  • execute: TRUE
+  • admin: TRUE
+```
+
+## Create a New Project
+
+```{r}
+a$projects$create(
+  name = "api_created_project",
+  billing_group = "<your_billing_group_id>",
+  description = "This project has been created using the
+              sevenbridges2 R API library."
+)
+```
+
+```
+── Project ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+• category: PRIVATE
+• root_folder: 12a123ab1234a12a1ab1234a
+• type: v2
+• description: This project has been created using the sevenbridges2 R 
+API library.
+• billing_group: <your_billing_group_id>
+• name: api_created_project
+• id: <owner>/api-created-project
+• href: https://cgc-api.sbgenomics.com/v2/projects/<owner>/api-created-project
+• settings
+  • locked: FALSE
+  • controlled: FALSE
+  • location: aws:us-east-1
+  • use_interruptible_instances: TRUE
+  • use_memoization: FALSE
+  • intermediate_files: list(duration = 24, retention = "LIMITED")
+  • allow_network_access: FALSE
+  • use_elastic_disk: FALSE
+```
+
+## Edit an existing project
+
+If for some reason you want to edit an existing project, you can do so by using
+the **update** method on the Project class object. As a project Admin you can use
+it to change the name, settings, tags or billing group of the project. For 
+example, if you want to change the name and description of the project, you can
+do it in the following way:
+
+```{r}
+p <- a$projects$get(
+  project = "<project's-short-name>"
+)
+p$update(
+  name = "project_with_modified_name",
+  description = "This is the modified description."
+)
+```
+
+Keep in mind that this modifies only the name of the project, not its short 
+name. Therefore, after calling this method, the id of the project will remain 
+the same \code{your_username/project's-short-name}.
+
+If something changes in the project on the Platform UI, you can refresh your Project object to fetch the changes, by reloading it with:
+
+```{r}
+p$reload()
+```
+
+## Delete a project
+
+You may also want to delete some project from the Platform using through the R 
+client library. To do that, you need to call the \code{delete} method on the 
+project object:
+
+```{r}
+p <- a$projects$get(
+  project = "<project's-short-name>"
+)
+p$delete()
+```
+
+Please be careful when using this method and note that calling it will
+permanently delete the project from the platform.
+
+
+## List project members
+
+To get a list of the members of the specified project:
+
+```{r}
+p$list_members()
+```
+
+
+## Add a member to a project
+
+To add a new user to a specified project:
+
+```{r}
+p <- a$projects$get(
+  project = "<project's-short-name>"
+)
+p$add_member(user = "<username_of_a_user_you_want_to_add>")
+```
+
+
+Please keep in mind that this call can only be successfully made by a user who 
+has admin permissions in the project.
+
+
+## Remove a project member
+
+On the other hand, you can delete a member from the project in a similar way:
+
+```{r}
+p$remove_member(user = "<username_of_a_user_you_want_to_remove>")
+```
+
+
+## Get and modify project member's permissions
+
+Sometimes you may just want to investigate a members's permissions within a 
+specified project or update them, and you can do that by calling the \code{
+modify_member_permissions} method. For this method to work, the user calling it 
+must have admin permissions in the project. For example, you may want to give 
+write permissions to a project member:
+
+```{r}
+p$modify_member_permissions(
+  user = "<username_of_a_user_of_interest>",
+  permissions = list(write = TRUE)
+)
+```
+
+## List project files
+
+In order to list all files and folders (special type of files) within 
+specified project object, you can use the Project's `list_files()` method. 
+
+```{r}
+p$list_files()
+```
+
+## Create folder within project's Files
+
+You are also able to create a folder within project's root Files directory
+using the method `create_folder()`. You would have to specify the folder name
+which should not start with '__' or contain spaces. 
+
+```{r}
+p$create_folder(name = "My_new_folder")
+```
+
+## Get project's root folder object
+
+Lastly, the project's root directory with all your files is a folder itself,
+therefore you are able to get this folder as File object too using
+`get_root_folder()`.
+
+```{r}
+p$get_root_folder()
+```
+
+
+## List files
+
+List of `files` and `subdirectories` in a specified **project** or **directory** 
+within a project, with specified properties that you can access. The project or 
+directory whose contents you want to list is specified as a parameter in 
+the call. Further properties to filter by can also be specified as query 
+parameters.
+
+Both `files` and `subdirectories` are of class `File`. The difference between
+them is in the `type` parameter which is:
+
+- `File` for `files`
+- `Folder` for `subdirectories`
+
+Note that this call lists both `files` and `subdirectories` in the 
+specified project or directory within a project, 
+but **not the contents of the subdirectories**. To list the contents of a 
+subdirectory, make a new call and specify the subdirectory as the parent 
+parameter.
+
+```{r}
+# List files in project root directory
+a$files$query(project = "<project_object>")
+```
+```
+[[1]]
+
+── File ────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 61f3f9c6e6aad8667516bf30
+• url: NA
+• modified_on: 2023-04-15T08:54:32Z
+• created_on: 2023-04-11T10:04:50Z
+• project: vladimir_obucina/api-debug
+• size: 56 bytes
+• name: Drop-seq_small_example.bam
+• id: 643530c286c9522d97313d17
+• href: https://api.sbgenomics.com/v2/files/643530c286c9522d97313d17
+
+[[2]]
+
+── File ────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 61f3f9c6e6aad8667516bf30
+• url: NA
+• modified_on: 2023-04-11T10:29:13Z
+• created_on: 2023-04-11T10:29:13Z
+• project: vladimir_obucina/api-debug
+• size: 56 bytes
+• name: G20479.HCC1143.2_1Mreads.tar.gz
+• id: 6435367997d9446ecb66cfb2
+• href: https://api.sbgenomics.com/v2/files/6435367997d9446ecb66cfb2
+
+```
+``` {r}
+# List files in subdirectory
+a$files$query(parent = "<parent_directory_object>")
+```
+
+You can also try and find file with certain:
+
+1. **Name** - List file with this name. (Note that the name must be an exact\
+complete string for the results to match.)
+2. **Metadata** - List only files that have the specified value in metadata\
+field.
+3. **Tag** - List files containing this tag. (Note that the tag must be an\
+exact complete string for the results to match.)
+4. **Origin task** - List only files produced by task specified by ID in\
+this field.
+
+```{r}
+# List file with this name
+a$files$query(project = "<project_object", name = "<file_name>")
+
+# List file with metadata field value
+a$files$query(
+  project = "<project_object",
+  metadata = list("<metadata_field>" = "<metadata_field_value>")
+)
+
+# List file with this tag
+a$files$query(project = "<project_object", tag = c("<tag_value>"))
+
+# List file from this task
+a$files$query(project = "<project_object", task = "<task_object>")
+```
+
+Also there is an option to get certain file using it's ID
+```{r}
+a$files$get(id = "6435367997d9446ecb66cfb2")
+```
+```
+── File ────────────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 61f3f9c6e6aad8667516bf30
+• url: NA
+• modified_on: 2023-04-11T10:29:13Z
+• created_on: 2023-04-11T10:29:13Z
+• project: vladimir_obucina/api-debug
+• size: 56 bytes
+• name: G20479.HCC1143.2_1Mreads.tar.gz
+• id: 6435367997d9446ecb66cfb2
+• href: https://api.sbgenomics.com/v2/files/6435367997d9446ecb66cfb2
+```
+
+## Copy files
+
+This method allows you to copy files between projects. 
+Unlike the call to copy a file between projects, 
+this call lets you batch the copy operation and copy a list of files at a time.
+```{r}
+file1 <- a$files$get(id = "6435367997d9446ecb66cfb2")
+file2 <- a$files$get(id = "6435367997d9446ecb66cgr2")
+
+a$files$copy(
+  files = list(file1, file2),
+  destination_project = "<short-name-of-the-project>"
+)
+```
+
+## Create a folder within the destination project or parent folder
+
+To create a new folder on the Platform, use the authentication object's \code{
+create_folder} method. It allows you to create a new folder on the Platform
+within the root folder of a specified destination project or the provided
+parent folder. Remember that you should provide either the destination project
+(as the `project` parameter) or the
+destination folder (as the `parent` parameter), not both.
+
+The `project` parameter can be provided either as a Project object or as an ID
+of a destination project. 
+
+```{r}
+# Option 1 - Using the project parameter
+
+# Option 1.a (providing a Project object as project parameter)
+my_project <- a$projects$get(project = "<short-name-of-the-project>")
+a$files$create_folder(name = "my_new_folder", project = my_project)
+
+# Option 1.b (providing a project's ID as project parameter)
+a$files$create_folder(name = "my_new_folder", project = "<project_id>")
+```
+
+
+Alternatively, you can provide the `parent` parameter to specify the
+destination where the new folder is going to be created. The `parent`
+parameter can be either a File object (must be of type `folder`) or
+an ID of the parent destination folder.
+
+```{r}
+# Option 2 - Using the parent parameter
+
+# Option 2.a (providing a File (must be a folder) object as parent parameter)
+my_parent_folder <- a$files$get(id = "<folder_id>")
+a$files$create_folder(name = "my_new_folder", parent = my_parent_folder)
+
+# Option 2.b (providing a file's (folder's) ID as project parameter)
+a$files$create_folder(name = "my_new_folder", parent = "<folder_id>")
+```
+
+## File print
+
+File has a regular `print()` method which gives you most important information
+about the file:
+```{r}
+# Regular file print
+file$print()
+```
+
+```
+── File ────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 61f3f9c6e6aad8667516bf30
+• url: NA
+• modified_on: 2023-04-15T08:54:32Z
+• created_on: 2023-04-11T10:04:50Z
+• project: vladimir_obucina/api-debug
+• size: 56 bytes
+• name: Drop-seq_small_example.bam
+• id: 643530c286c9522d97313d17
+• href: https://api.sbgenomics.com/v2/files/643530c286c9522d97313d17
+```
+
+But if you want to see all the details about the file in specific format,
+you can use `detailed_print()` method:
+
+```{r}
+# Pretty print
+file$detailed_print()
+```
+```
+── File ────────────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 61f3f9c6e6aad8667516bf30
+• url: NA
+• modified_on: 2023-04-15T08:54:32Z
+• created_on: 2023-04-11T10:04:50Z
+• project: vladimir_obucina/api-debug
+• size: 56 bytes
+• name: Drop-seq_small_example.bam
+• id: 643530c286c9522d97313d17
+• href: https://api.sbgenomics.com/v2/files/643530c286c9522d97313d17
+• tags
+  • tag_1: TEST
+  • tag_2: bla
+• metadata
+  • reference_genome: GSM1629193_hg19_ERCC
+  • investigation: GSM1629193
+  • md5_sum: 6294fee8200b29e03d3dc464f9c46a9c
+  • sbg_public_files_category: test
+• storage
+  • type: PLATFORM
+  • hosted_on_locations: list("aws:us-east-1", "aws:us-west-2")
+```
+
+## Update file details
+
+User can also update the name, the full set metadata, and tags for a specified
+file using `update()` method.
+
+``` {r}
+# Update file name
+file$update(name = "<new_name>")
+
+# Update file metadata
+file$update(
+  metadata = list("<metadata_field>" = "<metadata_field_value")
+)
+
+# Update file tags
+file$update(tags = list("<tag_value>"))
+```
+
+## Add tags to a file
+
+You can tag your files on the Platform with keywords to make it easier to 
+identify and organize files you’ve imported from public datasets or copied 
+between projects using `add_tag()` method. This method will automatically just 
+add new tag to a list of already existing ones, but you also have an option to 
+set `overwrite` parameter, which will erase old ones and set the new one.
+
+```{r}
+# Add new tag to a file
+file$add_tag(tags = list("new_tag"))
+
+# Add new tag to a file and overwrite old ones
+file$add_tag(tags = list("new_tag"), overwrite = TRUE)
+```
+
+## Copy a file between projects
+
+This call copies the specified file to a new project. Files retain their 
+metadata when copied, but may be assigned new names in their target project.
+If you don't specify new name the file will retain it's old name in new project.
+To make this call, you should have 
+[copy permission](https://docs.sevenbridges.com/docs/set-permissions) 
+within the project you are copying from. This call returns `File` object of 
+newly copied file.
+
+```{r}
+# Copy file to a new project and set a new name
+file$copy_to(project = "<destination_project_object>", name = "<new_name>")
+```
+
+## Get downloadable URL for a file
+
+To get URL that you can use to download the specified file, you can use
+`get_download_url()` method. This will set `url` parameter of a file and can 
+later be used to download file.
+
+```{r}
+# Get downloadable URL for a file
+file$get_download_url()
+```
+
+
+## Get a file's metadata
+`File` object has `get_metadata()` method which returns the metadata values for 
+the specified file. This will pull and reload file's metadata from the platform.
+
+```{r}
+# Get file metadata
+file$get_metadata()
+```
+
+## Modify a file's metadata
+
+User is also able to modify a file's metadata using `set_metadata()` method.
+Here you can also use `overwrite` parameter if you want to erase previous
+metadata fields and add new one (by default it's set to `FALSE`).
+
+```{r}
+# Set file metadata
+file$set_metadata(
+  metadata_fields = list("<metadata_field>" = "metadata_field_value"),
+  overwrite = TRUE
+)
+```
+
+## List folder contents
+
+Directory can have multiple `files`/`subdirectories` inside. You can see them
+using `list_contents()` method.
+
+```{r}
+# List folder contents
+folder$list_contents()
+```
+
+## Delete a file/folder
+
+User can delete files and folders using `delete()` method. The only thing you
+need to be aware of is that `folder` can only be deleted if it's empty.
+
+```{r}
+# Delete a file
+file$delete()
+
+# Delete a folder
+folder$delete()
+```
+
+## Reload file
+
+To keep your local File object up to date with the file on the platform, you can always call the `reload()` function:
+
+```{r}
+file$reload()
+folder$reload()
+```
+
+## Download a file
+
+`File` object has a `download()` method, which allows you to download that file
+to your local computer. You should provide the `directory_path` parameter, 
+which specifies the destination directory to which your file will be 
+downloaded. By default, this parameter is set to your current working
+directory. You can also set the new name for your resulting (downloaded)
+file by providing the `filename` parameter. Otherwise, the default name 
+(the one stored in the `name` field of your `File` object) will be used.
+
+```{r}
+# Download a file
+file$download(directory_path = "/path/to/your/destination/folder")
+```
+
+## Upload single file
+
+You can upload files from your local computer to the Platform using the 
+`upload()` method on your `Auth` object. The method allows you to upload only
+a single file. 
+
+To upload a file you should provide its full path on your local computer
+as the `path` parameter.
+
+To specify upload destination for your file you can use either `project` or
+`parent` parameter. These two parameters should not be used together.
+
+* **project** - `Project` object or project ID.
+* **parent** - `File` object (of type `Folder`) or its ID.
+
+#### Upload a single file
+
+```{r}
+a <- Auth$new(platform = "aws-us", token = "<your-token>")
+
+
+# Option 1 - Using the project parameter
+# Option 1.a (providing a Project object as project parameter)
+destination_project <- a$projects$get(project = "<short-name-of-the-project>")
+
+up <- a$upload(
+  path = "/path/to/your/file.txt",
+  project = destination_project,
+  overwrite = TRUE
+)
+# Call start() method do start upload process
+up$start()
+
+# Option 1.b (providing a project's ID as project parameter)
+up <- a$upload(
+  path = "/path/to/your/file.txt",
+  project = "<project_id>",
+  overwrite = TRUE
+)
+# Call start() method do start upload process
+up$start()
+
+
+# Option 2 - Using the parent parameter
+# Option 2.a (providing a File (must be a folder) object as parent parameter)
+destination_folder <- a$files$get(id = "<folder_id>")
+
+up <- a$upload(
+  path = "/path/to/your/file.txt",
+  parent = destination_folder,
+  overwrite = TRUE
+)
+# Call start() method do start upload process
+up$start()
+
+# Option 2.b (providing a file's (folder's) ID as project parameter)
+up <- a$upload(
+  path = "/path/to/your/file.txt",
+  parent = "<destination_folder_id>",
+  overwrite = TRUE
+)
+# Call start() method do start upload process
+up$start()
+```
+
+If you want to skip the step where you need to call the `start()` method
+to start the actual upload process, you can use the `init` parameter
+when calling the `upload()` method. If `init` parameter is set to `FALSE`
+the upload process will start right away.
+
+```{r}
+a <- Auth$new(platform = "aws-us", token = "<your-token>")
+
+destination_project <- a$projects$get(project = "<short-name-of-the-project>")
+
+up <- a$upload(
+  path = "/path/to/your/file.txt",
+  project = destination_project,
+  overwrite = TRUE,
+  init = FALSE
+)
+```
+
+#### List all ongoing uploads
+
+The method `list_ongoing_uploads()` allows you to see the list of all
+ongoing upload processes.
+
+```{r}
+# List ongoing uploads
+a$list_ongoing_uploads()
+```
+
+#### Abort upload process
+
+You can abort any uploading process using the `upload_abort()` method.
+To do so, you need to provide the ID of a process within the `upload_id`
+parameter.
+
+```{r}
+# Abort upload
+a$abort_upload(upload_id = "<id_of_the_upload_process>")
+```
+
+# Apps
+
+## List apps
+
+You can list all apps available to by calling the `apps$query()` method from
+the authentication object. The method has several parameters that allow you to
+search for apps in various places and by specified search terms.
+
+Note that you can see all of the publicly available apps on the Seven Bridges
+Platform by setting the the `visibility` parameter to `public`. If you omit this
+parameter (it will use the default value `private`), and you will see all your
+private apps, i.e. those in projects that you can access. Learn more about
+public apps in our documentation.
+
+```{r}
+# Query public apps - set visibility parameter to "public"
+a$apps$query(visibility = "public", limit = 10)
+```
+
+The same can be done for private apps. The following call will return all the
+apps available to you, i.e. all the apps that you have in your projects:
+
+```{r}
+# Query private apps - set limit to 10
+a$apps$query(limit = 10)
+```
+
+Keep in mind that not all of the available apps are going to be returned,
+because the `limit` parameter is set to 10.
+
+Alternatively, you can query all the apps in a specific project by providing
+the project of interest using the `project` parameter. You can either use the
+Project object, or a project ID (string).
+
+```{r}
+# Query apps within your project - set limit to 10
+a$apps$query(project = "<project_object_or_its_ID>", limit = 10)
+```
+
+
+You can also use one or more search terms via the `query_terms` parameter to
+query all apps that are available to you. Search terms should relate to the
+following app details:
+
+* name
+* label
+* toolkit
+* toolkit version
+* category
+* tagline
+* description
+
+For example, to get public apps that contain term **"VCFtools"** anywhere in
+the mentioned app's details, you can make a call similar to this:
+
+```{r}
+# List public apps containing the term "VCFtools" in app's details
+a$apps$query(visibility = "public", query_terms = list("VCFtools"), limit = 10)
+```
+
+For the query to return results, each term must match at least one of the
+fields that describe an app. For example, the first term can match the app's
+name while the second can match the app description. However, if any part of
+the search fails to match app details, the call will return an empty list.
+
+
+Another useful option is to query apps by id. You can do so either for public
+apps, or for private apps (apps available to you). The following example
+illustrates how this can be done for public apps:
+
+```{r}
+# List files in project root directory
+a$apps$query(
+  visibility = "public",
+  id = "admin/sbg-public-data/vcftools-convert"
+)
+```
+
+### List project apps
+
+All available apps in a specific project can also be listed by calling the
+`list_apps()` method directly on the Project object. This method has redefined
+the `project` and `visibility` arguments, while all other parameters are
+identical to those presented for `apps$query()`.
+
+```{r}
+# List apps in specified project
+p$list_apps(limit = 10)
+```
+
+## Get app information
+
+If you need information about a specific app, you can get it using the
+`apps$get()` method. Keep in mind that the app should be one in a project that
+you can access. This could be an app that has been uploaded to the Seven
+Bridges Platform by a project member, or a publicly available app. You should
+provide an `id` of the app of interest, and optionally its `revision`. If no
+revision is specified, the latest one will be used.
+
+```{r}
+# Get a public App object and assign it to an object
+bcftools_app <- a$apps$get(id = "admin/sbg-public-data/bcftools-call-1-15-1")
+```
+
+
+
+## Copy an app
+
+
+To copy an app to a specified destination project, you can use the
+`apps$copy()` method.
+
+Keep in mind that the app should be one in a project that
+you can access. This could be an app that has been uploaded to the Seven
+Bridges Platform by a project member, or a publicly available app.
+
+Destination project (`project` parameter) should be provided either as an
+object of `Project` class, or as an ID of the target project of interest.
+
+You might want to set the new name that the app will have in the target
+project. To so so, use the `name` parameter. If app's name will not change,
+omit the `name` parameter.
+
+Keep in mind that are different strategies for copying the apps on the
+platform:
+
+* `clone` : copy all revisions; get updates from the same app as the copied app (default)
+* `direct`: copy latest revision; get updates from the copied app
+* `clone_direct`: copy all revisions; get updates from the copied app
+* `transient`: copy latest revision; get updates from the same app as the copied app
+
+Learn more about copy strategies in our PUBLIC API documentation.
+
+
+The following example demonstrates how can you copy the previously created
+`bcftools_app` to some project:
+
+```{r}
+# Copy app to a project
+app_copy <- a$apps$copy(bcftools_app,
+  project = "<project_object_or_its_ID>",
+  name = "new_app_name"
+)
+```
+
+
+## Create new app
+
+This `apps$create()` method allows you to add an app using the raw CWL.
+
+The raw CWL can be provided either through the `raw` parameter, or by using the
+`file_path` parameter. Keep in mind that these two parameters should not be
+used together.
+
+If you choose to use the `raw` parameter, make sure to provide a list
+containing a raw CWL for the app revision you are about to create. To generate
+such a list, you might want to load some existing `JSON` / `YAML` file. In case
+that your CWL file is in JSON format, please use the `fromJSON` function from
+the `jsonlite` package to minimize potential problems with parsing the JSON
+file. If you want to load a CWL file in YAML format, it is highly recommended
+to use the `read_yaml` function from the `yaml` package.
+
+Make sure to set the `raw_format` parameter to match the type of the provide
+raw CWL file (`JSON` / `YAML`). By default, this parameter is set to `JSON`.
+
+```{r}
+# Load the JSON file
+file_json <- jsonlite::read_json("/path/to/your/raw_cwl_in_json_format.cwl")
+
+# Create app from raw CWL (JSON)
+new_app_json <- a$apps$create(
+  project = "<destination_project_object_or_its_ID>",
+  raw = file_json,
+  name = "new_app_json",
+  raw_format = "JSON"
+)
+```
+
+
+If you opt for `file_path` parameter instead, you should provide a path to a
+file containing the raw CWL for the app (`JSON` or `YAML`).
+
+```{r}
+# Create app from raw CWL (YAML)
+new_app_yaml <- a$apps$create(
+  project = dest_proj,
+  from_path = "/path/to/your/raw_cwl_in_yaml_format.cwl",
+  name = "new_app_yaml",
+  raw_format = "YAML"
+)
+```
+
+### Create app in a project
+
+The app can also be directly created on a Project object by invoking
+`create_app()`. Except it has the predefined `project` parameter, the
+`create_app()` has the same other parameters as `apps$create()`.
+
+```{r}
+# Create app from raw CWL (JSON) in specified project
+p$create_app(
+  raw = file_json,
+  name = "new_app_json",
+  raw_format = "JSON"
+)
+```
+## App object
+
+Once you have an App object, you'll see that it also has various useful methods
+within itself.
+
+The following actions are available for an App object:
+* print
+* get_revision
+* create_revision
+* copy
+* sync
+
+
+### Print app
+
+The `print` method prints the content of the App object to the console.
+
+```{r}
+# Print app's details
+new_app_json$print()
+```
+```
+
+── App ──────────────────────────────────────────────────────────────────────────────────────────────────────
+• latest_revision: 0
+• copy_of: admin/sbg-public-data/bcftools-call-1-15-1/0
+• revision: 0
+• name: BCFtools Call
+• project: user_123/test-project
+• id: user_123/test-project/new_app_json
+• href: https://api.sbgenomics.com/v2/apps/user_123/test-project/new_app_json/0
+```
+
+### Get app's revision
+
+To obtain a particular revision of an app, use the `get_revision()` method. If
+you need a specific revision of an app, use the `revision` parameter.
+
+Keep in mind that there is another important parameter that can be set for this
+method. If the `in_place` parameter is set to `TRUE`, the current app object
+will be replaced with new for specified app revision. By default, this
+parameter is set to false.
+
+```{r}
+my_app <- a$apps$get(id = "user_123/test-project/my_app/0")
+my_app$print()
+```
+```
+
+── App ──────────────────────────────────────────────────────────────────────────────────────────────────────
+• latest_revision: 1
+• revision: 0
+• name: BCFtools Call
+• project: user_123/test-project
+• id: user_123/test-project/my_app
+• href: https://api.sbgenomics.com/v2/apps/user_123/test-project/my_app/0
+```
+
+
+```{r}
+# Get app's revision
+my_app$get_revision(revision = 1)
+```
+
+```{r}
+# Get app's revision and update the object
+my_app$get_revision(revision = 1, in_place = TRUE)
+```
+
+
+### Create app's revision
+
+The `create_revision()` method allows you to create a new revision for an
+existing app.
+
+The raw CWL can be provided either through the `raw` parameter, or by using the
+`file_path` parameter. Keep in mind that these two parameters should not be
+used together.
+
+If you choose to use the `raw` parameter, make sure to provide a list
+containing a raw CWL for the app revision you are about to create. To generate
+such a list, you might want to load some existing `JSON` / `YAML` file. In case
+that your CWL file is in JSON format, please use the `fromJSON` function from
+the `jsonlite` package to minimize potential problems with parsing the JSON
+file. If you want to load a CWL file in YAML format, it is highly recommended
+to use the `read_yaml` function from the `yaml` package.
+
+Make sure to set the `raw_format` parameter to match the type of the provide
+raw CWL file (`JSON` / `YAML`). By default, this parameter is set to `JSON`.
+
+```{r}
+raw_cwl_as_list <- jsonlite::read_json(
+  path = "/path/to/your/raw_cwl_in_json_format.cwl"
+)
+my_app$create_revision(raw = raw_cwl_as_list, in_place = TRUE)
+```
+
+If you opt for `file_path` parameter instead, you should provide a path to a
+file containing the raw CWL for the app (`JSON` or `YAML`).
+
+```{r}
+# Create new revision for the existing app
+my_app$create_revision(
+  from_path = "/path/to/your/raw_cwl_in_json_format.cwl",
+  in_place = TRUE
+)
+```
+
+
+### Copy an app
+
+An app can be copied to a specified destination project directly from an
+app's object, by calling its `copy()`method.
+
+Destination project (`project` parameter) should be provided either as an
+object of `Project` class, or as an ID of the target project of interest.
+
+You might want to set the new name that the app will have in the target
+project. To so so, use the `name` parameter. If app's name will not change,
+omit the `name` parameter.
+
+Keep in mind that are different strategies for copying the apps on the
+platform:
+
+* `clone` : copy all revisions; get updates from the same app as the copied app (default)
+* `direct`: copy latest revision; get updates from the copied app
+* `clone_direct`: copy all revisions; get updates from the copied app
+* `transient`: copy latest revision; get updates from the same app as the copied app
+
+Learn more about copy strategies in our PUBLIC API documentation.
+
+```{r}
+copied_app <- my_app$copy(
+  project = "<destination_project_object_or_its_ID>",
+  name = "new_app_name"
+)
+```
+
+
+### Sync a copied app
+
+To synchronize a copied app with the source app from which it has been copied,
+you can use the `sync()` method.
+
+```{r}
+# Sync copied app to the latest revision created
+copied_app$sync()
+```
+
+## Reload app
+
+To keep your local App object up to date with the app on the platform, you can always call the `reload()` function:
+
+```{r}
+my_app$reload()
+```
+
+# Volumes
+
+## List volumes
+
+You can list all volumes you've registered by calling the `volumes$query()` 
+method from the authentication object. The method doesn't have any additional 
+query parameters that could allow you to search for volumes by specific 
+criteria, except to control the number of results returned using limit and 
+offset parameters.
+
+```{r}
+# Query volumes
+a$volumes$query()
+```
+
+## Get single volume information
+
+In order to retrieve information about a single volume of interest, you can get 
+it using the `volumes$get()` method using its id as parameter.
+Volume ID is usually presented in form '<division_name>/<volume_name>' for 
+enterprise users, while for others it can be in form 
+'<volume_owner>/<volume_name>'.
+
+```{r}
+# Get volume
+a$volumes$get(id = "<division_name>/<volume_name>")
+```
+
+## Create volumes - AWS (s3) using IAM User authentication type
+
+For creating volumes we have exposed several functions for different cloud 
+providers and authentication types:
+* `create_s3_using_iam_user` : creates s3 volume using IAM User authentication type
+* `create_s3_using_iam_role`: creates s3 volume using IAM Role authentication type
+* `create_google_using_iam_user` : creates GC volume using IAM User authentication type
+* `create_google_using_iam_role`: creates GC volume using IAM Role authentication type
+* `create_azure` : creates Azure volume (only RO privileges allowed)
+* `create_ali_oss`: creates Ali cloud volume (only RO privileges allowed)
+
+For each of the functions it is possible to provide parameters via path 
+(`from_path`) to some JSON file where all required fields should be listed.
+
+The examples of usages are listed below:
+
+```{r}
+# Create AWS volume using IAM User authentication type
+aws_iam_user_volume <- a$volumes$create_s3_using_iam_user(
+  name = "my_new_aws_user_volume",
+  bucket = "<bucket-name>",
+  description = "AWS IAM User volume",
+  access_key_id = "<access-key>",
+  secret_access_key = "<secret-access-key>"
+)
+
+aws_iam_user_volume_from_path <- a$volumes$create_s3_using_iam_user(
+  from_path = "path/to/my/json/file.json"
+)
+
+
+# Create AWS volume using IAM Role authentication type
+aws_iam_role_volume <- a$volumes$create_s3_using_iam_role(
+  name = "my_new_aws_role_volume",
+  bucket = "<bucket-name>",
+  description = "AWS IAM Role volume",
+  role_arn = "<role-arn-key>",
+  external_id = "<external-id>"
+)
+
+aws_iam_role_volume_from_path <- a$volumes$create_s3_using_iam_role(
+  from_path = "path/to/my/json/file.json"
+)
+
+# Create Google cloud volume using IAM User authentication type
+gc_iam_user_volume <- a$volumes$create_google_using_iam_user(
+  name = "my_new_gc_user_volume",
+  access_mode = "RW",
+  bucket = "<bucket-name>",
+  description = "GC IAM User volume",
+  client_email = "<client_email>",
+  private_key = "<private_key-string>"
+)
+
+gc_iam_user_volume_from_path <- a$volumes$create_google_using_iam_user(
+  from_path = "path/to/my/json/file.json"
+)
+
+# Create Google cloud volume using IAM Role authentication type
+# by passing configuration parameter as named list
+gc_iam_role_volume <- a$volumes$create_google_using_iam_role(
+  name = "my_new_gc_role_volume",
+  access_mode = "RO",
+  bucket = "<bucket-name>",
+  description = "GC IAM Role volume",
+  configuration = list(
+    type = "<type-name>",
+    audience = "<audience-link>",
+    subject_token_type = "<subject_token_type>",
+    service_account_impersonation_url = "<service_account_impersonation_url>",
+    token_url = "<token_url>",
+    credential_source = list(
+      environment_id = "<environment_id>",
+      region_url = "<region_url>",
+      url = "<url>",
+      regional_cred_verification_url = "<regional_cred_verification_url>"
+    )
+  )
+)
+
+# Create Google cloud volume using IAM Role authentication type
+# by passing configuration parameter as string path to configuration file
+gc_iam_role_volume_config_file <- a$volumes$create_google_using_iam_role(
+  name = "my_new_gc_role_volume_cnf_file",
+  access_mode = "RO",
+  bucket = "<bucket-name>",
+  description = "GC IAM Role volume - using config file",
+  configuration = "path/to/config/file.json"
+)
+
+# Create Google cloud volume using IAM Role authentication type
+# using from_path parameter
+gc_iam_role_volume_from_path <- a$volumes$create_google_using_iam_role(
+  from_path = "path/to/full/config/file.json"
+)
+
+# Create Azure volume
+azure_volume <- a$volumes$create_azure(
+  name = "my_new_azure_volume",
+  description = "Azure volume",
+  endpoint = "<endpoint>",
+  container = "<bucket-name",
+  storage_account = "<storage_account-name>",
+  tenant_id = "<tenant_id>",
+  client_id = "<client_id>",
+  client_secret = "<client_secret>",
+  resource_id = "<resource_id>"
+)
+
+azure_volume_from_path <- a$volumes$create_azure(
+  from_path = "path/to/my/json/file.json"
+)
+
+# Create Ali cloud volume
+ali_volume <- a$volumes$create_ali_oss(
+  name = "my_new_azure_volume",
+  description = "Ali volume",
+  endpoint = "<endpoint>",
+  bucket = "<bucket-name",
+  access_key_id = "<access_key_id>",
+  secret_access_key = "<secret_access_key>"
+)
+
+ali_volume_from_path <- a$volumes$create_ali_oss(
+  from_path = "path/to/my/json/file.json"
+)
+```
+
+## Volume operations
+
+When you've created a new volume, you can notice it is represented as an object
+of class Volume. To preview all volume information, use print method:
+```{r}
+print(aws_iam_user_volume)
+```
+
+Within this volume you have following operations available to 
+execute:
+
+* `update`: update volume information
+* `list_contents` : list volume content
+* `get_file`: get single volume file info
+* `deactivate` : deactivate volume
+* `reactivate` : reactivate previously deactivated volume
+* `delete` : delete previously deactivated volume
+
+### Update volume
+
+You can update volume's description, access_mode and service information. 
+Please, consult our [API documentation]
+('https://docs.sevenbridges.com/reference/update-a-volume-v2') 
+on how to use service parameter. 
+```{r}
+# If the volume is created with RO access mode and RO credential parameters,
+# and now we want to change it to RW, we should also set proper credential
+# parameters that are connected to RW user on the bucket.
+# If it's created with RW credentials, but access mode is set to RO, then no
+# change is needed in the credentials parameters.
+aws_iam_user_volume$update(
+  description = "Updated to RW",
+  access_mode = "RW",
+  service = list(
+    credentials = list(
+      access_key_id = "<access_key_id_for_rw>",
+      secret_access_key = "<secret_access_key_for_rw>",
+    )
+  )
+)
+```
+
+## Reload volume
+
+To keep your local Volume object up to date with the volume on the platform, you can always call the `reload()` function:
+
+```{r}
+aws_iam_user_volume$reload()
+```
+
+### List volume's content
+
+This operation lists all volume files in the root directory of the bucket, 
+unless `parent` parameter is specified. In that case, it lists the content of 
+that directory on the bucket. 
+The output is a `VolumeContentCollection` collection object, that contains 
+two fields `items` for storing list of VolumeFile objects (files on the volume) 
+and `prefixes` for storing list of VolumePrefix objects or folders on the 
+volume.
+You can also specify the `limit` parameter to control the number of results 
+returned.
+Users can navigate through pages of results by using `continuation token` 
+parameter or `link` to fetch next chunk of results. 
+If you use `link` parameter, it will overwrite all other parameters if set 
+together with it, since it already contains the `limit` and `continuation_token` 
+info.
+
+```{r}
+# List all files in root bucket directory
+content_collection <- aws_iam_user_volume$list_contents(limit = 20)
+
+# Print collection
+content_collection
+
+# List all files specific directory on the bucket
+folder_files_collection <- aws_iam_user_volume$list_contents(
+  prefix = "dir_name"
+)
+
+# Get next group of results by setting the continuation token
+content_collection <- aws_iam_user_volume$list_contents(
+  limit = 20,
+  continuation_token = "continuation_token"
+)
+
+# Get next group of results by setting the link parameter
+aws_iam_user_volume$list_contents(link = "link_to_next_results")
+
+# Or use VolumeContentCollection's object method next_page() for this:
+content_collection$next_page()
+
+# You can also fetch all results with all() method
+content_collection$all()
+```
+
+Users can also list the content of a volume prefix/folder on the volume, by
+calling list_contents() directly on the VolumePrefix object.
+
+```{r}
+## Select one of the volume folders to list its content
+volume_folder <- content_collection$prefixes[[1]]
+
+# List content
+volume_folder$list_contents()
+```
+
+### Get Volume file info
+
+This operation returns a single volume file information. The input parameter 
+can be file's id which is represented as location on the bucket 
+(`location)`, or a link to that file resource. The link is a `href` field 
+of desired file received from response when returning list of volume content with `list_contents()`.
+Empty arguments are not allowed along with setting both parameters together.
+```{r}
+# Get single volume file info - by setting file_location
+vol_file1 <- aws_iam_user_volume$get_file(location = "file_location_on_bucket")
+
+# Get single volume file info - by setting link
+vol_file1 <- aws_iam_user_volume$get_file(link = "full/request/link/to/file")
+```
+
+## Reload VolumeFile object
+
+To keep your local VolumeFile object up to date with the volume file on the 
+platform, you can always call the `reload()` function:
+
+```{r}
+vol_file1$reload()
+```
+
+### Deactivate and reactivate the volume
+
+Once deactivated, you cannot import from, export to, or browse within a volume. 
+As such, the content of the files imported from this volume will no longer be 
+accessible on the Platform. However, you can update the volume and manage 
+members. 
+Note that you cannot deactivate the volume if you have running imports or 
+exports unless you force the operation using the query parameter force=true.
+
+Note that to delete a volume, first you must deactivate it and delete all files 
+which have been imported from the volume to the Platform.
+
+To reactivate the volume, just use the reactivate() function.
+
+```{r}
+# Deactivate volume
+aws_iam_user_volume$deactivate()
+
+# Reactivate volume
+aws_iam_user_volume$reactivate()
+```
+
+### Delete volume
+
+To be able to delete a volume, you first need to deactivate it and then delete 
+all files on the Platform that were previously imported from the volume.
+
+```{r}
+# Deactivate volume
+aws_iam_user_volume$deactivate()
+
+# Delete volume
+aws_iam_user_volume$delete()
+```
+
+### List volume members
+
+In order to fetch members of one volume or a specific member by its username, 
+you can use list_members() and get_member() operations:
+```{r}
+# List volume members
+aws_iam_user_volume$list_members() # limit = 2
+
+# Get single member
+aws_iam_user_volume$get_member(user = "member-username")
+```
+
+### Remove members
+
+User can remove volume members by providing its username or object of the Member
+class to the remove_member() function:
+```{r}
+# Remove member
+aws_iam_user_volume$remove_member("member-username")
+
+# Remove member using Member object
+members <- aws_iam_user_volume$list_members()
+aws_iam_user_volume$remove_member(members[[3]])
+```
+
+### Adding new members
+
+Function for adding new members can accept a Member object (for example used in
+some project) or its username. 
+```{r}
+# Add member via username
+aws_iam_user_volume$add_member(user = "member-username", permissions = list(
+  read = TRUE, copy = TRUE, write = FALSE, admin = FALSE
+))
+
+# Add member via Member object
+aws_iam_user_volume$add_member(
+  user = Member$new(
+    username = "member-username",
+    id = "member-username"
+  ),
+  permissions = list(
+    read = TRUE, copy = TRUE, write = FALSE,
+    admin = FALSE
+  )
+)
+```
+
+### Modifying member's permissions
+
+Users can modify specific member's permissions on the volume by providing the
+privileges they want to change:
+```{r}
+# Modify member permissions
+aws_iam_user_volume$modify_member_permissions(
+  user = "member-username",
+  permissions = list(write = TRUE)
+)
+```
+
+# Imports
+
+### List volume imports
+
+Users are able to preview all import jobs they've created when they were trying
+to import files/folders from some cloud bucket using volumes, into the platform. 
+
+```{r}
+# List imports
+all_imports <- a$imports$list_imports()
+
+# Limit results to 5
+imp_limit5 <- a$imports$list_imports(limit = 5)
+
+# Load next page of 5 results
+imp_limit5$next_page(advance_access = TRUE)
+
+# Load all results at once until last page
+imp_limit5$all(advance_access = TRUE)
+```
+
+It is possible to use some query parameters as different criteria for filtering
+results like volume, project, state etc:
+
+```{r}
+# List imports with different criteria
+imp_states <- auth$imports$query(state = c("RUNNING", "FAILED"))
+
+imp_project <- auth$imports$query(project = "my-project-id")
+```
+
+Listing imports is also available within Project and Volume objects, where 
+resulted imports are related to the specific project or volume where they're 
+called from.
+
+```{r}
+## Get a volume where you want to list all imports
+vol1 <- auth$volumes$get(id = "volumes_test_division/volume-name")
+vol1$list_imports()
+
+## Get a project object where you want to list imports
+test_proj <- auth$projects$get("my-project-id")
+test_proj$list_imports()
+```
+
+
+### Get single import job
+
+Similarly like in other resource classes, get() method will return single
+import job object when provided with job id.
+
+```{r}
+# Get single import
+imp_obj <- a$imports$get(id = "import-job-id")
+```
+
+### Submit new import - import some volume file into the project
+
+In order to import volume files into the project, users can use submit_import()
+method from auth$imports path, or directly on the selected VolumeFile object 
+(file they want to import) where this function is also available. 
+
+```{r}
+## First, get a volume where you want to import files from
+vol1 <- a$volumes$get(id = "volumes_test_division/volume-name")
+
+## Then, get a project object/id where you want to import files
+test_proj <- a$projects$get("my-project-id")
+
+## list all volume's files
+vol1_content <- vol1$list_contents()
+
+## select one of the volume files
+volume_file_import <- vol1_content$items[[3]]
+
+## make file import
+imp_job1 <- a$imports$submit_import(
+  source_location = volume_file_import,
+  destination_project = test_proj,
+  autorename = TRUE
+)
+
+# alternatively you can also call import() directly on the VolumeFile object
+imp_job1 <- volume_file_import$import(
+  destination_project = test_proj,
+  autorename = TRUE
+)
+
+## print import job info
+print(imp_job1)
+```
+
+One can also import folders from the volume into the project, with option to 
+preserve or not to preserve folder structure:
+
+```{r}
+## select one of the volume folders to import
+volume_folder_import <- vol1_content$prefixes[[1]]
+
+# print import job info
+print(imp_job1)
+
+## make folder import
+imp_job2 <- a$imports$submit_import(
+  source_location = volume_folder_import,
+  destination_project = test_proj,
+  overwrite = TRUE,
+  preserve_folder_structure = TRUE
+)
+
+# alternatively you can also call import() directly on the VolumePrefix object
+imp_job2 <- volume_folder_import$import(
+  destination_project = test_proj,
+  overwrite = TRUE,
+  preserve_folder_structure = TRUE
+)
+
+# print import job info
+print(imp_job2)
+```
+
+## Reload import job
+
+In order to refresh the import job object and get the up to date info about its state, you can always call the `reload()` function:
+
+```{r}
+imp_job1$reload()
+```
+
+# Exports
+
+### List file exports into the volumes
+
+Users are able to preview all export jobs they've created when they were trying
+to export their files from the Platform into some cloud bucket using volumes. 
+
+```{r}
+# List exports
+all_exports <- a$exports$list_exports()
+
+# Limit results to 5
+exp_limit5 <- a$exports$list_exports(limit = 5)
+
+# Load next page of 5 results
+exp_limit5$next_page(advance_access = TRUE)
+
+# List all results until last page
+exp_limit5$all()
+```
+
+It is possible to use some query parameters as different criteria for filtering
+results like volume, state etc:
+
+```{r}
+# List exports with different criteria
+exp_states <- a$exports$query(state = c("RUNNING", "FAILED"))
+
+exp_volume <- a$exports$query(volume = "my-volume-id")
+```
+
+Listing exports is also available within Volume objects, where 
+results contains all files exported to that specific volume they're 
+called from.
+
+```{r}
+## Get a volume where you want to list all exports
+vol1 <- a$volumes$get(id = "volumes_test_division/volume-name")
+vol1$list_exports()
+```
+
+
+### Get single export job
+
+Similarly like in other resource classes, get() method will return single
+export job object when provided with job id.
+
+```{r}
+# Get single export
+exp_obj <- auth$exports$get(id = "export-job-id")
+```
+
+### Submit new export - export some file from the platform into the volume
+
+In order to export platform files into the volumes, users can use 
+submit_export() method from auth$exports path, or directly on the selected 
+File object (file they want to export) where this function is also available. 
+
+```{r}
+## First, get a volume where you want to export files into
+vol1 <- a$volumes$get(id = "volumes_test_division/volume-name")
+
+## Then, get a File object/id you want to export from the platform
+test_file <- a$files$get("my-file-id")
+
+## make file export
+exp_job1 <- a$exports$submit_export(
+  source_file = test_file,
+  destination_volume = vol1,
+  destination_location = "new_volume_file.txt"
+)
+
+## print export job info
+print(exp_job1)
+```
+
+Bear in mind that folders export from the platform into the volumes is not 
+possible with this function. For such cases (or multiple files export) it is 
+better to use bulk actions.
+
+Users can also export the file into some volume's directory, by providing the 
+prefix within the location parameter as a folder name, that will be virtually 
+created on the volume:
+
+```{r}
+## export file into the folder 'test_folder'
+exp_job2 <- a$exports$submit_export(
+  source_file = test_file,
+  destination_volume = vol1,
+  destination_location = "test_folder/new_volume_file.txt"
+)
+
+# print export job info
+print(exp_job2)
+```
+
+## Reload export job
+
+In order to refresh the export job object and get the up to date info about its state, you can always call the `reload()` function:
+
+```{r}
+exp_job1$reload()
+```
+
+# Tasks
+
+## List tasks
+
+You can list all tasks by calling the `tasks$query()` 
+method from the authentication object. The method has many additional 
+query parameters that could allow you to search for tasks by specific 
+criteria such as: `status`, `parent`, `project`, `created_from`, `created_to`, 
+`started_from`, `started_to`, `ended_from`, `ended_to`, `order_by`, `order`, 
+`origin_id`.
+
+```{r}
+# Query all tasks
+a$tasks$query()
+
+# Query tasks by their status
+a$tasks$query(status = "COMPLETED", limit = 5)
+```
+
+To list all the tasks in a project, use the following.
+```{r}
+# a better way
+p <- a$projects$query(name = "demo")
+p$items[[1]]$list_tasks()
+
+# alternatively
+p <- a$projects$query(name = "demo")
+a$tasks$query(project = p$items[[1]])
+```
+
+## Get single task information
+
+In order to retrieve information about a single task of interest, you can get 
+it using the `tasks$get()` method using its id as parameter.
+
+```{r}
+# Get volume
+a$volumes$get(id = "<task_id>")
+```
+
+## Create a draft task
+
+To create a draft task, you can call the `tasks$create` method. You need to pass
+the following arguments:
+
+* name: The name for this task
+* description (optional): A description for this task
+* app: The app id or app object
+* inputs (optional): A list of inputs for this task
+
+We can create draft task by only defining project and which app will be run:
+```{r}
+# Create a draft task
+draft_task <- a$tasks$create(
+  project = "<project>",
+  app = "<app>",
+  inputs = "<inputs>"
+)
+```
+
+This will create an empty task, without any parameter defined.
+User has the option to set execution settings by using `execution_settings`
+parameter, and also to define usage of interruptible instances through
+`use_interruptible_instances` parameter.
+
+```{r}
+# Create task with execution settings and with use of interruptible instances
+execution_settings <- list(
+  "instance_type" = "c4.2xlarge;ebs-gp2;2000",
+  "max_parallel_instances" = 2,
+  "use_memoization" = TRUE,
+  "use_elastic_disk" = FALSE
+)
+task_exec_settings <- a$tasks$create(
+  project = "<project>",
+  app = "<app>",
+  execution_settings = execution_settings,
+  use_interruptible_instances = FALSE,
+)
+```
+
+To run the app immediately after it was created we have `action` parameter,
+which when set to `run` will start the analysis task when it's created.
+
+```{r}
+# Create and run task
+task_exec_settings <- a$tasks$create(
+  project = "<project>",
+  app = "<app>",
+  input = "<inputs>",
+  action = "run"
+)
+```
+
+## Create Batch task
+
+To run tasks in batch mode we have `batch`, `batch_input` and `batch_by` 
+parameters.
+Parameter `batch` is boolean and there we define whether to run batch task or 
+not, while `batch_input` and `batch_by` define input on which the task will be 
+batched and by which criteria respectively.
+
+```{r}
+# Create a draft task
+batch_task <- a$tasks$create(
+  project = "<project>",
+  app = "<app>",
+  inputs = "<inputs>",
+  batch = TRUE,
+  batch_input = "<name_of_the_input>",
+  batch_by = list(
+    type = "CRITERIA",
+    criteria = list("metadata.<metadata-field-name>")
+  )
+)
+```
+
+## Run task
+
+In order to actually start the execution of the draft tasks created, use the
+task object's function `run()`. 
+You can modify input parameters values for:
+`in_place` - set to FALSE if you wish to store response in new task object,
+`batch` - this is used for tasks that are already batch tasks and this option
+allows the users to switch the batch mode off, 
+`use_interruptible_instances` - This field can be TRUE or FALSE. Set this field 
+to TRUE to allow the use of spot instances.
+
+```{r} 
+# Run task
+draft_task$run(in_place = TRUE)
+```
+
+## Abort task
+
+Users can abort the task execution by calling the abort() function. 
+It immediately stops the execution and puts it into ABORT status.
+
+```{r} 
+# Abort task
+draft_task$abort()
+```
+
+## Clone task
+
+In order to copy some task - user can clone the specified task. 
+Once cloned, the task can either be in `draft` mode or immediately ran, by 
+setting the `run` parameter to `TRUE`.
+
+```{r} 
+# Clone task
+cloned_task <- draft_task$clone_task()
+```
+
+## Get execution details
+
+If users would like to explore or debug the logs of task execution, they can 
+use function `get_execution_details()`.
+It returns execution details of the specified task and breaks down the
+information into the task's distinct jobs. A job is a single subprocess
+carried out in a task. The information returned by this call is broadly
+similar to that which can be found in the task stats and logs provided
+on the Platform.
+The task execution details include the following information:
+*  The name of the command line job that executed
+*  The start time of the job
+*  End time of the job (if it completed)
+*  The status of the job (`DONE`, `FAILED`, or `RUNNING`)
+*  Information on the computational instance that the job was run on, 
+including the provider ID, the type of instance used and the cloud service 
+provider
+*  A link that can be used to download the standard error logs for the job
+*  SHA hash of the Docker image ('checksum').
+
+```{r} 
+# Get execution details of the task
+details <- draft_task$get_execution_details()
+```
+
+## List batch children
+
+This operation retrieves batch child tasks for this task if its a batch task.
+You can set some query parameters to narrow the search like `status`, 
+`created_from`, `created_to`, `started_from`, `started_to`, `ended_from`, 
+`ended_to`, `origin` and `order`.
+
+```{r} 
+# List batch children
+children_tasks <- batch_task$list_batch_children()
+```
+
+## Update task
+
+Users can use `update()` method to change the details of the specified task, 
+including its name, description, and inputs. 
+Note that you can only modify tasks with a task status of DRAFT. 
+Tasks which are RUNNING, QUEUED, ABORTED, COMPLETED or FAILED cannot be modified
+in order to enable the reproducibility of analyses which have been queued for 
+execution or has initiated executing.
+There are two things to note if you are editing a batch task:
+* If you want to change the input on which to batch and the batch criteria, 
+you need to specify the `batch_input` and `batch_by` parameters together in the 
+same function call.
+* If you want to disable batching on a task, set `batch` to false. Or, you can 
+also set the parameters `batch_input` and `batch_by` to NULL.
+```{r} 
+# Update task
+draft_task$update(
+  description = "New description",
+  batch_by = list(
+    type = "CRITERIA",
+    criteria = list("metadata.diagnosis")
+  ),
+  inputs = list("in_reads" = "<some-file-object>")
+)
+```
+
+## Rerun task
+
+Users can also rerun the task which will actually clone the original task for 
+them and start the execution immediately. 
+```{r} 
+# Rerun task
+draft_task$rerun()
+```
+
+## Reload task
+
+In order to refresh the task object and get the up to date info about its status, you can always call the `reload()` function:
+
+```{r}
+draft_task$reload()
+```
+
+## Delete task
+
+Lastly, the task can be deleted using `delete()` method.
+```{r} 
+# Delete task
+draft_task$delete()
+```
