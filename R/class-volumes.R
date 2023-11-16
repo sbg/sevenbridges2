@@ -34,7 +34,7 @@ Volumes <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'limit', 'offset', 'fields', etc.
     #'
-    #' @return Collection containing list of Volume objects.
+    #' @return \code{\link{Collection}} of \code{\link{Volume}} objects.
     query = function(...) {
       # nocov start
       res <- super$query(
@@ -60,7 +60,7 @@ Volumes <- R6::R6Class(
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #'
-    #' @return Volume object.
+    #' @return \code{\link{Volume}} object.
     get = function(id) {
       if (is_missing(id)) {
         rlang::abort("Volume ID must be provided!")
@@ -148,7 +148,7 @@ Volumes <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom jsonlite fromJSON
     #'
-    #' @return Volume object.
+    #' @return \code{\link{Volume}} object.
     create_s3_using_iam_user = function(name = NULL,
                                         access_mode = "RW",
                                         description = NULL,
@@ -280,7 +280,7 @@ Volumes <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom jsonlite fromJSON
     #'
-    #' @return Volume object.
+    #' @return \code{\link{Volume}} object.
     create_s3_using_iam_role = function(name = NULL,
                                         access_mode = "RW",
                                         description = NULL,
@@ -392,7 +392,7 @@ Volumes <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom jsonlite fromJSON
     #'
-    #' @return Volume object.
+    #' @return \code{\link{Volume}} object.
     create_google_using_iam_user = function(name = NULL,
                                             access_mode = "RW",
                                             description = NULL,
@@ -504,7 +504,7 @@ Volumes <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom jsonlite fromJSON
     #'
-    #' @return Volume object.
+    #' @return \code{\link{Volume}} object.
     create_google_using_iam_role = function(name = NULL,
                                             access_mode = "RW",
                                             description = NULL,
@@ -609,7 +609,7 @@ Volumes <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom jsonlite fromJSON
     #'
-    #' @return Volume object.
+    #' @return \code{\link{Volume}} object.
     create_azure = function(name = NULL,
                             description = NULL,
                             endpoint = NULL,
@@ -717,7 +717,7 @@ Volumes <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom jsonlite fromJSON
     #'
-    #' @return Volume object.
+    #' @return \code{\link{Volume}} object.
     create_ali_oss = function(name = NULL,
                               description = NULL,
                               endpoint = NULL,

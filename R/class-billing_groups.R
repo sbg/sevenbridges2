@@ -37,7 +37,7 @@ Billing_groups <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like query parameters, 'fields', etc.
     #'
-    #' @return Collection of billing groups (Billing class objects).
+    #' @return \code{\link{Collection}} of \code{\link{Billing}} groups.
     query = function(limit = getOption("sevenbridges2")$limit,
                      offset = getOption("sevenbridges2")$offset,
                      ...) {
@@ -63,7 +63,7 @@ Billing_groups <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #' like 'fields', etc.
     #'
-    #' @return Billing object.
+    #' @return \code{\link{Billing}} object.
     get = function(id, ...) {
       # nocov start
       res <- super$get(

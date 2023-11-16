@@ -90,7 +90,7 @@ Billing <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'limit', 'offset', 'fields', etc.
     #'
-    #' @return Billing
+    #' @return \code{\link{Billing}} object.
     reload = function(...) {
       super$reload(
         cls = self,

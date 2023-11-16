@@ -75,6 +75,8 @@ Files <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_string assert_character
     #' @importFrom rlang abort
+    #'
+    #' @return \code{\link{Collection}} of \code{\link{File}} objects.
     query = function(project = NULL,
                      parent = NULL,
                      name = NULL,
@@ -146,6 +148,8 @@ Files <- R6::R6Class(
     #' @param id The file ID.
     #' @param ... Other arguments that can be passed to core `api()` function
     #' as 'fields', etc.
+    #'
+    #' @return \code{\link{File}} object.
     get = function(id, ...) {
       res <- super$get(
         cls = self,

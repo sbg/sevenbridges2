@@ -81,7 +81,7 @@ Tasks <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_string
     #'
-    #' @return Collection containing Task objects.
+    #' @return \code{\link{Collection}} of \code{\link{Task}} objects.
     query = function(status = NULL,
                      parent = NULL,
                      project = NULL,
@@ -194,7 +194,7 @@ Tasks <- R6::R6Class(
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #'
-    #' @return Task object.
+    #' @return \code{\link{Task}} object.
     get = function(id, ...) {
       if (is_missing(id)) {
         rlang::abort("Task ID must be provided!")
@@ -367,7 +367,7 @@ Tasks <- R6::R6Class(
     #' @importFrom checkmate assert_string assert_list assert_logical
     #' @importFrom rlang abort
     #'
-    #' @return Task object.
+    #' @return \code{\link{Task}} object.
     create = function(project,
                       app,
                       revision = NULL,

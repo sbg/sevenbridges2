@@ -111,7 +111,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Volume object.
+\code{\link{Volume}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -142,7 +142,7 @@ mapping of the volume to the cloud service where the data is stored.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Volume object.
+\code{\link{Volume}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -252,8 +252,8 @@ Default: \verb{_all}.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-VolumeContentCollection object containing list of VolumeFile
-and VolumePrefix objects.
+\code{\link{VolumeContentCollection}} object containing
+list of \code{\link{VolumeFile}} and \code{\link{VolumePrefix}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -281,7 +281,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-VolumeFile object.
+\code{\link{VolumeFile}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -316,7 +316,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing list of Member objects.
+\code{\link{Collection}} containing \code{\link{Member}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -355,7 +355,7 @@ Example:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Member object.
+\code{\link{Member}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -401,7 +401,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Member object.
+\code{\link{Member}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -443,7 +443,7 @@ Example:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Permission object.
+\code{\link{Permission}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -492,7 +492,8 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing list of Import jobs (Import class objects).
+\code{\link{Collection}} containing list of
+\code{\link{Import}} job objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -539,7 +540,8 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing list of export jobs (Export class objects).
+\code{\link{Collection}} containing list of
+\code{\link{Export}} job objects.
 }
 }
 \if{html}{\out{<hr>}}

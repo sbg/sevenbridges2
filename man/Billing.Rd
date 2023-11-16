@@ -92,7 +92,7 @@ like 'limit', 'offset', 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Billing
+\code{\link{Billing}} object.
 }
 }
 \if{html}{\out{<hr>}}

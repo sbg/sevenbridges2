@@ -53,7 +53,7 @@ Projects <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_string
     #'
-    #' @return Collection with list of Project objects.
+    #' @return \code{\link{Collection}} of \code{\link{Project}} objects.
     query = function(name = NULL,
                      owner = NULL,
                      tags = NULL,
@@ -87,7 +87,7 @@ Projects <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return Project object.
+    #' @return \code{\link{Project}} object.
     get = function(id, ...) {
       res <- super$get(
         cls = self,
@@ -96,6 +96,32 @@ Projects <- R6::R6Class(
       )
       return(asProject(res, auth = self$auth))
     }, # nocov end
+    #' @description Method that allows you to delete project from a platform.
+    #' It can only be successfully made if you have admin status for the
+    #' project. \cr
+    #' Please be careful when using this method and note that calling it will
+    #' permanently delete the project from the platform.
+    #'
+    #' @param project Project object or project ID.
+    #'
+    #' @importFrom rlang abort inform
+    #' @importFrom httr content
+    #' @importFrom glue glue
+    delete = function(project) {
+      id <- check_and_transform_id(project)
+      # nocov start
+      res <- sevenbridges2::api(
+        path = id,
+        method = "DELETE",
+        token = self$auth$get_token(),
+        base_url = self$auth$url
+      )
+
+      rlang::inform(
+        message = glue::glue("Project {id} has been deleted.")
+      )
+    },
+    # nocov end
     #' @description A method for creating a new project.
     #'
     #' @param name The name of the project you are creating.
@@ -136,7 +162,7 @@ Projects <- R6::R6Class(
     #' @importFrom glue glue
     #' @importFrom checkmate assert_string test_character
     #'
-    #' @return Project object.
+    #' @return \code{\link{Project}} object.
     create = function(name,
                       billing_group = NULL,
                       description = name,

@@ -94,7 +94,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection of Export jobs (Export class objects).
+\code{\link{Collection}} of \code{\link{Export}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -117,7 +117,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Export object.
+\code{\link{Export}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -210,7 +210,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Export object.
+\code{\link{Export}} object.
 }
 }
 \if{html}{\out{<hr>}}

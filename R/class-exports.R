@@ -56,7 +56,7 @@ Exports <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_character assert_subset
     #'
-    #' @return Collection of Export jobs (Export class objects).
+    #' @return \code{\link{Collection}} of \code{\link{Export}} objects.
     query = function(volume = NULL, state = NULL,
                      limit = getOption("sevenbridges2")$limit,
                      offset = getOption("sevenbridges2")$offset,
@@ -95,7 +95,7 @@ Exports <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #' like 'fields', etc.
     #'
-    #' @return Export object.
+    #' @return \code{\link{Export}} object.
     get = function(id, ...) {
       # nocov start
       res <- super$get(
@@ -179,7 +179,7 @@ Exports <- R6::R6Class(
     #' @importFrom glue glue glue_col
     #' @importFrom rlang abort
     #'
-    #' @return Export object.
+    #' @return \code{\link{Export}} object.
     submit_export = function(source_file, destination_volume,
                              destination_location, overwrite = FALSE,
                              copy_only = FALSE, properties = NULL, ...) {

@@ -103,7 +103,7 @@ Volume <- R6::R6Class(
     #' @description Reload Volume object information.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
-    #' @return Volume object.
+    #' @return \code{\link{Volume}} object.
     reload = function(...) {
       super$reload(
         cls = self,
@@ -128,7 +128,7 @@ Volume <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_character assert_list
     #'
-    #' @return Volume object.
+    #' @return \code{\link{Volume}} object.
     update = function(description = NULL, access_mode = NULL,
                       service = NULL) {
       checkmate::assert_character(description, null.ok = TRUE)
@@ -302,8 +302,8 @@ Volume <- R6::R6Class(
     #' @importFrom checkmate assert_character
     #' @importFrom glue glue
     #'
-    #' @return VolumeContentCollection object containing list of VolumeFile
-    #' and VolumePrefix objects.
+    #' @return \code{\link{VolumeContentCollection}} object containing
+    #' list of \code{\link{VolumeFile}} and \code{\link{VolumePrefix}} objects.
     list_contents = function(prefix = NULL,
                              limit = getOption("sevenbridges2")$limit,
                              link = NULL,
@@ -353,7 +353,7 @@ Volume <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom glue glue
     #'
-    #' @return VolumeFile object.
+    #' @return \code{\link{VolumeFile}} object.
     get_file = function(location = NULL, link = NULL, ...) {
       checkmate::assert_character(location,
         len = 1, null.ok = TRUE,
@@ -406,7 +406,7 @@ Volume <- R6::R6Class(
     #'
     #' @importFrom glue glue
     #'
-    #' @return Collection containing list of Member objects.
+    #' @return \code{\link{Collection}} containing \code{\link{Member}} objects.
     list_members = function(limit = getOption("sevenbridges2")$limit,
                             offset = getOption("sevenbridges2")$offset,
                             ...) {
@@ -451,7 +451,7 @@ Volume <- R6::R6Class(
     #' @importFrom checkmate assert_list assert_subset
     #' @importFrom glue glue
     #'
-    #' @return Member object.
+    #' @return \code{\link{Member}} object.
     add_member = function(user, permissions = list(
                             read = TRUE,
                             copy = FALSE,
@@ -529,7 +529,7 @@ Volume <- R6::R6Class(
     #'
     #' @importFrom glue glue
     #'
-    #' @return Member object.
+    #' @return \code{\link{Member}} object.
     get_member = function(user, ...) {
       username <- check_and_transform_id(user,
         class_name = "Member",
@@ -575,7 +575,7 @@ Volume <- R6::R6Class(
     #' @importFrom checkmate assert_list
     #' @importFrom glue glue glue_col
     #'
-    #' @return Permission object.
+    #' @return \code{\link{Permission}} object.
     modify_member_permissions = function(user, permissions = list(
                                            read = TRUE,
                                            copy = FALSE,
@@ -637,7 +637,8 @@ Volume <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return Collection containing list of Import jobs (Import class objects).
+    #' @return \code{\link{Collection}} containing list of
+    #' \code{\link{Import}} job objects.
     list_imports = function(project = NULL, state = NULL,
                             limit = getOption("sevenbridges2")$limit,
                             offset = getOption("sevenbridges2")$offset,
@@ -675,7 +676,8 @@ Volume <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return Collection containing list of export jobs (Export class objects).
+    #' @return \code{\link{Collection}} containing list of
+    #' \code{\link{Export}} job objects.
     list_exports = function(state = NULL,
                             limit = getOption("sevenbridges2")$limit,
                             offset = getOption("sevenbridges2")$offset,

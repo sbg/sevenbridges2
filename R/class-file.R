@@ -196,7 +196,7 @@ File <- R6::R6Class(
     #' @description Reload File object information.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
-    #' @return File
+    #' @return \code{\link{File}} object.
     reload = function(...) {
       super$reload(
         cls = self,
@@ -220,7 +220,7 @@ File <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom glue glue
     #'
-    #' @return Updated File object.
+    #' @return Updated \code{\link{File}} object.
     update = function(name = NULL,
                       metadata = NULL,
                       tags = NULL,
@@ -327,7 +327,7 @@ File <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom glue glue
     #'
-    #' @return Copied File object.
+    #' @return Copied \code{\link{File}} object.
     copy_to = function(project, name = NULL, ...) {
       if (is_missing(project)) {
         rlang::abort("Project parameter is missing. You need to provide one.")
@@ -457,7 +457,7 @@ File <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom glue glue
     #'
-    #' @return Moved File object.
+    #' @return Moved \code{\link{File}} object.
     move_to_folder = function(parent, name = NULL) {
       if (is_missing(parent)) {
         # nolint start
@@ -498,6 +498,8 @@ File <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @return \code{\link{Collection}} of \code{\link{File}} objects.
     list_contents = function(limit = getOption("sevenbridges2")$"limit",
                              offset = getOption("sevenbridges2")$"offset",
                              ...) {
@@ -679,8 +681,6 @@ File <- R6::R6Class(
     #'  }
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
-    #'
-    #' @return Export job object.
     submit_export = function(destination_volume,
                              destination_location,
                              overwrite = FALSE,

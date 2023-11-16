@@ -163,7 +163,7 @@ Task <- R6::R6Class(
     #' @description Reload Task object information.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
-    #' @return Task object.
+    #' @return \code{\link{Task}} object.
     reload = function(...) {
       super$reload(
         cls = self,
@@ -191,7 +191,7 @@ Task <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_logical
     #'
-    #' @return Task object.
+    #' @return \code{\link{Task}} object.
     run = function(batch = NULL,
                    use_interruptible_instances = NULL,
                    in_place = TRUE,
@@ -247,7 +247,7 @@ Task <- R6::R6Class(
     #' @importFrom glue glue glue_col
     #' @importFrom rlang inform
     #'
-    #' @return Task object.
+    #' @return \code{\link{Task}} object.
     abort = function(in_place = TRUE, ...) {
       checkmate::assert_logical(in_place, null.ok = FALSE)
 
@@ -292,7 +292,7 @@ Task <- R6::R6Class(
     #' @importFrom glue glue glue_col
     #' @importFrom rlang inform
     #'
-    #' @return Task object.
+    #' @return \code{\link{Task}} object.
     clone_task = function(run = FALSE, ...) {
       # nocov start
       action <- NULL
@@ -349,7 +349,7 @@ Task <- R6::R6Class(
     #' @importFrom glue glue
     #' @importFrom rlang inform
     #'
-    #' @return List.
+    #' @return List of execution details.
     get_execution_details = function(...) {
       # nocov start
       path <- glue::glue(self$URL[["execution_details"]])
@@ -416,7 +416,7 @@ Task <- R6::R6Class(
     #'
     #' @importFrom rlang abort
     #'
-    #' @return Collection containing Task objects.
+    #' @return \code{\link{Collection}} of \code{\link{Task}} objects.
     list_batch_children = function(status = NULL,
                                    project = NULL,
                                    created_from = NULL,
@@ -491,7 +491,7 @@ Task <- R6::R6Class(
     #'
     #' @importFrom glue glue
     #'
-    #' @return Task object.
+    #' @return \code{\link{Task}} object.
     rerun = function(...) {
       # nocov start
       path <- glue::glue(self$URL[["clone"]])
@@ -644,7 +644,7 @@ Task <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom glue glue glue_col
     #'
-    #' @return Task object.
+    #' @return \code{\link{Task}} object.
     update = function(name = NULL,
                       description = NULL,
                       execution_settings = NULL,

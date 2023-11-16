@@ -51,9 +51,6 @@ Create a new Member object.
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-A new Member object.
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Member-print"></a>}}

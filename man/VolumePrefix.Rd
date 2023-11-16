@@ -104,8 +104,8 @@ the response. You can use: \code{href}, \code{location}, \code{volume}, \code{ty
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-VolumeContentCollection object containing list of VolumeFile
-and VolumePrefix objects.
+\code{\link{VolumeContentCollection}} object containing list of
+\code{\link{VolumeFile}} and  \code{\link{VolumePrefix}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -180,7 +180,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Import object.
+\code{\link{Import}} object.
 }
 }
 \if{html}{\out{<hr>}}

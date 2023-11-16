@@ -78,7 +78,7 @@ VolumeFile <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return VolumeFile object.
+    #' @return \code{\link{VolumeFile}} object.
     reload = function(...) {
       reload_url <- ""
       if (!is_missing(self$href)) {
@@ -150,7 +150,7 @@ VolumeFile <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return Import object.
+    #' @return \code{\link{Import}} object.
     import = function(destination_project = NULL, destination_parent = NULL,
                       name = NULL, overwrite = FALSE, autorename = FALSE,
                       ...) {

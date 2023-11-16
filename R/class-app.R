@@ -88,7 +88,7 @@ App <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return App object.
+    #' @return \code{\link{App}} object.
     reload = function(...) {
       super$reload(
         cls = self,
@@ -125,7 +125,7 @@ App <- R6::R6Class(
     #' @importFrom checkmate assert_string assert_logical
     #' @importFrom glue glue
     #'
-    #' @return Copied App object.
+    #' @return Copied \code{\link{App}} object.
     copy = function(project, name = NULL, strategy = "clone", use_revision = FALSE, ...) { # nolint
       if (is_missing(project)) {
         rlang::abort("Project parameter must be provided!")
@@ -192,7 +192,7 @@ App <- R6::R6Class(
     #' @importFrom checkmate assert_numeric assert_logical
     #' @importFrom glue glue
     #'
-    #' @return App object.
+    #' @return \code{\link{App}} object.
     get_revision = function(revision = self$revision, in_place = FALSE, ...) {
       # Check if revision is positive number and convert it to integer
       checkmate::assert_numeric(revision, lower = 0, len = 1)
@@ -259,7 +259,7 @@ App <- R6::R6Class(
     #' @importFrom yaml yaml.load
     #' @importFrom readr read_file
     #'
-    #' @return App object.
+    #' @return \code{\link{App}} object.
     create_revision = function(raw = NULL, from_path = NULL, raw_format = c("JSON", "YAML"), in_place = FALSE, ...) { # nolint
       if (is_missing(raw) && is_missing(from_path)) {
         rlang::abort(glue::glue_col("Both parameters {magenta raw} and {magenta from_path} are missing. Please provide one of them.")) # nolint
@@ -328,6 +328,8 @@ App <- R6::R6Class(
     #'  like 'fields', etc.
     #'
     #' @importFrom glue glue
+    #'
+    #' @return \code{\link{App}} object.
     sync = function(...) {
       path <- glue::glue(self$URL[["sync"]])
       res <- sevenbridges2::api(
@@ -499,7 +501,7 @@ App <- R6::R6Class(
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #'
-    #' @return Task object.
+    #' @return \code{\link{Task}} object.
     create_task = function(project,
                            revision = NULL,
                            name = NULL,

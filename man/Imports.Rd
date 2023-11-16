@@ -102,7 +102,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing Import jobs (Import class objects).
+\code{\link{Collection}} of \code{\link{Import}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -125,7 +125,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Import object.
+\code{\link{Import}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -214,7 +214,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Import object.
+\code{\link{Import}} object.
 }
 }
 \if{html}{\out{<hr>}}

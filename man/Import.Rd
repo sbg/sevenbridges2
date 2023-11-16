@@ -109,7 +109,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Import object.
+\code{\link{Import}} object.
 }
 }
 \if{html}{\out{<hr>}}

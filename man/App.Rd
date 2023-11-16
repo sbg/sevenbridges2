@@ -91,7 +91,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-App object.
+\code{\link{App}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -136,7 +136,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Copied App object.
+Copied \code{\link{App}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -167,7 +167,7 @@ app, which is not necessarily the most recent version.
 }
 
 \subsection{Returns}{
-App object.
+\code{\link{App}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -221,7 +221,7 @@ More documentation about how to create the app via API can be found
 }
 
 \subsection{Returns}{
-App object.
+\code{\link{App}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -246,6 +246,9 @@ This call synchronizes a copied app with the source app from which it
 has been copied.
 }
 
+\subsection{Returns}{
+\code{\link{App}} object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-App-create_task"></a>}}
@@ -423,7 +426,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Task object.
+\code{\link{Task}} object.
 }
 }
 \if{html}{\out{<hr>}}

@@ -46,8 +46,6 @@ User <- R6::R6Class(
     #'
     #' @param res Response containing User object information.
     #' @param ... Other response arguments.
-    #'
-    #' @return A new User object.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
@@ -115,7 +113,7 @@ User <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return User
+    #' @return \code{\link{User}} object.
     reload = function(...) {
       super$reload(
         cls = self,

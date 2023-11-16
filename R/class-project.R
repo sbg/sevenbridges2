@@ -184,8 +184,6 @@ Project <- R6::R6Class(
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
-    #'
-    #' @return Project object.
     reload = function(...) {
       super$reload(
         cls = self,
@@ -298,7 +296,7 @@ Project <- R6::R6Class(
     #'
     #' @importFrom glue glue
     #'
-    #' @return Collection containing list of Member objects.
+    #' @return \code{\link{Collection}} of \code{\link{Member}} objects.
     list_members = function(limit = getOption("sevenbridges2")$limit,
                             offset = getOption("sevenbridges2")$offset,
                             ...) {
@@ -353,7 +351,7 @@ Project <- R6::R6Class(
     #' @importFrom glue glue glue_col
     #' @importFrom checkmate assert_character assert_list assert_subset
     #'
-    #' @return Member object.
+    #' @return \code{\link{Member}} object.
     add_member = function(user = NULL,
                           email = NULL,
                           permissions = list(
@@ -460,6 +458,8 @@ Project <- R6::R6Class(
     #'
     #' @importFrom rlang abort
     #' @importFrom glue glue
+    #'
+    #' @return \code{\link{Member}} object.
     get_member = function(user, ...) {
       if (is_missing(user)) {
         rlang::abort("Please provide a username or Member object.")
@@ -505,7 +505,7 @@ Project <- R6::R6Class(
     #' @importFrom glue glue glue_col
     #' @importFrom checkmate assert_list assert_subset
     #'
-    #' @return Permission object.
+    #' @return \code{\link{Permission}} object.
     modify_member_permissions = function(user = NULL,
                                          permissions = list(
                                            read = TRUE,
@@ -572,7 +572,7 @@ Project <- R6::R6Class(
     #'
     #' @importFrom glue glue
     #'
-    #' @return Collection containing File objects.
+    #' @return \code{\link{Collection}} of \code{\link{File}} objects.
     list_files = function(limit = getOption("sevenbridges2")$limit,
                           offset = getOption("sevenbridges2")$offset,
                           ...) {
@@ -603,7 +603,7 @@ Project <- R6::R6Class(
     #' @importFrom glue glue_col
     #' @importFrom rlang inform
     #'
-    #' @return File object of type 'FOLDER'.
+    #' @return \code{\link{File}} object of type 'FOLDER'.
     create_folder = function(name) {
       check_folder_name(name)
       # nocov start
@@ -644,7 +644,7 @@ Project <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like other query parameters or 'fields', etc.
     #'
-    #' @return Collection containing Apps objects.
+    #' @return \code{\link{Collection}} of \code{\link{App}} objects.
     list_apps = function(query_terms = NULL,
                          id = NULL,
                          limit = getOption("sevenbridges2")$limit,
@@ -673,7 +673,7 @@ Project <- R6::R6Class(
     #'  characters or spaces).
     #' @param raw_format The type of format used (`JSON` or `YAML`).
     #'
-    #' @return App object.
+    #' @return \code{\link{App}} object.
     create_app = function(raw = NULL,
                           from_path = NULL,
                           name,
@@ -741,7 +741,7 @@ Project <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return Collection containing Task objects.
+    #' @return \code{\link{Collection}} of \code{\link{Task}} objects.
     list_tasks = function(status = NULL,
                           parent = NULL,
                           created_from = NULL,
@@ -803,7 +803,7 @@ Project <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return Collection containing Import objects.
+    #' @return \code{\link{Collection}} of \code{\link{Import}} objects.
     list_imports = function(volume = NULL,
                             state = NULL,
                             limit = getOption("sevenbridges2")$limit,
@@ -970,7 +970,7 @@ Project <- R6::R6Class(
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #'
-    #' @return Task object.
+    #' @return \code{\link{Task}} object.
     create_task = function(app,
                            revision = NULL,
                            name = NULL,

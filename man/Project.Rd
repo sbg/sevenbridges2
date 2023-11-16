@@ -158,9 +158,6 @@ like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-Project object.
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-update"></a>}}
@@ -249,7 +246,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing list of Member objects.
+\code{\link{Collection}} of \code{\link{Member}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -304,7 +301,7 @@ Example:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Member object.
+\code{\link{Member}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -349,6 +346,9 @@ like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+\code{\link{Member}} object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-modify_member_permissions"></a>}}
@@ -390,7 +390,7 @@ Example:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Permission object.
+\code{\link{Permission}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -424,7 +424,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing File objects.
+\code{\link{Collection}} of \code{\link{File}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -448,7 +448,7 @@ within this root folder by using this function.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-File object of type 'FOLDER'.
+\code{\link{File}} object of type 'FOLDER'.
 }
 }
 \if{html}{\out{<hr>}}
@@ -499,7 +499,7 @@ like other query parameters or 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing Apps objects.
+\code{\link{Collection}} of \code{\link{App}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -536,7 +536,7 @@ characters or spaces).}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-App object.
+\code{\link{App}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -633,7 +633,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing Task objects.
+\code{\link{Collection}} of \code{\link{Task}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -685,7 +685,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing Import objects.
+\code{\link{Collection}} of \code{\link{Import}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -865,7 +865,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Task object.
+\code{\link{Task}} object.
 }
 }
 \if{html}{\out{<hr>}}

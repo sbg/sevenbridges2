@@ -97,7 +97,7 @@ like other query parameters or 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing App objects.
+\code{\link{Collection}} containing \code{\link{App}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -130,7 +130,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-App object.
+\code{\link{App}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -184,7 +184,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Copied App object.
+Copied \code{\link{App}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -228,7 +228,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-App object.
+\code{\link{App}} object.
 }
 }
 \if{html}{\out{<hr>}}

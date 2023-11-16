@@ -24,8 +24,6 @@ Member <- R6::R6Class(
     #'
     #' @param res Response containing Member object information.
     #' @param ... Other response arguments.
-    #'
-    #' @return A new Member object.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)

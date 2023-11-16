@@ -91,8 +91,8 @@ VolumePrefix <- R6::R6Class(
     #'  the response. You can use: `href`, `location`, `volume`, `type`,
     #'  `metadata`, `_all`. Default: `_all`.
     #'
-    #' @return VolumeContentCollection object containing list of VolumeFile
-    #' and VolumePrefix objects.
+    #' @return \code{\link{VolumeContentCollection}} object containing list of
+    #' \code{\link{VolumeFile}} and  \code{\link{VolumePrefix}} objects.
     list_contents = function(limit = getOption("sevenbridges2")$limit,
                              continuation_token = NULL,
                              ...) {
@@ -167,7 +167,7 @@ VolumePrefix <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return Import object.
+    #' @return \code{\link{Import}} object.
     import = function(destination_project = NULL, destination_parent = NULL,
                       name = NULL, overwrite = FALSE, autorename = FALSE,
                       preserve_folder_structure = NULL, ...) {

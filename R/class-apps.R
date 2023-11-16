@@ -51,7 +51,7 @@ Apps <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_list
     #'
-    #' @return Collection containing App objects.
+    #' @return \code{\link{Collection}} containing \code{\link{App}} objects.
     query = function(project = NULL,
                      visibility = c("private", "public"),
                      query_terms = NULL,
@@ -113,7 +113,7 @@ Apps <- R6::R6Class(
     #' @importFrom checkmate assert_int
     #' @importFrom rlang abort
     #'
-    #' @return App object.
+    #' @return \code{\link{App}} object.
     get = function(id, revision = NULL, ...) {
       if (is_missing(id)) {
         rlang::abort("App ID must be provided!")
@@ -165,7 +165,7 @@ Apps <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom glue glue
     #'
-    #' @return Copied App object.
+    #' @return Copied \code{\link{App}} object.
     copy = function(app,
                     project,
                     name = NULL,
@@ -228,7 +228,7 @@ Apps <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom readr read_file
     #'
-    #' @return App object.
+    #' @return \code{\link{App}} object.
     create = function(raw = NULL,
                       from_path = NULL,
                       project,

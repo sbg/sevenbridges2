@@ -140,7 +140,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-File
+\code{\link{File}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -172,7 +172,7 @@ like 'limit', 'offset', 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Updated File object.
+Updated \code{\link{File}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -235,7 +235,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Copied File object.
+Copied \code{\link{File}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -325,7 +325,7 @@ If you want to use the same name, omit this key.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Moved File object.
+Moved \code{\link{File}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -357,6 +357,9 @@ This is a pagination-specific attribute.}
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{Collection}} of \code{\link{File}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -489,9 +492,6 @@ on during export. Supported values: any one of
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Export job object.
 }
 }
 \if{html}{\out{<hr>}}

@@ -129,6 +129,9 @@ as 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+\code{\link{Collection}} of \code{\link{File}} objects.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Files-get"></a>}}
@@ -151,6 +154,9 @@ the API call to list all files in a project.
 as 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{File}} object.
 }
 }
 \if{html}{\out{<hr>}}

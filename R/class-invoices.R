@@ -41,7 +41,7 @@ Invoices <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like query parameters or 'fields', etc.
     #'
-    #' @return Collection of invoices (Invoice class objects).
+    #' @return \code{\link{Collection}} of \code{\link{Invoice}} objects.
     query = function(billing_group = NULL,
                      limit = getOption("sevenbridges2")$limit,
                      offset = getOption("sevenbridges2")$offset,
@@ -72,7 +72,7 @@ Invoices <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return Invoice job object.
+    #' @return \code{\link{Invoice}} object.
     get = function(id, ...) {
       # nocov start
       res <- super$get(

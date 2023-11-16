@@ -128,7 +128,7 @@ Invoice <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return Invoice
+    #' @return \code{\link{Invoice}} object.
     reload = function(...) {
       super$reload(
         cls = self,

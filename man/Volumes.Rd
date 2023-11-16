@@ -67,7 +67,7 @@ like 'limit', 'offset', 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing list of Volume objects.
+\code{\link{Collection}} of \code{\link{Volume}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -93,7 +93,7 @@ for a volume by making the call to list all volumes you've registered.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Volume object.
+\code{\link{Volume}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -194,7 +194,7 @@ overwrite all previous parameters set.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Volume object.
+\code{\link{Volume}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -288,7 +288,7 @@ overwrite all previous parameters set.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Volume object.
+\code{\link{Volume}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -364,7 +364,7 @@ overwrite all previous parameters set.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Volume object.
+\code{\link{Volume}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -438,7 +438,7 @@ overwrite all previous parameters set.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Volume object.
+\code{\link{Volume}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -509,7 +509,7 @@ information for registering a volume.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Volume object.
+\code{\link{Volume}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -570,7 +570,7 @@ information for registering a volume.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Volume object.
+\code{\link{Volume}} object.
 }
 }
 \if{html}{\out{<hr>}}

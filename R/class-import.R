@@ -116,7 +116,7 @@ Import <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return Import object.
+    #' @return \code{\link{Import}} object.
     reload = function(...) {
       super$reload(
         cls = self,

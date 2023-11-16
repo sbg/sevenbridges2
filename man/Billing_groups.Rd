@@ -81,7 +81,7 @@ like query parameters, 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection of billing groups (Billing class objects).
+\code{\link{Collection}} of \code{\link{Billing}} groups.
 }
 }
 \if{html}{\out{<hr>}}
@@ -108,7 +108,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Billing object.
+\code{\link{Billing}} object.
 }
 }
 \if{html}{\out{<hr>}}

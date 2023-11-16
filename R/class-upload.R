@@ -203,6 +203,8 @@ Upload <- R6::R6Class(
     #'
     #' @importFrom rlang abort
     #' @importFrom httr PUT
+    #'
+    #' @return \code{\link{Fike}} object.
     start = function() {
       if (!self$initialized) {
         rlang::abort("Upload has not been initialized yet.")

@@ -62,7 +62,7 @@ Imports <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_character assert_subset
     #'
-    #' @return Collection containing Import jobs (Import class objects).
+    #' @return \code{\link{Collection}} of \code{\link{Import}} objects.
     query = function(volume = NULL, project = NULL, state = NULL,
                      limit = getOption("sevenbridges2")$limit,
                      offset = getOption("sevenbridges2")$offset,
@@ -105,7 +105,7 @@ Imports <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return Import object.
+    #' @return \code{\link{Import}} object.
     get = function(id, ...) {
       # nocov start
       res <- super$get(
@@ -179,7 +179,7 @@ Imports <- R6::R6Class(
     #' @importFrom glue glue
     #' @importFrom rlang abort
     #'
-    #' @return Import object.
+    #' @return \code{\link{Import}} object.
     submit_import = function(source_volume = NULL, source_location,
                              destination_project = NULL,
                              destination_parent = NULL,

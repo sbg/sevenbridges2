@@ -110,7 +110,7 @@ Export <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return Export object.
+    #' @return \code{\link{Export}} object.
     reload = function(...) {
       super$reload(
         cls = self,
