@@ -97,6 +97,8 @@ m.match <- function(obj,
   }
 }
 
+#' @title Parse time to POSIXlt
+#'
 #' @description Parse time to POSIXlt for rate limit expiration datetime.
 #'
 #' @param reset_time_as_unix_epoch Time received from response.
@@ -312,7 +314,8 @@ flatten_query <- function(x) {
   )
 }
 
-#' Set client info for API request header (User-Agent data)
+#' @title Set client info for API request header (User-Agent data)
+#'
 #' @description This function returns client info that will be stored
 #' in headers for API requests, in order to track logs better.
 #'
@@ -345,7 +348,8 @@ setup_client_info <- function() {
   return(client_info_string)
 }
 
-#' Set headers for API request
+#' @title Set headers for API request
+#'
 #' @description This function returns headers for API request,
 #'  depending on the value of the authorization parameter.
 #'
@@ -471,7 +475,7 @@ setup_body <- function(method, body = list()) {
 }
 # nolint end
 
-#' @title Check and transform id.
+#' @title Check and transform id
 #'
 #' @description Generic way to check if the supplied argument is an instance
 #'  of a given class or ID is directly specified as a string.

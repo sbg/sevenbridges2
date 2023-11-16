@@ -35,6 +35,8 @@ App <- R6::R6Class(
     latest_revision = NULL,
     #' @field raw App's raw CWL (JSON or YAML).
     raw = NULL,
+
+    # Initialise App object --------------------------------------------------
     #' @description Create a new App object.
     #' @param res Response containing App object information.
     #' @param ... Other response arguments.
@@ -54,7 +56,9 @@ App <- R6::R6Class(
         res$raw$`sbg:latestRevision`, NA
       )
     },
+
     # nocov start
+    # Print App object ------------------------------------------------------
     #' @description Print method for App class.
     #'
     #' @importFrom purrr discard
@@ -83,6 +87,8 @@ App <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+
+    # Reload App object ------------------------------------------------------
     #' @description Reload App object information.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
@@ -96,6 +102,8 @@ App <- R6::R6Class(
       )
       rlang::inform("App object is refreshed!")
     }, # nocov end
+
+    # Copy App ---------------------------------------------------------------
     #' @description A method that copies the current app to the
     #'  specified project.
     #'
@@ -177,6 +185,8 @@ App <- R6::R6Class(
       return(asApp(res, auth = self$auth))
       # nocov end
     },
+
+    # Get App's revision -----------------------------------------------------
     #' @description Get app's revision.
     #'
     #' @details
@@ -224,6 +234,8 @@ App <- R6::R6Class(
         return(asApp(res, self$auth))
       } # nocov end
     },
+
+    # Create App revision ----------------------------------------------------
     #' @description Create a new app revision.
     #'
     #' @details
@@ -318,6 +330,8 @@ App <- R6::R6Class(
       # Return new or reload current object with newly created revision
       return(self$get_revision(revision = self$latest_revision + 1, in_place = in_place)) # nolint
     },
+
+    # Synchronize Apps -------------------------------------------------------
     #' @description Synchronize a copied app with its parent app
     #'
     #' @details
@@ -350,6 +364,8 @@ App <- R6::R6Class(
         auth = self$auth
       )
     },
+
+    # Create task ------------------------------------------------------------
     #' @description This call creates a new task. You can create either a single
     #'  task or a batch task by using the app's default batching, override
     #'  batching, or disable batching completely. A parent task is a task that
