@@ -66,12 +66,12 @@ Before we start, keep in mind the following:
 __`Collection`__
 
 Every API call that returns as a result some list of items (usually the output from 
-`query()` operations), like fetching projects, files, apps etc, wraps the results into a general Collection class object containing `items` field from which users may access the items returned. 
-Additional options that Collection class is offering are possibilities to 
+`query()` operations), like fetching projects, files, apps etc, wraps the results into a general `Collection` class object containing `items` field from which users may access the items returned. 
+Additional options that `Collection` class is offering are possibilities to 
 navigate between pages of results, for example, to load next or previous page of results 
 by calling methods `next_page()` and `prev_page()`.
 
-Lastly, users are able to fetch all results using Collection's method `all()` which is a 
+Lastly, users are able to fetch all results using `Collection`'s method `all()` which is a 
 shortcut to send multiple API calls for each next page and collect all results. 
 Keep in mind the limit used as well as the API rate limit.
 
@@ -126,7 +126,7 @@ library("sevenbridges2")
 
 You have three different ways to provide your token. Choose from one method below:
 
-1. [Direct authentication.](#method1) Here you should provide your developer token and a base URL for the platform of interest (alternatively, you can provide the name of the platform - these are the available options `cgc`, `aws-us`, `aws-eu`, `ali-cn`, `cavatica`, `f4c` - the default platform is `aws-us`) as a function call arguments to `Auth()`. This will create the platform authentication object and temporarily set up your token and platform base URL as environment variables `SB_AUTH_TOKEN` and `SB_API_ENDPOINT`. This way, your token will not be directly stored in the Auth object, but you will still be able to access it by calling the `get_token()` method. Keep in mind that these environment variables are session-specific and are deleted when the session ends.
+1. [Direct authentication.](#method1) Here you should provide your developer token and a base URL for the platform of interest (alternatively, you can provide the name of the platform - these are the available options `cgc`, `aws-us`, `aws-eu`, `ali-cn`, `cavatica`, `f4c` - the default platform is `aws-us`) as a function call arguments to `Auth$new()`. This will create the platform authentication object and temporarily set up your token and platform base URL as environment variables `SB_AUTH_TOKEN` and `SB_API_ENDPOINT`. This way, your token will not be directly stored in the Auth object, but you will still be able to access it by calling the `get_token()` method. Keep in mind that these environment variables are session-specific and are deleted when the session ends.
 
 2. [Authentication via system environment variables.](#method2) By default this will read the credential information from two existing system environment variables: `SB_API_ENDPOINT` and `SB_AUTH_TOKEN`. Of course, assuming that you have previously set these environment variables. Alternatively, you can specify the names of the system environment variables you want to be loaded using the `sysenv_token` and `sysenv_url` arguments.
 3. [Authentication via the user configuration file.](#method3) This file, by default `$HOME/.sevenbridges/credentials`, provides an organized way to collect and manage all your API authentication information for Seven Bridges platforms.
@@ -139,7 +139,7 @@ If you need to be logged into multiple accounts at the same time (which can also
 This is the most common method to construct the `Auth` object. For example:
 
 ```{r}
-(a <- Auth$new(platform = "aws-us", token = "<your-token>"))
+a <- Auth$new(platform = "aws-us", token = "<your-token>")
 ```
 
 <a name="method2"/>**Method 2: Environment variables**
@@ -208,18 +208,17 @@ Assume we have already created the configuration file named
 api_endpoint = https://api.sbgenomics.com/v2
 auth_token = token_for_this_user
 
-# This is a comment:
 # another user on the same platform
 [aws-us-rosalind-franklin]
 api_endpoint = https://api.sbgenomics.com/v2
 auth_token = token_for_this_user
 
-[default]
+[cgc]
 api_endpoint = https://cgc-api.sbgenomics.com/v2
 auth_token = token_for_this_user
 
-[gcp]
-api_endpoint = https://gcp-api.sbgenomics.com/v2
+[bdc]
+api_endpoint = https://api.sb.biodatacatalyst.nhlbi.nih.gov/v2/
 auth_token = token_for_this_user
 ```
 
@@ -263,6 +262,8 @@ b <- sevenbridges2::Auth$new(from = "file", profile_name = "aws-us-rfranklin")
 | BioData Catalyst Powered by Seven Bridges | `https://api.sb.biodatacatalyst.nhlbi.nih.gov/v2` | `"f4c"`       |
 +-------------------------------------------+---------------------------------------------------+---------------+
 
+
+Please refer to the [API reference section](#auth-reference) for more usage and technical details about the three authentication methods.
 
 </div>
 
@@ -331,13 +332,6 @@ Each project must have a Billing Group associated with it. This Billing Group pa
 
 For example, your first project(s) were created with the free funds from the Pilot Funds Billing Group assigned to each user at sign-up.
 
-To get a list of paths used to access billing information via the API:
-
-``` {r}
-# get paths used to access billing information
-a$billing()
-```
-
 To get information about your billing groups:
 
 ```{r}
@@ -374,77 +368,7 @@ a$billing_groups$get(id = "<billing_group_id>")
   • amount: 221
 ```
 
-Keep in mind that you can assign the output of the previous call to a variable, which will be an R6 environment:
-```{r}
-my_billing_group <- a$billing_groups$get(id = "<billing_group_id>")
-# you can still print the billing group info by calling the print method
-my_billing_group$print()
-```
-
-You can also get detailed information for a specific billing group,.The following options are available to you:
-\itemize{
-  \item analysis breakdown
-  \item storage breakdown
-  \item egress breakdown
-}
-
-To get an analysis breakdown for a billing group which contains information on both the tasks and Cruncher analysis, call:
-
-```{r}
-my_billing_group$analysis_breakdown()
-```
-
-To get a storage breakdown for a billing group, call:
-
-```{r}
-my_billing_group$storage_breakdown()
-```
-
-Finally, you may want to get an egress breakdown for a billing group:
-
-```{r}
-my_billing_group$egress_breakdown()
-```
-If something changes in the billing group, you can refresh your Billing
-object by reloading it with:
-
-```{r}
-my_billing_group$reload()
-```
-
-To retrieve information about a selected invoice, including the costs for analysis and storage, and the invoice period, you can use the invoice method with the id parameter set to the ID of the invoice you are querying.
-
-```{r}
-invoice <- a$invoices$get(id = "<invoice_id>")
-invoice
-```
-
-```
-── Invoice info ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-• approval_date: 2022-02-01T00:00:00Z
-• pending: FALSE
-• invoice_id: <your_invoice_id>
-• href: https://api.sbgenomics.com/v2/billing/invoices/<your_invoice_id>
-• invoice_period
-  • from: 2022-01-01T00:00:00Z
-  • to: 2022-01-31T23:59:59Z
-• analysis_costs
-  • currency: USD
-  • amount: 101.77
-• storage_costs
-  • currency: USD
-  • amount: 256.11
-• total
-  • currency: USD
-  • amount: 357.88
-```
-<div align="right"><a href="#top">top</a></div>
-
-Same applies for invoices, if something changes, you can refresh your Invoice object by reloading it with:
-
-```{r}
-invoice$reload()
-```
+Read more about billing and invoices operations in the [Billing group and Invoices section](#billing_invoices).
 
 ## Create Project
 
