@@ -20,6 +20,7 @@ Member <- R6::R6Class(
     #' @field permissions Member's permissions.
     permissions = NULL,
 
+    # Initialize Member object ------------------------------------------------
     #' @description Create a new Member object.
     #'
     #' @param res Response containing Member object information.
@@ -34,6 +35,8 @@ Member <- R6::R6Class(
       self$type <- res$type
       self$permissions <- res$permissions
     },
+
+    # Print Member object ----------------------------------------------------
     #' @description Print method for Member class.
     #'
     #' @importFrom purrr discard
@@ -74,6 +77,8 @@ Member <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+
+    # Reload Member object ---------------------------------------------------
     #' @description Reload Member object information.
     reload = function() {
       rlang::inform("Reloading Member objects is not possible.")
@@ -81,7 +86,7 @@ Member <- R6::R6Class(
   )
 )
 # nocov start
-# Helper function for creating Member objects
+# Helper functions for creating Member objects --------------------------------
 asMember <- function(x = NULL, auth = NULL) {
   Member$new(
     res = x,
@@ -91,7 +96,6 @@ asMember <- function(x = NULL, auth = NULL) {
   )
 }
 
-# Helper function for creating a list of Member objects
 asMemberList <- function(x, auth) {
   obj <- lapply(x$items, asMember, auth = auth)
   obj

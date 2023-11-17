@@ -16,7 +16,10 @@ Item <- R6::R6Class(
     response = NULL,
     auth = NULL,
     href = NULL,
+
+    # Initialize Item object -----------------------------------------------
     #' @description Create a new Item object.
+    #'
     #' @param href Item's API request URL.
     #' @param response Raw API response.
     #' @param auth Seven Bridges Authentication object.
@@ -25,11 +28,15 @@ Item <- R6::R6Class(
       self$response <- response
       self$auth <- auth
     },
+
     # nocov start
+    # Reload Item object -----------------------------------------------------
     #' @description Reload the Item (resource).
+    #'
     #' @param cls Item class object.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'limit', 'offset', 'fields', etc.
+    #'
     #' @importFrom rlang abort
     reload = function(cls, ...) {
       if (is_missing(cls)) {

@@ -19,6 +19,8 @@ Permission <- R6::R6Class(
     execute = NULL,
     #' @field admin Admin permission.
     admin = NULL,
+
+    # Initialize Permission object --------------------------------------------
     #' @description Create a new Permission object.
     #'
     #' @param read User can view file names, metadata, and workflows.
@@ -51,7 +53,9 @@ Permission <- R6::R6Class(
       self$execute <- execute
       self$admin <- admin
     },
+
     # nocov start
+    # Print Permission object -------------------------------------------------
     #' @description Print method for Permission class.
     #'
     #' @importFrom purrr discard
@@ -74,6 +78,8 @@ Permission <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+
+    # Reload Permission object ------------------------------------------------
     #' @description Reload Permission object information.
     reload = function() {
       rlang::inform("Reloading Permission objects is not possible.")
@@ -81,7 +87,7 @@ Permission <- R6::R6Class(
   )
 )
 # nocov start
-# Helper function for creating Permission objects
+# Helper function for creating Permission objects ----------------------------
 asPermission <- function(x, auth = NULL) {
   Permission$new(
     write = x$write,

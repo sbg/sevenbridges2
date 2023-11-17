@@ -78,7 +78,10 @@ Project <- R6::R6Class(
     permissions = NULL,
     #' @field category Project's category. By default projects are `PRIVATE`.
     category = NULL,
+
+    # Initialize Project object -----------------------------------------------
     #' @description Create a new Project object.
+    #'
     #' @param res Response containing Project object information.
     #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
@@ -99,6 +102,8 @@ Project <- R6::R6Class(
       self$permissions <- res$permissions
       self$category <- res$category
     },
+
+    # Print Project object ----------------------------------------------------
     #' @description  Basic print method for Project class.
     #'
     #' @importFrom glue glue_col
@@ -106,6 +111,8 @@ Project <- R6::R6Class(
       cat(glue::glue_col("{blue  Project name: } {self$name}"), "\n") # nocov
       cat(glue::glue_col("{blue  Project id: } {self$id}"), "\n") # nocov
     },
+
+    # Print Project object in detail ------------------------------------------
     #' @description Detailed print method for Project class.
     #'
     #' @details This method allows users to print all the fields from the
@@ -180,6 +187,8 @@ Project <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+
+    # Reload Project object ---------------------------------------------------
     #' @description Reload Project object information.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
@@ -191,6 +200,8 @@ Project <- R6::R6Class(
       )
       rlang::inform("Project object is refreshed!")
     },
+
+    # Update project ---------------------------------------------------------
     #' @description Method that allows you to edit an already existing project.
     #'  As a project Admin you can use it to change the `name`, `settings`,
     #'  `tags` or `billing group` of the project.
@@ -259,6 +270,8 @@ Project <- R6::R6Class(
       )
     },
     # nocov end
+
+    # Delete project ---------------------------------------------------------
     #' @description Method that allows you to delete project from a platform.
     #' It can only be successfully made if you have admin status for the
     #' project. \cr
@@ -282,6 +295,8 @@ Project <- R6::R6Class(
       )
     },
     # nocov end
+
+    # List project members ----------------------------------------------------
     #' @description Method for listing all the project members.
     #'
     #' @param limit The maximum number of collection items to return
@@ -316,6 +331,8 @@ Project <- R6::R6Class(
       return(asCollection(res, auth = self$auth))
     },
     # nocov end
+
+    # Add project member ----------------------------------------------------
     #' @description Method for adding new members to a specified project.
     #'  The call can only be successfully made by a user who has admin
     #'  permissions in the project.
@@ -410,6 +427,8 @@ Project <- R6::R6Class(
       return(asMember(res, auth = self$auth))
     },
     # nocov end
+
+    # Remove project member ---------------------------------------------------
     #' @description A method for removing members from the project. It can only
     #'  be successfully run by a user who has admin privileges in the project.
     #'
@@ -447,6 +466,8 @@ Project <- R6::R6Class(
       )
     },
     # nocov end
+
+    # Get project member ---------------------------------------------------
     #' @description This method returns the information about the member of
     #'  the specified project.
     #'
@@ -480,6 +501,8 @@ Project <- R6::R6Class(
       return(asMember(res, self$auth))
     },
     # nocov end
+
+    # Modify project member's permissions -------------------------------------
     #' @description This method can be used to edit a user's permissions in a
     #'  specified  project. It can only be successfully made by a user who
     #'  has admin permissions in the project.
@@ -558,6 +581,8 @@ Project <- R6::R6Class(
       return(asPermission(res, auth = self$auth))
     },
     # nocov end
+
+    # List project's files and folders ----------------------------------------
     #' @description  List all project's files and folders.
     #'
     #' @param limit The maximum number of collection items to return
@@ -592,6 +617,8 @@ Project <- R6::R6Class(
       return(asCollection(res, auth = self$auth))
     },
     # nocov end
+
+    # Create folder within project --------------------------------------------
     #' @description  Create a new folder under the project's root directory.
     #'  Every project on the Seven Bridges Platform is represented
     #'  by a root folder which contains all the files associated
@@ -625,10 +652,14 @@ Project <- R6::R6Class(
 
       return(asFile(res, self$auth))
     },
+
+    # Get project's root folder -----------------------------------------------
     #' @description  Get project's root folder object
     get_root_folder = function() {
       self$auth$files$get(id = self$root_folder)
     },
+
+    # List project's apps ----------------------------------------------------
     #' @description This call lists all apps in project.
     #'
     #' @param query_terms Enter one or more search terms to query Project's
@@ -660,6 +691,8 @@ Project <- R6::R6Class(
         ...
       )
     },
+
+    # Create new app within project -----------------------------------------
     #' @description This call creates app in project.
     #'
     #' @param raw The body of the request should be a CWL app description saved
@@ -686,6 +719,8 @@ Project <- R6::R6Class(
         raw_format = raw_format
       )
     },
+
+    # List project's tasks ----------------------------------------------------
     #' @description This call lists all tasks from project you can access. \cr
     #'  Read more about how to use query parameters properly
     # nolint start
@@ -777,6 +812,8 @@ Project <- R6::R6Class(
         ...
       )
     },
+
+    # List project's import jobs ----------------------------------------------
     #' @description This call lists imports initiated by particular user
     #'  into this destination project.
     #'
@@ -818,6 +855,8 @@ Project <- R6::R6Class(
         ...
       )
     },
+
+    # Create new task within project ------------------------------------------
     #' @description This call creates a new task. You can create either a single
     #'  task or a batch task by using the app's default batching, override
     #'  batching, or disable batching completely. A parent task is a task that
@@ -1003,8 +1042,8 @@ Project <- R6::R6Class(
     }
   )
 )
-
-# Helper function for creating Project objects --------------------------------
+# nocov start
+# Helper functions for creating Project objects -------------------------------
 asProject <- function(x = NULL, auth = NULL) {
   Project$new(
     res = x,
@@ -1014,8 +1053,8 @@ asProject <- function(x = NULL, auth = NULL) {
   )
 }
 
-
 asProjectList <- function(x, auth) {
   obj <- lapply(x$items, asProject, auth = auth)
   obj
 }
+# nocov end

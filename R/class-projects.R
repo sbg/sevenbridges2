@@ -20,12 +20,16 @@ Projects <- R6::R6Class(
       "create" = "projects"
     ),
 
+    # Initialize Projects object ----------------------------------------------
     #' @description Create new Projects resource object.
+    #'
     #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
+
+    # List projects -----------------------------------------------------------
     #' @description A method to list all projects available to particular user.
     #'  If the username is not provided, all projects available to the
     #'  currently authenticated user will be listed.
@@ -76,6 +80,8 @@ Projects <- R6::R6Class(
 
       return(asCollection(res, auth = self$auth))
     },
+
+    # Get project -----------------------------------------------------------
     #' @description This call creates Project object containing the details
     #'  of a specified project.
     #'
@@ -96,6 +102,8 @@ Projects <- R6::R6Class(
       )
       return(asProject(res, auth = self$auth))
     }, # nocov end
+
+    # Delete project ----------------------------------------------------------
     #' @description Method that allows you to delete project from a platform.
     #' It can only be successfully made if you have admin status for the
     #' project. \cr
@@ -122,6 +130,8 @@ Projects <- R6::R6Class(
       )
     },
     # nocov end
+
+    # Create new project ------------------------------------------------------
     #' @description A method for creating a new project.
     #'
     #' @param name The name of the project you are creating.
