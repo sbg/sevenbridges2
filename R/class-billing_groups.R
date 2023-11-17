@@ -18,12 +18,17 @@ Billing_groups <- R6::R6Class(
       "query" = "billing/groups",
       "get" = "billing/groups/{id}"
     ),
+
+    # Initialize Billing_groups object ----------------------------------------
     #' @description Create a new Billing_groups object.
+    #'
     #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
+
+    # List all billing groups -------------------------------------------------
     #' @description List all your billing groups, including groups
     #'  that are pending or have been disabled.
     #'
@@ -53,6 +58,8 @@ Billing_groups <- R6::R6Class(
 
       return(asCollection(res, auth = self$auth))
     }, # nocov end
+
+    # Get billing group -------------------------------------------------------
     #' @description Retrieve a single billing group, specified by its id.
     #'  To find the `billing_group`, use the call [Billing_groups$query()]
     #'  to list all your billing groups. The information returned

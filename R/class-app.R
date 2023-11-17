@@ -552,7 +552,7 @@ App <- R6::R6Class(
   )
 )
 # nocov start
-# Helper function for creating App objects
+# Helper functions for creating App objects ---------------------------------
 asApp <- function(x = NULL, auth = NULL) {
   App$new(
     res = x,
@@ -562,7 +562,6 @@ asApp <- function(x = NULL, auth = NULL) {
   )
 }
 
-# Helper function for creating a list of App objects
 asAppList <- function(x, auth) {
   obj <- lapply(x$items, asApp, auth = auth)
   obj

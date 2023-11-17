@@ -18,12 +18,17 @@ Invoices <- R6::R6Class(
       "query" = "billing/invoices",
       "get" = "billing/invoices/{id}"
     ),
+
+    # Initialize Invoices object ---------------------------------------------
     #' @description Create a new Invoices object.
+    #'
     #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
+
+    # List all invoices ------------------------------------------------------
     #' @description The call returns information about all your available
     #'  invoices, unless you use the `billing_group` query parameter to specify
     #'  the ID of a particular billing group, in which case it will return the
@@ -63,6 +68,8 @@ Invoices <- R6::R6Class(
 
       return(asCollection(res, auth = self$auth))
     }, # nocov end
+
+    # Get invoice -------------------------------------------------------------
     #' @description This call retrieves information about a selected invoice,
     #'  including the costs for analysis and storage, and the invoice period.
     #'  Use the call to list invoices to retrieve the `invoice_id`s for a

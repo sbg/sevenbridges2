@@ -33,7 +33,9 @@ Invoice <- R6::R6Class(
     #' @field total Total costs.
     total = NULL,
 
+    # Initialize Invoice object ---------------------------------------------
     #' @description Create new Invoice object.
+    #'
     #' @param res Response containing Invoice object information.
     #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
@@ -48,7 +50,9 @@ Invoice <- R6::R6Class(
       self$storage_costs <- res$storage_costs
       self$total <- res$total
     },
+
     # nocov start
+    # Print Invoice object ----------------------------------------------------
     #' @description Print invoice information as a bullet list.
     #'
     #' @importFrom purrr discard
@@ -123,6 +127,8 @@ Invoice <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+
+    # Reload Invoice object ---------------------------------------------------
     #' @description Reload Invoice.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
@@ -138,7 +144,8 @@ Invoice <- R6::R6Class(
     } # nocov end
   )
 )
-
+# nocov start
+# Helper functions for creating Invoice objects -------------------------------
 asInvoice <- function(x = NULL, auth = NULL) {
   Invoice$new(
     res = x,
@@ -152,3 +159,4 @@ asInvoiceList <- function(x, auth) {
   obj <- lapply(x$items, asInvoice, auth = auth)
   obj
 }
+# nocov end
