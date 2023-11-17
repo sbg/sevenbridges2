@@ -30,6 +30,7 @@ Collection <- R6::R6Class(
     #' @field auth Seven Bridges Authentication object.
     auth = NULL,
 
+    # Initialize Collection object --------------------------------------------
     #' @description Create a new Collection object.
     #'
     #' @param href API request URL.
@@ -48,7 +49,9 @@ Collection <- R6::R6Class(
       self$response <- response
       self$auth <- auth
     },
+
     # nocov start
+    # Print Collection object ------------------------------------------------
     #' @description Print method for Collection class.
     #'
     #' @param n Number of items to print in console.
@@ -79,6 +82,8 @@ Collection <- R6::R6Class(
         }
       }
     }, # nocov end
+
+    # Get next page of results ------------------------------------------------
     #' @description Return next page of results.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
@@ -110,6 +115,8 @@ Collection <- R6::R6Class(
         }
       }
     }, # nocov end
+
+    # Get previous page of results --------------------------------------------
     #' @description Return previous page of results.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
@@ -141,6 +148,8 @@ Collection <- R6::R6Class(
         }
       }
     }, # nocov end
+
+    # Get all results ---------------------------------------------------------
     #' @description Fetches all available items by iterating through all pages.
     #'  Please, be aware of the API rate limit for your request.
     #'
@@ -172,8 +181,10 @@ Collection <- R6::R6Class(
       self$links <- NULL
     }
   ), # nocov end
+
   private = list(
     # nocov start
+    # Get items class ---------------------------------------------------------
     items_class = function() {
       if (length(self$items) > 0) {
         return(class(self$items[[1]])[[1]])
@@ -181,7 +192,8 @@ Collection <- R6::R6Class(
         return(NULL)
       }
     },
-    # Reload object to get new results
+
+    # Reload object to get new results ----------------------------------------
     load = function(res, auth) {
       # Get items class to convert its elements
       items_class <- private$items_class()
@@ -191,7 +203,6 @@ Collection <- R6::R6Class(
           list(x = res, auth = auth)
         )
       }
-
       self$initialize(
         href = res$href,
         items = res$items,
@@ -206,7 +217,7 @@ Collection <- R6::R6Class(
 )
 
 # nocov start
-# Helper function for creating Collection objects
+# Helper function for creating Collection objects -----------------------------
 asCollection <- function(x, auth = NULL) {
   Collection$new(
     href = x$href,

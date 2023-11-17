@@ -52,6 +52,7 @@ File <- R6::R6Class(
     #' @field secondary_files Secondary files linked to the file if exist.
     secondary_files = NULL,
 
+    # Initialize File object -----------------------------------------------
     #' @description Create a new File object.
     #'
     #' @param res Response containing File object information.
@@ -78,7 +79,9 @@ File <- R6::R6Class(
     },
 
     # nocov start
+    # Print File object -------------------------------------------------------
     #' @description Print method for File class.
+    #'
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end cli_bullets
@@ -101,6 +104,7 @@ File <- R6::R6Class(
       cli::cli_end()
     },
 
+    # Print File object in detail ---------------------------------------------
     #' @description Detailed print method for File class.
     #'
     #' @details  The call returns the file's name, its tags, and all of its
@@ -193,7 +197,10 @@ File <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+
+    # Reload File object ------------------------------------------------------
     #' @description Reload File object information.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #' @return \code{\link{File}} object.
@@ -204,6 +211,8 @@ File <- R6::R6Class(
       )
       rlang::inform("File object is refreshed!")
     }, # nocov end
+
+    # Update file ------------------------------------------------------------
     #' @description Updates the name, the full set metadata, and tags
     #' for a specified file.
     #' .
@@ -258,6 +267,8 @@ File <- R6::R6Class(
       )
       rlang::inform("File has been updated!")
     }, # nocov end
+
+    # Add file tags -----------------------------------------------------------
     #' @description This method allows you to tag files on the Platform.
     #'  You can tag your files on the Platform with keywords to make it easier
     #'  to identify and organize files you’ve imported from public datasets
@@ -306,6 +317,8 @@ File <- R6::R6Class(
         self$tags <- unique(c(self$tags, tags))
       }
     }, # nocov end
+
+    # Copy file -----------------------------------------------------------
     #' @description This call copies the specified file to a new project.
     #'  Files retain their metadata when copied, but may be assigned new names
     #'  in their target project. To make this call, you should have
@@ -352,6 +365,8 @@ File <- R6::R6Class(
       # Return newly created file
       return(asFile(res, auth = self$auth))
     },
+
+    # Get file's download URL ------------------------------------------------
     #' @description This method returns a URL that you can use to download
     #'  the specified file.
     #'
@@ -373,6 +388,8 @@ File <- R6::R6Class(
       # Return download url
       return(self$url)
     },
+
+    # Get file's metadata -----------------------------------------------------
     #' @description This call returns the metadata values for the specified
     #'  file.
     #'
@@ -395,6 +412,8 @@ File <- R6::R6Class(
 
       return(self$metadata)
     }, # nocov end
+
+    # Set file's metadata -----------------------------------------------------
     #' @description This call changes the metadata values for the specified
     #'  file. \cr
     #'  More details about how to modify metadata, you can find in the
@@ -445,6 +464,8 @@ File <- R6::R6Class(
 
       return(self$metadata)
     }, # nocov end
+
+    # Move file to folder -----------------------------------------------------
     #' @description This call moves a file from one folder to another.
     #'  Moving of files is only allowed within the same project.
     #'
@@ -487,6 +508,8 @@ File <- R6::R6Class(
       # Return newly created file
       return(asFile(res, auth = self$auth))
     },
+
+    # List folder's content ---------------------------------------------------
     #' @description List folder contents.
     #'
     #' @param limit The maximum number of collection items to return
@@ -518,6 +541,8 @@ File <- R6::R6Class(
       # Return folder contents as Collection
       return(asCollection(res, auth = self$auth))
     },
+
+    # Delete file/folder ------------------------------------------------------
     #' @description Delete method for File objects.
     #'
     #' @importFrom purrr discard
@@ -535,6 +560,8 @@ File <- R6::R6Class(
 
       rlang::inform(message = glue::glue("File {self$id} has been deleted."))
     }, # nocov end
+
+    # Download file from platform ---------------------------------------------
     #' @description Download method for File objects. It allows download a
     #'  platform file to your local computer. To specify the destination for
     #'  your download, you should provide the path to the destination directory
@@ -619,6 +646,8 @@ File <- R6::R6Class(
         )
       }
     },
+
+    # Export file into a volume ---------------------------------------------
     #' @description This call lets you queue a job to export this file from a
     #'  project on the Platform into a volume. The file selected for export must
     #'  not be a public file or an alias. Aliases are objects stored in your
@@ -707,7 +736,7 @@ File <- R6::R6Class(
     }
   ),
   private = list(
-    # Handle secondary files parameter to return list of File objects
+    # Handle secondary files parameter to return list of File objects ---------
     get_secondary_files = function(secondary_files) {
       if (!is_missing(secondary_files)) {
         sf_list <- list()
@@ -721,7 +750,7 @@ File <- R6::R6Class(
   )
 )
 
-# Helper function for creating File objects
+# Helper functions for creating File objects ---------------------------------
 asFile <- function(x = NULL, auth = NULL) {
   File$new(
     res = x,
@@ -731,10 +760,8 @@ asFile <- function(x = NULL, auth = NULL) {
   )
 }
 
-# Helper function for creating a list of File objects
 asFileList <- function(x, auth) {
   obj <- lapply(x$items, asFile, auth = auth)
   obj
 }
-
 # nocov end

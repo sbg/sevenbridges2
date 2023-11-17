@@ -49,6 +49,7 @@ Export <- R6::R6Class(
     #' @field result File object that was exported.
     result = NULL,
 
+    # Initialize Export object ------------------------------------------------
     #' @description Create a new Export object.
     #'
     #' @param res Response containing Export job information.
@@ -72,6 +73,7 @@ Export <- R6::R6Class(
     },
 
     # nocov start
+    # Print Export object -----------------------------------------------------
     #' @description Print method for Export class.
     #'
     #' @importFrom purrr discard
@@ -105,6 +107,8 @@ Export <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+
+    # Reload Export object ----------------------------------------------------
     #' @description Reload Export object information.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
@@ -121,7 +125,7 @@ Export <- R6::R6Class(
   )
 )
 # nocov start
-# Helper function for creating Export objects
+# Helper functions for creating Export objects --------------------------------
 asExport <- function(x = NULL, auth = NULL) {
   Export$new(
     res = x,
@@ -131,7 +135,6 @@ asExport <- function(x = NULL, auth = NULL) {
   )
 }
 
-# Helper function for creating a list of Export objects
 asExportList <- function(x, auth) {
   obj <- lapply(x$items, asExport, auth = auth)
   obj

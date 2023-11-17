@@ -19,14 +19,16 @@ Imports <- R6::R6Class(
       "create" = "storage/imports"
     ),
 
+    # Initialize Imports object -----------------------------------------------
     #' @description Create a new Imports object.
+    #'
     #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
 
-    # List all import jobs --------------------------------------
+    # List import jobs --------------------------------------------------------
     #' @description This call lists import jobs initiated by particular user.
     #'  Note that when you import a file from your volume on your cloud storage
     #'  provider (Amazon Web Services or Google Cloud Storage), you are

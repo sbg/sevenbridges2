@@ -55,6 +55,7 @@ Import <- R6::R6Class(
     #' @field result File object that was imported.
     result = NULL,
 
+    # Initialize Import object -----------------------------------------------
     #' @description Create a new Import object.
     #'
     #' @param res Response containing Import object information.
@@ -79,6 +80,7 @@ Import <- R6::R6Class(
     },
 
     # nocov start
+    # Print Import object ----------------------------------------------------
     #' @description Print method for Import class.
     #'
     #' @importFrom purrr discard
@@ -111,6 +113,7 @@ Import <- R6::R6Class(
       cli::cli_end()
     },
 
+    # Reload Import object ----------------------------------------------------
     #' @description Reload Import object information.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
@@ -127,7 +130,7 @@ Import <- R6::R6Class(
   )
 )
 # nocov start
-# Helper function for creating Import objects
+# Helper functions for creating Import objects ---------------------------
 asImport <- function(x = NULL, auth = NULL) {
   Import$new(
     res = x,
@@ -137,7 +140,6 @@ asImport <- function(x = NULL, auth = NULL) {
   )
 }
 
-# Helper function for creating a list of Import objects
 asImportList <- function(x, auth) {
   obj <- lapply(x$items, asImport, auth = auth)
   obj

@@ -19,14 +19,16 @@ Exports <- R6::R6Class(
       "create" = "storage/exports"
     ),
 
+    # Initialize Exports object -----------------------------------------------
     #' @description Create a new Exports object.
+    #'
     #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
 
-    # List all export jobs --------------------------------------
+    # List export jobs --------------------------------------------------------
     #' @description This call lists export jobs initiated by particular user.
     #'  Note that when you export a file from a project on the Platform into a
     #'  volume, you write to your cloud storage bucket.
@@ -88,7 +90,7 @@ Exports <- R6::R6Class(
       return(asCollection(res, auth = self$auth))
     }, # nocov end
 
-    # Get export job details -----------------------------------------------
+    # Get export job details --------------------------------------------------
     #' @description This call will return the details of an export job.
     #'
     #' @param id The export job identifier (id).
@@ -107,7 +109,7 @@ Exports <- R6::R6Class(
       return(asExport(res, auth = self$auth))
     }, # nocov end
 
-    # Start new export job -----------------------------------------------
+    # Start new export job ----------------------------------------------------
     #' @description This call lets you queue a job to export a file from a
     #'  project on the Platform into a volume. The file selected for export must
     #'  not be a public file or an alias. Aliases are objects stored in your
@@ -243,7 +245,7 @@ Exports <- R6::R6Class(
       return(export)
     },
 
-    # Delete export job ----------------------------------------------------
+    # Delete export job -------------------------------------------------------
     #' @description Deleting export jobs is not possible.
     #'
     #' @importFrom rlang inform

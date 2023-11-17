@@ -18,12 +18,17 @@ Files <- R6::R6Class(
       "get" = "files/{id}",
       "copy" = "action/files/copy"
     ),
+
+    # Initialize Files object -----------------------------------------------
     #' @description Create new Files resource object.
+    #'
     #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
+
+    # List files --------------------------------------------------------------
     #' @description This call returns a list of files and subdirectories in a
     #'  specified project or directory within a project, with specified
     #'  properties that you can access. The project or directory whose contents
@@ -39,6 +44,7 @@ Files <- R6::R6Class(
     # nolint start
     #'  [API documentation](https://docs.sevenbridges.com/reference/list-files-primary-method).
     # nolint end
+    #'
     #' @param project Project identifier (ID) as string or a Project object.
     #'  Project should not be used together with parent.
     #'  If parent is used, the call will list the content of the specified
@@ -140,6 +146,8 @@ Files <- R6::R6Class(
 
       return(asCollection(res, auth = self$auth))
     },
+
+    # Get file ---------------------------------------------------------------
     #' @description This call returns a single File object with its details.
     #' The call returns the file's name, its tags, and all of its metadata.
     #' Files are specified by their IDs, which you can obtain by making
@@ -158,6 +166,8 @@ Files <- R6::R6Class(
       )
       return(asFile(res, auth = self$auth))
     }, # nocov end
+
+    # Copy files --------------------------------------------------------------
     #' @description  Copy file/files to the specified project. This call allows
     #'  you to copy files between projects. Unlike the call to copy a file
     #'  between projects, this call lets you batch the copy operation and copy
@@ -225,6 +235,8 @@ Files <- R6::R6Class(
       }
       invisible(result)
     }, # nocov end
+
+    # Create folder -----------------------------------------------------------
     #' @description A method for creating a new folder. It allows you to create
     #'  a new folder on the Platform within the root folder of a specified
     #'  project or the provided parent folder. Remember that you should provide
