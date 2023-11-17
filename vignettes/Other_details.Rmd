@@ -1,0 +1,271 @@
+---
+title: "API reference details for Seven Bridges API R Client"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    number_sections: true
+    theme: "flatly"
+    highlight: "textmate"
+    css: "sevenbridges.css"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Introduction and Quickstart for Seven Bridges API R Client}
+  %\VignetteEncoding{UTF-8}
+---
+
+<a name="top"></a>
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+
+`Important note:` This is a work-in-progress project to update the 
+`sevenbridges2` package. Accordingly, this vignette will also change as new 
+features are implemented.
+
+# Introduction
+
+`sevenbridges2` is an R package that provides an interface for Seven Bridges 
+public API. The supported platforms includes the 
+[Seven Bridges Platform](https://igor.sbgenomics.com/), 
+[Cancer Genomics Cloud (CGC)](https://www.cancergenomicscloud.org), 
+[BioData Catalyst (BDC)](https://platform.sb.biodatacatalyst.nhlbi.nih.gov/) and [Cavatica](https://cavatica.sbgenomics.com).
+
+Learn more from our documentation on the 
+[Seven Bridges Platform](https://docs.sevenbridges.com/page/api), 
+[Cancer Genomics Cloud (CGC)](http://docs.cancergenomicscloud.org/v1.0/page/the-cgc-api), 
+[BioData Catalyst (BDC)](https://sb-biodatacatalyst.readme.io/reference/new-1)
+and [Cavatica](https://docs.cavatica.org/reference/the-api).
+
+Unlike the current `sevenbridges` package that is built on top of reference 
+classes, the `sevenbridges2` package is based on more modern and lightweight 
+R6 classes. However, the basic idea and way of constructing API requests is 
+largely preserved.
+
+## R Client for Seven Bridges API
+
+The `sevenbridges2` package only supports v2+ versions of the API, since 
+versions prior to V2 are not compatible with the Common Workflow Language (CWL). 
+This package provides a simple interface for accessing and trying out various 
+methods.
+
+There are two ways of constructing API calls. For instance, you can use 
+low-level API calls which use arguments like `path`, `query`, and `body`. 
+These are documented in the API reference libraries for the [Seven Bridges Platform](https://docs.sevenbridges.com/reference#list-all-api-paths) and the [CGC](http://docs.cancergenomicscloud.org/docs/new-1). An example of a low-level
+request to "list all projects" is shown below. 
+In this request, you can also pass `query` and `body` as a list.
+
+```{r}
+library("sevenbridges2")
+a <- Auth$new(token = "<your_token>", platform = "aws-us")
+a$api(path = "projects", method = "GET")
+```
+
+***(Advanced user option)*** The second way of constructing an API request is 
+to directly use the `httr2` package to make your API calls.
+
+
+## Billing and invoices
+
+Keep in mind that you can assign the output of the previous call to a variable, which will be an R6 environment:
+```{r}
+my_billing_group <- a$billing_groups$get(id = "<billing_group_id>")
+# you can still print the billing group info by calling the print method
+my_billing_group$print()
+```
+
+You can also get detailed information for a specific billing group,.The following options are available to you:
+\itemize{
+  \item analysis breakdown
+  \item storage breakdown
+  \item egress breakdown
+}
+
+To get an analysis breakdown for a billing group which contains information on both the tasks and Cruncher analysis, call:
+
+```{r}
+my_billing_group$analysis_breakdown()
+```
+
+To get a storage breakdown for a billing group, call:
+
+```{r}
+my_billing_group$storage_breakdown()
+```
+
+Finally, you may want to get an egress breakdown for a billing group:
+
+```{r}
+my_billing_group$egress_breakdown()
+```
+If something changes in the billing group, you can refresh your Billing
+object by reloading it with:
+
+```{r}
+my_billing_group$reload()
+```
+
+To retrieve information about a selected invoice, including the costs for analysis and storage, and the invoice period, you can use the invoice method with the id parameter set to the ID of the invoice you are querying.
+
+```{r}
+invoice <- a$invoices$get(id = "<invoice_id>")
+invoice
+```
+
+```
+── Invoice info ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+• approval_date: 2022-02-01T00:00:00Z
+• pending: FALSE
+• invoice_id: <your_invoice_id>
+• href: https://api.sbgenomics.com/v2/billing/invoices/<your_invoice_id>
+• invoice_period
+  • from: 2022-01-01T00:00:00Z
+  • to: 2022-01-31T23:59:59Z
+• analysis_costs
+  • currency: USD
+  • amount: 101.77
+• storage_costs
+  • currency: USD
+  • amount: 256.11
+• total
+  • currency: USD
+  • amount: 357.88
+```
+<div align="right"><a href="#top">top</a></div>
+
+Same applies for invoices, if something changes, you can refresh your Invoice object by reloading it with:
+
+```{r}
+invoice$reload()
+```
+
+## Projects
+
+## Edit an existing project
+
+If for some reason you want to edit an existing project, you can do so by using
+the **update** method on the Project class object. As a project Admin you can 
+use it to change the name, settings, tags or billing group of the project. For 
+example, if you want to change the name and description of the project, you can
+do it in the following way:
+
+```{r}
+p <- a$projects$get(id = "<project's-short-name>")
+p$update(
+  name = "project_with_modified_name",
+  description = "This is the modified description."
+)
+```
+
+Keep in mind that this modifies only the name of the project, not its short 
+name. Therefore, after calling this method, the id of the project will remain 
+the same \code{your_username/project's-short-name}.
+
+If something changes in the project on the Platform UI, you can refresh your Project object to fetch the changes, by reloading it with:
+
+```{r}
+p$reload()
+```
+
+## Delete a project
+
+You may also want to delete some project from the Platform using through the R 
+client library. To do that, you need to call the \code{delete} method on the 
+project object:
+
+```{r}
+p <- a$projects$get(
+  project = "<project's-short-name>"
+)
+p$delete()
+```
+
+Please be careful when using this method and note that calling it will
+permanently delete the project from the platform.
+
+
+## List project members
+
+To get a list of the members of the specified project:
+
+```{r}
+p$list_members()
+```
+
+
+## Add a member to a project
+
+To add a new user to a specified project:
+
+```{r}
+p <- a$projects$get(
+  project = "<project's-short-name>"
+)
+p$add_member(user = "<username_of_a_user_you_want_to_add>")
+```
+
+
+Please keep in mind that this call can only be successfully made by a user who 
+has admin permissions in the project.
+
+
+## Remove a project member
+
+On the other hand, you can delete a member from the project in a similar way:
+
+```{r}
+p$remove_member(user = "<username_of_a_user_you_want_to_remove>")
+```
+
+
+## Get and modify project member's permissions
+
+Sometimes you may just want to investigate a members's permissions within a 
+specified project or update them, and you can do that by calling the \code{
+modify_member_permissions} method. For this method to work, the user calling it 
+must have admin permissions in the project. For example, you may want to give 
+write permissions to a project member:
+
+```{r}
+p$modify_member_permissions(
+  user = "<username_of_a_user_of_interest>",
+  permissions = list(write = TRUE)
+)
+```
+
+## List project files
+
+In order to list all files and folders (special type of files) within 
+specified project object, you can use the Project's `list_files()` method. 
+
+```{r}
+p$list_files()
+```
+
+## Create folder within project's Files
+
+You are also able to create a folder within project's root Files directory
+using the method `create_folder()`. You would have to specify the folder name
+which should not start with '__' or contain spaces. 
+
+```{r}
+p$create_folder(name = "My_new_folder")
+```
+
+## Get project's root folder object
+
+Lastly, the project's root directory with all your files is a folder itself,
+therefore you are able to get this folder as File object too using
+`get_root_folder()`.
+
+```{r}
+p$get_root_folder()
+```

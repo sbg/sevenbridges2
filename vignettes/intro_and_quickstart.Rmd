@@ -27,23 +27,41 @@ knitr::opts_chunk$set(
 ```
 
 
-`Important note:` This is a work-in-progress project to update the `sevenbridges2` package. Accordingly, this vignette will also change as new features are implemented.
+`Important note:` This is a work-in-progress project to update the 
+`sevenbridges2` package. Accordingly, this vignette will also change as new 
+features are implemented.
 
 # Introduction
 
-`sevenbridges2` is an R package that provides an interface for Seven Bridges public API. The supported platforms includes the [Seven Bridges Platform](https://igor.sbgenomics.com/), [Cancer Genomics Cloud (CGC)](https://www.cancergenomicscloud.org), [BioData Catalyst (BDC)](https://platform.sb.biodatacatalyst.nhlbi.nih.gov/) and [Cavatica](https://cavatica.sbgenomics.com).
+`sevenbridges2` is an R package that provides an interface for Seven Bridges 
+public API. The supported platforms includes the 
+[Seven Bridges Platform](https://igor.sbgenomics.com/), 
+[Cancer Genomics Cloud (CGC)](https://www.cancergenomicscloud.org), 
+[BioData Catalyst (BDC)](https://platform.sb.biodatacatalyst.nhlbi.nih.gov/) and [Cavatica](https://cavatica.sbgenomics.com).
 
-Learn more from our documentation on the [Seven Bridges Platform](https://docs.sevenbridges.com/page/api), the [Cancer Genomics Cloud (CGC)](http://docs.cancergenomicscloud.org/v1.0/page/the-cgc-api), 
+Learn more from our documentation on the 
+[Seven Bridges Platform](https://docs.sevenbridges.com/page/api), 
+[Cancer Genomics Cloud (CGC)](http://docs.cancergenomicscloud.org/v1.0/page/the-cgc-api), 
 [BioData Catalyst (BDC)](https://sb-biodatacatalyst.readme.io/reference/new-1)
 and [Cavatica](https://docs.cavatica.org/reference/the-api).
 
-Unlike the current `sevenbridges` package that is built on top of reference classes, the `sevenbridges2` package is based on more modern and lightweight R6 classes. However, the basic idea and way of constructing API requests is largely preserved.
+Unlike the current `sevenbridges` package that is built on top of reference 
+classes, the `sevenbridges2` package is based on more modern and lightweight 
+R6 classes. However, the basic idea and way of constructing API requests is 
+largely preserved.
 
 ## R Client for Seven Bridges API
 
-The `sevenbridges2` package only supports v2+ versions of the API, since versions prior to V2 are not compatible with the Common Workflow Language (CWL). This package provides a simple interface for accessing and trying out various methods.
+The `sevenbridges2` package only supports v2+ versions of the API, since 
+versions prior to V2 are not compatible with the Common Workflow Language (CWL). 
+This package provides a simple interface for accessing and trying out various 
+methods.
 
-There are two ways of constructing API calls. For instance, you can use low-level API calls which use arguments like `path`, `query`, and `body`. These are documented in the API reference libraries for the [Seven Bridges Platform](https://docs.sevenbridges.com/reference#list-all-api-paths) and the [CGC](http://docs.cancergenomicscloud.org/docs/new-1). An example of a low-level request to "list all projects" is shown below. In this request, you can also pass `query` and `body` as a list.
+There are two ways of constructing API calls. For instance, you can use 
+low-level API calls which use arguments like `path`, `query`, and `body`. 
+These are documented in the API reference libraries for the [Seven Bridges Platform](https://docs.sevenbridges.com/reference#list-all-api-paths) and the [CGC](http://docs.cancergenomicscloud.org/docs/new-1). An example of a low-level
+request to "list all projects" is shown below. 
+In this request, you can also pass `query` and `body` as a list.
 
 ```{r}
 library("sevenbridges2")
@@ -51,29 +69,35 @@ a <- Auth$new(token = "<your_token>", platform = "aws-us")
 a$api(path = "projects", method = "GET")
 ```
 
-***(Advanced user option)*** The second way of constructing an API request is to directly use the `httr` package to make your API calls.
+***(Advanced user option)*** The second way of constructing an API request is 
+to directly use the `httr2` package to make your API calls.
 
 
 ## API General Information
 
-The `sevenbridges2` package is organized by main resources from the Seven Bridges API reference. 
-There we have groups of endpoints for: projects, files, apps, tasks, invoices, volumes etc.
-For each group of resources the set of operations is available like `query()`, `get()` and `delete()` as common and other custom operations. 
+The `sevenbridges2` package is organized by main resources from the 
+Seven Bridges API reference. 
+There we have groups of endpoints for: projects, files, apps, tasks, invoices, 
+volumes etc.
+For each group of resources the set of operations is available like `query()`, 
+`get()` and `delete()` as common and other custom operations. 
 
 
 Before we start, keep in mind the following:
 
 __`Collection`__
 
-Every API call that returns as a result some list of items (usually the output from 
-`query()` operations), like fetching projects, files, apps etc, wraps the results into a general `Collection` class object containing `items` field from which users may access the items returned. 
+Every API call that returns as a result some list of items (usually the output 
+from `query()` operations), like fetching projects, files, apps etc, wraps 
+the results into a general `Collection` class object containing `items` field 
+from which users may access the items returned. 
 Additional options that `Collection` class is offering are possibilities to 
-navigate between pages of results, for example, to load next or previous page of results 
-by calling methods `next_page()` and `prev_page()`.
+navigate between pages of results, for example, to load next or previous page 
+of results by calling methods `next_page()` and `prev_page()`.
 
-Lastly, users are able to fetch all results using `Collection`'s method `all()` which is a 
-shortcut to send multiple API calls for each next page and collect all results. 
-Keep in mind the limit used as well as the API rate limit.
+Lastly, users are able to fetch all results using `Collection`'s method `all()` 
+which is a shortcut to send multiple API calls for each next page and collect 
+all results. Keep in mind the limit used as well as the API rate limit.
 
 __`offset` and `limit`__
 
@@ -82,18 +106,27 @@ Almost every API call accepts two arguments named `offset` and `limit`.
 - Offset defines where the retrieved items started.
 - Limit defines the number of items you want to get.
 
-By default, `offset` is set to `0` and `limit` is set to `50`. As such, your API request returns the __first 50 items__ when you list items or search for items by name. To search and list all items, use `complete = TRUE` if you use core `api()` function in your API request, or `all()`
-operation within the Collection object you've received as result. 
-
+By default, `offset` is set to `0` and `limit` is set to `50`. As such, your 
+API request returns the __first 50 items__ when you list items or search for 
+items by name. To search and list all items, use `complete = TRUE` 
+if you use core `api()` function in your API request, or `all()` operation 
+within the Collection object you've received as result. 
 
 __Search by ID__
 
-When searching by ID (usually it's the resource's `get()` operation), your request will return your exact resource as it is unique. As such, you do not have to set `offset` and `limit` manually. It is a good practice to find your resources by their ID and pass this ID as an input to your task. You can find a resource's ID in the final part of the URL on the visual interface or via the API requests to list resources or get a resource's details.
+When searching by ID (usually it's the resource's `get()` operation), 
+your request will return your exact resource as it is unique. 
+As such, you do not have to set `offset` and `limit` manually. 
+It is a good practice to find your resources by their ID and pass this ID 
+as an input to your task. You can find a resource's ID in the final part of 
+the URL on the visual interface or via the API requests to list resources or 
+get a resource's details.
 
 
 ## Installation
 
-The `sevenbridges2` package is available on CRAN and Seven Bridges Github repository.
+The `sevenbridges2` package is available on CRAN and Seven Bridges Github 
+repository.
 
 To install it from `CRAN`, use simply:
 ```{r}
@@ -109,14 +142,19 @@ remotes::install_github(
   build_vignettes = TRUE, dependencies = TRUE
 )
 ```
-If you have trouble with `pandoc` and do not want to install it, set `build_vignettes = FALSE` to avoid the vignettes build.
+If you have trouble with `pandoc` and do not want to install it, set 
+`build_vignettes = FALSE` to avoid the vignettes build.
 
 # Quickstart
 
-
 ## Create `Auth` Object
 
-Before you can access your account via the API, you have to provide your credentials. You can obtain your credentials in the form of an ["authentication token"](https://docs.sevenbridges.com/v1.0/docs/get-your-authentication-token) from the **Developer Tab** under **Account Settings** on the visual interface. Once you've obtained this, create an `Auth` object, so it remembers your authentication token and the path for the API. All subsequent requests will draw upon these two pieces of information.
+Before you can access your account via the API, you have to provide your 
+credentials. You can obtain your credentials in the form of an ["authentication token"](https://docs.sevenbridges.com/v1.0/docs/get-your-authentication-token) 
+from the **Developer Tab** under **Account Settings** on the visual interface. 
+Once you've obtained this, create an `Auth` object, so it remembers your 
+authentication token and the path for the API. 
+All subsequent requests will draw upon these two pieces of information.
 
 Let's load the package first:
 
@@ -124,15 +162,34 @@ Let's load the package first:
 library("sevenbridges2")
 ```
 
-You have three different ways to provide your token. Choose from one method below:
+You have three different ways to provide your token. 
+Choose from one method below:
 
-1. [Direct authentication.](#method1) Here you should provide your developer token and a base URL for the platform of interest (alternatively, you can provide the name of the platform - these are the available options `cgc`, `aws-us`, `aws-eu`, `ali-cn`, `cavatica`, `f4c` - the default platform is `aws-us`) as a function call arguments to `Auth$new()`. This will create the platform authentication object and temporarily set up your token and platform base URL as environment variables `SB_AUTH_TOKEN` and `SB_API_ENDPOINT`. This way, your token will not be directly stored in the Auth object, but you will still be able to access it by calling the `get_token()` method. Keep in mind that these environment variables are session-specific and are deleted when the session ends.
+1. [Direct authentication.](#method1) Here you should provide your developer 
+token and a base URL for the platform of interest (alternatively, you can 
+provide the name of the platform - these are the available options `cgc`, 
+`aws-us`, `aws-eu`, `ali-cn`, `cavatica`, `f4c` - the default platform is 
+`aws-us`) as a function call arguments to `Auth$new()`. This will create the 
+platform authentication object and temporarily set up your token and platform 
+base URL as environment variables `SB_AUTH_TOKEN` and `SB_API_ENDPOINT`. 
+This way, your token will not be directly stored in the Auth object, but you 
+will still be able to access it by calling the `get_token()` method. 
+Keep in mind that these environment variables are session-specific and are
+deleted when the session ends.
 
-2. [Authentication via system environment variables.](#method2) By default this will read the credential information from two existing system environment variables: `SB_API_ENDPOINT` and `SB_AUTH_TOKEN`. Of course, assuming that you have previously set these environment variables. Alternatively, you can specify the names of the system environment variables you want to be loaded using the `sysenv_token` and `sysenv_url` arguments.
-3. [Authentication via the user configuration file.](#method3) This file, by default `$HOME/.sevenbridges/credentials`, provides an organized way to collect and manage all your API authentication information for Seven Bridges platforms.
+2. [Authentication via system environment variables.](#method2) By default 
+this will read the credential information from two existing system environment 
+variables: `SB_API_ENDPOINT` and `SB_AUTH_TOKEN`. Of course, assuming that you 
+have previously set these environment variables. Alternatively, you can specify 
+the names of the system environment variables you want to be loaded using the 
+`sysenv_token` and `sysenv_url` arguments.
 
+3. [Authentication via the user configuration file.](#method3) This file, by 
+default `$HOME/.sevenbridges/credentials`, provides an organized way to collect 
+and manage all your API authentication information for Seven Bridges platforms.
 
-If you need to be logged into multiple accounts at the same time (which can also be for different platforms), please use either the second or third method.
+If you need to be logged into multiple accounts at the same time (which can 
+also be for different platforms), please use either the second or third method.
 
 <div style="margin-left:3em"><a name="method1"/>**Method 1: Direct authentication**
 
@@ -159,10 +216,12 @@ Create an `Auth` object:
 a <- Auth$new(from = "env")
 ```
 
-If you need to be logged into multiple accounts at the same time it is essential that you provide
-environment variables for each of the accounts. Of course, these variables must have different names.
+If you need to be logged into multiple accounts at the same time it is 
+essential that you provide environment variables for each of the accounts. 
+Of course, these variables must have different names.
 
-If you do not have pre-set environment variables, you can create them in the following way:
+If you do not have pre-set environment variables, you can create them in the 
+following way:
 
 ```{r}
 # Set environment variables for the first account
@@ -222,21 +281,27 @@ api_endpoint = https://api.sb.biodatacatalyst.nhlbi.nih.gov/v2/
 auth_token = token_for_this_user
 ```
 
-To load the user profile `aws-us-rfranklin` from this configuration file, simply use:
+To load the user profile `aws-us-rfranklin` from this configuration file, 
+simply use:
 
 ```{r}
 a <- sevenbridges2::Auth$new(from = "file", profile_name = "aws-us-rfranklin")
 ```
 
-If `profile_name` is not specified, we will try to load the profile named `[default]`:
+If `profile_name` is not specified, we will try to load the profile 
+named `[default]`:
 
 ```{r}
 a <- sevenbridges2::Auth$new(from = "file")
 ```
 
 
-The option based on the use of a configuration file also enables simultaneous authentication from multiple accounts. 
-Assuming that we have a configuration file like the one listed above, and that we want to create authentication objects for two profiles (**default** and **aws-us-rfranklin**), we can achieve this in the following way:
+The option based on the use of a configuration file also enables simultaneous 
+authentication from multiple accounts. 
+Assuming that we have a configuration file like the one listed above, 
+and that we want to create authentication objects for two profiles 
+(**default** and **aws-us-rfranklin**), we can achieve this in the following 
+way:
 
 ```{r}
 a <- sevenbridges2::Auth$new(from = "file", profile_name = "default")
@@ -244,7 +309,9 @@ b <- sevenbridges2::Auth$new(from = "file", profile_name = "aws-us-rfranklin")
 ```
 
 
-***Note:*** API paths (base URLs) differ for each Seven Bridges environment. Be sure to provide the correct path for the environment you are using. API paths for some of the environments are:
+***Note:*** API paths (base URLs) differ for each Seven Bridges environment. 
+Be sure to provide the correct path for the environment you are using. 
+API paths for some of the environments are:
 
 +-------------------------------------------+---------------------------------------------------+---------------+
 | Platform Name                             | API Base URL                                      | Short Name    |
@@ -263,7 +330,8 @@ b <- sevenbridges2::Auth$new(from = "file", profile_name = "aws-us-rfranklin")
 +-------------------------------------------+---------------------------------------------------+---------------+
 
 
-Please refer to the [API reference section](#auth-reference) for more usage and technical details about the three authentication methods.
+Please refer to the [API reference section](#auth-reference) for more usage and 
+technical details about the three authentication methods.
 
 </div>
 
@@ -296,7 +364,9 @@ a$user()
 
 **Get information about a user**
 
-This call returns information about the specified user. Note that currently you can view only your own user information, so this call is equivalent to the [call to get information about your account](#youruser).
+This call returns information about the specified user. Note that currently 
+you can view only your own user information, so this call is equivalent to 
+the [call to get information about your account](#youruser).
 
 ```{r}
 a$user(username = "RFranklin")
@@ -307,7 +377,9 @@ a$user(username = "RFranklin")
 
 ## Rate Limit
 
-This call returns information about your current rate limit. This is the number of API calls you can make in five minutes. This call also returns information about your current instance limit.
+This call returns information about your current rate limit. This is the 
+number of API calls you can make in five minutes. This call also returns 
+information about your current instance limit.
 
 ```{r}
 a$rate_limit()
@@ -328,9 +400,11 @@ a$rate_limit()
 
 ## Show Billing Information
 
-Each project must have a Billing Group associated with it. This Billing Group pays for the storage and computation in the project.
+Each project must have a Billing Group associated with it. This Billing 
+Group pays for the storage and computation in the project.
 
-For example, your first project(s) were created with the free funds from the Pilot Funds Billing Group assigned to each user at sign-up.
+For example, your first project(s) were created with the free funds from 
+the Pilot Funds Billing Group assigned to each user at sign-up.
 
 To get information about your billing groups:
 
@@ -339,16 +413,23 @@ To get information about your billing groups:
 a$billing_groups$query()
 ```
 
-This call lists all your billing groups, including groups that are pending or have been disabled.
+This call lists all your billing groups, including groups that are pending 
+or have been disabled.
 
 To get information about your invoices:
 ```{r}
 a$invoices$query()
 ```
 
-The call returns information about all your available invoices, unless you use the \code{billing_group_id} query parameter to specify the ID of a particular billing group, in which case it will return the invoice incurred by that billing group only.
+The call returns information about all your available invoices, unless you use 
+the \code{billing_group_id} query parameter to specify the ID of a particular 
+billing group, in which case it will return the invoice incurred by that 
+billing group only.
 
-To get a detailed information for a specific billing group, please use the billing_group method with the billing group ID. The information returned includes the billing group owner, the total balance, and the status of the billing group (pending, disabled,...). 
+To get a detailed information for a specific billing group, please use the 
+billing_group method with the billing group ID. The information returned 
+includes the billing group owner, the total balance, and the status of the 
+billing group (pending, disabled,...). 
 
 ```{r}
 a$billing_groups$get(id = "<billing_group_id>")
@@ -368,22 +449,55 @@ a$billing_groups$get(id = "<billing_group_id>")
   • amount: 221
 ```
 
-Read more about billing and invoices operations in the [Billing group and Invoices section](#billing_invoices).
+Read more about billing and invoices operations in the 
+[Billing group and Invoices section](#billing_invoices).
 
-## Create Project
 
-Projects are the core building blocks of the platform. Each project corresponds to a distinct scientific investigation, serving as a container for its data, analysis tools, results, and collaborators.
+## List and query projects
 
-Create a new project called "api testing" with the billing group `id` obtained above.
+Projects are the core building blocks of the platform. Each project corresponds 
+to a distinct scientific investigation, serving as a container for its data, 
+analysis tools, results, and collaborators.
+
+In order to query and explore all projects, use the `projects` 
+resource path and `query()` method. One can also filter the projects by several
+criteria, like project's name and tags. 
+The search by name is partial and case-insensitive. 
 
 ```{r}
-# list all available billing groups for currently logged in user
+# List first 5 projects
+my_projects <- a$projects$query(limit = 5)
+my_projects
+
+# Load next page of results
+my_projects$next_page()
+
+# Return all projects that contain the term "demo"
+demo_projects <- a$projects$query(name = "demo")
+
+# Return all projects tagged with "test_1"
+tagged_projects <- a$projects$query(tags = list("test_1"))
+```
+
+Notice that the output is the `Collection` object and the results (list of 
+`Project` objects) can be found within `items` field.
+
+
+## Create a new project
+
+Create a new project called "API testing" with the billing group `id` obtained 
+above.
+
+```{r}
+# List all available billing groups for currently logged in user
 a$billing_groups$query()
-# set billing group for the new project
+
+# Set billing group for the new project
 bid <- "<billing_group_id>"
-# create new project
+
+# Create new project
 p <- a$projects$create(
-  name = "api testing", billing_group = bid,
+  name = "API testing", billing_group = bid,
   description = "Just a test"
 )
 ```
@@ -393,11 +507,11 @@ p <- a$projects$create(
 • category: PRIVATE
 • root_folder: <root_folder_id>
 • type: v2
-• description: Just a test
+• description: This project has been created using the sevenbridges2 R API library.
 • billing_group: <billing_group_id>
-• name: new project
-• id: <your_username>/new-project
-• href: https://api.sbgenomics.com/v2/projects/<your_username>/new-project
+• name: API testing
+• id: <your_username_or_division>/api-testing
+• href: https://api.sbgenomics.com/v2/projects/<your_username_or_division>/api-testing
 • settings
   • locked: FALSE
   • controlled: FALSE
@@ -411,38 +525,30 @@ p <- a$projects$create(
 
 <div align="right"><a href="#top">top</a></div>
 
-The **new project** is created on the platform. Notice also that the variable p is an R6 object with fields that contain information about the platform project. The facility also has several methods that allow you to perform basic platform operations on the project.
+The **new project** is created on the platform. Notice also that the variable 
+`p` is an R6 object with fields that contain information about the platform 
+project. The facility also has several methods that allow you to perform 
+basic platform operations on the project.
 
 
-## Get Details about Existing Project
+## Get details of a specified project
 
-```{r}
-# list first 50 projects
-a$projects$query()
-# return all projects that contain the term "demo"
-a$projects$query(name = "demo")
-# return all projects tagged with "test_1"
-a$projects$query(tags = list("test_1"))
-```
-
-## Get Details of a Specified Project
+Use `get()` method and provide full ID of the project you would like to fetch. 
 
 ```{r}
-a$projects$get(project = "api-testing")
+a$projects$get(id = "RFranklin/api-testing")
 ```
 
 ```
-── Project ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+── Project ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 • category: PRIVATE
-• modified_on: 2022-12-20T16:09:20Z
-• created_on: 2022-12-20T16:09:20Z
-• created_by: luna_lovegood
-• root_folder: 12a1ab12345a12345a12345a
+• root_folder: <root_folder_id>
 • type: v2
-• billing_group: ab12345a-123a-1234-1234-a1ab12a12ab1
-• name: nargles-project
-• id: luna_lovegood/nargles-project
-• href: https://api.sbgenomics.com/v2/projects/luna_lovegood/nargles-project
+• description: This project has been created using the sevenbridges2 R API library.
+• billing_group: <billing_group_id>
+• name: API testing
+• id: <your_username_or_division>/api-testing
+• href: https://api.sbgenomics.com/v2/projects/<your_username_or_division>/api-testing
 • settings
   • locked: FALSE
   • controlled: FALSE
@@ -450,171 +556,115 @@ a$projects$get(project = "api-testing")
   • use_interruptible_instances: TRUE
   • use_memoization: FALSE
   • intermediate_files: list(duration = 24, retention = "LIMITED")
-  • allow_network_access: FALSE
-  • use_elastic_disk: FALSE
-• permissions
-  • write: TRUE
-  • read: TRUE
-  • copy: TRUE
-  • execute: TRUE
-  • admin: TRUE
-```
-
-## Create a New Project
-
-```{r}
-a$projects$create(
-  name = "api_created_project",
-  billing_group = "<your_billing_group_id>",
-  description = "This project has been created using the
-              sevenbridges2 R API library."
-)
-```
-
-```
-── Project ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-• category: PRIVATE
-• root_folder: 12a123ab1234a12a1ab1234a
-• type: v2
-• description: This project has been created using the sevenbridges2 R 
-API library.
-• billing_group: <your_billing_group_id>
-• name: api_created_project
-• id: <owner>/api-created-project
-• href: https://cgc-api.sbgenomics.com/v2/projects/<owner>/api-created-project
-• settings
-  • locked: FALSE
-  • controlled: FALSE
-  • location: aws:us-east-1
-  • use_interruptible_instances: TRUE
-  • use_memoization: FALSE
-  • intermediate_files: list(duration = 24, retention = "LIMITED")
-  • allow_network_access: FALSE
+  • allow_network_access: TRUE
   • use_elastic_disk: FALSE
 ```
 
-## Edit an existing project
+## Copy app into the project
 
-If for some reason you want to edit an existing project, you can do so by using
-the **update** method on the Project class object. As a project Admin you can use
-it to change the name, settings, tags or billing group of the project. For 
-example, if you want to change the name and description of the project, you can
-do it in the following way:
+Seven Bridges maintains workflows and tools available to all of its users in 
+the Public Apps repository.
+
+To find out more about public apps, you can do the following:
+
+- Browse them online. Check out the [tutorial](https://docs.sevenbridges.com/docs/search-for-an-app) in the 
+"Find apps" section.
+- You can use the `sevenbridges2` package to find it, as shown below.
 
 ```{r}
-p <- a$projects$get(
-  project = "<project's-short-name>"
+# Search by name matching, with limit 10
+public_apps <- a$apps$query(
+  visibility = "public",
+  limit = 10,
+  query_terms = list("STAR")
 )
-p$update(
-  name = "project_with_modified_name",
-  description = "This is the modified description."
-)
-```
 
-Keep in mind that this modifies only the name of the project, not its short 
-name. Therefore, after calling this method, the id of the project will remain 
-the same \code{your_username/project's-short-name}.
-
-If something changes in the project on the Platform UI, you can refresh your Project object to fetch the changes, by reloading it with:
-
-```{r}
-p$reload()
-```
-
-## Delete a project
-
-You may also want to delete some project from the Platform using through the R 
-client library. To do that, you need to call the \code{delete} method on the 
-project object:
-
-```{r}
-p <- a$projects$get(
-  project = "<project's-short-name>"
-)
-p$delete()
-```
-
-Please be careful when using this method and note that calling it will
-permanently delete the project from the platform.
-
-
-## List project members
-
-To get a list of the members of the specified project:
-
-```{r}
-p$list_members()
-```
-
-
-## Add a member to a project
-
-To add a new user to a specified project:
-
-```{r}
-p <- a$projects$get(
-  project = "<project's-short-name>"
-)
-p$add_member(user = "<username_of_a_user_you_want_to_add>")
-```
-
-
-Please keep in mind that this call can only be successfully made by a user who 
-has admin permissions in the project.
-
-
-## Remove a project member
-
-On the other hand, you can delete a member from the project in a similar way:
-
-```{r}
-p$remove_member(user = "<username_of_a_user_you_want_to_remove>")
-```
-
-
-## Get and modify project member's permissions
-
-Sometimes you may just want to investigate a members's permissions within a 
-specified project or update them, and you can do that by calling the \code{
-modify_member_permissions} method. For this method to work, the user calling it 
-must have admin permissions in the project. For example, you may want to give 
-write permissions to a project member:
-
-```{r}
-p$modify_member_permissions(
-  user = "<username_of_a_user_of_interest>",
-  permissions = list(write = TRUE)
+# Search by ID
+star_app <- a$apps$get(
+  id = "admin/sbg-public-data/rna-seq-alignment-star-2-7-10a/2"
 )
 ```
 
-## List project files
-
-In order to list all files and folders (special type of files) within 
-specified project object, you can use the Project's `list_files()` method. 
+Now, copy the App your `project` with a new `name`, following this logic.
 
 ```{r}
-p$list_files()
+# Copy app into the project
+a$apps$copy(
+  app = star_app,
+  project = "RFranklin/api-testing",
+  name = "New copy of STAR"
+)
+
+# Check if it is copied
+p <- a$projects$get(id = "RFranklin/api-testing")
+# List apps your got in your project
+p$list_apps()
 ```
 
-## Create folder within project's Files
+The short name is changed to `newcopyofstar`.
 
-You are also able to create a folder within project's root Files directory
-using the method `create_folder()`. You would have to specify the folder name
-which should not start with '__' or contain spaces. 
+```
+== App ==
+id : RFranklin/api-testing/newcopyofstar/0
+name : RNA-seq Alignment - STAR
+project : RFranklin/api-testing
+revision : 0
+```
+
+Alternatively, you can copy it from the `App` object.
 
 ```{r}
-p$create_folder(name = "My_new_folder")
+star_app <- a$apps$get(
+  id = "admin/sbg-public-data/rna-seq-alignment-star-2-7-10a/2"
+)
+
+star_app$copy(
+  project = "RFranklin/api-testing",
+  name = "Copy of STAR"
+)
 ```
 
-## Get project's root folder object
+<div align="right"><a href="#top">top</a></div>
 
-Lastly, the project's root directory with all your files is a folder itself,
-therefore you are able to get this folder as File object too using
-`get_root_folder()`.
+Next, we would like to run a task with this app. Let's see what is all 
+required.
 
-```{r}
-p$get_root_folder()
-```
+## Execute a new task
+
+### Find your app inputs
+
+Once you have copied the public app 
+`admin/sbg-public-data/rna-seq-alignment-star-star-2-7-10a/2` into your project, 
+`<username>/api-testing`, the app `id` in your current project is 
+`<username>/api-testing/newcopyofstar`. 
+Conversely, you can use another app you already have in your project for 
+this Quickstart.
+
+To draft a new task, you need to specify the following:
+
+- The name of the task
+- An optional description
+- The app object or `id` of the workflow you are executing
+- The inputs for your workflow. In this case, the CWL app accepts 
+four parameters: number, min, max, and seed.
+
+You can always check the App details on the visual interface for task input 
+requirements. To find the required inputs with R, you need to get an 
+`App` object first.
+
+Let's check which inputs this app requires and bring them into our
+project.
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## List files
