@@ -38,6 +38,7 @@ R6 Class representing apps resource endpoint.
 \if{html}{\out{<a id="method-Apps-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Apps-new}{}}}
 \subsection{Method \code{new()}}{
+Create new Apps resource object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Apps$new(...)}\if{html}{\out{</div>}}
 }

@@ -36,7 +36,7 @@ App <- R6::R6Class(
     #' @field raw App's raw CWL (JSON or YAML).
     raw = NULL,
 
-    # Initialise App object --------------------------------------------------
+    # Initialize App object --------------------------------------------------
     #' @description Create a new App object.
     #' @param res Response containing App object information.
     #' @param ... Other response arguments.

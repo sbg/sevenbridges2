@@ -24,11 +24,15 @@ Apps <- R6::R6Class(
       "raw" = "apps/{id}/raw"
     ),
 
+    # Initialize Apps object --------------------------------------------------
+    #' @description Create new Apps resource object.
     #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
+
+    # List apps --------------------------------------------------------------
     #' @description This call lists all the apps available to you.
     #'
     #' @param project Project ID string in the form
@@ -93,6 +97,8 @@ Apps <- R6::R6Class(
 
       return(asCollection(res, auth = self$auth)) # nocov end
     },
+
+    # Get app ----------------------------------------------------------------
     #' @description This call returns information about the specified app.
     #'  The app should be one in a project that you can access;
     #'  this could be an app that has been uploaded to the Seven Bridges
@@ -131,6 +137,8 @@ Apps <- R6::R6Class(
 
       return(asApp(res, auth = self$auth)) # nocov end
     },
+
+    # Copy app ----------------------------------------------------------------
     #' @description This call copies the specified app to the specified project.
     #'  The app should be one in a project that you can access; this could be an
     #'  app that has been uploaded to the Seven Bridges Platform by a project
@@ -207,6 +215,8 @@ Apps <- R6::R6Class(
 
       return(asApp(res, auth = self$auth)) # nocov end
     },
+
+    # Create app using CWL ---------------------------------------------------
     #' @description This call allows you to add an app using raw CWL.
     #'
     #' @param raw The body of the request should be a CWL app description saved
