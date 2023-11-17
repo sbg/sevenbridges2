@@ -566,7 +566,7 @@ Volume <- R6::R6Class(
     },
 
     # Modify volume member's permissions --------------------------------------
-    #' @description Modify a volume member's permissions.
+    #' @description Modify volume member's permissions.
     #'  This function modifies the permissions for a member of a specific
     #'  volume. Note that this does not overwrite all previously set permissions
     #'  for the member.
