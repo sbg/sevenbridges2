@@ -91,7 +91,9 @@ Task <- R6::R6Class(
     #'  stored.
     output_location = NULL,
     #'
+    # Initialize Task object ----------------------------------------------
     #' @description Create new Task object.
+    #'
     #' @param res Response containing Task object information.
     #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
@@ -126,6 +128,7 @@ Task <- R6::R6Class(
       self$output_location <- res$output_location
     },
 
+    # Print Task object ------------------------------------------------------
     #' @description Print method for Task class.
     #'
     #' @importFrom purrr discard
@@ -159,10 +162,14 @@ Task <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+
     # nocov start
+    # Reload Task object ------------------------------------------------------
     #' @description Reload Task object information.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @return \code{\link{Task}} object.
     reload = function(...) {
       super$reload(
@@ -172,6 +179,7 @@ Task <- R6::R6Class(
       rlang::inform("Task object is refreshed!")
     }, # nocov end
 
+    # Run task ---------------------------------------------------------------
     #' @description This call runs (executes) the task. Only tasks whose status
     #' is `DRAFT` can be run.
     #'
@@ -236,6 +244,7 @@ Task <- R6::R6Class(
       }
     }, # nocov end
 
+    # Abort task -------------------------------------------------------------
     #' @description This call aborts the specified task. Only tasks whose
     #'  status is `RUNNING` or `QUEUED` may be aborted.
     #' @param in_place Default `TRUE`. Should the new object of
@@ -280,6 +289,7 @@ Task <- R6::R6Class(
       }
     }, # nocov end
 
+    # Clone task ------------------------------------------------------------
     #' @description This call clones the specified task. Once cloned, the task
     #'  can either be in `DRAFT` mode or immediately ran, by setting the `run`
     #'  parameter to `TRUE`.
@@ -324,6 +334,7 @@ Task <- R6::R6Class(
       return(asTask(res, auth = self$auth))
     }, # nocov end
 
+    # Get execution details of a task -----------------------------------------
     #' @description This call returns execution details of the specified task.
     #'  The task is referred to by its ID, which you can obtain by making the
     #'  call to list all tasks you can access. The call breaks down the
@@ -362,7 +373,6 @@ Task <- R6::R6Class(
         ...
       )
 
-
       if (self$batch) {
         rlang::inform("Execution details can be seen on each child task.")
       }
@@ -370,8 +380,10 @@ Task <- R6::R6Class(
       return(res)
     }, # nocov end
 
+    # List batch child tasks -------------------------------------------------
     #' @description This call retrieves batch child tasks for this task if its
     #'  a batch task.
+    #'
     #' @param status You can filter the returned tasks by their status.
     #'  Set the value of status to one of the following values:
     #'  * QUEUED
@@ -456,6 +468,7 @@ Task <- R6::R6Class(
       )
     }, # nocov end
 
+    # Delete task -----------------------------------------------------------
     #' @description This call deletes the specified task. The task is referred
     #'  to by its ID, which you can obtain by making the call to list all tasks
     #'  you can access.
@@ -476,7 +489,6 @@ Task <- R6::R6Class(
         ...
       )
 
-
       rlang::inform(
         glue::glue_col(
           "The task with the following ID {green {id}} has been deleted."
@@ -484,6 +496,7 @@ Task <- R6::R6Class(
       )
     }, # nocov end
 
+    # Rerun task -----------------------------------------------------------
     #' @description This call reruns (executes) the specified task.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
@@ -499,6 +512,7 @@ Task <- R6::R6Class(
       self$clone_task(run = TRUE)
     }, # nocov end
 
+    # Update task -----------------------------------------------------------
     #' @description Change the details of the specified task, including its
     #'  name, description, and inputs. Note that you can only modify tasks with
     #'  a task status of `DRAFT`. Tasks which are `RUNNING`, `QUEUED`,
@@ -715,7 +729,7 @@ Task <- R6::R6Class(
     } # nocov end
   ),
   private = list(
-    # Map input/output values
+    # Map input/output values -----------------------------------------------
     #' @importFrom checkmate test_list
     map_input_output = function(input) {
       return_value <- list()
@@ -753,7 +767,7 @@ Task <- R6::R6Class(
       }
       return(return_value)
     },
-    # Map fields
+    # Map fields -------------------------------------------------------------
     map_fields_util = function(input) {
       mapped_data <- list(
         id = input[["path"]],
@@ -771,7 +785,7 @@ Task <- R6::R6Class(
 )
 
 # nocov start
-# Helper function for creating Task objects
+# Helper functions for creating Task objects --------------------------------
 asTask <- function(x = NULL, auth = NULL) {
   Task$new(
     res = x,
@@ -781,7 +795,6 @@ asTask <- function(x = NULL, auth = NULL) {
   )
 }
 
-# Helper function for creating a list of Task objects
 asTaskList <- function(x, auth) {
   obj <- lapply(x$items, asTask, auth = auth)
   obj

@@ -49,6 +49,7 @@ Volume <- R6::R6Class(
     #'  set to `FALSE`.
     active = NULL,
 
+    # Initialize Volume object ----------------------------------------------
     #' @description Create a new Volume object.
     #' @param res Response containing Volume object info.
     #' @param ... Other response arguments.
@@ -65,7 +66,9 @@ Volume <- R6::R6Class(
       self$modified_on <- res$modified_on
       self$active <- res$active
     },
+
     # nocov start
+    # Print Volume object ----------------------------------------------------
     #' @description Print method for Volume class.
     #'
     #' @importFrom purrr discard
@@ -100,6 +103,7 @@ Volume <- R6::R6Class(
       cli::cli_end()
     },
 
+    # Reload Volume object ----------------------------------------------------
     #' @description Reload Volume object information.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
@@ -112,10 +116,12 @@ Volume <- R6::R6Class(
       )
       rlang::inform("Volume object is refreshed!")
     },
-
     # nocov end
+
+    # Update volume ----------------------------------------------------------
     #' @description Update a volume.
     #'  This function updates the details of a specific volume.
+    #'
     #' @param description The new description of the volume.
     #' @param access_mode Signifies whether this volume should be used
     #'  for read-write (RW) or read-only (RO) operations. The access mode is
@@ -168,6 +174,7 @@ Volume <- R6::R6Class(
       )
     }, # nocov end
 
+    # Deactivate volume -------------------------------------------------------
     #' @description Deactivate volume.
     #'  Once deactivated, you cannot import from, export to, or browse within a
     #'  volume. As such, the content of the files imported from this volume will
@@ -210,6 +217,7 @@ Volume <- R6::R6Class(
       return(self)
     }, # nocov end
 
+    # Reactivate volume -------------------------------------------------------
     #' @description Reactivate volume.
     #'  This function reactivates the previously deactivated volume by updating
     #'  the `active` field of the volume to `TRUE`.
@@ -244,6 +252,7 @@ Volume <- R6::R6Class(
       return(self)
     }, # nocov end
 
+    # Delete volume ----------------------------------------------------------
     #' @description Delete volume.
     #'  This call deletes a volume you've created to refer to storage on
     #'  Amazon Web Services, Google Cloud Storage, Azure or Ali cloud.
@@ -269,7 +278,6 @@ Volume <- R6::R6Class(
         advance_access = TRUE
       )
 
-
       rlang::inform(glue::glue("The volume {self$name} has been ", glue::glue_col("{red deleted}."))) # nolint
 
       self$initialize(
@@ -280,6 +288,7 @@ Volume <- R6::R6Class(
       )
     }, # nocov end
 
+    # List volume contents ----------------------------------------------------
     #' @description List volume contents.
     #'  This call lists the contents of a specific volume.
     #' @param prefix This is parent parameter in volume context. If specified,
@@ -339,6 +348,7 @@ Volume <- R6::R6Class(
       return(asVolumeContentCollection(res, auth = self$auth))
     }, # nocov end
 
+    # Get volume file info ----------------------------------------------------
     #' @description Get volume file information.
     #'  This function returns the specific Volume File.
     #'
@@ -391,6 +401,7 @@ Volume <- R6::R6Class(
       # nocov end
     },
 
+    # List volume members ----------------------------------------------------
     #' @description List members of a volume.
     #'  This function returns the members of a specific volume.
     #'
@@ -430,6 +441,7 @@ Volume <- R6::R6Class(
       # nocov end
     },
 
+    # Add volume members ----------------------------------------------------
     #' @description Add member to a volume.
     #'  This function adds members to the specified volume.
     #'
@@ -490,6 +502,7 @@ Volume <- R6::R6Class(
       # nocov end
     },
 
+    # Remove volume members ---------------------------------------------------
     #' @description Remove member from a volume.
     #'  This function removes members from the specified volume.
     #'
@@ -518,6 +531,7 @@ Volume <- R6::R6Class(
       # nocov end
     },
 
+    # Get volume member details ---------------------------------------------
     #' @description Get member's details.
     #'  This function returns member's information.
     #'
@@ -551,7 +565,8 @@ Volume <- R6::R6Class(
       # nocov end
     },
 
-    #' @description Modify a volume member's permission.
+    # Modify volume member's permissions --------------------------------------
+    #' @description Modify a volume member's permissions.
     #'  This function modifies the permissions for a member of a specific
     #'  volume. Note that this does not overwrite all previously set permissions
     #'  for the member.
@@ -613,7 +628,9 @@ Volume <- R6::R6Class(
       return(asPermission(res, auth = self$auth))
       # nocov end
     },
+
     # nocov start
+    # List import jobs of this volume --------------------------------------
     #' @description This call lists import jobs initiated by particular user
     #'  from this volume.
     #'
@@ -653,6 +670,7 @@ Volume <- R6::R6Class(
       )
     },
 
+    # List export jobs of this volume --------------------------------------
     #' @description This call lists export jobs initiated by a user into this
     #'  volume.
     #'  Note that when you export a file from a project on the Platform into a
@@ -694,7 +712,7 @@ Volume <- R6::R6Class(
 )
 
 # nocov start
-# Helper function for creating Volume objects
+# Helper functions for creating Volume objects --------------------------------
 asVolume <- function(x = NULL, auth = NULL) {
   Volume$new(
     res = x,
@@ -704,7 +722,6 @@ asVolume <- function(x = NULL, auth = NULL) {
   )
 }
 
-# Helper function for creating a list of Volume objects
 asVolumeList <- function(x, auth) {
   obj <- lapply(x$items, asVolume, auth = auth)
   obj

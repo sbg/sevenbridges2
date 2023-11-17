@@ -16,6 +16,7 @@ VolumeContentCollection <- R6::R6Class(
     #' @field prefixes Prefixes on the volume, returned in API response.
     prefixes = NULL,
 
+    # Initialize VolumeContentCollection object -------------------------------
     #' @description Create new VolumeContentCollection object.
     #'
     #' @param res Response containing VolumeContentCollection object fields.
@@ -34,6 +35,7 @@ VolumeContentCollection <- R6::R6Class(
     },
 
     # nocov start
+    # Print VolumeContentCollection object -------------------------------
     #' @description Print method for VolumeContentCollection class.
     #'
     #' @param n Number of items to print in console.
@@ -90,6 +92,7 @@ VolumeContentCollection <- R6::R6Class(
       }
     }, # nocov end
 
+    # Get next page of results ------------------------------------------------
     #' @description Return next page of results.
     #'
     #' @param ... Other arguments or query parameters that can be passed to
@@ -118,6 +121,7 @@ VolumeContentCollection <- R6::R6Class(
       }
     }, # nocov end
 
+    # Get previous page of results --------------------------------------------
     #' @description Return previous page of results.
     #'
     #' @importFrom rlang abort
@@ -125,6 +129,7 @@ VolumeContentCollection <- R6::R6Class(
       rlang::abort("Cannot paginate backwards.")
     },
 
+    # Get all results ---------------------------------------------------------
     #' @description Fetches all available items.
     #'
     #' @param ... Other arguments or query parameters that can be passed to
@@ -160,7 +165,7 @@ VolumeContentCollection <- R6::R6Class(
     }
   ), # nocov end
   private = list(
-    # Reload object to get new results
+    # Reload object to get new results ---------------------------------------
     # nocov start
     load = function(res, auth) {
       self$initialize(
@@ -176,7 +181,7 @@ VolumeContentCollection <- R6::R6Class(
 )
 
 # nocov start
-# Helper function for creating VolumeContentCollection objects
+# Helper function for creating VolumeContentCollection objects ---------------
 asVolumeContentCollection <- function(x = NULL, auth = NULL) {
   VolumeContentCollection$new(
     href = x$href,

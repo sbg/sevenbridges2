@@ -42,6 +42,7 @@ User <- R6::R6Class(
     #' @field tags Platform tags associated with the user.
     tags = NULL,
 
+    # Initialize User object --------------------------------------------------
     #' @description Create a new User object.
     #'
     #' @param res Response containing User object information.
@@ -64,7 +65,9 @@ User <- R6::R6Class(
       self$role <- res$role
       self$tags <- res$tags
     },
+
     # nocov start
+    # Print User object ------------------------------------------------------
     #' @description Print user information as bullet list.
     #'
     #' @importFrom purrr discard
@@ -108,6 +111,8 @@ User <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+
+    # Reload User object ------------------------------------------------------
     #' @description Reload User object information.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
@@ -124,7 +129,7 @@ User <- R6::R6Class(
   ) # nocov end
 )
 
-# Helper function for creating User objects
+# Helper function for creating User objects ----------------------------------
 asUser <- function(x = NULL, auth = NULL) {
   User$new(
     res = x,

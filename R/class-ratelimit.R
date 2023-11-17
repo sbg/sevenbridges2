@@ -35,6 +35,7 @@ Rate <- R6::R6Class(
     #'  }
     instance = NULL,
 
+    # Initialize Rate object -----------------------------------------------
     #' @description Create a new Rate limit object.
     #'
     #' @param res Response containing Rate limit object info.
@@ -54,6 +55,7 @@ Rate <- R6::R6Class(
     },
 
     # nocov start
+    # Print Rate object -----------------------------------------------------
     #' @description Print rate limit information as a bullet list.
     #'
     #' @importFrom purrr discard
@@ -101,7 +103,7 @@ Rate <- R6::R6Class(
   )
 )
 
-# Helper function for creating Rate objects
+# Helper functions for creating Rate objects ----------------------------------
 asRate <- function(x = NULL, auth = NULL) {
   Rate$new(
     res = x,
