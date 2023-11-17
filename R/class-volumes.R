@@ -20,6 +20,7 @@ Volumes <- R6::R6Class(
       "create" = "storage/volumes"
     ),
 
+    # Initialize Volumes object ----------------------------------------------
     #' @description Create a new Volumes object.
     #'
     #' @param ... Other response arguments.

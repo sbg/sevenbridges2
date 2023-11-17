@@ -408,7 +408,7 @@ like 'fields', etc.}
 \if{html}{\out{<a id="method-Volume-modify_member_permissions"></a>}}
 \if{latex}{\out{\hypertarget{method-Volume-modify_member_permissions}{}}}
 \subsection{Method \code{modify_member_permissions()}}{
-Modify a volume member's permission.
+Modify a volume member's permissions.
 This function modifies the permissions for a member of a specific
 volume. Note that this does not overwrite all previously set permissions
 for the member.

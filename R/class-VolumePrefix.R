@@ -22,6 +22,7 @@ VolumePrefix <- R6::R6Class(
     #' @field volume Volume id.
     volume = NULL,
 
+    # Initialize VolumePrefix object ------------------------------------------
     #' @description Create a new VolumePrefix object.
     #'
     #' @param res Response containing VolumePrefix object info.
@@ -38,6 +39,7 @@ VolumePrefix <- R6::R6Class(
     },
 
     # nocov start
+    # Print VolumePrefix object ---------------------------------------------
     #' @description Print method for VolumePrefix class.
     #'
     #' @importFrom purrr discard
@@ -69,6 +71,7 @@ VolumePrefix <- R6::R6Class(
       cli::cli_end()
     },
 
+    # Reload VolumePrefix object ---------------------------------------------
     #' @description Reload VolumePrefix object information.
     reload = function() {
       rlang::inform(
@@ -76,6 +79,7 @@ VolumePrefix <- R6::R6Class(
       )
     }, # nocov end
 
+    # List volume folder content ---------------------------------------------
     #' @description List volume folder contents.
     #'  This call lists the contents of a specific volume folder.
     #'
@@ -120,7 +124,7 @@ VolumePrefix <- R6::R6Class(
       return(asVolumeContentCollection(res, auth = self$auth))
     }, # nocov end
 
-    # Start new import job -----------------------------------------------
+    # Start new import job ---------------------------------------------------
     #' @description This call lets you queue a job to import this file or folder
     #'  from a volume into a project on the Platform. \cr
     #'  Essentially, you are importing an item from your cloud storage provider
@@ -186,8 +190,8 @@ VolumePrefix <- R6::R6Class(
     }
   )
 )
-
-# Helper function for creating VolumePrefix objects
+# nocov start
+# Helper functions for creating VolumePrefix objects ---------------------------
 asVolumePrefix <- function(x = NULL, auth = NULL) {
   VolumePrefix$new(
     res = x,
@@ -197,8 +201,8 @@ asVolumePrefix <- function(x = NULL, auth = NULL) {
   )
 }
 
-# Helper function for creating a list of VolumePrefix objects
 asVolumePrefixList <- function(x, auth) {
   obj <- lapply(x, asVolumePrefix, auth = auth)
   obj
 }
+# nocov end
