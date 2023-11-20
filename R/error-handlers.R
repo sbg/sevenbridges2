@@ -1,6 +1,6 @@
-#' Rate limit sleeper
+# Rate limit sleeper --------------------------------------------------------
+#' @description Pauses the execution if rate limit is breached.
 #'
-#' Pauses the execution if rate limit is breached.
 #' @param req API request
 #'
 #' @return request Response object
@@ -31,9 +31,9 @@ rate_limit_sleeper <- function(req) { # nocov start
   return(req)
 }
 
-#' Maintenance sleeper
+# Maintenance sleeper  --------------------------------------------
+#' @description Pauses the execution if sevenbridges api is under maintenance.
 #'
-#' Pauses the execution if sevenbridges api is under maintenance.
 #' @param req API request
 #' @param sleep Time to sleep in between the requests.
 #'
@@ -65,12 +65,13 @@ maintenance_sleeper <- function(req, sleep = 300) {
   return(req)
 }
 
-#' General error sleeper
+# General error sleeper  ----------------------------------------------------
+#' @description Pauses the execution if response status code is > 500.
 #'
-#' Pauses the execution if response status code is > 500.
 #' @param req API request
 #'
 #' @return request Response object
+#'
 #' @importFrom httr status_code
 #'
 #' @noRd

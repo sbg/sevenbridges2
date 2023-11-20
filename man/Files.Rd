@@ -129,6 +129,9 @@ as 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+\code{\link{Collection}} of \code{\link{File}} objects.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Files-get"></a>}}
@@ -145,12 +148,15 @@ the API call to list all files in a project.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{The file ID string.}
+\item{\code{id}}{The file ID.}
 
 \item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 as 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{File}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -161,8 +167,8 @@ Copy file/files to the specified project. This call allows
 you to copy files between projects. Unlike the call to copy a file
 between projects, this call lets you batch the copy operation and copy
 a list of files at a time. \cr
-More information you may find in the
-\url{https://docs.sevenbridges.com/reference/copy-files-between-projects}.
+More information you may find
+\href{https://docs.sevenbridges.com/reference/copy-files-between-projects}{here}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Files$copy(files, destination_project)}\if{html}{\out{</div>}}
 }
@@ -172,7 +178,7 @@ More information you may find in the
 \describe{
 \item{\code{files}}{The list of files' IDs or list of File object to copy.}
 
-\item{\code{destination_project}}{Project object or project ID string
+\item{\code{destination_project}}{Project object or project ID.
 where you want to copy files into.}
 }
 \if{html}{\out{</div>}}
@@ -187,8 +193,8 @@ a new folder on the Platform within the root folder of a specified
 project or the provided parent folder. Remember that you should provide
 either the destination project (as the \code{project} parameter) or the
 destination folder (as the \code{parent} parameter), not both. \cr
-More information you may find on
-\url{https://docs.sevenbridges.com/reference/create-a-folder}.
+More information you may find
+\href{https://docs.sevenbridges.com/reference/create-a-folder}{here}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Files$create_folder(name, parent = NULL, project = NULL)}\if{html}{\out{</div>}}
 }
@@ -198,7 +204,7 @@ More information you may find on
 \describe{
 \item{\code{name}}{The name of the folder you are about to create.}
 
-\item{\code{parent}}{The ID string of the parent destination folder or a File
+\item{\code{parent}}{The ID of the parent destination folder or a File
 object which must be of type \code{FOLDER}.}
 
 \item{\code{project}}{The ID of the destination project, or a Project object.}

@@ -34,7 +34,7 @@ the auth token.}
 
 \item{\code{fs}}{FS (FileSystem) object, for mount and unmount file system.}
 
-\item{\code{authorization}}{Logical. Is the \code{token} an API
+\item{\code{authorization}}{Is the \code{token} an API
 authentication token (\code{FALSE}) or an access token from the
 Seven Bridges single sign-on (\code{TRUE})?}
 
@@ -150,7 +150,7 @@ The default value is \code{"default"}.}
 
 \item{\code{fs}}{FS (FileSystem) object, for mount and unmount file system.}
 
-\item{\code{authorization}}{Logical. Is the \code{token} an API
+\item{\code{authorization}}{Is the \code{token} an API
 authentication token (\code{FALSE}) or an access token from the
 Seven Bridges single sign-on (\code{TRUE})?}
 }
@@ -212,7 +212,7 @@ For example, \code{fields="id,name,size"} to return the fields
 id, name and size for files. Default value is set to
 \verb{_all}, so all fields are always returned for each resource.
 More details please check
-\url{https://docs.sevenbridges.com/docs/the-api#section-general-api-information}}
+\href{https://docs.sevenbridges.com/docs/the-api#section-general-api-information}{general API documentation}.}
 }
 \if{html}{\out{</div>}}
 }

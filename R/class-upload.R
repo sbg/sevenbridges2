@@ -5,6 +5,7 @@
 #' R6 Class representing a resource for managing files' uploads.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 Upload <- R6::R6Class(
   # nolint end
@@ -44,7 +45,9 @@ Upload <- R6::R6Class(
     #' @field auth Authentication object.
     auth = NULL,
 
+    # Initialize Upload object -----------------------------------------------
     #' @description Create a new Upload object.
+    #'
     #' @param path Path to the file on the local disc.
     #' @param project Project's identifier (character).
     #' @param parent The ID of the folder to which the item is being uploaded.
@@ -78,8 +81,11 @@ Upload <- R6::R6Class(
       self$auth <- auth
       self$parts <- private$generate_parts()
     },
+
     # nocov start
+    # Print Upload object ----------------------------------------------------
     #' @description Print method for Upload class.
+    #'
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end cli_bullets
@@ -99,7 +105,9 @@ Upload <- R6::R6Class(
       cli::cli_end()
     }, # nocov end
 
+    # Initialize multipart file upload ---------------------------------------
     #' @description Initialize new multipart file upload.
+    #'
     #' @importFrom glue glue glue_col
     #' @importFrom rlang abort
     init = function() {
@@ -154,11 +162,15 @@ Upload <- R6::R6Class(
       )
       return(self)
     }, # nocov end
+
+    # Get details of multipart file upload ------------------------------------
     #' @description Get the details of an active multipart upload.
+    #'
     #' @param list_parts If `TRUE`, also return a list of parts
     #' that have been reported as completed for this multipart upload.
     #' Please, bear in mind that the output could be heavy for printing if
     #' there are lot of parts.
+    #'
     #' @importFrom checkmate assert_logical
     #' @importFrom glue glue
     info = function(list_parts = FALSE) {
@@ -193,9 +205,14 @@ Upload <- R6::R6Class(
         to_print
       }
     }, # nocov end
+
+    # Start multipart file upload --------------------------------------------
     #' @description Start the file upload
+    #'
     #' @importFrom rlang abort
     #' @importFrom httr PUT
+    #'
+    #' @return \code{\link{Fike}} object.
     start = function() {
       if (!self$initialized) {
         rlang::abort("Upload has not been initialized yet.")
@@ -246,8 +263,10 @@ Upload <- R6::R6Class(
       return(asFile(res, auth = self$auth))
     }, # nocov end
 
+    # Abort multipart file upload --------------------------------------------
     #' @description Abort the multipart upload
     #' This call aborts an ongoing upload.
+    #'
     #' @importFrom glue glue glue_col
     #' @importFrom rlang abort
     abort = function() {
@@ -274,7 +293,7 @@ Upload <- R6::R6Class(
     } # nocov end
   ),
   private = list(
-    # Helper method that returns list of objects of class `Part`.
+    # Helper method that returns list of objects of class `Part` -------------
     generate_parts = function() {
       if (self$part_length > 1) {
         # nolint start
@@ -297,8 +316,9 @@ Upload <- R6::R6Class(
       })
       return(parts)
     },
+
     # nocov start
-    # Complete a multipart upload
+    # Complete a multipart upload --------------------------------------------
     # This call must be issued to report the completion of a file upload.
     upload_complete_all = function() {
       all_parts <- lapply(self$parts, function(part) {
@@ -329,6 +349,7 @@ Upload <- R6::R6Class(
 #' R6 Class representing a resource for managing parts of the files' uploads.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 Part <- R6::R6Class(
   # nolint end
@@ -368,7 +389,9 @@ Part <- R6::R6Class(
     #' @field response Response object.
     response = NULL,
 
+    # Initialize Part object --------------------------------------------------
     #' @description Create a new Part object.
+    #'
     #' @param part_number Part number.
     #' @param part_size Part size.
     #' @param url The URL to which to make the HTTP part upload request.
@@ -395,8 +418,11 @@ Part <- R6::R6Class(
       self$etag <- etag
       self$auth <- auth
     },
+
     # nocov start
+    # Print Part object ----------------------------------------------------
     #' @description Print method for Part class.
+    #'
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end cli_bullets
@@ -416,9 +442,12 @@ Part <- R6::R6Class(
       cli::cli_end()
     }, # nocov end
 
-    #' @description Get upload part info
-    #' @param upload_id Upload object or ID of the upload process that part
+    # Get upload part info ----------------------------------------------------
+    #' @description Get upload part info.
+    #'
+    #' @param upload_id Upload object or ID of the upload process that part.
     #'  belongs to.
+    #'
     #' @importFrom glue glue
     upload_info_part = function(upload_id) {
       upload_id <- check_and_transform_id(upload_id, "Upload")
@@ -438,9 +467,13 @@ Part <- R6::R6Class(
       self$response <- attr(res, "response")
       self
     }, # nocov end
-    #' @description Report an uploaded part
+
+    # Report about uploaded part --------------------------------------------
+    #' @description Report an uploaded part.
+    #'
     #' @param upload_id Upload object or ID of the upload process that part
     #'  belongs to.
+    #'
     #' @importFrom glue glue
     upload_complete_part = function(upload_id) {
       upload_id <- check_and_transform_id(upload_id, "Upload")

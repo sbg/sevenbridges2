@@ -14,13 +14,17 @@ Resource <- R6::R6Class(
     #' @field auth Seven Bridges Authentication object.
     auth = NULL,
 
+    # Initialize Resource object ----------------------------------------------
     #' @description Create a new Resource object.
+    #'
     #' @param auth Seven Bridges Authentication object.
     initialize = function(auth = NA) {
       self$auth <- auth
     },
 
+    # Generic query function ----------------------------------------------
     #' @description Generic query implementation that is used by the resources.
+    #'
     #' @param ... Parameters that will be passed to core `api()` function.
     query = function(...) {
       args <- list(...)
@@ -55,8 +59,11 @@ Resource <- R6::R6Class(
 
       return(res) # nocov end
     },
+
+    # Generic get function ----------------------------------------------
     #' @description Generic get implementation that fetches single resource
     #'  from the server.
+    #'
     #' @param cls Resource class object.
     #' @param id Object id.
     #' @param ... Other arguments that can be passed to core `api()` function
@@ -98,8 +105,11 @@ Resource <- R6::R6Class(
 
       return(res) # nocov end
     },
+
+    # Generic delete function ------------------------------------------------
     #' @description Generic implementation that deletes the resource
     #'  from the server.
+    #'
     #' @param cls Resource class object.
     #' @param id Object id.
     #' @param ... Other arguments that can be passed to core `api()` function.

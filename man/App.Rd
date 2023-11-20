@@ -18,13 +18,13 @@ R6 Class representing a resource for managing apps.
 
 \item{\code{project}}{Project ID if any, when returned by an API call.}
 
-\item{\code{name}}{String used as an app name.}
+\item{\code{name}}{App name.}
 
-\item{\code{revision}}{Integer representing app's revision.}
+\item{\code{revision}}{App's revision number.}
 
 \item{\code{copy_of}}{The original application of which this is a copy.}
 
-\item{\code{latest_revision}}{Integer representing app's latest revision.}
+\item{\code{latest_revision}}{App's latest revision number.}
 
 \item{\code{raw}}{App's raw CWL (JSON or YAML).}
 }
@@ -91,7 +91,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-App object.
+\code{\link{App}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -136,7 +136,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Copied App object.
+Copied \code{\link{App}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -151,7 +151,7 @@ Get app's revision.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{revision}}{Integer denoting the revision of the app.}
+\item{\code{revision}}{Revision of the app.}
 
 \item{\code{in_place}}{If \code{TRUE}, replace current app object with new for
 specified app revision.}
@@ -167,7 +167,7 @@ app, which is not necessarily the most recent version.
 }
 
 \subsection{Returns}{
-App object.
+\code{\link{App}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -217,11 +217,11 @@ app description, and stores it as the named revision for the specified
 app. The revision number must not already exist and should follow the
 sequence of previously created revisions. \cr \cr
 More documentation about how to create the app via API can be found
-\href{https://docs.sevenbridges.com/reference/add-an-app-using-raw-cwl}{here}
+\href{https://docs.sevenbridges.com/reference/add-an-app-using-raw-cwl}{here}.
 }
 
 \subsection{Returns}{
-App object.
+\code{\link{App}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -246,6 +246,9 @@ This call synchronizes a copied app with the source app from which it
 has been copied.
 }
 
+\subsection{Returns}{
+\code{\link{App}} object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-App-create_task"></a>}}
@@ -255,8 +258,8 @@ This call creates a new task. You can create either a single
 task or a batch task by using the app's default batching, override
 batching, or disable batching completely. A parent task is a task that
 specifies criteria by which to batch its inputs into a series of further
-sub-tasks, called child tasks. the documentation on
-\link{batching tasks} (https://docs.sevenbridges.com/docs/about-batch-analyses)
+sub-tasks, called child tasks. The documentation on
+\href{https://docs.sevenbridges.com/docs/about-batch-analyses}{batching tasks}
 for more details on batching criteria.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App$create_task(
@@ -423,7 +426,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Task object.
+\code{\link{Task}} object.
 }
 }
 \if{html}{\out{<hr>}}

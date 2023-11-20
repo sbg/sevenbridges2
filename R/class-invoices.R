@@ -5,6 +5,7 @@
 #' R6 Class representing invoice resource endpoints
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 Invoices <- R6::R6Class(
   "Invoices",
@@ -17,12 +18,17 @@ Invoices <- R6::R6Class(
       "query" = "billing/invoices",
       "get" = "billing/invoices/{id}"
     ),
+
+    # Initialize Invoices object ---------------------------------------------
     #' @description Create a new Invoices object.
+    #'
     #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
+
+    # List all invoices ------------------------------------------------------
     #' @description The call returns information about all your available
     #'  invoices, unless you use the `billing_group` query parameter to specify
     #'  the ID of a particular billing group, in which case it will return the
@@ -39,7 +45,8 @@ Invoices <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like query parameters or 'fields', etc.
-    #' @return Collection of invoices (Invoice class objects).
+    #'
+    #' @return \code{\link{Collection}} of \code{\link{Invoice}} objects.
     query = function(billing_group = NULL,
                      limit = getOption("sevenbridges2")$limit,
                      offset = getOption("sevenbridges2")$offset,
@@ -61,6 +68,8 @@ Invoices <- R6::R6Class(
 
       return(asCollection(res, auth = self$auth))
     }, # nocov end
+
+    # Get invoice -------------------------------------------------------------
     #' @description This call retrieves information about a selected invoice,
     #'  including the costs for analysis and storage, and the invoice period.
     #'  Use the call to list invoices to retrieve the `invoice_id`s for a
@@ -70,7 +79,7 @@ Invoices <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return Invoice job object.
+    #' @return \code{\link{Invoice}} object.
     get = function(id, ...) {
       # nocov start
       res <- super$get(

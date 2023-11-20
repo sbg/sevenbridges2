@@ -64,7 +64,7 @@ volume, you write to your cloud storage bucket.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{volume}}{String volume id or Volume object. List all exports
+\item{\code{volume}}{Volume id or Volume object. List all exports
 into this particular volume. Optional.}
 
 \item{\code{state}}{The state of the export job. Possible values are:
@@ -94,7 +94,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection of Export jobs (Export class objects).
+\code{\link{Collection}} of \code{\link{Export}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -117,7 +117,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Export object.
+\code{\link{Export}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -148,7 +148,7 @@ Read more about this operation in our documentation
 
 If you want to export multiple files, the recommended way is to do it
 in bulk considering the API rate limit (\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).
-(bulk operations will be implemented in next releases).
+Bulk operations will be implemented in next releases.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Exports$submit_export(
   source_file,
@@ -164,13 +164,13 @@ in bulk considering the API rate limit (\href{https://docs.sevenbridges.com/docs
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{source_file}}{String file id or File object you want to export to
+\item{\code{source_file}}{File id or File object you want to export to
 the volume.}
 
-\item{\code{destination_volume}}{String volume id or Volume object you want to
+\item{\code{destination_volume}}{Volume id or Volume object you want to
 export files into.}
 
-\item{\code{destination_location}}{String volume-specific location to which the
+\item{\code{destination_location}}{Volume-specific location to which the
 file will be exported.
 This location should be recognizable to the underlying cloud service as
 a valid key or path to a new file. Please note that if this volume has
@@ -210,7 +210,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Export object.
+\code{\link{Export}} object.
 }
 }
 \if{html}{\out{<hr>}}

@@ -143,6 +143,9 @@ Start the file upload
 \if{html}{\out{<div class="r">}}\preformatted{Upload$start()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+\code{\link{Fike}} object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Upload-abort"></a>}}

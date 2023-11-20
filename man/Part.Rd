@@ -110,7 +110,7 @@ Print method for Part class.
 \if{html}{\out{<a id="method-Part-upload_info_part"></a>}}
 \if{latex}{\out{\hypertarget{method-Part-upload_info_part}{}}}
 \subsection{Method \code{upload_info_part()}}{
-Get upload part info
+Get upload part info.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Part$upload_info_part(upload_id)}\if{html}{\out{</div>}}
 }
@@ -118,7 +118,7 @@ Get upload part info
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{upload_id}}{Upload object or ID of the upload process that part
+\item{\code{upload_id}}{Upload object or ID of the upload process that part.
 belongs to.}
 }
 \if{html}{\out{</div>}}
@@ -128,7 +128,7 @@ belongs to.}
 \if{html}{\out{<a id="method-Part-upload_complete_part"></a>}}
 \if{latex}{\out{\hypertarget{method-Part-upload_complete_part}{}}}
 \subsection{Method \code{upload_complete_part()}}{
-Report an uploaded part
+Report an uploaded part.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Part$upload_complete_part(upload_id)}\if{html}{\out{</div>}}
 }

@@ -5,6 +5,7 @@
 #' R6 Class representing apps resource endpoint.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 Apps <- R6::R6Class(
   "Apps",
@@ -23,11 +24,15 @@ Apps <- R6::R6Class(
       "raw" = "apps/{id}/raw"
     ),
 
+    # Initialize Apps object --------------------------------------------------
+    #' @description Create new Apps resource object.
     #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
+
+    # List apps --------------------------------------------------------------
     #' @description This call lists all the apps available to you.
     #'
     #' @param project Project ID string in the form
@@ -49,7 +54,8 @@ Apps <- R6::R6Class(
     #'  like other query parameters or 'fields', etc.
     #'
     #' @importFrom checkmate assert_list
-    #' @return Collection containing App objects.
+    #'
+    #' @return \code{\link{Collection}} containing \code{\link{App}} objects.
     query = function(project = NULL,
                      visibility = c("private", "public"),
                      query_terms = NULL,
@@ -91,6 +97,8 @@ Apps <- R6::R6Class(
 
       return(asCollection(res, auth = self$auth)) # nocov end
     },
+
+    # Get app ----------------------------------------------------------------
     #' @description This call returns information about the specified app.
     #'  The app should be one in a project that you can access;
     #'  this could be an app that has been uploaded to the Seven Bridges
@@ -100,15 +108,18 @@ Apps <- R6::R6Class(
     # nolint start
     #'  [API documentation](https://docs.sevenbridges.com/reference/get-details-of-an-app).
     # nolint end
+
     #' @param id The full {project_id}/{app_short_name}
     #'  path for this API call is known as App ID. You can also get the App ID
     #'  for an app by making the call to list all apps available to you.
     #' @param revision The number of the app revision you want to get.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom checkmate assert_int
     #' @importFrom rlang abort
-    #' @return App object.
+    #'
+    #' @return \code{\link{App}} object.
     get = function(id, revision = NULL, ...) {
       if (is_missing(id)) {
         rlang::abort("App ID must be provided!")
@@ -126,6 +137,8 @@ Apps <- R6::R6Class(
 
       return(asApp(res, auth = self$auth)) # nocov end
     },
+
+    # Copy app ----------------------------------------------------------------
     #' @description This call copies the specified app to the specified project.
     #'  The app should be one in a project that you can access; this could be an
     #'  app that has been uploaded to the Seven Bridges Platform by a project
@@ -155,10 +168,12 @@ Apps <- R6::R6Class(
     # nolint end
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #' @importFrom glue glue
-    #' @return Copied App object.
+    #'
+    #' @return Copied \code{\link{App}} object.
     copy = function(app,
                     project,
                     name = NULL,
@@ -200,6 +215,8 @@ Apps <- R6::R6Class(
 
       return(asApp(res, auth = self$auth)) # nocov end
     },
+
+    # Create app using CWL ---------------------------------------------------
     #' @description This call allows you to add an app using raw CWL.
     #'
     #' @param raw The body of the request should be a CWL app description saved
@@ -215,11 +232,13 @@ Apps <- R6::R6Class(
     #' @param raw_format The type of format used (`JSON` or `YAML`).
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom checkmate assert_string
     #' @importFrom jsonlite validate fromJSON
     #' @importFrom rlang abort
     #' @importFrom readr read_file
-    #' @return App object.
+    #'
+    #' @return \code{\link{App}} object.
     create = function(raw = NULL,
                       from_path = NULL,
                       project,

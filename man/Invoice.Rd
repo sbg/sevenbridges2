@@ -90,7 +90,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Invoice
+\code{\link{Invoice}} object.
 }
 }
 \if{html}{\out{<hr>}}

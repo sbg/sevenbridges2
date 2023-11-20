@@ -4,6 +4,7 @@
 #' R6 Class representing a central resource for managing billing groups.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @details
 #' This is main object for Billing
 # nolint start
@@ -35,7 +36,9 @@ Billing <- R6::R6Class(
     #' @field balance Billing group balance.
     balance = NULL,
 
+    # Initialize Billing object ---------------------------------------------
     #' @description Create a new Billing object.
+    #'
     #' @param res Response containing Billing object information.
     #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
@@ -50,8 +53,11 @@ Billing <- R6::R6Class(
       self$disabled <- res$disabled
       self$balance <- res$balance
     },
+
     # nocov start
+    # Print Billing object --------------------------------------------------
     #' @description Print billing group information as a bullet list.
+    #'
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul
@@ -82,10 +88,14 @@ Billing <- R6::R6Class(
       )
       cli::cli_end()
     },
+
+    # Reload Billing object --------------------------------------------------
     #' @description Reload Billing group object.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'limit', 'offset', 'fields', etc.
-    #' @return Billing
+    #'
+    #' @return \code{\link{Billing}} object.
     reload = function(...) {
       super$reload(
         cls = self,
@@ -93,6 +103,8 @@ Billing <- R6::R6Class(
       )
       rlang::inform("Billing group object is refreshed!")
     },
+
+    # Get analysis breakdown --------------------------------------------------
     #' @description Method for getting a analysis breakdown for a billing group.
     #'
     #' @param offset The zero-based starting index in the entire collection
@@ -149,6 +161,8 @@ Billing <- R6::R6Class(
 
       return(res)
     },
+
+    # Get storage breakdown --------------------------------------------------
     #' @description Method for getting a storage breakdown for a billing group.
     #'
     #' @param offset The zero-based starting index in the entire collection
@@ -205,6 +219,8 @@ Billing <- R6::R6Class(
 
       return(res)
     },
+
+    # Get egress breakdown --------------------------------------------------
     #' @description Method for getting a egress breakdown for a billing group.
     #'
     #' @param offset The zero-based starting index in the entire collection
@@ -263,7 +279,8 @@ Billing <- R6::R6Class(
     } # nocov end
   )
 )
-
+# nocov start
+# Helper functions for creating Billing objects -------------------------------
 asBilling <- function(x = NULL, auth = NULL) {
   Billing$new(
     res = x,
@@ -277,3 +294,4 @@ asBillingList <- function(x, auth) {
   obj <- lapply(x$items, asBilling, auth = auth)
   obj
 }
+# nocov end

@@ -140,7 +140,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing Task objects.
+\code{\link{Collection}} of \code{\link{Task}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -167,7 +167,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Task object.
+\code{\link{Task}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -203,10 +203,10 @@ for more details on batching criteria.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{project}}{The ID string of a project or a Project object where you
+\item{\code{project}}{The ID of a project or a Project object where you
 want to create the task in.}
 
-\item{\code{app}}{The ID string of an app or an App object you want to run.
+\item{\code{app}}{The ID of an app or an App object you want to run.
 Recall that apps are specified by their projects, in the form
 \code{{project_id}/{app_name}}.}
 
@@ -351,7 +351,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Task object.
+\code{\link{Task}} object.
 }
 }
 \if{html}{\out{<hr>}}

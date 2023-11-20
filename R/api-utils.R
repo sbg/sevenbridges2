@@ -2,6 +2,7 @@
 #' @title Match results by criteria
 #'
 #' @description Get results by criteria.
+#'
 #' @param x Value(s) to find.
 #' @param y Data input to search through.
 #' @param exact Should it be an exact match or partial, default TRUE.
@@ -32,6 +33,7 @@ m.fun <- function(x,
 #' @title Match results by id and/or name
 #'
 #' @description Get results by id and/or name.
+#'
 #' @param obj Results list.
 #' @param id Id of the resource.
 #' @param name Name of the resource.
@@ -95,6 +97,8 @@ m.match <- function(obj,
   }
 }
 
+#' @title Parse time to POSIXlt
+#'
 #' @description Parse time to POSIXlt for rate limit expiration datetime.
 #'
 #' @param reset_time_as_unix_epoch Time received from response.
@@ -102,7 +106,9 @@ m.match <- function(obj,
 #' @param time_zone Time zone as reference.
 #' @param use_milliseconds Does unix timestamp contain information about
 #' milliseconds (default is FALSE).
+#'
 #' @importFrom rlang abort
+#'
 #' @noRd
 parse_time <- function(reset_time_as_unix_epoch,
                        origin = "1970-01-01",
@@ -133,6 +139,7 @@ parse_time <- function(reset_time_as_unix_epoch,
 #' @param handle Handle.
 #' @param url URL.
 #' @param ... Additional arguments to pass.
+#'
 #' @importFrom utils modifyList
 #' @importFrom rlang abort
 #'
@@ -280,6 +287,7 @@ POST2 <- function(url = NULL,
 #'  list(x = 1, x = 2, y = "a").
 #'
 #' @param x List of query parameters.
+#'
 #' @return Flattened query params list.
 #'
 #' @importFrom checkmate test_atomic
@@ -306,10 +314,13 @@ flatten_query <- function(x) {
   )
 }
 
-#' Set client info for API request header (User-Agent data)
+#' @title Set client info for API request header (User-Agent data)
+#'
 #' @description This function returns client info that will be stored
 #' in headers for API requests, in order to track logs better.
+#'
 #' @importFrom utils packageDescription
+#'
 #' @noRd
 setup_client_info <- function() {
   # Fill client data
@@ -337,10 +348,12 @@ setup_client_info <- function() {
   return(client_info_string)
 }
 
-#' Set headers for API request
+#' @title Set headers for API request
+#'
 #' @description This function returns headers for API request,
 #'  depending on the value of the authorization parameter.
-#' @param authorization Logical. Is the `token` an API
+#'
+#' @param authorization Is the `token` an API
 #'  auth token (`FALSE`) or an access token from the
 #'  Seven Bridges single sign-on (`TRUE`)?
 #' @param token API auth token or `access_token` for
@@ -350,7 +363,9 @@ setup_client_info <- function() {
 #' @param client_info Client info that will be send in the header.
 #'
 #' @importFrom checkmate assert_logical
+#'
 #' @return A named vector with headers for an API request.
+#'
 #' @noRd
 set_headers <- function(authorization = FALSE,
                         token = NULL,
@@ -383,7 +398,9 @@ set_headers <- function(authorization = FALSE,
 }
 
 #' @title Setup query parameters for API request
+#'
 #' @description This function prepares query parameters for API request.
+#'
 #' @param query Passed to httr package GET/POST call
 #' @param limit The maximum number of collection items to return
 #'  for a single request. Minimum value is `1`.
@@ -401,9 +418,10 @@ set_headers <- function(authorization = FALSE,
 #'  id, name and size for files. Default value is set to
 #'  `_all`, so all fields are always returned for each resource.
 #'  More details please check
-#'  \url{https://docs.sevenbridges.com/docs/the-api#section-general-api-information}
+#'  [here](https://docs.sevenbridges.com/docs/the-api#section-general-api-information).
 #'
 #' @return List of query parameters.
+#'
 #' @noRd
 setup_query <- function(query = NULL,
                         limit = getOption("sevenbridges2")$limit,
@@ -432,11 +450,14 @@ setup_query <- function(query = NULL,
 }
 
 #' @title Setup body parameters for API request
+#'
 #' @description This function prepares body parameters for API request.
+#'
 #' @param method HTTP method to be used in the request.
 #' @param body  HTTP request body - passed to httr package GET/POST/PUT/DELETE/PATCH call.
 #'
 #' @return Request body as JSON.
+#'
 #' @noRd
 setup_body <- function(method, body = list()) {
   if (method %in% c("POST", "PATCH", "PUT")) {
@@ -454,7 +475,7 @@ setup_body <- function(method, body = list()) {
 }
 # nolint end
 
-#' @title Check and transform id.
+#' @title Check and transform id
 #'
 #' @description Generic way to check if the supplied argument is an instance
 #'  of a given class or ID is directly specified as a string.
@@ -464,9 +485,11 @@ setup_body <- function(method, body = list()) {
 #' @param x String with id or an instance of specified class.
 #' @param class_name Expected class of instance from which ID will be extracted.
 #' @param field_name Field name of to extract ID from. Default is "id".
+#'
 #' @return String with id.
 #'
 #' @importFrom checkmate assert_r6 assert_character
+#'
 #' @noRd
 check_and_transform_id <-
   function(x, class_name, field_name = "id") {

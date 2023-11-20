@@ -5,6 +5,7 @@
 #' R6 Class representing Projects resource.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 Projects <- R6::R6Class(
   # nolint end
@@ -19,12 +20,16 @@ Projects <- R6::R6Class(
       "create" = "projects"
     ),
 
+    # Initialize Projects object ----------------------------------------------
     #' @description Create new Projects resource object.
+    #'
     #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
+
+    # List projects -----------------------------------------------------------
     #' @description A method to list all projects available to particular user.
     #'  If the username is not provided, all projects available to the
     #'  currently authenticated user will be listed.
@@ -33,8 +38,9 @@ Projects <- R6::R6Class(
     #'  Please keep in mind that this way you will only be able to list
     #'  projects you are a member of. \cr \cr
     #'  More details on how to query projects, you can find in our
-    #'  documentation:
-    #'  \url{https://docs.sevenbridges.com/reference/list-all-your-projects}.
+    # nolint start
+    #'  [documentation](https://docs.sevenbridges.com/reference/list-all-your-projects).
+    # nolint end
     #'
     #' @param name Project's name.
     #' @param owner The username of the owner whose projects you want to query.
@@ -48,9 +54,10 @@ Projects <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like other query parameters or 'fields', etc.
+    #'
     #' @importFrom checkmate assert_string
     #'
-    #' @return Collection with list of Project objects.
+    #' @return \code{\link{Collection}} of \code{\link{Project}} objects.
     query = function(name = NULL,
                      owner = NULL,
                      tags = NULL,
@@ -73,8 +80,11 @@ Projects <- R6::R6Class(
 
       return(asCollection(res, auth = self$auth))
     },
+
+    # Get project -----------------------------------------------------------
     #' @description This call creates Project object containing the details
     #'  of a specified project.
+    #'
     #' @param id Project ID. It consists of project owner's username or
     #'  if you are using Enterprise, then the Division name and project's
     #'  short name in form of `<owner_username>/<project-short-name>` or
@@ -83,7 +93,7 @@ Projects <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return Project object.
+    #' @return \code{\link{Project}} object.
     get = function(id, ...) {
       res <- super$get(
         cls = self,
@@ -92,6 +102,36 @@ Projects <- R6::R6Class(
       )
       return(asProject(res, auth = self$auth))
     }, # nocov end
+
+    # Delete project ----------------------------------------------------------
+    #' @description Method that allows you to delete project from a platform.
+    #' It can only be successfully made if you have admin status for the
+    #' project. \cr
+    #' Please be careful when using this method and note that calling it will
+    #' permanently delete the project from the platform.
+    #'
+    #' @param project Project object or project ID.
+    #'
+    #' @importFrom rlang abort inform
+    #' @importFrom httr content
+    #' @importFrom glue glue
+    delete = function(project) {
+      id <- check_and_transform_id(project)
+      # nocov start
+      res <- sevenbridges2::api(
+        path = id,
+        method = "DELETE",
+        token = self$auth$get_token(),
+        base_url = self$auth$url
+      )
+
+      rlang::inform(
+        message = glue::glue("Project {id} has been deleted.")
+      )
+    },
+    # nocov end
+
+    # Create new project ------------------------------------------------------
     #' @description A method for creating a new project.
     #'
     #' @param name The name of the project you are creating.
@@ -127,10 +167,12 @@ Projects <- R6::R6Class(
     #'  }
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom rlang inform abort
     #' @importFrom glue glue
     #' @importFrom checkmate assert_string test_character
-    #' @return Project object.
+    #'
+    #' @return \code{\link{Project}} object.
     create = function(name,
                       billing_group = NULL,
                       description = name,

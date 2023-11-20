@@ -87,7 +87,7 @@ like query parameters or 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection of invoices (Invoice class objects).
+\code{\link{Collection}} of \code{\link{Invoice}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -113,7 +113,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Invoice job object.
+\code{\link{Invoice}} object.
 }
 }
 \if{html}{\out{<hr>}}

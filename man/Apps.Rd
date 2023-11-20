@@ -38,6 +38,7 @@ R6 Class representing apps resource endpoint.
 \if{html}{\out{<a id="method-Apps-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Apps-new}{}}}
 \subsection{Method \code{new()}}{
+Create new Apps resource object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Apps$new(...)}\if{html}{\out{</div>}}
 }
@@ -97,7 +98,7 @@ like other query parameters or 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing App objects.
+\code{\link{Collection}} containing \code{\link{App}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -130,7 +131,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-App object.
+\code{\link{App}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -184,7 +185,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Copied App object.
+Copied \code{\link{App}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -228,7 +229,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-App object.
+\code{\link{App}} object.
 }
 }
 \if{html}{\out{<hr>}}
