@@ -263,7 +263,7 @@ Assume we have already created the configuration file named
 `credentials` under the directory `$HOME/.sevenbridges/`:
 
 ```
-[aws-us-rfranklin]
+[aws-us-<username>]
 api_endpoint = https://api.sbgenomics.com/v2
 auth_token = token_for_this_user
 
@@ -281,11 +281,14 @@ api_endpoint = https://api.sb.biodatacatalyst.nhlbi.nih.gov/v2/
 auth_token = token_for_this_user
 ```
 
-To load the user profile `aws-us-rfranklin` from this configuration file, 
-simply use:
+To load the user profile `aws-us-<username>` from this configuration 
+file, simply use:
 
 ```{r}
-a <- sevenbridges2::Auth$new(from = "file", profile_name = "aws-us-rfranklin")
+a <- sevenbridges2::Auth$new(
+  from = "file",
+  profile_name = "aws-us-<username>"
+)
 ```
 
 If `profile_name` is not specified, we will try to load the profile 
@@ -300,12 +303,12 @@ The option based on the use of a configuration file also enables simultaneous
 authentication from multiple accounts. 
 Assuming that we have a configuration file like the one listed above, 
 and that we want to create authentication objects for two profiles 
-(**default** and **aws-us-rfranklin**), we can achieve this in the following 
-way:
+(**default** and **aws-us-<username>**), we can achieve this in 
+the following way:
 
 ```{r}
 a <- sevenbridges2::Auth$new(from = "file", profile_name = "default")
-b <- sevenbridges2::Auth$new(from = "file", profile_name = "aws-us-rfranklin")
+b <- sevenbridges2::Auth$new(from = "file", profile_name = "aws-us-<username>")
 ```
 
 
@@ -352,11 +355,11 @@ a$user()
 ── User ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 • country: United States
 • affiliation: SBG
-• last_name: Franklin
-• first_name: Rosalind
-• email: rosalind.franklin@sbgenomics.com
-• username: RFranklin
-• href: https://cgc-api.sbgenomics.com/v2/users/RFranklin
+• last_name: Test
+• first_name: User
+• email: <user>@sbgenomics.com
+• username: <username>
+• href: https://api.sbgenomics.com/v2/users/<user>
 ```
 
 <div align="right"><a href="#top">top</a></div>
@@ -369,7 +372,7 @@ you can view only your own user information, so this call is equivalent to
 the [call to get information about your account](#youruser).
 
 ```{r}
-a$user(username = "RFranklin")
+a$user(username = "<username>")
 ```
 
 <div align="right"><a href="#top">top</a></div>
@@ -475,8 +478,8 @@ my_projects$next_page()
 # Return all projects that contain the term "demo"
 demo_projects <- a$projects$query(name = "demo")
 
-# Return all projects tagged with "test_1"
-tagged_projects <- a$projects$query(tags = list("test_1"))
+# Return all projects tagged with "demo"
+tagged_projects <- a$projects$query(tags = list("demo"))
 ```
 
 Notice that the output is the `Collection` object and the results (list of 
@@ -498,7 +501,8 @@ bid <- "<billing_group_id>"
 # Create new project
 p <- a$projects$create(
   name = "API testing", billing_group = bid,
-  description = "Just a test"
+  description = "This project has been created using the sevenbridges2 R API
+  library."
 )
 ```
 
@@ -536,7 +540,7 @@ basic platform operations on the project.
 Use `get()` method and provide full ID of the project you would like to fetch. 
 
 ```{r}
-a$projects$get(id = "RFranklin/api-testing")
+a$projects$get(id = "<your_username_or_division>/api-testing")
 ```
 
 ```
@@ -581,7 +585,7 @@ public_apps <- a$apps$query(
 
 # Search by ID
 star_app <- a$apps$get(
-  id = "admin/sbg-public-data/rna-seq-alignment-star-2-7-10a/2"
+  id = "admin/sbg-public-data/rna-seq-alignment-star-2-5-4b/25"
 )
 ```
 
@@ -591,12 +595,12 @@ Now, copy the App your `project` with a new `name`, following this logic.
 # Copy app into the project
 a$apps$copy(
   app = star_app,
-  project = "RFranklin/api-testing",
+  project = "<username_or_division>/api-testing",
   name = "New copy of STAR"
 )
 
 # Check if it is copied
-p <- a$projects$get(id = "RFranklin/api-testing")
+p <- a$projects$get(id = "<username_or_division>/api-testing")
 # List apps your got in your project
 p$list_apps()
 ```
@@ -605,9 +609,9 @@ The short name is changed to `newcopyofstar`.
 
 ```
 == App ==
-id : RFranklin/api-testing/newcopyofstar/0
+id : <username_or_division>/api-testing/newcopyofstar/0
 name : RNA-seq Alignment - STAR
-project : RFranklin/api-testing
+project : <username_or_division>/api-testing
 revision : 0
 ```
 
@@ -615,11 +619,11 @@ Alternatively, you can copy it from the `App` object.
 
 ```{r}
 star_app <- a$apps$get(
-  id = "admin/sbg-public-data/rna-seq-alignment-star-2-7-10a/2"
+  id = "admin/sbg-public-data/rna-seq-alignment-star-2-5-4b/25"
 )
 
 star_app$copy(
-  project = "RFranklin/api-testing",
+  project = "<username_or_division>/api-testing",
   name = "Copy of STAR"
 )
 ```
@@ -634,7 +638,7 @@ required.
 ### Find your app inputs
 
 Once you have copied the public app 
-`admin/sbg-public-data/rna-seq-alignment-star-star-2-7-10a/2` into your project, 
+`admin/sbg-public-data/rna-seq-alignment-star-star-2-5-4b/25` into your project, 
 `<username>/api-testing`, the app `id` in your current project is 
 `<username>/api-testing/newcopyofstar`. 
 Conversely, you can use another app you already have in your project for 
@@ -644,9 +648,8 @@ To draft a new task, you need to specify the following:
 
 - The name of the task
 - An optional description
-- The app object or `id` of the workflow you are executing
-- The inputs for your workflow. In this case, the CWL app accepts 
-four parameters: number, min, max, and seed.
+- The App object or `id` of the workflow you are executing
+- The inputs for your workflow. 
 
 You can always check the App details on the visual interface for task input 
 requirements. To find the required inputs with R, you need to get an 
@@ -655,13 +658,128 @@ requirements. To find the required inputs with R, you need to get an
 Let's check which inputs this app requires and bring them into our
 project.
 
+```{r}
+# Fetch copied app
+copied_star_app <- a$apps$get(
+  id = "<username_or_division>/api-testing/newcopyofstar/0"
+)
 
+# Preview its inputs from raw CWL
+copied_star_app$raw$inputs
+```
 
+Depending on the CWL version, the structure of the inputs presented could differ. 
+Here with sbg::draft2 we can see first 3 files that are required and we will 
+use their ids (excluding the starting '#') in mapping the input files 
+when defining a task. 
 
+Locate the names of the required inputs. Note that task inputs need to match 
+the expected data type and name. In the above example, we see two required 
+fields:
 
+- **fastq:** This input takes a file array of formats FASTA, FASTQ, FA, FQ etc.
+- **genomeFastaFiles:** This is a single reference file of formats FASTA, FA, 
+FNA or TAR.
 
+We also want to provide a gene feature file:
 
+- **sjdbGTFfile:** A file array that can be of format GTF, GFF, GFF2, GFF3. 
 
+You can find a list of possible input types below:
+
+- **number, character or integer:** you can directly pass these to the input 
+parameter as it is.
+- **enum type:** Pass this value to the input parameter.
+- **file:** This input is a file. However, while some inputs accept only 
+single file (`File`), other inputs take more than one file (`File` arrays, 
+`FilesList`, or '`File...`' ). This input requires you to pass a single `File` 
+object (for a single file input) or list of `File` objects (for inputs which 
+accept more than one file). 
+You can search for your file by `id` or by `name`, as shown in the example 
+below.
+
+<div align="right"><a href="#top">top</a></div>
+
+### Get your input files ready
+
+```{r}
+# Get reads (fastq) files and copy into a project
+reads_1 <- a$files$get(id = "641c48c425ed1842bd0bf799")
+reads_1$copy_to(project = p)
+
+reads_2 <- a$files$get(id = "641c48c425ed1842bd0bf835")
+reads_2$copy_to(project = p)
+
+# Get a single file reference file and copy into a project
+fasta_in <- a$files$get(id = "641c48c525ed1842bd0bf86a")
+fasta_in$copy_to(project = p)
+
+# Get gtf file and copy into a project
+gtf_in <- a$files$get(id = "641c48c425ed1842bd0bf825")
+gtf_in$copy_to(project = p)
+
+# Get copied files
+input_files <- p$list_files()$items
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Create a new draft task
+
+```{r}
+# Add new tasks
+taskName <- paste0("TestUser-star-alignment ", date())
+
+execution_settings <- list(
+  "use_memoization" = TRUE,
+  "use_elastic_disk" = FALSE
+)
+
+tsk <- p$create_task(
+  name = taskName,
+  description = "STAR test",
+  app = copied_star_app,
+  inputs = list(
+    "fastq" = c(input_files[[1]], input_files[[2]]),
+    "genomeFastaFiles" = input_files[[3]],
+    "sjdbGTFfile" = list(input_files[[4]])
+  ), execution_settings = execution_settings
+)
+```
+
+## Run a Task
+
+Now, we are ready to run our task.
+
+```{r}
+# run your task
+tsk$run()
+```
+
+Before you run your task, you can adjust your draft task if you have any final modifications. Alternatively, you can delete the draft task if you no longer wish to run it.
+
+```{r}
+# # not run
+# tsk$delete()
+```
+
+After you run a task, you can abort it.
+
+```{r}
+# abort your task
+tsk$abort()
+```
+
+If you want to update your task and then re-run it, follow the example below.
+
+```{r}
+# First clone existing task
+cloned_task <- tsk$clone_task()
+
+# Then, update GTF input file in the cloned task
+cloned_task$update(inputs = list(sjdbGTFfile = "<some new file>"))
+cloned_task$run()
+```
 
 
 
