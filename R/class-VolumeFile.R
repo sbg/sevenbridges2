@@ -5,6 +5,7 @@
 #' R6 Class representing a resource for managing VolumeFile objects.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 VolumeFile <- R6::R6Class(
   # nolint end
@@ -26,6 +27,7 @@ VolumeFile <- R6::R6Class(
     #' @field metadata File's metadata if exists.
     metadata = NULL,
 
+    # Initialize VolumeFile object -------------------------------------------
     #' @description Create a new VolumeFile object.
     #'
     #' @param res Response containing VolumeFile object info.
@@ -41,6 +43,7 @@ VolumeFile <- R6::R6Class(
     },
 
     # nocov start
+    # Print VolumeFile object -------------------------------------------------
     #' @description Print method for VolumeFile class.
     #'
     #' @importFrom purrr discard
@@ -72,12 +75,13 @@ VolumeFile <- R6::R6Class(
       cli::cli_end()
     },
 
+    # Reload VolumeFile object ------------------------------------------------
     #' @description Reload VolumeFile object information.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return VolumeFile object.
+    #' @return \code{\link{VolumeFile}} object.
     reload = function(...) {
       reload_url <- ""
       if (!is_missing(self$href)) {
@@ -109,7 +113,7 @@ VolumeFile <- R6::R6Class(
       rlang::inform("VolumeFile object is refreshed!")
     }, # nocov end
 
-    # Start new import job -----------------------------------------------
+    # Start new file import job -----------------------------------------------
     #' @description This call lets you queue a job to import this file or folder
     #'  from a volume into a project on the Platform. \cr
     #'  Essentially, you are importing an item from your cloud storage provider
@@ -149,7 +153,7 @@ VolumeFile <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return Import object.
+    #' @return \code{\link{Import}} object.
     import = function(destination_project = NULL, destination_parent = NULL,
                       name = NULL, overwrite = FALSE, autorename = FALSE,
                       ...) {
@@ -167,8 +171,8 @@ VolumeFile <- R6::R6Class(
     }
   )
 )
-
-# Helper function for creating VolumeFile objects
+# nocov start
+# Helper functions for creating VolumeFile objects ---------------------------
 asVolumeFile <- function(x = NULL, auth = NULL) {
   VolumeFile$new(
     res = x,
@@ -178,8 +182,8 @@ asVolumeFile <- function(x = NULL, auth = NULL) {
   )
 }
 
-# Helper function for creating a list of VolumeFile objects
 asVolumeFileList <- function(x, auth) {
   obj <- lapply(x, asVolumeFile, auth = auth)
   obj
 }
+# nocov end

@@ -36,7 +36,7 @@
 #'  This is a pagination-specific attribute.
 #' @param advance_access Enable advance access features?
 #'  Default is `FALSE`.
-#' @param authorization Logical. Is the `token` an API
+#' @param authorization Is the `token` an API
 #'  authentication token (`FALSE`) or an access token from the
 #'  Seven Bridges single sign-on (`TRUE`)?
 #' @param fields Selector specifying a subset of fields to include in the
@@ -49,7 +49,7 @@
 #'  `_all`, so all fields are always returned for each resource.
 #'  More details please check
 # nolint start
-#'  \url{https://docs.sevenbridges.com/docs/the-api#section-general-api-information}
+#'  [here](https://docs.sevenbridges.com/docs/the-api#section-general-api-information).
 # nolint end
 #'
 #' @param base_url Platform URL, default is NULL.
@@ -69,6 +69,7 @@
 #' @importFrom rlang abort
 #'
 #' @export api
+#'
 #' @examples
 #' token <- "your_token"
 #' # list projects

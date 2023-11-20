@@ -5,6 +5,7 @@
 #' R6 Class representing a resource for managing apps.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 App <- R6::R6Class(
   # nolint end
@@ -24,16 +25,18 @@ App <- R6::R6Class(
     id = NULL,
     #' @field project Project ID if any, when returned by an API call.
     project = NULL,
-    #' @field name String used as an app name.
+    #' @field name App name.
     name = NULL,
-    #' @field revision Integer representing app's revision.
+    #' @field revision App's revision number.
     revision = NULL,
     #' @field copy_of The original application of which this is a copy.
     copy_of = NULL,
-    #' @field latest_revision Integer representing app's latest revision.
+    #' @field latest_revision App's latest revision number.
     latest_revision = NULL,
     #' @field raw App's raw CWL (JSON or YAML).
     raw = NULL,
+
+    # Initialize App object --------------------------------------------------
     #' @description Create a new App object.
     #' @param res Response containing App object information.
     #' @param ... Other response arguments.
@@ -53,7 +56,9 @@ App <- R6::R6Class(
         res$raw$`sbg:latestRevision`, NA
       )
     },
+
     # nocov start
+    # Print App object ------------------------------------------------------
     #' @description Print method for App class.
     #'
     #' @importFrom purrr discard
@@ -82,10 +87,14 @@ App <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+
+    # Reload App object ------------------------------------------------------
     #' @description Reload App object information.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
-    #' @return App object.
+    #'
+    #' @return \code{\link{App}} object.
     reload = function(...) {
       super$reload(
         cls = self,
@@ -93,6 +102,8 @@ App <- R6::R6Class(
       )
       rlang::inform("App object is refreshed!")
     }, # nocov end
+
+    # Copy App ---------------------------------------------------------------
     #' @description A method that copies the current app to the
     #'  specified project.
     #'
@@ -117,10 +128,12 @@ App <- R6::R6Class(
     #'  be copied.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom rlang abort
     #' @importFrom checkmate assert_string assert_logical
     #' @importFrom glue glue
-    #' @return Copied App object.
+    #'
+    #' @return Copied \code{\link{App}} object.
     copy = function(project, name = NULL, strategy = "clone", use_revision = FALSE, ...) { # nolint
       if (is_missing(project)) {
         rlang::abort("Project parameter must be provided!")
@@ -172,20 +185,24 @@ App <- R6::R6Class(
       return(asApp(res, auth = self$auth))
       # nocov end
     },
+
+    # Get App's revision -----------------------------------------------------
     #' @description Get app's revision.
     #'
     #' @details
     #' This call allows you to obtain a particular revision of an
     #' app, which is not necessarily the most recent version.
     #'
-    #' @param revision Integer denoting the revision of the app.
+    #' @param revision Revision of the app.
     #' @param in_place If `TRUE`, replace current app object with new for
     #'  specified app revision.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom checkmate assert_numeric assert_logical
     #' @importFrom glue glue
-    #' @return App object.
+    #'
+    #' @return \code{\link{App}} object.
     get_revision = function(revision = self$revision, in_place = FALSE, ...) {
       # Check if revision is positive number and convert it to integer
       checkmate::assert_numeric(revision, lower = 0, len = 1)
@@ -217,6 +234,8 @@ App <- R6::R6Class(
         return(asApp(res, self$auth))
       } # nocov end
     },
+
+    # Create App revision ----------------------------------------------------
     #' @description Create a new app revision.
     #'
     #' @details
@@ -225,7 +244,7 @@ App <- R6::R6Class(
     #'  app. The revision number must not already exist and should follow the
     #'  sequence of previously created revisions. \cr \cr
     #'  More documentation about how to create the app via API can be found
-    #'  [here](https://docs.sevenbridges.com/reference/add-an-app-using-raw-cwl)
+    #' [here](https://docs.sevenbridges.com/reference/add-an-app-using-raw-cwl).
     #' @param raw A list containing a raw CWL for the app revision you are
     #'  about to create. To generate such a list, you might want to load some
     #'  existing JSON / YAML file. In case that your CWL file is in JSON format,
@@ -242,6 +261,7 @@ App <- R6::R6Class(
     #'  created revision.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom rlang abort
     #' @importFrom glue glue glue_col
     #' @importFrom checkmate assert_list assert_character
@@ -250,7 +270,8 @@ App <- R6::R6Class(
     #' @importFrom jsonlite validate fromJSON
     #' @importFrom yaml yaml.load
     #' @importFrom readr read_file
-    #' @return App object.
+    #'
+    #' @return \code{\link{App}} object.
     create_revision = function(raw = NULL, from_path = NULL, raw_format = c("JSON", "YAML"), in_place = FALSE, ...) { # nolint
       if (is_missing(raw) && is_missing(from_path)) {
         rlang::abort(glue::glue_col("Both parameters {magenta raw} and {magenta from_path} are missing. Please provide one of them.")) # nolint
@@ -309,14 +330,20 @@ App <- R6::R6Class(
       # Return new or reload current object with newly created revision
       return(self$get_revision(revision = self$latest_revision + 1, in_place = in_place)) # nolint
     },
+
+    # Synchronize Apps -------------------------------------------------------
     #' @description Synchronize a copied app with its parent app
     #'
     #' @details
     #' This call synchronizes a copied app with the source app from which it
     #' has been copied.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom glue glue
+    #'
+    #' @return \code{\link{App}} object.
     sync = function(...) {
       path <- glue::glue(self$URL[["sync"]])
       res <- sevenbridges2::api(
@@ -337,13 +364,15 @@ App <- R6::R6Class(
         auth = self$auth
       )
     },
+
+    # Create task ------------------------------------------------------------
     #' @description This call creates a new task. You can create either a single
     #'  task or a batch task by using the app's default batching, override
     #'  batching, or disable batching completely. A parent task is a task that
     #'  specifies criteria by which to batch its inputs into a series of further
-    #'  sub-tasks, called child tasks. the documentation on
+    #'  sub-tasks, called child tasks. The documentation on
     # nolint start
-    #'  [batching tasks] (https://docs.sevenbridges.com/docs/about-batch-analyses)
+    #'  [batching tasks](https://docs.sevenbridges.com/docs/about-batch-analyses)
     # nolint end
     #'  for more details on batching criteria.
     #'
@@ -488,7 +517,7 @@ App <- R6::R6Class(
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #'
-    #' @return Task object.
+    #' @return \code{\link{Task}} object.
     create_task = function(project,
                            revision = NULL,
                            name = NULL,
@@ -523,7 +552,7 @@ App <- R6::R6Class(
   )
 )
 # nocov start
-# Helper function for creating App objects
+# Helper functions for creating App objects ---------------------------------
 asApp <- function(x = NULL, auth = NULL) {
   App$new(
     res = x,
@@ -533,7 +562,6 @@ asApp <- function(x = NULL, auth = NULL) {
   )
 }
 
-# Helper function for creating a list of App objects
 asAppList <- function(x, auth) {
   obj <- lapply(x$items, asApp, auth = auth)
   obj

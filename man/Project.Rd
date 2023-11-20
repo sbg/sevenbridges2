@@ -158,9 +158,6 @@ like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-Project object.
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-update"></a>}}
@@ -193,8 +190,8 @@ Users with write permissions in the project can change the project
 group you want to set to the project.}
 
 \item{\code{settings}}{Contains detailed project settings as explained in
-previous methods. Check our API documentation:
-\url{https://docs.sevenbridges.com/reference/edit-a-project}.}
+previous methods. Check our
+\href{https://docs.sevenbridges.com/reference/edit-a-project}{API documentation}.}
 
 \item{\code{tags}}{The list of project tags you want to update.}
 
@@ -249,7 +246,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing list of Member objects.
+\code{\link{Collection}} of \code{\link{Member}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -304,7 +301,7 @@ Example:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Member object.
+\code{\link{Member}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -349,6 +346,9 @@ like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+\code{\link{Member}} object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-modify_member_permissions"></a>}}
@@ -390,7 +390,7 @@ Example:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Permission object.
+\code{\link{Permission}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -424,7 +424,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing File objects.
+\code{\link{Collection}} of \code{\link{File}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -448,7 +448,7 @@ within this root folder by using this function.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-File object of type 'FOLDER'.
+\code{\link{File}} object of type 'FOLDER'.
 }
 }
 \if{html}{\out{<hr>}}
@@ -499,7 +499,7 @@ like other query parameters or 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing Apps objects.
+\code{\link{Collection}} of \code{\link{App}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -536,7 +536,7 @@ characters or spaces).}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-App object.
+\code{\link{App}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -633,7 +633,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing Task objects.
+\code{\link{Collection}} of \code{\link{Task}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -655,7 +655,7 @@ into this destination project.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{volume}}{String volume id or Volume object. List all imports
+\item{\code{volume}}{Volume id or Volume object. List all imports
 from particular volume. Optional.}
 
 \item{\code{state}}{The state of the import job. Possible values are:
@@ -685,7 +685,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing Import objects.
+\code{\link{Collection}} of \code{\link{Import}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -720,7 +720,7 @@ for more details on batching criteria.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{app}}{The ID string of an app or an App object you want to run.
+\item{\code{app}}{The ID of an app or an App object you want to run.
 Recall that apps are specified by their projects, in the form
 \code{{project_id}/{app_name}}.}
 
@@ -865,7 +865,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Task object.
+\code{\link{Task}} object.
 }
 }
 \if{html}{\out{<hr>}}

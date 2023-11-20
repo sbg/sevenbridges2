@@ -73,9 +73,6 @@ Create a new User object.
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-A new User object.
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-User-print"></a>}}
@@ -105,7 +102,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-User
+\code{\link{User}} object.
 }
 }
 \if{html}{\out{<hr>}}

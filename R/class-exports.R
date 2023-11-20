@@ -19,19 +19,21 @@ Exports <- R6::R6Class(
       "create" = "storage/exports"
     ),
 
+    # Initialize Exports object -----------------------------------------------
     #' @description Create a new Exports object.
+    #'
     #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
 
-    # List all export jobs --------------------------------------
+    # List export jobs --------------------------------------------------------
     #' @description This call lists export jobs initiated by particular user.
     #'  Note that when you export a file from a project on the Platform into a
     #'  volume, you write to your cloud storage bucket.
     #'
-    #' @param volume String volume id or Volume object. List all exports
+    #' @param volume Volume id or Volume object. List all exports
     #'  into this particular volume. Optional.
     #' @param state The state of the export job. Possible values are:
     #'  \itemize{
@@ -56,7 +58,7 @@ Exports <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_character assert_subset
     #'
-    #' @return Collection of Export jobs (Export class objects).
+    #' @return \code{\link{Collection}} of \code{\link{Export}} objects.
     query = function(volume = NULL, state = NULL,
                      limit = getOption("sevenbridges2")$limit,
                      offset = getOption("sevenbridges2")$offset,
@@ -88,14 +90,14 @@ Exports <- R6::R6Class(
       return(asCollection(res, auth = self$auth))
     }, # nocov end
 
-    # Get export job details -----------------------------------------------
+    # Get export job details --------------------------------------------------
     #' @description This call will return the details of an export job.
     #'
     #' @param id The export job identifier (id).
     #' @param ... Other arguments that can be passed to core `api()` function
     #' like 'fields', etc.
     #'
-    #' @return Export object.
+    #' @return \code{\link{Export}} object.
     get = function(id, ...) {
       # nocov start
       res <- super$get(
@@ -107,7 +109,7 @@ Exports <- R6::R6Class(
       return(asExport(res, auth = self$auth))
     }, # nocov end
 
-    # Start new export job -----------------------------------------------
+    # Start new export job ----------------------------------------------------
     #' @description This call lets you queue a job to export a file from a
     #'  project on the Platform into a volume. The file selected for export must
     #'  not be a public file or an alias. Aliases are objects stored in your
@@ -134,13 +136,13 @@ Exports <- R6::R6Class(
     # nolint start
     #'  in bulk considering the API rate limit ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).
     # nolint end
-    #'  (bulk operations will be implemented in next releases).
+    #'  Bulk operations will be implemented in next releases.
     #'
-    #' @param source_file String file id or File object you want to export to
+    #' @param source_file File id or File object you want to export to
     #'  the volume.
-    #' @param destination_volume String volume id or Volume object you want to
+    #' @param destination_volume Volume id or Volume object you want to
     #'  export files into.
-    #' @param destination_location String volume-specific location to which the
+    #' @param destination_location Volume-specific location to which the
     #'  file will be exported.
     #'  This location should be recognizable to the underlying cloud service as
     #'  a valid key or path to a new file. Please note that if this volume has
@@ -179,7 +181,7 @@ Exports <- R6::R6Class(
     #' @importFrom glue glue glue_col
     #' @importFrom rlang abort
     #'
-    #' @return Export object.
+    #' @return \code{\link{Export}} object.
     submit_export = function(source_file, destination_volume,
                              destination_location, overwrite = FALSE,
                              copy_only = FALSE, properties = NULL, ...) {
@@ -243,8 +245,9 @@ Exports <- R6::R6Class(
       return(export)
     },
 
-    # Delete export job ----------------------------------------------------
+    # Delete export job -------------------------------------------------------
     #' @description Deleting export jobs is not possible.
+    #'
     #' @importFrom rlang inform
     delete = function() {
       rlang::inform("Deleting export jobs is not possible.")

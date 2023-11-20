@@ -19,7 +19,10 @@ Permission <- R6::R6Class(
     execute = NULL,
     #' @field admin Admin permission.
     admin = NULL,
+
+    # Initialize Permission object --------------------------------------------
     #' @description Create a new Permission object.
+    #'
     #' @param read User can view file names, metadata, and workflows.
     #'  They cannot view file contents. All members of a project have read
     #'  permissions by default. Even if you try setting read permissions to
@@ -50,8 +53,11 @@ Permission <- R6::R6Class(
       self$execute <- execute
       self$admin <- admin
     },
+
     # nocov start
+    # Print Permission object -------------------------------------------------
     #' @description Print method for Permission class.
+    #'
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_end
@@ -72,6 +78,8 @@ Permission <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+
+    # Reload Permission object ------------------------------------------------
     #' @description Reload Permission object information.
     reload = function() {
       rlang::inform("Reloading Permission objects is not possible.")
@@ -79,7 +87,7 @@ Permission <- R6::R6Class(
   )
 )
 # nocov start
-# Helper function for creating Permission objects
+# Helper function for creating Permission objects ----------------------------
 asPermission <- function(x, auth = NULL) {
   Permission$new(
     write = x$write,

@@ -44,7 +44,7 @@ Auth <- R6::R6Class(
     #' @field fs FS (FileSystem) object, for mount and unmount file system.
     fs = NULL,
 
-    #' @field authorization Logical. Is the `token` an API
+    #' @field authorization Is the `token` an API
     #'  authentication token (`FALSE`) or an access token from the
     #'  Seven Bridges single sign-on (`TRUE`)?
     authorization = NULL,
@@ -84,6 +84,7 @@ Auth <- R6::R6Class(
     #'  resources on the platform.
     billing_groups = NULL,
 
+    # Initialize Auth object -------------------------------------------------
     #' @description
     #'  Create a new Seven Bridges API Authentication object.
     #'  All methods can be accessed through this object.
@@ -132,7 +133,7 @@ Auth <- R6::R6Class(
     #'
     #' @param fs FS (FileSystem) object, for mount and unmount file system.
     #'
-    #' @param authorization Logical. Is the `token` an API
+    #' @param authorization Is the `token` an API
     #'  authentication token (`FALSE`) or an access token from the
     #'  Seven Bridges single sign-on (`TRUE`)?
     #'
@@ -327,8 +328,11 @@ Auth <- R6::R6Class(
       # Billng_groups resousrce
       self$billing_groups <- Billing_groups$new(self)
     },
+
+    # Get token --------------------------------------------------------------
     #' @description Returns the authentication token read from
     #'  system environment variable.
+    #'
     #' @return An API authentication token in form of a string.
     get_token = function() {
       if (self$from == "env" || self$from == "file") {
@@ -337,8 +341,11 @@ Auth <- R6::R6Class(
         Sys.getenv("SB_AUTH_TOKEN")
       }
     },
+
+    # Send low level API requests ---------------------------------------------
     #' @description This method returns all API paths and
     #'  pass arguments to core `api()` function.
+    #'
     #' @param limit The maximum number of collection items to return for a
     #'  single request. Minimum value is `1`. The maximum value is `100` and the
     #'  default value is `50`.
@@ -355,7 +362,7 @@ Auth <- R6::R6Class(
     #'  `_all`, so all fields are always returned for each resource.
     #'  More details please check
     # nolint start
-    #'  \url{https://docs.sevenbridges.com/docs/the-api#section-general-api-information}
+    #'  [general API documentation](https://docs.sevenbridges.com/docs/the-api#section-general-api-information).
     # nolint end
     #' @param ... Other arguments passed to core `api()` function, like `path`,
     #'  `query` parameters or full `url` to some resource.
@@ -375,6 +382,8 @@ Auth <- R6::R6Class(
       )
       return(res)
     },
+
+    # Get user info ----------------------------------------------------------
     #' @description Get details about the authenticated user.
     #' @param username The username of a user for whom you want to get basic
     #'  account information. If not provided, information about the currently
@@ -403,6 +412,8 @@ Auth <- R6::R6Class(
       # Create User object
       return(asUser(res, auth = self))
     },
+
+    # Get rate limit info ----------------------------------------------------
     #' @description Get information about current rate limit. \cr \cr
     #'  This call returns information about your current rate limit. This is the
     #'  number of API calls you can make in one hour. This call also returns
@@ -417,6 +428,8 @@ Auth <- R6::R6Class(
 
       return(asRate(res, auth = self)) # nocov end
     },
+
+    # Upload file ------------------------------------------------------------
     #' @description This method allows you to upload a single file from your
     #'  local computer to the Platform.
     #'
@@ -447,6 +460,7 @@ Auth <- R6::R6Class(
     #' @param init If `TRUE`, the method will initialize and return the Upload
     #'  object and stop. If `FALSE`, the method will return the Upload object
     #'  and start the upload process immediately.
+    #'
     #' @importFrom checkmate test_r6 test_class assert_logical
     #' @importFrom rlang abort
     upload = function(path,
@@ -520,7 +534,10 @@ Auth <- R6::R6Class(
         u$init()$start()
       }
     },
+
+    # List ongoing file uploads -----------------------------------------------
     #' @description This method returns the list of all ongoing uploads.
+    #'
     #' @importFrom cli cli_h1 cli_li cli_end
     #' @importFrom glue glue
     list_ongoing_uploads = function() {
@@ -554,9 +571,13 @@ Auth <- R6::R6Class(
 
       invisible(res)
     },
+
+    # Abort file upload ------------------------------------------------------
     #' @description This call aborts an ongoing multipart upload.
+    #'
     #' @param upload_id Upload object or ID of the upload process that you want
     #'  to abort.
+    #'
     #' @importFrom rlang abort inform
     #' @importFrom checkmate assert_character
     #' @importFrom glue glue_col
@@ -576,14 +597,18 @@ Auth <- R6::R6Class(
         )
       ) # nocov end
     },
+
+    # Send feedback ----------------------------------------------------------
     #' @description Send feedback to Seven Bridges. \cr \cr
     #'  Send feedback on ideas, thoughts, and problems via the sevenbridges2 API
     #'  package with three available types: `idea`, `thought`, and `problem`.
     #'  You can send one feedback item per minute.
+    #'
     #' @param text Specifies the content for the feedback i.e. feedback text.
     #' @param type Specifies the type of feedback. The following are available:
     #'  `idea`, `thought` and `problem`.
     #' @param referrer The name of the person submitting the feedback.
+    #'
     #' @importFrom rlang inform
     #' @importFrom checkmate assert_string
     send_feedback = function(text,

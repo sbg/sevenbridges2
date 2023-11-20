@@ -78,7 +78,10 @@ Project <- R6::R6Class(
     permissions = NULL,
     #' @field category Project's category. By default projects are `PRIVATE`.
     category = NULL,
+
+    # Initialize Project object -----------------------------------------------
     #' @description Create a new Project object.
+    #'
     #' @param res Response containing Project object information.
     #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
@@ -99,6 +102,8 @@ Project <- R6::R6Class(
       self$permissions <- res$permissions
       self$category <- res$category
     },
+
+    # Print Project object ----------------------------------------------------
     #' @description  Basic print method for Project class.
     #'
     #' @importFrom glue glue_col
@@ -106,6 +111,8 @@ Project <- R6::R6Class(
       cat(glue::glue_col("{blue  Project name: } {self$name}"), "\n") # nocov
       cat(glue::glue_col("{blue  Project id: } {self$id}"), "\n") # nocov
     },
+
+    # Print Project object in detail ------------------------------------------
     #' @description Detailed print method for Project class.
     #'
     #' @details This method allows users to print all the fields from the
@@ -180,10 +187,12 @@ Project <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+
+    # Reload Project object ---------------------------------------------------
     #' @description Reload Project object information.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
-    #' @return Project object.
     reload = function(...) {
       super$reload(
         cls = self,
@@ -191,21 +200,27 @@ Project <- R6::R6Class(
       )
       rlang::inform("Project object is refreshed!")
     },
+
+    # Update project ---------------------------------------------------------
     #' @description Method that allows you to edit an already existing project.
     #'  As a project Admin you can use it to change the `name`, `settings`,
     #'  `tags` or `billing group` of the project.
     #'  Users with write permissions in the project can change the project
     #'  `description`.
+    #'
     #' @param name New name of the project you are updating.
     #' @param description New description of the project you are updating.
     #' @param billing_group Billing object or ID of a particular billing
     #'  group you want to set to the project.
     #' @param settings Contains detailed project settings as explained in
-    #'  previous methods. Check our API documentation:
-    #'  \url{https://docs.sevenbridges.com/reference/edit-a-project}.
+    #'  previous methods. Check our
+    # nolint start
+    #'  [API documentation](https://docs.sevenbridges.com/reference/edit-a-project).
+    # nolint end
     #' @param tags The list of project tags you want to update.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'limit', 'offset', 'fields', etc.
+    #'
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #' @importFrom glue glue
@@ -255,11 +270,14 @@ Project <- R6::R6Class(
       )
     },
     # nocov end
+
+    # Delete project ---------------------------------------------------------
     #' @description Method that allows you to delete project from a platform.
     #' It can only be successfully made if you have admin status for the
     #' project. \cr
     #' Please be careful when using this method and note that calling it will
     #' permanently delete the project from the platform.
+    #'
     #' @importFrom rlang abort inform
     #' @importFrom httr content
     #' @importFrom glue glue
@@ -277,7 +295,10 @@ Project <- R6::R6Class(
       )
     },
     # nocov end
+
+    # List project members ----------------------------------------------------
     #' @description Method for listing all the project members.
+    #'
     #' @param limit The maximum number of collection items to return
     #'  for a single request. Minimum value is `1`.
     #'  The maximum value is `100` and the default value is `50`.
@@ -287,8 +308,10 @@ Project <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom glue glue
-    #' @return Collection containing list of Member objects.
+    #'
+    #' @return \code{\link{Collection}} of \code{\link{Member}} objects.
     list_members = function(limit = getOption("sevenbridges2")$limit,
                             offset = getOption("sevenbridges2")$offset,
                             ...) {
@@ -308,9 +331,12 @@ Project <- R6::R6Class(
       return(asCollection(res, auth = self$auth))
     },
     # nocov end
+
+    # Add project member ----------------------------------------------------
     #' @description Method for adding new members to a specified project.
     #'  The call can only be successfully made by a user who has admin
     #'  permissions in the project.
+    #'
     #' @param user The Seven Bridges Platform username of the person
     #'  you want to add to the project or object of class Member containing
     #'  user's username.
@@ -341,7 +367,8 @@ Project <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom glue glue glue_col
     #' @importFrom checkmate assert_character assert_list assert_subset
-    #' @return Member object.
+    #'
+    #' @return \code{\link{Member}} object.
     add_member = function(user = NULL,
                           email = NULL,
                           permissions = list(
@@ -400,11 +427,15 @@ Project <- R6::R6Class(
       return(asMember(res, auth = self$auth))
     },
     # nocov end
+
+    # Remove project member ---------------------------------------------------
     #' @description A method for removing members from the project. It can only
     #'  be successfully run by a user who has admin privileges in the project.
+    #'
     #' @param user The Seven Bridges Platform username of the person
     #'  you want to remove from the project or object of class Member containing
     #'  user's username.
+    #'
     #' @importFrom rlang abort inform
     #' @importFrom glue glue glue_col
     remove_member = function(user) {
@@ -435,15 +466,21 @@ Project <- R6::R6Class(
       )
     },
     # nocov end
+
+    # Get project member ---------------------------------------------------
     #' @description This method returns the information about the member of
     #'  the specified project.
+    #'
     #' @param user The Seven Bridges Platform username of the project member
     #'  you want to get information about or object of class Member containing
     #'  user's username.
-    #' @importFrom rlang abort
-    #' @importFrom glue glue
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @importFrom rlang abort
+    #' @importFrom glue glue
+    #'
+    #' @return \code{\link{Member}} object.
     get_member = function(user, ...) {
       if (is_missing(user)) {
         rlang::abort("Please provide a username or Member object.")
@@ -464,9 +501,12 @@ Project <- R6::R6Class(
       return(asMember(res, self$auth))
     },
     # nocov end
+
+    # Modify project member's permissions -------------------------------------
     #' @description This method can be used to edit a user's permissions in a
     #'  specified  project. It can only be successfully made by a user who
     #'  has admin permissions in the project.
+    #'
     #' @param user The Seven Bridges Platform username of the person
     #'  you want to modify permissions on the volume for or object of class
     #'  Member containing user's username.
@@ -487,7 +527,8 @@ Project <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom glue glue glue_col
     #' @importFrom checkmate assert_list assert_subset
-    #' @return Permission object.
+    #'
+    #' @return \code{\link{Permission}} object.
     modify_member_permissions = function(user = NULL,
                                          permissions = list(
                                            read = TRUE,
@@ -540,7 +581,10 @@ Project <- R6::R6Class(
       return(asPermission(res, auth = self$auth))
     },
     # nocov end
+
+    # List project's files and folders ----------------------------------------
     #' @description  List all project's files and folders.
+    #'
     #' @param limit The maximum number of collection items to return
     #'  for a single request. Minimum value is `1`.
     #'  The maximum value is `100` and the default value is `50`.
@@ -550,8 +594,10 @@ Project <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
     #' @importFrom glue glue
-    #' @return Collection containing File objects.
+    #'
+    #' @return \code{\link{Collection}} of \code{\link{File}} objects.
     list_files = function(limit = getOption("sevenbridges2")$limit,
                           offset = getOption("sevenbridges2")$offset,
                           ...) {
@@ -571,6 +617,8 @@ Project <- R6::R6Class(
       return(asCollection(res, auth = self$auth))
     },
     # nocov end
+
+    # Create folder within project --------------------------------------------
     #' @description  Create a new folder under the project's root directory.
     #'  Every project on the Seven Bridges Platform is represented
     #'  by a root folder which contains all the files associated
@@ -578,9 +626,11 @@ Project <- R6::R6Class(
     #'  within this root folder by using this function.
     #'
     #' @param name Folder name.
+    #'
     #' @importFrom glue glue_col
     #' @importFrom rlang inform
-    #' @return File object of type 'FOLDER'.
+    #'
+    #' @return \code{\link{File}} object of type 'FOLDER'.
     create_folder = function(name) {
       check_folder_name(name)
       # nocov start
@@ -602,10 +652,14 @@ Project <- R6::R6Class(
 
       return(asFile(res, self$auth))
     },
+
+    # Get project's root folder -----------------------------------------------
     #' @description  Get project's root folder object
     get_root_folder = function() {
       self$auth$files$get(id = self$root_folder)
     },
+
+    # List project's apps ----------------------------------------------------
     #' @description This call lists all apps in project.
     #'
     #' @param query_terms Enter one or more search terms to query Project's
@@ -620,7 +674,8 @@ Project <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like other query parameters or 'fields', etc.
-    #' @return Collection containing Apps objects.
+    #'
+    #' @return \code{\link{Collection}} of \code{\link{App}} objects.
     list_apps = function(query_terms = NULL,
                          id = NULL,
                          limit = getOption("sevenbridges2")$limit,
@@ -636,6 +691,8 @@ Project <- R6::R6Class(
         ...
       )
     },
+
+    # Create new app within project -----------------------------------------
     #' @description This call creates app in project.
     #'
     #' @param raw The body of the request should be a CWL app description saved
@@ -648,7 +705,8 @@ Project <- R6::R6Class(
     #' @param name A short name for the app (without any non-alphanumeric
     #'  characters or spaces).
     #' @param raw_format The type of format used (`JSON` or `YAML`).
-    #' @return App object.
+    #'
+    #' @return \code{\link{App}} object.
     create_app = function(raw = NULL,
                           from_path = NULL,
                           name,
@@ -661,6 +719,8 @@ Project <- R6::R6Class(
         raw_format = raw_format
       )
     },
+
+    # List project's tasks ----------------------------------------------------
     #' @description This call lists all tasks from project you can access. \cr
     #'  Read more about how to use query parameters properly
     # nolint start
@@ -715,7 +775,8 @@ Project <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
-    #' @return Collection containing Task objects.
+    #'
+    #' @return \code{\link{Collection}} of \code{\link{Task}} objects.
     list_tasks = function(status = NULL,
                           parent = NULL,
                           created_from = NULL,
@@ -751,10 +812,12 @@ Project <- R6::R6Class(
         ...
       )
     },
+
+    # List project's import jobs ----------------------------------------------
     #' @description This call lists imports initiated by particular user
     #'  into this destination project.
     #'
-    #' @param volume String volume id or Volume object. List all imports
+    #' @param volume Volume id or Volume object. List all imports
     #'  from particular volume. Optional.
     #' @param state The state of the import job. Possible values are:
     #'  \itemize{
@@ -776,7 +839,8 @@ Project <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
-    #' @return Collection containing Import objects.
+    #'
+    #' @return \code{\link{Collection}} of \code{\link{Import}} objects.
     list_imports = function(volume = NULL,
                             state = NULL,
                             limit = getOption("sevenbridges2")$limit,
@@ -791,6 +855,8 @@ Project <- R6::R6Class(
         ...
       )
     },
+
+    # Create new task within project ------------------------------------------
     #' @description This call creates a new task. You can create either a single
     #'  task or a batch task by using the app's default batching, override
     #'  batching, or disable batching completely. A parent task is a task that
@@ -801,7 +867,7 @@ Project <- R6::R6Class(
     # nolint end
     #'  for more details on batching criteria.
     #'
-    #' @param app The ID string of an app or an App object you want to run.
+    #' @param app The ID of an app or an App object you want to run.
     #'  Recall that apps are specified by their projects, in the form
     #'  `{project_id}/{app_name}`.
     #' @param revision The app
@@ -943,7 +1009,7 @@ Project <- R6::R6Class(
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #'
-    #' @return Task object.
+    #' @return \code{\link{Task}} object.
     create_task = function(app,
                            revision = NULL,
                            name = NULL,
@@ -976,8 +1042,8 @@ Project <- R6::R6Class(
     }
   )
 )
-
-# Helper function for creating Project objects --------------------------------
+# nocov start
+# Helper functions for creating Project objects -------------------------------
 asProject <- function(x = NULL, auth = NULL) {
   Project$new(
     res = x,
@@ -987,8 +1053,8 @@ asProject <- function(x = NULL, auth = NULL) {
   )
 }
 
-
 asProjectList <- function(x, auth) {
   obj <- lapply(x$items, asProject, auth = auth)
   obj
 }
+# nocov end

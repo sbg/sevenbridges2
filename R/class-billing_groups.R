@@ -5,6 +5,7 @@
 #' R6 Class representing billing groups resource endpoints.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 Billing_groups <- R6::R6Class(
   "Billing_groups",
@@ -17,14 +18,20 @@ Billing_groups <- R6::R6Class(
       "query" = "billing/groups",
       "get" = "billing/groups/{id}"
     ),
+
+    # Initialize Billing_groups object ----------------------------------------
     #' @description Create a new Billing_groups object.
+    #'
     #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
+
+    # List all billing groups -------------------------------------------------
     #' @description List all your billing groups, including groups
     #'  that are pending or have been disabled.
+    #'
     #' @param limit The maximum number of collection items to return
     #'  for a single request. Minimum value is `1`.
     #'  The maximum value is `100` and the default value is `50`.
@@ -34,7 +41,8 @@ Billing_groups <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like query parameters, 'fields', etc.
-    #' @return Collection of billing groups (Billing class objects).
+    #'
+    #' @return \code{\link{Collection}} of \code{\link{Billing}} groups.
     query = function(limit = getOption("sevenbridges2")$limit,
                      offset = getOption("sevenbridges2")$offset,
                      ...) {
@@ -50,6 +58,8 @@ Billing_groups <- R6::R6Class(
 
       return(asCollection(res, auth = self$auth))
     }, # nocov end
+
+    # Get billing group -------------------------------------------------------
     #' @description Retrieve a single billing group, specified by its id.
     #'  To find the `billing_group`, use the call [Billing_groups$query()]
     #'  to list all your billing groups. The information returned
@@ -60,7 +70,7 @@ Billing_groups <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #' like 'fields', etc.
     #'
-    #' @return Billing object.
+    #' @return \code{\link{Billing}} object.
     get = function(id, ...) {
       # nocov start
       res <- super$get(

@@ -19,14 +19,16 @@ Imports <- R6::R6Class(
       "create" = "storage/imports"
     ),
 
+    # Initialize Imports object -----------------------------------------------
     #' @description Create a new Imports object.
+    #'
     #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
 
-    # List all import jobs --------------------------------------
+    # List import jobs --------------------------------------------------------
     #' @description This call lists import jobs initiated by particular user.
     #'  Note that when you import a file from your volume on your cloud storage
     #'  provider (Amazon Web Services or Google Cloud Storage), you are
@@ -35,9 +37,9 @@ Imports <- R6::R6Class(
     #'  be copied, executed, and modified as such. They refer back to the
     #'  respective file on the given volume.
     #'
-    #' @param volume String volume id or Volume object. List all imports
+    #' @param volume Volume id or Volume object. List all imports
     #'  from this particular volume. Optional.
-    #' @param project String project id or Project object. List all volume
+    #' @param project Project id or Project object. List all volume
     #'  imports to this particular project. Optional.
     #' @param state The state of the import job. Possible values are:
     #'  \itemize{
@@ -62,7 +64,7 @@ Imports <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_character assert_subset
     #'
-    #' @return Collection containing Import jobs (Import class objects).
+    #' @return \code{\link{Collection}} of \code{\link{Import}} objects.
     query = function(volume = NULL, project = NULL, state = NULL,
                      limit = getOption("sevenbridges2")$limit,
                      offset = getOption("sevenbridges2")$offset,
@@ -105,7 +107,7 @@ Imports <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #' @return Import object.
+    #' @return \code{\link{Import}} object.
     get = function(id, ...) {
       # nocov start
       res <- super$get(
@@ -131,18 +133,18 @@ Imports <- R6::R6Class(
     # nolint start
     #'  in bulk considering the API rate limit ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).
     # nolint end
-    #'  (bulk operations will be implemented in next releases).
+    #'  Bulk operations will be implemented in next releases.
     #'
-    #' @param source_volume String volume id or Volume object you want to import
+    #' @param source_volume Volume id or Volume object you want to import
     #'  files or folders from. Required if `source_location` parameter is
     #'  provided as a string.
-    #' @param source_location String file/folder location name on the volume or
+    #' @param source_location File/folder location name on the volume or
     #'  VolumeFile object you would like to import into some project/folder on
     #'  the platform.
-    #' @param destination_project String destination project id or Project
+    #' @param destination_project Destination project id or Project
     #'  object. Not required, but either `destination_project` or
     #'  `destination_parent` directory must be provided.
-    #' @param destination_parent String folder id or File object
+    #' @param destination_parent Folder id or File object
     #'  (with `type = 'FOLDER'`). Not required, but either `destination_project`
     #'  or `destination_parent` directory must be provided.
     #' @param name The name of the alias to create. This name should be unique
@@ -179,7 +181,7 @@ Imports <- R6::R6Class(
     #' @importFrom glue glue
     #' @importFrom rlang abort
     #'
-    #' @return Import object.
+    #' @return \code{\link{Import}} object.
     submit_import = function(source_volume = NULL, source_location,
                              destination_project = NULL,
                              destination_parent = NULL,
@@ -275,6 +277,7 @@ Imports <- R6::R6Class(
 
     # Delete import job ----------------------------------------------------
     #' @description Deleting import jobs is not possible.
+    #'
     #' @importFrom rlang inform
     delete = function() {
       rlang::inform("Deleting import jobs is not possible.")

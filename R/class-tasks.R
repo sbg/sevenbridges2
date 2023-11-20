@@ -5,6 +5,7 @@
 #' R6 Class representing tasks resource endpoints.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @export
 Tasks <- R6::R6Class(
   "Tasks",
@@ -80,7 +81,7 @@ Tasks <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_string
     #'
-    #' @return Collection containing Task objects.
+    #' @return \code{\link{Collection}} of \code{\link{Task}} objects.
     query = function(status = NULL,
                      parent = NULL,
                      project = NULL,
@@ -193,7 +194,7 @@ Tasks <- R6::R6Class(
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #'
-    #' @return Task object.
+    #' @return \code{\link{Task}} object.
     get = function(id, ...) {
       if (is_missing(id)) {
         rlang::abort("Task ID must be provided!")
@@ -222,9 +223,9 @@ Tasks <- R6::R6Class(
     # nolint end
     #' for more details on batching criteria.
     #'
-    #' @param project The ID string of a project or a Project object where you
+    #' @param project The ID of a project or a Project object where you
     #'  want to create the task in.
-    #' @param app The ID string of an app or an App object you want to run.
+    #' @param app The ID of an app or an App object you want to run.
     #'  Recall that apps are specified by their projects, in the form
     #'  `{project_id}/{app_name}`.
     #' @param revision The app
@@ -366,7 +367,7 @@ Tasks <- R6::R6Class(
     #' @importFrom checkmate assert_string assert_list assert_logical
     #' @importFrom rlang abort
     #'
-    #' @return Task object.
+    #' @return \code{\link{Task}} object.
     create = function(project,
                       app,
                       revision = NULL,

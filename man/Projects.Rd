@@ -22,17 +22,11 @@ R6 Class representing Projects resource.
 \item \href{#method-Projects-new}{\code{Projects$new()}}
 \item \href{#method-Projects-query}{\code{Projects$query()}}
 \item \href{#method-Projects-get}{\code{Projects$get()}}
+\item \href{#method-Projects-delete}{\code{Projects$delete()}}
 \item \href{#method-Projects-create}{\code{Projects$create()}}
 \item \href{#method-Projects-clone}{\code{Projects$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Resource" data-id="delete"><a href='../../sevenbridges2/html/Resource.html#method-Resource-delete'><code>sevenbridges2::Resource$delete()</code></a></span></li>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Projects-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Projects-new}{}}}
@@ -62,8 +56,7 @@ is provided.
 Please keep in mind that this way you will only be able to list
 projects you are a member of. \cr \cr
 More details on how to query projects, you can find in our
-documentation:
-\url{https://docs.sevenbridges.com/reference/list-all-your-projects}.
+\href{https://docs.sevenbridges.com/reference/list-all-your-projects}{documentation}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Projects$query(
   name = NULL,
@@ -99,7 +92,7 @@ like other query parameters or 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection with list of Project objects.
+\code{\link{Collection}} of \code{\link{Project}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -126,7 +119,28 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Project object.
+\code{\link{Project}} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Projects-delete"></a>}}
+\if{latex}{\out{\hypertarget{method-Projects-delete}{}}}
+\subsection{Method \code{delete()}}{
+Method that allows you to delete project from a platform.
+It can only be successfully made if you have admin status for the
+project. \cr
+Please be careful when using this method and note that calling it will
+permanently delete the project from the platform.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Projects$delete(project)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{project}}{Project object or project ID.}
+}
+\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -200,7 +214,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Project object.
+\code{\link{Project}} object.
 }
 }
 \if{html}{\out{<hr>}}

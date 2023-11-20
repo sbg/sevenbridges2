@@ -18,12 +18,17 @@ Files <- R6::R6Class(
       "get" = "files/{id}",
       "copy" = "action/files/copy"
     ),
+
+    # Initialize Files object -----------------------------------------------
     #' @description Create new Files resource object.
+    #'
     #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
       super$initialize(...)
     },
+
+    # List files --------------------------------------------------------------
     #' @description This call returns a list of files and subdirectories in a
     #'  specified project or directory within a project, with specified
     #'  properties that you can access. The project or directory whose contents
@@ -39,6 +44,7 @@ Files <- R6::R6Class(
     # nolint start
     #'  [API documentation](https://docs.sevenbridges.com/reference/list-files-primary-method).
     # nolint end
+    #'
     #' @param project Project identifier (ID) as string or a Project object.
     #'  Project should not be used together with parent.
     #'  If parent is used, the call will list the content of the specified
@@ -75,6 +81,8 @@ Files <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_string assert_character
     #' @importFrom rlang abort
+    #'
+    #' @return \code{\link{Collection}} of \code{\link{File}} objects.
     query = function(project = NULL,
                      parent = NULL,
                      name = NULL,
@@ -138,14 +146,18 @@ Files <- R6::R6Class(
 
       return(asCollection(res, auth = self$auth))
     },
+
+    # Get file ---------------------------------------------------------------
     #' @description This call returns a single File object with its details.
     #' The call returns the file's name, its tags, and all of its metadata.
     #' Files are specified by their IDs, which you can obtain by making
     #' the API call to list all files in a project.
     #'
-    #' @param id The file ID string.
+    #' @param id The file ID.
     #' @param ... Other arguments that can be passed to core `api()` function
     #' as 'fields', etc.
+    #'
+    #' @return \code{\link{File}} object.
     get = function(id, ...) {
       res <- super$get(
         cls = self,
@@ -154,17 +166,21 @@ Files <- R6::R6Class(
       )
       return(asFile(res, auth = self$auth))
     }, # nocov end
+
+    # Copy files --------------------------------------------------------------
     #' @description  Copy file/files to the specified project. This call allows
     #'  you to copy files between projects. Unlike the call to copy a file
     #'  between projects, this call lets you batch the copy operation and copy
     #'  a list of files at a time. \cr
-    #'  More information you may find in the
+    #'  More information you may find
     # nolint start
-    #'  \url{https://docs.sevenbridges.com/reference/copy-files-between-projects}.
+    #'  [here](https://docs.sevenbridges.com/reference/copy-files-between-projects).
     # nolint end
+    #'
     #' @param files The list of files' IDs or list of File object to copy.
-    #' @param destination_project Project object or project ID string
+    #' @param destination_project Project object or project ID.
     #'  where you want to copy files into.
+    #'
     #' @importFrom checkmate assert_list
     #' @importFrom glue glue_col
     copy = function(files, destination_project) {
@@ -219,18 +235,21 @@ Files <- R6::R6Class(
       }
       invisible(result)
     }, # nocov end
+
+    # Create folder -----------------------------------------------------------
     #' @description A method for creating a new folder. It allows you to create
     #'  a new folder on the Platform within the root folder of a specified
     #'  project or the provided parent folder. Remember that you should provide
     #'  either the destination project (as the `project` parameter) or the
     #'  destination folder (as the `parent` parameter), not both. \cr
-    #'  More information you may find on
-    #'  \url{https://docs.sevenbridges.com/reference/create-a-folder}.
+    #'  More information you may find
+    #'  [here](https://docs.sevenbridges.com/reference/create-a-folder).
     #'
     #' @param name The name of the folder you are about to create.
-    #' @param parent The ID string of the parent destination folder or a File
+    #' @param parent The ID of the parent destination folder or a File
     #'  object which must be of type `FOLDER`.
     #' @param project The ID of the destination project, or a Project object.
+    #'
     #' @importFrom rlang abort inform
     #' @importFrom glue glue_col
     create_folder = function(name,

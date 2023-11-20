@@ -29,6 +29,7 @@ sbg_get_env <- function(x) {
 #' The default value is `r toString(sbg_default_sysenv_url)`.
 #' @param sysenv_token_name Name for the token environment variable.
 #' The default value is `r toString(sbg_default_sysenv_token)`.
+#'
 #' @importFrom rlang abort
 #'
 #' @noRd
@@ -54,6 +55,7 @@ sbg_set_env <- function(url = NULL, token = NULL,
 #' @return Nested list keeping the hierarchical structure of the ini file.
 #'
 #' @importFrom stringr str_trim
+#'
 #' @noRd
 read_ini <- function(file) {
   # section name lines: starting with `[` ending with `]`
@@ -96,9 +98,10 @@ read_ini <- function(file) {
 
 #' @title Parse Seven Bridges user config file into a nested list
 #'
-#' @param file character string, path to config file
+#' @param file Path to config file
 #'
 #' @importFrom rlang abort
+#'
 #' @return Nested list keeping the hierarchical structure of the config file
 #'
 #' @noRd
@@ -118,7 +121,8 @@ sbg_parse_config <- function(file) {
 #' @title Normalise URL
 #'
 #' @description Add `/` to url ends.
-#' @param x String, URL.
+#'
+#' @param x URL.
 #'
 #' @noRd
 normalize_url <- function(x) {
@@ -131,7 +135,7 @@ normalize_url <- function(x) {
 
 #' @title Platform name reverse lookup
 #'
-#' @param baseurl String; Base URL.
+#' @param baseurl Base URL.
 #'
 #' @noRd
 sbg_platform_lookup <- function(baseurl) {

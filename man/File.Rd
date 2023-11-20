@@ -14,9 +14,9 @@ R6 Class representing a resource for managing files and folders.
 \describe{
 \item{\code{URL}}{List of URL endpoints for this resource.}
 
-\item{\code{id}}{String used as a file ID.}
+\item{\code{id}}{File ID.}
 
-\item{\code{name}}{String used as a file name.}
+\item{\code{name}}{File name.}
 
 \item{\code{size}}{File size.}
 
@@ -140,7 +140,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-File
+\code{\link{File}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -172,7 +172,7 @@ like 'limit', 'offset', 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Updated File object.
+Updated \code{\link{File}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -235,7 +235,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Copied File object.
+Copied \code{\link{File}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -316,7 +316,7 @@ Moving of files is only allowed within the same project.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{parent}}{The ID string of target folder or a File object which must
+\item{\code{parent}}{The ID of target folder or a File object which must
 be of type \code{FOLDER}.}
 
 \item{\code{name}}{Specify a new name for a file in case you want to rename it.
@@ -325,7 +325,7 @@ If you want to use the same name, omit this key.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Moved File object.
+Moved \code{\link{File}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -357,6 +357,9 @@ This is a pagination-specific attribute.}
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{Collection}} of \code{\link{File}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -448,10 +451,10 @@ in bulk considering the API rate limit
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{destination_volume}}{String volume id or Volume object you want to
+\item{\code{destination_volume}}{Volume id or Volume object you want to
 export files into. Required.}
 
-\item{\code{destination_location}}{String volume-specific location to which the
+\item{\code{destination_location}}{Volume-specific location to which the
 file will be exported.
 This location should be recognizable to the underlying cloud service as
 a valid key or path to a new file. Please note that if this volume has
@@ -489,9 +492,6 @@ on during export. Supported values: any one of
 like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Export job object.
 }
 }
 \if{html}{\out{<hr>}}

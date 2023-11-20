@@ -4,6 +4,7 @@
 #' R6 Class representing invoice information.
 #'
 #' @importFrom R6 R6Class
+#'
 #' @details
 #'  This object contains information about a selected invoice,
 #'  including the costs for analysis and storage, and the invoice period.
@@ -32,7 +33,9 @@ Invoice <- R6::R6Class(
     #' @field total Total costs.
     total = NULL,
 
+    # Initialize Invoice object ---------------------------------------------
     #' @description Create new Invoice object.
+    #'
     #' @param res Response containing Invoice object information.
     #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
@@ -47,8 +50,11 @@ Invoice <- R6::R6Class(
       self$storage_costs <- res$storage_costs
       self$total <- res$total
     },
+
     # nocov start
+    # Print Invoice object ----------------------------------------------------
     #' @description Print invoice information as a bullet list.
+    #'
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_ul cli_li
@@ -121,10 +127,14 @@ Invoice <- R6::R6Class(
       # Close container elements
       cli::cli_end()
     },
+
+    # Reload Invoice object ---------------------------------------------------
     #' @description Reload Invoice.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
-    #' @return Invoice
+    #'
+    #' @return \code{\link{Invoice}} object.
     reload = function(...) {
       super$reload(
         cls = self,
@@ -134,7 +144,8 @@ Invoice <- R6::R6Class(
     } # nocov end
   )
 )
-
+# nocov start
+# Helper functions for creating Invoice objects -------------------------------
 asInvoice <- function(x = NULL, auth = NULL) {
   Invoice$new(
     res = x,
@@ -148,3 +159,4 @@ asInvoiceList <- function(x, auth) {
   obj <- lapply(x$items, asInvoice, auth = auth)
   obj
 }
+# nocov end

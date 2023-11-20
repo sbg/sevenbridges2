@@ -14,7 +14,7 @@ R6 Class representing a resource for managing tasks.
 \describe{
 \item{\code{URL}}{List of URL endpoints for this resource.}
 
-\item{\code{id}}{The string ID of the task.}
+\item{\code{id}}{The ID of the task.}
 
 \item{\code{name}}{The name of the task.}
 
@@ -151,7 +151,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Task object.
+\code{\link{Task}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -190,7 +190,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Task object.
+\code{\link{Task}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -215,7 +215,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Task object.
+\code{\link{Task}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -241,7 +241,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Task object.
+\code{\link{Task}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -281,7 +281,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-List.
+List of execution details.
 }
 }
 \if{html}{\out{<hr>}}
@@ -372,7 +372,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection containing Task objects.
+\code{\link{Collection}} of \code{\link{Task}} objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -413,7 +413,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Task object.
+\code{\link{Task}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -582,7 +582,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Task object.
+\code{\link{Task}} object.
 }
 }
 \if{html}{\out{<hr>}}

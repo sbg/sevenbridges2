@@ -82,7 +82,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-VolumeFile object.
+\code{\link{VolumeFile}} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -149,7 +149,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Import object.
+\code{\link{Import}} object.
 }
 }
 \if{html}{\out{<hr>}}

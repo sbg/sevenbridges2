@@ -103,7 +103,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Export object.
+\code{\link{Export}} object.
 }
 }
 \if{html}{\out{<hr>}}
