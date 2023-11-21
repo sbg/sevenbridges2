@@ -319,7 +319,7 @@ flatten_query <- function(x) {
 #' @description This function returns client info that will be stored
 #' in headers for API requests, in order to track logs better.
 #'
-#' @importFrom utils packageDescription
+#' @importFrom utils packageDescription sessionInfo
 #'
 #' @noRd
 setup_client_info <- function() {
@@ -327,7 +327,7 @@ setup_client_info <- function() {
   package_version <- paste0(suppressWarnings(
     utils::packageDescription("sevenbridges2", fields = c("Package", "Version"))
   ), collapse = "/")
-  client_session_info <- sessionInfo()
+  client_session_info <- utils::sessionInfo()
   client_os <- client_session_info$running
   client_platform <- client_session_info$platform
   client_r <- client_session_info$R.version$version.string

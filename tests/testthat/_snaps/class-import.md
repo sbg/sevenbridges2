@@ -2,7 +2,7 @@
 
     Code
       setup_import_obj$print()
-    Message <cliMessage>
+    Message
       
       -- Import job ------------------------------------------------------------------
       * id: import-job-id

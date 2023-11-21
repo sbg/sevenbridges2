@@ -2,7 +2,7 @@
 
     Code
       setup_file_obj$print()
-    Message <cliMessage>
+    Message
       
       -- File ------------------------------------------------------------------------
       * type: file
@@ -19,7 +19,7 @@
 
     Code
       setup_file_obj$detailed_print()
-    Message <cliMessage>
+    Message
       
       -- File ------------------------------------------------------------------------
       * type: file

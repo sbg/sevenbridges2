@@ -2,7 +2,7 @@
 
     Code
       setup_task_obj$print()
-    Message <cliMessage>
+    Message
       
       -- Task ------------------------------------------------------------------------
       * end_time: 12-08-2023

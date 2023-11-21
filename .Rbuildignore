@@ -1,10 +1,11 @@
 ^.*\.Rproj$
+^.covrignore
 ^\.DS_Store$
 ^\.Rproj\.user$
+^\.github$
 ^\.pre-commit-config\.yaml$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
 ^renv$
 ^renv\.lock$
-^.covrignore

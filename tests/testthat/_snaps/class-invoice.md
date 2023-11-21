@@ -2,7 +2,7 @@
 
     Code
       setup_invoice_obj$print()
-    Message <cliMessage>
+    Message
       
       -- Invoice info ----------------------------------------------------------------
         * approval_date: 2020-01-01T00:00:00Z

@@ -863,7 +863,7 @@ Project <- R6::R6Class(
     #'  specifies criteria by which to batch its inputs into a series of further
     #'  sub-tasks, called child tasks. the documentation on
     # nolint start
-    #'  [batching tasks] (https://docs.sevenbridges.com/docs/about-batch-analyses)
+    #'  [batching tasks](https://docs.sevenbridges.com/docs/about-batch-analyses)
     # nolint end
     #'  for more details on batching criteria.
     #'

@@ -2,7 +2,7 @@
 
     Code
       setup_rate_limit_obj$print()
-    Message <cliMessage>
+    Message
       
       -- Rate limit ------------------------------------------------------------------
       * rate

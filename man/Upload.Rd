@@ -144,7 +144,7 @@ Start the file upload
 }
 
 \subsection{Returns}{
-\code{\link{Fike}} object.
+\code{\link{File}} object.
 }
 }
 \if{html}{\out{<hr>}}
