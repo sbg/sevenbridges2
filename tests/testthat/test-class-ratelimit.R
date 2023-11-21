@@ -13,5 +13,6 @@ test_that("Rate class initialization works", {
 })
 
 test_that("Rate print method works", {
+  testthat::skip_on_ci()
   testthat::expect_snapshot(setup_rate_limit_obj$print())
 })

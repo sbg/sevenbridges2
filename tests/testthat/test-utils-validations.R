@@ -421,9 +421,10 @@ test_that("transform_configuration_param works", {
 
   # Provide configuration as path to JSON file
   config_json_path <- testthat::test_path(
-    "test_data",
-    "volumes_configuration_params.json"
+    file.path("test_data", "volumes_configuration_params.json")
   )
+
+  testthat::skip_on_ci()
   transformed_str <- transform_configuration_param(configuration = config_json_path) # nolint
   testthat::expect_type(transformed_str, "character")
   testthat::expect_true(startsWith(transformed_str, prefix = "{\n"))

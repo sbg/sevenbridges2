@@ -2,7 +2,7 @@
 
     Code
       setup_volume_file_obj$print()
-    Message <cliMessage>
+    Message
       
       -- VolumeFile ------------------------------------------------------------------
       * volume: my_s3_volume

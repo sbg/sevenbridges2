@@ -15,7 +15,7 @@ License: Apache License 2.0 | file LICENSE
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
-URL: https://www.sevenbridges.com, https://gitlab.sbgenomics.com/r-stack/sevenbridges2
+URL: https://www.sevenbridges.com, https://gitlab.sbgenomics.com/r-stack/sevenbridges2, https://github.com/sbg/sevenbridges-r2
 Depends:
     R (>= 4.2.0)
 RoxygenNote: 7.2.3
@@ -33,8 +33,7 @@ Imports:
     checkmate,
     DescTools,
     yaml,
-    readr,
-    lifecycle
+    readr
 Suggests:
     knitr,
     rmarkdown,
@@ -47,3 +46,4 @@ Config/testthat/edition: 3
 Config/testthat/parallel: true
 Remotes: 
 Roxygen: list(markdown = TRUE)
+BugReports: https://github.com/sbg/sevenbridges-r2/issues

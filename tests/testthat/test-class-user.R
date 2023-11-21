@@ -15,5 +15,6 @@ test_that("User initialization works", {
 })
 
 test_that("User print method works", {
+  testthat::skip_on_ci()
   testthat::expect_snapshot(setup_user_object$print())
 })

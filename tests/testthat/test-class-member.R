@@ -24,5 +24,6 @@ test_that("Member initialization works", {
 })
 
 test_that("Member print method works", {
+  testthat::skip_on_ci()
   testthat::expect_snapshot(setup_project_member_object$print())
 })

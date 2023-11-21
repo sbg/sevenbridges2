@@ -179,7 +179,7 @@ task or a batch task by using the app's default batching, override
 batching, or disable batching completely. A parent task is a task that
 specifies criteria by which to batch its inputs into a series of further
 sub-tasks, called child tasks. the documentation on
-\link{batching tasks} (https://docs.sevenbridges.com/docs/about-batch-analyses)
+\href{https://docs.sevenbridges.com/docs/about-batch-analyses}{batching tasks}
 for more details on batching criteria.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Tasks$create(
@@ -211,7 +211,7 @@ Recall that apps are specified by their projects, in the form
 \code{{project_id}/{app_name}}.}
 
 \item{\code{revision}}{The app
-\link{revision (version)} (https://docs.sevenbridges.com/docs/app-versions)
+\href{https://docs.sevenbridges.com/docs/app-versions}{revision (version)}
 number.}
 
 \item{\code{name}}{The name of the task.}

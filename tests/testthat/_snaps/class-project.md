@@ -10,7 +10,7 @@
 
     Code
       setup_project_obj$detailed_print()
-    Message <cliMessage>
+    Message
       
       -- Project ---------------------------------------------------------------------
       * category: PRIVATE

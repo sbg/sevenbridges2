@@ -1145,7 +1145,7 @@ a$apps$query(visibility = "public", limit = 10)
 The same can be done for private apps. The following call will return all the
 apps available to you, i.e. all the apps that you have in your projects:
 
-  ```{r}
+```{r}
 # Query private apps - set limit to 10
 a$apps$query(limit = 10)
 ```

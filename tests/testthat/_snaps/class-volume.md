@@ -2,7 +2,7 @@
 
     Code
       setup_s3_volume_obj$print()
-    Message <cliMessage>
+    Message
       
       -- Volume ----------------------------------------------------------------------
       * active: TRUE

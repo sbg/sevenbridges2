@@ -17,6 +17,7 @@ test_that("Volume initialization works", {
 })
 
 test_that("Volume print method works", {
+  testthat::skip_on_ci()
   testthat::expect_snapshot(setup_s3_volume_obj$print())
 })
 

@@ -2,7 +2,7 @@
 
     Code
       setup_volume_prefix_obj$print()
-    Message <cliMessage>
+    Message
       
       -- VolumePrefix ----------------------------------------------------------------
       * volume: my_s3_volume
