@@ -79,7 +79,9 @@ the results to apps from that project only.}
 \item{\code{visibility}}{Set this to \code{public} to see all public apps on
 the Seven Bridges Platform.}
 
-\item{\code{query_terms}}{Enter one or more search terms to query apps.}
+\item{\code{query_terms}}{Enter one or more search terms to query apps.
+Read more about how to use the query_terms parameter in our
+\href{https://docs.sevenbridges.com/reference/list-all-apps-available-to-you#query-apps}{API documentation}.}
 
 \item{\code{id}}{Use this parameter to query apps based on their ID.}
 
