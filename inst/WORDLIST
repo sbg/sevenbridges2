@@ -15,6 +15,7 @@ aut
 auth
 Auth
 aws
+BAM
 bamtools
 bbb
 BDC
@@ -77,6 +78,7 @@ FQ
 fromJSON
 FS
 GC
+GCP
 GCS
 gcs
 genomeFastaFiles
@@ -97,6 +99,7 @@ IAM
 ifelse
 img
 importFrom
+ini
 initialisation
 interruptible
 Jovanovic
