@@ -205,7 +205,7 @@ All subsequent requests will draw upon these two pieces of information.
 
 Let's load the package first:
 
-```{r, eval = TRUE, message = FALSE}
+```{r}
 library("sevenbridges2")
 ```
 
