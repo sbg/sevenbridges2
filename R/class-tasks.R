@@ -219,7 +219,7 @@ Tasks <- R6::R6Class(
     #'  specifies criteria by which to batch its inputs into a series of further
     #'  sub-tasks, called child tasks. the documentation on
     # nolint start
-    #' [batching tasks] (https://docs.sevenbridges.com/docs/about-batch-analyses)
+    #' [batching tasks](https://docs.sevenbridges.com/docs/about-batch-analyses)
     # nolint end
     #' for more details on batching criteria.
     #'
@@ -229,7 +229,7 @@ Tasks <- R6::R6Class(
     #'  Recall that apps are specified by their projects, in the form
     #'  `{project_id}/{app_name}`.
     #' @param revision The app
-    #' [revision (version)] (https://docs.sevenbridges.com/docs/app-versions)
+    #' [revision (version)](https://docs.sevenbridges.com/docs/app-versions)
     #'  number.
     #' @param name The name of the task.
     #' @param description An optional description of the task.

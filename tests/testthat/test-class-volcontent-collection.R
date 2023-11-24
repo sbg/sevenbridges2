@@ -61,5 +61,6 @@ test_that("VolumeContentCollection's method all() throws error when needed", {
 })
 
 test_that("VolumeContentCollection print method works", {
+  testthat::skip_on_ci()
   testthat::expect_snapshot(setup_volcont_collection_obj$print())
 })

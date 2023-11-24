@@ -2,7 +2,7 @@
 
     Code
       setup_volcont_collection_obj$print()
-    Message <cliMessage>
+    Message
       
       -- Volume files ----------------------------------------------------------------
       

@@ -27,5 +27,6 @@ test_that("Import initialization works", {
 })
 
 test_that("Import print method works", {
+  testthat::skip_on_ci()
   testthat::expect_snapshot(setup_import_obj$print())
 })

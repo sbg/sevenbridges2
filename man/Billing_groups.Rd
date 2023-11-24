@@ -89,7 +89,7 @@ like query parameters, 'fields', etc.}
 \if{latex}{\out{\hypertarget{method-Billing_groups-get}{}}}
 \subsection{Method \code{get()}}{
 Retrieve a single billing group, specified by its id.
-To find the \code{billing_group}, use the call \code{\link[=Billing_groups$query]{Billing_groups$query()}}
+To find the \code{billing_group}, use the call \code{Billing_groups$query()}
 to list all your billing groups. The information returned
 includes the billing group owner, the total balance, and the status of
 the billing group (pending or confirmed).

@@ -2,7 +2,7 @@
 
     Code
       setup_user_object$print()
-    Message <cliMessage>
+    Message
       
       -- User ------------------------------------------------------------------------
       * country: United Kingdom

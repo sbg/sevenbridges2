@@ -2,7 +2,7 @@
 
     Code
       setup_collection_obj$print()
-    Message <cliMessage>
+    Message
       
       -- 1 --
       

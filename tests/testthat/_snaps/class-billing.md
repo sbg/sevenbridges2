@@ -2,7 +2,7 @@
 
     Code
       setup_billing_obj$print()
-    Message <cliMessage>
+    Message
       
       -- Billing group info ----------------------------------------------------------
         * disabled: FALSE

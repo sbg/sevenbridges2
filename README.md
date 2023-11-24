@@ -1,11 +1,8 @@
 # sevenbridges2 <!-- omit in toc -->
 
 <!-- badges: start -->
-[![CRAN status](https://www.r-pkg.org/badges/version/sevenbridges2)](https://CRAN.R-project.org/package=sevenbridges2)
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-
+  [![R-CMD-check](https://github.com/sbg/sevenbridges-r2/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sbg/sevenbridges-r2/actions/workflows/R-CMD-check.yaml)
   <!-- badges: end -->
-  
 
 ## Overview <!-- omit in toc -->
 

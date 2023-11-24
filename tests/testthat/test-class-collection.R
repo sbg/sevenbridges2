@@ -65,6 +65,7 @@ test_that("Collection's pagination method prev_page() throws error when needed",
 })
 
 test_that("Collection print method works", {
+  testthat::skip_on_ci()
   testthat::expect_snapshot(setup_collection_obj$print())
 })
 

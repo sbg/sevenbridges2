@@ -288,12 +288,14 @@ check_metadata <- function(metadata) {
 #'
 #' @param metadata Metadata named list.
 #'
+#' @importFrom utils URLencode
+#'
 #' @noRd
 transform_metadata <- function(metadata) {
   metadata_names <- paste0("metadata.", names(metadata))
   names(metadata) <- metadata_names
   encoded_metadata <- lapply(metadata, function(x) {
-    URLencode(x)
+    utils::URLencode(x)
   })
   new_metadata <- flatten_query(encoded_metadata)
   return(new_metadata)

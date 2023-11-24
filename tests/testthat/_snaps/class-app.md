@@ -2,7 +2,7 @@
 
     Code
       setup_app_obj$print()
-    Message <cliMessage>
+    Message
       
       -- App -------------------------------------------------------------------------
       * latest_revision: 0

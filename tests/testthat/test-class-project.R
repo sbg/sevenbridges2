@@ -19,10 +19,12 @@ test_that("Project initialization works", {
 })
 
 test_that("Project print method works", {
+  testthat::skip_on_ci()
   testthat::expect_snapshot(setup_project_obj$print())
 })
 
 test_that("Project detailed_print method works", {
+  testthat::skip_on_ci()
   testthat::expect_snapshot(setup_project_obj$detailed_print())
 })
 

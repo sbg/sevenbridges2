@@ -2,7 +2,7 @@
 
     Code
       setup_export_obj$print()
-    Message <cliMessage>
+    Message
       
       -- Export job ------------------------------------------------------------------
       * id: export-job-id

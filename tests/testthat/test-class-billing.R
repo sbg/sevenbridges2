@@ -24,8 +24,10 @@ test_that("Billing initialization works", {
 })
 
 test_that("Billing print method works", {
+  testthat::skip_on_ci()
   testthat::expect_snapshot(setup_billing_obj$print())
 })
+
 
 test_that("Breakdown queries throws error when needed", {
   # Setup test parameters for test

@@ -2,7 +2,7 @@
 
     Code
       setup_project_member_object$print()
-    Message <cliMessage>
+    Message
       
       -- Member ----------------------------------------------------------------------
       * type: USER

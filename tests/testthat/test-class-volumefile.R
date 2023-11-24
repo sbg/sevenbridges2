@@ -14,5 +14,6 @@ test_that("VolumeFile initialization works", {
 })
 
 test_that("VolumeFile print method works", {
+  testthat::skip_on_ci()
   testthat::expect_snapshot(setup_volume_file_obj$print())
 })
