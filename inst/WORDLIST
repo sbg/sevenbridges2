@@ -184,6 +184,7 @@ subprocess
 svg
 Sys
 sysenv
+TBD
 TCGA
 testthat
 textLength
@@ -195,6 +196,7 @@ unmount
 urlencoded
 vayu
 VCFtools
+Velsera
 Verdana
 VignetteBuilder
 VolumeContentCollection
