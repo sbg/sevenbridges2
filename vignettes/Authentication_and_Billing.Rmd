@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Authentication
+# Authentication
 
 Before you can interact with the API, you need to construct an `Auth` object 
 which stores the following information:
@@ -52,7 +52,7 @@ not specified explicitly or specified as `from = "direct"`.
 2. The package will load the authentication information from environment 
 variables when `from = "env"`, or user configuration file when `from = "file"`.
 
-### Direct authentication
+## Direct authentication
 
 To use direct authentication, users need to specify one of `platform` or `url`,
 with the corresponding `token`. Examples of direct authentication:
@@ -88,7 +88,7 @@ since no `platform` nor `url` were explicitly specified.
 
 <div align="right"><a href="#top">top</a></div>
 
-### Authentication via system environment variables
+## Authentication via system environment variables
 
 The R API client supports reading authentication information stored in
 system environment variables.
@@ -112,7 +112,7 @@ sevenbridges2:::sbg_get_env("SB_AUTH_TOKEN")
 ## "your_token"
 ```
 
-To create an `Auth` object:
+Now you can create the `Auth` object:
 
 ```{r}
 a <- Auth$new(from = "env")
@@ -168,7 +168,7 @@ b <- sevenbridges2::Auth$new(
 
 <div align="right"><a href="#top">top</a></div>
 
-### Authentication via user configuration file
+## Authentication via user configuration file
 
 You can create an ini-like file named `credentials` under the folder 
 `$HOME/.sevenbridges/` and maintain your credentials for multiple accounts 
@@ -226,19 +226,7 @@ re-authenticate.
 
 <div align="right"><a href="#top">top</a></div>
 
-## List All API Calls
-
-If you did not pass any parameters to `api()` from `Auth` object, it would 
-list all API calls. Any parameters you provide will be passed to the `api()` 
-function, but you do not have to pass your input token and path once more 
-since the `Auth` object already handles these information. 
-The following call from the `Auth` object will check the response as well.
-
-```{r}
-a$api()
-```
-
-<div align="right"><a href="#top">top</a></div>
+# API general information
 
 ## Advance Access Features
 
@@ -401,7 +389,37 @@ number of instances available to the user.
 
 <div align="right"><a href="#top">top</a></div>
 
-## Users
+## General API error handlers
+
+We should also mention that there are 3 types of general API errors that are 
+handled by the client `sevenbridges2` package:
+
+- **rate limit sleeper** which pauses the execution of any API 
+call if rate limit is breached. The execution will automatically continue 
+when the required break time exceeds,
+- **maintenance sleeper** which pauses the execution if SevenBridges API is 
+under maintenance and
+- **general error sleeper** which pauses the execution if response status code 
+is equal or larger than 500 (if some server error occurred). 
+
+# List All API Calls
+
+Users are able to preview all main resource paths that exist on the public
+Seven Bridges API. 
+If you did not pass any parameters to `api()` from `Auth` object, it would 
+list all API calls. Any parameters you provide will be passed to the `api()` 
+function, but you do not have to pass your input token and path once more 
+since the `Auth` object already handles these information. 
+The following call from the `Auth` object will check the response as well.
+
+```{r}
+a$api()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+
+# Users
 
 This call will return a successful response of currently authenticated user, 
 while if you have some advanced privileges as Enterprise user, you can 
@@ -419,9 +437,9 @@ a$user(username = "RFranklin")
 
 <div align="right"><a href="#top">top</a></div>
 
-## Billing Groups and Invoices
+# Billing Groups and Invoices
 
-### Billing groups
+## Billing groups
 
 Billing operations are grouped under the `Billing_groups` R6 Resource class and 
 from here you can query all billing groups or fetch single one by its id. 
@@ -437,9 +455,9 @@ my_billing_group$print()
 You can also get detailed information for a specific billing group. 
 The following options are available to you:
 
--analysis breakdown
--storage breakdown
--egress breakdown.
+- analysis breakdown
+- storage breakdown
+- egress breakdown.
 
 To get an analysis breakdown for a billing group which contains information 
 on both the tasks and Data studio analyses, call:
@@ -467,7 +485,7 @@ object by reloading it with:
 my_billing_group$reload()
 ```
 
-### Invoices
+## Invoices
 
 Same logic applies for the invoices - the operations available for invoices are
 grouped under Invoices class and from here you can query of fetch single invoice
@@ -521,10 +539,10 @@ reloading it with:
 invoice$reload()
 ```
 
-## Send a feedback item
+# Send a feedback item
 
-To send feedback to Velsera via the API, you can use the `Auth` class method 
-`send_feedback()`. 
+Lastly, to send feedback to Velsera via the API, you can use the `Auth` class 
+method `send_feedback()`. 
 There are three feedback types available: `"idea"`, `"thought"`, or `"problem"`. 
 You can send one feedback item per minute.
 
@@ -536,15 +554,3 @@ a$send_feedback(
 ```
 
 <div align="right"><a href="#top">top</a></div>
-
-## General API error handlers
-
-We should also mention that there are 3 types of general API errors that are 
-handled by the client `sevenbridges2` package:
--rate limit sleeper which pauses the execution of any API 
-call if rate limit is breached. The execution will automatically continue 
-when the required break time exceeds,
--maintenance sleeper which pauses the execution if SevenBridges API is 
-under maintenance and
--general error sleeper which pauses the execution if response status code 
-is equal or larger than 500 (if some server error occurred). 
