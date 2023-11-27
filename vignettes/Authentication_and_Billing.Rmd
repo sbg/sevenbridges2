@@ -6,13 +6,13 @@ output:
     toc: true
     toc_float: true
     toc_depth: 4
-    number_sections: true
+    number_sections: false
     theme: "flatly"
     highlight: "textmate"
     css: "sevenbridges.css"
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Introduction and Quickstart for Seven Bridges API R Client}
+  %\VignetteIndexEntry{Authentication and Billing for Seven Bridges API R Client}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -33,8 +33,10 @@ which stores the following information:
 
 - Your authentication token. This is used to authenticate your credentials 
 with the API. Learn more about obtaining your authentication token on the 
-[Seven Bridges Platform](https://docs.sevenbridges.com/v1.0/docs/get-your-authentication-token) 
-and the [Cancer Genomics Cloud](http://docs.cancergenomicscloud.org/v1.0/docs/get-your-authentication-token). 
+[Seven Bridges Platform](https://docs.sevenbridges.com/v1.0/docs/get-your-authentication-token), 
+[Cancer Genomics Cloud](http://docs.cancergenomicscloud.org/v1.0/docs/get-your-authentication-token),
+[BioData Catalyst (BDC)](https://sb-biodatacatalyst.readme.io/docs/get-your-authentication-token#find-your-authentication-token) and [Cavatica](https://docs.cavatica.org/docs/get-your-authentication-token#your-authentication-token).
+
 The approach for obtaining the authentication token also applies to the other 
 Seven Bridges platforms.
 - The path for the API (base URL).
@@ -238,7 +240,7 @@ a$api()
 
 <div align="right"><a href="#top">top</a></div>
 
-## Advance Access Features and fields parameter
+## Advance Access Features
 
 Similar to `offset` and `limit`, every API call accepts an argument named
 `advance_access`. This argument was first introduced in August 2017 and 
@@ -252,8 +254,8 @@ This offers a one-button switch for users who want to experiment with the
 Advance Access features. The option is disabled by default:
 
 ```{r}
-library("sevenbridges")
-getOption("sevenbridges")$advance_access
+library("sevenbridges2")
+getOption("sevenbridges2")$advance_access
 ```
 
 ```
@@ -341,7 +343,7 @@ list()
 
 <div align="right"><a href="#top">top</a></div>
 
-## Query Parameter `'fields'`
+## Query Parameter `fields`
 
 All API calls take the optional query parameter `fields`. This parameter 
 enables you to specify the fields you want to be returned when listing resources
@@ -380,6 +382,21 @@ This is the number of API calls you can make in one hour.
 
 ```{r}
 a$rate_limit()
+```
+
+It shows information about the remaining number of API calls to make in one
+hour, along side with time when will rate limit reset and total and remaining
+number of instances available to the user.
+
+```
+── Rate limit ──────────────────────────────────────────────────────────────
+• rate
+  • limit: 1000
+  • remaining: 998
+  • reset: 2023-11-27 14:24:38 CET
+• instance
+  • limit: 25
+  • remaining: 25
 ```
 
 <div align="right"><a href="#top">top</a></div>
@@ -520,4 +537,14 @@ a$send_feedback(
 
 <div align="right"><a href="#top">top</a></div>
 
-## Error handlers
+## General API error handlers
+
+We should also mention that there are 3 types of general API errors that are 
+handled by the client `sevenbridges2` package:
+-rate limit sleeper which pauses the execution of any API 
+call if rate limit is breached. The execution will automatically continue 
+when the required break time exceeds,
+-maintenance sleeper which pauses the execution if SevenBridges API is 
+under maintenance and
+-general error sleeper which pauses the execution if response status code 
+is equal or larger than 500 (if some server error occurred). 
