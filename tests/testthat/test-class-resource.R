@@ -6,7 +6,7 @@ test_that("Resource initialization works", {
   checkmate::assert_r6(
     setup_resource_obj,
     classes = c("Resource"),
-    public = c("query", "get", "delete")
+    public = c("query", "get", "delete", "URL")
   )
 })
 
@@ -55,35 +55,20 @@ test_that("Resource get works", {
 
 test_that("Resource delete works", {
   # Setup test parameters for test
-  test_cls <- list(auth = "foo", URL = list(delete = "foo"))
-  test_cls_no_auth <- list(auth = NULL, URL = list(delete = "foo"))
-  test_cls_no_delete <-
-    list(auth = "foo", URL = list(delete = NULL))
-  test_id <- "foo"
+  test_no_id <- list(id = NULL)
 
-  # Query fails when no cls is provided
-  testthat::expect_error(setup_resource_obj$delete(cls = NULL),
-    regexp = "Please provide cls parameter!",
-    fixed = TRUE
-  )
-
-  # Query fails when no auth in cls parameter
-  testthat::expect_error(
-    setup_resource_obj$delete(cls = test_cls_no_auth, id = test_id),
-    regexp = "Your cls parameter doesn't have field auth!",
-    fixed = TRUE
-  )
-
-  # Test no delete URL in cls
-  testthat::expect_error(
-    setup_resource_obj$delete(cls = test_cls_no_delete, id = test_id),
+  # Set delete URL on setup_resource_obj to be empty
+  setup_resource_obj$URL <- list()
+  # Query fails when resource doesn't have delete URL
+  testthat::expect_error(setup_resource_obj$delete(id = "some_id"),
     regexp = "Resource can not be deleted!",
     fixed = TRUE
   )
 
+  # Set delete URL on setup_resource_obj
+  setup_resource_obj$URL <- list("delete" = "delete_url")
   # Query fails when no id is provided
-  testthat::expect_error(
-    setup_resource_obj$delete(cls = test_cls, id = NULL),
+  testthat::expect_error(do.call(setup_resource_obj$delete(), test_no_id),
     regexp = "Please provide id parameter!",
     fixed = TRUE
   )

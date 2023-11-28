@@ -81,6 +81,18 @@ test_that("Tasks get() throws error when needed", {
   testthat::expect_error(do.call(setup_tasks_obj$get, test_bad_id))
 })
 
+test_that("Tasks delete() throws error when needed", {
+  # Setup test parameters for test
+  test_no_task <- list(task = NULL)
+  test_bad_task <- list(task = 1)
+
+  # Get fails when no id is provided
+  testthat::expect_error(do.call(setup_tasks_obj$delete, test_no_task))
+
+  # Get fails when bad id is provided
+  testthat::expect_error(do.call(setup_tasks_obj$delete, test_bad_task))
+})
+
 test_that("Tasks create() throws error when needed", {
   # Setup test parameters for test
   test_no_project <- list(project = NULL)

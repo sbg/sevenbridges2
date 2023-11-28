@@ -128,17 +128,22 @@ like 'fields', etc.}
 \subsection{Method \code{delete()}}{
 Method that allows you to delete project from a platform.
 It can only be successfully made if you have admin status for the
-project. \cr
+project. \cr Projects are specified by their IDs, which you can obtain by
+using \code{\link{Projects$query()}} to list projects or by getting a
+single project using \code{\link{Projects$get()}}.
 Please be careful when using this method and note that calling it will
 permanently delete the project from the platform.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Projects$delete(project)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Projects$delete(project, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{project}}{Project object or project ID.}
+\item{\code{project}}{\code{\link{Project}} object or project ID.}
+
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+as 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
