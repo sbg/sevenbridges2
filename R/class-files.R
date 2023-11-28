@@ -16,7 +16,8 @@ Files <- R6::R6Class(
     URL = list(
       "query" = "files",
       "get" = "files/{id}",
-      "copy" = "action/files/copy"
+      "copy" = "action/files/copy",
+      "delete" = "files"
     ),
 
     # Initialize Files object -----------------------------------------------
@@ -165,6 +166,29 @@ Files <- R6::R6Class(
         ...
       )
       return(asFile(res, auth = self$auth))
+    }, # nocov end
+
+    # Delete file --------------------------------------------------------------
+    #' @description This call removes a file from the Seven Bridges Platform.
+    #' Files are specified by their IDs, which you can obtain by using
+    #' \code{\link{Files$query()}} to list files or by getting a single file
+    #' using \code{\link{Files$get()}}.
+    #'
+    #' @param file \code{\link{File}} object or file ID.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #' as 'fields', etc.
+    #'
+    delete = function(file, ...) {
+      id <- check_and_transform_id(file, "File")
+      # nocov start
+      res <- super$delete(
+        id = id,
+        ...
+      )
+
+      rlang::inform(
+        message = glue::glue("File {id} has been deleted.")
+      )
     }, # nocov end
 
     # Copy files --------------------------------------------------------------

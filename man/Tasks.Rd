@@ -22,17 +22,11 @@ R6 Class representing tasks resource endpoints.
 \item \href{#method-Tasks-new}{\code{Tasks$new()}}
 \item \href{#method-Tasks-query}{\code{Tasks$query()}}
 \item \href{#method-Tasks-get}{\code{Tasks$get()}}
+\item \href{#method-Tasks-delete}{\code{Tasks$delete()}}
 \item \href{#method-Tasks-create}{\code{Tasks$create()}}
 \item \href{#method-Tasks-clone}{\code{Tasks$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Resource" data-id="delete"><a href='../../sevenbridges2/html/Resource.html#method-Resource-delete'><code>sevenbridges2::Resource$delete()</code></a></span></li>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Tasks-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Tasks-new}{}}}
@@ -168,6 +162,29 @@ like 'fields', etc.}
 }
 \subsection{Returns}{
 \code{\link{Task}} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Tasks-delete"></a>}}
+\if{latex}{\out{\hypertarget{method-Tasks-delete}{}}}
+\subsection{Method \code{delete()}}{
+This call deletes a task from the Seven Bridges Platform.
+Tasks are specified by their IDs, which you can obtain by using
+\code{\link{Tasks$query()}} to list tasks or by getting a single task
+using \code{\link{Tasks$get()}}.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Tasks$delete(task, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{task}}{\code{\link{Task}} object or task ID.}
+
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+as 'fields', etc.}
+}
+\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}

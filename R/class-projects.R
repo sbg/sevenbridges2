@@ -17,7 +17,8 @@ Projects <- R6::R6Class(
     URL = list(
       "query" = "projects",
       "get" = "projects/{id}",
-      "create" = "projects"
+      "create" = "projects",
+      "delete" = "projects"
     ),
 
     # Initialize Projects object ----------------------------------------------
@@ -106,23 +107,23 @@ Projects <- R6::R6Class(
     # Delete project ----------------------------------------------------------
     #' @description Method that allows you to delete project from a platform.
     #' It can only be successfully made if you have admin status for the
-    #' project. \cr
+    #' project. \cr Projects are specified by their IDs, which you can obtain by
+    #'  using \code{\link{Projects$query()}} to list projects or by getting a
+    #'  single project using \code{\link{Projects$get()}}.
     #' Please be careful when using this method and note that calling it will
     #' permanently delete the project from the platform.
     #'
-    #' @param project Project object or project ID.
+    #' @param project \code{\link{Project}} object or project ID.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #' as 'fields', etc.
     #'
-    #' @importFrom rlang abort inform
-    #' @importFrom httr content
     #' @importFrom glue glue
-    delete = function(project) {
-      id <- check_and_transform_id(project)
+    delete = function(project, ...) {
+      id <- check_and_transform_id(project, "Project")
       # nocov start
-      res <- sevenbridges2::api(
-        path = id,
-        method = "DELETE",
-        token = self$auth$get_token(),
-        base_url = self$auth$url
+      res <- super$delete(
+        id = id,
+        ...
       )
 
       rlang::inform(

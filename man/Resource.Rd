@@ -14,6 +14,8 @@ Projects, Tasks, Volumes, Files, Apps etc.
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{auth}}{Seven Bridges Authentication object.}
+
+\item{\code{URL}}{List of URL endpoints for this resource.}
 }
 \if{html}{\out{</div>}}
 }
@@ -91,17 +93,17 @@ like 'fields', etc.}
 Generic implementation that deletes the resource
 from the server.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Resource$delete(cls, id, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Resource$delete(id, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{cls}}{Resource class object.}
-
 \item{\code{id}}{Object id.}
 
 \item{\code{...}}{Other arguments that can be passed to core \code{api()} function.}
+
+\item{\code{cls}}{Resource class object.}
 }
 \if{html}{\out{</div>}}
 }

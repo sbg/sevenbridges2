@@ -42,6 +42,18 @@ test_that("Projects get() throws error when expected", {
   testthat::expect_error(do.call(setup_projects_obj$get, test_bad_id))
 })
 
+test_that("Projects delete() throws error when needed", {
+  # Setup test parameters for test
+  test_no_project <- list(project = NULL)
+  test_bad_project <- list(project = 1)
+
+  # Get fails when no id is provided
+  testthat::expect_error(do.call(setup_projects_obj$delete, test_no_project))
+
+  # Get fails when bad id is provided
+  testthat::expect_error(do.call(setup_projects_obj$delete, test_bad_project))
+})
+
 test_that("Projects create() throws error when expected", {
   # Setup test parameters for test
   test_no_name <- list(name = NULL)
