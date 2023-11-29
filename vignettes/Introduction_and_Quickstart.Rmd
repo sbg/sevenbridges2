@@ -139,9 +139,24 @@ Additional options that `Collection` class is offering are possibilities to
 navigate between pages of results, for example, to load next or previous page 
 of results by calling methods `next_page()` and `prev_page()`.
 
-Lastly, users are able to fetch all results using `Collection`'s method `all()` 
-which is a shortcut to send multiple API calls for each next page and collect 
-all results. Keep in mind the `limit` used as well as the API rate limit.
+Moreover, users are able to fetch all results using `Collection`'s method 
+`all()` which is a shortcut to send multiple API calls for each next page and 
+collect all results. Keep in mind the `limit` used as well as the API rate limit.
+
+Lastly, printing `Collection` objects will print first 10 items (if there's more 
+than 10 items in results) by default, but this can be changed with `n` 
+parameter in its `print()` function: 
+
+```{r}
+# Create some collection of files
+public_files <- a$files$query(project = "admin/sbg-public-data")
+
+# Default print
+public_files
+
+# Print 20 items
+public_files$print(n = 20)
+```
 
 __Search by ID__
 
