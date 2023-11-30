@@ -59,7 +59,7 @@ first by creating an Auth object and providing necessary credentials.
 More about the authentication types you can read in our next chapters.
 
 The `sevenbridges2` package only supports v2+ versions of the API, since 
-versions prior to V2 are not compatible with the Common Workflow Language (CWL). 
+versions prior to v2 are not compatible with the Common Workflow Language (CWL). 
 This package provides a simple interface for accessing and trying out various 
 methods.
 
@@ -105,7 +105,8 @@ a$api(path = "projects", method = "GET")
 ```
 
 ***(Advanced user option)*** The second way of constructing an API request is 
-to directly use the `httr2` package to make your API calls.
+to directly use the [httr2](https://httr2.r-lib.org/) package to make your 
+API calls.
 
 The `sevenbridges2` package is organized by main resources from the 
 Seven Bridges API reference. 
@@ -238,7 +239,7 @@ and manage all your API authentication information for Seven Bridges platforms.
 If you need to be logged into multiple accounts at the same time (which can 
 also be for different platforms), please use either the second or third method.
 
-<div style="margin-left:3em"><a name="method1"/>**Method 1: Direct authentication**
+<a name="method1"/>**Method 1: Direct authentication**
 
 This is the most common method to construct the `Auth` object. For example:
 
@@ -266,7 +267,7 @@ Create an `Auth` object:
 a <- Auth$new(from = "env")
 ```
 
-<a name="method3"/>***Method 3: User configuration file***
+<a name="method3"/>**Method 3: User configuration file**
 
 Assume we have already created the configuration file named
 `credentials` under the directory `$HOME/.sevenbridges/`:
@@ -311,7 +312,7 @@ The option based on the use of a configuration file also enables simultaneous
 authentication from multiple accounts. 
 Assuming that we have a configuration file like the one listed above, 
 and that we want to create authentication objects for two profiles 
-(**default** and **aws-us-<username>**), we can achieve this in 
+(`default` and `aws-us-<username>`), we can achieve this in 
 the following way:
 
 ```{r}
@@ -434,7 +435,7 @@ a$invoices$query()
 ```
 
 The call returns information about all your available invoices, unless you use 
-the \code{billing_group_id} query parameter to specify the ID of a particular 
+the `billing_group_id` query parameter to specify the ID of a particular 
 billing group, in which case it will return the invoice incurred by that 
 billing group only.
 
@@ -612,6 +613,7 @@ a$apps$copy(
 
 # Check if it is copied
 p <- a$projects$get(id = "<username_or_division>/api-testing")
+
 # List apps your got in your project
 p$list_apps()
 ```
@@ -629,10 +631,12 @@ revision : 0
 Alternatively, you can copy it from the `App` object.
 
 ```{r}
+# Get public app RNA Sequencing alignment - STAR
 star_app <- a$apps$get(
   id = "admin/sbg-public-data/rna-seq-alignment-star/0"
 )
 
+# Copy it into a project
 star_app$copy(
   project = "<username_or_division>/api-testing",
   name = "Copy of STAR"
@@ -761,13 +765,14 @@ tsk$print()
 Now, we are ready to run our task.
 
 ```{r}
-# run your task
+# Run your task
 tsk$run()
 ```
 
 Before you run your task, you can adjust your draft task if you have any final 
 modifications. 
 ```{r}
+# Update task
 tsk$update(description = "New RNA SEQ Alignment - STAR task")
 ```
 
@@ -827,6 +832,7 @@ we can set `use_interruptible = FALSE` to use on-demand instances
 (interruptible but cheaper):
 
 ```{r}
+# Create project with disabled spot instances
 p <- a$projects$create(
   name = "spot-disabled-project", bid, description = "spot disabled project",
   use_interruptible = FALSE
@@ -842,6 +848,7 @@ For example, if `p` is the above spot disabled project, to draft
 a task that will use spot instances to run:
 
 ```{r}
+# Create task and set usage of interruptible instances to TRUE
 tsk <- p$create_task(
   name = paste0("spot enabled task in a spot disabled project"),
   description = "spot enabled task",
@@ -872,6 +879,7 @@ using `execution_settings`. It includes the instance type (`instance_type`)
 and the maximum number of parallel instances (`max_parallel_instances`):
 
 ```{r}
+# Create task with setting instance type and number of parallel instances
 tsk <- p$create_task(
   ...,
   execution_settings = list(
