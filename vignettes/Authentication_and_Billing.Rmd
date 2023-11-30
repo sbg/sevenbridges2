@@ -59,7 +59,7 @@ with the corresponding `token`. Examples of direct authentication:
 
 ```{r}
 a <- Auth$new(
-  token = "your_token",
+  token = "<your_token>",
   platform = "aws-us"
 )
 ```
@@ -68,17 +68,17 @@ The above will use the Seven Bridges Platform on AWS (US).
 
 ```{r}
 a <- Auth$new(
-  token = "your_token",
-  url = "https://gcp-api.sbgenomics.com/v2"
+  token = "<your_token>",
+  url = "https://api.sb.biodatacatalyst.nhlbi.nih.gov/v2/"
 )
 ```
 
 The above will use the specified `url` as the base URL for the API calls. 
-In this example, the `url` points to the Seven Bridges Platform on 
-Google Cloud Platform (GCP).
+In this example, the `url` points to the BioData Catalyst Platform powered by 
+Seven Bridges.
 
 ```{r}
-a <- Auth$new(token = "your_token")
+a <- Auth$new(token = "<your_token>")
 ```
 
 The above will use the Seven Bridges Platform on AWS environment 
@@ -99,7 +99,7 @@ the function `sbg_set_env()`. For example:
 ```{r}
 sevenbridges2:::sbg_set_env(
   url = "https://cgc-api.sbgenomics.com/v2",
-  token = "your_token"
+  token = "<your_token>"
 )
 ```
 
@@ -109,7 +109,7 @@ See if the environment variables are correctly set:
 sevenbridges2:::sbg_get_env("SB_API_ENDPOINT")
 ## "https://cgc-api.sbgenomics.com/v2"
 sevenbridges2:::sbg_get_env("SB_AUTH_TOKEN")
-## "your_token"
+## "<your_token>"
 ```
 
 Now you can create the `Auth` object:
@@ -189,8 +189,8 @@ auth_token = token_for_this_user
 api_endpoint = https://cgc-api.sbgenomics.com/v2
 auth_token = token_for_this_user
 
-[gcp]
-api_endpoint = https://gcp-api.sbgenomics.com/v2
+[bdc]
+api_endpoint = https://api.sb.biodatacatalyst.nhlbi.nih.gov/v2/
 auth_token = token_for_this_user
 ```
 
@@ -394,12 +394,12 @@ number of instances available to the user.
 We should also mention that there are 3 types of general API errors that are 
 handled by the client `sevenbridges2` package:
 
-- **rate limit sleeper** which pauses the execution of any API 
+- **Rate limit sleeper** which pauses the execution of any API 
 call if rate limit is breached. The execution will automatically continue 
 when the required break time exceeds,
-- **maintenance sleeper** which pauses the execution if SevenBridges API is 
+- **Maintenance sleeper** which pauses the execution if SevenBridges API is 
 under maintenance and
-- **general error sleeper** which pauses the execution if response status code 
+- **General error sleeper** which pauses the execution if response status code 
 is equal or larger than 500 (if some server error occurred). 
 
 # List All API Calls
