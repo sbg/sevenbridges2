@@ -120,6 +120,18 @@ test_that("Files get() throws error when expected", {
   )
 })
 
+test_that("Files delete() throws error when needed", {
+  # Setup test parameters for test
+  test_no_file <- list(file = NULL)
+  test_bad_file <- list(file = 1)
+
+  # Get fails when no id is provided
+  testthat::expect_error(do.call(setup_files_obj$delete, test_no_file))
+
+  # Get fails when bad id is provided
+  testthat::expect_error(do.call(setup_files_obj$delete, test_bad_file))
+})
+
 test_that("Files copy() throws error when expected", {
   missing_files_dest_proj_params <- list(
     files = NULL,

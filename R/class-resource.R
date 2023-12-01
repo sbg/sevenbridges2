@@ -10,9 +10,13 @@
 Resource <- R6::R6Class(
   "Resource",
   portable = FALSE,
+  lock_objects = FALSE,
   public = list(
     #' @field auth Seven Bridges Authentication object.
     auth = NULL,
+
+    #' @field URL List of URL endpoints for this resource.
+    URL = list(),
 
     # Initialize Resource object ----------------------------------------------
     #' @description Create a new Resource object.
@@ -116,23 +120,15 @@ Resource <- R6::R6Class(
     #'
     #' @importFrom rlang abort
     #' @importFrom glue glue
-    delete = function(cls, id, ...) {
-      if (is_missing(cls)) {
-        rlang::abort("Please provide cls parameter!")
+    delete = function(id, ...) {
+      if (is.null(self[["URL"]][["delete"]])) {
+        rlang::abort("Resource can not be deleted!")
       }
       if (is_missing(id)) {
         rlang::abort("Please provide id parameter!")
       }
 
-      if (is.null(cls[["auth"]])) {
-        rlang::abort("Your cls parameter doesn't have field auth!")
-      }
-
-      if (is.null(cls$url[["delete"]])) {
-        rlang::abort("Resource can not be deleted!")
-      }
-
-      url <- cls$url[["delete"]]
+      url <- self$URL[["delete"]]
       path <- glue::glue("{url}/{id}")
 
       # nocov start
@@ -140,7 +136,7 @@ Resource <- R6::R6Class(
         path = path,
         method = "DELETE",
         token = auth$get_token(),
-        base_url = url,
+        base_url = auth$url,
         ...
       )
 

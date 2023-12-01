@@ -16,7 +16,8 @@ Tasks <- R6::R6Class(
     #' @field URL List of URL endpoints for this resource.
     URL = list(
       "query" = "tasks/",
-      "get" = "tasks/{id}"
+      "get" = "tasks/{id}",
+      "delete" = "tasks"
     ),
 
     #' @description Create new Tasks resource object.
@@ -211,6 +212,31 @@ Tasks <- R6::R6Class(
 
       return(asTask(res, auth = self$auth))
     }, # nocov end
+
+    # Delete task  ----------------------------------------------------------
+    #' @description This call deletes a task from the Seven Bridges Platform.
+    #' Tasks are specified by their IDs, which you can obtain by using
+    #' \code{\link{Tasks$query()}} to list tasks or by getting a single task
+    #' using \code{\link{Tasks$get()}}.
+    #'
+    #' @param task \code{\link{Task}} object or task ID.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #' as 'fields', etc.
+    #'
+    #' @importFrom glue glue
+    delete = function(task, ...) {
+      id <- check_and_transform_id(task, "Task")
+      # nocov start
+      res <- super$delete(
+        id = id,
+        ...
+      )
+
+      rlang::inform(
+        message = glue::glue("Task {id} has been deleted.")
+      )
+    },
+    # nocov end
 
     # Create a new draft task --------------------------------------------------
     #' @description This call creates a new task. You can create either a single
