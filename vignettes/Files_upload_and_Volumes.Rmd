@@ -26,14 +26,29 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Files upload and download
+# Files upload
 
+Seven Bridges platforms provide a few different methods for data import:
+
+- Import from FTP or HTTP with the web interface
+- The file upload API that you can directly call with the `sevenbridges2` 
+package
+- The command line uploader
+- Import from cloud storage - Volume
+- Import from a DRS server
+
+In this chapter we will explain how you can use the `sevenbridges2` API library
+to upload your files into the Platform.
+
+Although it is more intuitive to have these operations available on the `File`
+object, they are separated and stored directly on the authentication object 
+`Auth`, because there are a separate group of endpoints themselves. 
 
 ## Upload single file
 
 You can upload files from your local computer to the Platform using the 
 `upload()` method on your `Auth` object. The method allows you to upload only
-a single file. 
+a single file for now. 
 
 To upload a file you should provide its full path on your local computer
 as the `path` parameter.
@@ -44,66 +59,107 @@ To specify upload destination for your file you can use either `project` or
 * **project** - `Project` object or project ID.
 * **parent** - `File` object (of type `Folder`) or its ID.
 
-#### Upload a single file
+By calling the `upload()` method you are creating an upload job that by 
+default starts to run immediately.
+If you don't want to start the job immediately, just set the `init` parameter
+to `TRUE` in order to only initialize the object. 
 
+This upload job is wrapped into an object of class `Upload` where you can
+see its details and call other actions on it. 
+
+Let's initialize upload job that will upload file into a project:
 ```{r}
+# Authenticate
 a <- Auth$new(platform = "aws-us", token = "<your-token>")
 
+# Get desired project to upload to
+destination_project <- a$projects$get(project = "<project_id>")
 
-# Option 1 - Using the project parameter
-# Option 1.a (providing a Project object as project parameter)
-destination_project <- a$projects$get(project = "<short-name-of-the-project>")
-
-up <- a$upload(
+# Create upload job and set destination project
+upload_job <- a$upload(
   path = "/path/to/your/file.txt",
   project = destination_project,
-  overwrite = TRUE
+  overwrite = TRUE,
+  init = TRUE
 )
-# Call start() method do start upload process
-up$start()
+```
 
-# Option 1.b (providing a project's ID as project parameter)
-up <- a$upload(
-  path = "/path/to/your/file.txt",
-  project = "<project_id>",
-  overwrite = TRUE
-)
-# Call start() method do start upload process
-up$start()
+If you would like to upload your file into some folder, you need to set
+`parent` parameter:
 
-
-# Option 2 - Using the parent parameter
-# Option 2.a (providing a File (must be a folder) object as parent parameter)
+```{r}
+# Get destination folder object
 destination_folder <- a$files$get(id = "<folder_id>")
 
 up <- a$upload(
   path = "/path/to/your/file.txt",
   parent = destination_folder,
-  overwrite = TRUE
+  overwrite = TRUE,
+  init = TRUE
 )
-# Call start() method do start upload process
-up$start()
+```
 
-# Option 2.b (providing a file's (folder's) ID as project parameter)
-up <- a$upload(
-  path = "/path/to/your/file.txt",
-  parent = "<destination_folder_id>",
-  overwrite = TRUE
-)
-# Call start() method do start upload process
+## Upload fields and operations
+
+Since we have initialized the upload job, let's see which actions can we run.
+
+### Print upload job
+
+First, let's print the `Upload` object to see what API returned as response.
+```{r}
+up$print()
+```
+
+```
+── Upload ─────────────────────────────────────────────────────────────────────
+• initialized: TRUE
+• part_length: 1
+• part_size: 33554432
+• file_size: 232
+• overwrite: FALSE
+• filename: file.txt
+• project: <username_or_division>/api-testing
+• path: /path/to/your/file.txt
+• upload_id: 4OvRx8Z9vghNoAUqsgYtNuM2IsiIM8kghhjgi7igu79HX9QKZpDEh5TZDrmhPxF
+
+```
+<div align="right"><a href="#top">top</a></div>
+
+### File size, part size and part number/length
+
+In previous example we can see that API returned the upload id and some 
+information about sizes. 
+First we see the `file_size` in bytes (232), which is the real size of the file. 
+Uploading files actually in the background splits the files into parts which
+are then being uploaded one by one or in parallel and then united again on 
+destination.
+Each part can weight 5GB maximum, while the default `part_size` is recommended
+and set to be 32MB (which is 33554432B in our example). 
+
+Lastly, number of parts or `part_length` field, is also an important measure. 
+Maximum number of parts can be 10.000. 
+
+Since users can control part size through parameter `part_size` in `upload()`
+function, they should be careful to not set this size too small for very large 
+files, so that total number of parts doesn’t exceed the limit of maximum 10000.
+
+<div align="right"><a href="#top">top</a></div>
+
+### Start upload
+
+Call `start()` method on the upload job object do start the upload process.
+
+```{r}
+# Start upload
 up$start()
 ```
 
 If you want to skip the step where you need to call the `start()` method
-to start the actual upload process, you can use the `init` parameter
-when calling the `upload()` method. If `init` parameter is set to `FALSE`
-the upload process will start right away.
+to start the actual upload process, just set the `init` parameter back to 
+`FALSE` when creating upload job and the upload process will start right away.
 
 ```{r}
-a <- Auth$new(platform = "aws-us", token = "<your-token>")
-
-destination_project <- a$projects$get(project = "<short-name-of-the-project>")
-
+# Create upload job and start it immediately
 up <- a$upload(
   path = "/path/to/your/file.txt",
   project = destination_project,
@@ -112,18 +168,38 @@ up <- a$upload(
 )
 ```
 
-#### List all ongoing uploads
+<div align="right"><a href="#top">top</a></div>
 
-The method `list_ongoing_uploads()` allows you to see the list of all
-ongoing upload processes.
+### Get status information about the job
+
+In order to track the progress of the job, you can call the `info()` method
+on the upload object.
+
+```{r}
+# Get upload progress info
+up$info()
+```
+
+In the result beside basic information, you will receive the info on the
+number of uploaded parts up to that moment. 
+
+<div align="right"><a href="#top">top</a></div>
+
+## List all ongoing uploads
+
+Going back to authentication object, there are two more operations for uploads
+manipulation. 
+One is the method `list_ongoing_uploads()` that allows you to see the list of 
+all ongoing upload processes.
 
 ```{r}
 # List ongoing uploads
 a$list_ongoing_uploads()
 ```
 
-#### Abort upload process
+## Abort upload process
 
+The other one is the `abort()`.
 You can abort any uploading process using the `upload_abort()` method.
 To do so, you need to provide the ID of a process within the `upload_id`
 parameter.
@@ -133,22 +209,11 @@ parameter.
 a$abort_upload(upload_id = "<id_of_the_upload_process>")
 ```
 
-
-### Download a file
-
-`File` object has a `download()` method, which allows you to download that file
-to your local computer. You should provide the `directory_path` parameter, 
-which specifies the destination directory to which your file will be 
-downloaded. By default, this parameter is set to your current working
-directory. You can also set the new name for your resulting (downloaded)
-file by providing the `filename` parameter. Otherwise, the default name 
-(the one stored in the `name` field of your `File` object) will be used.
-
-```{r}
-# Download a file
-file$download(directory_path = "/path/to/your/destination/folder")
-```
-
+**Note** that in practice, if you start some big upload job, your R session 
+will be blocked until this process is finished. This functionality is work in 
+progress but the idea is to not block your main session while the upload is 
+running. For now, you can create another R session on your own and track the 
+progress of the upload job there. 
 
 ## Volumes
 

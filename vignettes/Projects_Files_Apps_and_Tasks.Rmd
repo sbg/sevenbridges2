@@ -800,6 +800,23 @@ demo_file$move_to_folder(parent = "<parent_id>", name = "Moved_file.txt")
 
 <div align="right"><a href="#top">top</a></div>
 
+### Download a file
+
+`File` object has a `download()` method, which allows you to download that file
+to your local computer. You should provide the `directory_path` parameter, 
+which specifies the destination directory to which your file will be 
+downloaded. By default, this parameter is set to your current working
+directory. You can also set the new name for your resulting (downloaded)
+file by providing the `filename` parameter. Otherwise, the default name 
+(the one stored in the `name` field of your `File` object) will be used.
+
+```{r}
+# Download a file
+demo_file$download(directory_path = "/path/to/your/destination/folder")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
 ### Get file's parent directory
 
 Sometimes, it's convenient to get the parent folder ID for a file or folder:
