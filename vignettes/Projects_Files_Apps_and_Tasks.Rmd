@@ -830,6 +830,24 @@ demo_folder$reload()
 
 # Apps
 
+Following the same logic as with other `Resource` classes, all apps related 
+operations are grouped under `Apps` class, that can be accessed within 
+`Auth` objects on the path `Auth$apps`. 
+From here users can call operations to list all apps, fetch single app by its 
+id, delete, copy or create new app.
+
+When you operate with single app, it is represented as an object of `App` 
+class. 
+`App` object contains almost all app information and additional methods that 
+can be executed directly on the object like getting or creating new app's 
+revisions, copying, syncing with the latest revision or creating tasks with 
+this app etc.
+
+Note that we say almost all information, because for apps we don't return all 
+fields by default - the raw CWL field is excluded due to its size and speed of execution. Therefore, if you wish to fetch the raw CWL of the app, there is a 
+separate method for this purpose you can call on the App object 
+(`get_raw_cwl()`).
+
 ## List apps
 
 You can list all apps available to by calling the `apps$query()` method from
@@ -851,22 +869,29 @@ The same can be done for private apps. The following call will return all the
 apps available to you, i.e. all the apps that you have in your projects:
 
 ```{r}
-# Query private apps - set limit to 10
-a$apps$query(limit = 10)
+# Query private apps
+my_apps <- a$apps$query()
 ```
 
-Keep in mind that not all of the available apps are going to be returned,
-because the `limit` parameter is set to 10.
+Just to remind you that not all of the available apps are going to be returned,
+because the `limit` parameter is set to 50 by default.
+Since the result is the `Collection` object, you can paginate through results
+by calling `next_page()` and `prev_page()` or call `all()` to return all 
+results.
+
+```{r}
+# Load next 50 apps
+my_apps$next_page()
+```
 
 Alternatively, you can query all the apps in a specific project by providing
 the project of interest using the `project` parameter. You can either use the
-Project object, or a project ID (string).
+`Project` object, or a project ID (string).
 
 ```{r}
 # Query apps within your project - set limit to 10
 a$apps$query(project = "<project_object_or_its_ID>", limit = 10)
 ```
-
 
 You can also use one or more search terms via the `query_terms` parameter to
 query all apps that are available to you. Search terms should relate to the
@@ -893,7 +918,6 @@ fields that describe an app. For example, the first term can match the app's
 name while the second can match the app description. However, if any part of
 the search fails to match app details, the call will return an empty list.
 
-
 Another useful option is to query apps by id. You can do so either for public
 apps, or for private apps (apps available to you). The following example
 illustrates how this can be done for public apps:
@@ -906,35 +930,42 @@ a$apps$query(
 )
 ```
 
+<div align="right"><a href="#top">top</a></div>
+
 ### List project apps
 
 All available apps in a specific project can also be listed by calling the
-`list_apps()` method directly on the Project object. This method has redefined
-the `project` and `visibility` arguments, while all other parameters are
-identical to those presented for `apps$query()`.
+`list_apps()` method directly on the `Project` object. This method has 
+predefined the `project` and `visibility` arguments, while all other parameters 
+are identical to those presented in `apps$query()` function.
 
 ```{r}
+# Get project
+p <- a$projects$get("<username>/api-testing")
+
 # List apps in specified project
 p$list_apps(limit = 10)
 ```
+
+<div align="right"><a href="#top">top</a></div>
 
 ## Get app information
 
 If you need information about a specific app, you can get it using the
 `apps$get()` method. Keep in mind that the app should be one in a project that
-you can access. This could be an app that has been uploaded to the Seven
+you can access. This could be the app that has been uploaded to the Seven
 Bridges Platform by a project member, or a publicly available app. You should
-provide an `id` of the app of interest, and optionally its `revision`. If no
+provide the `id` of the app of interest, and optionally its `revision`. If no
 revision is specified, the latest one will be used.
 
 ```{r}
-# Get a public App object and assign it to an object
+# Get a public App object
 bcftools_app <- a$apps$get(id = "admin/sbg-public-data/bcftools-call-1-15-1")
 ```
 
+<div align="right"><a href="#top">top</a></div>
 
 ## Copy an app
-
 
 To copy an app to a specified destination project, you can use the
 `apps$copy()` method.
@@ -947,10 +978,10 @@ Destination project (`project` parameter) should be provided either as an
 object of `Project` class, or as an ID of the target project of interest.
 
 You might want to set the new name that the app will have in the target
-project. To so so, use the `name` parameter. If app's name will not change,
+project. To do so, use the `name` parameter. If app's name will not change,
 omit the `name` parameter.
 
-Keep in mind that are different strategies for copying the apps on the
+Keep in mind that there are different strategies for copying the apps on the
 platform:
 
 * `clone` : copy all revisions; get updates from the same app as the copied app (default)
@@ -958,8 +989,7 @@ platform:
 * `clone_direct`: copy all revisions; get updates from the copied app
 * `transient`: copy latest revision; get updates from the same app as the copied app
 
-Learn more about copy strategies in our PUBLIC API documentation.
-
+Learn more about copy strategies in our public [API documentation](https://docs.sevenbridges.com/reference/copy-an-app).
 
 The following example demonstrates how can you copy the previously created
 `bcftools_app` to some project:
@@ -968,10 +998,11 @@ The following example demonstrates how can you copy the previously created
 # Copy app to a project
 app_copy <- a$apps$copy(bcftools_app,
   project = "<project_object_or_its_ID>",
-  name = "new_app_name"
+  name = "New_app_name"
 )
 ```
 
+<div align="right"><a href="#top">top</a></div>
 
 ## Create new app
 
@@ -982,7 +1013,7 @@ The raw CWL can be provided either through the `raw` parameter, or by using the
 used together.
 
 If you choose to use the `raw` parameter, make sure to provide a list
-containing a raw CWL for the app revision you are about to create. To generate
+containing a raw CWL for the app you are about to create. To generate
 such a list, you might want to load some existing `JSON` / `YAML` file. In case
 that your CWL file is in JSON format, please use the `fromJSON` function from
 the `jsonlite` package to minimize potential problems with parsing the JSON
@@ -1000,7 +1031,7 @@ file_json <- jsonlite::read_json("/path/to/your/raw_cwl_in_json_format.cwl")
 new_app_json <- a$apps$create(
   project = "<destination_project_object_or_its_ID>",
   raw = file_json,
-  name = "new_app_json",
+  name = "New_app_json",
   raw_format = "JSON"
 )
 ```
@@ -1012,60 +1043,83 @@ file containing the raw CWL for the app (`JSON` or `YAML`).
 ```{r}
 # Create app from raw CWL (YAML)
 new_app_yaml <- a$apps$create(
-  project = dest_proj,
+  project = "<destination_project_object_or_its_ID>",
   from_path = "/path/to/your/raw_cwl_in_yaml_format.cwl",
-  name = "new_app_yaml",
+  name = "New_app_yaml",
   raw_format = "YAML"
 )
 ```
 
+<div align="right"><a href="#top">top</a></div>
+
 ### Create app in a project
 
-The app can also be directly created on a Project object by invoking
+The app can also be directly created on a `Project` object by invoking
 `create_app()`. Except it has the predefined `project` parameter, the
 `create_app()` has the same other parameters as `apps$create()`.
 
 ```{r}
+# Load the JSON file
+file_json <- jsonlite::read_json("/path/to/your/raw_cwl_in_json_format.cwl")
+
+# Get project
+p <- a$projects$get("<username>/api-testing")
+
 # Create app from raw CWL (JSON) in specified project
 p$create_app(
   raw = file_json,
-  name = "new_app_json",
+  name = "New_app_json",
   raw_format = "JSON"
 )
 ```
 
-## App object
+<div align="right"><a href="#top">top</a></div>
 
-Once you have an App object, you'll see that it also has various useful methods
-within itself.
+## App object operations
+
+Once you've fetched the `App` object, you'll see that it also has various useful 
+methods within itself.
 
 The following actions are available for an App object:
 * print
+* get_raw_cwl
 * get_revision
 * create_revision
 * copy
 * sync
+* create_task
 
 
 ### Print app
 
-The `print` method prints the content of the App object to the console.
+The `print` method prints the app details to the console.
 
 ```{r}
+# Fetch first app from the project's apps
+p <- a$projects$get("<username>/api-testing")
+my_apps <- p$list_apps()
+my_new_app <- my_apps$items[[1]]
+
 # Print app's details
-new_app_json$print()
+my_new_app$print()
 ```
+
 ```
 
 ── App ──────────────────────────────────────────────────────────────────────────────────────────────────────
-• latest_revision: 0
+• latest_revision: 1
 • copy_of: admin/sbg-public-data/bcftools-call-1-15-1/0
 • revision: 0
 • name: BCFtools Call
-• project: user_123/test-project
-• id: user_123/test-project/new_app_json
-• href: https://api.sbgenomics.com/v2/apps/user_123/test-project/new_app_json/0
+• project: <username>/api-testing
+• id: <username>/api-testing/new_app_json
+• href: https://api.sbgenomics.com/v2/apps/<username>/api-testing/new_app_json/0
 ```
+<div align="right"><a href="#top">top</a></div>
+
+### Get app's raw CWL
+
+[Placeholder for this]
 
 ### Get app's revision
 
@@ -1074,24 +1128,24 @@ you need a specific revision of an app, use the `revision` parameter.
 
 Keep in mind that there is another important parameter that can be set for this
 method. If the `in_place` parameter is set to `TRUE`, the current app object
-will be replaced with new for specified app revision. By default, this
-parameter is set to false.
+will be replaced with new one for specified app revision. By default, this
+parameter is set to `FALSE`.
 
 ```{r}
-my_app <- a$apps$get(id = "user_123/test-project/my_app/0")
+my_app <- a$apps$get(id = "<username>/api-testing/new_app_json/0")
 my_app$print()
 ```
-```
 
+```
 ── App ──────────────────────────────────────────────────────────────────────────────────────────────────────
 • latest_revision: 1
+• copy_of: admin/sbg-public-data/bcftools-call-1-15-1/0
 • revision: 0
 • name: BCFtools Call
-• project: user_123/test-project
-• id: user_123/test-project/my_app
-• href: https://api.sbgenomics.com/v2/apps/user_123/test-project/my_app/0
+• project: <username>/api-testing
+• id: <username>/api-testing/new_app_json
+• href: https://api.sbgenomics.com/v2/apps/<username>/api-testing/new_app_json/0
 ```
-
 
 ```{r}
 # Get app's revision
@@ -1103,6 +1157,17 @@ my_app$get_revision(revision = 1)
 my_app$get_revision(revision = 1, in_place = TRUE)
 ```
 
+```
+── App ──────────────────────────────────────────────────────────────────────────────────────────────────────
+• latest_revision: 1
+• copy_of: admin/sbg-public-data/bcftools-call-1-15-1/0
+• revision: 1
+• name: BCFtools Call
+• project: <username>/api-testing
+• id: <username>/api-testing/new_app_json
+• href: https://api.sbgenomics.com/v2/apps/<username>/api-testing/new_app_json/1
+```
+<div align="right"><a href="#top">top</a></div>
 
 ### Create app's revision
 
@@ -1124,6 +1189,9 @@ to use the `read_yaml` function from the `yaml` package.
 Make sure to set the `raw_format` parameter to match the type of the provide
 raw CWL file (`JSON` / `YAML`). By default, this parameter is set to `JSON`.
 
+Using `in_place` parameter will overwrite current app object with new app's 
+revision information.
+
 ```{r}
 raw_cwl_as_list <- jsonlite::read_json(
   path = "/path/to/your/raw_cwl_in_json_format.cwl"
@@ -1142,19 +1210,18 @@ my_app$create_revision(
 )
 ```
 
+<div align="right"><a href="#top">top</a></div>
 
 ### Copy an app
 
 An app can be copied to a specified destination project directly from an
-app's object, by calling its `copy()`method.
+app's object too, by calling its own `copy()`method.
 
 Destination project (`project` parameter) should be provided either as an
 object of `Project` class, or as an ID of the target project of interest.
 
-You might want to set the new name that the app will have in the target
-project. To so so, use the `name` parameter. If app's name will not change,
-omit the `name` parameter.
-
+You can set the new name that the app will have in the target project with 
+`name` parameter. 
 Keep in mind that are different strategies for copying the apps on the
 platform:
 
@@ -1163,37 +1230,44 @@ platform:
 * `clone_direct`: copy all revisions; get updates from the copied app
 * `transient`: copy latest revision; get updates from the same app as the copied app
 
-Learn more about copy strategies in our PUBLIC API documentation.
+Learn more about copy strategies in our public [API documentation](https://docs.sevenbridges.com/reference/copy-an-app).
 
 ```{r}
 copied_app <- my_app$copy(
   project = "<destination_project_object_or_its_ID>",
-  name = "new_app_name"
+  name = "New_app_name"
 )
 ```
 
+<div align="right"><a href="#top">top</a></div>
 
 ### Sync a copied app
 
-To synchronize a copied app with the source app from which it has been copied,
-you can use the `sync()` method.
+To synchronize a copied app with the source app from which it has been copied, 
+so it uses the latest revision, you can call the `sync()` method.
+The `App` object will be overwritten with the latest app.
 
 ```{r}
 # Sync copied app to the latest revision created
 copied_app$sync()
 ```
 
+<div align="right"><a href="#top">top</a></div>
+
 ### Reload app
 
-To keep your local App object up to date with the app on the platform, you can always call the `reload()` function:
+To keep your local `App` object up to date with the app on the platform, you can always call the `reload()` function:
 
 ```{r}
 my_app$reload()
 ```
 
+<div align="right"><a href="#top">top</a></div>
+
+
 # Tasks
 
-### List tasks
+## List tasks
 
 You can list all tasks by calling the `tasks$query()` 
 method from the authentication object. The method has many additional 
@@ -1221,7 +1295,7 @@ p <- a$projects$query(name = "demo")
 a$tasks$query(project = p$items[[1]])
 ```
 
-### Get single task information
+## Get single task information
 
 In order to retrieve information about a single task of interest, you can get 
 it using the `tasks$get()` method using its id as parameter.
@@ -1231,7 +1305,7 @@ it using the `tasks$get()` method using its id as parameter.
 a$volumes$get(id = "<task_id>")
 ```
 
-### Create a draft task
+## Create a draft task
 
 To create a draft task, you can call the `tasks$create` method. You need to pass
 the following arguments:
@@ -1285,7 +1359,7 @@ task_exec_settings <- a$tasks$create(
 )
 ```
 
-### Create Batch task
+## Create Batch task
 
 To run tasks in batch mode we have `batch`, `batch_input` and `batch_by` 
 parameters.
@@ -1307,6 +1381,8 @@ batch_task <- a$tasks$create(
   )
 )
 ```
+
+## Task operations 
 
 ### Run task
 
