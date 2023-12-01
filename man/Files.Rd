@@ -22,18 +22,12 @@ R6 Class representing Files resource.
 \item \href{#method-Files-new}{\code{Files$new()}}
 \item \href{#method-Files-query}{\code{Files$query()}}
 \item \href{#method-Files-get}{\code{Files$get()}}
+\item \href{#method-Files-delete}{\code{Files$delete()}}
 \item \href{#method-Files-copy}{\code{Files$copy()}}
 \item \href{#method-Files-create_folder}{\code{Files$create_folder()}}
 \item \href{#method-Files-clone}{\code{Files$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Resource" data-id="delete"><a href='../../sevenbridges2/html/Resource.html#method-Resource-delete'><code>sevenbridges2::Resource$delete()</code></a></span></li>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Files-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Files-new}{}}}
@@ -157,6 +151,29 @@ as 'fields', etc.}
 }
 \subsection{Returns}{
 \code{\link{File}} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Files-delete"></a>}}
+\if{latex}{\out{\hypertarget{method-Files-delete}{}}}
+\subsection{Method \code{delete()}}{
+This call removes a file from the Seven Bridges Platform.
+Files are specified by their IDs, which you can obtain by using
+\code{\link{Files$query()}} to list files or by getting a single file
+using \code{\link{Files$get()}}.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Files$delete(file, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{file}}{\code{\link{File}} object or file ID.}
+
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+as 'fields', etc.}
+}
+\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
