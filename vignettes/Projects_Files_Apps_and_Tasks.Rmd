@@ -155,6 +155,26 @@ p$detailed_print()
 
 <div align="right"><a href="#top">top</a></div>
 
+## Delete a project
+
+There are two ways how deleting projects can be performed. 
+One is from the `projects` path on the authentication object and the other 
+one is to call the `delete()` method directly on the `Project` object you want 
+to delete:
+
+```{r}
+# Delete project using Auth$projects path
+a$projects$delete(project = "<project_id>")
+
+# Delete project directly from the project object
+p$delete()
+```
+
+Please be careful when using this method and note that calling it will
+permanently delete the project from the platform.
+
+<div align="right"><a href="#top">top</a></div>
+
 ## Edit an existing project
 
 If you want to edit an existing project, you can do so by using
@@ -183,18 +203,7 @@ Project object to fetch the changes, by reloading it with:
 p$reload()
 ```
 
-## Delete a project
-
-Another way to delete the project is to call the `delete()` method directly on  
-the `Project` object:
-
-```{r}
-# don't run
-# p$delete()
-```
-
-Please be careful when using this method and note that calling it will
-permanently delete the project from the platform.
+<div align="right"><a href="#top">top</a></div>
 
 ## Project's members manipulation
 
@@ -211,6 +220,7 @@ For each member, the response is wrapped into a Member class object containing:
 p$list_members()
 ```
 
+<div align="right"><a href="#top">top</a></div>
 
 ### Add a member to a project
 
@@ -248,6 +258,7 @@ p$add_member(
   • admin: FALSE
   
 ```
+<div align="right"><a href="#top">top</a></div>
 
 ### Get and modify project member's permissions
 
@@ -265,6 +276,8 @@ p$modify_member_permissions(
 )
 ```
 
+<div align="right"><a href="#top">top</a></div>
+
 ### Remove a project member
 
 On the other hand, you can delete a member from the project in a similar way
@@ -273,6 +286,8 @@ with `remove_member()` operation:
 ```{r}
 p$remove_member(user = "<username_of_a_user_you_want_to_remove>")
 ```
+
+<div align="right"><a href="#top">top</a></div>
 
 ## List project files
 
@@ -286,6 +301,8 @@ p$list_files()
 It will return `Collection` object with items field containing list of returned 
 File objects and with pagination options. 
 
+<div align="right"><a href="#top">top</a></div>
+
 ## Create folder within project's Files
 
 You are also able to create a folder within project's root Files directory
@@ -296,6 +313,8 @@ which should not start with '__' or contain spaces.
 p$create_folder(name = "My_new_folder")
 ```
 
+<div align="right"><a href="#top">top</a></div>
+
 ## Get project's root folder object
 
 Lastly, the project's root directory with all your files is a folder itself,
@@ -305,6 +324,8 @@ therefore you are able to get this folder as File object too using
 ```{r}
 p$get_root_folder()
 ```
+
+<div align="right"><a href="#top">top</a></div>
 
 ## List project's apps, tasks and import jobs
 
@@ -323,6 +344,8 @@ p$list_tasks()
 # List project's imports
 p$list_imports()
 ```
+
+<div align="right"><a href="#top">top</a></div>
 
 ## Create new app and task within project
 
@@ -834,7 +857,7 @@ Following the same logic as with other `Resource` classes, all apps related
 operations are grouped under `Apps` class, that can be accessed within 
 `Auth` objects on the path `Auth$apps`. 
 From here users can call operations to list all apps, fetch single app by its 
-id, delete, copy or create new app.
+id, copy or create new app.
 
 When you operate with single app, it is represented as an object of `App` 
 class. 
@@ -1035,7 +1058,6 @@ new_app_json <- a$apps$create(
   raw_format = "JSON"
 )
 ```
-
 
 If you opt for `file_path` parameter instead, you should provide a path to a
 file containing the raw CWL for the app (`JSON` or `YAML`).
@@ -1267,15 +1289,28 @@ my_app$reload()
 
 # Tasks
 
+All task related operations are grouped under `Tasks` class within 
+authentication object, which also inherits `Resource` class and implements 
+`query()`, `get()` and `delete()` operations for listing tasks, fetching 
+single task and delete tasks. Besides these, users are able to create new
+tasks with `create()` operation from this `Auth$tasks` path.
+
+When you operate with single task, it is represented as an object of `Task` 
+class. 
+`Task` object contains all task information and additional methods that 
+can be executed directly on the object like running, aborting, cloning, 
+updating, deleting the task etc.
+
 ## List tasks
 
-You can list all tasks by calling the `tasks$query()` 
+As mentioned above, you can list your tasks by calling the `tasks$query()` 
 method from the authentication object. The method has many additional 
 query parameters that could allow you to search for tasks by specific 
 criteria such as: `status`, `parent`, `project`, `created_from`, `created_to`, 
 `started_from`, `started_to`, `ended_from`, `ended_to`, `order_by`, `order`, 
 `origin_id`.
 
+Let's list all tasks that were completed:
 ```{r}
 # Query all tasks
 a$tasks$query()
@@ -1286,14 +1321,20 @@ a$tasks$query(status = "COMPLETED", limit = 5)
 
 To list all the tasks in a project, use the following.
 ```{r}
-# a better way
-p <- a$projects$query(name = "demo")
-p$items[[1]]$list_tasks()
+# Find project and pass it in the project parameter
+p <- a$projects$query(id = "<project_id>")
+a$tasks$query(project = p)
 
-# alternatively
-p <- a$projects$query(name = "demo")
-a$tasks$query(project = p$items[[1]])
+# Alternatively you can list all tasks directly from the Project object
+p <- a$projects$get(id = "<project_id>")
+p$list_tasks()
 ```
+
+Similarly to previous query methods, here you will also get the `Collection`
+object where resulting tasks will be stored in the `items` fields and you can
+paginate through results. 
+
+<div align="right"><a href="#top">top</a></div>
 
 ## Get single task information
 
@@ -1301,27 +1342,26 @@ In order to retrieve information about a single task of interest, you can get
 it using the `tasks$get()` method using its id as parameter.
 
 ```{r}
-# Get volume
-a$volumes$get(id = "<task_id>")
+# Get specific task by ID
+a$tasks$get(id = "<task_id>")
 ```
+
+<div align="right"><a href="#top">top</a></div>
 
 ## Create a draft task
 
-To create a draft task, you can call the `tasks$create` method. You need to pass
-the following arguments:
+To create a new draft task, user can use the `tasks$create` method. 
+The method accepts various arguments like in which project to create a task,
+which app and its revision to use, task name, description, which inputs it 
+requires, batching options, execution settings etc.
 
-* name: The name for this task
-* description (optional): A description for this task
-* app: The app id or app object
-* inputs (optional): A list of inputs for this task
-
-We can create draft task by only defining project and which app will be run:
+However, we can create draft task by only defining project and which app 
+will be run, since all other parameters are optional:
 ```{r}
 # Create a draft task
 draft_task <- a$tasks$create(
-  project = "<project>",
-  app = "<app>",
-  inputs = "<inputs>"
+  project = "<project_object_or_id>",
+  app = "<app_object_or_id>"
 )
 ```
 
@@ -1339,8 +1379,8 @@ execution_settings <- list(
   "use_elastic_disk" = FALSE
 )
 task_exec_settings <- a$tasks$create(
-  project = "<project>",
-  app = "<app>",
+  project = "<project_object_or_id>",
+  app = "<app_object_or_id>",
   execution_settings = execution_settings,
   use_interruptible_instances = FALSE,
 )
@@ -1352,37 +1392,92 @@ which when set to `run` will start the analysis task when it's created.
 ```{r}
 # Create and run task
 task_exec_settings <- a$tasks$create(
-  project = "<project>",
-  app = "<app>",
+  project = "<project_object_or_id>",
+  app = "<app_object_or_id>",
   input = "<inputs>",
   action = "run"
 )
 ```
 
-## Create Batch task
+Usually, for most of the tasks, some inputs should be defined, which is 
+required by the app. Information about which inputs are required or optional to
+be set for the app is stored in its CWL. However, we have provided a utility 
+function `input_matrix()` that can parse this information and return the app
+input matrix for you. This way, users will know how to construct the list of
+inputs (how to name them and make them available within Files) when creating 
+the task.
+
+[PLACEHOLDER for example]
+
+Similarly, there is another utility operation to list expected outputs of the
+app/task. This information can be received by calling the `output_matrix()`
+method:
+
+[PLACEHOLDER for example]
+
+<div align="right"><a href="#top">top</a></div>
+
+## Create a batch task
 
 To run tasks in batch mode we have `batch`, `batch_input` and `batch_by` 
 parameters.
-Parameter `batch` is boolean and there we define whether to run batch task or 
-not, while `batch_input` and `batch_by` define input on which the task will be 
+Parameter `batch` defines whether to run batch task or not, 
+while `batch_input` and `batch_by` define input on which the task will be 
 batched and by which criteria respectively.
+
+In the example below it is given a form of creating a batch task for input file
+named 'reads' and with batch criteria set to be 'sample_id' metadata field:
 
 ```{r}
 # Create a draft task
 batch_task <- a$tasks$create(
-  project = "<project>",
-  app = "<app>",
-  inputs = "<inputs>",
+  project = "<project_object_or_id>",
+  app = "<app_object_or_id>",
+  inputs = list(
+    "reads" = "<reads_file_object_or_id>",
+    "reference" = "<reference_file_object_or_id>"
+  ),
   batch = TRUE,
-  batch_input = "<name_of_the_input>",
+  batch_input = "reads",
   batch_by = list(
     type = "CRITERIA",
-    criteria = list("metadata.<metadata-field-name>")
+    criteria = list("metadata.sample_id")
   )
 )
 ```
 
+<div align="right"><a href="#top">top</a></div>
+
 ## Task operations 
+
+Once you've fetched the `Task` object, you can execute various operations
+directly on it. 
+
+### Print task
+
+To print all task details call print method directly on the `Task` object:
+
+```{r} 
+# Print task
+draft_task$print()
+```
+
+```
+── Task ─────────────────────────────────────────────────────────────────────
+• batch: FALSE
+• end_time: 2023-11-22T16:58:16Z
+• start_time: 2023-11-22T16:51:35Z
+• executed_by: <username>
+• created_by: <username>
+• app: <username>/api-testing/rna-seq-alignment-star/0
+• project: <username>/api-testing
+• description: STAR test 2
+• status: COMPLETED
+• name: Star-alignment-task
+• id: 66f7a639-85fb-4594-aa93-d435ra37fb1b
+• href: https://api.sbgenomics.com/v2/tasks/66f7a639-85fb-4594-aa93-d435ra37fb1b
+```
+<div align="right"><a href="#top">top</a></div>
 
 ### Run task
 
@@ -1395,31 +1490,40 @@ allows the users to switch the batch mode off,
 `use_interruptible_instances` - This field can be TRUE or FALSE. Set this field 
 to TRUE to allow the use of spot instances.
 
+Only tasks with a `DRAFT` status may be run.
+
 ```{r} 
 # Run task
 draft_task$run(in_place = TRUE)
 ```
 
+<div align="right"><a href="#top">top</a></div>
+
 ### Abort task
 
-Users can abort the task execution by calling the abort() function. 
-It immediately stops the execution and puts it into ABORT status.
+Users can abort the task execution by calling the `abort()` function. 
+It immediately stops the execution and puts it into `ABORT` status.
+Only tasks whose status is `RUNNING` may be aborted.
 
 ```{r} 
 # Abort task
 draft_task$abort()
 ```
 
+<div align="right"><a href="#top">top</a></div>
+
 ### Clone task
 
-In order to copy some task - user can clone the specified task. 
-Once cloned, the task can either be in `draft` mode or immediately ran, by 
+In order to copy some task - user can clone it. 
+Once cloned, the task can either be in `DRAFT` mode or immediately run, by 
 setting the `run` parameter to `TRUE`.
 
 ```{r} 
 # Clone task
 cloned_task <- draft_task$clone_task()
 ```
+
+<div align="right"><a href="#top">top</a></div>
 
 ### Get execution details
 
@@ -1446,32 +1550,38 @@ provider
 details <- draft_task$get_execution_details()
 ```
 
+<div align="right"><a href="#top">top</a></div>
+
 ### List batch children
 
-This operation retrieves batch child tasks for this task if its a batch task.
-You can set some query parameters to narrow the search like `status`, 
-`created_from`, `created_to`, `started_from`, `started_to`, `ended_from`, 
-`ended_to`, `origin` and `order`.
+This operation retrieves child tasks for some batch task.
+It works just like `tasks$query()` function, so you can set query parameters 
+to narrow the search like `status`, `created_from`, `created_to`, 
+`started_from`, `started_to`, `ended_from`, `ended_to`, `origin` and `order`.
 
 ```{r} 
 # List batch children
 children_tasks <- batch_task$list_batch_children()
 ```
 
+<div align="right"><a href="#top">top</a></div>
+
 ### Update task
 
 Users can use `update()` method to change the details of the specified task, 
 including its name, description, and inputs. 
-Note that you can only modify tasks with a task status of DRAFT. 
-Tasks which are RUNNING, QUEUED, ABORTED, COMPLETED or FAILED cannot be modified
-in order to enable the reproducibility of analyses which have been queued for 
-execution or has initiated executing.
+Note that you can only modify tasks with a task status of `DRAFT`. 
+Tasks which are `RUNNING`, `QUEUED`, `ABORTED`, `COMPLETED` or `FAILED` cannot 
+be modified in order to enable the reproducibility of analyses which have 
+been queued for execution or has initiated executing.
+
 There are two things to note if you are editing a batch task:
 * If you want to change the input on which to batch and the batch criteria, 
 you need to specify the `batch_input` and `batch_by` parameters together in the 
 same function call.
 * If you want to disable batching on a task, set `batch` to false. Or, you can 
-also set the parameters `batch_input` and `batch_by` to NULL.
+also set the parameters `batch_input` and `batch_by` to `NULL`.
+
 ```{r} 
 # Update task
 draft_task$update(
@@ -1480,31 +1590,42 @@ draft_task$update(
     type = "CRITERIA",
     criteria = list("metadata.diagnosis")
   ),
-  inputs = list("in_reads" = "<some-file-object>")
+  inputs = list("in_reads" = "<some_other_file_object_or_id>")
 )
 ```
+
+<div align="right"><a href="#top">top</a></div>
 
 ### Rerun task
 
 Users can also rerun the task which will actually clone the original task for 
 them and start the execution immediately. 
+
 ```{r} 
 # Rerun task
 draft_task$rerun()
 ```
 
+<div align="right"><a href="#top">top</a></div>
+
 ### Reload task
 
-In order to refresh the task object and get the up to date info about its status, you can always call the `reload()` function:
+In order to refresh the `Task` object and get the up to date info about its 
+status, you can always call the `reload()` function:
 
 ```{r}
 draft_task$reload()
 ```
 
+<div align="right"><a href="#top">top</a></div>
+
 ### Delete task
 
-Lastly, the task can be deleted using `delete()` method.
+Lastly, the task can be deleted using `delete()` method directly on the `Task`
+object too:
 ```{r} 
 # Delete task
 draft_task$delete()
 ```
+
+<div align="right"><a href="#top">top</a></div>
