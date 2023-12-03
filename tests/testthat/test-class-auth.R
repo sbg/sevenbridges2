@@ -68,20 +68,17 @@ testthat::test_that("Init authentication works", {
   expected_error <- "`platform` and `url` cannot be set simultaneously"
   testthat::expect_equal(err$message, expected_error)
 
-  # Check of the initialization method throws an error if neither of
-  # those two (platform and url) are provided
-  err <- testthat::expect_error(
-    suppressMessages(
-      sevenbridges2::Auth$new(
-        from = "direct",
-        platform = NULL,
-        token = test_token,
-        url = NULL
-      )
-    )
+  # Check of the initialization method throws no error if neither of
+  # those two (platform and url) are provided, because default aws-us is used
+  req <- testthat::expect_message(
+    sevenbridges2::Auth$new(
+      from = "direct",
+      platform = NULL,
+      token = test_token,
+      url = NULL
+    ),
+    "Using platform: aws-us"
   )
-  expected_error <- "`platform` and `url` are not set, please, set one of them."
-  testthat::expect_equal(err$message, expected_error)
 
   # Check error message when wrong platform name is provided
   err <- testthat::expect_error(
