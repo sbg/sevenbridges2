@@ -483,6 +483,18 @@ my_files <- a$files$query(
 
 <div align="right"><a href="#top">top</a></div>
 
+### List public data
+
+To list publicly available files on Seven Bridges Platform, set the project
+parameter to `admin/sbg-public-data`.
+
+```{r}
+# Query public files
+public_files <- a$files$query(project = "admin/sbg-public-data")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
 ## Get single file/folder
 
 To return specific file or folder, knowing their ID, same as for other 
