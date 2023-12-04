@@ -95,6 +95,7 @@ Volumes <- R6::R6Class(
       # nocov start
       res <- super$delete(
         id = id,
+        advance_access = TRUE,
         ...
       )
 
