@@ -17,7 +17,8 @@ Volumes <- R6::R6Class(
     URL = list(
       "query" = "storage/volumes",
       "get" = "storage/volumes/{id}",
-      "create" = "storage/volumes"
+      "create" = "storage/volumes",
+      "delete" = "storage/volumes"
     ),
 
     # Initialize Volumes object ----------------------------------------------
@@ -77,12 +78,30 @@ Volumes <- R6::R6Class(
     }, # nocov end
 
     # Delete volume -------------------------------------------------------
-    #' @description Please, use `delete()` operation on the exact Volume object.
+    #' @description This call deletes a volume you've created to refer to
+    #' storage on Amazon Web Services or Google Cloud Storage. To be able to
+    #' delete a volume, you first need to deactivate it and then delete all
+    #' files on the Platform that were previously imported from the volume.
     #'
-    #' @importFrom rlang inform
-    delete = function() {
-      rlang::inform("Deleting volumes is possible to perform on the specific instance of class Volume.") # nolint
-    },
+    #' Volumes are specified by their IDs, which you can obtain by using
+    #' \code{\link{Volumes$query()}} to list files or by getting a single file
+    #' using \code{\link{Volumes$get()}}.
+    #'
+    #' @param volume \code{\link{Volume}} object or volume ID.
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #' as 'fields', etc.
+    delete = function(volume, ...) {
+      id <- check_and_transform_id(volume, "Volume")
+      # nocov start
+      res <- super$delete(
+        id = id,
+        ...
+      )
+
+      rlang::inform(
+        message = glue::glue("Volume {id} has been deleted.")
+      )
+    }, # nocov end
 
     # Create new AWS Volume (IAM User type authentication type) ---------------
     #' @description Create new volume to connect to your s3 bucket on AWS cloud.

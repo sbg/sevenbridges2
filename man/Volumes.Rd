@@ -100,11 +100,28 @@ for a volume by making the call to list all volumes you've registered.}
 \if{html}{\out{<a id="method-Volumes-delete"></a>}}
 \if{latex}{\out{\hypertarget{method-Volumes-delete}{}}}
 \subsection{Method \code{delete()}}{
-Please, use \code{delete()} operation on the exact Volume object.
+This call deletes a volume you've created to refer to
+storage on Amazon Web Services or Google Cloud Storage. To be able to
+delete a volume, you first need to deactivate it and then delete all
+files on the Platform that were previously imported from the volume.
+
+Volumes are specified by their IDs, which you can obtain by using
+\code{\link{Volumes$query()}} to list files or by getting a single file
+using \code{\link{Volumes$get()}}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Volumes$delete()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Volumes$delete(volume, ...)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{volume}}{\code{\link{Volume}} object or volume ID.}
+
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+as 'fields', etc.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volumes-create_s3_using_iam_user"></a>}}
