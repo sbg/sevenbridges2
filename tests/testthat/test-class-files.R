@@ -69,7 +69,7 @@ test_that("Files query() throws error when expected", {
   # Query fails when name param is invalid
   testthat::expect_error(
     do.call(setup_files_obj$query, test_bad_name),
-    regexp = "Assertion on 'name' failed: Must be of type 'string' (or 'NULL'), not 'double'.", # nolint
+    regexp = "Assertion on 'name' failed: Must be of type 'character' (or 'NULL'), not 'double'.", # nolint
     fixed = TRUE
   )
 

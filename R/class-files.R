@@ -59,7 +59,7 @@ Files <- R6::R6Class(
     #'  folder, within the project to which the folder belongs.
     #'  If project is used, the call will list the content at the root of
     #'  the project's files.
-    #' @param name Name of the file. List file with this name. Note that the
+    #' @param name Name of the file. List files with this name. Note that the
     #'  name must be an exact complete string for the results to match.
     #'  Multiple names can be represented as a vector.
     #' @param metadata List file with this metadata field values. List only
@@ -94,10 +94,17 @@ Files <- R6::R6Class(
                      offset = getOption("sevenbridges2")$offset,
                      ...) {
       # Check input parameters
-      checkmate::assert_string(name, null.ok = TRUE)
+      if (!is_missing(name)) {
+        checkmate::assert_character(name, null.ok = TRUE)
+        # Transform into a list with name 'name'
+        name_list <- list("name" = lapply(name, c))
+        name <- transform_multiple_vals(name_list)
+      }
       if (!is_missing(metadata)) {
         check_metadata(metadata)
-        metadata <- transform_metadata(metadata)
+        metadata_names <- paste0("metadata.", names(metadata))
+        names(metadata) <- metadata_names
+        metadata <- transform_multiple_vals(metadata)
       }
       if (!is_missing(origin)) {
         origin_task_id <-
@@ -105,7 +112,12 @@ Files <- R6::R6Class(
       } else {
         origin_task_id <- NULL
       }
-      checkmate::assert_character(tag, null.ok = TRUE)
+      if (!is_missing(tag)) {
+        checkmate::assert_character(tag, null.ok = TRUE)
+        # Transform into a list with name 'tag'
+        tag_list <- list("tag" = lapply(tag, c))
+        tag <- transform_multiple_vals(tag_list)
+      }
 
       # Check project and parent parameters
       if (is_missing(parent) && is_missing(project)) {
@@ -124,16 +136,16 @@ Files <- R6::R6Class(
         parent <- check_and_transform_id(parent, "File")
       }
       # nocov start
-      params_list <- append(
+      params_list <- c(
         list(
           project = project,
           parent = parent,
-          name = name,
           origin.task = origin_task_id,
-          tag = tag,
           limit = limit,
           offset = offset
         ),
+        name,
+        tag,
         metadata
       )
 
