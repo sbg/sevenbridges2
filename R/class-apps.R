@@ -50,8 +50,12 @@ Apps <- R6::R6Class(
     #' @param offset The zero-based starting index in the entire collection
     #'  of the first item to return. The default value is `0`.
     #'  This is a pagination-specific attribute.
-    #' @param ... Other arguments that can be passed to core `api()` function
-    #'  like other query parameters or 'fields', etc.
+    #' @param fields Selector specifying a subset of fields to include in the
+    #'  response. For querying apps it is set to return all fields except 'raw'
+    #'  which stores CWL in form of a list. Please, be careful when setting to
+    #'  return all fields, since the execution of this API request could be
+    #'  time-consuming.
+    #' @param ... Other arguments that can be passed to core `api()` function.
     #'
     #' @importFrom checkmate assert_list
     #'
@@ -62,6 +66,7 @@ Apps <- R6::R6Class(
                      id = NULL,
                      limit = getOption("sevenbridges2")$limit,
                      offset = getOption("sevenbridges2")$offset,
+                     fields = "!raw",
                      ...) {
       if (!is_missing(project)) {
         project <-
@@ -90,6 +95,7 @@ Apps <- R6::R6Class(
         id = id,
         offset = offset,
         limit = limit,
+        fields = fields,
         ...
       )
 

@@ -16,6 +16,7 @@ App <- R6::R6Class(
     #' @field URL List of URL endpoints for this resource.
     URL = list(
       "get" = "apps/{id}/{revision}",
+      "get_raw_cwl" = "apps/{self$id}/raw",
       "get_revision" = "apps/{self$id}/{revision}",
       "create_revision" = "apps/{self$id}/{revision}/raw",
       "copy" = "apps/{id}/actions/copy",
@@ -186,12 +187,52 @@ App <- R6::R6Class(
       # nocov end
     },
 
+    # Get App's raw CWL -----------------------------------------------------
+    #' @description Get raw CWL for an app.
+    #'
+    #' @details
+    #'  This call returns information about the specified app, as raw CWL.
+    #'  The call differs from the call to get details of an app by returning
+    #'  a JSON object that is the CWL, transformed into the R list. \cr
+    #'  The app should be one in a project that you can access.
+    #'  This could be an app that has been uploaded to the Seven Bridges
+    #'  Platform by a project member, or a publicly available app that has
+    #'  been copied to the project. \cr
+    #'  The response list will be stored in the 'raw' field of the app object.
+    #'
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
+    #'
+    #' @return List.
+    get_raw_cwl = function(...) {
+      # nocov start
+      path <- glue::glue(self$URL[["get_raw_cwl"]])
+
+      res <- sevenbridges2::api(
+        path = path,
+        method = "GET",
+        token = self$auth$get_token(),
+        base_url = self$auth$url,
+        ...
+      )
+
+      self$raw <- res
+      self$copy_of <- ifelse(!is.null(res$`sbg:copyOf`),
+        res$`sbg:copyOf`, NA
+      )
+      self$latest_revision <- ifelse(!is.null(res$`sbg:latestRevision`),
+        res$`sbg:latestRevision`, NA
+      )
+      res
+      # nocov end
+    },
+
     # Get App's revision -----------------------------------------------------
     #' @description Get app's revision.
     #'
     #' @details
-    #' This call allows you to obtain a particular revision of an
-    #' app, which is not necessarily the most recent version.
+    #'  This call allows you to obtain a particular revision of an
+    #'  app, which is not necessarily the most recent version.
     #'
     #' @param revision Revision of the app.
     #' @param in_place If `TRUE`, replace current app object with new for
@@ -332,11 +373,11 @@ App <- R6::R6Class(
     },
 
     # Synchronize Apps -------------------------------------------------------
-    #' @description Synchronize a copied app with its parent app
+    #' @description Synchronize a copied app with its parent app.
     #'
     #' @details
-    #' This call synchronizes a copied app with the source app from which it
-    #' has been copied.
+    #'  This call synchronizes a copied app with the source app from which it
+    #'  has been copied.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.

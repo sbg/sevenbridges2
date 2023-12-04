@@ -37,6 +37,7 @@ R6 Class representing a resource for managing apps.
 \item \href{#method-App-print}{\code{App$print()}}
 \item \href{#method-App-reload}{\code{App$reload()}}
 \item \href{#method-App-copy}{\code{App$copy()}}
+\item \href{#method-App-get_raw_cwl}{\code{App$get_raw_cwl()}}
 \item \href{#method-App-get_revision}{\code{App$get_revision()}}
 \item \href{#method-App-create_revision}{\code{App$create_revision()}}
 \item \href{#method-App-sync}{\code{App$sync()}}
@@ -140,6 +141,38 @@ Copied \code{\link{App}} object.
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-App-get_raw_cwl"></a>}}
+\if{latex}{\out{\hypertarget{method-App-get_raw_cwl}{}}}
+\subsection{Method \code{get_raw_cwl()}}{
+Get raw CWL for an app.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{App$get_raw_cwl(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+This call returns information about the specified app, as raw CWL.
+The call differs from the call to get details of an app by returning
+a JSON object that is the CWL, transformed into the R list. \cr
+The app should be one in a project that you can access.
+This could be an app that has been uploaded to the Seven Bridges
+Platform by a project member, or a publicly available app that has
+been copied to the project. \cr
+The response list will be stored in the 'raw' field of the app object.
+}
+
+\subsection{Returns}{
+List.
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-App-get_revision"></a>}}
 \if{latex}{\out{\hypertarget{method-App-get_revision}{}}}
 \subsection{Method \code{get_revision()}}{
@@ -228,7 +261,7 @@ More documentation about how to create the app via API can be found
 \if{html}{\out{<a id="method-App-sync"></a>}}
 \if{latex}{\out{\hypertarget{method-App-sync}{}}}
 \subsection{Method \code{sync()}}{
-Synchronize a copied app with its parent app
+Synchronize a copied app with its parent app.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App$sync(...)}\if{html}{\out{</div>}}
 }
