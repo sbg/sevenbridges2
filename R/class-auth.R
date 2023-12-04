@@ -137,6 +137,8 @@ Auth <- R6::R6Class(
     #'  authentication token (`FALSE`) or an access token from the
     #'  Seven Bridges single sign-on (`TRUE`)?
     #'
+    #' @importFrom rlang inform abort
+    #'
     #' @return `Auth` class object.
     initialize = function(from = c("direct", "env", "file"),
                           platform = NA,
@@ -174,11 +176,9 @@ Auth <- R6::R6Class(
           rlang::abort("`platform` and `url` cannot be set simultaneously")
         }
 
-        # Case 2: platform and url are both *not* provided
+        # Case 2: platform and url are both *not* provided, use default aws-us
         if (is_missing(platform) & is_missing(url)) {
-          # nolint start
-          rlang::abort("`platform` and `url` are not set, please, set one of them.")
-          # nolint end
+          platform <- "aws-us"
         }
 
         # Case 3: platform is provided, url is not provided
@@ -192,7 +192,7 @@ Auth <- R6::R6Class(
             rlang::abort("Platform does not exist, please check its spelling (case-sensitive)")
             # nolint end
           }
-          message("Using platform: ", self$platform)
+          rlang::inform(paste0("Using platform: ", self$platform))
         }
 
         # Case 4: platform is not provided, url is provided
