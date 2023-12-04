@@ -68,15 +68,23 @@ Projects <- R6::R6Class(
       checkmate::assert_string(name, null.ok = TRUE)
       checkmate::assert_string(owner, null.ok = TRUE)
       check_tags(tags)
+
       # nocov start
+      if (!is_missing(owner)) {
+        path <- glue::glue(self$URL[["query"]], "/", owner)
+      } else {
+        path <- self$URL[["query"]]
+      }
+
       res <- super$query(
-        path = self$URL[["query"]],
+        path = path,
         name = name,
         tags = tags,
         limit = limit,
         offset = offset,
         ...
       )
+
       res$items <- asProjectList(res, auth = self$auth)
 
       return(asCollection(res, auth = self$auth))
