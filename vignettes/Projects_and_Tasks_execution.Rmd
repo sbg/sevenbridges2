@@ -1,5 +1,5 @@
 ---
-title: "Reference details about Projects, Files, Apps and Tasks for Seven Bridges API R Client"
+title: "Projects and Tasks execution"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_document:
@@ -12,7 +12,7 @@ output:
     css: "sevenbridges.css"
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Reference details about Projects, Files, Apps and Tasks for Seven Bridges API R Client}
+  %\VignetteIndexEntry{Projects and Tasks execution}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -51,6 +51,7 @@ For full projects' information, you can access the `items` field in the
 `Collection` object and preview the list of projects.
 
 ```{r}
+# List and view your projects
 all_my_projects <- a$projects$query()
 View(all_my_projects$items)
 ```
@@ -59,6 +60,7 @@ If you want to list the projects owned by and accessible to a particular user,
 specify the `owner` argument as follows. 
 
 ```{r}
+# List projects of particular user
 a$projects$query(owner = "<username1>")
 a$projects$query(owner = "<username2>")
 ```
@@ -70,7 +72,7 @@ package supports _partial name matching_. Set `name` parameter in the `query()`
 method:
 
 ```{r}
-# want to return a project called
+# List projects which name contains 'demo'
 a$projects$query(name = "demo")
 ```
 
@@ -87,18 +89,18 @@ Since these fields cannot be passed to `query()` function as parameters, you can
 use the helper code below in order to perform such action:
 
 ```{r}
-# return all projects matching the name "wgs"
+# Return all projects matching the name "wgs"
 wgs_projects <- a$projects$query(name = "wgs")
 
-# filter by project creators
+# Filter by project creators
 creators <- sapply(wgs_projects$items, "[[", "created_by")
 wgs_projects$items[which(creators == "<some_username>")]
 
-# filter by project creation date
+# Filter by project creation date
 create_date <- as.Date(sapply(wgs_projects$items, "[[", "created_on"))
 wgs_projects$items[which(as.Date(create_date) < as.Date("2019-01-01"))]
 
-# filter by project modification date
+# Filter by project modification date
 modify_date <- as.Date(sapply(wgs_projects$items, "[[", "modified_on"))
 wgs_projects$items[which(as.Date(modify_date) < as.Date("2019-01-01"))]
 ```
@@ -121,6 +123,7 @@ the `create()` function documentation on `?Projects`.
 billing_groups <- a$billing_groups$query()
 billing_group <- a$billing_groups$get("<billing_id>")
 
+# Create project with name 'API Testing'
 a$projects$create(
   name = "API Testing", billing_group = billing_group,
   description = "Test for API"
@@ -143,6 +146,7 @@ in form of `<your_username_or_division>/<project's-short-name>`.
 This id can also be seen in the URL of the project on the UI. 
 
 ```{r}
+# Fetch previously created project
 p <- a$projects$get(id = "<your_username_or_division>/api-testing")
 ```
 
@@ -150,6 +154,7 @@ To print all details about the project, use `detailed_print()` method directly
 on the `Project` object:
 
 ```{r}
+# Print all project info
 p$detailed_print()
 ```
 
@@ -164,7 +169,7 @@ to delete:
 
 ```{r}
 # Delete project using Auth$projects path
-a$projects$delete(project = "<project_id>")
+a$projects$delete(project = "<project_object_or_id>")
 
 # Delete project directly from the project object
 p$delete()
@@ -200,6 +205,7 @@ If something changes in the project on the Platform UI, you can refresh your
 Project object to fetch the changes, by reloading it with:
 
 ```{r}
+# Reload project object
 p$reload()
 ```
 
@@ -217,6 +223,7 @@ For each member, the response is wrapped into a Member class object containing:
 - The member's permissions in the specified project.
 
 ```{r}
+# List project members
 p$list_members()
 ```
 
@@ -238,6 +245,7 @@ Note: `read` is implicit and set by default. You can not be a project member
 without having `read` permissions.
 
 ```{r}
+# Add project member
 p$add_member(
   user = "<username_of_a_user_you_want_to_add>",
   permissions = list(write = TRUE, execute = TRUE)
@@ -270,6 +278,7 @@ the project. For example, you may want to give `write` permissions to a
 project member:
 
 ```{r}
+# Modify project member's permissions
 p$modify_member_permissions(
   user = "<username_of_a_user_of_interest>",
   permissions = list(copy = TRUE)
@@ -284,6 +293,7 @@ On the other hand, you can delete a member from the project in a similar way
 with `remove_member()` operation:
 
 ```{r}
+# Remove project member
 p$remove_member(user = "<username_of_a_user_you_want_to_remove>")
 ```
 
@@ -295,6 +305,7 @@ In order to list all files and folders (special type of files) within
 specified project object, you can use the Project's `list_files()` method. 
 
 ```{r}
+# List project files
 p$list_files()
 ```
 
@@ -310,6 +321,7 @@ using the method `create_folder()`. You would have to specify the folder name
 which should not start with '__' or contain spaces. 
 
 ```{r}
+# Create folder within project files
 p$create_folder(name = "My_new_folder")
 ```
 
@@ -322,6 +334,7 @@ therefore you are able to get this folder as File object too using
 `get_root_folder()`.
 
 ```{r}
+# Get project's root folder
 p$get_root_folder()
 ```
 
@@ -383,7 +396,7 @@ The result will be a `Collection` class containing list of File objects in
 `items` field.
 ```{r}
 # List files in the project root directory
-api_testing_files <- a$files$query(project = "<username>/api-testing")
+api_testing_files <- a$files$query(project = "project_object_or_id")
 api_testing_files
 ```
 ```
@@ -395,7 +408,7 @@ api_testing_files
 • url: NA
 • modified_on: 2023-04-15T08:54:32Z
 • created_on: 2023-04-11T10:04:50Z
-• project: <username>/api-testing
+• project: <username_or_division>/api-testing
 • size: 56 bytes
 • name: Drop-seq_small_example.bam
 • id: 643530c28345522d97313d17
@@ -409,7 +422,7 @@ api_testing_files
 • url: NA
 • modified_on: 2023-04-11T10:29:13Z
 • created_on: 2023-04-11T10:29:13Z
-• project: <username>/api-testing
+• project: <username_or_division>/api-testing
 • size: 56 bytes
 • name: G20479.HCC1143.2_1Mreads.tar.gz
 • id: 6435367943r4456ecb66cfb2
@@ -503,7 +516,7 @@ File id can also be extracted from the URL on the Platform's visual interface.
 
 ```{r}
 # Get single File object by ID
-a$files$get(id = "6435367997d9446ecb66cfb2")
+a$files$get(id = "<file_id>")
 ```
 ```
 ── File ────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -512,7 +525,7 @@ a$files$get(id = "6435367997d9446ecb66cfb2")
 • url: NA
 • modified_on: 2023-04-11T10:29:13Z
 • created_on: 2023-04-11T10:29:13Z
-• project: <username>/api-testing
+• project: <username_or_division>/api-testing
 • size: 56 bytes
 • name: G20479.HCC1143.2_1Mreads.tar.gz
 • id: 6435367997d934334fb66cfb2
@@ -523,11 +536,12 @@ a$files$get(id = "6435367997d9446ecb66cfb2")
 ## Delete file
 
 The `delete` action only works for one file at a time. It can be called from 
-`Auth$files` path and accepts the ID of the file you want to delete. 
+`Auth$files` path and accepts the `File` object or ID of the file you want to 
+delete. 
 
 ```{r}
-# Delete file by id
-a$files$delete(id = "<file_id>")
+# Delete file
+a$files$delete(file = "<file_object_or_id>")
 ```
 
 <div align="right"><a href="#top">top</a></div>
@@ -549,7 +563,7 @@ file2 <- a$files$get(id = "6435367997d9446ecb66cgr2")
 # Copy files to the project
 a$files$copy(
   files = list(file1, file2),
-  destination_project = "<username>/api-testing"
+  destination_project = "<username_or_division>/api-testing"
 )
 ```
 
@@ -568,7 +582,7 @@ destination folder (as the `parent` parameter), not both.
 # Option 1 - Using the project parameter
 
 # Option 1.a (providing a Project object as project parameter)
-my_project <- a$projects$get(project = "<username>/api-testing")
+my_project <- a$projects$get(project = "<username_or_division>/api-testing")
 demo_folder <- a$files$create_folder(
   name = "my_new_folder",
   project = my_project
@@ -577,7 +591,7 @@ demo_folder <- a$files$create_folder(
 # Option 1.b (providing a project's ID as project parameter)
 demo_folder <- a$files$create_folder(
   name = "my_new_folder",
-  project = "<username>/api-testing"
+  project = "<username_or_division>/api-testing"
 )
 ```
 
@@ -628,7 +642,7 @@ demo_file$print()
 • url: NA
 • modified_on: 2023-04-15T08:54:32Z
 • created_on: 2023-04-11T10:04:50Z
-• project: <username>/api-testing
+• project: <username_or_division>/api-testing
 • size: 56 bytes
 • name: Drop-seq_small_example.bam
 • id: 643530c286c9522d9222213d17
@@ -649,7 +663,7 @@ demo_file$detailed_print()
 • url: NA
 • modified_on: 2023-04-15T08:54:32Z
 • created_on: 2023-04-11T10:04:50Z
-• project: <username>/api-testing
+• project: <username_or_division>/api-testing
 • size: 56 bytes
 • name: Drop-seq_small_example.bam
 • id: 643530c286c9522d9222213d17
@@ -729,7 +743,7 @@ newly copied file.
 ```{r}
 # Copy file to a new project and set a new name
 demo_file$copy_to(
-  project = "<destination_project_object>",
+  project = "<destination_project_object_or_id>",
   name = "<new_name>"
 )
 ```
@@ -807,7 +821,27 @@ argument.
 
 ```{r}
 # Move file to a folder
-demo_file$move_to_folder(parent = "<parent_id>", name = "Moved_file.txt")
+demo_file$move_to_folder(
+  parent = "<parent_file_object_or_id>",
+  name = "Moved_file.txt"
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Download a file
+
+`File` object has a `download()` method, which allows you to download that file
+to your local computer. You should provide the `directory_path` parameter, 
+which specifies the destination directory to which your file will be 
+downloaded. By default, this parameter is set to your current working
+directory. You can also set the new name for your resulting (downloaded)
+file by providing the `filename` parameter. Otherwise, the default name 
+(the one stored in the `name` field of your `File` object) will be used.
+
+```{r}
+# Download a file
+demo_file$download(directory_path = "/path/to/your/destination/folder")
 ```
 
 <div align="right"><a href="#top">top</a></div>
@@ -835,6 +869,7 @@ Sometimes, it's convenient to get the parent folder ID for a file or folder:
 This information is stored on the `File` object in `parent` field. 
 
 ```{r}
+# Get file's parent directory
 demo_file$parent
 ```
 
@@ -845,6 +880,7 @@ This is essentially the root folder ID. Alternatively, to get the parent folder
 as an object, use:
 
 ```{r}
+# Get folder object
 parent_folder <- a$files$get(demo_file$parent)
 ```
 
@@ -873,6 +909,7 @@ To keep your local `File` object up to date with the file on the platform,
 you can always call the `reload()` function:
 
 ```{r}
+# Reload file/folder objects
 demo_file$reload()
 demo_folder$reload()
 ```
@@ -902,12 +939,12 @@ separate method for this purpose you can call on the App object
 
 ## List apps
 
-You can list all apps available to by calling the `apps$query()` method from
+You can list all apps available to you by calling the `apps$query()` method from
 the authentication object. The method has several parameters that allow you to
 search for apps in various places and by specified search terms.
 
 Note that you can see all of the publicly available apps on the Seven Bridges
-Platform by setting the the `visibility` parameter to `public`. If you omit this
+Platform by setting the `visibility` parameter to `public`. If you omit this
 parameter (it will use the default value `private`), and you will see all your
 private apps, i.e. those in projects that you can access. Learn more about
 public apps in our documentation.
@@ -993,7 +1030,7 @@ are identical to those presented in `apps$query()` function.
 
 ```{r}
 # Get project
-p <- a$projects$get("<username>/api-testing")
+p <- a$projects$get("<username_or_division>/api-testing")
 
 # List apps in specified project
 p$list_apps(limit = 10)
@@ -1114,7 +1151,7 @@ The app can also be directly created on a `Project` object by invoking
 file_json <- jsonlite::read_json("/path/to/your/raw_cwl_in_json_format.cwl")
 
 # Get project
-p <- a$projects$get("<username>/api-testing")
+p <- a$projects$get("<username_or_division>/api-testing")
 
 # Create app from raw CWL (JSON) in specified project
 p$create_app(
@@ -1132,6 +1169,7 @@ Once you've fetched the `App` object, you'll see that it also has various useful
 methods within itself.
 
 The following actions are available for an App object:
+
 * print
 * get_raw_cwl
 * get_revision
@@ -1147,7 +1185,7 @@ The `print` method prints the app details to the console.
 
 ```{r}
 # Fetch first app from the project's apps
-p <- a$projects$get("<username>/api-testing")
+p <- a$projects$get("<username_or_division>/api-testing")
 my_apps <- p$list_apps()
 my_new_app <- my_apps$items[[1]]
 
@@ -1156,15 +1194,12 @@ my_new_app$print()
 ```
 
 ```
-
 ── App ──────────────────────────────────────────────────────────────────────────────────────────────────────
-• latest_revision: 1
-• copy_of: admin/sbg-public-data/bcftools-call-1-15-1/0
 • revision: 0
 • name: BCFtools Call
-• project: <username>/api-testing
-• id: <username>/api-testing/new_app_json
-• href: https://api.sbgenomics.com/v2/apps/<username>/api-testing/new_app_json/0
+• project: <username_or_division>/api-testing
+• id: <username_or_division>/api-testing/new_app_json
+• href: https://api.sbgenomics.com/v2/apps/<username_or_division>/api-testing/new_app_json/0
 ```
 <div align="right"><a href="#top">top</a></div>
 
@@ -1183,7 +1218,8 @@ will be replaced with new one for specified app revision. By default, this
 parameter is set to `FALSE`.
 
 ```{r}
-my_app <- a$apps$get(id = "<username>/api-testing/new_app_json/0")
+# Get app's revision
+my_app <- a$apps$get(id = "<username_or_division>/api-testing/new_app_json/0")
 my_app$print()
 ```
 
@@ -1193,9 +1229,9 @@ my_app$print()
 • copy_of: admin/sbg-public-data/bcftools-call-1-15-1/0
 • revision: 0
 • name: BCFtools Call
-• project: <username>/api-testing
-• id: <username>/api-testing/new_app_json
-• href: https://api.sbgenomics.com/v2/apps/<username>/api-testing/new_app_json/0
+• project: <username_or_division>/api-testing
+• id: <username_or_division>/api-testing/new_app_json
+• href: https://api.sbgenomics.com/v2/apps/<username_or_division>/api-testing/new_app_json/0
 ```
 
 ```{r}
@@ -1214,9 +1250,9 @@ my_app$get_revision(revision = 1, in_place = TRUE)
 • copy_of: admin/sbg-public-data/bcftools-call-1-15-1/0
 • revision: 1
 • name: BCFtools Call
-• project: <username>/api-testing
-• id: <username>/api-testing/new_app_json
-• href: https://api.sbgenomics.com/v2/apps/<username>/api-testing/new_app_json/1
+• project: <username_or_division>/api-testing
+• id: <username_or_division>/api-testing/new_app_json
+• href: https://api.sbgenomics.com/v2/apps/<username_or_division>/api-testing/new_app_json/1
 ```
 <div align="right"><a href="#top">top</a></div>
 
@@ -1244,6 +1280,7 @@ Using `in_place` parameter will overwrite current app object with new app's
 revision information.
 
 ```{r}
+# Create app's revision from file
 raw_cwl_as_list <- jsonlite::read_json(
   path = "/path/to/your/raw_cwl_in_json_format.cwl"
 )
@@ -1284,6 +1321,7 @@ platform:
 Learn more about copy strategies in our public [API documentation](https://docs.sevenbridges.com/reference/copy-an-app).
 
 ```{r}
+# Copy app
 copied_app <- my_app$copy(
   project = "<destination_project_object_or_its_ID>",
   name = "New_app_name"
@@ -1310,6 +1348,7 @@ copied_app$sync()
 To keep your local `App` object up to date with the app on the platform, you can always call the `reload()` function:
 
 ```{r}
+# Reload app object
 my_app$reload()
 ```
 
@@ -1498,8 +1537,8 @@ draft_task$print()
 • start_time: 2023-11-22T16:51:35Z
 • executed_by: <username>
 • created_by: <username>
-• app: <username>/api-testing/rna-seq-alignment-star/0
-• project: <username>/api-testing
+• app: <username_or_division>/api-testing/rna-seq-alignment-star/0
+• project: <username_or_division>/api-testing
 • description: STAR test 2
 • status: COMPLETED
 • name: Star-alignment-task
@@ -1564,6 +1603,7 @@ carried out in a task. The information returned by this call is broadly
 similar to that which can be found in the task stats and logs provided
 on the Platform.
 The task execution details include the following information:
+
 *  The name of the command line job that executed
 *  The start time of the job
 *  End time of the job (if it completed)
@@ -1643,6 +1683,7 @@ In order to refresh the `Task` object and get the up to date info about its
 status, you can always call the `reload()` function:
 
 ```{r}
+# Reload task object
 draft_task$reload()
 ```
 
@@ -1652,6 +1693,7 @@ draft_task$reload()
 
 Lastly, the task can be deleted using `delete()` method directly on the `Task`
 object too:
+
 ```{r} 
 # Delete task
 draft_task$delete()
