@@ -1,5 +1,5 @@
 ---
-title: "Files upload and Volumes in Seven Bridges API R Client"
+title: "Files upload and Volumes"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_document:
@@ -12,7 +12,7 @@ output:
     css: "sevenbridges.css"
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Files upload and download and Volumes in Seven Bridges API R Client}
+  %\VignetteIndexEntry{Files upload and Volumes}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -233,7 +233,10 @@ enabled Seven Bridges to read from (and, optionally, to write to).
 Currently, volumes may be created using two types of cloud storage repository: 
 Amazon Web Services' (AWS) S3 buckets and Google Cloud Storage (GCS) buckets.
 
-A volume enables you to treat the cloud repository associated with it as external storage. You can 'import' files from the volume to your Seven Bridges environment to use them as inputs for computation. Similarly, you can write files from the Seven Bridges environment to your cloud storage by 'exporting' them to your volume.
+A volume enables you to treat the cloud repository associated with it as 
+external storage. You can 'import' files from the volume to your Seven Bridges environment to use them as inputs for computation. Similarly, you can write 
+files from the Seven Bridges environment to your cloud storage by 'exporting' 
+them to your volume.
 
 Learn more about volumes on the [Seven Bridges Platform](https://docs.sevenbridges.com/docs/connecting-cloud-storage-overview), [CGC](http://docs.cancergenomicscloud.org/docs/connect-cloud-storage-overview),
 [BDC](https://sb-biodatacatalyst.readme.io/docs/connect-cloud-storage-overview)
@@ -424,6 +427,7 @@ ali_volume_from_path <- a$volumes$create_ali_oss(
 When you've created a new volume, you can notice it is represented as an object
 of class `Volume`. To preview all volume information, use `print()` method:
 ```{r}
+# Print volume info
 print(aws_iam_user_volume)
 ```
 
@@ -450,6 +454,7 @@ execute:
 You can update volume's `description`, `access_mode` and `service` information. 
 Please, consult our [API documentation](https://docs.sevenbridges.com/reference/update-a-volume-v2) 
 on how to use service parameter. 
+
 ```{r}
 # If the volume is created with RO access mode and RO credential parameters,
 # and now we want to change it to RW, we should also set proper credential
@@ -476,6 +481,7 @@ To keep your local `Volume` object up to date with the volume on the platform,
 you can always call the `reload()` function:
 
 ```{r}
+# Reload volume object
 aws_iam_user_volume$reload()
 ```
 
@@ -612,45 +618,6 @@ volume_folder_content <- volume_folder$list_contents()
 
 <div align="right"><a href="#top">top</a></div>
 
-### Deactivate and reactivate the volume
-
-Once deactivated, you cannot import from, export to, or browse within a volume. 
-As such, the content of the files imported from this volume will no longer be 
-accessible on the Platform. However, you can update the volume and manage 
-members. 
-Note that you cannot deactivate the volume if you have running imports or 
-exports unless you force the operation using the query parameter `force = TRUE`.
-
-**Note** that to delete a volume, first you must deactivate it and delete all 
-files which have been imported from the volume to the Platform.
-
-To reactivate the volume, just use the `reactivate()` function.
-
-```{r}
-# Deactivate volume
-aws_iam_user_volume$deactivate()
-
-# Reactivate volume
-aws_iam_user_volume$reactivate()
-```
-
-<div align="right"><a href="#top">top</a></div>
-
-### Delete volume
-
-To be able to delete a volume, you first need to deactivate it and then delete 
-all files on the Platform that were previously imported from the volume.
-
-```{r}
-# Deactivate volume
-aws_iam_user_volume$deactivate()
-
-# Delete volume
-aws_iam_user_volume$delete()
-```
-
-<div align="right"><a href="#top">top</a></div>
-
 ### List volume members
 
 In order to fetch members of one volume or a specific member by its username, 
@@ -715,6 +682,45 @@ aws_iam_user_volume$modify_member_permissions(
   user = "<member-username>",
   permissions = list(write = TRUE)
 )
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Deactivate and reactivate the volume
+
+Once deactivated, you cannot import from, export to, or browse within a volume. 
+As such, the content of the files imported from this volume will no longer be 
+accessible on the Platform. However, you can update the volume and manage 
+members. 
+Note that you cannot deactivate the volume if you have running imports or 
+exports unless you force the operation using the query parameter `force = TRUE`.
+
+**Note** that to delete a volume, first you must deactivate it and delete all 
+files which have been imported from the volume to the Platform.
+
+To reactivate the volume, just use the `reactivate()` function.
+
+```{r}
+# Deactivate volume
+aws_iam_user_volume$deactivate()
+
+# Reactivate volume
+aws_iam_user_volume$reactivate()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Delete volume
+
+To be able to delete a volume, you first need to deactivate it and then delete 
+all files on the Platform that were previously imported from the volume.
+
+```{r}
+# Deactivate volume
+aws_iam_user_volume$deactivate()
+
+# Delete volume
+aws_iam_user_volume$delete()
 ```
 
 <div align="right"><a href="#top">top</a></div>
@@ -863,6 +869,7 @@ In order to refresh the import job object and get the up to date info
 about its state, you can always call the `reload()` function:
 
 ```{r}
+# Reload import object
 imp_job1$reload()
 ```
 
@@ -887,6 +894,7 @@ Users are able to preview and query all export jobs they've created when they
 were trying to export their files from the Platform into some cloud bucket using volumes. 
 The output is a `Collection` object storing list of exports in its `items`
 field and with pagination options.
+
 ```{r}
 # List exports
 all_exports <- a$exports$query()
@@ -1006,6 +1014,7 @@ In order to refresh the export job object and get the up to date info about
 its state, you can always call the `reload()` function:
 
 ```{r}
+# Reload export object
 exp_job1$reload()
 ```
 
