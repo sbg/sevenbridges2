@@ -1,0 +1,595 @@
+---
+title: "Authentication and Billing"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    number_sections: false
+    theme: "flatly"
+    highlight: "textmate"
+    css: "sevenbridges.css"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Authentication and Billing}
+  %\VignetteEncoding{UTF-8}
+---
+
+<a name="top"></a>
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+# Authentication
+
+Before you can interact with the API, you need to construct an `Auth` object 
+which stores the following information:
+
+- Your authentication token. This is used to authenticate your credentials 
+with the API. Learn more about obtaining your authentication token on the 
+[Seven Bridges Platform](https://docs.sevenbridges.com/v1.0/docs/get-your-authentication-token), 
+[Cancer Genomics Cloud](http://docs.cancergenomicscloud.org/v1.0/docs/get-your-authentication-token),
+[BioData Catalyst (BDC)](https://sb-biodatacatalyst.readme.io/docs/get-your-authentication-token#find-your-authentication-token) and [Cavatica](https://docs.cavatica.org/docs/get-your-authentication-token#your-authentication-token).
+
+The approach for obtaining the authentication token also applies to the other 
+Seven Bridges platforms.
+
+- The path for the API (base URL).
+- The platform name you are using. This is an optional field, as the base URL 
+of the API ultimately decides where the API calls will be sent to. 
+This field will only be blank when the URL was directly provided, and the 
+platform name could not be inferred from that URL.
+
+The general authentication logic for `Auth$new()` is as follows:
+
+1. The package will use the direct authentication method if `from` parameter is 
+not specified explicitly or specified as `from = "direct"`.
+2. The package will load the authentication information from environment 
+variables when `from = "env"`, or user configuration file when `from = "file"`.
+
+## Direct authentication
+
+To use direct authentication, users need to specify one of `platform` or `url`,
+with the corresponding `token`. Examples of direct authentication:
+
+```{r}
+# Direct authentication with setting platform parameter
+a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+)
+```
+
+The above will use the Seven Bridges Platform on AWS (US).
+
+```{r}
+# Direct authentication with setting url parameter
+a <- Auth$new(
+  token = "<your_token>",
+  url = "https://api.sb.biodatacatalyst.nhlbi.nih.gov/v2/"
+)
+```
+
+The above will use the specified `url` as the base URL for the API calls. 
+In this example, the `url` points to the BioData Catalyst Platform powered by 
+Seven Bridges.
+
+```{r}
+# Direct authentication on default aws-us platform
+a <- Auth$new(token = "<your_token>")
+```
+
+The above will use the Seven Bridges Platform on AWS environment 
+since no `platform` nor `url` were explicitly specified.
+
+***Note:*** `platform` and `url` should not be specified at the same time.
+
+<div align="right"><a href="#top">top</a></div>
+
+## Authentication via system environment variables
+
+The R API client supports reading authentication information stored in
+system environment variables.
+
+To set the two environment variables in your system, you could use
+the function `sbg_set_env()`. For example:
+
+```{r}
+# Set environment variables
+sevenbridges2:::sbg_set_env(
+  url = "https://cgc-api.sbgenomics.com/v2",
+  token = "<your_token>"
+)
+```
+
+See if the environment variables are correctly set:
+
+```{r}
+# Check environment variables
+sevenbridges2:::sbg_get_env("SB_API_ENDPOINT")
+## "https://cgc-api.sbgenomics.com/v2"
+
+sevenbridges2:::sbg_get_env("SB_AUTH_TOKEN")
+## "<your_token>"
+```
+
+Now you can create the `Auth` object:
+
+```{r}
+# Authenticate using environment variables
+a <- Auth$new(from = "env")
+```
+
+To unset the two environment variables:
+
+```{r}
+# Unset environment variables
+Sys.unsetenv("SB_API_ENDPOINT")
+Sys.unsetenv("SB_AUTH_TOKEN")
+```
+
+If you need to be logged into multiple accounts at the same time it is 
+essential that you provide environment variables for each of the accounts. 
+Of course, these variables must have different names.
+
+If you do not have pre-set environment variables, you can create them in the 
+following way:
+
+```{r}
+# Set environment variables for the first account
+sevenbridges2:::sbg_set_env(
+  url = "https://api.sbgenomics.com/v2",
+  token = "<your_token>",
+  sysenv_url_name = "account_1_url",
+  sysenv_token_name = "account_1_token"
+)
+
+# Set environment variables for the second account
+sevenbridges2:::sbg_set_env(
+  url = "https://api.sb.biodatacatalyst.nhlbi.nih.gov/v2/",
+  token = "<your_token>",
+  sysenv_url_name = "account_2_url",
+  sysenv_token_name = "account_2_token"
+)
+```
+
+Now you are ready to create authentication object for these two accounts:
+
+```{r}
+# Authenticate using first account
+a <- sevenbridges2::Auth$new(
+  from = "env",
+  sysenv_url = "account_1_url",
+  sysenv_token = "account_1_token"
+)
+
+# Authenticate using second account
+b <- sevenbridges2::Auth$new(
+  from = "env",
+  sysenv_url = "account_2_url",
+  sysenv_token = "account_2_token"
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Authentication via user configuration file
+
+You can create an ini-like file named `credentials` under the folder 
+`$HOME/.sevenbridges/` and maintain your credentials for multiple accounts 
+across various Seven Bridges environments. An example:
+
+```
+[aws-us-rfranklin]
+api_endpoint = https://api.sbgenomics.com/v2
+auth_token = token_for_this_user
+
+# This is a comment:
+# another user on the same platform
+[aws-us-rosalind-franklin]
+api_endpoint = https://api.sbgenomics.com/v2
+auth_token = token_for_this_user
+
+[default]
+api_endpoint = https://cgc-api.sbgenomics.com/v2
+auth_token = token_for_this_user
+
+[bdc]
+api_endpoint = https://api.sb.biodatacatalyst.nhlbi.nih.gov/v2/
+auth_token = token_for_this_user
+```
+
+Please make sure to have two fields **exactly** named as `api_endpoint` 
+and `auth_token` under each profile.
+
+To load the default profile (named `[default]`) from the default user
+configuration file (`$HOME/.sevenbridges/credentials`), please use:
+
+```{r}
+# Authenticate using file configuration
+a <- Auth$new(from = "file")
+```
+
+To load the user profile `aws-us-<username>` from this configuration file,
+change the `profile_name`:
+
+```{r}
+# Authenticate using file configuration and specific profile
+a <- Auth$new(from = "file", profile_name = "aws-us-<username>")
+```
+
+To use a user configuration file from other locations (not recommended),
+please specify the file path using the argument `config_file`. For example:
+
+```{r}
+# Authenticate using specific file configuration on custom path
+a <- Auth$new(
+  from = "file", config_file = "~/sevenbridges.cfg",
+  profile_name = "aws-us-<username>"
+)
+```
+
+***Note:*** If you edited the `credentials` file, please use `Auth$new()` to 
+re-authenticate.
+
+<div align="right"><a href="#top">top</a></div>
+
+# API general information
+
+## Advance Access Features
+
+Similar to `offset` and `limit`, every API call accepts an argument named
+`advance_access`. This argument was first introduced in August 2017 and 
+controls if a special field in the HTTP request header will be sent, 
+which can enable the access to the "Advance Access" features in the 
+Seven Bridges API. 
+
+In addition to modifying each API call that uses Advance Access features, 
+the option can also be set globally at the beginning of your API script. 
+This offers a one-button switch for users who want to experiment with the 
+Advance Access features. The option is disabled by default:
+
+```{r}
+# Load package and check advance access option
+library("sevenbridges2")
+getOption("sevenbridges2")$advance_access
+```
+
+```
+## [1] FALSE
+```
+For example, the Markers API is in Advance Access as of November 2018. 
+If we try to use the Markers API to list markers available on a BAM file with 
+the `advance_access` option disabled, it will return an error message:
+
+```{r}
+# Authenticate first
+a <- Auth$new(token = "<your_token>", platform = "aws-us")
+
+# Try to send request to list markers
+req <- a$api(
+  path = "genome/markers?file={bam_file_id}",
+  method = "GET"
+)
+```
+
+```
+## !HTTP Status 400: Advance access feature needs X-SBG-Advance-Access: advance header.
+```
+
+To enable the Advance Access features, one can use
+
+```{r}
+# Enable advance access option
+opt <- getOption("sevenbridges2")
+opt$advance_access <- TRUE
+options(sevenbridges2 = opt)
+```
+
+at the beginning of their scripts. Let's check if the option has been enabled:
+
+```{r}
+# Check advance_access option again
+getOption("sevenbridges2")$advance_access
+```
+
+```
+## [1] TRUE
+```
+
+Send the API call again:
+
+```{r}
+# Send request again to list markers
+req <- a$api(
+  path = "genome/markers?file={bam_file_id}",
+  method = "GET"
+)
+```
+
+The information of the markers available on that BAM file will be returned:
+
+```{r}
+# Read content
+httr::content(req)
+```
+
+```
+$href
+[1] "https://api.sbgenomics.com/v2/genome/markers?file={bam_file_id}&offset=0&limit=50"
+
+$items
+$items[[1]]
+$items[[1]]$href
+[1] "https://api.sbgenomics.com/v2/genome/markers/{bam_file_id}"
+
+$items[[1]]$id
+[1] "{bam_file_id}"
+
+$items[[1]]$name
+[1] "Marker Title"
+
+$items[[2]]
+$items[[2]]$href
+[1] "https://api.sbgenomics.com/v2/genome/markers/{bam_file_id}"
+
+$items[[2]]$id
+[1] "{bam_file_id}"
+
+$items[[2]]$name
+[1] "Marker Title"
+
+$links
+list()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Query Parameter `fields`
+
+All API calls take the optional query parameter `fields`. This parameter 
+enables you to specify the fields you want to be returned when listing resources
+(e.g., all your projects) or getting details of a specific resource 
+(e.g., a given project).
+
+The `fields` parameter can be used in the following ways:
+
+1. No `fields` parameter specified: returns **all fields** for each 
+resource returned (TBD for Apps).
+
+2. The `fields` parameter can be set to a list of fields: for example, 
+to return the fields id, name and size for files in a project, you may issue 
+the call `p$list_files(fields = c("id" ,"name", "size"))`.
+
+3. The fields parameter can be used to exclude a specific file: if you wish to 
+omit certain field from the response, do so using the fields parameter with 
+the prefix `!`. For example, to get the details of a file without listing its 
+metadata, issue a call `p$list_files(fields = "!metadata")` or to exclude 
+multiple fields `p$list_files(fields = c("!metadata", "!tags"))`.
+The entire metadata and tags fields will be removed from the response.
+
+4. The fields parameter can be used to include or omit certain nested fields, 
+in the same way as listed in 2 and 3 above: for example, you can use 
+`metadata.sample_id` or `origin.task` for files.
+
+5. Negations and nesting can be combined freely, so, for example, you can issue 
+`p$list_files(fields = c("id", "name", "size", "!metadata.library", "!origin"))`.
+
+<div align="right"><a href="#top">top</a></div>
+
+## Rate Limits
+
+This call returns information about your current rate limit.
+This is the number of API calls you can make in one hour.
+
+```{r}
+# Get rate limit info
+a$rate_limit()
+```
+
+It shows information about the remaining number of API calls to make in one
+hour, along side with time when will rate limit reset and total and remaining
+number of instances available to the user.
+
+```
+── Rate limit ──────────────────────────────────────────────────────────────
+• rate
+  • limit: 1000
+  • remaining: 998
+  • reset: 2023-11-27 14:24:38 CET
+• instance
+  • limit: 25
+  • remaining: 25
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## General API error handlers
+
+We should also mention that there are 3 types of general API errors that are 
+handled by the client `sevenbridges2` package:
+
+- **Rate limit sleeper** which pauses the execution of any API 
+call if rate limit is breached. The execution will automatically continue 
+when the required break time exceeds,
+- **Maintenance sleeper** which pauses the execution if SevenBridges API is 
+under maintenance and
+- **General error sleeper** which pauses the execution if response status code 
+is equal or larger than 500 (if some server error occurred). 
+
+# List All API Calls
+
+Users are able to preview all main resource paths that exist on the public
+Seven Bridges API. 
+If you did not pass any parameters to `api()` from `Auth` object, it would 
+list all API calls. Any parameters you provide will be passed to the `api()` 
+function, but you do not have to pass your input token and path once more 
+since the `Auth` object already handles these information. 
+The following call from the `Auth` object will check the response as well.
+
+```{r}
+# List all API paths
+a$api()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+
+# Users
+
+This call will return a successful response of currently authenticated user, 
+while if you have some advanced privileges as Enterprise user, you can 
+fetch information about other users when specifying their usernames. 
+
+If you did not provide a username, it will show your user information.
+
+```{r}
+# Return your information
+a$user()
+
+# Return user RFranklin's information
+a$user(username = "RFranklin")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+# Billing Groups and Invoices
+
+## Billing groups
+
+Billing operations are grouped under the `Billing_groups` R6 Resource class and 
+from here you can query all billing groups or fetch single one by its id. 
+
+When you fetch single billing group it will be an object of class `Billing`. 
+
+```{r}
+# Get specific billing group
+my_billing_group <- a$billing_groups$get(id = "<billing_group_id>")
+
+# You can still print the billing group info by calling the print method
+my_billing_group$print()
+```
+
+You can also get detailed information for a specific billing group. 
+The following options are available to you:
+
+- analysis breakdown
+- storage breakdown
+- egress breakdown.
+
+To get an analysis breakdown for a billing group which contains information 
+on both the tasks and Data studio analyses, call:
+
+```{r}
+# Get analysis breakdown
+my_billing_group$analysis_breakdown()
+```
+
+To get a storage breakdown for a billing group, call:
+
+```{r}
+# Get storage breakdown
+my_billing_group$storage_breakdown()
+```
+
+Finally, you may want to get an egress breakdown for a billing group:
+
+```{r}
+# Get egress breakdown
+my_billing_group$egress_breakdown()
+```
+
+If something changes in the billing group, you can refresh your `Billing`
+object by reloading it with:
+
+```{r}
+# Reload Billing objcet
+my_billing_group$reload()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Invoices
+
+Same logic applies for the invoices - the operations available for invoices are
+grouped under Invoices class and from here you can query of fetch single invoice
+with resource operations `query()` and `get()`.
+
+Listing all invoices doesn't require any arguments to set, while if you would
+like to list invoices of specific billing group, set the `billing_group`
+parameter to the desired value. 
+
+```{r}
+# List invoices of specific billing group
+invoices_bg <- a$invoices$query(billing_group = "<billing_group_id>")
+
+# Print invoices
+invoices_bg
+```
+
+Keep in mind that the result is `Collection` object which stores the returned
+items in the `items` field.
+
+To retrieve information about a single invoice, including the costs for 
+analysis and storage, and the invoice period, you can use the `get()` method 
+with the id parameter set to the ID of the invoice you are querying.
+
+```{r}
+# Get specific invoice by ID
+invoice <- a$invoices$get(id = "<invoice_id>")
+
+# Print
+invoice
+```
+
+```
+── Invoice info ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+• approval_date: 2022-02-01T00:00:00Z
+• pending: FALSE
+• invoice_id: <your_invoice_id>
+• href: https://api.sbgenomics.com/v2/billing/invoices/<your_invoice_id>
+• invoice_period
+  • from: 2022-01-01T00:00:00Z
+  • to: 2022-01-31T23:59:59Z
+• analysis_costs
+  • currency: USD
+  • amount: 101.77
+• storage_costs
+  • currency: USD
+  • amount: 256.11
+• total
+  • currency: USD
+  • amount: 357.88
+```
+
+If something changes, you can always refresh your local `Invoice` object by 
+reloading it with:
+```{r}
+# Reload Invoice object
+invoice$reload()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+# Send a feedback item
+
+Lastly, to send feedback to Velsera via the API, you can use the `Auth` class 
+method `send_feedback()`. 
+There are three feedback types available: `"idea"`, `"thought"`, or `"problem"`. 
+You can send one feedback item per minute.
+
+```{r}
+# Send feedback
+a$send_feedback(
+  "This is a test for sending feedback via API. Please ignore this message.",
+  type = "thought"
+)
+```
+
+<div align="right"><a href="#top">top</a></div>

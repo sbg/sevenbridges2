@@ -42,6 +42,10 @@ Apps <- R6::R6Class(
     #' @param visibility Set this to `public` to see all public apps on
     #'  the Seven Bridges Platform.
     #' @param query_terms Enter one or more search terms to query apps.
+    #'  Read more about how to use the query_terms parameter in our
+    # nolint start
+    #'  [API documentation](https://docs.sevenbridges.com/reference/list-all-apps-available-to-you#query-apps).
+    # nolint end
     #' @param id Use this parameter to query apps based on their ID.
     #' @param limit The maximum number of collection items to return
     #'  for a single request. Minimum value is `1`.

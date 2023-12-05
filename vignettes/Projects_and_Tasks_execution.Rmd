@@ -1,0 +1,1702 @@
+---
+title: "Projects and Tasks execution"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    number_sections: false
+    theme: "flatly"
+    highlight: "textmate"
+    css: "sevenbridges.css"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Projects and Tasks execution}
+  %\VignetteEncoding{UTF-8}
+---
+
+<a name="top"></a>
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+# Projects
+
+Projects are the core building blocks of the platform. Each project corresponds 
+to a distinct scientific investigation, serving as a container for its data, 
+analysis tools, results, and collaborators.
+
+All projects related operations can be accessed through `projects` path from 
+`Auth` object. `Projects` is also a `Resource` R6 class which contains 
+implementation of `query()`, `get()` and `delete()` methods for listing, 
+fetching single project and deleting specific project. Besides those, there is
+also a custom method to create projects. 
+
+When you fetch single project it is represented as an object of `Project` class 
+containing all project information and additional methods that can be executed
+directly on the project like updating the project, project's members management,
+listing project's files, apps and tasks etc.
+
+## List all projects
+
+The following call returns a Collection with list of all projects of which you 
+are a member. Each project's `project_id` and name will be printed.
+For full projects' information, you can access the `items` field in the 
+`Collection` object and preview the list of projects.
+
+```{r}
+# List and view your projects
+all_my_projects <- a$projects$query()
+View(all_my_projects$items)
+```
+
+If you want to list the projects owned by and accessible to a particular user, 
+specify the `owner` argument as follows. 
+
+```{r}
+# List projects of particular user
+a$projects$query(owner = "<username1>")
+a$projects$query(owner = "<username2>")
+```
+
+## Partial match project name
+
+For a more friendly interface and convenient search, the `sevenbridges2` 
+package supports _partial name matching_. Set `name` parameter in the `query()`
+method:
+
+```{r}
+# List projects which name contains 'demo'
+a$projects$query(name = "demo")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Filter by project creation date, modification date, and creator
+
+Project creation date, modification date, and creator information is useful 
+for quickly locating the project you need, especially when you want to 
+follow the life cycle of a large number of projects and distinguish recent 
+projects from old ones. To facilitate such needs, the fields `created_by`, 
+`created_on`, and `modified_on` are returned in the project query calls.
+Since these fields cannot be passed to `query()` function as parameters, you can
+use the helper code below in order to perform such action:
+
+```{r}
+# Return all projects matching the name "wgs"
+wgs_projects <- a$projects$query(name = "wgs")
+
+# Filter by project creators
+creators <- sapply(wgs_projects$items, "[[", "created_by")
+wgs_projects$items[which(creators == "<some_username>")]
+
+# Filter by project creation date
+create_date <- as.Date(sapply(wgs_projects$items, "[[", "created_on"))
+wgs_projects$items[which(as.Date(create_date) < as.Date("2019-01-01"))]
+
+# Filter by project modification date
+modify_date <- as.Date(sapply(wgs_projects$items, "[[", "modified_on"))
+wgs_projects$items[which(as.Date(modify_date) < as.Date("2019-01-01"))]
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Create a new project
+
+To create a new project, use the `create()` method on the Projects path. 
+Users need to specify the following:
+
+- `name` (required)
+- `billing_group` (required)
+
+Other parameters and settings are optional. You can find more information in 
+the `create()` function documentation on `?Projects`. 
+
+```{r}
+# Get billing group
+billing_groups <- a$billing_groups$query()
+billing_group <- a$billing_groups$get("<billing_id>")
+
+# Create project with name 'API Testing'
+a$projects$create(
+  name = "API Testing", billing_group = billing_group,
+  description = "Test for API"
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Get single project
+
+Let's fetch the project we've just created by its ID. 
+For this purpose, we can use Projects' method `get()`.
+This method accepts only project's ID which consists of:
+
+- user's username or division name (for Seven Bridges platform users that are 
+part of some divisions) and
+- project's short name low-cased where spaces are replaced with dashes,
+
+in form of `<your_username_or_division>/<project's-short-name>`. 
+This id can also be seen in the URL of the project on the UI. 
+
+```{r}
+# Fetch previously created project
+p <- a$projects$get(id = "<your_username_or_division>/api-testing")
+```
+
+To print all details about the project, use `detailed_print()` method directly
+on the `Project` object:
+
+```{r}
+# Print all project info
+p$detailed_print()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Delete a project
+
+There are two ways how deleting projects can be performed. 
+One is from the `projects` path on the authentication object and the other 
+one is to call the `delete()` method directly on the `Project` object you want 
+to delete:
+
+```{r}
+# Delete project using Auth$projects path
+a$projects$delete(project = "<project_object_or_id>")
+
+# Delete project directly from the project object
+p$delete()
+```
+
+Please be careful when using this method and note that calling it will
+permanently delete the project from the platform.
+
+<div align="right"><a href="#top">top</a></div>
+
+## Edit an existing project
+
+If you want to edit an existing project, you can do so by using
+the `update()` method on the Project object. As a project Admin you can 
+use it to change the name, description, settings, tags or billing group of the 
+project. 
+For example, if you want to change the name and description of the project, you 
+can do it in the following way:
+
+```{r}
+# Update project
+p$update(
+  name = "Project with modified name",
+  description = "This is the modified description."
+)
+```
+
+Keep in mind that this modifies only the name of the project, not its short 
+name. Therefore, after calling this method, the ID of the project will remain 
+the same.
+
+If something changes in the project on the Platform UI, you can refresh your 
+Project object to fetch the changes, by reloading it with:
+
+```{r}
+# Reload project object
+p$reload()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Project's members manipulation
+
+### List project members
+
+This call returns a Collection with list of the members of the specified 
+project. 
+For each member, the response is wrapped into a Member class object containing:
+
+- The member's username, email, id and type and
+- The member's permissions in the specified project.
+
+```{r}
+# List project members
+p$list_members()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Add a member to a project
+
+This call adds a new user to the specified project. It can only be made by 
+a user who has admin permissions in the project.
+
+Requests to add a project member must include the key `permissions`. 
+However, if you do not include a value, the member's permissions will be set 
+to default values, which is read-only (only read value will be set to TRUE).
+
+Set permissions by creating a named list with `copy`, `write`, `execute`, 
+`admin`, or `read` names and assign TRUE or FALSE values to them.
+
+Note: `read` is implicit and set by default. You can not be a project member 
+without having `read` permissions.
+
+```{r}
+# Add project member
+p$add_member(
+  user = "<username_of_a_user_you_want_to_add>",
+  permissions = list(write = TRUE, execute = TRUE)
+)
+```
+```
+── Member ─────────────────────────────────────────────────────────────────────
+• type: USER
+• email: new_user@velsera.com
+• username: <username_of_a_user_you_want_to_add>
+• id: <username_of_a_user_you_want_to_add>
+• href: https://api.sbgenomics.com/v2/projects/<admin_username>/api-testing/members/<username_of_a_user_you_want_to_add>
+• permissions:
+  • write: TRUE
+  • read: TRUE
+  • copy: FALSE
+  • execute: TRUE
+  • admin: FALSE
+  
+```
+<div align="right"><a href="#top">top</a></div>
+
+### Get and modify project member's permissions
+
+Sometimes you may just want to investigate a members's permissions within a 
+specified project or update them, and you can do that by calling the
+`modify_member_permissions()` method. 
+For this method to work, the user calling it must have admin permissions in 
+the project. For example, you may want to give `write` permissions to a 
+project member:
+
+```{r}
+# Modify project member's permissions
+p$modify_member_permissions(
+  user = "<username_of_a_user_of_interest>",
+  permissions = list(copy = TRUE)
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Remove a project member
+
+On the other hand, you can delete a member from the project in a similar way
+with `remove_member()` operation:
+
+```{r}
+# Remove project member
+p$remove_member(user = "<username_of_a_user_you_want_to_remove>")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## List project files
+
+In order to list all files and folders (special type of files) within 
+specified project object, you can use the Project's `list_files()` method. 
+
+```{r}
+# List project files
+p$list_files()
+```
+
+It will return `Collection` object with items field containing list of returned 
+File objects and with pagination options. 
+
+<div align="right"><a href="#top">top</a></div>
+
+## Create folder within project's Files
+
+You are also able to create a folder within project's root Files directory
+using the method `create_folder()`. You would have to specify the folder name
+which should not start with '__' or contain spaces. 
+
+```{r}
+# Create folder within project files
+p$create_folder(name = "My_new_folder")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Get project's root folder object
+
+Lastly, the project's root directory with all your files is a folder itself,
+therefore you are able to get this folder as File object too using
+`get_root_folder()`.
+
+```{r}
+# Get project's root folder
+p$get_root_folder()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## List project's apps, tasks and import jobs
+
+We will just mention here that it is also available to list all project's 
+apps, tasks and import jobs (created for Volume imports) directly on the
+Project object, but more details about these topics will be explained in 
+next chapters:
+
+```{r}
+# List project's apps
+p$list_apps()
+
+# List project's tasks
+p$list_tasks()
+
+# List project's imports
+p$list_imports()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Create new app and task within project
+
+Another shortcut is available on the Project object and that is creation of
+the apps and tasks. 
+More details about this topic will be written in next chapters.
+
+# Files, folders and metadata
+
+All files related operations can be accessed through `files` path from 
+`Auth` object. `Files` also inherits `Resource` R6 class which contains 
+implementation of `query()`, `get()` and `delete()` methods for listing, 
+fetching single file/folder and deleting specific file/folder. 
+Besides those, there are also custom methods to copy files/folders and 
+create folders. 
+
+When you fetch single file/folder it is represented as an object of `File` 
+class. 
+Note that both `files` and `subdirectories` are of class `File`. The difference between them is in the `type` parameter which is:
+
+- `File` for `files`
+- `Folder` for `subdirectories`.
+
+`File` object contains all file/folder information and additional methods that 
+can be executed directly on the object like updating, adding tags, setting 
+metadata, copying or moving files, exporting to volumes etc.
+
+## List files
+
+This call lists `files` and `subdirectories` in a specified **project** or **directory** within a project, with specified properties that you can access. 
+The project or directory whose contents you want to list is specified as a 
+parameter in the call.
+
+The result will be a `Collection` class containing list of File objects in
+`items` field.
+```{r}
+# List files in the project root directory
+api_testing_files <- a$files$query(project = "project_object_or_id")
+api_testing_files
+```
+```
+[[1]]
+
+── File ────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 61f3f9c6e6aad23247516bf30
+• url: NA
+• modified_on: 2023-04-15T08:54:32Z
+• created_on: 2023-04-11T10:04:50Z
+• project: <username_or_division>/api-testing
+• size: 56 bytes
+• name: Drop-seq_small_example.bam
+• id: 643530c28345522d97313d17
+• href: https://api.sbgenomics.com/v2/files/643530c28345522d97313d17
+
+[[2]]
+
+── File ────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 61f3f9c6e6aae54367516bf30
+• url: NA
+• modified_on: 2023-04-11T10:29:13Z
+• created_on: 2023-04-11T10:29:13Z
+• project: <username_or_division>/api-testing
+• size: 56 bytes
+• name: G20479.HCC1143.2_1Mreads.tar.gz
+• id: 6435367943r4456ecb66cfb2
+• href: https://api.sbgenomics.com/v2/files/6435367943r4456ecb66cfb2
+
+```
+Note that this call lists both `files` and `subdirectories` in the 
+specified project or directory within a project, 
+but **not the contents of the subdirectories**. To list the contents of a 
+subdirectory, make a new call and specify the subdirectory as the `parent`
+parameter.
+
+``` {r}
+# List files in subdirectory
+a$files$query(parent = "<parent_directory_object_or_id>")
+```
+
+You can also try and find file with certain:
+
+1. **Name** - List file with this name. Note that the name must be an exact
+complete string for the results to match.
+2. **Metadata** - List only files that have the specified value in metadata
+field. Note that multiple instances of the same metadata field are implicitly separated by an OR operation. Conversely, different metadata fields are 
+implicitly separated by an AND operation.
+3. **Tag** - List files containing this tag. Note that the tag must be an
+exact complete string for the results to match. Operation OR is performed 
+between multiple tags listed.
+4. **Origin task** - List only files produced by task specified by ID in
+this field.
+
+```{r}
+# List files with these names
+a$files$query(
+  project = "<project_object_or_id",
+  name = c("<file_name1>", "<file_name2>")
+)
+
+# List files with metadata fields sample_id and library values set
+a$files$query(
+  project = "<project_object_or_id>",
+  metadata = list(
+    "sample_id" = "<sample_id_value>",
+    "library" = "<library_value>"
+  )
+)
+
+# List files with this tag
+a$files$query(project = "<project_object_or_id>", tag = c("<tag_value>"))
+
+# List files from this task
+a$files$query(project = "<project_object_or_id>", task = "<task_object_or_id>")
+```
+ 
+To combine everything on a more realistic example - the following code gives 
+us all files in the project `user1/api-testing` having metadata sample_id 
+"Sample1" __OR__ "Sample2", __AND__ the library id "EXAMPLE", __AND__ has tags 
+either "hello" __OR__ "world":
+
+```{r}
+# Query project files according to described criteria
+my_files <- a$files$query(
+  project = "user1/api-testing",
+  metadata = list(
+    sample_id = "Sample1",
+    sample_id = "Sample2",
+    library_id = "EXAMPLE"
+  ),
+  tag = c("hello", "world")
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### List public data
+
+To list publicly available files on Seven Bridges Platform, set the project
+parameter to `admin/sbg-public-data`.
+
+```{r}
+# Query public files
+public_files <- a$files$query(project = "admin/sbg-public-data")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Get single file/folder
+
+To return specific file or folder, knowing their ID, same as for other 
+resources, you can use `get()` method.
+File id can also be extracted from the URL on the Platform's visual interface.
+
+```{r}
+# Get single File object by ID
+a$files$get(id = "<file_id>")
+```
+```
+── File ────────────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 61f3f9c6e6aad8667516rf543
+• url: NA
+• modified_on: 2023-04-11T10:29:13Z
+• created_on: 2023-04-11T10:29:13Z
+• project: <username_or_division>/api-testing
+• size: 56 bytes
+• name: G20479.HCC1143.2_1Mreads.tar.gz
+• id: 6435367997d934334fb66cfb2
+• href: https://api.sbgenomics.com/v2/files/6435367997d934334fb66cfb2
+```
+<div align="right"><a href="#top">top</a></div>
+
+## Delete file
+
+The `delete` action only works for one file at a time. It can be called from 
+`Auth$files` path and accepts the `File` object or ID of the file you want to 
+delete. 
+
+```{r}
+# Delete file
+a$files$delete(file = "<file_object_or_id>")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Copy files
+
+The method `copy()` allows you to copy multiple files between projects at a time. 
+It can also be called from `Auth$files` path and accepts list of File objects or 
+their ids within `files` parameter. Besides this, you have to specify the 
+destination project too. 
+In result you will get a printed response with information about the copied 
+files - what are their destination names and ids. 
+
+```{r}
+# Fetch files by id to copy into api-testing project
+file1 <- a$files$get(id = "6435367997d9446ecb66cfb2")
+file2 <- a$files$get(id = "6435367997d9446ecb66cgr2")
+
+# Copy files to the project
+a$files$copy(
+  files = list(file1, file2),
+  destination_project = "<username_or_division>/api-testing"
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Create a folder within the destination project or parent folder
+
+To create a new folder on the Platform, use the `Auth$files` method
+`create_folder()`. It allows you to create a new folder on the Platform
+within the root folder of a specified destination project or the provided
+parent folder. Remember that you should provide either the destination project
+(as the `project` parameter) or the
+destination folder (as the `parent` parameter), not both.
+
+```{r}
+# Option 1 - Using the project parameter
+
+# Option 1.a (providing a Project object as project parameter)
+my_project <- a$projects$get(project = "<username_or_division>/api-testing")
+demo_folder <- a$files$create_folder(
+  name = "my_new_folder",
+  project = my_project
+)
+
+# Option 1.b (providing a project's ID as project parameter)
+demo_folder <- a$files$create_folder(
+  name = "my_new_folder",
+  project = "<username_or_division>/api-testing"
+)
+```
+
+Alternatively, you can provide the `parent` parameter to specify the
+destination where the new folder is going to be created. The `parent`
+parameter can be either a File object (must be of type `folder`) or
+an ID of the parent destination folder.
+
+```{r}
+# Option 2 - Using the parent parameter
+
+# Option 2.a (providing a File (must be a folder) object as parent parameter)
+my_parent_folder <- a$files$get(id = "<folder_id>")
+demo_folder <- a$files$create_folder(
+  name = "my_new_folder",
+  parent = my_parent_folder
+)
+
+# Option 2.b (providing a file's (folder's) ID as project parameter)
+demo_folder <- a$files$create_folder(
+  name = "my_new_folder",
+  parent = "<folder_id>"
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## File object operations
+
+Let's see now all available operations on the `File` objects that can be called.
+
+### File print
+
+File object has a regular `print()` method which gives you most important 
+information about the file:
+```{r}
+# Get some file
+demo_file <- a$files$get(id = "<file_id>")
+
+# Regular file print
+demo_file$print()
+```
+
+```
+── File ────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 61f3f9c6e6aad86675453ff30
+• url: NA
+• modified_on: 2023-04-15T08:54:32Z
+• created_on: 2023-04-11T10:04:50Z
+• project: <username_or_division>/api-testing
+• size: 56 bytes
+• name: Drop-seq_small_example.bam
+• id: 643530c286c9522d9222213d17
+• href: https://api.sbgenomics.com/v2/files/643530c286c9522d9222213d17
+```
+
+But if you want to see all the details about the file in specific format,
+you can use `detailed_print()` method:
+
+```{r}
+# Pretty print
+demo_file$detailed_print()
+```
+```
+── File ────────────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 61f3f9c6e6aad86675453ff30
+• url: NA
+• modified_on: 2023-04-15T08:54:32Z
+• created_on: 2023-04-11T10:04:50Z
+• project: <username_or_division>/api-testing
+• size: 56 bytes
+• name: Drop-seq_small_example.bam
+• id: 643530c286c9522d9222213d17
+• href: https://api.sbgenomics.com/v2/files/643530c286c9522d9222213d17
+• tags
+  • tag_1: TEST
+  • tag_2: SEQ
+• metadata
+  • reference_genome: GSM1629193_hg19_ERCC
+  • investigation: GSM1629193
+  • md5_sum: 6294fee8200b29e03d3dc464f9c46a9c
+  • sbg_public_files_category: test
+• storage
+  • type: PLATFORM
+  • hosted_on_locations: list("aws:us-east-1", "aws:us-west-2")
+```
+<div align="right"><a href="#top">top</a></div>
+
+### Update file details
+
+You can call the `update()` function on the File object. With this call, 
+the following can be updated:
+
+- The file's `name`,
+- The file's `metadata`,
+- The file's `tags`. 
+
+Read more details about this method in our [API documentation](https://docs.sevenbridges.com/reference/update-file-details).
+
+```{r}
+# Update file name
+demo_file$update(name = "<new_name>")
+
+# Update file metadata
+demo_file$update(
+  metadata = list("<metadata_field>" = "<metadata_field_value")
+)
+
+# Update file tags
+demo_file$update(tags = list("<tag_value>"))
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Add tags to a file
+
+You can tag your files with keywords or strings to make it easier to identify 
+and organize files. Tags are different from metadata and are more convenient and visible from the files list on the visual interface.
+
+You can tag your files using `add_tag()` method. This method will automatically 
+just add new tag to a list of already existing ones, but you also have an option 
+to set `overwrite` parameter, which will erase old ones and set the new one.
+
+```{r}
+# Add new tag to a file
+demo_file$add_tag(tags = list("new_tag"))
+
+# Add new tag to a file and overwrite old ones
+demo_file$add_tag(tags = list("new_tag"), overwrite = TRUE)
+
+# Delete all tags - just set tags to NULL
+demo_file$add_tag(tags = NULL, overwrite = TRUE)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Copy single file between projects
+
+This call copies the specified file to a new project. Files retain their 
+metadata when copied, but may be assigned new names in their target project.
+If you don't specify new name the file will retain it's old name in new project.
+To make this call, you should have 
+[copy permission](https://docs.sevenbridges.com/docs/set-permissions) 
+within the project you are copying from. This call returns `File` object of 
+newly copied file.
+
+```{r}
+# Copy file to a new project and set a new name
+demo_file$copy_to(
+  project = "<destination_project_object_or_id>",
+  name = "<new_name>"
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Get downloadable URL for a file
+
+To get URL that you can use to download the specified file, you can use
+`get_download_url()` method. This will set `url` parameter in the File object 
+and can later be used to download file.
+
+```{r}
+# Get downloadable URL for a file
+demo_file$get_download_url()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Get a file's metadata
+
+Files from curated datasets on Seven Bridges environments have a defined set of metadata which is visible on the visual interface of each environment. 
+
+`File` object has `get_metadata()` method which returns the metadata values for 
+the specified file. This will pull and reload file's metadata from the platform.
+
+```{r}
+# Get file metadata
+demo_file$get_metadata()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Modify file's metadata
+
+You can also pass additional metadata for each file which is stored with your 
+copy of the file in your project.
+
+To modify a file's metadata use `set_metadata()` method.
+Here you can also use `overwrite` parameter if you want to erase previous
+metadata fields and add new one (by default it's set to `FALSE`).
+
+```{r}
+# Set file metadata
+demo_file$set_metadata(
+  metadata_fields = list("<metadata_field>" = "metadata_field_value"),
+  overwrite = TRUE
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### List folder contents
+
+Directories can have multiple `files`/`subdirectories` inside. You can see them
+using `list_contents()` method.
+Note that this operation will work only on `File` objects of type `folder`.
+The result will also be a `Collection` class containing list of File objects in
+`items` field.
+```{r}
+# List folder contents
+demo_folder$list_contents()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Move some file into a folder
+
+This call moves a file from one folder to another. 
+Moving folders is not allowed by the API.
+Moving of files is only allowed within the same project.
+Parent parameter must be a folder id or a `File` object of type `folder`.
+One can also rename a file on the destination if preferred with setting `name`
+argument.
+
+```{r}
+# Move file to a folder
+demo_file$move_to_folder(
+  parent = "<parent_file_object_or_id>",
+  name = "Moved_file.txt"
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Download a file
+
+`File` object has a `download()` method, which allows you to download that file
+to your local computer. You should provide the `directory_path` parameter, 
+which specifies the destination directory to which your file will be 
+downloaded. By default, this parameter is set to your current working
+directory. You can also set the new name for your resulting (downloaded)
+file by providing the `filename` parameter. Otherwise, the default name 
+(the one stored in the `name` field of your `File` object) will be used.
+
+```{r}
+# Download a file
+demo_file$download(directory_path = "/path/to/your/destination/folder")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Download a file
+
+`File` object has a `download()` method, which allows you to download that file
+to your local computer. You should provide the `directory_path` parameter, 
+which specifies the destination directory to which your file will be 
+downloaded. By default, this parameter is set to your current working
+directory. You can also set the new name for your resulting (downloaded)
+file by providing the `filename` parameter. Otherwise, the default name 
+(the one stored in the `name` field of your `File` object) will be used.
+
+```{r}
+# Download a file
+demo_file$download(directory_path = "/path/to/your/destination/folder")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Get file's parent directory
+
+Sometimes, it's convenient to get the parent folder ID for a file or folder:
+This information is stored on the `File` object in `parent` field. 
+
+```{r}
+# Get file's parent directory
+demo_file$parent
+```
+
+```
+[1] "5bd7c53ee4b04b8fb1a9f454x"
+```
+This is essentially the root folder ID. Alternatively, to get the parent folder 
+as an object, use:
+
+```{r}
+# Get folder object
+parent_folder <- a$files$get(demo_file$parent)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Delete a file/folder
+
+User can delete files and folders using `delete()` method directly on the `File`
+object too. 
+The only thing you need to be aware of is that `folder` can only be deleted 
+if it's empty.
+
+```{r}
+# Delete a file
+demo_file$delete()
+
+# Delete a folder
+demo_folder$delete()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Reload file
+
+To keep your local `File` object up to date with the file on the platform, 
+you can always call the `reload()` function:
+
+```{r}
+# Reload file/folder objects
+demo_file$reload()
+demo_folder$reload()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+
+# Apps
+
+Following the same logic as with other `Resource` classes, all apps related 
+operations are grouped under `Apps` class, that can be accessed within 
+`Auth` objects on the path `Auth$apps`. 
+From here users can call operations to list all apps, fetch single app by its 
+id, copy or create new app.
+
+When you operate with single app, it is represented as an object of `App` 
+class. 
+`App` object contains almost all app information and additional methods that 
+can be executed directly on the object like getting or creating new app's 
+revisions, copying, syncing with the latest revision or creating tasks with 
+this app etc.
+
+Note that we say almost all information, because for apps we don't return all 
+fields by default - the raw CWL field is excluded due to its size and speed of execution. Therefore, if you wish to fetch the raw CWL of the app, there is a 
+separate method for this purpose you can call on the App object 
+(`get_raw_cwl()`).
+
+## List apps
+
+You can list all apps available to you by calling the `apps$query()` method from
+the authentication object. The method has several parameters that allow you to
+search for apps in various places and by specified search terms.
+
+Note that you can see all of the publicly available apps on the Seven Bridges
+Platform by setting the `visibility` parameter to `public`. If you omit this
+parameter (it will use the default value `private`), and you will see all your
+private apps, i.e. those in projects that you can access. Learn more about
+public apps in our documentation.
+
+```{r}
+# Query public apps - set visibility parameter to "public"
+a$apps$query(visibility = "public", limit = 10)
+```
+
+The same can be done for private apps. The following call will return all the
+apps available to you, i.e. all the apps that you have in your projects:
+
+```{r}
+# Query private apps
+my_apps <- a$apps$query()
+```
+
+Just to remind you that not all of the available apps are going to be returned,
+because the `limit` parameter is set to 50 by default.
+Since the result is the `Collection` object, you can paginate through results
+by calling `next_page()` and `prev_page()` or call `all()` to return all 
+results.
+
+```{r}
+# Load next 50 apps
+my_apps$next_page()
+```
+
+Alternatively, you can query all the apps in a specific project by providing
+the project of interest using the `project` parameter. You can either use the
+`Project` object, or a project ID (string).
+
+```{r}
+# Query apps within your project - set limit to 10
+a$apps$query(project = "<project_object_or_its_ID>", limit = 10)
+```
+
+You can also use one or more search terms via the `query_terms` parameter to
+query all apps that are available to you. Search terms should relate to the
+following app details:
+
+* name
+* label
+* toolkit
+* toolkit version
+* category
+* tagline
+* description
+
+For example, to get public apps that contain term **"VCFtools"** anywhere in
+the mentioned app's details, you can make a call similar to this:
+
+```{r}
+# List public apps containing the term "VCFtools" in app's details
+a$apps$query(visibility = "public", query_terms = list("VCFtools"), limit = 10)
+```
+
+For the query to return results, each term must match at least one of the
+fields that describe an app. For example, the first term can match the app's
+name while the second can match the app description. However, if any part of
+the search fails to match app details, the call will return an empty list.
+
+Another useful option is to query apps by id. You can do so either for public
+apps, or for private apps (apps available to you). The following example
+illustrates how this can be done for public apps:
+
+```{r}
+# List files in project root directory
+a$apps$query(
+  visibility = "public",
+  id = "admin/sbg-public-data/vcftools-convert"
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### List project apps
+
+All available apps in a specific project can also be listed by calling the
+`list_apps()` method directly on the `Project` object. This method has 
+predefined the `project` and `visibility` arguments, while all other parameters 
+are identical to those presented in `apps$query()` function.
+
+```{r}
+# Get project
+p <- a$projects$get("<username_or_division>/api-testing")
+
+# List apps in specified project
+p$list_apps(limit = 10)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Get app information
+
+If you need information about a specific app, you can get it using the
+`apps$get()` method. Keep in mind that the app should be one in a project that
+you can access. This could be the app that has been uploaded to the Seven
+Bridges Platform by a project member, or a publicly available app. You should
+provide the `id` of the app of interest, and optionally its `revision`. If no
+revision is specified, the latest one will be used.
+
+```{r}
+# Get a public App object
+bcftools_app <- a$apps$get(id = "admin/sbg-public-data/bcftools-call-1-15-1")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Copy an app
+
+To copy an app to a specified destination project, you can use the
+`apps$copy()` method.
+
+Keep in mind that the app should be one in a project that
+you can access. This could be an app that has been uploaded to the Seven
+Bridges Platform by a project member, or a publicly available app.
+
+Destination project (`project` parameter) should be provided either as an
+object of `Project` class, or as an ID of the target project of interest.
+
+You might want to set the new name that the app will have in the target
+project. To do so, use the `name` parameter. If app's name will not change,
+omit the `name` parameter.
+
+Keep in mind that there are different strategies for copying the apps on the
+platform:
+
+* `clone` : copy all revisions; get updates from the same app as the copied app (default)
+* `direct`: copy latest revision; get updates from the copied app
+* `clone_direct`: copy all revisions; get updates from the copied app
+* `transient`: copy latest revision; get updates from the same app as the copied app
+
+Learn more about copy strategies in our public [API documentation](https://docs.sevenbridges.com/reference/copy-an-app).
+
+The following example demonstrates how can you copy the previously created
+`bcftools_app` to some project:
+
+```{r}
+# Copy app to a project
+app_copy <- a$apps$copy(bcftools_app,
+  project = "<project_object_or_its_ID>",
+  name = "New_app_name"
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Create new app
+
+This `apps$create()` method allows you to add an app using the raw CWL.
+
+The raw CWL can be provided either through the `raw` parameter, or by using the
+`file_path` parameter. Keep in mind that these two parameters should not be
+used together.
+
+If you choose to use the `raw` parameter, make sure to provide a list
+containing a raw CWL for the app you are about to create. To generate
+such a list, you might want to load some existing `JSON` / `YAML` file. In case
+that your CWL file is in JSON format, please use the `fromJSON` function from
+the `jsonlite` package to minimize potential problems with parsing the JSON
+file. If you want to load a CWL file in YAML format, it is highly recommended
+to use the `read_yaml` function from the `yaml` package.
+
+Make sure to set the `raw_format` parameter to match the type of the provide
+raw CWL file (`JSON` / `YAML`). By default, this parameter is set to `JSON`.
+
+```{r}
+# Load the JSON file
+file_json <- jsonlite::read_json("/path/to/your/raw_cwl_in_json_format.cwl")
+
+# Create app from raw CWL (JSON)
+new_app_json <- a$apps$create(
+  project = "<destination_project_object_or_its_ID>",
+  raw = file_json,
+  name = "New_app_json",
+  raw_format = "JSON"
+)
+```
+
+If you opt for `file_path` parameter instead, you should provide a path to a
+file containing the raw CWL for the app (`JSON` or `YAML`).
+
+```{r}
+# Create app from raw CWL (YAML)
+new_app_yaml <- a$apps$create(
+  project = "<destination_project_object_or_its_ID>",
+  from_path = "/path/to/your/raw_cwl_in_yaml_format.cwl",
+  name = "New_app_yaml",
+  raw_format = "YAML"
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Create app in a project
+
+The app can also be directly created on a `Project` object by invoking
+`create_app()`. Except it has the predefined `project` parameter, the
+`create_app()` has the same other parameters as `apps$create()`.
+
+```{r}
+# Load the JSON file
+file_json <- jsonlite::read_json("/path/to/your/raw_cwl_in_json_format.cwl")
+
+# Get project
+p <- a$projects$get("<username_or_division>/api-testing")
+
+# Create app from raw CWL (JSON) in specified project
+p$create_app(
+  raw = file_json,
+  name = "New_app_json",
+  raw_format = "JSON"
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## App object operations
+
+Once you've fetched the `App` object, you'll see that it also has various useful 
+methods within itself.
+
+The following actions are available for an App object:
+
+* print
+* get_raw_cwl
+* get_revision
+* create_revision
+* copy
+* sync
+* create_task
+
+
+### Print app
+
+The `print` method prints the app details to the console.
+
+```{r}
+# Fetch first app from the project's apps
+p <- a$projects$get("<username_or_division>/api-testing")
+my_apps <- p$list_apps()
+my_new_app <- my_apps$items[[1]]
+
+# Print app's details
+my_new_app$print()
+```
+
+```
+── App ──────────────────────────────────────────────────────────────────────────────────────────────────────
+• revision: 0
+• name: BCFtools Call
+• project: <username_or_division>/api-testing
+• id: <username_or_division>/api-testing/new_app_json
+• href: https://api.sbgenomics.com/v2/apps/<username_or_division>/api-testing/new_app_json/0
+```
+<div align="right"><a href="#top">top</a></div>
+
+### Get app's raw CWL
+
+[Placeholder for this]
+
+### Get app's revision
+
+To obtain a particular revision of an app, use the `get_revision()` method. If
+you need a specific revision of an app, use the `revision` parameter.
+
+Keep in mind that there is another important parameter that can be set for this
+method. If the `in_place` parameter is set to `TRUE`, the current app object
+will be replaced with new one for specified app revision. By default, this
+parameter is set to `FALSE`.
+
+```{r}
+# Get app's revision
+my_app <- a$apps$get(id = "<username_or_division>/api-testing/new_app_json/0")
+my_app$print()
+```
+
+```
+── App ──────────────────────────────────────────────────────────────────────────────────────────────────────
+• latest_revision: 1
+• copy_of: admin/sbg-public-data/bcftools-call-1-15-1/0
+• revision: 0
+• name: BCFtools Call
+• project: <username_or_division>/api-testing
+• id: <username_or_division>/api-testing/new_app_json
+• href: https://api.sbgenomics.com/v2/apps/<username_or_division>/api-testing/new_app_json/0
+```
+
+```{r}
+# Get app's revision
+my_app$get_revision(revision = 1)
+```
+
+```{r}
+# Get app's revision and update the object
+my_app$get_revision(revision = 1, in_place = TRUE)
+```
+
+```
+── App ──────────────────────────────────────────────────────────────────────────────────────────────────────
+• latest_revision: 1
+• copy_of: admin/sbg-public-data/bcftools-call-1-15-1/0
+• revision: 1
+• name: BCFtools Call
+• project: <username_or_division>/api-testing
+• id: <username_or_division>/api-testing/new_app_json
+• href: https://api.sbgenomics.com/v2/apps/<username_or_division>/api-testing/new_app_json/1
+```
+<div align="right"><a href="#top">top</a></div>
+
+### Create app's revision
+
+The `create_revision()` method allows you to create a new revision for an
+existing app.
+
+The raw CWL can be provided either through the `raw` parameter, or by using the
+`file_path` parameter. Keep in mind that these two parameters should not be
+used together.
+
+If you choose to use the `raw` parameter, make sure to provide a list
+containing a raw CWL for the app revision you are about to create. To generate
+such a list, you might want to load some existing `JSON` / `YAML` file. In case
+that your CWL file is in JSON format, please use the `fromJSON` function from
+the `jsonlite` package to minimize potential problems with parsing the JSON
+file. If you want to load a CWL file in YAML format, it is highly recommended
+to use the `read_yaml` function from the `yaml` package.
+
+Make sure to set the `raw_format` parameter to match the type of the provide
+raw CWL file (`JSON` / `YAML`). By default, this parameter is set to `JSON`.
+
+Using `in_place` parameter will overwrite current app object with new app's 
+revision information.
+
+```{r}
+# Create app's revision from file
+raw_cwl_as_list <- jsonlite::read_json(
+  path = "/path/to/your/raw_cwl_in_json_format.cwl"
+)
+my_app$create_revision(raw = raw_cwl_as_list, in_place = TRUE)
+```
+
+If you opt for `file_path` parameter instead, you should provide a path to a
+file containing the raw CWL for the app (`JSON` or `YAML`).
+
+```{r}
+# Create new revision for the existing app
+my_app$create_revision(
+  from_path = "/path/to/your/raw_cwl_in_json_format.cwl",
+  in_place = TRUE
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Copy an app
+
+An app can be copied to a specified destination project directly from an
+app's object too, by calling its own `copy()`method.
+
+Destination project (`project` parameter) should be provided either as an
+object of `Project` class, or as an ID of the target project of interest.
+
+You can set the new name that the app will have in the target project with 
+`name` parameter. 
+Keep in mind that are different strategies for copying the apps on the
+platform:
+
+* `clone` : copy all revisions; get updates from the same app as the copied app (default)
+* `direct`: copy latest revision; get updates from the copied app
+* `clone_direct`: copy all revisions; get updates from the copied app
+* `transient`: copy latest revision; get updates from the same app as the copied app
+
+Learn more about copy strategies in our public [API documentation](https://docs.sevenbridges.com/reference/copy-an-app).
+
+```{r}
+# Copy app
+copied_app <- my_app$copy(
+  project = "<destination_project_object_or_its_ID>",
+  name = "New_app_name"
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Sync a copied app
+
+To synchronize a copied app with the source app from which it has been copied, 
+so it uses the latest revision, you can call the `sync()` method.
+The `App` object will be overwritten with the latest app.
+
+```{r}
+# Sync copied app to the latest revision created
+copied_app$sync()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Reload app
+
+To keep your local `App` object up to date with the app on the platform, you can always call the `reload()` function:
+
+```{r}
+# Reload app object
+my_app$reload()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+
+# Tasks
+
+All task related operations are grouped under `Tasks` class within 
+authentication object, which also inherits `Resource` class and implements 
+`query()`, `get()` and `delete()` operations for listing tasks, fetching 
+single task and delete tasks. Besides these, users are able to create new
+tasks with `create()` operation from this `Auth$tasks` path.
+
+When you operate with single task, it is represented as an object of `Task` 
+class. 
+`Task` object contains all task information and additional methods that 
+can be executed directly on the object like running, aborting, cloning, 
+updating, deleting the task etc.
+
+## List tasks
+
+As mentioned above, you can list your tasks by calling the `tasks$query()` 
+method from the authentication object. The method has many additional 
+query parameters that could allow you to search for tasks by specific 
+criteria such as: `status`, `parent`, `project`, `created_from`, `created_to`, 
+`started_from`, `started_to`, `ended_from`, `ended_to`, `order_by`, `order`, 
+`origin_id`.
+
+Let's list all tasks that were completed:
+```{r}
+# Query all tasks
+a$tasks$query()
+
+# Query tasks by their status
+a$tasks$query(status = "COMPLETED", limit = 5)
+```
+
+To list all the tasks in a project, use the following.
+```{r}
+# Find project and pass it in the project parameter
+p <- a$projects$query(id = "<project_id>")
+a$tasks$query(project = p)
+
+# Alternatively you can list all tasks directly from the Project object
+p <- a$projects$get(id = "<project_id>")
+p$list_tasks()
+```
+
+Similarly to previous query methods, here you will also get the `Collection`
+object where resulting tasks will be stored in the `items` fields and you can
+paginate through results. 
+
+<div align="right"><a href="#top">top</a></div>
+
+## Get single task information
+
+In order to retrieve information about a single task of interest, you can get 
+it using the `tasks$get()` method using its id as parameter.
+
+```{r}
+# Get specific task by ID
+a$tasks$get(id = "<task_id>")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Create a draft task
+
+To create a new draft task, user can use the `tasks$create` method. 
+The method accepts various arguments like in which project to create a task,
+which app and its revision to use, task name, description, which inputs it 
+requires, batching options, execution settings etc.
+
+However, we can create draft task by only defining project and which app 
+will be run, since all other parameters are optional:
+```{r}
+# Create a draft task
+draft_task <- a$tasks$create(
+  project = "<project_object_or_id>",
+  app = "<app_object_or_id>"
+)
+```
+
+This will create an empty task, without any parameter defined.
+User has the option to set execution settings by using `execution_settings`
+parameter, and also to define usage of interruptible instances through
+`use_interruptible_instances` parameter.
+
+```{r}
+# Create task with execution settings and with use of interruptible instances
+execution_settings <- list(
+  "instance_type" = "c4.2xlarge;ebs-gp2;2000",
+  "max_parallel_instances" = 2,
+  "use_memoization" = TRUE,
+  "use_elastic_disk" = FALSE
+)
+task_exec_settings <- a$tasks$create(
+  project = "<project_object_or_id>",
+  app = "<app_object_or_id>",
+  execution_settings = execution_settings,
+  use_interruptible_instances = FALSE,
+)
+```
+
+To run the app immediately after it was created we have `action` parameter,
+which when set to `run` will start the analysis task when it's created.
+
+```{r}
+# Create and run task
+task_exec_settings <- a$tasks$create(
+  project = "<project_object_or_id>",
+  app = "<app_object_or_id>",
+  input = "<inputs>",
+  action = "run"
+)
+```
+
+Usually, for most of the tasks, some inputs should be defined, which is 
+required by the app. Information about which inputs are required or optional to
+be set for the app is stored in its CWL. However, we have provided a utility 
+function `input_matrix()` that can parse this information and return the app
+input matrix for you. This way, users will know how to construct the list of
+inputs (how to name them and make them available within Files) when creating 
+the task.
+
+[PLACEHOLDER for example]
+
+Similarly, there is another utility operation to list expected outputs of the
+app/task. This information can be received by calling the `output_matrix()`
+method:
+
+[PLACEHOLDER for example]
+
+<div align="right"><a href="#top">top</a></div>
+
+## Create a batch task
+
+To run tasks in batch mode we have `batch`, `batch_input` and `batch_by` 
+parameters.
+Parameter `batch` defines whether to run batch task or not, 
+while `batch_input` and `batch_by` define input on which the task will be 
+batched and by which criteria respectively.
+
+In the example below it is given a form of creating a batch task for input file
+named 'reads' and with batch criteria set to be 'sample_id' metadata field:
+
+```{r}
+# Create a draft task
+batch_task <- a$tasks$create(
+  project = "<project_object_or_id>",
+  app = "<app_object_or_id>",
+  inputs = list(
+    "reads" = "<reads_file_object_or_id>",
+    "reference" = "<reference_file_object_or_id>"
+  ),
+  batch = TRUE,
+  batch_input = "reads",
+  batch_by = list(
+    type = "CRITERIA",
+    criteria = list("metadata.sample_id")
+  )
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Task operations 
+
+Once you've fetched the `Task` object, you can execute various operations
+directly on it. 
+
+### Print task
+
+To print all task details call print method directly on the `Task` object:
+
+```{r} 
+# Print task
+draft_task$print()
+```
+
+```
+── Task ─────────────────────────────────────────────────────────────────────
+• batch: FALSE
+• end_time: 2023-11-22T16:58:16Z
+• start_time: 2023-11-22T16:51:35Z
+• executed_by: <username>
+• created_by: <username>
+• app: <username_or_division>/api-testing/rna-seq-alignment-star/0
+• project: <username_or_division>/api-testing
+• description: STAR test 2
+• status: COMPLETED
+• name: Star-alignment-task
+• id: 66f7a639-85fb-4594-aa93-d435ra37fb1b
+• href: https://api.sbgenomics.com/v2/tasks/66f7a639-85fb-4594-aa93-d435ra37fb1b
+```
+<div align="right"><a href="#top">top</a></div>
+
+### Run task
+
+In order to actually start the execution of the draft tasks created, use the
+task object's function `run()`. 
+You can modify input parameters values for:
+`in_place` - set to FALSE if you wish to store response in new task object,
+`batch` - this is used for tasks that are already batch tasks and this option
+allows the users to switch the batch mode off, 
+`use_interruptible_instances` - This field can be TRUE or FALSE. Set this field 
+to TRUE to allow the use of spot instances.
+
+Only tasks with a `DRAFT` status may be run.
+
+```{r} 
+# Run task
+draft_task$run(in_place = TRUE)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Abort task
+
+Users can abort the task execution by calling the `abort()` function. 
+It immediately stops the execution and puts it into `ABORT` status.
+Only tasks whose status is `RUNNING` may be aborted.
+
+```{r} 
+# Abort task
+draft_task$abort()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Clone task
+
+In order to copy some task - user can clone it. 
+Once cloned, the task can either be in `DRAFT` mode or immediately run, by 
+setting the `run` parameter to `TRUE`.
+
+```{r} 
+# Clone task
+cloned_task <- draft_task$clone_task()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Get execution details
+
+If users would like to explore or debug the logs of task execution, they can 
+use function `get_execution_details()`.
+It returns execution details of the specified task and breaks down the
+information into the task's distinct jobs. A job is a single subprocess
+carried out in a task. The information returned by this call is broadly
+similar to that which can be found in the task stats and logs provided
+on the Platform.
+The task execution details include the following information:
+
+*  The name of the command line job that executed
+*  The start time of the job
+*  End time of the job (if it completed)
+*  The status of the job (`DONE`, `FAILED`, or `RUNNING`)
+*  Information on the computational instance that the job was run on, 
+including the provider ID, the type of instance used and the cloud service 
+provider
+*  A link that can be used to download the standard error logs for the job
+*  SHA hash of the Docker image ('checksum').
+
+```{r} 
+# Get execution details of the task
+details <- draft_task$get_execution_details()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### List batch children
+
+This operation retrieves child tasks for some batch task.
+It works just like `tasks$query()` function, so you can set query parameters 
+to narrow the search like `status`, `created_from`, `created_to`, 
+`started_from`, `started_to`, `ended_from`, `ended_to`, `origin` and `order`.
+
+```{r} 
+# List batch children
+children_tasks <- batch_task$list_batch_children()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Update task
+
+Users can use `update()` method to change the details of the specified task, 
+including its name, description, and inputs. 
+Note that you can only modify tasks with a task status of `DRAFT`. 
+Tasks which are `RUNNING`, `QUEUED`, `ABORTED`, `COMPLETED` or `FAILED` cannot 
+be modified in order to enable the reproducibility of analyses which have 
+been queued for execution or has initiated executing.
+
+There are two things to note if you are editing a batch task:
+* If you want to change the input on which to batch and the batch criteria, 
+you need to specify the `batch_input` and `batch_by` parameters together in the 
+same function call.
+* If you want to disable batching on a task, set `batch` to false. Or, you can 
+also set the parameters `batch_input` and `batch_by` to `NULL`.
+
+```{r} 
+# Update task
+draft_task$update(
+  description = "New description",
+  batch_by = list(
+    type = "CRITERIA",
+    criteria = list("metadata.diagnosis")
+  ),
+  inputs = list("in_reads" = "<some_other_file_object_or_id>")
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Rerun task
+
+Users can also rerun the task which will actually clone the original task for 
+them and start the execution immediately. 
+
+```{r} 
+# Rerun task
+draft_task$rerun()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Reload task
+
+In order to refresh the `Task` object and get the up to date info about its 
+status, you can always call the `reload()` function:
+
+```{r}
+# Reload task object
+draft_task$reload()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Delete task
+
+Lastly, the task can be deleted using `delete()` method directly on the `Task`
+object too:
+
+```{r} 
+# Delete task
+draft_task$delete()
+```
+
+<div align="right"><a href="#top">top</a></div>

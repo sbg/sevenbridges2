@@ -1,0 +1,1021 @@
+---
+title: "Files upload and Volumes"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    number_sections: false
+    theme: "flatly"
+    highlight: "textmate"
+    css: "sevenbridges.css"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Files upload and Volumes}
+  %\VignetteEncoding{UTF-8}
+---
+
+<a name="top"></a>
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+# Files upload
+
+Seven Bridges platforms provide a few different methods for data import:
+
+- Import from FTP or HTTP with the web interface
+- The file upload API that you can directly call with the `sevenbridges2` 
+package
+- The command line uploader
+- Import from cloud storage - Volume
+- Import from a DRS server
+
+In this chapter we will explain how you can use the `sevenbridges2` API library
+to upload your files into the Platform.
+
+Although it is more intuitive to have these operations available on the `File`
+object, they are separated and stored directly on the authentication object 
+`Auth`, because there are a separate group of endpoints themselves. 
+
+## Upload single file
+
+You can upload files from your local computer to the Platform using the 
+`upload()` method on your `Auth` object. The method allows you to upload only
+a single file for now. 
+
+To upload a file you should provide its full path on your local computer
+as the `path` parameter.
+
+To specify upload destination for your file you can use either `project` or
+`parent` parameter. These two parameters should not be used together.
+
+* **project** - `Project` object or project ID.
+* **parent** - `File` object (of type `Folder`) or its ID.
+
+By calling the `upload()` method you are creating an upload job that by 
+default starts to run immediately.
+If you don't want to start the job immediately, just set the `init` parameter
+to `TRUE` in order to only initialize the object. 
+
+This upload job is wrapped into an object of class `Upload` where you can
+see its details and call other actions on it. 
+
+Let's initialize upload job that will upload file into a project:
+```{r}
+# Authenticate
+a <- Auth$new(platform = "aws-us", token = "<your-token>")
+
+# Get desired project to upload to
+destination_project <- a$projects$get(project = "<project_id>")
+
+# Create upload job and set destination project
+upload_job <- a$upload(
+  path = "/path/to/your/file.txt",
+  project = destination_project,
+  overwrite = TRUE,
+  init = TRUE
+)
+```
+
+If you would like to upload your file into some folder, you need to set
+`parent` parameter:
+
+```{r}
+# Get destination folder object
+destination_folder <- a$files$get(id = "<folder_id>")
+
+up <- a$upload(
+  path = "/path/to/your/file.txt",
+  parent = destination_folder,
+  overwrite = TRUE,
+  init = TRUE
+)
+```
+
+## Upload fields and operations
+
+Since we have initialized the upload job, let's see which actions can we run.
+
+### Print upload job
+
+First, let's print the `Upload` object to see what API returned as response.
+```{r}
+up$print()
+```
+
+```
+── Upload ─────────────────────────────────────────────────────────────────────
+• initialized: TRUE
+• part_length: 1
+• part_size: 33554432
+• file_size: 232
+• overwrite: FALSE
+• filename: file.txt
+• project: <username_or_division>/api-testing
+• path: /path/to/your/file.txt
+• upload_id: 4OvRx8Z9vghNoAUqsgYtNuM2IsiIM8kghhjgi7igu79HX9QKZpDEh5TZDrmhPxF
+
+```
+<div align="right"><a href="#top">top</a></div>
+
+### File size, part size and part number/length
+
+In previous example we can see that API returned the upload id and some 
+information about sizes. 
+First we see the `file_size` in bytes (232), which is the real size of the file. 
+Uploading files actually in the background splits the files into parts which
+are then being uploaded one by one or in parallel and then united again on 
+destination.
+Each part can weight 5GB maximum, while the default `part_size` is recommended
+and set to be 32MB (which is 33554432B in our example). 
+
+Lastly, number of parts or `part_length` field, is also an important measure. 
+Maximum number of parts can be 10.000. 
+
+Since users can control part size through parameter `part_size` in `upload()`
+function, they should be careful to not set this size too small for very large 
+files, so that total number of parts doesn’t exceed the limit of maximum 10000.
+
+<div align="right"><a href="#top">top</a></div>
+
+### Start upload
+
+Call `start()` method on the upload job object do start the upload process.
+
+```{r}
+# Start upload
+up$start()
+```
+
+If you want to skip the step where you need to call the `start()` method
+to start the actual upload process, just set the `init` parameter back to 
+`FALSE` when creating upload job and the upload process will start right away.
+
+```{r}
+# Create upload job and start it immediately
+up <- a$upload(
+  path = "/path/to/your/file.txt",
+  project = destination_project,
+  overwrite = TRUE,
+  init = FALSE
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Get status information about the job
+
+In order to track the progress of the job, you can call the `info()` method
+on the upload object.
+
+```{r}
+# Get upload progress info
+up$info()
+```
+
+In the result beside basic information, you will receive the info on the
+number of uploaded parts up to that moment. 
+
+<div align="right"><a href="#top">top</a></div>
+
+## List all ongoing uploads
+
+Going back to authentication object, there are two more operations for uploads
+manipulation. 
+One is the method `list_ongoing_uploads()` that allows you to see the list of 
+all ongoing upload processes.
+
+```{r}
+# List ongoing uploads
+a$list_ongoing_uploads()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Abort upload process
+
+The other one is the `abort()`.
+You can abort any uploading process using the `upload_abort()` method.
+To do so, you need to provide the ID of a process within the `upload_id`
+parameter.
+
+```{r}
+# Abort upload
+a$abort_upload(upload_id = "<id_of_the_upload_process>")
+```
+
+**Note** that in practice, if you start some big upload job, your R session 
+will be blocked until this process is finished. This functionality is work in 
+progress but the idea is to not block your main session in the future,
+while the upload is running. 
+For now, you can create another R session on your own and track the 
+progress of the upload job there. 
+
+<div align="right"><a href="#top">top</a></div>
+
+# Volumes
+
+Cloud storage providers come with their own interfaces, features, and 
+terminology. At a certain level, though, they all view resources as data objects organized in repositories. Authentication and operations are commonly defined 
+on those objects and repositories, and while each cloud provider might call 
+these things different names and apply different parameters to them, their basic behavior is the same.
+
+Seven Bridges environments mediate access to these repositories using volumes. 
+A volume is associated with a particular cloud storage repository that you have 
+enabled Seven Bridges to read from (and, optionally, to write to). 
+Currently, volumes may be created using two types of cloud storage repository: 
+Amazon Web Services' (AWS) S3 buckets and Google Cloud Storage (GCS) buckets.
+
+A volume enables you to treat the cloud repository associated with it as 
+external storage. You can 'import' files from the volume to your Seven Bridges environment to use them as inputs for computation. Similarly, you can write 
+files from the Seven Bridges environment to your cloud storage by 'exporting' 
+them to your volume.
+
+Learn more about volumes on the [Seven Bridges Platform](https://docs.sevenbridges.com/docs/connecting-cloud-storage-overview), [CGC](http://docs.cancergenomicscloud.org/docs/connect-cloud-storage-overview),
+[BDC](https://sb-biodatacatalyst.readme.io/docs/connect-cloud-storage-overview)
+and [Cavatica](https://docs.cavatica.org/reference/connect-cloud-storage-overview).
+
+All volume related operations for querying volumes, fetching single volume, 
+creating and creating volumes are grouped under `volumes` path (`Volumes` 
+resource class) on the authentication object. 
+
+When operating with single volume, it is represented as object of class `Volume`
+which stores all volume information returned from API and additional methods you
+are able to call directly on the volume, like volume update, deactivation, 
+listing content, volume members manipulation etc.
+
+**Note** that all operations with volumes require `advance_access` parameter 
+to be set to TRUE. In most of the volume operations it is pre-set to `TRUE` by 
+default.
+
+## List volumes
+
+You can list all volumes you've registered by calling the `volumes$query()` 
+method from the authentication object. The method doesn't have any additional 
+query parameters that could allow you to search for volumes by specific 
+criteria, except to control the number of results returned using `limit` and 
+`offset` parameters.
+
+```{r}
+# Query volumes
+a$volumes$query()
+```
+
+The result returned is the `Collection` object with pagination ability.
+
+<div align="right"><a href="#top">top</a></div>
+
+## Get single volume information
+
+In order to retrieve information about a single volume of interest, you can get 
+it using the `volumes$get()` method using its id as parameter.
+Volume ID is usually presented in form `<division_name>/<volume_name>` for 
+Enterprise users, while for public program users it can be in form 
+`<volume_owner>/<volume_name>`.
+
+```{r}
+# Get volume
+a$volumes$get(id = "<volume_owner_or_division>/<volume_name>")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Create volumes - AWS (s3) using IAM User authentication type
+
+For creating volumes we have exposed several functions for different cloud 
+providers and authentication types:
+
+* `create_s3_using_iam_user`: creates s3 volume using IAM User authentication 
+type
+* `create_s3_using_iam_role`: creates s3 volume using IAM Role authentication 
+type
+* `create_google_using_iam_user`: creates GC volume using IAM User 
+authentication type
+* `create_google_using_iam_role`: creates GC volume using IAM Role 
+authentication type
+* `create_azure`: creates Azure volume (only RO privileges allowed)
+* `create_ali_oss`: creates Ali cloud volume (only RO privileges allowed)
+
+For each of the functions it is possible to provide parameters via path 
+(`from_path`) to some JSON file where all required fields should be listed.
+
+The examples of usages are listed below:
+
+```{r}
+# Create AWS volume using IAM User authentication type
+aws_iam_user_volume <- a$volumes$create_s3_using_iam_user(
+  name = "my_new_aws_user_volume",
+  bucket = "<bucket-name>",
+  description = "AWS IAM User volume",
+  access_key_id = "<access-key>",
+  secret_access_key = "<secret-access-key>"
+)
+
+aws_iam_user_volume_from_path <- a$volumes$create_s3_using_iam_user(
+  from_path = "path/to/my/json/file.json"
+)
+
+
+# Create AWS volume using IAM Role authentication type
+aws_iam_role_volume <- a$volumes$create_s3_using_iam_role(
+  name = "my_new_aws_role_volume",
+  bucket = "<bucket-name>",
+  description = "AWS IAM Role volume",
+  role_arn = "<role-arn-key>",
+  external_id = "<external-id>"
+)
+
+aws_iam_role_volume_from_path <- a$volumes$create_s3_using_iam_role(
+  from_path = "path/to/my/json/file.json"
+)
+
+# Create Google cloud volume using IAM User authentication type
+gc_iam_user_volume <- a$volumes$create_google_using_iam_user(
+  name = "my_new_gc_user_volume",
+  access_mode = "RW",
+  bucket = "<bucket-name>",
+  description = "GC IAM User volume",
+  client_email = "<client_email>",
+  private_key = "<private_key-string>"
+)
+
+gc_iam_user_volume_from_path <- a$volumes$create_google_using_iam_user(
+  from_path = "path/to/my/json/file.json"
+)
+
+# Create Google cloud volume using IAM Role authentication type
+# by passing configuration parameter as named list
+gc_iam_role_volume <- a$volumes$create_google_using_iam_role(
+  name = "my_new_gc_role_volume",
+  access_mode = "RO",
+  bucket = "<bucket-name>",
+  description = "GC IAM Role volume",
+  configuration = list(
+    type = "<type-name>",
+    audience = "<audience-link>",
+    subject_token_type = "<subject_token_type>",
+    service_account_impersonation_url = "<service_account_impersonation_url>",
+    token_url = "<token_url>",
+    credential_source = list(
+      environment_id = "<environment_id>",
+      region_url = "<region_url>",
+      url = "<url>",
+      regional_cred_verification_url = "<regional_cred_verification_url>"
+    )
+  )
+)
+
+# Create Google cloud volume using IAM Role authentication type
+# by passing configuration parameter as string path to configuration file
+gc_iam_role_volume_config_file <- a$volumes$create_google_using_iam_role(
+  name = "my_new_gc_role_volume_cnf_file",
+  access_mode = "RO",
+  bucket = "<bucket-name>",
+  description = "GC IAM Role volume - using config file",
+  configuration = "path/to/config/file.json"
+)
+
+# Create Google cloud volume using IAM Role authentication type
+# using from_path parameter
+gc_iam_role_volume_from_path <- a$volumes$create_google_using_iam_role(
+  from_path = "path/to/full/config/file.json"
+)
+
+# Create Azure volume
+azure_volume <- a$volumes$create_azure(
+  name = "my_new_azure_volume",
+  description = "Azure volume",
+  endpoint = "<endpoint>",
+  container = "<bucket-name",
+  storage_account = "<storage_account-name>",
+  tenant_id = "<tenant_id>",
+  client_id = "<client_id>",
+  client_secret = "<client_secret>",
+  resource_id = "<resource_id>"
+)
+
+azure_volume_from_path <- a$volumes$create_azure(
+  from_path = "path/to/my/json/file.json"
+)
+
+# Create Ali cloud volume
+ali_volume <- a$volumes$create_ali_oss(
+  name = "my_new_azure_volume",
+  description = "Ali volume",
+  endpoint = "<endpoint>",
+  bucket = "<bucket-name",
+  access_key_id = "<access_key_id>",
+  secret_access_key = "<secret_access_key>"
+)
+
+ali_volume_from_path <- a$volumes$create_ali_oss(
+  from_path = "path/to/my/json/file.json"
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Volume object operations
+
+When you've created a new volume, you can notice it is represented as an object
+of class `Volume`. To preview all volume information, use `print()` method:
+```{r}
+# Print volume info
+print(aws_iam_user_volume)
+```
+
+Within this volume you have following operations available to 
+execute:
+
+* `update`: update volume information
+* `list_contents` : list volume content
+* `get_file`: get single volume file info
+* `deactivate` : deactivate volume
+* `reactivate` : reactivate previously deactivated volume
+* `list_members`: list all volume members
+* `add_member`: add new volume member
+* `remove_member`: remove volume member
+* `get_member`: get some volume member information
+* `modify_member_permissions`: modify member permissions on the volume
+* `delete` : delete previously deactivated volume
+* `reload` : reload volume object to sync information
+* `list_imports`: list all imports from the specified volume
+* `list_exports`: list all exports to the specified volume
+
+### Update volume
+
+You can update volume's `description`, `access_mode` and `service` information. 
+Please, consult our [API documentation](https://docs.sevenbridges.com/reference/update-a-volume-v2) 
+on how to use service parameter. 
+
+```{r}
+# If the volume is created with RO access mode and RO credential parameters,
+# and now we want to change it to RW, we should also set proper credential
+# parameters that are connected to RW user on the bucket.
+# If it's created with RW credentials, but access mode is set to RO, then no
+# change is needed in the credentials parameters.
+aws_iam_user_volume$update(
+  description = "Updated to RW",
+  access_mode = "RW",
+  service = list(
+    credentials = list(
+      access_key_id = "<access_key_id_for_rw>",
+      secret_access_key = "<secret_access_key_for_rw>",
+    )
+  )
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Reload volume
+
+To keep your local `Volume` object up to date with the volume on the platform, 
+you can always call the `reload()` function:
+
+```{r}
+# Reload volume object
+aws_iam_user_volume$reload()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### List volume's content
+
+This operation lists all volume files in the root directory of the bucket, 
+unless `parent` parameter is specified. In that case, it lists the content of 
+that directory on the bucket. 
+The output is a `VolumeContentCollection` collection object, that contains 
+two fields `items` for storing list of `VolumeFile` objects (files on the volume) 
+and `prefixes` for storing list of `VolumePrefix` objects or folders on the 
+volume.
+You can also specify the `limit` parameter to control the number of results 
+returned.
+
+Same as we had with `Collection` objects, here we also have pagination
+functions to return next page of results or all results. However, backwards
+pagination is not available for volume's contents. 
+
+Users can navigate through pages of results also by using `continuation token` 
+parameter or `link` to fetch next chunk of results. 
+If you use `link` parameter, it will overwrite all other parameters if set 
+together with it, since it already contains the `limit` and `continuation_token` 
+info.
+
+```{r}
+# List all files in root bucket directory
+content_collection <- aws_iam_user_volume$list_contents(limit = 20)
+
+# Print collection
+content_collection
+
+# List all files specific directory on the bucket
+folder_files_collection <- aws_iam_user_volume$list_contents(
+  prefix = "<directory_name>"
+)
+
+# Get next group of results by setting the continuation token
+content_collection <- aws_iam_user_volume$list_contents(
+  limit = 20,
+  continuation_token = "<continuation_token>"
+)
+
+# Preview volume files
+content_collection$items
+
+# Preview volume prefixes/folders
+content_collection$prefixes
+
+# Preview links
+aws_iam_user_volume$links
+
+# Get next group of results by setting the link parameter
+aws_iam_user_volume$list_contents(link = "<link_to_next_results>")
+
+# Or use VolumeContentCollection's object method next_page() for this:
+content_collection$next_page()
+
+# You can also fetch all results with all() method
+content_collection$all()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Volume files and prefixes
+
+Volume files and prefixes are also treated as objects and they contain some 
+operations that could be called on them.
+
+#### Get VolumeFile info
+
+This operation returns a single volume file information. The input parameter 
+can be file's id which is represented as location on the bucket 
+(`location)`, or a link to that file resource. The link is a `href` field 
+of desired file received from response when returning list of volume content 
+with `list_contents()`.
+Empty arguments are not allowed along with setting both parameters together.
+```{r}
+# Get single volume file info - by setting file_location
+vol_file1 <- aws_iam_user_volume$get_file(
+  location = "<file_location_on_bucket>"
+)
+
+# Get single volume file info - by setting link
+vol_file1 <- aws_iam_user_volume$get_file(link = "full/request/link/to/file")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+#### Reload VolumeFile object
+
+To keep your local VolumeFile object up to date with the volume file on the 
+platform, you can always call the `reload()` function:
+
+```{r}
+vol_file1$reload()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+#### Get VolumePrefix info
+
+Unfortunately we don't have a separate operation to fetch only prefixes on the
+volume, therefore, we can get its prefixes only by using the `list_contents()`
+operation and look for `prefixes` field in the returned `VolumeContentCollection` 
+object. 
+
+```{r}
+# List content
+volume_content <- aws_iam_user_volume$list_contents()
+
+# Extract prefixes
+volume_prefixes <- volume_content$prefixes
+
+# Select one of the volume folders to list its content
+volume_folder <- volume_prefixes[[1]]
+
+# Print volume prefix information
+volume_folder$print()
+```
+
+You can also list the content of a volume prefix/folder on the volume, by
+calling `list_contents()` directly on the `VolumePrefix` object.
+
+```{r}
+## Select one of the volume folders to list its content
+volume_folder <- volume_prefixes[[1]]
+
+# List content
+volume_folder_content <- volume_folder$list_contents()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### List volume members
+
+In order to fetch members of one volume or a specific member by its username, 
+you can use `list_members()` and `get_member()` operations:
+```{r}
+# List volume members
+aws_iam_user_volume$list_members() # limit = 2
+
+# Get single member
+aws_iam_user_volume$get_member(user = "<member-username>")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Remove members
+
+User can remove volume members by providing its username or object of the 
+`Member` class to the `remove_member()` function:
+```{r}
+# Remove member
+aws_iam_user_volume$remove_member("<member-username>")
+
+# Remove member using Member object
+members <- aws_iam_user_volume$list_members()
+aws_iam_user_volume$remove_member(members$items[[3]])
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Adding new members
+
+Function for adding new members to the volume can accept a `Member` object 
+(for example used in some project) or its username. 
+```{r}
+# Add member via username
+aws_iam_user_volume$add_member(user = "<member-username>", permissions = list(
+  read = TRUE, copy = TRUE, write = FALSE, admin = FALSE
+))
+
+# Add member via Member object
+aws_iam_user_volume$add_member(
+  user = Member$new(
+    username = "<member-username>",
+    id = "<member-username>"
+  ),
+  permissions = list(
+    read = TRUE, copy = TRUE, write = FALSE,
+    admin = FALSE
+  )
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Modifying member's permissions
+
+Users can modify specific member's permissions on the volume by providing the
+privileges they want to change:
+```{r}
+# Modify member permissions
+aws_iam_user_volume$modify_member_permissions(
+  user = "<member-username>",
+  permissions = list(write = TRUE)
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Deactivate and reactivate the volume
+
+Once deactivated, you cannot import from, export to, or browse within a volume. 
+As such, the content of the files imported from this volume will no longer be 
+accessible on the Platform. However, you can update the volume and manage 
+members. 
+Note that you cannot deactivate the volume if you have running imports or 
+exports unless you force the operation using the query parameter `force = TRUE`.
+
+**Note** that to delete a volume, first you must deactivate it and delete all 
+files which have been imported from the volume to the Platform.
+
+To reactivate the volume, just use the `reactivate()` function.
+
+```{r}
+# Deactivate volume
+aws_iam_user_volume$deactivate()
+
+# Reactivate volume
+aws_iam_user_volume$reactivate()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+### Delete volume
+
+To be able to delete a volume, you first need to deactivate it and then delete 
+all files on the Platform that were previously imported from the volume.
+
+```{r}
+# Deactivate volume
+aws_iam_user_volume$deactivate()
+
+# Delete volume
+aws_iam_user_volume$delete()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+# Imports
+
+Creating and connecting volumes to the Platform allow you to import your 
+files/folders from some cloud bucket into the Platform. 
+Imports operations are related to volumes, but in the API they are 
+separated under `/imports` endpoints, so in our library they are also grouped
+under `imports` path on the authentication object (`Imports` resource class). 
+
+Single import job is represented as `Import` class object containing information
+about which file/folder has been or is being imported, from which volume, 
+to which project/folder on the Platform, time when started and finished, 
+status of the job, logs etc. 
+
+## List volume imports
+
+To preview and query all import jobs you've created use `query()` function on
+`Auth$imports` path:
+
+```{r}
+# List imports
+all_imports <- a$imports$query()
+
+# Limit results to 5
+imp_limit5 <- a$imports$query(limit = 5)
+
+# Load next page of 5 results
+imp_limit5$next_page(advance_access = TRUE)
+
+# Load all results at once until last page
+imp_limit5$all(advance_access = TRUE)
+```
+
+It is possible to use some query parameters as different criteria for filtering
+results like `volume`, `project`, `state` etc:
+
+```{r}
+# List imports with state being RUNNING or FAILED
+imp_states <- auth$imports$query(state = c("RUNNING", "FAILED"))
+
+# List imports to the specific project
+imp_project <- auth$imports$query(project = "<project_id>")
+```
+
+Listing imports is also available within `Project` and `Volume` objects, where 
+resulted imports are related to the specific project or volume where they're 
+called from.
+
+```{r}
+## Get a volume where you want to list all imports
+vol1 <- auth$volumes$get(id = "<volumes_owner_or_division>/<volume-name>")
+vol1$list_imports()
+
+## Get a project object where you want to list imports
+test_proj <- auth$projects$get("<project_id>")
+test_proj$list_imports()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Get single import job
+
+Similarly like in other resource classes, `get()` method will return single
+import job object when provided with job id.
+
+```{r}
+# Get single import
+imp_obj <- a$imports$get(id = "<import_job_id>")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Submit new import - import some volume file into the project
+
+In order to import volume files into the project, users can use 
+`submit_import()` method from `Auth$imports` path, or directly on the selected `VolumeFile` object (file they want to import) where this function is also 
+available. 
+
+```{r}
+## First, get a volume where you want to import files from
+vol1 <- a$volumes$get(id = "<volume_owner_or_division>/<volume_name>")
+
+## Then, get a project object/id where you want to import files
+test_proj <- a$projects$get("<project_id>")
+
+## lList all volume's files
+vol1_content <- vol1$list_contents()
+
+## Select one of the volume files
+volume_file_import <- vol1_content$items[[3]]
+
+## Make file import
+imp_job1 <- a$imports$submit_import(
+  source_location = volume_file_import,
+  destination_project = test_proj,
+  autorename = TRUE
+)
+
+# Alternatively you can also call import() directly on the VolumeFile object
+imp_job1 <- volume_file_import$import(
+  destination_project = test_proj,
+  autorename = TRUE
+)
+```
+
+Preview import job details with `print()` method:
+```{r}
+# Print Import object
+print(imp_job1)
+```
+
+You can also import folders from the volume into the project, with option to 
+preserve or not to preserve folder structure:
+
+```{r}
+# Select one of the volume folders to import
+volume_folder_import <- vol1_content$prefixes[[1]]
+
+# Make folder import
+imp_job2 <- a$imports$submit_import(
+  source_location = volume_folder_import,
+  destination_project = test_proj,
+  overwrite = TRUE,
+  preserve_folder_structure = TRUE
+)
+
+# Alternatively you can also call import() directly on the VolumePrefix object
+imp_job2 <- volume_folder_import$import(
+  destination_project = test_proj,
+  overwrite = TRUE,
+  preserve_folder_structure = TRUE
+)
+
+# Print Import object
+print(imp_job2)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Reload import job
+
+In order to refresh the import job object and get the up to date info 
+about its state, you can always call the `reload()` function:
+
+```{r}
+# Reload import object
+imp_job1$reload()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+# Exports
+
+Exports state for the actions of exporting your files on Platform into some 
+cloud bucket represented via volumes.
+Export operations are also related to volumes, but in the API they are 
+separated under `/exports` endpoints, so in our library they are also grouped
+under `exports` path on the authentication object (`Exports` resource class). 
+
+Single export job is represented as `Export` class object containing information
+about which file has been or is being exported, from which project/folder
+on the Platform, to which volume, time when started and finished, status of the 
+job, logs etc. 
+
+## List file exports into the volumes
+
+Users are able to preview and query all export jobs they've created when they 
+were trying to export their files from the Platform into some cloud bucket using volumes. 
+The output is a `Collection` object storing list of exports in its `items`
+field and with pagination options.
+
+```{r}
+# List exports
+all_exports <- a$exports$query()
+
+# Limit results to 5
+exp_limit5 <- a$exports$query(limit = 5)
+
+# Load next page of 5 results
+exp_limit5$next_page(advance_access = TRUE)
+
+# List all results until last page
+exp_limit5$all()
+```
+
+It is possible to use some query parameters as different criteria for filtering
+results like `volume`, `state` etc:
+
+```{r}
+# List exports with status RUNNING or FAILED
+exp_states <- a$exports$query(state = c("RUNNING", "FAILED"))
+
+# List exports into specific volume
+exp_volume <- a$exports$query(
+  volume = "<volume_owner_or_division>/<volume_name>" # volume object or id
+)
+```
+
+Listing exports is also available within `Volume` objects, where 
+results contains all files exported to that specific volume they're being 
+called from.
+
+```{r}
+# Get a volume where you want to list all exports
+vol1 <- a$volumes$get(id = "<volume_owner_or_division>/<volume_name>")
+
+# List exports
+vol1$list_exports()
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Get single export job
+
+Similarly like in other resource classes, `get()` method will return single
+export job object when provided with job id.
+
+```{r}
+# Get single export
+exp_obj <- auth$exports$get(id = "<export_job_id>")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Submit new export - export some file from the platform into the volume
+
+In order to export platform files into the volumes, users can use 
+`submit_export()` method from `auth$exports` path, or directly on the selected 
+`File` object (file they want to export) where this function is also available. 
+
+```{r}
+# First, get a volume where you want to export files into
+vol1 <- a$volumes$get(id = "<volume_owner_or_division>/<volume_name>")
+
+# Get a File object/id you want to export from the platform
+test_file <- a$files$get("<file_id>")
+
+# Make file export
+exp_job1 <- a$exports$submit_export(
+  source_file = test_file,
+  destination_volume = vol1,
+  destination_location = "new_volume_file.txt" # new name
+)
+```
+
+Preview export job details with `print()` method:
+```{r}
+# Print export job info
+print(exp_job1)
+```
+
+Bear in mind that **folders export** from the platform into the volumes is 
+**not possible** with this function. For such cases (or multiple files export) 
+it is better to use bulk actions that will be added soon into the package.
+
+Users can also export the file into some volume's directory, by providing the 
+`prefix` within the `location` parameter as a folder name, that will be 
+virtually created on the volume:
+
+```{r}
+# Export file into the folder 'test_folder'
+exp_job2 <- a$exports$submit_export(
+  source_file = test_file,
+  destination_volume = vol1,
+  destination_location = "test_folder/new_volume_file.txt" # new name
+)
+
+# Print export job info
+print(exp_job2)
+```
+
+__Important__ :
+
+- The file selected for export must not be a public file or an alias. 
+Aliases are objects stored in your cloud storage bucket which have been made 
+available on a Seven Bridges environment. The volume you are exporting to must 
+be configured for read-write access. To do this, set the `access_mode` parameter 
+to RW when creating or modifying a volume.
+- If this call is successful, the original project file will become an alias to 
+the newly exported object on the volume. The source file will be deleted from the Seven Bridges environment and, if no more copies of this file exist, it will no 
+longer count towards your total storage price on the Seven Bridges environment.
+
+<div align="right"><a href="#top">top</a></div>
+
+## Reload export job
+
+In order to refresh the export job object and get the up to date info about 
+its state, you can always call the `reload()` function:
+
+```{r}
+# Reload export object
+exp_job1$reload()
+```
+
+<div align="right"><a href="#top">top</a></div>
