@@ -1,5 +1,5 @@
 ---
-title: "Authentication and Billing for Seven Bridges API R Client"
+title: "Authentication and Billing"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_document:
@@ -12,7 +12,7 @@ output:
     css: "sevenbridges.css"
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Authentication and Billing for Seven Bridges API R Client}
+  %\VignetteIndexEntry{Authentication and Billing}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -39,6 +39,7 @@ with the API. Learn more about obtaining your authentication token on the
 
 The approach for obtaining the authentication token also applies to the other 
 Seven Bridges platforms.
+
 - The path for the API (base URL).
 - The platform name you are using. This is an optional field, as the base URL 
 of the API ultimately decides where the API calls will be sent to. 
@@ -58,6 +59,7 @@ To use direct authentication, users need to specify one of `platform` or `url`,
 with the corresponding `token`. Examples of direct authentication:
 
 ```{r}
+# Direct authentication with setting platform parameter
 a <- Auth$new(
   token = "<your_token>",
   platform = "aws-us"
@@ -67,6 +69,7 @@ a <- Auth$new(
 The above will use the Seven Bridges Platform on AWS (US).
 
 ```{r}
+# Direct authentication with setting url parameter
 a <- Auth$new(
   token = "<your_token>",
   url = "https://api.sb.biodatacatalyst.nhlbi.nih.gov/v2/"
@@ -78,6 +81,7 @@ In this example, the `url` points to the BioData Catalyst Platform powered by
 Seven Bridges.
 
 ```{r}
+# Direct authentication on default aws-us platform
 a <- Auth$new(token = "<your_token>")
 ```
 
@@ -97,6 +101,7 @@ To set the two environment variables in your system, you could use
 the function `sbg_set_env()`. For example:
 
 ```{r}
+# Set environment variables
 sevenbridges2:::sbg_set_env(
   url = "https://cgc-api.sbgenomics.com/v2",
   token = "<your_token>"
@@ -106,8 +111,10 @@ sevenbridges2:::sbg_set_env(
 See if the environment variables are correctly set:
 
 ```{r}
+# Check environment variables
 sevenbridges2:::sbg_get_env("SB_API_ENDPOINT")
 ## "https://cgc-api.sbgenomics.com/v2"
+
 sevenbridges2:::sbg_get_env("SB_AUTH_TOKEN")
 ## "<your_token>"
 ```
@@ -115,12 +122,14 @@ sevenbridges2:::sbg_get_env("SB_AUTH_TOKEN")
 Now you can create the `Auth` object:
 
 ```{r}
+# Authenticate using environment variables
 a <- Auth$new(from = "env")
 ```
 
 To unset the two environment variables:
 
 ```{r}
+# Unset environment variables
 Sys.unsetenv("SB_API_ENDPOINT")
 Sys.unsetenv("SB_AUTH_TOKEN")
 ```
@@ -153,12 +162,14 @@ sevenbridges2:::sbg_set_env(
 Now you are ready to create authentication object for these two accounts:
 
 ```{r}
+# Authenticate using first account
 a <- sevenbridges2::Auth$new(
   from = "env",
   sysenv_url = "account_1_url",
   sysenv_token = "account_1_token"
 )
 
+# Authenticate using second account
 b <- sevenbridges2::Auth$new(
   from = "env",
   sysenv_url = "account_2_url",
@@ -201,6 +212,7 @@ To load the default profile (named `[default]`) from the default user
 configuration file (`$HOME/.sevenbridges/credentials`), please use:
 
 ```{r}
+# Authenticate using file configuration
 a <- Auth$new(from = "file")
 ```
 
@@ -208,6 +220,7 @@ To load the user profile `aws-us-<username>` from this configuration file,
 change the `profile_name`:
 
 ```{r}
+# Authenticate using file configuration and specific profile
 a <- Auth$new(from = "file", profile_name = "aws-us-<username>")
 ```
 
@@ -215,6 +228,7 @@ To use a user configuration file from other locations (not recommended),
 please specify the file path using the argument `config_file`. For example:
 
 ```{r}
+# Authenticate using specific file configuration on custom path
 a <- Auth$new(
   from = "file", config_file = "~/sevenbridges.cfg",
   profile_name = "aws-us-<username>"
@@ -242,6 +256,7 @@ This offers a one-button switch for users who want to experiment with the
 Advance Access features. The option is disabled by default:
 
 ```{r}
+# Load package and check advance access option
 library("sevenbridges2")
 getOption("sevenbridges2")$advance_access
 ```
@@ -257,6 +272,7 @@ the `advance_access` option disabled, it will return an error message:
 # Authenticate first
 a <- Auth$new(token = "<your_token>", platform = "aws-us")
 
+# Try to send request to list markers
 req <- a$api(
   path = "genome/markers?file={bam_file_id}",
   method = "GET"
@@ -270,6 +286,7 @@ req <- a$api(
 To enable the Advance Access features, one can use
 
 ```{r}
+# Enable advance access option
 opt <- getOption("sevenbridges2")
 opt$advance_access <- TRUE
 options(sevenbridges2 = opt)
@@ -278,6 +295,7 @@ options(sevenbridges2 = opt)
 at the beginning of their scripts. Let's check if the option has been enabled:
 
 ```{r}
+# Check advance_access option again
 getOption("sevenbridges2")$advance_access
 ```
 
@@ -288,6 +306,7 @@ getOption("sevenbridges2")$advance_access
 Send the API call again:
 
 ```{r}
+# Send request again to list markers
 req <- a$api(
   path = "genome/markers?file={bam_file_id}",
   method = "GET"
@@ -297,6 +316,7 @@ req <- a$api(
 The information of the markers available on that BAM file will be returned:
 
 ```{r}
+# Read content
 httr::content(req)
 ```
 
@@ -369,6 +389,7 @@ This call returns information about your current rate limit.
 This is the number of API calls you can make in one hour.
 
 ```{r}
+# Get rate limit info
 a$rate_limit()
 ```
 
@@ -413,6 +434,7 @@ since the `Auth` object already handles these information.
 The following call from the `Auth` object will check the response as well.
 
 ```{r}
+# List all API paths
 a$api()
 ```
 
@@ -447,8 +469,10 @@ from here you can query all billing groups or fetch single one by its id.
 When you fetch single billing group it will be an object of class `Billing`. 
 
 ```{r}
+# Get specific billing group
 my_billing_group <- a$billing_groups$get(id = "<billing_group_id>")
-# you can still print the billing group info by calling the print method
+
+# You can still print the billing group info by calling the print method
 my_billing_group$print()
 ```
 
@@ -463,27 +487,33 @@ To get an analysis breakdown for a billing group which contains information
 on both the tasks and Data studio analyses, call:
 
 ```{r}
+# Get analysis breakdown
 my_billing_group$analysis_breakdown()
 ```
 
 To get a storage breakdown for a billing group, call:
 
 ```{r}
+# Get storage breakdown
 my_billing_group$storage_breakdown()
 ```
 
 Finally, you may want to get an egress breakdown for a billing group:
 
 ```{r}
+# Get egress breakdown
 my_billing_group$egress_breakdown()
 ```
 
-If something changes in the billing group, you can refresh your Billing
+If something changes in the billing group, you can refresh your `Billing`
 object by reloading it with:
 
 ```{r}
+# Reload Billing objcet
 my_billing_group$reload()
 ```
+
+<div align="right"><a href="#top">top</a></div>
 
 ## Invoices
 
@@ -496,7 +526,10 @@ like to list invoices of specific billing group, set the `billing_group`
 parameter to the desired value. 
 
 ```{r}
+# List invoices of specific billing group
 invoices_bg <- a$invoices$query(billing_group = "<billing_group_id>")
+
+# Print invoices
 invoices_bg
 ```
 
@@ -508,7 +541,10 @@ analysis and storage, and the invoice period, you can use the `get()` method
 with the id parameter set to the ID of the invoice you are querying.
 
 ```{r}
+# Get specific invoice by ID
 invoice <- a$invoices$get(id = "<invoice_id>")
+
+# Print
 invoice
 ```
 
@@ -531,13 +567,15 @@ invoice
   • currency: USD
   • amount: 357.88
 ```
-<div align="right"><a href="#top">top</a></div>
 
-If something changes, you can always refresh your local Invoice object by 
+If something changes, you can always refresh your local `Invoice` object by 
 reloading it with:
 ```{r}
+# Reload Invoice object
 invoice$reload()
 ```
+
+<div align="right"><a href="#top">top</a></div>
 
 # Send a feedback item
 
@@ -547,6 +585,7 @@ There are three feedback types available: `"idea"`, `"thought"`, or `"problem"`.
 You can send one feedback item per minute.
 
 ```{r}
+# Send feedback
 a$send_feedback(
   "This is a test for sending feedback via API. Please ignore this message.",
   type = "thought"

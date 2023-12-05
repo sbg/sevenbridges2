@@ -1,5 +1,5 @@
 ---
-title: "Introduction and Quickstart for Seven Bridges API R Client"
+title: "Introduction and Quickstart"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_document:
@@ -12,7 +12,7 @@ output:
     css: "sevenbridges.css"
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Introduction and Quickstart for Seven Bridges API R Client}
+  %\VignetteIndexEntry{Introduction and Quickstart}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -70,6 +70,7 @@ repository.
 
 To install it from `CRAN`, use simply:
 ```{r}
+# Install package from CRAN
 install.packages("sevenbridges2")
 ```
 
@@ -77,6 +78,7 @@ To install the development version from `develop` branch on our Github, use
 `remotes` package:
 
 ```{r}
+# Install package from github
 remotes::install_github(
   "sbg/sevenbridges-r2",
   build_vignettes = TRUE, dependencies = TRUE
@@ -143,6 +145,20 @@ of results by calling methods `next_page()` and `prev_page()`.
 Moreover, users are able to fetch all results using `Collection`'s method 
 `all()` which is a shortcut to send multiple API calls for each next page and 
 collect all results. Keep in mind the `limit` used as well as the API rate limit.
+
+```{r}
+# Create some collection of files
+public_files <- a$files$query(project = "admin/sbg-public-data")
+
+# Load next 50 results
+public_files$next_page()
+
+# Load previous 50 results
+public_files$prev_page()
+
+# Load all results
+public_files$all()
+```
 
 Lastly, printing `Collection` objects will print first 10 items (if there's more 
 than 10 items in results) by default, but this can be changed with `n` 
@@ -222,6 +238,7 @@ All subsequent requests will draw upon these two pieces of information.
 Let's load the package first:
 
 ```{r}
+# Load package
 library("sevenbridges2")
 ```
 
@@ -259,6 +276,7 @@ also be for different platforms), please use either the second or third method.
 This is the most common method to construct the `Auth` object. For example:
 
 ```{r}
+# Authenticate with direct method
 a <- Auth$new(platform = "aws-us", token = "<your-token>")
 ```
 
@@ -268,6 +286,7 @@ To set the two environment variables in your system, you could use
 the function `sbg_set_env()`. For example:
 
 ```{r}
+# Set environment variables
 sevenbridges2:::sbg_set_env(
   url = "https://api.sbgenomics.com/v2/",
   token = "<your_token>"
@@ -279,6 +298,7 @@ Note that these environment variables are session-specific.
 Create an `Auth` object:
 
 ```{r}
+# Authenticate using environment variables
 a <- Auth$new(from = "env")
 ```
 
@@ -310,6 +330,7 @@ To load the user profile `aws-us-<username>` from this configuration
 file, simply use:
 
 ```{r}
+# Load aws-us-<username> profile for authentication
 a <- Auth$new(
   from = "file",
   profile_name = "aws-us-<username>"
@@ -320,6 +341,7 @@ If `profile_name` is not specified, we will try to load the profile
 named `[default]`:
 
 ```{r}
+# Load default profile
 a <- Auth$new(from = "file")
 ```
 
@@ -331,7 +353,10 @@ and that we want to create authentication objects for two profiles
 the following way:
 
 ```{r}
+# Create Auth object with 'default' account
 a <- Auth$new(from = "file", profile_name = "default")
+
+# Create Auth object with 'aws-us-<username>' account
 b <- Auth$new(from = "file", profile_name = "aws-us-<username>")
 ```
 
@@ -357,12 +382,6 @@ API paths for some of the environments are:
 +-------------------------------------------+---------------------------------------------------+---------------+
 
 
-Please refer to the 
-[Authentication and Billing guide](Authentication_and_Billing guide.html) for 
-more usage and technical details about the three authentication methods.
-
-</div>
-
 <div align="right"><a href="#top">top</a></div>
 
 
@@ -373,6 +392,7 @@ more usage and technical details about the three authentication methods.
 This call returns information about your account.
 
 ```{r}
+# Get currently authenticated user info
 a$user()
 ```
 
@@ -397,6 +417,7 @@ you can view only your own user information, so this call is equivalent to
 the [call to get information about your account](#youruser).
 
 ```{r}
+# Get user info
 a$user(username = "<username>")
 ```
 
@@ -410,6 +431,7 @@ number of API calls you can make in five minutes. This call also returns
 information about your current instance limit.
 
 ```{r}
+# Get rate limit info
 a$rate_limit()
 ```
 
@@ -437,7 +459,7 @@ the Pilot Funds Billing Group assigned to each user at sign-up.
 To get information about your billing groups:
 
 ```{r}
-# check your billing info
+# Check your billing info
 a$billing_groups$query()
 ```
 
@@ -445,7 +467,9 @@ This call lists all your billing groups, including groups that are pending
 or have been disabled.
 
 To get information about your invoices:
+
 ```{r}
+# Check your invoices
 a$invoices$query()
 ```
 
@@ -460,6 +484,7 @@ includes the billing group owner, the total balance, and the status of the
 billing group (pending, disabled,...). 
 
 ```{r}
+# Get single billing group
 a$billing_groups$get(id = "<billing_group_id>")
 ```
 
@@ -477,10 +502,7 @@ a$billing_groups$get(id = "<billing_group_id>")
   • amount: 221
 ```
 
-Read more about billing and invoices operations in the 
-[Billing group and Invoices section](Authentication_and_Billing.html) in 
-Authentication and Billing guide.
-
+<div align="right"><a href="#top">top</a></div>
 
 ## List and query projects
 
@@ -511,6 +533,7 @@ tagged_projects <- a$projects$query(tags = list("demo"))
 Notice that the output is the `Collection` object and the results (list of 
 `Project` objects) can be found within `items` field.
 
+<div align="right"><a href="#top">top</a></div>
 
 ## Create a new project
 
@@ -566,6 +589,7 @@ basic platform operations on the project.
 Use `get()` method and provide full ID of the project you would like to fetch. 
 
 ```{r}
+# Get single project by ID
 a$projects$get(id = "<your_username_or_division>/api-testing")
 ```
 
@@ -775,6 +799,8 @@ tsk <- p$create_task(
 tsk$print()
 ```
 
+<div align="right"><a href="#top">top</a></div>
+
 ## Run a Task
 
 Now, we are ready to run our task.
@@ -832,6 +858,8 @@ Alternatively, you can delete the draft task if you no longer wish to run it.
 # tsk$delete()
 ```
 
+<div align="right"><a href="#top">top</a></div>
+
 ## Run tasks using spot instances
 
 Running tasks with [spot instances](https://docs.sevenbridges.com/docs/about-spot-instances)
@@ -881,6 +909,8 @@ Conversely, you can have a spot instance enabled project,
 but draft and run specific tasks using on-demand instances,
 by setting `use_interruptible_instances = FALSE` in `create_task()` explicitly.
 
+<div align="right"><a href="#top">top</a></div>
+
 ## Execution hints per task run
 
 During workflow development and benchmarking, sometimes we need to view and 
@@ -905,6 +935,8 @@ tsk <- p$create_task(
 ```
 
 For details about `execution_settings`, please check [create a new draft task](https://docs.sevenbridges.com/reference/create-a-new-task).
+
+<div align="right"><a href="#top">top</a></div>
 
 ## Draft a batch task
 
