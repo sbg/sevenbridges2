@@ -283,22 +283,20 @@ check_metadata <- function(metadata) {
   }
 }
 
-# Transform metadata input --------------------------------------------------
-#' @description Transform metadata input to be in API acceptable form.
+# Transform multiple values set for single query parameter --------------------
+#' @description Transform multiple values set for single query parameter.
 #'
-#' @param metadata Metadata named list.
+#' @param input Query parameter values.
 #'
 #' @importFrom utils URLencode
 #'
 #' @noRd
-transform_metadata <- function(metadata) {
-  metadata_names <- paste0("metadata.", names(metadata))
-  names(metadata) <- metadata_names
-  encoded_metadata <- lapply(metadata, function(x) {
+transform_multiple_vals <- function(input) {
+  encoded_inputs <- lapply(input, function(x) {
     utils::URLencode(x)
   })
-  new_metadata <- flatten_query(encoded_metadata)
-  return(new_metadata)
+  new_inputs <- flatten_query(encoded_inputs)
+  return(new_inputs)
 }
 
 # Check file download destination ------------------------------------------

@@ -94,7 +94,7 @@ folder, within the project to which the folder belongs.
 If project is used, the call will list the content at the root of
 the project's files.}
 
-\item{\code{name}}{Name of the file. List file with this name. Note that the
+\item{\code{name}}{Name of the file. List files with this name. Note that the
 name must be an exact complete string for the results to match.
 Multiple names can be represented as a vector.}
 

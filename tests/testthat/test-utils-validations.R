@@ -193,21 +193,28 @@ test_that("check_metadata function throws error when metadata is not valid", {
   )
 })
 
-test_that("transform_metadata function works", {
+test_that("transform_multiple_vals function works", {
+  # Test with metadata example
   metadata_values <- list(
-    disease_type = "Acute Myeloma",
-    sample_id = "some-id",
-    metadata_field = c("some other value1", "some-value2")
+    metadata.disease_type = "Acute Myeloma",
+    metadata.sample_id = "some-id",
+    metadata.metadata_field = c("some other value1", "some-value2")
   )
-  transformed_metadata <- transform_metadata(metadata_values)
+  transformed_metadata <- transform_multiple_vals(metadata_values)
   testthat::expect_equal(length(names(transformed_metadata)), 4)
-  testthat::expect_true(
-    all(startsWith(names(transformed_metadata), "metadata."))
-  )
+
   testthat::expect_true(names(transformed_metadata)[3] == names(transformed_metadata)[4]) # nolint
   testthat::expect_equal(transformed_metadata[[1]], "Acute%20Myeloma")
   testthat::expect_equal(transformed_metadata[[2]], metadata_values[[2]])
   testthat::expect_equal(transformed_metadata[[3]], "some%20other%20value1")
+
+  # Test with tags example
+  tags_values <- list(tags = list("index files", "suggested"))
+
+  transformed_tags <- transform_multiple_vals(tags_values)
+  testthat::expect_equal(length(names(transformed_tags)), 2)
+  testthat::expect_equal(transformed_tags[[1]], "index%20files")
+  testthat::expect_equal(transformed_tags[[2]], "suggested")
 })
 
 test_that("check_download_path function throws error when parameters are not valid", { # nolint
