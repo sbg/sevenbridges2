@@ -1,5 +1,5 @@
 ---
-title: "Reference details about Projects, Files, Apps and Tasks for Seven Bridges API R Client"
+title: "Projects and Tasks execution"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_document:
@@ -12,7 +12,7 @@ output:
     css: "sevenbridges.css"
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Reference details about Projects, Files, Apps and Tasks for Seven Bridges API R Client}
+  %\VignetteIndexEntry{Projects and Tasks execution}
   %\VignetteEncoding{UTF-8}
 ---
 
