@@ -40,6 +40,8 @@ R6 Class representing a resource for managing apps.
 \item \href{#method-App-get_revision}{\code{App$get_revision()}}
 \item \href{#method-App-create_revision}{\code{App$create_revision()}}
 \item \href{#method-App-sync}{\code{App$sync()}}
+\item \href{#method-App-input_matrix}{\code{App$input_matrix()}}
+\item \href{#method-App-output_matrix}{\code{App$output_matrix()}}
 \item \href{#method-App-create_task}{\code{App$create_task()}}
 \item \href{#method-App-clone}{\code{App$clone()}}
 }
@@ -248,6 +250,36 @@ has been copied.
 
 \subsection{Returns}{
 \code{\link{App}} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-App-input_matrix"></a>}}
+\if{latex}{\out{\hypertarget{method-App-input_matrix}{}}}
+\subsection{Method \code{input_matrix()}}{
+Get inputs matrix for the app - what are expected inputs
+required or not, with their details about the expected types,
+descriptions etc.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{App$input_matrix()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Data frame.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-App-output_matrix"></a>}}
+\if{latex}{\out{\hypertarget{method-App-output_matrix}{}}}
+\subsection{Method \code{output_matrix()}}{
+Get outputs matrix for the app - what are the expected
+outputs of the task running this app, with their details about the
+expected types, descriptions etc.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{App$output_matrix()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Data frame.
 }
 }
 \if{html}{\out{<hr>}}

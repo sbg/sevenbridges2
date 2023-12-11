@@ -528,3 +528,83 @@ extract_common_query_params <- function(args, param_name) {
   }
   return(param_value)
 }
+
+#' @description Get app's inputs details.
+#'
+#' @importFrom data.table rbindlist
+#'
+#' @return Data.frame.
+#'
+#' @noRd
+input_matrix <- function(cwl) {
+  inputs_lst <- cwl$inputs
+  lst <- lapply(inputs_lst, function(x) {
+    x$id <- gsub("^#", "", x$id)
+    res <- c(
+      x[names(x) %in% c(
+        "id",
+        "label"
+      )],
+      list(
+        required = is_required(x),
+        type = make_type(x$type)
+      )
+    )
+
+    res[sapply(res, is.null)] <- "null"
+    res <- do.call(data.frame, res)
+  })
+
+  res <- suppressWarnings(
+    as.data.frame(data.table::rbindlist(lst, fill = TRUE))
+  )
+
+  # Order rows to show File types first
+  idx <- which(grepl(pattern = "File", x = res$type))
+  res1 <- res[idx, ]
+  res2 <- res[-idx, ]
+  res <- rbind(res1, res2)
+  return(res)
+}
+
+#' @description Make type
+#' @param type Type.
+#' @return String.
+#'
+#' @noRd
+make_type <- function(type) {
+  type <- sapply(type, function(s) {
+    # file array problem
+    if (!is.null(names(s)) && "type" %in% names(s)) {
+      if (s$type == "array") {
+        return(paste0(s$items, "..."))
+      } else if (s$type == "enum") {
+        return("enum")
+      } else {
+        return("null")
+      }
+    } else {
+      if (is.list(s)) {
+        return(s[[1]])
+      } else {
+        if (length(s) > 1) {
+          return(s[s != "null"])
+        } else {
+          return(s)
+        }
+      }
+    }
+  })
+  type[type != "null"]
+}
+
+#' @description Is the input required.
+#' @param x Input.
+#' @return Boolean.
+#'
+#' @noRd
+is_required <- function(x) {
+  # x is input item
+  !((is.list(x$type) && x$type[[1]] == "null") ||
+    (is.character(x$type) && grepl(pattern = "?", x = x$type, fixed = TRUE)))
+}
