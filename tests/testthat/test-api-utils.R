@@ -501,3 +501,93 @@ test_that("Utility function check_and_transform_id throws error when ID is not v
     testthat::expect_error(check_and_transform_id(id))
   }
 })
+
+test_that("Utility function input_matrix works as expected", {
+  simulated_raw_cwl <- list(inputs = setup_app_inputs_list)
+  inputs_info <- input_matrix(simulated_raw_cwl)
+
+  testthat::expect_true(
+    checkmate::test_class(inputs_info, classes = "data.frame")
+  )
+  testthat::expect_equal(ncol(inputs_info), 4)
+  testthat::expect_equal(nrow(inputs_info), 9)
+  testthat::expect_true(
+    all(c("id", "label", "type", "required") %in% names(inputs_info))
+  )
+})
+
+test_that("Utility function make_type works as expected", {
+  # Get example of one File type
+  file_type <- setup_app_inputs_list[[3]]
+  make_type <- make_type(file_type$type)
+  testthat::expect_equal(make_type, "File")
+
+  # Get example of one File array type
+  file_type <- setup_app_inputs_list[[2]]
+  make_type <- make_type(file_type$type)
+  testthat::expect_equal(make_type, "File...")
+
+  # Get example of one integer type
+  int_type <- setup_app_inputs_list[[5]]
+  make_type <- make_type(int_type$type)
+  testthat::expect_equal(make_type, "int?")
+
+  # Get example of one enum type
+  enum_type <- setup_app_inputs_list[[7]]
+  make_type <- make_type(enum_type$type)
+  testthat::expect_equal(make_type, "enum")
+})
+
+test_that("Utility function find_type works as expected", {
+  simple_list_enum <- list("enum")
+  testthat::expect_equal(find_type(simple_list_enum), "null")
+
+  simple_list_null <- list("null")
+  testthat::expect_equal(find_type(simple_list_null), "null")
+
+  named_list_enum <- list(type = "enum")
+  testthat::expect_equal(find_type(named_list_enum), "enum")
+
+  named_list_nested <- list(symbols = list(1, 2, 3))
+  testthat::expect_equal(find_type(named_list_nested), "null")
+
+  named_list_string <- list(name = "name")
+  testthat::expect_equal(find_type(named_list_string), "null")
+
+  simple_value_null <- "null"
+  testthat::expect_equal(find_type(simple_value_null), "null")
+
+  simple_value <- "File"
+  testthat::expect_equal(find_type(simple_value), "File")
+
+  simple_list_w_type <- list(type = "array", items = "File")
+  testthat::expect_equal(find_type(simple_list_w_type), "File...")
+
+  simple_list_w_type_enum <- list(
+    type = "enum",
+    symbols = list(1, 2, 3, 4),
+    name = "Sample_Tags_Version"
+  )
+  testthat::expect_equal(find_type(simple_list_w_type_enum), "enum")
+
+  string_vector <- c("null", "File")
+  testthat::expect_equal(find_type(string_vector), "File")
+})
+
+test_that("Utility function is_required works as expected", {
+  # Get example of one optional field with first 'null' value
+  example_list <- list(type = list("null", type = "File"))
+  testthat::expect_false(is_required(example_list))
+
+  # Get example of one optional field containing ?
+  example_string <- list(type = "int?")
+  testthat::expect_false(is_required(example_string))
+
+  # Get example of one required field
+  example_list <- list(type = list(type = "File"))
+  testthat::expect_true(is_required(example_list))
+
+  # Get example of one required field
+  example_string <- list(type = "int")
+  testthat::expect_true(is_required(example_string))
+})

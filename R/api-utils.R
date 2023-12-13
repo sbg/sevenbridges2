@@ -628,6 +628,9 @@ find_type <- function(type) {
       } else if (type$type == "enum") {
         return("enum")
       } else {
+        # I suppose if there is type but it's not enum or array, than it must
+        # be some complex type in form of list, so we return null here or there
+        # are no cases of such 'element of the type field'
         return("null")
       }
     } else {

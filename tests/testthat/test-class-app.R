@@ -134,3 +134,17 @@ test_that("App create_revision method works", {
   # Create revision fails when bad in_place is provided
   testthat::expect_error(do.call(setup_app_obj$get_revision, test_bad_in_place)) # nolint
 })
+
+test_that("App input_matrix method works", {
+  setup_app_obj$raw$inputs <- setup_app_inputs_list
+  result <- setup_app_obj$input_matrix()
+
+  testthat::expect_true(
+    checkmate::test_class(result, classes = "data.frame")
+  )
+  testthat::expect_equal(ncol(result), 4)
+  testthat::expect_equal(nrow(result), 9)
+  testthat::expect_true(
+    all(c("id", "label", "type", "required") %in% names(result))
+  )
+})
