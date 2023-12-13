@@ -574,7 +574,51 @@ input_matrix <- function(cwl) {
   return(res)
 }
 
-#' @description Handle input type.
+#' @description Get app's outputs details.
+#'
+#' @param cwl Raw CWL of an app.
+#'
+#' @importFrom data.table rbindlist
+#'
+#' @return Data.frame.
+#'
+#' @noRd
+output_matrix <- function(cwl) {
+  outputs_lst <- cwl$outputs
+
+  # Extract id, label, type and whether input is required or not
+  lst <- lapply(outputs_lst, function(x) {
+    x$id <- gsub("^#", "", x$id) # transform id if starts with '#'
+    res <- c(
+      x[names(x) %in% c(
+        "id",
+        "label"
+      )],
+      list(
+        type = make_type(x$type) # handle type
+      )
+    )
+
+    res[sapply(res, is.null)] <- "null"
+    res <- do.call(data.frame, res)
+  })
+
+  res <- suppressWarnings(
+    as.data.frame(data.table::rbindlist(lst, fill = TRUE))
+  )
+
+  # Order rows to show File types first
+  idx <- which(grepl(pattern = "File", x = res$type))
+  if (length(idx) != 0) {
+    res1 <- res[idx, ]
+    res2 <- res[-idx, ]
+    res <- rbind(res1, res2)
+  }
+
+  return(res)
+}
+
+#' @description Handle type.
 #'
 #' @param input_type Type.
 #'

@@ -148,3 +148,17 @@ test_that("App input_matrix method works", {
     all(c("id", "label", "type", "required") %in% names(result))
   )
 })
+
+test_that("App output_matrix method works", {
+  setup_app_obj$raw$outputs <- setup_app_outputs_list
+  result <- setup_app_obj$output_matrix()
+
+  testthat::expect_true(
+    checkmate::test_class(result, classes = "data.frame")
+  )
+  testthat::expect_equal(ncol(result), 3)
+  testthat::expect_equal(nrow(result), 11)
+  testthat::expect_true(
+    all(c("id", "label", "type") %in% names(result))
+  )
+})

@@ -385,7 +385,10 @@ App <- R6::R6Class(
     #'
     #' @return Data frame.
     output_matrix = function() {
-
+      if (is.null(self$raw)) {
+        self$reload()
+      }
+      sevenbridges2:::output_matrix(self$raw)
     },
 
     # Create task ------------------------------------------------------------

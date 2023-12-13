@@ -591,3 +591,17 @@ test_that("Utility function is_required works as expected", {
   example_string <- list(type = "int")
   testthat::expect_true(is_required(example_string))
 })
+
+test_that("Utility function output_matrix works as expected", {
+  simulated_raw_cwl <- list(outputs = setup_app_outputs_list)
+  outputs_info <- output_matrix(simulated_raw_cwl)
+
+  testthat::expect_true(
+    checkmate::test_class(outputs_info, classes = "data.frame")
+  )
+  testthat::expect_equal(ncol(outputs_info), 3)
+  testthat::expect_equal(nrow(outputs_info), 11)
+  testthat::expect_true(
+    all(c("id", "label", "type") %in% names(outputs_info))
+  )
+})

@@ -705,5 +705,75 @@ setup_app_inputs_list <-
     )
   )
 
+setup_app_outputs_list <- list(
+  list(
+    id = "#summary_metrics", label = "Summary Metrics",
+    source = list("#Picard_CollectAlignmentSummaryMetrics.summary_metrics"),
+    type = list("File"), `sbg:fileTypes` = "TXT", required = TRUE,
+    `sbg:y` = 317.000007256866, `sbg:x` = 1185.00002108514
+  ),
+  list(
+    id = "out_filtered_variants",
+    outputSource = list("gatk_variantfiltration_4_1_0_0/out_variants"),
+    `sbg:fileTypes` = "VCF.GZ", type = "File?", label = "Output filtered VCF",
+    doc = "Output filtered VCF file.", `sbg:x` = 2750.72924804688,
+    `sbg:y` = -106.195388793945
+  ), list(
+    id = "html_report",
+    doc = "HTML report.", label = "HTML report", type = "File?",
+    outputBinding = list(
+      glob = "*.b64html",
+      outputEval = "${\n return inheritMetadata(self, inputs.abundances)\n\n}"
+    ),
+    `sbg:fileTypes` = "HTML"
+  ), list(
+    id = "normalized_counts",
+    doc = "Counts normalized using estimated sample-specific normalization factors.", # nolint
+    label = "Normalized counts", type = "File?", outputBinding = list(
+      glob = "*raw_counts.txt",
+      outputEval = "${\n return inheritMetadata(self, inputs.abundances)\n\n}"
+    ),
+    `sbg:fileTypes` = "TXT"
+  ), list(
+    id = "results", doc = "Output CSV file.",
+    label = "DESeq2 analysis results.", type = "File?", outputBinding = list(
+      glob = "*out.csv",
+      outputEval = "${\n return inheritMetadata(self, inputs.abundances)\n\n}"
+    ),
+    `sbg:fileTypes` = "CSV"
+  ), list(
+    id = "rdata", doc = "Workspace image.",
+    label = "RData file", type = "File[]?", outputBinding = list(
+      glob = "*.RData"
+    ), `sbg:fileTypes` = "RDATA"
+  ), list(
+    id = "pheno_out", type = "File?", outputBinding = list(
+      glob = "pheno_data.csv"
+    )
+  ), list(
+    id = "out_report",
+    outputSource = list("bracken_2_7/out_report"), `sbg:fileTypes` = "REPORT",
+    type = "File[]?", label = "Bracken read estimates",
+    doc = "Bracken read estimates report file.",
+    `sbg:x` = 1692.93395996094, `sbg:y` = 223.5
+  ), list(
+    id = "vdj",
+    outputSource = list(
+      "VDJ_Compile_Results/vdjCellsDatatable",
+      "VDJ_Compile_Results/vdjCellsDatatableUncorrected",
+      "VDJ_Compile_Results/vdjUnfilteredContigsAIRR",
+      "VDJ_Compile_Results/vdjDominantContigsAIRR",
+      "VDJ_Compile_Results/vdjMetricsCsv"
+    ), type = "File[]?",
+    label = "VDJ"
+  ), list(id = "Logs", outputSource = list(
+    "BundleLogs/logs_dir"
+  ), type = "Directory", label = "Pipeline Logs"),
+  list(
+    id = "Multiplex", outputSource = list("MergeMultiplex/Multiplex_out"),
+    type = "File[]?"
+  )
+)
+
 # Close session at the end of tests
 withr::defer(teardown_env())
