@@ -1,5 +1,5 @@
 ---
-title: "Introduction and Quickstart"
+title: "Introduction and Quickstart for Seven Bridges API R Client"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_document:
@@ -12,7 +12,7 @@ output:
     css: "sevenbridges.css"
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Introduction and Quickstart}
+  %\VignetteIndexEntry{Introduction and Quickstart for Seven Bridges API R Client}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -687,7 +687,7 @@ star_app$copy(
 Next, we would like to run a task with this app. Let's see what is all 
 required.
 
-## Execute a new task
+## Create a new task
 
 ### Find your app inputs
 
@@ -706,11 +706,12 @@ To draft a new task, you need to specify the following:
 - The inputs for your workflow. 
 
 You can always check the App details on the visual interface for task input 
-requirements. To find the required inputs with R, you need to get an 
-`App` object first.
+requirements. However, there is also a function on the App objects to get 
+basic information about app's inputs and outputs. 
+To find the required inputs with R, you need to get an `App` object first.
 
-Let's check which inputs this app requires and bring them into our
-project.
+Let's check which inputs this app requires by calling the `input_matrix()`
+function and bring them into our project.
 
 ```{r}
 # Fetch copied app
@@ -718,16 +719,11 @@ copied_star_app <- a$apps$get(
   id = "<username_or_division>/api-testing/newcopyofstar/0"
 )
 
-# Preview its inputs from raw CWL
-copied_star_app$raw$inputs
+# Preview its inputs
+copied_star_app$input_matrix()
 ```
 
-Depending on the CWL version, the structure of the inputs presented could differ. 
-Here with sbg::draft2 we can see first 3 files that are required and we will 
-use their ids (excluding the starting '#') in mapping the input files 
-when defining a task. 
-
-Locate the names of the required inputs. Note that task inputs need to match 
+Locate the IDs of the required inputs. Note that task inputs need to match 
 the expected data type and name. In the above example, we see two required 
 fields:
 
@@ -797,6 +793,18 @@ tsk <- p$create_task(
 
 # Preview task
 tsk$print()
+```
+
+### Preview your app's expected outputs
+
+Similarly as with inputs, you can also preview the structure of the expected
+outputs of the task or workflow. You can get details about the output's name,
+description and type using `output_matrix()`. 
+This function can be called from the App object.
+
+```{r}
+# Get app's outputs details
+copied_star_app$output_matrix()
 ```
 
 <div align="right"><a href="#top">top</a></div>
