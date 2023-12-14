@@ -78,6 +78,8 @@ Print method for App class.
 \if{latex}{\out{\hypertarget{method-App-reload}{}}}
 \subsection{Method \code{reload()}}{
 Reload App object information.
+Suitable also for loading raw CWL in the 'raw' field, if it's not
+already populated.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App$reload(...)}\if{html}{\out{</div>}}
 }

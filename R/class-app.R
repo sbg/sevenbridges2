@@ -90,6 +90,8 @@ App <- R6::R6Class(
 
     # Reload App object ------------------------------------------------------
     #' @description Reload App object information.
+    #'  Suitable also for loading raw CWL in the 'raw' field, if it's not
+    #'  already populated.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
