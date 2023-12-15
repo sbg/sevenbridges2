@@ -78,6 +78,8 @@ Print method for App class.
 \if{latex}{\out{\hypertarget{method-App-reload}{}}}
 \subsection{Method \code{reload()}}{
 Reload App object information.
+Suitable also for loading raw CWL in the 'raw' field, if it's not
+already populated.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App$reload(...)}\if{html}{\out{</div>}}
 }
@@ -228,7 +230,7 @@ More documentation about how to create the app via API can be found
 \if{html}{\out{<a id="method-App-sync"></a>}}
 \if{latex}{\out{\hypertarget{method-App-sync}{}}}
 \subsection{Method \code{sync()}}{
-Synchronize a copied app with its parent app
+Synchronize a copied app with its parent app.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App$sync(...)}\if{html}{\out{</div>}}
 }

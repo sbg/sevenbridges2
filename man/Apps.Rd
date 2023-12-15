@@ -64,6 +64,7 @@ This call lists all the apps available to you.
   id = NULL,
   limit = getOption("sevenbridges2")$limit,
   offset = getOption("sevenbridges2")$offset,
+  fields = "!raw",
   ...
 )}\if{html}{\out{</div>}}
 }
@@ -94,8 +95,13 @@ This is a pagination-specific attribute.}
 of the first item to return. The default value is \code{0}.
 This is a pagination-specific attribute.}
 
-\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
-like other query parameters or 'fields', etc.}
+\item{\code{fields}}{Selector specifying a subset of fields to include in the
+response. For querying apps it is set to return all fields except 'raw'
+which stores CWL in form of a list. Please, be careful when setting to
+return all fields, since the execution of this API request could be
+time-consuming.}
+
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function.}
 }
 \if{html}{\out{</div>}}
 }

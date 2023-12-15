@@ -90,6 +90,8 @@ App <- R6::R6Class(
 
     # Reload App object ------------------------------------------------------
     #' @description Reload App object information.
+    #'  Suitable also for loading raw CWL in the 'raw' field, if it's not
+    #'  already populated.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
@@ -190,8 +192,8 @@ App <- R6::R6Class(
     #' @description Get app's revision.
     #'
     #' @details
-    #' This call allows you to obtain a particular revision of an
-    #' app, which is not necessarily the most recent version.
+    #'  This call allows you to obtain a particular revision of an
+    #'  app, which is not necessarily the most recent version.
     #'
     #' @param revision Revision of the app.
     #' @param in_place If `TRUE`, replace current app object with new for
@@ -332,11 +334,11 @@ App <- R6::R6Class(
     },
 
     # Synchronize Apps -------------------------------------------------------
-    #' @description Synchronize a copied app with its parent app
+    #' @description Synchronize a copied app with its parent app.
     #'
     #' @details
-    #' This call synchronizes a copied app with the source app from which it
-    #' has been copied.
+    #'  This call synchronizes a copied app with the source app from which it
+    #'  has been copied.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
