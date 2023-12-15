@@ -33,17 +33,17 @@ features are implemented.
 
 # Introduction
 
-`sevenbridges2` is an R package that provides an interface for Seven Bridges 
+`sevenbridges2` is an R package that provides an interface for the Seven Bridges 
 public API. The supported platforms include the 
 [Seven Bridges Platform](https://igor.sbgenomics.com/), 
 [Cancer Genomics Cloud (CGC)](https://www.cancergenomicscloud.org), 
-[BioData Catalyst (BDC)](https://platform.sb.biodatacatalyst.nhlbi.nih.gov/) and [Cavatica](https://cavatica.sbgenomics.com).
+[BioData Catalyst (BDC)](https://platform.sb.biodatacatalyst.nhlbi.nih.gov/) and [CAVATICA](https://cavatica.sbgenomics.com).
 
 Learn more from our documentation on the 
 [Seven Bridges Platform](https://docs.sevenbridges.com/page/api), 
-[Cancer Genomics Cloud (CGC)](http://docs.cancergenomicscloud.org/v1.0/page/the-cgc-api), 
+[Cancer Genomics Cloud (CGC)](http://docs.cancergenomicscloud.org/v1.0/page/the-cgc-api),
 [BioData Catalyst (BDC)](https://sb-biodatacatalyst.readme.io/reference/new-1)
-and [Cavatica](https://docs.cavatica.org/reference/the-api).
+and [CAVATICA](https://docs.cavatica.org/reference/the-api).
 
 Unlike the current `sevenbridges` package that is built on top of 
 [Reference classes]("http://adv-r.had.co.nz/R5.html"), 
@@ -52,11 +52,11 @@ the `sevenbridges2` package is based on more modern and lightweight
 However, the basic idea and way of constructing API requests is largely 
 preserved.
 
-## R Client for Seven Bridges API
+## R Client for the Seven Bridges API
 
 In order to use the `sevenbridges2` package users must authenticate themselves
 first by creating an Auth object and providing necessary credentials. 
-More about the authentication types you can read in our next chapters.
+You can read more about the authentication types in our next chapters.
 
 The `sevenbridges2` package only supports v2+ versions of the API, since 
 versions prior to v2 are not compatible with the Common Workflow Language (CWL). 
@@ -74,8 +74,8 @@ To install it from `CRAN`, use simply:
 install.packages("sevenbridges2")
 ```
 
-To install the development version from `develop` branch on our Github, use
-`remotes` package:
+To install the development version from the `develop` branch on our Github, use
+the `remotes` package:
 
 ```{r}
 # Install package from github
@@ -112,10 +112,10 @@ API calls.
 
 The `sevenbridges2` package is organized by main resources from the 
 Seven Bridges API reference. 
-There we have groups of endpoints to manipulate with: projects, files, apps, 
-tasks, invoices, volumes etc.
-For each group of resources the set of operations is available like `query()`, 
-`get()` and `delete()` as common and other custom operations. 
+There we have groups of endpoints to work with projects, files, apps, tasks, 
+invoices, volumes, etc.
+For each group of resources, there is a set of operations such as `query()`, 
+`get()` and `delete()` which are common, as well as other custom operations. 
 
 Before we start, keep in mind the following:
 
@@ -123,31 +123,30 @@ __`offset` and `limit`__
 
 Almost every API call accepts two arguments named `offset` and `limit`.
 
-- Offset defines where the retrieved items started.
+- Offset defines where the retrieved items start.
 - Limit defines the number of items you want to get.
 
 By default, `offset` is set to `0` and `limit` is set to `50`. As such, your 
 API request returns the __first 50 items__ when you list items or search for 
 items by name. To search and list all items, use `complete = TRUE` 
-if you use core `api()` function in your API request, or `all()` operation 
-within the `Collection` object you've received as result. 
+if you are using the core `api()` function in your API request, or the `all()` 
+operation within the `Collection` object you've received as the result. 
 
 __`Collection`__
 
-Every API call that returns as a result some list of items (usually the output 
-from `query()` operations), like fetching projects, files, apps etc, wraps 
-the results into a general `Collection` class object containing `items` field 
+Every API call that returns a list of items (usually the output from `query()` operations), operations), like fetching projects, files, apps etc, wraps the 
+results into a general `Collection` class object containing the `items` field 
 from which users may access the items returned. 
-Additional options that `Collection` class is offering are possibilities to 
-navigate between pages of results, for example, to load next or previous page 
-of results by calling methods `next_page()` and `prev_page()`.
+Additional options that the `Collection` class offers are to navigate between 
+pages of results, for example, to load next or previous page of results by 
+calling `next_page()` and `prev_page()` methods.
 
-Moreover, users are able to fetch all results using `Collection`'s method 
-`all()` which is a shortcut to send multiple API calls for each next page and 
-collect all results. Keep in mind the `limit` used as well as the API rate limit.
+Moreover, users can fetch all results using `Collection`'s `all()` method which 
+is a shortcut to send multiple API calls for each next page and collect all 
+results. Keep in mind the `limit` used, as well as the API rate limit.
 
 ```{r}
-# Create some collection of files
+# Create a collection of files
 public_files <- a$files$query(project = "admin/sbg-public-data")
 
 # Load next 50 results
@@ -160,12 +159,12 @@ public_files$prev_page()
 public_files$all()
 ```
 
-Lastly, printing `Collection` objects will print first 10 items (if there's more 
-than 10 items in results) by default, but this can be changed with `n` 
-parameter in its `print()` function: 
+Lastly, printing `Collection` objects will print the first 10 items (if there 
+are more than 10 items in the results) by default, but this can be changed with 
+the `n` parameter in its `print()` function: 
 
 ```{r}
-# Create some collection of files
+# Create a collection of files
 public_files <- a$files$query(project = "admin/sbg-public-data")
 
 # Default print
@@ -178,19 +177,20 @@ public_files$print(n = 20)
 __Search by ID__
 
 When searching by ID (usually it's the resource's `get()` operation), 
-your request will return your exact resource as it is unique. 
-As such, you do not have to set `offset` and `limit` manually. 
-It is a good practice to find your resources by their ID and pass this ID
-as an input to your task. 
-You can find a resource's ID in the final part of the URL on the visual 
-interface or via the API requests to list resources or get resource's details.
+your request will return your exact resource as it is unique. Therefore, 
+you do not have to set `offset` and `limit` manually. 
+It is good practice to find your resources by their ID and pass this ID as an 
+input to your task. You can find a resource's ID in the final part of the URL 
+in the visual interface or via API requests to list resources or get a 
+resource's details.
 
 __Search by name__
 
-Search by name as criteria in the `query()` operations of the Resources, returns 
+Search by name as criteria in the `query()` operations of Resources, returns 
 all exact or partial matches depending on the resource. 
 
-For example, to list all public files, use project query parameter `admin/sbg-public-data`, while if you want to find exact file by name, 
+For example, to list all public files, use the `admin/sbg-public-data` project 
+query parameter, while if you want to find an exact file by name, 
 set its `name` parameter to the exact value (partial search by name is not 
 possible for files). 
 
@@ -205,13 +205,13 @@ file_1000G_omni <- a$files$query(
 )
 ```
 
-On the other side, partial search by name works for Projects and Apps resources.
+On the other hand, partial search by name works for Projects and Apps resources. 
 You can set the corresponding `name` or `query_terms` parameters for this use 
 case. 
-In order to query public apps, set `visibility` parameter to 'public'. 
+In order to query public apps, set the `visibility` parameter to 'public'. 
 
 ```{r}
-# Search all public apps containing STAR term
+# Search all public apps containing the STAR term
 public_star_apps <- a$apps$query(
   visibility = "public",
   query_terms = list("STAR")
@@ -230,10 +230,10 @@ demo_projs <- a$projects$query(name = "demo")
 
 Before you can access your account via the API, you have to provide your 
 credentials. You can obtain your credentials in the form of an ["authentication token"](https://docs.sevenbridges.com/v1.0/docs/get-your-authentication-token) 
-from the **Developer Tab** under **Account Settings** on the visual interface. 
+from the **Developer Tab** under **Account Settings** in the visual interface. 
 Once you've obtained this, create an `Auth` object, so it remembers your 
 authentication token and the path for the API. 
-All subsequent requests will draw upon these two pieces of information.
+All subsequent requests will use these two pieces of information.
 
 Let's load the package first:
 
@@ -243,13 +243,13 @@ library("sevenbridges2")
 ```
 
 You have three different ways to provide your token. 
-Choose from one method below:
+Choose from one of the methods below:
 
 1. [Direct authentication.](#method1) Here you should provide your developer 
 token and a base URL for the platform of interest (alternatively, you can 
 provide the name of the platform - these are the available options `cgc`, 
 `aws-us`, `aws-eu`, `ali-cn`, `cavatica`, `f4c` - the default platform is 
-`aws-us`) as a function call arguments to `Auth$new()`. This will create the 
+`aws-us`) as function call arguments to `Auth$new()`. This will create the 
 platform authentication object and temporarily set up your token and platform 
 base URL as environment variables `SB_AUTH_TOKEN` and `SB_API_ENDPOINT`. 
 This way, your token will not be directly stored in the Auth object, but you 
@@ -269,7 +269,8 @@ default `$HOME/.sevenbridges/credentials`, provides an organized way to collect
 and manage all your API authentication information for Seven Bridges platforms.
 
 If you need to be logged into multiple accounts at the same time (which can 
-also be for different platforms), please use either the second or third method.
+also be for different platforms), please use either the second or the third 
+method.
 
 <a name="method1"/>**Method 1: Direct authentication**
 
@@ -478,13 +479,13 @@ the `billing_group_id` query parameter to specify the ID of a particular
 billing group, in which case it will return the invoice incurred by that 
 billing group only.
 
-To get a detailed information for a specific billing group, please use the 
+To get detailed information for a specific billing group, please use the 
 billing_group method with the billing group ID. The information returned 
 includes the billing group owner, the total balance, and the status of the 
 billing group (pending, disabled,...). 
 
 ```{r}
-# Get single billing group
+# Get a single billing group
 a$billing_groups$get(id = "<billing_group_id>")
 ```
 
@@ -511,8 +512,8 @@ to a distinct scientific investigation, serving as a container for its data,
 analysis tools, results, and collaborators.
 
 In order to query and explore all projects, use the `projects` 
-resource path and `query()` method. One can also filter the projects by several
-criteria, like project's name and tags. 
+resource path and the `query()` method. One can also filter the projects by 
+several criteria, like project's name and tags. 
 The search by name is partial and case-insensitive. 
 
 ```{r}
@@ -530,8 +531,8 @@ demo_projects <- a$projects$query(name = "demo")
 tagged_projects <- a$projects$query(tags = list("demo"))
 ```
 
-Notice that the output is the `Collection` object and the results (list of 
-`Project` objects) can be found within `items` field.
+Note that the output is the `Collection` object and the results (list of 
+`Project` objects) can be found within the `items` field.
 
 <div align="right"><a href="#top">top</a></div>
 
@@ -544,10 +545,10 @@ above.
 # List all available billing groups for currently logged in user
 a$billing_groups$query()
 
-# Set billing group for the new project
+# Set the billing group for the new project
 bid <- "<billing_group_id>"
 
-# Create new project
+# Create a new project
 p <- a$projects$create(
   name = "API testing", billing_group = bid,
   description = "This project has been created using the sevenbridges2 R API
@@ -586,10 +587,11 @@ basic platform operations on the project.
 
 ## Get details of a specified project
 
-Use `get()` method and provide full ID of the project you would like to fetch. 
+Use the `get()` method and provide the full ID of the project you would like to 
+fetch.
 
 ```{r}
-# Get single project by ID
+# Get a single project by ID
 a$projects$get(id = "<your_username_or_division>/api-testing")
 ```
 
@@ -614,7 +616,7 @@ a$projects$get(id = "<your_username_or_division>/api-testing")
   • use_elastic_disk: FALSE
 ```
 
-## Copy app into the project
+## Copy an app to the project
 
 Seven Bridges maintains workflows and tools available to all of its users in 
 the Public Apps repository.
@@ -653,7 +655,7 @@ a$apps$copy(
 # Check if it is copied
 p <- a$projects$get(id = "<username_or_division>/api-testing")
 
-# List apps your got in your project
+# List the apps you have in your project
 p$list_apps()
 ```
 
@@ -684,8 +686,7 @@ star_app$copy(
 
 <div align="right"><a href="#top">top</a></div>
 
-Next, we would like to run a task with this app. Let's see what is all 
-required.
+Next, we would like to run a task with this app. Let's see what is required.
 
 ## Create a new task
 
@@ -695,7 +696,7 @@ Once you have copied the public app
 `admin/sbg-public-data/rna-seq-alignment-star/0` into your project, 
 `<username>/api-testing`, the app `id` in your current project is 
 `<username>/api-testing/newcopyofstar`. 
-Conversely, you can use another app you already have in your project for 
+Alternatively, you can use another app you already have in your project for 
 this Quickstart.
 
 To draft a new task, you need to specify the following:
@@ -727,20 +728,22 @@ Locate the IDs of the required inputs. Note that task inputs need to match
 the expected data type and name. In the above example, we see two required 
 fields:
 
-- **fastq:** This input takes a file array of formats FASTA, FASTQ, FA, FQ etc.
-- **genomeFastaFiles:** This is a single reference file of formats FASTA, FA, 
-FNA or TAR.
+- **fastq:** This input takes a file array in the following formats: FASTA, 
+FASTQ, FA, FQ etc.
+- **genomeFastaFiles:** This is a single reference file in the FASTA, FA, FNA 
+or TAR format.
 
 We also want to provide a gene feature file:
 
-- **sjdbGTFfile:** A file array that can be of format GTF, GFF, GFF2, GFF3. 
+- **sjdbGTFfile:** A file array that can be in the GTF, GFF, GFF2, or GFF3 
+format.
 
 You can find a list of possible input types below:
 
 - **number, character or integer:** you can directly pass these to the input 
-parameter as it is.
+parameter as they are.
 - **enum type:** Pass this value to the input parameter.
-- **file:** This input is a file. However, while some inputs accept only 
+- **file:** This input is a file. However, while some inputs accept only a 
 single file (`File`), other inputs take more than one file (`File` arrays, 
 `FilesList`, or '`File...`' ). This input requires you to pass a single `File` 
 object (for a single file input) or list of `File` objects (for inputs which 
@@ -750,10 +753,10 @@ below.
 
 <div align="right"><a href="#top">top</a></div>
 
-### Get your input files ready
+### Prepare your input files
 
 ```{r}
-# Get reads (fastq) files and copy into a project
+# Get reads (fastq) files and and copy them into a project
 reads_1 <- a$files$get(id = "641c48c425ed1842bd0bf799") # file id
 reads_1$copy_to(project = p)
 
