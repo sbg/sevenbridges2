@@ -367,6 +367,32 @@ App <- R6::R6Class(
       )
     },
 
+    # Get inputs info ---------------------------------------------------------
+    #' @description Get inputs matrix for the app - what are expected inputs
+    #'  required or not, with their details about the expected types,
+    #'  descriptions etc.
+    #'
+    #' @return Data frame.
+    input_matrix = function() {
+      if (is.null(self$raw)) {
+        self$reload()
+      }
+      sevenbridges2:::input_matrix(self$raw)
+    },
+
+    # Get outputs info --------------------------------------------------------
+    #' @description Get outputs matrix for the app - what are the expected
+    #'  outputs of the task running this app, with their details about the
+    #'  expected types, descriptions etc.
+    #'
+    #' @return Data frame.
+    output_matrix = function() {
+      if (is.null(self$raw)) {
+        self$reload()
+      }
+      sevenbridges2:::output_matrix(self$raw)
+    },
+
     # Create task ------------------------------------------------------------
     #' @description This call creates a new task. You can create either a single
     #'  task or a batch task by using the app's default batching, override
