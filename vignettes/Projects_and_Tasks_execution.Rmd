@@ -1210,13 +1210,13 @@ If app's `raw` field is empty, just call `reload()`, to fetch app's raw CWL.
 
 ### Preview app's inputs and expected outputs
 
-Usually, for most of the tasks, some inputs should be defined, which is 
+Usually, for most of the tasks, some inputs should be defined, which are 
 required by the app. Information about which inputs are required or optional to
 be set for the app is stored in its CWL. However, we have provided a utility 
 function `input_matrix()` on the `App` object that can parse this information 
 and return the app's input matrix for you. 
 This way, users will know how to construct the list of inputs (how to name 
-them and make them available within Files) when creating the task.
+them and make them available within files) when creating the task.
 
 **NOTE** that `id` field in the data frame is the name you should
 use when specifying task inputs.
@@ -1234,9 +1234,14 @@ output_type                                Output type    FALSE      enum
 regions                         Regions for processing    FALSE string[]?
 ...
 ```
-Similarly, there is another utility operation on the `App` object to list 
-expected outputs of the app/task. This information can be received by calling 
-the `output_matrix()` method:
+Besides id and label describing the input, you can see whether the input is 
+required or not and which type is expected. 
+For most of the inputs, if you notice that `type` field contains '?', it means
+that the field is optional. 
+
+There is another utility operation on the `App` object to list expected outputs 
+of an app or task. This information can be received by calling the 
+`output_matrix()` method:
 
 ```{r}
 # Get app's outputs details
@@ -1250,6 +1255,9 @@ my_new_app$output_matrix()
 3            html_report              HTML report     File?
 ...
 ```
+
+<div align="right"><a href="#top">top</a></div>
+
 ### Get app's revision
 
 To obtain a particular revision of an app, use the `get_revision()` method. If
