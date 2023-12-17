@@ -637,5 +637,143 @@ invoice_res <- list(
 
 setup_invoice_obj <- asInvoice(x = invoice_res, auth = setup_auth_object)
 
+# Setup App's inputs list with different cwl cases combined together
+setup_app_inputs_list <-
+  list(
+    list(
+      type = list("null", "File"), label = "Reference Genome FASTA",
+      `sbg:fileTypes` = "FASTA", id = "#Reference_Genome_FASTA",
+      `sbg:x` = 256.000007271767, `sbg:y` = 222.000005692244
+    ),
+    list(
+      type = list("null", list(type = "array", items = "File")),
+      label = "BAM_files", id = "#input_list", `sbg:x` = 67.9999739378687,
+      `sbg:y` = 453.988288149063
+    ), list(
+      id = "in_alignments",
+      `sbg:fileTypes` = "SAM, BAM, CRAM", type = "File", label = "Unmapped BAM",
+      doc = "Unmapped BAM file.", `sbg:x` = -1237L, `sbg:y` = -463L
+    ),
+    list(
+      id = "known_indels", `sbg:fileTypes` = "VCF", type = "File[]?",
+      label = "Known INDELs", doc = "Known INDELs.", secondaryFiles = list(
+        ".idx"
+      ), `sbg:x` = 729.852416992188, `sbg:y` = -223.191284179688
+    ),
+    list(
+      id = "scatter_count", type = "int?", doc = "Scatter count.",
+      `sbg:exposed` = TRUE
+    ), list(
+      `sbg:category` = "Options",
+      id = "factor", type = "string", inputBinding = list(
+        prefix = "--factor=",
+        separate = FALSE, shellQuote = FALSE, position = 3L
+      ), # nolint start
+      label = "Covariate of interest", doc = "The samples will be grouped according to the chosen variable of interest. This needs to match either a column name in the provided phenotype data CSV file or a metadata key. If the latter is true, then all the input files need to have this metadata field populated."
+    ), # nolint end
+    list(
+      id = "quantification_tool", type = list(
+        type = "enum",
+        symbols = list(
+          "htseq", "kallisto", "salmon", "sailfish",
+          "rsem", "stringtie"
+        ), name = "quantification_tool"
+      ),
+      inputBinding = list(
+        prefix = "--quant=", separate = FALSE,
+        shellQuote = FALSE, position = 3L
+      ), label = "Quantification tool",
+      doc = "Tool that generated abundance estimates."
+    ), list(
+      id = "in_tax", type = "Directory?", label = "Taxonomy directory",
+      # nolint start
+      doc = "Path to directory containing a taxonomy database to use. By default, /opt/Krona-2.8.1/KronaTools/taxonomy will be used.",
+      # nolint end
+      `sbg:x` = 612.62109375, `sbg:y` = 384L, loadListing = "deep_listing"
+    ),
+    list(
+      id = "Sample_Tags_Version", type = list("null", list(
+        type = "enum", symbols = list(
+          "No Multiplexing", "Single-Cell Multiplex Kit - Human",
+          "Single-Cell Multiplex Kit - Mouse", "Single-Cell Multiplex Kit - Flex" # nolint
+        ),
+        name = "Sample_Tags_Version"
+      )), label = "Sample Tags Version",
+      # nolint start
+      description = "The sample multiplexing kit version.  This option should only be set for a multiplexed experiment."
+      # nolint end
+    )
+  )
+
+setup_app_outputs_list <- list(
+  list(
+    id = "#summary_metrics", label = "Summary Metrics",
+    source = list("#Picard_CollectAlignmentSummaryMetrics.summary_metrics"),
+    type = list("File"), `sbg:fileTypes` = "TXT", required = TRUE,
+    `sbg:y` = 317.000007256866, `sbg:x` = 1185.00002108514
+  ),
+  list(
+    id = "out_filtered_variants",
+    outputSource = list("gatk_variantfiltration_4_1_0_0/out_variants"),
+    `sbg:fileTypes` = "VCF.GZ", type = "File?", label = "Output filtered VCF",
+    doc = "Output filtered VCF file.", `sbg:x` = 2750.72924804688,
+    `sbg:y` = -106.195388793945
+  ), list(
+    id = "html_report",
+    doc = "HTML report.", label = "HTML report", type = "File?",
+    outputBinding = list(
+      glob = "*.b64html",
+      outputEval = "${\n return inheritMetadata(self, inputs.abundances)\n\n}"
+    ),
+    `sbg:fileTypes` = "HTML"
+  ), list(
+    id = "normalized_counts",
+    doc = "Counts normalized using estimated sample-specific normalization factors.", # nolint
+    label = "Normalized counts", type = "File?", outputBinding = list(
+      glob = "*raw_counts.txt",
+      outputEval = "${\n return inheritMetadata(self, inputs.abundances)\n\n}"
+    ),
+    `sbg:fileTypes` = "TXT"
+  ), list(
+    id = "results", doc = "Output CSV file.",
+    label = "DESeq2 analysis results.", type = "File?", outputBinding = list(
+      glob = "*out.csv",
+      outputEval = "${\n return inheritMetadata(self, inputs.abundances)\n\n}"
+    ),
+    `sbg:fileTypes` = "CSV"
+  ), list(
+    id = "rdata", doc = "Workspace image.",
+    label = "RData file", type = "File[]?", outputBinding = list(
+      glob = "*.RData"
+    ), `sbg:fileTypes` = "RDATA"
+  ), list(
+    id = "pheno_out", type = "File?", outputBinding = list(
+      glob = "pheno_data.csv"
+    )
+  ), list(
+    id = "out_report",
+    outputSource = list("bracken_2_7/out_report"), `sbg:fileTypes` = "REPORT",
+    type = "File[]?", label = "Bracken read estimates",
+    doc = "Bracken read estimates report file.",
+    `sbg:x` = 1692.93395996094, `sbg:y` = 223.5
+  ), list(
+    id = "vdj",
+    outputSource = list(
+      "VDJ_Compile_Results/vdjCellsDatatable",
+      "VDJ_Compile_Results/vdjCellsDatatableUncorrected",
+      "VDJ_Compile_Results/vdjUnfilteredContigsAIRR",
+      "VDJ_Compile_Results/vdjDominantContigsAIRR",
+      "VDJ_Compile_Results/vdjMetricsCsv"
+    ), type = "File[]?",
+    label = "VDJ"
+  ), list(id = "Logs", outputSource = list(
+    "BundleLogs/logs_dir"
+  ), type = "Directory", label = "Pipeline Logs"),
+  list(
+    id = "Multiplex", outputSource = list("MergeMultiplex/Multiplex_out"),
+    type = "File[]?"
+  )
+)
+
 # Close session at the end of tests
 withr::defer(teardown_env())

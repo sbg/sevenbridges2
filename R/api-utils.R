@@ -528,3 +528,185 @@ extract_common_query_params <- function(args, param_name) {
   }
   return(param_value)
 }
+
+#' @description Get app's inputs details.
+#'
+#' @param cwl Raw CWL of an app.
+#'
+#' @importFrom data.table rbindlist
+#'
+#' @return Data.frame.
+#'
+#' @noRd
+input_matrix <- function(cwl) {
+  inputs_lst <- cwl$inputs
+
+  # Extract id, label, type and whether input is required or not
+  lst <- lapply(inputs_lst, function(x) {
+    x$id <- gsub("^#", "", x$id) # transform id if starts with '#'
+    res <- c(
+      x[names(x) %in% c(
+        "id",
+        "label"
+      )],
+      list(
+        required = is_required(x), # handle required
+        type = make_type(x$type) # handle type
+      )
+    )
+
+    res[sapply(res, is.null)] <- "null"
+    res <- do.call(data.frame, res)
+  })
+
+  res <- suppressWarnings(
+    as.data.frame(data.table::rbindlist(lst, fill = TRUE))
+  )
+
+  # Order rows to show File types first
+  idx <- which(grepl(pattern = "File", x = res$type))
+  if (length(idx) != 0) {
+    res1 <- res[idx, ]
+    res2 <- res[-idx, ]
+    res <- rbind(res1, res2)
+  }
+
+  return(res)
+}
+
+#' @description Get app's outputs details.
+#'
+#' @param cwl Raw CWL of an app.
+#'
+#' @importFrom data.table rbindlist
+#'
+#' @return Data.frame.
+#'
+#' @noRd
+output_matrix <- function(cwl) {
+  outputs_lst <- cwl$outputs
+
+  # Extract id, label, type and whether input is required or not
+  lst <- lapply(outputs_lst, function(x) {
+    x$id <- gsub("^#", "", x$id) # transform id if starts with '#'
+    res <- c(
+      x[names(x) %in% c(
+        "id",
+        "label"
+      )],
+      list(
+        type = make_type(x$type) # handle type
+      )
+    )
+
+    res[sapply(res, is.null)] <- "null"
+    res <- do.call(data.frame, res)
+  })
+
+  res <- suppressWarnings(
+    as.data.frame(data.table::rbindlist(lst, fill = TRUE))
+  )
+
+  # Order rows to show File types first
+  idx <- which(grepl(pattern = "File", x = res$type))
+  if (length(idx) != 0) {
+    res1 <- res[idx, ]
+    res2 <- res[-idx, ]
+    res <- rbind(res1, res2)
+  }
+
+  return(res)
+}
+
+#' @description Handle type.
+#'
+#' @param input_type Type.
+#'
+#' @importFrom checkmate test_string test_character
+#'
+#' @return String.
+#'
+#' @noRd
+make_type <- function(input_type) {
+  # Due to different versions of CWL, 'type' field can have different structure
+
+  # If it's regular string only - return that string
+  if (checkmate::test_string(input_type)) {
+    return(input_type)
+  }
+
+  # If it's some other structure, iterate through its elements/content until
+  # type value has been found
+  res <- c()
+  for (i in seq_along(input_type)) {
+    # check first level if it's a named list/string (single brackets [i])
+    res <- c(res, find_type(input_type[i]))
+
+    # if the res contains only 'null' values, continue to check elements by
+    # accessing with double brackets ([[i]]) until you find type
+    if (all(checkmate::test_character(res, fixed = "null"))) {
+      res <- c(res, find_type(input_type[[i]]))
+    } else {
+      # opposite, break the loop if res contains other than 'null' values
+      break
+    }
+  }
+  res[res != "null"]
+}
+
+#' @description Check input type elements to find type value.
+#'
+#' @param type Type element.
+#'
+#' @importFrom checkmate test_string test_character
+#'
+#' @return String.
+#'
+#' @noRd
+find_type <- function(type) {
+  # Custom logic to cover all cases when parsing input type elements
+  if (!is.null(names(type))) {
+    if ("type" %in% names(type)) {
+      if (type$type == "array") {
+        return(paste0(type$items, "..."))
+      } else if (type$type == "enum") {
+        return("enum")
+      } else {
+        # I suppose if there is type but it's not enum or array, than it must
+        # be some complex type in form of list, so we return null here or there
+        # are no cases of such 'element of the type field'
+        return("null")
+      }
+    } else {
+      return("null")
+    }
+  } else {
+    if (checkmate::test_list(type)) {
+      return("null")
+    } else {
+      if (length(type) > 1) {
+        return(type[type != "null"])
+      } else {
+        return(type)
+      }
+    }
+  }
+}
+
+#' @description Is the input required.
+#'  If the input field's type is a list with first element being 'null'
+#'  or if its type is a string containing '?' in the value,
+#'  it means that input is optional.
+#'
+#' @param x Input.
+#'
+#' @importFrom checkmate test_list test_string
+#'
+#' @return Boolean.
+#'
+#' @noRd
+is_required <- function(x) {
+  !((checkmate::test_list(x$type) && x$type[[1]] == "null") ||
+    (checkmate::test_string(x$type) &&
+      grepl(pattern = "?", x = x$type, fixed = TRUE)))
+}
