@@ -1,5 +1,5 @@
 ---
-title: "Projects and Tasks execution"
+title: "Projects, Files, Apps and Tasks execution with Seven Bridges API R Client"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_document:
@@ -12,7 +12,7 @@ output:
     css: "sevenbridges.css"
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Projects and Tasks execution}
+  %\VignetteIndexEntry{Projects, Files, Apps and Tasks execution with Seven Bridges API R Client}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -32,23 +32,23 @@ Projects are the core building blocks of the platform. Each project corresponds
 to a distinct scientific investigation, serving as a container for its data, 
 analysis tools, results, and collaborators.
 
-All projects related operations can be accessed through `projects` path from 
-`Auth` object. `Projects` is also a `Resource` R6 class which contains 
+All projects related operations can be accessed through the `projects` path from 
+the `Auth` object. `Projects` is also a `Resource` R6 class which contains 
 implementation of `query()`, `get()` and `delete()` methods for listing, 
-fetching single project and deleting specific project. Besides those, there is
-also a custom method to create projects. 
+fetching a single project and deleting a specific project. Besides those, there 
+is also a custom method to create projects. 
 
-When you fetch single project it is represented as an object of `Project` class 
-containing all project information and additional methods that can be executed
-directly on the project like updating the project, project's members management,
-listing project's files, apps and tasks etc.
+When you fetch a single project, it is represented as an object of the `Project` 
+class containing all project information and additional methods that can be 
+executed directly on the project such as: updating the project, project members 
+management, listing project files, apps and tasks etc.
 
 ## List all projects
 
-The following call returns a Collection with list of all projects of which you 
-are a member. Each project's `project_id` and name will be printed.
-For full projects' information, you can access the `items` field in the 
-`Collection` object and preview the list of projects.
+The following call returns a Collection with a list of all projects you are a 
+member of. Each project's `project_id` and name will be printed. For full 
+project information, you can access the `items` field in the `Collection` object 
+and preview the list of projects.
 
 ```{r}
 # List and view your projects
@@ -68,11 +68,11 @@ a$projects$query(owner = "<username2>")
 ## Partial match project name
 
 For a more friendly interface and convenient search, the `sevenbridges2` 
-package supports _partial name matching_. Set `name` parameter in the `query()`
-method:
+package supports _partial name matching_. Set the `name` parameter in the 
+`query()` method:
 
 ```{r}
-# List projects which name contains 'demo'
+# List projects whose name contains 'demo'
 a$projects$query(name = "demo")
 ```
 
@@ -85,8 +85,8 @@ for quickly locating the project you need, especially when you want to
 follow the life cycle of a large number of projects and distinguish recent 
 projects from old ones. To facilitate such needs, the fields `created_by`, 
 `created_on`, and `modified_on` are returned in the project query calls.
-Since these fields cannot be passed to `query()` function as parameters, you can
-use the helper code below in order to perform such action:
+Since these fields cannot be passed to the `query()` function as parameters, 
+you can use the helper code below in order to perform such action:
 
 ```{r}
 # Return all projects matching the name "wgs"
@@ -123,7 +123,7 @@ the `create()` function documentation on `?Projects`.
 billing_groups <- a$billing_groups$query()
 billing_group <- a$billing_groups$get("<billing_id>")
 
-# Create project with name 'API Testing'
+# Create a project named 'API Testing'
 a$projects$create(
   name = "API Testing", billing_group = billing_group,
   description = "Test for API"
@@ -132,17 +132,17 @@ a$projects$create(
 
 <div align="right"><a href="#top">top</a></div>
 
-## Get single project
+## Get a single project
 
 Let's fetch the project we've just created by its ID. 
-For this purpose, we can use Projects' method `get()`.
-This method accepts only project's ID which consists of:
+For this purpose, we can use Projects' `get()` method.
+This method accepts only project ID which consists of:
 
 - user's username or division name (for Seven Bridges platform users that are 
 part of some divisions) and
-- project's short name low-cased where spaces are replaced with dashes,
+- project's short name in lowercase with spaces replaced by dashes,
 
-in form of `<your_username_or_division>/<project's-short-name>`. 
+in the form of `<your_username_or_division>/<project's-short-name>`. 
 This id can also be seen in the URL of the project on the UI. 
 
 ```{r}
@@ -162,7 +162,7 @@ p$detailed_print()
 
 ## Delete a project
 
-There are two ways how deleting projects can be performed. 
+There are two ways to delete a project. 
 One is from the `projects` path on the authentication object and the other 
 one is to call the `delete()` method directly on the `Project` object you want 
 to delete:
@@ -201,7 +201,7 @@ Keep in mind that this modifies only the name of the project, not its short
 name. Therefore, after calling this method, the ID of the project will remain 
 the same.
 
-If something changes in the project on the Platform UI, you can refresh your 
+If something changes in the project in the Platform UI, you can refresh your 
 Project object to fetch the changes, by reloading it with:
 
 ```{r}
@@ -211,15 +211,15 @@ p$reload()
 
 <div align="right"><a href="#top">top</a></div>
 
-## Project's members manipulation
+## Project members management
 
 ### List project members
 
-This call returns a Collection with list of the members of the specified 
+This call returns a `Collection` with a list of members of the specified 
 project. 
 For each member, the response is wrapped into a Member class object containing:
 
-- The member's username, email, id and type and
+- The member's username, email, id, and type and
 - The member's permissions in the specified project.
 
 ```{r}
@@ -236,7 +236,8 @@ a user who has admin permissions in the project.
 
 Requests to add a project member must include the key `permissions`. 
 However, if you do not include a value, the member's permissions will be set 
-to default values, which is read-only (only read value will be set to TRUE).
+to default values, which is read-only (only the `read` value will be set to 
+TRUE).
 
 Set permissions by creating a named list with `copy`, `write`, `execute`, 
 `admin`, or `read` names and assign TRUE or FALSE values to them.
@@ -268,9 +269,9 @@ p$add_member(
 ```
 <div align="right"><a href="#top">top</a></div>
 
-### Get and modify project member's permissions
+### Get and modify a project member's permissions
 
-Sometimes you may just want to investigate a members's permissions within a 
+Sometimes you may just want to investigate a member's permissions within a 
 specified project or update them, and you can do that by calling the
 `modify_member_permissions()` method. 
 For this method to work, the user calling it must have admin permissions in 
@@ -290,10 +291,10 @@ p$modify_member_permissions(
 ### Remove a project member
 
 On the other hand, you can delete a member from the project in a similar way
-with `remove_member()` operation:
+with the `remove_member()` operation:
 
 ```{r}
-# Remove project member
+# Remove a project member
 p$remove_member(user = "<username_of_a_user_you_want_to_remove>")
 ```
 
@@ -301,7 +302,7 @@ p$remove_member(user = "<username_of_a_user_you_want_to_remove>")
 
 ## List project files
 
-In order to list all files and folders (special type of files) within 
+In order to list all files and folders (special type of files) within the
 specified project object, you can use the Project's `list_files()` method. 
 
 ```{r}
@@ -309,32 +310,32 @@ specified project object, you can use the Project's `list_files()` method.
 p$list_files()
 ```
 
-It will return `Collection` object with items field containing list of returned 
-File objects and with pagination options. 
+It will return a `Collection` object with the `items` field containing a list 
+of returned `File` objects, along with pagination options.
 
 <div align="right"><a href="#top">top</a></div>
 
-## Create folder within project's Files
+## Create a folder within project Files
 
-You are also able to create a folder within project's root Files directory
-using the method `create_folder()`. You would have to specify the folder name
-which should not start with '__' or contain spaces. 
+You are also able to create a folder within a project's root Files directory 
+using the `create_folder()` method. You have to specify the folder name which 
+should not start with '__' or contain spaces.
 
 ```{r}
-# Create folder within project files
+# Create a folder within project files
 p$create_folder(name = "My_new_folder")
 ```
 
 <div align="right"><a href="#top">top</a></div>
 
-## Get project's root folder object
+## Get a project's root folder object
 
 Lastly, the project's root directory with all your files is a folder itself,
-therefore you are able to get this folder as File object too using
+therefore you are able to get this folder as a File object too using
 `get_root_folder()`.
 
 ```{r}
-# Get project's root folder
+# Get a project's root folder object
 p$get_root_folder()
 ```
 
@@ -342,10 +343,9 @@ p$get_root_folder()
 
 ## List project's apps, tasks and import jobs
 
-We will just mention here that it is also available to list all project's 
-apps, tasks and import jobs (created for Volume imports) directly on the
-Project object, but more details about these topics will be explained in 
-next chapters:
+We will just briefly mention that you can also list all project's apps, tasks 
+and import jobs (created for Volume imports) directly on the Project object, 
+but more details about these topics will be explained in the upcoming chapters:
 
 ```{r}
 # List project's apps
@@ -360,24 +360,25 @@ p$list_imports()
 
 <div align="right"><a href="#top">top</a></div>
 
-## Create new app and task within project
+## Create a new app and task within a project
 
 Another shortcut is available on the Project object and that is creation of
-the apps and tasks. 
-More details about this topic will be written in next chapters.
+apps and tasks. 
+More details about this topic will be provided in the next chapters.
 
 # Files, folders and metadata
 
-All files related operations can be accessed through `files` path from 
-`Auth` object. `Files` also inherits `Resource` R6 class which contains 
+All file-related operations can be accessed through the `files` path from the
+`Auth` object. `Files` also inherits `Resource` R6 class which contains an
 implementation of `query()`, `get()` and `delete()` methods for listing, 
-fetching single file/folder and deleting specific file/folder. 
+fetching a single file/folder, and deleting a specific file/folder. 
 Besides those, there are also custom methods to copy files/folders and 
 create folders. 
 
-When you fetch single file/folder it is represented as an object of `File` 
+When you fetch single file/folder, it is represented as an object of `File` 
 class. 
-Note that both `files` and `subdirectories` are of class `File`. The difference between them is in the `type` parameter which is:
+Note that class of both `files` and `subdirectories` is `File`. The difference 
+between them is in the `type` parameter which is:
 
 - `File` for `files`
 - `Folder` for `subdirectories`.
@@ -388,12 +389,14 @@ metadata, copying or moving files, exporting to volumes etc.
 
 ## List files
 
-This call lists `files` and `subdirectories` in a specified **project** or **directory** within a project, with specified properties that you can access. 
+This call lists `files` and `subdirectories` in a specified **project** or 
+**directory** within a project, with specified properties that you can access. 
 The project or directory whose contents you want to list is specified as a 
 parameter in the call.
 
-The result will be a `Collection` class containing list of File objects in
-`items` field.
+The result will be a `Collection` class containing a list of File objects in
+the `items` field.
+
 ```{r}
 # List files in the project root directory
 api_testing_files <- a$files$query(project = "project_object_or_id")
@@ -436,22 +439,23 @@ subdirectory, make a new call and specify the subdirectory as the `parent`
 parameter.
 
 ``` {r}
-# List files in subdirectory
+# List files in a subdirectory
 a$files$query(parent = "<parent_directory_object_or_id>")
 ```
 
-You can also try and find file with certain:
+You can also try and find a file with specific:
 
-1. **Name** - List file with this name. Note that the name must be an exact
-complete string for the results to match.
-2. **Metadata** - List only files that have the specified value in metadata
-field. Note that multiple instances of the same metadata field are implicitly separated by an OR operation. Conversely, different metadata fields are 
-implicitly separated by an AND operation.
-3. **Tag** - List files containing this tag. Note that the tag must be an
-exact complete string for the results to match. Operation OR is performed 
-between multiple tags listed.
-4. **Origin task** - List only files produced by task specified by ID in
-this field.
+1. **Name** - List the file with the specified name. Note that the name must be 
+an exact complete string for the results to match.
+2. **Metadata** - List only files that have the specified value in a metadata 
+field. Note that multiple instances of the same metadata field are implicitly 
+separated by the OR operation. Conversely, different metadata fields are 
+implicitly separated by the AND operation.
+3. **Tag** - List files containing the specified tag. Note that the tag must 
+be an exact complete string for the results to match. The OR operation is 
+performed between multiple tags.
+4. **Origin task** - List only files produced by the task specified by the 
+ID in this field.
 
 ```{r}
 # List files with these names
@@ -476,10 +480,10 @@ a$files$query(project = "<project_object_or_id>", tag = c("<tag_value>"))
 a$files$query(project = "<project_object_or_id>", task = "<task_object_or_id>")
 ```
  
-To combine everything on a more realistic example - the following code gives 
-us all files in the project `user1/api-testing` having metadata sample_id 
-"Sample1" __OR__ "Sample2", __AND__ the library id "EXAMPLE", __AND__ has tags 
-either "hello" __OR__ "world":
+To combine everything in a more realistic example - the following code gives us 
+all files in the  `user1/api-testing` project that have sample_id metadata set 
+to "Sample1" __OR__ "Sample2", __AND__ the library id "EXAMPLE", __AND__ have 
+either "hello" __OR__ "world" tag:
 
 ```{r}
 # Query project files according to described criteria
@@ -498,7 +502,7 @@ my_files <- a$files$query(
 
 ### List public data
 
-To list publicly available files on Seven Bridges Platform, set the project
+To list publicly available files on the Seven Bridges Platform, set the project
 parameter to `admin/sbg-public-data`.
 
 ```{r}
@@ -508,14 +512,14 @@ public_files <- a$files$query(project = "admin/sbg-public-data")
 
 <div align="right"><a href="#top">top</a></div>
 
-## Get single file/folder
+## Get a single file/folder
 
-To return specific file or folder, knowing their ID, same as for other 
-resources, you can use `get()` method.
-File id can also be extracted from the URL on the Platform's visual interface.
+To return a specific file or folder, knowing their ID, you can use the `get()` 
+method, same as for other resources.
+File id can also be extracted from the URL in the Platform's visual interface.
 
 ```{r}
-# Get single File object by ID
+# Get a single File object by ID
 a$files$get(id = "<file_id>")
 ```
 ```
@@ -533,14 +537,14 @@ a$files$get(id = "<file_id>")
 ```
 <div align="right"><a href="#top">top</a></div>
 
-## Delete file
+## Delete a file
 
 The `delete` action only works for one file at a time. It can be called from 
-`Auth$files` path and accepts the `File` object or ID of the file you want to 
-delete. 
+the `Auth$files` path and accepts the `File` object or ID of the file you want 
+to delete. 
 
 ```{r}
-# Delete file
+# Delete a file
 a$files$delete(file = "<file_object_or_id>")
 ```
 
@@ -548,15 +552,15 @@ a$files$delete(file = "<file_object_or_id>")
 
 ## Copy files
 
-The method `copy()` allows you to copy multiple files between projects at a time. 
-It can also be called from `Auth$files` path and accepts list of File objects or 
-their ids within `files` parameter. Besides this, you have to specify the 
-destination project too. 
-In result you will get a printed response with information about the copied 
-files - what are their destination names and ids. 
+The `copy()` method allows you to copy multiple files between projects at a 
+time. It can also be called from the `Auth$files` path and accepts a list of 
+File objects or their ids within the `files` parameter. Besides this, you have 
+to specify the destination project too. 
+The result will contain a printed response with information about the copied 
+files - their destination names and ids.
 
 ```{r}
-# Fetch files by id to copy into api-testing project
+# Fetch files by id to copy into the api-testing project
 file1 <- a$files$get(id = "6435367997d9446ecb66cfb2")
 file2 <- a$files$get(id = "6435367997d9446ecb66cgr2")
 
@@ -581,14 +585,14 @@ destination folder (as the `parent` parameter), not both.
 ```{r}
 # Option 1 - Using the project parameter
 
-# Option 1.a (providing a Project object as project parameter)
+# Option 1.a (providing a Project object as the project parameter)
 my_project <- a$projects$get(project = "<username_or_division>/api-testing")
 demo_folder <- a$files$create_folder(
   name = "my_new_folder",
   project = my_project
 )
 
-# Option 1.b (providing a project's ID as project parameter)
+# Option 1.b (providing a project's ID as the project parameter)
 demo_folder <- a$files$create_folder(
   name = "my_new_folder",
   project = "<username_or_division>/api-testing"
@@ -649,8 +653,8 @@ demo_file$print()
 • href: https://api.sbgenomics.com/v2/files/643530c286c9522d9222213d17
 ```
 
-But if you want to see all the details about the file in specific format,
-you can use `detailed_print()` method:
+But if you want to see all the details about a file in a specific format, 
+you can use the `detailed_print()` method:
 
 ```{r}
 # Pretty print
@@ -711,17 +715,19 @@ demo_file$update(tags = list("<tag_value>"))
 ### Add tags to a file
 
 You can tag your files with keywords or strings to make it easier to identify 
-and organize files. Tags are different from metadata and are more convenient and visible from the files list on the visual interface.
+and organize files. Tags are different from metadata and are more convenient 
+and visible from the files list in the visual interface.
 
-You can tag your files using `add_tag()` method. This method will automatically 
-just add new tag to a list of already existing ones, but you also have an option 
-to set `overwrite` parameter, which will erase old ones and set the new one.
+You can tag your files using the `add_tag()` method. This method will 
+automatically just add a new tag to a list of already existing ones, but you 
+also have the option to set the `overwrite` parameter, which will erase old 
+ones and set the new one.
 
 ```{r}
-# Add new tag to a file
+# Add a new tag to a file
 demo_file$add_tag(tags = list("new_tag"))
 
-# Add new tag to a file and overwrite old ones
+# Add a new tag to a file and overwrite old ones
 demo_file$add_tag(tags = list("new_tag"), overwrite = TRUE)
 
 # Delete all tags - just set tags to NULL
@@ -730,18 +736,18 @@ demo_file$add_tag(tags = NULL, overwrite = TRUE)
 
 <div align="right"><a href="#top">top</a></div>
 
-### Copy single file between projects
+### Copy a single file between projects
 
 This call copies the specified file to a new project. Files retain their 
 metadata when copied, but may be assigned new names in their target project.
-If you don't specify new name the file will retain it's old name in new project.
-To make this call, you should have 
+If you don't specify a new name, the file will retain its old name in the new 
+project. To make this call, you should have the
 [copy permission](https://docs.sevenbridges.com/docs/set-permissions) 
-within the project you are copying from. This call returns `File` object of 
-newly copied file.
+within the project you are copying from. This call returns the `File` object of 
+the newly copied file.
 
 ```{r}
-# Copy file to a new project and set a new name
+# Copy a file to a new project and set a new name
 demo_file$copy_to(
   project = "<destination_project_object_or_id>",
   name = "<new_name>"
@@ -752,9 +758,9 @@ demo_file$copy_to(
 
 ### Get downloadable URL for a file
 
-To get URL that you can use to download the specified file, you can use
-`get_download_url()` method. This will set `url` parameter in the File object 
-and can later be used to download file.
+To get a URL that you can use to download the specified file, you can use the 
+`get_download_url()` method. This will set the `url` parameter in the File 
+object and can later be used to download the file.
 
 ```{r}
 # Get downloadable URL for a file
@@ -765,10 +771,12 @@ demo_file$get_download_url()
 
 ### Get a file's metadata
 
-Files from curated datasets on Seven Bridges environments have a defined set of metadata which is visible on the visual interface of each environment. 
+Files from curated datasets on Seven Bridges environments have a defined set of 
+metadata which is visible in the visual interface of each environment. 
 
-`File` object has `get_metadata()` method which returns the metadata values for 
-the specified file. This will pull and reload file's metadata from the platform.
+`File` object has the `get_metadata()` method which returns the metadata values 
+for the specified file. This will pull and reload file's metadata from the 
+platform.
 
 ```{r}
 # Get file metadata
@@ -777,14 +785,14 @@ demo_file$get_metadata()
 
 <div align="right"><a href="#top">top</a></div>
 
-### Modify file's metadata
+### Modify file metadata
 
 You can also pass additional metadata for each file which is stored with your 
 copy of the file in your project.
 
-To modify a file's metadata use `set_metadata()` method.
-Here you can also use `overwrite` parameter if you want to erase previous
-metadata fields and add new one (by default it's set to `FALSE`).
+To modify a file's metadata use the `set_metadata()` method.
+Here you can also use the `overwrite` parameter if you want to erase previous
+metadata fields and add a new one (by default it's set to `FALSE`).
 
 ```{r}
 # Set file metadata
@@ -799,10 +807,11 @@ demo_file$set_metadata(
 ### List folder contents
 
 Directories can have multiple `files`/`subdirectories` inside. You can see them
-using `list_contents()` method.
-Note that this operation will work only on `File` objects of type `folder`.
-The result will also be a `Collection` class containing list of File objects in
-`items` field.
+using the `list_contents()` method.
+Note that this operation will work only on `File` objects whose type is 
+`folder`. The result will also be a `Collection` class object containing a list 
+of File objects in the `items` field.
+
 ```{r}
 # List folder contents
 demo_folder$list_contents()
@@ -810,17 +819,15 @@ demo_folder$list_contents()
 
 <div align="right"><a href="#top">top</a></div>
 
-### Move some file into a folder
+### Move a file into a folder
 
-This call moves a file from one folder to another. 
-Moving folders is not allowed by the API.
-Moving of files is only allowed within the same project.
-Parent parameter must be a folder id or a `File` object of type `folder`.
-One can also rename a file on the destination if preferred with setting `name`
-argument.
+This call moves a file from one folder to another. Moving folders is not 
+allowed by the API. Moving of files is only allowed within the same project. 
+Parent parameter must be a folder id or a `File` object whose type is `folder`.
+A file can also be renamed at the destination by setting the `name` argument.
 
 ```{r}
-# Move file to a folder
+# Move a file to a folder
 demo_file$move_to_folder(
   parent = "<parent_file_object_or_id>",
   name = "Moved_file.txt"
@@ -846,30 +853,13 @@ demo_file$download(directory_path = "/path/to/your/destination/folder")
 
 <div align="right"><a href="#top">top</a></div>
 
-### Download a file
-
-`File` object has a `download()` method, which allows you to download that file
-to your local computer. You should provide the `directory_path` parameter, 
-which specifies the destination directory to which your file will be 
-downloaded. By default, this parameter is set to your current working
-directory. You can also set the new name for your resulting (downloaded)
-file by providing the `filename` parameter. Otherwise, the default name 
-(the one stored in the `name` field of your `File` object) will be used.
-
-```{r}
-# Download a file
-demo_file$download(directory_path = "/path/to/your/destination/folder")
-```
-
-<div align="right"><a href="#top">top</a></div>
-
-### Get file's parent directory
+### Get a file's parent directory
 
 Sometimes, it's convenient to get the parent folder ID for a file or folder:
-This information is stored on the `File` object in `parent` field. 
+This information is stored in the `parent` field of the `File` object. 
 
 ```{r}
-# Get file's parent directory
+# Get a file's parent directory
 demo_file$parent
 ```
 
@@ -880,7 +870,7 @@ This is essentially the root folder ID. Alternatively, to get the parent folder
 as an object, use:
 
 ```{r}
-# Get folder object
+# Get a folder object
 parent_folder <- a$files$get(demo_file$parent)
 ```
 
@@ -888,10 +878,9 @@ parent_folder <- a$files$get(demo_file$parent)
 
 ### Delete a file/folder
 
-User can delete files and folders using `delete()` method directly on the `File`
-object too. 
-The only thing you need to be aware of is that `folder` can only be deleted 
-if it's empty.
+User can delete files and folders using the `delete()` method directly on the 
+`File` object. 
+Please be aware that `folder` can only be deleted if it's empty.
 
 ```{r}
 # Delete a file
@@ -903,7 +892,7 @@ demo_folder$delete()
 
 <div align="right"><a href="#top">top</a></div>
 
-### Reload file
+### Reload a file
 
 To keep your local `File` object up to date with the file on the platform, 
 you can always call the `reload()` function:
@@ -920,21 +909,22 @@ demo_folder$reload()
 # Apps
 
 Following the same logic as with other `Resource` classes, all apps related 
-operations are grouped under `Apps` class, that can be accessed within 
-`Auth` objects on the path `Auth$apps`. 
-From here users can call operations to list all apps, fetch single app by its 
-id, copy or create new app.
+operations are grouped under the `Apps` class, that can be accessed within 
+`Auth` objects on the `Auth$apps` path. 
+From here you can call operations to list all apps, fetch single app by its 
+id, copy or create a new app.
 
-When you operate with single app, it is represented as an object of `App` 
+When you operate with a single app, it is represented as an object of `App` 
 class. 
-`App` object contains almost all app information and additional methods that 
-can be executed directly on the object like getting or creating new app's 
-revisions, copying, syncing with the latest revision or creating tasks with 
-this app etc.
+The `App` object contains almost all app information and additional methods 
+that can be executed directly on the object, such as getting or creating new 
+app revisions, copying, syncing with the latest revision or creating tasks with 
+this app, etc.
 
-Note that we say almost all information, because for apps we don't return all 
-fields by default - the raw CWL field is excluded due to its size and speed of execution. Therefore, if you wish to fetch the raw CWL of the app, there is a 
-separate method for this purpose you can call on the App object 
+Note that we say almost all information, because we don't return all fields by 
+default for apps - the raw CWL field is excluded due to its size and speed of 
+execution. Therefore, if you wish to fetch the raw CWL of an app, there is a 
+separate method for this purpose that you can call on the App object
 (`get_raw_cwl()`).
 
 ## List apps
@@ -964,7 +954,7 @@ my_apps <- a$apps$query()
 
 Just to remind you that not all of the available apps are going to be returned,
 because the `limit` parameter is set to 50 by default.
-Since the result is the `Collection` object, you can paginate through results
+Since the result is a `Collection` object, you can navigate through results
 by calling `next_page()` and `prev_page()` or call `all()` to return all 
 results.
 
@@ -994,8 +984,8 @@ following app details:
 * tagline
 * description
 
-For example, to get public apps that contain term **"VCFtools"** anywhere in
-the mentioned app's details, you can make a call similar to this:
+For example, to get public apps that contain the term **"VCFtools"** anywhere in
+the app details, you can make a call similar to this one:
 
 ```{r}
 # List public apps containing the term "VCFtools" in app's details
@@ -1004,7 +994,7 @@ a$apps$query(visibility = "public", query_terms = list("VCFtools"), limit = 10)
 
 For the query to return results, each term must match at least one of the
 fields that describe an app. For example, the first term can match the app's
-name while the second can match the app description. However, if any part of
+name while the second one can match the app description. However, if any part of
 the search fails to match app details, the call will return an empty list.
 
 Another useful option is to query apps by id. You can do so either for public
@@ -1024,15 +1014,15 @@ a$apps$query(
 ### List project apps
 
 All available apps in a specific project can also be listed by calling the
-`list_apps()` method directly on the `Project` object. This method has 
-predefined the `project` and `visibility` arguments, while all other parameters 
-are identical to those presented in `apps$query()` function.
+`list_apps()` method directly on the `Project` object. This method has the
+`project` and `visibility` arguments predefined, while all other parameters 
+are identical to those presented in the `apps$query()` function.
 
 ```{r}
 # Get project
 p <- a$projects$get("<username_or_division>/api-testing")
 
-# List apps in specified project
+# List apps in the specified project
 p$list_apps(limit = 10)
 ```
 
@@ -1041,10 +1031,10 @@ p$list_apps(limit = 10)
 ## Get app information
 
 If you need information about a specific app, you can get it using the
-`apps$get()` method. Keep in mind that the app should be one in a project that
-you can access. This could be the app that has been uploaded to the Seven
-Bridges Platform by a project member, or a publicly available app. You should
-provide the `id` of the app of interest, and optionally its `revision`. If no
+`apps$get()` method. Keep in mind that the app should be in a project that you 
+can access. This could be an app that has been uploaded to the Seven Bridges 
+Platform by a project member, or a publicly available app. You should provide 
+the `id` of the app of interest, and optionally its `revision`. If no
 revision is specified, the latest one will be used.
 
 ```{r}
@@ -1059,15 +1049,15 @@ bcftools_app <- a$apps$get(id = "admin/sbg-public-data/bcftools-call-1-15-1")
 To copy an app to a specified destination project, you can use the
 `apps$copy()` method.
 
-Keep in mind that the app should be one in a project that
-you can access. This could be an app that has been uploaded to the Seven
+Keep in mind that the app should be in a project that you can access. 
+This could be an app that has been uploaded to the Seven
 Bridges Platform by a project member, or a publicly available app.
 
 Destination project (`project` parameter) should be provided either as an
-object of `Project` class, or as an ID of the target project of interest.
+object of the `Project` class, or as an ID of the target project of interest.
 
 You might want to set the new name that the app will have in the target
-project. To do so, use the `name` parameter. If app's name will not change,
+project. To do so, use the `name` parameter. If the app's name will not change,
 omit the `name` parameter.
 
 Keep in mind that there are different strategies for copying the apps on the
@@ -1081,10 +1071,10 @@ platform:
 Learn more about copy strategies in our public [API documentation](https://docs.sevenbridges.com/reference/copy-an-app).
 
 The following example demonstrates how can you copy the previously created
-`bcftools_app` to some project:
+`bcftools_app` to a project:
 
 ```{r}
-# Copy app to a project
+# Copy an app to a project
 app_copy <- a$apps$copy(bcftools_app,
   project = "<project_object_or_its_ID>",
   name = "New_app_name"
@@ -1095,21 +1085,21 @@ app_copy <- a$apps$copy(bcftools_app,
 
 ## Create new app
 
-This `apps$create()` method allows you to add an app using the raw CWL.
+The `apps$create()` method allows you to add an app using raw CWL.
 
 The raw CWL can be provided either through the `raw` parameter, or by using the
 `file_path` parameter. Keep in mind that these two parameters should not be
 used together.
 
 If you choose to use the `raw` parameter, make sure to provide a list
-containing a raw CWL for the app you are about to create. To generate
-such a list, you might want to load some existing `JSON` / `YAML` file. In case
+containing raw CWL for the app you are about to create. To generate
+such a list, you might want to load an existing `JSON` / `YAML` file. In case
 that your CWL file is in JSON format, please use the `fromJSON` function from
 the `jsonlite` package to minimize potential problems with parsing the JSON
 file. If you want to load a CWL file in YAML format, it is highly recommended
 to use the `read_yaml` function from the `yaml` package.
 
-Make sure to set the `raw_format` parameter to match the type of the provide
+Make sure to set the `raw_format` parameter to match the type of the provided
 raw CWL file (`JSON` / `YAML`). By default, this parameter is set to `JSON`.
 
 ```{r}
@@ -1125,11 +1115,11 @@ new_app_json <- a$apps$create(
 )
 ```
 
-If you opt for `file_path` parameter instead, you should provide a path to a
+If you opt for the `file_path` parameter instead, you should provide a path to a
 file containing the raw CWL for the app (`JSON` or `YAML`).
 
 ```{r}
-# Create app from raw CWL (YAML)
+# Create an app from raw CWL (YAML)
 new_app_yaml <- a$apps$create(
   project = "<destination_project_object_or_its_ID>",
   from_path = "/path/to/your/raw_cwl_in_yaml_format.cwl",
@@ -1140,10 +1130,10 @@ new_app_yaml <- a$apps$create(
 
 <div align="right"><a href="#top">top</a></div>
 
-### Create app in a project
+### Create an app in a project
 
 The app can also be directly created on a `Project` object by invoking
-`create_app()`. Except it has the predefined `project` parameter, the
+`create_app()`. Except for the predefined `project` parameter, the
 `create_app()` has the same other parameters as `apps$create()`.
 
 ```{r}
@@ -1179,12 +1169,12 @@ The following actions are available for an App object:
 * create_task
 
 
-### Print app
+### Print an app
 
 The `print` method prints the app details to the console.
 
 ```{r}
-# Fetch first app from the project's apps
+# Fetch the first app from project's apps
 p <- a$projects$get("<username_or_division>/api-testing")
 my_apps <- p$list_apps()
 my_new_app <- my_apps$items[[1]]
@@ -1203,22 +1193,22 @@ my_new_app$print()
 ```
 <div align="right"><a href="#top">top</a></div>
 
-### Get app's raw CWL
+### Get an app's raw CWL
 
 [Placeholder for this]
 
-### Get app's revision
+### Get an app revision
 
-To obtain a particular revision of an app, use the `get_revision()` method. If
-you need a specific revision of an app, use the `revision` parameter.
+To obtain a particular revision of an app, use the `get_revision()` method and 
+set the `revision` parameter to the number of the version you want to get.
 
 Keep in mind that there is another important parameter that can be set for this
 method. If the `in_place` parameter is set to `TRUE`, the current app object
-will be replaced with new one for specified app revision. By default, this
+will be replaced with the new one for specified app revision. By default, this
 parameter is set to `FALSE`.
 
 ```{r}
-# Get app's revision
+# Get an app revision
 my_app <- a$apps$get(id = "<username_or_division>/api-testing/new_app_json/0")
 my_app$print()
 ```
@@ -1235,12 +1225,12 @@ my_app$print()
 ```
 
 ```{r}
-# Get app's revision
+# Get an app revision
 my_app$get_revision(revision = 1)
 ```
 
 ```{r}
-# Get app's revision and update the object
+# Get an app revision and update the object
 my_app$get_revision(revision = 1, in_place = TRUE)
 ```
 
@@ -1256,7 +1246,7 @@ my_app$get_revision(revision = 1, in_place = TRUE)
 ```
 <div align="right"><a href="#top">top</a></div>
 
-### Create app's revision
+### Create an app revision
 
 The `create_revision()` method allows you to create a new revision for an
 existing app.
@@ -1265,33 +1255,33 @@ The raw CWL can be provided either through the `raw` parameter, or by using the
 `file_path` parameter. Keep in mind that these two parameters should not be
 used together.
 
-If you choose to use the `raw` parameter, make sure to provide a list
-containing a raw CWL for the app revision you are about to create. To generate
-such a list, you might want to load some existing `JSON` / `YAML` file. In case
+If you choose to use the `raw` parameter, make sure to provide a list 
+containing raw CWL for the app revision you are about to create. To generate 
+such a list, you might want to load an existing `JSON` / `YAML` file. In case
 that your CWL file is in JSON format, please use the `fromJSON` function from
 the `jsonlite` package to minimize potential problems with parsing the JSON
 file. If you want to load a CWL file in YAML format, it is highly recommended
 to use the `read_yaml` function from the `yaml` package.
 
-Make sure to set the `raw_format` parameter to match the type of the provide
+Make sure to set the `raw_format` parameter to match the type of the provided
 raw CWL file (`JSON` / `YAML`). By default, this parameter is set to `JSON`.
 
-Using `in_place` parameter will overwrite current app object with new app's 
+Using `in_place` parameter will overwrite the current app object with new app 
 revision information.
 
 ```{r}
-# Create app's revision from file
+# Create an app revision from a file
 raw_cwl_as_list <- jsonlite::read_json(
   path = "/path/to/your/raw_cwl_in_json_format.cwl"
 )
 my_app$create_revision(raw = raw_cwl_as_list, in_place = TRUE)
 ```
 
-If you opt for `file_path` parameter instead, you should provide a path to a
+If you opt for the `file_path` parameter instead, you should provide a path to a
 file containing the raw CWL for the app (`JSON` or `YAML`).
 
 ```{r}
-# Create new revision for the existing app
+# Create a new revision for an existing app
 my_app$create_revision(
   from_path = "/path/to/your/raw_cwl_in_json_format.cwl",
   in_place = TRUE
@@ -1306,12 +1296,11 @@ An app can be copied to a specified destination project directly from an
 app's object too, by calling its own `copy()`method.
 
 Destination project (`project` parameter) should be provided either as an
-object of `Project` class, or as an ID of the target project of interest.
+object of the `Project` class, or as an ID of the target project of interest.
 
-You can set the new name that the app will have in the target project with 
+You can set the new name that the app will have in the target project with the 
 `name` parameter. 
-Keep in mind that are different strategies for copying the apps on the
-platform:
+Keep in mind that are different strategies for copying apps on the platform:
 
 * `clone` : copy all revisions; get updates from the same app as the copied app (default)
 * `direct`: copy latest revision; get updates from the copied app
@@ -1337,18 +1326,18 @@ so it uses the latest revision, you can call the `sync()` method.
 The `App` object will be overwritten with the latest app.
 
 ```{r}
-# Sync copied app to the latest revision created
+# Sync a copied app to the latest revision created
 copied_app$sync()
 ```
 
 <div align="right"><a href="#top">top</a></div>
 
-### Reload app
+### Reload an app
 
 To keep your local `App` object up to date with the app on the platform, you can always call the `reload()` function:
 
 ```{r}
-# Reload app object
+# Reload an app object
 my_app$reload()
 ```
 
@@ -1357,17 +1346,17 @@ my_app$reload()
 
 # Tasks
 
-All task related operations are grouped under `Tasks` class within 
-authentication object, which also inherits `Resource` class and implements 
+All task related operations are grouped under the `Tasks` class within the
+authentication object, which also inherits the `Resource` class and implements 
 `query()`, `get()` and `delete()` operations for listing tasks, fetching 
-single task and delete tasks. Besides these, users are able to create new
-tasks with `create()` operation from this `Auth$tasks` path.
+single task and deleting tasks. Besides these, users are able to create new
+tasks with the `create()` operation from this `Auth$tasks` path.
 
-When you operate with single task, it is represented as an object of `Task` 
-class. 
-`Task` object contains all task information and additional methods that 
-can be executed directly on the object like running, aborting, cloning, 
-updating, deleting the task etc.
+When you operate with a single task, it is represented as an object of the 
+`Task` class. 
+The `Task` object contains all task information and additional methods that can 
+be executed directly on the object such as running, aborting, cloning, updating, 
+deleting the task, etc.
 
 ## List tasks
 
@@ -1379,6 +1368,7 @@ criteria such as: `status`, `parent`, `project`, `created_from`, `created_to`,
 `origin_id`.
 
 Let's list all tasks that were completed:
+
 ```{r}
 # Query all tasks
 a$tasks$query()
@@ -1388,8 +1378,9 @@ a$tasks$query(status = "COMPLETED", limit = 5)
 ```
 
 To list all the tasks in a project, use the following.
+
 ```{r}
-# Find project and pass it in the project parameter
+# Find the project and pass it in the project parameter
 p <- a$projects$query(id = "<project_id>")
 a$tasks$query(project = p)
 
@@ -1398,9 +1389,9 @@ p <- a$projects$get(id = "<project_id>")
 p$list_tasks()
 ```
 
-Similarly to previous query methods, here you will also get the `Collection`
-object where resulting tasks will be stored in the `items` fields and you can
-paginate through results. 
+Similar to previous query methods, here you will also get the `Collection`
+object where resulting tasks will be stored in the `items` fields and you can 
+use pagination to navigate through results.
 
 <div align="right"><a href="#top">top</a></div>
 
@@ -1418,13 +1409,14 @@ a$tasks$get(id = "<task_id>")
 
 ## Create a draft task
 
-To create a new draft task, user can use the `tasks$create` method. 
-The method accepts various arguments like in which project to create a task,
+To create a new draft task, you can use the `tasks$create` method. 
+The method accepts various arguments such as: in which project to create a task, 
 which app and its revision to use, task name, description, which inputs it 
-requires, batching options, execution settings etc.
+requires, batching options, execution settings, etc.
 
-However, we can create draft task by only defining project and which app 
-will be run, since all other parameters are optional:
+However, we can create a draft task by only defining the project and the app 
+that will be run, since all other parameters are optional:
+
 ```{r}
 # Create a draft task
 draft_task <- a$tasks$create(
@@ -1467,17 +1459,16 @@ task_exec_settings <- a$tasks$create(
 )
 ```
 
-Usually, for most of the tasks, some inputs should be defined, which is 
-required by the app. Information about which inputs are required or optional to
-be set for the app is stored in its CWL. However, we have provided a utility 
-function `input_matrix()` that can parse this information and return the app
-input matrix for you. This way, users will know how to construct the list of
-inputs (how to name them and make them available within Files) when creating 
-the task.
+Usually, tasks need at least the inputs that are marked as required by the app 
+to be set. Information about which inputs are required or optional for an app 
+is stored in its CWL. However, we have provided a utility function 
+`input_matrix()` that can parse this information and return the app input 
+matrix for you. This way, you will know how to construct the list of inputs 
+(how to name them and make them available within Files) when creating the task.
 
 [PLACEHOLDER for example]
 
-Similarly, there is another utility operation to list expected outputs of the
+Similar, there is another utility operation to list the expected outputs of an
 app/task. This information can be received by calling the `output_matrix()`
 method:
 
@@ -1489,12 +1480,12 @@ method:
 
 To run tasks in batch mode we have `batch`, `batch_input` and `batch_by` 
 parameters.
-Parameter `batch` defines whether to run batch task or not, 
-while `batch_input` and `batch_by` define input on which the task will be 
-batched and by which criteria respectively.
+The `batch` parameter defines whether to run a batch task or not, 
+while `batch_input` and `batch_by` define the input by which the task will be 
+batched and by which criteria, respectively.
 
-In the example below it is given a form of creating a batch task for input file
-named 'reads' and with batch criteria set to be 'sample_id' metadata field:
+The example below shows the format of creating a batch task for an input file 
+named 'reads', with batch criteria set to the 'sample_id' metadata field:
 
 ```{r}
 # Create a draft task
@@ -1523,10 +1514,11 @@ directly on it.
 
 ### Print task
 
-To print all task details call print method directly on the `Task` object:
+To print all task details, call the print() method directly on the `Task` 
+object:
 
 ```{r} 
-# Print task
+# Print task details
 draft_task$print()
 ```
 
@@ -1547,10 +1539,10 @@ draft_task$print()
 ```
 <div align="right"><a href="#top">top</a></div>
 
-### Run task
+### Run a task
 
-In order to actually start the execution of the draft tasks created, use the
-task object's function `run()`. 
+To actually start the execution of a created draft task, use the task object's
+`run()` function. 
 You can modify input parameters values for:
 `in_place` - set to FALSE if you wish to store response in new task object,
 `batch` - this is used for tasks that are already batch tasks and this option
@@ -1561,33 +1553,33 @@ to TRUE to allow the use of spot instances.
 Only tasks with a `DRAFT` status may be run.
 
 ```{r} 
-# Run task
+# Run a task
 draft_task$run(in_place = TRUE)
 ```
 
 <div align="right"><a href="#top">top</a></div>
 
-### Abort task
+### Abort a task
 
 Users can abort the task execution by calling the `abort()` function. 
 It immediately stops the execution and puts it into `ABORT` status.
 Only tasks whose status is `RUNNING` may be aborted.
 
 ```{r} 
-# Abort task
+# Abort a task
 draft_task$abort()
 ```
 
 <div align="right"><a href="#top">top</a></div>
 
-### Clone task
+### Clone a task
 
-In order to copy some task - user can clone it. 
+In order to copy a task, the user can clone it.
 Once cloned, the task can either be in `DRAFT` mode or immediately run, by 
 setting the `run` parameter to `TRUE`.
 
 ```{r} 
-# Clone task
+# Clone a task
 cloned_task <- draft_task$clone_task()
 ```
 
@@ -1596,13 +1588,13 @@ cloned_task <- draft_task$clone_task()
 ### Get execution details
 
 If users would like to explore or debug the logs of task execution, they can 
-use function `get_execution_details()`.
+use the `get_execution_details()` function.
 It returns execution details of the specified task and breaks down the
 information into the task's distinct jobs. A job is a single subprocess
 carried out in a task. The information returned by this call is broadly
-similar to that which can be found in the task stats and logs provided
+similar to the one that can be found in the task stats and logs provided
 on the Platform.
-The task execution details include the following information:
+Task execution details include the following information:
 
 *  The name of the command line job that executed
 *  The start time of the job
@@ -1623,10 +1615,9 @@ details <- draft_task$get_execution_details()
 
 ### List batch children
 
-This operation retrieves child tasks for some batch task.
-It works just like `tasks$query()` function, so you can set query parameters 
-to narrow the search like `status`, `created_from`, `created_to`, 
-`started_from`, `started_to`, `ended_from`, `ended_to`, `origin` and `order`.
+This operation retrieves child tasks for a batch task. It works just like the `tasks$query()` function, so you can set query parameters such as `status`, 
+`created_from`, `created_to`, `started_from`, `started_to`, `ended_from`, 
+`ended_to`, `origin`, and `order` to narrow down the search.
 
 ```{r} 
 # List batch children
@@ -1637,14 +1628,14 @@ children_tasks <- batch_task$list_batch_children()
 
 ### Update task
 
-Users can use `update()` method to change the details of the specified task, 
+Users can use the `update()` method to change the details of the specified task, 
 including its name, description, and inputs. 
 Note that you can only modify tasks with a task status of `DRAFT`. 
 Tasks which are `RUNNING`, `QUEUED`, `ABORTED`, `COMPLETED` or `FAILED` cannot 
-be modified in order to enable the reproducibility of analyses which have 
-been queued for execution or has initiated executing.
+be modified in order to enable the reproducibility of analyses.
 
 There are two things to note if you are editing a batch task:
+
 * If you want to change the input on which to batch and the batch criteria, 
 you need to specify the `batch_input` and `batch_by` parameters together in the 
 same function call.
@@ -1665,7 +1656,7 @@ draft_task$update(
 
 <div align="right"><a href="#top">top</a></div>
 
-### Rerun task
+### Rerun a task
 
 Users can also rerun the task which will actually clone the original task for 
 them and start the execution immediately. 
