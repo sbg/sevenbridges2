@@ -202,6 +202,24 @@ permissions within the project.</p></dd>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Project</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print project object
+ project_object$print()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Project-detailed_print"></a><div class="section">
 <h3 id="method-detailed-print-">Method <code>detailed_print()</code><a class="anchor" aria-label="anchor" href="#method-detailed-print-"></a></h3>
@@ -214,6 +232,24 @@ permissions within the project.</p></dd>
 <h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
 <p>This method allows users to print all the fields from the
 Project object more descriptively.</p>
+</div>
+
+<div class="section">
+<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print project object in detail
+ project_object$detailed_print()
+}
+
+</code></pre></div><p></p></div>
 </div>
 
 
@@ -233,6 +269,24 @@ like 'fields', etc.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload project object
+ project_object$reload()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Project-update"></a><div class="section">
 <h3 id="method-update-">Method <code><a href="https://rdrr.io/r/stats/update.html" class="external-link">update()</a></code><a class="anchor" aria-label="anchor" href="#method-update-"></a></h3>
@@ -284,6 +338,24 @@ like 'limit', 'offset', 'fields', etc.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-3">Examples<a class="anchor" aria-label="anchor" href="#examples-3"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Change project object name
+ project_object$update(name = name)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Project-delete"></a><div class="section">
 <h3 id="method-delete-">Method <code>delete()</code><a class="anchor" aria-label="anchor" href="#method-delete-"></a></h3>
@@ -294,6 +366,24 @@ Please be careful when using this method and note that calling it will
 permanently delete the project from the platform.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Project</span><span class="op">$</span><span class="fu">delete</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="examples-4">Examples<a class="anchor" aria-label="anchor" href="#examples-4"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Delete project object
+ project_object$delete()
+}
+
+</code></pre></div><p></p></div>
 </div>
 
 
@@ -334,6 +424,24 @@ like 'fields', etc.</p></dd>
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p><code><a href="Collection.html">Collection</a></code> of <code><a href="Member.html">Member</a></code> objects.</p>
 </div>
+<div class="section">
+<h4 id="examples-5">Examples<a class="anchor" aria-label="anchor" href="#examples-5"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List members in a project
+ project_object$list_members()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Project-add_member"></a><div class="section">
 <h3 id="method-add-member-">Method <code>add_member()</code><a class="anchor" aria-label="anchor" href="#method-add-member-"></a></h3>
@@ -390,6 +498,24 @@ contents.</p>
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p><code><a href="Member.html">Member</a></code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-6">Examples<a class="anchor" aria-label="anchor" href="#examples-6"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Add member to a project
+ project_object$add_member(
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Project-remove_member"></a><div class="section">
 <h3 id="method-remove-member-">Method <code>remove_member()</code><a class="anchor" aria-label="anchor" href="#method-remove-member-"></a></h3>
@@ -409,6 +535,24 @@ user's username.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-7">Examples<a class="anchor" aria-label="anchor" href="#examples-7"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Remove member from a project
+ project_object$remove_member(user = user)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Project-get_member"></a><div class="section">
 <h3 id="method-get-member-">Method <code>get_member()</code><a class="anchor" aria-label="anchor" href="#method-get-member-"></a></h3>
@@ -437,6 +581,24 @@ like 'fields', etc.</p></dd>
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p><code><a href="Member.html">Member</a></code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-8">Examples<a class="anchor" aria-label="anchor" href="#examples-8"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get member from a project
+ project_object$get_member(user = user)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Project-modify_member_permissions"></a><div class="section">
 <h3 id="method-modify-member-permissions-">Method <code>modify_member_permissions()</code><a class="anchor" aria-label="anchor" href="#method-modify-member-permissions-"></a></h3>
@@ -480,6 +642,27 @@ Example:</p>
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p><code><a href="Permission.html">Permission</a></code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-9">Examples<a class="anchor" aria-label="anchor" href="#examples-9"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Modify member permissions in a project
+ project_object$modify_member_permissions(
+                  user = user,
+                  permission = list(read = TRUE, copy = FALSE)
+                  )
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Project-list_files"></a><div class="section">
 <h3 id="method-list-files-">Method <code>list_files()</code><a class="anchor" aria-label="anchor" href="#method-list-files-"></a></h3>
@@ -518,6 +701,24 @@ like 'fields', etc.</p></dd>
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p><code><a href="Collection.html">Collection</a></code> of <code><a href="File.html">File</a></code> objects.</p>
 </div>
+<div class="section">
+<h4 id="examples-10">Examples<a class="anchor" aria-label="anchor" href="#examples-10"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List files in a project
+ project_object$list_files()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Project-create_folder"></a><div class="section">
 <h3 id="method-create-folder-">Method <code>create_folder()</code><a class="anchor" aria-label="anchor" href="#method-create-folder-"></a></h3>
@@ -542,12 +743,52 @@ within this root folder by using this function.</p><div class="section">
 <h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p><code><a href="File.html">File</a></code> object of type 'FOLDER'.</p>
 </div>
+<div class="section">
+<h4 id="examples-11">Examples<a class="anchor" aria-label="anchor" href="#examples-11"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List files in a project
+ project_object$create_folder(name = "new_folder")
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Project-get_root_folder"></a><div class="section">
 <h3 id="method-get-root-folder-">Method <code>get_root_folder()</code><a class="anchor" aria-label="anchor" href="#method-get-root-folder-"></a></h3>
 <p>Get project's root folder object</p><div class="section">
 <h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Project</span><span class="op">$</span><span class="fu">get_root_folder</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<p><code><a href="File.html">File</a></code> object of type 'FOLDER'.</p>
+</div>
+<div class="section">
+<h4 id="examples-12">Examples<a class="anchor" aria-label="anchor" href="#examples-12"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get root folder in a project
+ project_object$get_root_folder()
+}
+
+</code></pre></div><p></p></div>
 </div>
 
 
@@ -596,9 +837,27 @@ like other query parameters or 'fields', etc.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p><code><a href="Collection.html">Collection</a></code> of <code><a href="App.html">App</a></code> objects.</p>
 </div>
+<div class="section">
+<h4 id="examples-13">Examples<a class="anchor" aria-label="anchor" href="#examples-13"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List apps in a project
+ project_object$list_apps(query_terms = query_term)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Project-create_app"></a><div class="section">
 <h3 id="method-create-app-">Method <code>create_app()</code><a class="anchor" aria-label="anchor" href="#method-create-app-"></a></h3>
@@ -639,9 +898,27 @@ characters or spaces).</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p><code><a href="App.html">App</a></code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-14">Examples<a class="anchor" aria-label="anchor" href="#examples-14"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Create app in a project
+ project_object$create_app(raw = raw)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Project-list_tasks"></a><div class="section">
 <h3 id="method-list-tasks-">Method <code>list_tasks()</code><a class="anchor" aria-label="anchor" href="#method-list-tasks-"></a></h3>
@@ -760,9 +1037,27 @@ like 'fields', etc.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p><code><a href="Collection.html">Collection</a></code> of <code><a href="Task.html">Task</a></code> objects.</p>
 </div>
+<div class="section">
+<h4 id="examples-15">Examples<a class="anchor" aria-label="anchor" href="#examples-15"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List tasks in a project
+ project_object$list_tasks()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Project-list_imports"></a><div class="section">
 <h3 id="method-list-imports-">Method <code>list_imports()</code><a class="anchor" aria-label="anchor" href="#method-list-imports-"></a></h3>
@@ -815,9 +1110,27 @@ like 'fields', etc.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p><code><a href="Collection.html">Collection</a></code> of <code><a href="Import.html">Import</a></code> objects.</p>
 </div>
+<div class="section">
+<h4 id="examples-16">Examples<a class="anchor" aria-label="anchor" href="#examples-16"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List import jobs in a project
+ project_object$list_imports()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Project-create_task"></a><div class="section">
 <h3 id="method-create-task-">Method <code>create_task()</code><a class="anchor" aria-label="anchor" href="#method-create-task-"></a></h3>
@@ -1005,9 +1318,29 @@ like 'fields', etc.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
+<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
 <p><code><a href="Task.html">Task</a></code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-17">Examples<a class="anchor" aria-label="anchor" href="#examples-17"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when project is requested
+ project_object &lt;- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Create a task in a project
+ project_object$create_task(
+                  app = app
+                  )
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Project-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
@@ -1029,12 +1362,16 @@ like 'fields', etc.</p></dd>
 
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics.</p>
+  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">

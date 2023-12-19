@@ -135,12 +135,31 @@
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
+<p>A new <code>App</code> object.</p>
+</div>
 
 </div><p></p><hr><a id="method-App-print"></a><div class="section">
 <h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
 <p>Print method for App class.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">App</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when app is requested
+ app_object &lt;- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ app_object$print()
+}
+</code></pre></div><p></p></div>
 </div>
 
 
@@ -163,9 +182,24 @@ like 'fields', etc.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p><code>App</code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when app is requested
+ app_object &lt;- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ app_object$reload()
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-App-copy"></a><div class="section">
 <h3 id="method-copy-">Method <code>copy()</code><a class="anchor" aria-label="anchor" href="#method-copy-"></a></h3>
@@ -214,9 +248,25 @@ like 'fields', etc.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>Copied <code>App</code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when app is requested
+ app_object &lt;- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ app_object$copy(project)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-App-get_revision"></a><div class="section">
 <h3 id="method-get-revision-">Method <code>get_revision()</code><a class="anchor" aria-label="anchor" href="#method-get-revision-"></a></h3>
@@ -250,9 +300,25 @@ app, which is not necessarily the most recent version.</p>
 </div>
 
 <div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p><code>App</code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-3">Examples<a class="anchor" aria-label="anchor" href="#examples-3"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when app is requested
+ app_object &lt;- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ app_object$get_revision()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-App-create_revision"></a><div class="section">
 <h3 id="method-create-revision-">Method <code>create_revision()</code><a class="anchor" aria-label="anchor" href="#method-create-revision-"></a></h3>
@@ -313,9 +379,26 @@ More documentation about how to create the app via API can be found
 </div>
 
 <div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p><code>App</code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-4">Examples<a class="anchor" aria-label="anchor" href="#examples-4"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when app is requested
+ app_object &lt;- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ # Create App object using raw CWL
+ app_object$create_revision(raw)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-App-sync"></a><div class="section">
 <h3 id="method-sync-">Method <code>sync()</code><a class="anchor" aria-label="anchor" href="#method-sync-"></a></h3>
@@ -340,9 +423,26 @@ has been copied.</p>
 </div>
 
 <div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p><code>App</code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-5">Examples<a class="anchor" aria-label="anchor" href="#examples-5"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when app is requested
+ app_object &lt;- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+
+  app_object$sync()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-App-input_matrix"></a><div class="section">
 <h3 id="method-input-matrix-">Method <code>input_matrix()</code><a class="anchor" aria-label="anchor" href="#method-input-matrix-"></a></h3>
@@ -354,7 +454,7 @@ descriptions etc.</p><div class="section">
 </div>
 
 <div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>Data frame.</p>
 </div>
 
@@ -368,7 +468,7 @@ expected types, descriptions etc.</p><div class="section">
 </div>
 
 <div class="section">
-<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p>Data frame.</p>
 </div>
 
@@ -557,9 +657,26 @@ like 'fields', etc.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p><code><a href="Task.html">Task</a></code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-6">Examples<a class="anchor" aria-label="anchor" href="#examples-6"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when app is requested
+ app_object &lt;- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ # Create a DRAFT task
+ app_object$create_task(project = project)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-App-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
@@ -581,12 +698,129 @@ like 'fields', etc.</p></dd>
 
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `App$print`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="co"># x is API response when app is requested</span></span></span>
+<span class="r-in"><span> <span class="va">app_object</span> <span class="op">&lt;-</span> <span class="va">App</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>   href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>   auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>   response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">app_object</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `App$reload`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="co"># x is API response when app is requested</span></span></span>
+<span class="r-in"><span> <span class="va">app_object</span> <span class="op">&lt;-</span> <span class="va">App</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>   href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>   auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>   response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">app_object</span><span class="op">$</span><span class="fu">reload</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `App$copy`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="co"># x is API response when app is requested</span></span></span>
+<span class="r-in"><span> <span class="va">app_object</span> <span class="op">&lt;-</span> <span class="va">App</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>   href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>   auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>   response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">app_object</span><span class="op">$</span><span class="fu">copy</span><span class="op">(</span><span class="va">project</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `App$get_revision`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="co"># x is API response when app is requested</span></span></span>
+<span class="r-in"><span> <span class="va">app_object</span> <span class="op">&lt;-</span> <span class="va">App</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>   href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>   auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>   response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">app_object</span><span class="op">$</span><span class="fu">get_revision</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `App$create_revision`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="co"># x is API response when app is requested</span></span></span>
+<span class="r-in"><span> <span class="va">app_object</span> <span class="op">&lt;-</span> <span class="va">App</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>   href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>   auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>   response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="co"># Create App object using raw CWL</span></span></span>
+<span class="r-in"><span> <span class="va">app_object</span><span class="op">$</span><span class="fu">create_revision</span><span class="op">(</span><span class="va">raw</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `App$sync`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="co"># x is API response when app is requested</span></span></span>
+<span class="r-in"><span> <span class="va">app_object</span> <span class="op">&lt;-</span> <span class="va">App</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>   href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>   auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>   response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">app_object</span><span class="op">$</span><span class="fu">sync</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `App$create_task`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="co"># x is API response when app is requested</span></span></span>
+<span class="r-in"><span> <span class="va">app_object</span> <span class="op">&lt;-</span> <span class="va">App</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>   href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>   auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>   response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="co"># Create a DRAFT task</span></span></span>
+<span class="r-in"><span> <span class="va">app_object</span><span class="op">$</span><span class="fu">create_task</span><span class="op">(</span>project <span class="op">=</span> <span class="va">project</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics.</p>
+  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">

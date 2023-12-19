@@ -154,6 +154,20 @@ like 'fields', etc.</p></dd>
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p><code><a href="Collection.html">Collection</a></code> of <code><a href="Export.html">Export</a></code> objects.</p>
 </div>
+<div class="section">
+<h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ exports_object &lt;- Exports$new(
+   auth = auth
+ )
+
+ # List all your running or failed export jobs on the volume
+ exports_object$query(volume = volume, state = c("RUNNING", "FAILED"))
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Exports-get"></a><div class="section">
 <h3 id="method-get-">Method <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code><a class="anchor" aria-label="anchor" href="#method-get-"></a></h3>
@@ -179,6 +193,20 @@ like 'fields', etc.</p></dd>
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p><code><a href="Export.html">Export</a></code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ exports_object &lt;- Exports$new(
+   auth = auth
+ )
+
+ # Get export job by ID
+ exports_object$get(id = id)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Exports-submit_export"></a><div class="section">
 <h3 id="method-submit-export-">Method <code>submit_export()</code><a class="anchor" aria-label="anchor" href="#method-submit-export-"></a></h3>
@@ -278,6 +306,20 @@ like 'fields', etc.</p></dd>
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p><code><a href="Export.html">Export</a></code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ exports_object &lt;- Exports$new(
+   auth = auth
+ )
+
+ # Submit export job
+ exp_job1 &lt;- exports_object$submit_export(
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Exports-delete"></a><div class="section">
 <h3 id="method-delete-">Method <code>delete()</code><a class="anchor" aria-label="anchor" href="#method-delete-"></a></h3>
@@ -307,12 +349,16 @@ like 'fields', etc.</p></dd>
 
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics.</p>
+  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">

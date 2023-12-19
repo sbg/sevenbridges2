@@ -271,6 +271,27 @@ Seven Bridges single sign-on (<code>TRUE</code>)?</p></dd>
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p><code>Auth</code> class object.</p>
 </div>
+<div class="section">
+<h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # Multiple ways to create Auth object
+
+ # Using authentication token
+ a &lt;- Auth$new(
+  token = "&lt;your_token&gt;",
+  platform = "aws-us"
+ )
+
+ # Authenticate using environment variables
+ a &lt;- Auth$new(from = "env")
+
+ # Authenticate using file configuration
+ a &lt;- Auth$new(from = "file")
+
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Auth-get_token"></a><div class="section">
 <h3 id="method-get-token-">Method <code>get_token()</code><a class="anchor" aria-label="anchor" href="#method-get-token-"></a></h3>
@@ -284,6 +305,22 @@ system environment variable.</p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>An API authentication token in form of a string.</p>
 </div>
+<div class="section">
+<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # Authenticate using authentication token
+ a &lt;- Auth$new(
+  token = "&lt;your_token&gt;",
+  platform = "aws-us"
+ )
+
+ # Get that same token
+ a$get_token()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Auth-api"></a><div class="section">
 <h3 id="method-api-">Method <code><a href="api.html">api()</a></code><a class="anchor" aria-label="anchor" href="#method-api-"></a></h3>
@@ -332,6 +369,22 @@ More details please check
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # Authenticate using authentication token
+ a &lt;- Auth$new(
+  token = "&lt;your_token&gt;",
+  platform = "aws-us"
+ )
+
+ # Create API request using request parameters directly
+ a$api(params)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Auth-user"></a><div class="section">
 <h3 id="method-user-">Method <code>user()</code><a class="anchor" aria-label="anchor" href="#method-user-"></a></h3>
@@ -354,6 +407,21 @@ authenticated user will be returned.</p></dd>
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p><code>User</code> class object.</p>
 </div>
+<div class="section">
+<h4 id="examples-3">Examples<a class="anchor" aria-label="anchor" href="#examples-3"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # Authenticate using authentication token
+ a &lt;- Auth$new(
+  token = "&lt;your_token&gt;",
+  platform = "aws-us"
+ )
+
+ # Get information about the currently authenticated user
+ a$user()
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Auth-rate_limit"></a><div class="section">
 <h3 id="method-rate-limit-">Method <code>rate_limit()</code><a class="anchor" aria-label="anchor" href="#method-rate-limit-"></a></h3>
@@ -363,6 +431,22 @@ number of API calls you can make in one hour. This call also returns
 information about your current instance limit.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Auth</span><span class="op">$</span><span class="fu">rate_limit</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="examples-4">Examples<a class="anchor" aria-label="anchor" href="#examples-4"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # Authenticate using authentication token
+ a &lt;- Auth$new(
+  token = "&lt;your_token&gt;",
+  platform = "aws-us"
+ )
+
+ # Get current rate limit
+ a$rate_limit()
+}
+
+</code></pre></div><p></p></div>
 </div>
 
 
@@ -434,12 +518,47 @@ and start the upload process immediately.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-5">Examples<a class="anchor" aria-label="anchor" href="#examples-5"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # Authenticate using authentication token
+ a &lt;- Auth$new(
+  token = "&lt;your_token&gt;",
+  platform = "aws-us"
+ )
+
+ # Create upload job and set destination project
+ upload_job &lt;- a$upload(
+   path = "/path/to/your/file.txt",
+   project = destination_project,
+   overwrite = TRUE,
+   init = TRUE
+ )
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Auth-list_ongoing_uploads"></a><div class="section">
 <h3 id="method-list-ongoing-uploads-">Method <code>list_ongoing_uploads()</code><a class="anchor" aria-label="anchor" href="#method-list-ongoing-uploads-"></a></h3>
 <p>This method returns the list of all ongoing uploads.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Auth</span><span class="op">$</span><span class="fu">list_ongoing_uploads</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="examples-6">Examples<a class="anchor" aria-label="anchor" href="#examples-6"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # Authenticate using authentication token
+ a &lt;- Auth$new(
+  token = "&lt;your_token&gt;",
+  platform = "aws-us"
+ )
+
+ # List ongoing uploads
+. a$list_ongoing_uploads()
+}
+</code></pre></div><p></p></div>
 </div>
 
 
@@ -459,6 +578,21 @@ to abort.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-7">Examples<a class="anchor" aria-label="anchor" href="#examples-7"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # Authenticate using authentication token
+ a &lt;- Auth$new(
+  token = "&lt;your_token&gt;",
+  platform = "aws-us"
+ )
+
+ # Abort upload
+ a$abort_upload(upload_id = "&lt;id_of_the_upload_process&gt;")
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Auth-send_feedback"></a><div class="section">
 <h3 id="method-send-feedback-">Method <code>send_feedback()</code><a class="anchor" aria-label="anchor" href="#method-send-feedback-"></a></h3>
@@ -491,6 +625,23 @@ You can send one feedback item per minute.</p><div class="section">
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-8">Examples<a class="anchor" aria-label="anchor" href="#examples-8"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # Authenticate using authentication token
+ a &lt;- Auth$new(
+  token = "&lt;your_token&gt;",
+  platform = "aws-us"
+ )
+
+ # Send feedback
+ a$send_feedback(
+  "This is a test for sending feedback via API.",
+  type = "thought"
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Auth-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
@@ -512,12 +663,16 @@ You can send one feedback item per minute.</p><div class="section">
 
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics.</p>
+  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">

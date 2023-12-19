@@ -193,6 +193,21 @@ the HTTP part upload request that should be recognized as success.</p></dd>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Part</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ upload_part_object &lt;- Part$new(
+                        part_number = part_number,
+                        part_size = part_size,
+                        auth = auth
+                      )
+
+ # Print upload part information
+ upload_part_object$print()
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Part-upload_info_part"></a><div class="section">
 <h3 id="method-upload-info-part-">Method <code>upload_info_part()</code><a class="anchor" aria-label="anchor" href="#method-upload-info-part-"></a></h3>
@@ -210,6 +225,21 @@ belongs to.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ upload_part_object &lt;- Part$new(
+                        part_number = part_number,
+                        part_size = part_size,
+                        auth = auth
+                      )
+
+ # Get upload part status information
+ upload_part_object$upload_info_part(upload_id = upload_id)
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Part-upload_complete_part"></a><div class="section">
 <h3 id="method-upload-complete-part-">Method <code>upload_complete_part()</code><a class="anchor" aria-label="anchor" href="#method-upload-complete-part-"></a></h3>
@@ -227,6 +257,21 @@ belongs to.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ upload_part_object &lt;- Part$new(
+                        part_number = part_number,
+                        part_size = part_size,
+                        auth = auth
+                      )
+
+ # Report an uploaded part
+ upload_part_object$upload_complete_part(upload_id = upload_id)
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Part-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
@@ -248,12 +293,61 @@ belongs to.</p></dd>
 
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Part$print`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">upload_part_object</span> <span class="op">&lt;-</span> <span class="va">Part</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                        part_number <span class="op">=</span> <span class="va">part_number</span>,</span></span>
+<span class="r-in"><span>                        part_size <span class="op">=</span> <span class="va">part_size</span>,</span></span>
+<span class="r-in"><span>                        auth <span class="op">=</span> <span class="va">auth</span></span></span>
+<span class="r-in"><span>                      <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Print upload part information</span></span></span>
+<span class="r-in"><span> <span class="va">upload_part_object</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Part$upload_info_part`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">upload_part_object</span> <span class="op">&lt;-</span> <span class="va">Part</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                        part_number <span class="op">=</span> <span class="va">part_number</span>,</span></span>
+<span class="r-in"><span>                        part_size <span class="op">=</span> <span class="va">part_size</span>,</span></span>
+<span class="r-in"><span>                        auth <span class="op">=</span> <span class="va">auth</span></span></span>
+<span class="r-in"><span>                      <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Get upload part status information</span></span></span>
+<span class="r-in"><span> <span class="va">upload_part_object</span><span class="op">$</span><span class="fu">upload_info_part</span><span class="op">(</span>upload_id <span class="op">=</span> <span class="va">upload_id</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Part$upload_complete_part`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">upload_part_object</span> <span class="op">&lt;-</span> <span class="va">Part</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                        part_number <span class="op">=</span> <span class="va">part_number</span>,</span></span>
+<span class="r-in"><span>                        part_size <span class="op">=</span> <span class="va">part_size</span>,</span></span>
+<span class="r-in"><span>                        auth <span class="op">=</span> <span class="va">auth</span></span></span>
+<span class="r-in"><span>                      <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Report an uploaded part</span></span></span>
+<span class="r-in"><span> <span class="va">upload_part_object</span><span class="op">$</span><span class="fu">upload_complete_part</span><span class="op">(</span>upload_id <span class="op">=</span> <span class="va">upload_id</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics.</p>
+  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">

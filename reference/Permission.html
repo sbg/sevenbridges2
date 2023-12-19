@@ -160,12 +160,55 @@ permission.</p></dd>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Permission</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when permission is requested
+ permission_object &lt;- Permission$new(
+                    write = x$write,
+                    read = x$read,
+                    copy = x$copy,
+                    execute = x$execute,
+                    admin = x$admin,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+ # Print permission object
+ permission_object$print()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Permission-reload"></a><div class="section">
 <h3 id="method-reload-">Method <code>reload()</code><a class="anchor" aria-label="anchor" href="#method-reload-"></a></h3>
 <p>Reload Permission object information.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Permission</span><span class="op">$</span><span class="fu">reload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when permission is requested
+ permission_object &lt;- Permission$new(
+                    write = x$write,
+                    read = x$read,
+                    copy = x$copy,
+                    execute = x$execute,
+                    admin = x$admin,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload permission object
+ permission_object$reload()
+}
+
+</code></pre></div><p></p></div>
 </div>
 
 
@@ -189,12 +232,59 @@ permission.</p></dd>
 
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Permission$print`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="co"># x is API response when permission is requested</span></span></span>
+<span class="r-in"><span> <span class="va">permission_object</span> <span class="op">&lt;-</span> <span class="va">Permission</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    write <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">write</span>,</span></span>
+<span class="r-in"><span>                    read <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">read</span>,</span></span>
+<span class="r-in"><span>                    copy <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">copy</span>,</span></span>
+<span class="r-in"><span>                    execute <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">execute</span>,</span></span>
+<span class="r-in"><span>                    admin <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">admin</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="co"># Print permission object</span></span></span>
+<span class="r-in"><span> <span class="va">permission_object</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Permission$reload`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="co"># x is API response when permission is requested</span></span></span>
+<span class="r-in"><span> <span class="va">permission_object</span> <span class="op">&lt;-</span> <span class="va">Permission</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    write <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">write</span>,</span></span>
+<span class="r-in"><span>                    read <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">read</span>,</span></span>
+<span class="r-in"><span>                    copy <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">copy</span>,</span></span>
+<span class="r-in"><span>                    execute <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">execute</span>,</span></span>
+<span class="r-in"><span>                    admin <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">admin</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Reload permission object</span></span></span>
+<span class="r-in"><span> <span class="va">permission_object</span><span class="op">$</span><span class="fu">reload</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics.</p>
+  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">

@@ -171,6 +171,26 @@ resources.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when collection object is requested
+ collection_object &lt;- Collection$new(
+                                   href = x$href,
+                                   items = x$items,
+                                   links = x$links,
+                                   total = x$total,
+                                   auth = auth,
+                                   response = attr(x, "response")
+                                 )
+
+ # Print collection object
+ collection_object$print()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Collection-next_page"></a><div class="section">
 <h3 id="method-next-page-">Method <code>next_page()</code><a class="anchor" aria-label="anchor" href="#method-next-page-"></a></h3>
@@ -188,6 +208,26 @@ like 'advanced_access', 'fields', etc.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when collection object is requested
+ collection_object &lt;- Collection$new(
+                                   href = x$href,
+                                   items = x$items,
+                                   links = x$links,
+                                   total = x$total,
+                                   auth = auth,
+                                   response = attr(x, "response")
+                                 )
+
+ # Get next page of collection results
+ collection_object$next_page()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Collection-prev_page"></a><div class="section">
 <h3 id="method-prev-page-">Method <code>prev_page()</code><a class="anchor" aria-label="anchor" href="#method-prev-page-"></a></h3>
@@ -205,6 +245,26 @@ like 'advanced_access', 'fields', etc.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when collection object is requested
+ collection_object &lt;- Collection$new(
+                                   href = x$href,
+                                   items = x$items,
+                                   links = x$links,
+                                   total = x$total,
+                                   auth = auth,
+                                   response = attr(x, "response")
+                                 )
+
+ # Get previous page of collection results
+ collection_object$prev_page()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Collection-all"></a><div class="section">
 <h3 id="method-all-">Method <code><a href="https://rdrr.io/r/base/all.html" class="external-link">all()</a></code><a class="anchor" aria-label="anchor" href="#method-all-"></a></h3>
@@ -223,6 +283,26 @@ like 'advanced_access', 'fields', etc.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-3">Examples<a class="anchor" aria-label="anchor" href="#examples-3"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when collection object is requested
+ collection_object &lt;- Collection$new(
+                                   href = x$href,
+                                   items = x$items,
+                                   links = x$links,
+                                   total = x$total,
+                                   auth = auth,
+                                   response = attr(x, "response")
+                                 )
+
+ # Get all results of collection
+ collection_object$all()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Collection-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
@@ -244,12 +324,96 @@ like 'advanced_access', 'fields', etc.</p></dd>
 
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Collection$print`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="co"># x is API response when collection object is requested</span></span></span>
+<span class="r-in"><span> <span class="va">collection_object</span> <span class="op">&lt;-</span> <span class="va">Collection</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                                   href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                                   items <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">items</span>,</span></span>
+<span class="r-in"><span>                                   links <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">links</span>,</span></span>
+<span class="r-in"><span>                                   total <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">total</span>,</span></span>
+<span class="r-in"><span>                                   auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                                   response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                                 <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Print collection object</span></span></span>
+<span class="r-in"><span> <span class="va">collection_object</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Collection$next_page`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="co"># x is API response when collection object is requested</span></span></span>
+<span class="r-in"><span> <span class="va">collection_object</span> <span class="op">&lt;-</span> <span class="va">Collection</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                                   href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                                   items <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">items</span>,</span></span>
+<span class="r-in"><span>                                   links <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">links</span>,</span></span>
+<span class="r-in"><span>                                   total <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">total</span>,</span></span>
+<span class="r-in"><span>                                   auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                                   response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                                 <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Get next page of collection results</span></span></span>
+<span class="r-in"><span> <span class="va">collection_object</span><span class="op">$</span><span class="fu">next_page</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Collection$prev_page`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="co"># x is API response when collection object is requested</span></span></span>
+<span class="r-in"><span> <span class="va">collection_object</span> <span class="op">&lt;-</span> <span class="va">Collection</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                                   href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                                   items <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">items</span>,</span></span>
+<span class="r-in"><span>                                   links <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">links</span>,</span></span>
+<span class="r-in"><span>                                   total <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">total</span>,</span></span>
+<span class="r-in"><span>                                   auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                                   response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                                 <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Get previous page of collection results</span></span></span>
+<span class="r-in"><span> <span class="va">collection_object</span><span class="op">$</span><span class="fu">prev_page</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Collection$all`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="co"># x is API response when collection object is requested</span></span></span>
+<span class="r-in"><span> <span class="va">collection_object</span> <span class="op">&lt;-</span> <span class="va">Collection</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                                   href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                                   items <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">items</span>,</span></span>
+<span class="r-in"><span>                                   links <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">links</span>,</span></span>
+<span class="r-in"><span>                                   total <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">total</span>,</span></span>
+<span class="r-in"><span>                                   auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                                   response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                                 <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Get all results of collection</span></span></span>
+<span class="r-in"><span> <span class="va">collection_object</span><span class="op">$</span><span class="fu">all</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics.</p>
+  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">

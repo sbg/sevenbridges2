@@ -163,6 +163,24 @@ set to <code>FALSE</code>.</p></dd>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Volume</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when volume is requested
+volume_object &lt;- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print volume object
+ volume_object$print()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Volume-reload"></a><div class="section">
 <h3 id="method-reload-">Method <code>reload()</code><a class="anchor" aria-label="anchor" href="#method-reload-"></a></h3>
@@ -184,6 +202,24 @@ like 'fields', etc.</p></dd>
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p><code>Volume</code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when volume is requested
+volume_object &lt;- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload volume object
+ volume_object$reload()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Volume-update"></a><div class="section">
 <h3 id="method-update-">Method <code><a href="https://rdrr.io/r/stats/update.html" class="external-link">update()</a></code><a class="anchor" aria-label="anchor" href="#method-update-"></a></h3>
@@ -219,6 +255,24 @@ mapping of the volume to the cloud service where the data is stored.</p></dd>
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p><code>Volume</code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when volume is requested
+volume_object &lt;- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Update volume object
+ volume_object$update(description = description)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Volume-deactivate"></a><div class="section">
 <h3 id="method-deactivate-">Method <code>deactivate()</code><a class="anchor" aria-label="anchor" href="#method-deactivate-"></a></h3>
@@ -246,6 +300,24 @@ Use it within query parameter, like <code>query = list(force = TRUE)</code>.</p>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-3">Examples<a class="anchor" aria-label="anchor" href="#examples-3"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when volume is requested
+volume_object &lt;- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Deactivate volume
+ volume_object$deactivate()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Volume-reactivate"></a><div class="section">
 <h3 id="method-reactivate-">Method <code>reactivate()</code><a class="anchor" aria-label="anchor" href="#method-reactivate-"></a></h3>
@@ -266,6 +338,31 @@ Use it within query parameter, like <code>query = list(force = TRUE)</code>.</p>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<p><code>Volume</code> object.</p>
+</div>
+<div class="section">
+<h4 id="examples-4">Examples<a class="anchor" aria-label="anchor" href="#examples-4"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when volume is requested
+volume_object &lt;- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Deactivate volume
+ volume_object$deactivate()
+
+ # Reactivate volume
+ volume_object$reactivate()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Volume-delete"></a><div class="section">
 <h3 id="method-delete-">Method <code>delete()</code><a class="anchor" aria-label="anchor" href="#method-delete-"></a></h3>
@@ -277,6 +374,24 @@ delete all files on the Platform that were previously imported from
 the volume.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Volume</span><span class="op">$</span><span class="fu">delete</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="examples-5">Examples<a class="anchor" aria-label="anchor" href="#examples-5"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when volume is requested
+volume_object &lt;- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Delete volume
+ volume_object$delete()
+}
+
+</code></pre></div><p></p></div>
 </div>
 
 
@@ -330,10 +445,28 @@ Default: <code>_all</code>.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p><code><a href="VolumeContentCollection.html">VolumeContentCollection</a></code> object containing
 list of <code><a href="VolumeFile.html">VolumeFile</a></code> and <code><a href="VolumePrefix.html">VolumePrefix</a></code> objects.</p>
 </div>
+<div class="section">
+<h4 id="examples-6">Examples<a class="anchor" aria-label="anchor" href="#examples-6"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when volume is requested
+volume_object &lt;- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List volume contents
+ volume_object$list_contents()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Volume-get_file"></a><div class="section">
 <h3 id="method-get-file-">Method <code>get_file()</code><a class="anchor" aria-label="anchor" href="#method-get-file-"></a></h3>
@@ -363,9 +496,27 @@ like 'fields', etc.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p><code><a href="VolumeFile.html">VolumeFile</a></code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-7">Examples<a class="anchor" aria-label="anchor" href="#examples-7"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when volume is requested
+volume_object &lt;- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get volume file
+ volume_object$get_file(location = location)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Volume-list_members"></a><div class="section">
 <h3 id="method-list-members-">Method <code>list_members()</code><a class="anchor" aria-label="anchor" href="#method-list-members-"></a></h3>
@@ -402,9 +553,27 @@ like 'fields', etc.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p><code><a href="Collection.html">Collection</a></code> containing <code><a href="Member.html">Member</a></code> objects.</p>
 </div>
+<div class="section">
+<h4 id="examples-8">Examples<a class="anchor" aria-label="anchor" href="#examples-8"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when volume is requested
+volume_object &lt;- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List volume members
+ volume_object$list_members()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Volume-add_member"></a><div class="section">
 <h3 id="method-add-member-">Method <code>add_member()</code><a class="anchor" aria-label="anchor" href="#method-add-member-"></a></h3>
@@ -441,9 +610,30 @@ Example:</p>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p><code><a href="Member.html">Member</a></code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-9">Examples<a class="anchor" aria-label="anchor" href="#examples-9"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when volume is requested
+volume_object &lt;- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Add volume member
+ volume_object$add_member(
+                user = user,
+                permissions = list(read = TRUE, copy = FALSE)
+              )
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Volume-remove_member"></a><div class="section">
 <h3 id="method-remove-member-">Method <code>remove_member()</code><a class="anchor" aria-label="anchor" href="#method-remove-member-"></a></h3>
@@ -463,6 +653,24 @@ user's username.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-10">Examples<a class="anchor" aria-label="anchor" href="#examples-10"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when volume is requested
+volume_object &lt;- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Remove volume member
+ volume_object$remove_member(user = user)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Volume-get_member"></a><div class="section">
 <h3 id="method-get-member-">Method <code>get_member()</code><a class="anchor" aria-label="anchor" href="#method-get-member-"></a></h3>
@@ -488,9 +696,27 @@ like 'fields', etc.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p><code><a href="Member.html">Member</a></code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-11">Examples<a class="anchor" aria-label="anchor" href="#examples-11"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when volume is requested
+volume_object &lt;- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get volume member
+ volume_object$get_member(user = user)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Volume-modify_member_permissions"></a><div class="section">
 <h3 id="method-modify-member-permissions-">Method <code>modify_member_permissions()</code><a class="anchor" aria-label="anchor" href="#method-modify-member-permissions-"></a></h3>
@@ -530,9 +756,30 @@ Example:</p>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p><code><a href="Permission.html">Permission</a></code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-12">Examples<a class="anchor" aria-label="anchor" href="#examples-12"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when volume is requested
+volume_object &lt;- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Modify volume member permissions
+ volume_object$modify_member_permissions(
+                    user = user,
+                    permission = list(read = TRUE, copy = TRUE)
+                  )
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Volume-list_imports"></a><div class="section">
 <h3 id="method-list-imports-">Method <code>list_imports()</code><a class="anchor" aria-label="anchor" href="#method-list-imports-"></a></h3>
@@ -584,10 +831,31 @@ like 'fields', etc.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p><code><a href="Collection.html">Collection</a></code> containing list of
 <code><a href="Import.html">Import</a></code> job objects.</p>
 </div>
+<div class="section">
+<h4 id="examples-13">Examples<a class="anchor" aria-label="anchor" href="#examples-13"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when volume is requested
+volume_object &lt;- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List volume imports
+ volume_object$list_imports(
+                    project = project,
+                    state = c("RUNNING", "FAILED")
+                  )
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Volume-list_exports"></a><div class="section">
 <h3 id="method-list-exports-">Method <code>list_exports()</code><a class="anchor" aria-label="anchor" href="#method-list-exports-"></a></h3>
@@ -635,10 +903,28 @@ like 'fields', etc.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p><code><a href="Collection.html">Collection</a></code> containing list of
 <code><a href="Export.html">Export</a></code> job objects.</p>
 </div>
+<div class="section">
+<h4 id="examples-14">Examples<a class="anchor" aria-label="anchor" href="#examples-14"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when volume is requested
+volume_object &lt;- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List volume exports
+ volume_object$list_exports(state = c("RUNNING", "FAILED"))
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Volume-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
@@ -660,12 +946,298 @@ like 'fields', etc.</p></dd>
 
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volume$print`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when volume is requested</span></span></span>
+<span class="r-in"><span><span class="va">volume_object</span> <span class="op">&lt;-</span> <span class="va">Volume</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Print volume object</span></span></span>
+<span class="r-in"><span> <span class="va">volume_object</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volume$reload`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when volume is requested</span></span></span>
+<span class="r-in"><span><span class="va">volume_object</span> <span class="op">&lt;-</span> <span class="va">Volume</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Reload volume object</span></span></span>
+<span class="r-in"><span> <span class="va">volume_object</span><span class="op">$</span><span class="fu">reload</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volume$update`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when volume is requested</span></span></span>
+<span class="r-in"><span><span class="va">volume_object</span> <span class="op">&lt;-</span> <span class="va">Volume</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Update volume object</span></span></span>
+<span class="r-in"><span> <span class="va">volume_object</span><span class="op">$</span><span class="fu">update</span><span class="op">(</span>description <span class="op">=</span> <span class="va">description</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volume$deactivate`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when volume is requested</span></span></span>
+<span class="r-in"><span><span class="va">volume_object</span> <span class="op">&lt;-</span> <span class="va">Volume</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Deactivate volume</span></span></span>
+<span class="r-in"><span> <span class="va">volume_object</span><span class="op">$</span><span class="fu">deactivate</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volume$reactivate`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when volume is requested</span></span></span>
+<span class="r-in"><span><span class="va">volume_object</span> <span class="op">&lt;-</span> <span class="va">Volume</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Deactivate volume</span></span></span>
+<span class="r-in"><span> <span class="va">volume_object</span><span class="op">$</span><span class="fu">deactivate</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Reactivate volume</span></span></span>
+<span class="r-in"><span> <span class="va">volume_object</span><span class="op">$</span><span class="fu">reactivate</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volume$delete`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when volume is requested</span></span></span>
+<span class="r-in"><span><span class="va">volume_object</span> <span class="op">&lt;-</span> <span class="va">Volume</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Delete volume</span></span></span>
+<span class="r-in"><span> <span class="va">volume_object</span><span class="op">$</span><span class="fu">delete</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volume$list_contents`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when volume is requested</span></span></span>
+<span class="r-in"><span><span class="va">volume_object</span> <span class="op">&lt;-</span> <span class="va">Volume</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># List volume contents</span></span></span>
+<span class="r-in"><span> <span class="va">volume_object</span><span class="op">$</span><span class="fu">list_contents</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volume$get_file`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when volume is requested</span></span></span>
+<span class="r-in"><span><span class="va">volume_object</span> <span class="op">&lt;-</span> <span class="va">Volume</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Get volume file</span></span></span>
+<span class="r-in"><span> <span class="va">volume_object</span><span class="op">$</span><span class="fu">get_file</span><span class="op">(</span>location <span class="op">=</span> <span class="va">location</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volume$list_members`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when volume is requested</span></span></span>
+<span class="r-in"><span><span class="va">volume_object</span> <span class="op">&lt;-</span> <span class="va">Volume</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># List volume members</span></span></span>
+<span class="r-in"><span> <span class="va">volume_object</span><span class="op">$</span><span class="fu">list_members</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volume$add_member`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when volume is requested</span></span></span>
+<span class="r-in"><span><span class="va">volume_object</span> <span class="op">&lt;-</span> <span class="va">Volume</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Add volume member</span></span></span>
+<span class="r-in"><span> <span class="va">volume_object</span><span class="op">$</span><span class="fu">add_member</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                user <span class="op">=</span> <span class="va">user</span>,</span></span>
+<span class="r-in"><span>                permissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>read <span class="op">=</span> <span class="cn">TRUE</span>, copy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>              <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volume$remove_member`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when volume is requested</span></span></span>
+<span class="r-in"><span><span class="va">volume_object</span> <span class="op">&lt;-</span> <span class="va">Volume</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Remove volume member</span></span></span>
+<span class="r-in"><span> <span class="va">volume_object</span><span class="op">$</span><span class="fu">remove_member</span><span class="op">(</span>user <span class="op">=</span> <span class="va">user</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volume$get_member`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when volume is requested</span></span></span>
+<span class="r-in"><span><span class="va">volume_object</span> <span class="op">&lt;-</span> <span class="va">Volume</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Get volume member</span></span></span>
+<span class="r-in"><span> <span class="va">volume_object</span><span class="op">$</span><span class="fu">get_member</span><span class="op">(</span>user <span class="op">=</span> <span class="va">user</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volume$modify_member_permissions`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when volume is requested</span></span></span>
+<span class="r-in"><span><span class="va">volume_object</span> <span class="op">&lt;-</span> <span class="va">Volume</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Modify volume member permissions</span></span></span>
+<span class="r-in"><span> <span class="va">volume_object</span><span class="op">$</span><span class="fu">modify_member_permissions</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    user <span class="op">=</span> <span class="va">user</span>,</span></span>
+<span class="r-in"><span>                    permission <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>read <span class="op">=</span> <span class="cn">TRUE</span>, copy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volume$list_imports`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when volume is requested</span></span></span>
+<span class="r-in"><span><span class="va">volume_object</span> <span class="op">&lt;-</span> <span class="va">Volume</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># List volume imports</span></span></span>
+<span class="r-in"><span> <span class="va">volume_object</span><span class="op">$</span><span class="fu">list_imports</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    project <span class="op">=</span> <span class="va">project</span>,</span></span>
+<span class="r-in"><span>                    state <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RUNNING"</span>, <span class="st">"FAILED"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volume$list_exports`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when volume is requested</span></span></span>
+<span class="r-in"><span><span class="va">volume_object</span> <span class="op">&lt;-</span> <span class="va">Volume</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># List volume exports</span></span></span>
+<span class="r-in"><span> <span class="va">volume_object</span><span class="op">$</span><span class="fu">list_exports</span><span class="op">(</span>state <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RUNNING"</span>, <span class="st">"FAILED"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics.</p>
+  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">

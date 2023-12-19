@@ -143,6 +143,24 @@
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Billing</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when billing group is requested
+ billing_object &lt;- Billing$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print billing group
+ billing_object$print()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Billing-reload"></a><div class="section">
 <h3 id="method-reload-">Method <code>reload()</code><a class="anchor" aria-label="anchor" href="#method-reload-"></a></h3>
@@ -164,6 +182,24 @@ like 'limit', 'offset', 'fields', etc.</p></dd>
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p><code>Billing</code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when billing group is requested
+ billing_object &lt;- Billing$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload billing group
+ billing_object$reload()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Billing-analysis_breakdown"></a><div class="section">
 <h3 id="method-analysis-breakdown-">Method <code>analysis_breakdown()</code><a class="anchor" aria-label="anchor" href="#method-analysis-breakdown-"></a></h3>
@@ -222,6 +258,24 @@ This is a pagination-specific attribute.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when billing group is requested
+ billing_object &lt;- Billing$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get analysis breakdown
+ billing_object$analysis_breakdown()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Billing-storage_breakdown"></a><div class="section">
 <h3 id="method-storage-breakdown-">Method <code>storage_breakdown()</code><a class="anchor" aria-label="anchor" href="#method-storage-breakdown-"></a></h3>
@@ -280,6 +334,24 @@ This is a pagination-specific attribute.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-3">Examples<a class="anchor" aria-label="anchor" href="#examples-3"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when billing group is requested
+ billing_object &lt;- Billing$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get storage breakdown
+ billing_object$storage_breakdown()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Billing-egress_breakdown"></a><div class="section">
 <h3 id="method-egress-breakdown-">Method <code>egress_breakdown()</code><a class="anchor" aria-label="anchor" href="#method-egress-breakdown-"></a></h3>
@@ -338,6 +410,24 @@ This is a pagination-specific attribute.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-4">Examples<a class="anchor" aria-label="anchor" href="#examples-4"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when billing group is requested
+ billing_object &lt;- Billing$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get egress breakdown
+ billing_object$egress_breakdown()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Billing-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
@@ -359,12 +449,106 @@ This is a pagination-specific attribute.</p></dd>
 
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Billing$print`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when billing group is requested</span></span></span>
+<span class="r-in"><span> <span class="va">billing_object</span> <span class="op">&lt;-</span> <span class="va">Billing</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Print billing group</span></span></span>
+<span class="r-in"><span> <span class="va">billing_object</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Billing$reload`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="co"># x is API response when billing group is requested</span></span></span>
+<span class="r-in"><span> <span class="va">billing_object</span> <span class="op">&lt;-</span> <span class="va">Billing</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Reload billing group</span></span></span>
+<span class="r-in"><span> <span class="va">billing_object</span><span class="op">$</span><span class="fu">reload</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Billing$analysis_breakdown`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when billing group is requested</span></span></span>
+<span class="r-in"><span> <span class="va">billing_object</span> <span class="op">&lt;-</span> <span class="va">Billing</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Get analysis breakdown</span></span></span>
+<span class="r-in"><span> <span class="va">billing_object</span><span class="op">$</span><span class="fu">analysis_breakdown</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Billing$storage_breakdown`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when billing group is requested</span></span></span>
+<span class="r-in"><span> <span class="va">billing_object</span> <span class="op">&lt;-</span> <span class="va">Billing</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Get storage breakdown</span></span></span>
+<span class="r-in"><span> <span class="va">billing_object</span><span class="op">$</span><span class="fu">storage_breakdown</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Billing$egress_breakdown`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when billing group is requested</span></span></span>
+<span class="r-in"><span> <span class="va">billing_object</span> <span class="op">&lt;-</span> <span class="va">Billing</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Get egress breakdown</span></span></span>
+<span class="r-in"><span> <span class="va">billing_object</span><span class="op">$</span><span class="fu">egress_breakdown</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics.</p>
+  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">

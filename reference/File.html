@@ -176,6 +176,24 @@
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">File</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when file is requested
+file_object &lt;- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print file object
+ file_object$print()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-File-detailed_print"></a><div class="section">
 <h3 id="method-detailed-print-">Method <code>detailed_print()</code><a class="anchor" aria-label="anchor" href="#method-detailed-print-"></a></h3>
@@ -200,6 +218,24 @@ file.</p></li>
 on the Platform.</p></li>
 </ul></div>
 
+<div class="section">
+<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when file is requested
+file_object &lt;- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Detailed print of file object
+ file_object$detailed_print()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-File-reload"></a><div class="section">
 <h3 id="method-reload-">Method <code>reload()</code><a class="anchor" aria-label="anchor" href="#method-reload-"></a></h3>
@@ -221,6 +257,24 @@ like 'fields', etc.</p></dd>
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p><code>File</code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when file is requested
+file_object &lt;- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload file object
+ file_object$reload()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-File-update"></a><div class="section">
 <h3 id="method-update-">Method <code><a href="https://rdrr.io/r/stats/update.html" class="external-link">update()</a></code><a class="anchor" aria-label="anchor" href="#method-update-"></a></h3>
@@ -259,6 +313,24 @@ like 'limit', 'offset', 'fields', etc.</p></dd>
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>Updated <code>File</code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-3">Examples<a class="anchor" aria-label="anchor" href="#examples-3"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when file is requested
+file_object &lt;- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Update file object
+ file_object$update(name = "new_name")
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-File-add_tag"></a><div class="section">
 <h3 id="method-add-tag-">Method <code>add_tag()</code><a class="anchor" aria-label="anchor" href="#method-add-tag-"></a></h3>
@@ -290,6 +362,24 @@ Default: <code>FALSE</code>.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-4">Examples<a class="anchor" aria-label="anchor" href="#examples-4"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when file is requested
+file_object &lt;- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Add new tag to file object
+ file_object$add_tag(tags = c("new_tag"))
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-File-copy_to"></a><div class="section">
 <h3 id="method-copy-to-">Method <code>copy_to()</code><a class="anchor" aria-label="anchor" href="#method-copy-to-"></a></h3>
@@ -329,6 +419,24 @@ like 'fields', etc.</p></dd>
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>Copied <code>File</code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-5">Examples<a class="anchor" aria-label="anchor" href="#examples-5"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when file is requested
+file_object &lt;- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Copy file object to project
+ file_object$copy_to(project = project)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-File-get_download_url"></a><div class="section">
 <h3 id="method-get-download-url-">Method <code>get_download_url()</code><a class="anchor" aria-label="anchor" href="#method-get-download-url-"></a></h3>
@@ -347,6 +455,24 @@ like 'fields', etc.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-6">Examples<a class="anchor" aria-label="anchor" href="#examples-6"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when file is requested
+file_object &lt;- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get download url for file object
+ file_object$get_download_url()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-File-get_metadata"></a><div class="section">
 <h3 id="method-get-metadata-">Method <code>get_metadata()</code><a class="anchor" aria-label="anchor" href="#method-get-metadata-"></a></h3>
@@ -365,6 +491,24 @@ like 'fields', etc.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-7">Examples<a class="anchor" aria-label="anchor" href="#examples-7"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when file is requested
+file_object &lt;- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get metadata for file object
+ file_object$get_metadata()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-File-set_metadata"></a><div class="section">
 <h3 id="method-set-metadata-">Method <code>set_metadata()</code><a class="anchor" aria-label="anchor" href="#method-set-metadata-"></a></h3>
@@ -395,6 +539,24 @@ like 'fields', etc.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-8">Examples<a class="anchor" aria-label="anchor" href="#examples-8"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when file is requested
+file_object &lt;- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Set metadata for file object
+ file_object$set_metadata(metadata_fields = list("field_1" = "value_1"))
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-File-move_to_folder"></a><div class="section">
 <h3 id="method-move-to-folder-">Method <code>move_to_folder()</code><a class="anchor" aria-label="anchor" href="#method-move-to-folder-"></a></h3>
@@ -422,6 +584,24 @@ If you want to use the same name, omit this key.</p></dd>
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>Moved <code>File</code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-9">Examples<a class="anchor" aria-label="anchor" href="#examples-9"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when file is requested
+file_object &lt;- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Move file object to a project
+ file_object$move_to_folder(parent = "parent-folder-id")
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-File-list_contents"></a><div class="section">
 <h3 id="method-list-contents-">Method <code>list_contents()</code><a class="anchor" aria-label="anchor" href="#method-list-contents-"></a></h3>
@@ -460,12 +640,48 @@ like 'fields', etc.</p></dd>
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p><code><a href="Collection.html">Collection</a></code> of <code>File</code> objects.</p>
 </div>
+<div class="section">
+<h4 id="examples-10">Examples<a class="anchor" aria-label="anchor" href="#examples-10"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when file is requested
+file_object &lt;- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List folder's content
+ file_object$list_contents()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-File-delete"></a><div class="section">
 <h3 id="method-delete-">Method <code>delete()</code><a class="anchor" aria-label="anchor" href="#method-delete-"></a></h3>
 <p>Delete method for File objects.</p><div class="section">
 <h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">File</span><span class="op">$</span><span class="fu">delete</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="examples-11">Examples<a class="anchor" aria-label="anchor" href="#examples-11"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when file is requested
+file_object &lt;- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Delete file object
+ file_object$delete()
+}
+
+</code></pre></div><p></p></div>
 </div>
 
 
@@ -511,6 +727,24 @@ parameter is set to <code>curl</code>.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-12">Examples<a class="anchor" aria-label="anchor" href="#examples-12"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# x is API response when file is requested
+file_object &lt;- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Download file object
+ file_object$download()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-File-submit_export"></a><div class="section">
 <h3 id="method-submit-export-">Method <code>submit_export()</code><a class="anchor" aria-label="anchor" href="#method-submit-export-"></a></h3>
@@ -601,6 +835,31 @@ like 'fields', etc.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<p><code><a href="Export.html">Export</a></code> object.</p>
+</div>
+<div class="section">
+<h4 id="examples-13">Examples<a class="anchor" aria-label="anchor" href="#examples-13"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # x is API response when file is requested
+ file_object &lt;- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Export file object to a volume
+ file_object$submit_export(
+               destination_volume = volume,
+               destination_location = location
+             )
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-File-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
@@ -622,12 +881,271 @@ like 'fields', etc.</p></dd>
 
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `File$print`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when file is requested</span></span></span>
+<span class="r-in"><span><span class="va">file_object</span> <span class="op">&lt;-</span> <span class="va">File</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Print file object</span></span></span>
+<span class="r-in"><span> <span class="va">file_object</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `File$detailed_print`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when file is requested</span></span></span>
+<span class="r-in"><span><span class="va">file_object</span> <span class="op">&lt;-</span> <span class="va">File</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Detailed print of file object</span></span></span>
+<span class="r-in"><span> <span class="va">file_object</span><span class="op">$</span><span class="fu">detailed_print</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `File$reload`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when file is requested</span></span></span>
+<span class="r-in"><span><span class="va">file_object</span> <span class="op">&lt;-</span> <span class="va">File</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Reload file object</span></span></span>
+<span class="r-in"><span> <span class="va">file_object</span><span class="op">$</span><span class="fu">reload</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `File$update`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when file is requested</span></span></span>
+<span class="r-in"><span><span class="va">file_object</span> <span class="op">&lt;-</span> <span class="va">File</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Update file object</span></span></span>
+<span class="r-in"><span> <span class="va">file_object</span><span class="op">$</span><span class="fu">update</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"new_name"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `File$add_tag`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when file is requested</span></span></span>
+<span class="r-in"><span><span class="va">file_object</span> <span class="op">&lt;-</span> <span class="va">File</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Add new tag to file object</span></span></span>
+<span class="r-in"><span> <span class="va">file_object</span><span class="op">$</span><span class="fu">add_tag</span><span class="op">(</span>tags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"new_tag"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `File$copy_to`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when file is requested</span></span></span>
+<span class="r-in"><span><span class="va">file_object</span> <span class="op">&lt;-</span> <span class="va">File</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Copy file object to project</span></span></span>
+<span class="r-in"><span> <span class="va">file_object</span><span class="op">$</span><span class="fu">copy_to</span><span class="op">(</span>project <span class="op">=</span> <span class="va">project</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `File$get_download_url`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when file is requested</span></span></span>
+<span class="r-in"><span><span class="va">file_object</span> <span class="op">&lt;-</span> <span class="va">File</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Get download url for file object</span></span></span>
+<span class="r-in"><span> <span class="va">file_object</span><span class="op">$</span><span class="fu">get_download_url</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `File$get_metadata`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when file is requested</span></span></span>
+<span class="r-in"><span><span class="va">file_object</span> <span class="op">&lt;-</span> <span class="va">File</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Get metadata for file object</span></span></span>
+<span class="r-in"><span> <span class="va">file_object</span><span class="op">$</span><span class="fu">get_metadata</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `File$set_metadata`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when file is requested</span></span></span>
+<span class="r-in"><span><span class="va">file_object</span> <span class="op">&lt;-</span> <span class="va">File</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Set metadata for file object</span></span></span>
+<span class="r-in"><span> <span class="va">file_object</span><span class="op">$</span><span class="fu">set_metadata</span><span class="op">(</span>metadata_fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"field_1"</span> <span class="op">=</span> <span class="st">"value_1"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `File$move_to_folder`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when file is requested</span></span></span>
+<span class="r-in"><span><span class="va">file_object</span> <span class="op">&lt;-</span> <span class="va">File</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Move file object to a project</span></span></span>
+<span class="r-in"><span> <span class="va">file_object</span><span class="op">$</span><span class="fu">move_to_folder</span><span class="op">(</span>parent <span class="op">=</span> <span class="st">"parent-folder-id"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `File$list_contents`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when file is requested</span></span></span>
+<span class="r-in"><span><span class="va">file_object</span> <span class="op">&lt;-</span> <span class="va">File</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># List folder's content</span></span></span>
+<span class="r-in"><span> <span class="va">file_object</span><span class="op">$</span><span class="fu">list_contents</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `File$delete`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when file is requested</span></span></span>
+<span class="r-in"><span><span class="va">file_object</span> <span class="op">&lt;-</span> <span class="va">File</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Delete file object</span></span></span>
+<span class="r-in"><span> <span class="va">file_object</span><span class="op">$</span><span class="fu">delete</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `File$download`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># x is API response when file is requested</span></span></span>
+<span class="r-in"><span><span class="va">file_object</span> <span class="op">&lt;-</span> <span class="va">File</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Download file object</span></span></span>
+<span class="r-in"><span> <span class="va">file_object</span><span class="op">$</span><span class="fu">download</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `File$submit_export`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="co"># x is API response when file is requested</span></span></span>
+<span class="r-in"><span> <span class="va">file_object</span> <span class="op">&lt;-</span> <span class="va">File</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    res <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>                    href <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">href</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Export file object to a volume</span></span></span>
+<span class="r-in"><span> <span class="va">file_object</span><span class="op">$</span><span class="fu">submit_export</span><span class="op">(</span></span></span>
+<span class="r-in"><span>               destination_volume <span class="op">=</span> <span class="va">volume</span>,</span></span>
+<span class="r-in"><span>               destination_location <span class="op">=</span> <span class="va">location</span></span></span>
+<span class="r-in"><span>             <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics.</p>
+  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">

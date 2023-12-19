@@ -164,6 +164,20 @@ like 'fields', etc.</p></dd>
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p><code><a href="Collection.html">Collection</a></code> of <code><a href="Import.html">Import</a></code> objects.</p>
 </div>
+<div class="section">
+<h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ imports_object &lt;- Imports$new(
+                    auth = auth
+                   )
+
+ # List import job
+ imports_object$query()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Imports-get"></a><div class="section">
 <h3 id="method-get-">Method <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code><a class="anchor" aria-label="anchor" href="#method-get-"></a></h3>
@@ -189,6 +203,20 @@ like 'fields', etc.</p></dd>
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p><code><a href="Import.html">Import</a></code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ imports_object &lt;- Imports$new(
+                    auth = auth,
+                   )
+
+ # List import job
+ imports_object$get(id = id)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Imports-submit_import"></a><div class="section">
 <h3 id="method-submit-import-">Method <code>submit_import()</code><a class="anchor" aria-label="anchor" href="#method-submit-import-"></a></h3>
@@ -292,6 +320,24 @@ like 'fields', etc.</p></dd>
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p><code><a href="Import.html">Import</a></code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ imports_object &lt;- Imports$new(
+                    auth = auth
+                   )
+
+ # Submit new import into a project
+ imports_object$submit_import(
+  source_location = volume_file_object,
+  destination_project = test_project_object,
+  autorename = TRUE
+ )
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Imports-delete"></a><div class="section">
 <h3 id="method-delete-">Method <code>delete()</code><a class="anchor" aria-label="anchor" href="#method-delete-"></a></h3>
@@ -321,12 +367,62 @@ like 'fields', etc.</p></dd>
 
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Imports$query`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">imports_object</span> <span class="op">&lt;-</span> <span class="va">Imports</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># List import job</span></span></span>
+<span class="r-in"><span> <span class="va">imports_object</span><span class="op">$</span><span class="fu">query</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Imports$get`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">imports_object</span> <span class="op">&lt;-</span> <span class="va">Imports</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span>,</span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># List import job</span></span></span>
+<span class="r-in"><span> <span class="va">imports_object</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="va">id</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Imports$submit_import`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">imports_object</span> <span class="op">&lt;-</span> <span class="va">Imports</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Submit new import into a project</span></span></span>
+<span class="r-in"><span> <span class="va">imports_object</span><span class="op">$</span><span class="fu">submit_import</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  source_location <span class="op">=</span> <span class="va">volume_file_object</span>,</span></span>
+<span class="r-in"><span>  destination_project <span class="op">=</span> <span class="va">test_project_object</span>,</span></span>
+<span class="r-in"><span>  autorename <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics.</p>
+  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">

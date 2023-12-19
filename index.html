@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="R client and utilities for Seven Bridges platform API, from Cancer
     Genomics Cloud to other Seven Bridges supported platforms.">
-<title>Seven Bridges Platform API Client and Common Workflow Language Tool Builder in R • sevenbridges2</title>
+<title>Seven Bridges Platform API Client in R • sevenbridges2</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -19,7 +19,7 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
-<meta property="og:title" content="Seven Bridges Platform API Client and Common Workflow Language Tool Builder in R">
+<meta property="og:title" content="Seven Bridges Platform API Client in R">
 <meta property="og:description" content="R client and utilities for Seven Bridges platform API, from Cancer
     Genomics Cloud to other Seven Bridges supported platforms.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -92,11 +92,135 @@
 <p>The <a href="https://www.sevenbridges.com/" class="external-link">Seven Bridges Platform</a> is a cloud-based environment for conducting bioinformatics analysis. It is a central hub for teams to store, analyze, and jointly interpret their bioinformatic data. The Platform co-locates analysis pipelines alongside the largest genomic datasets to optimize processing, allocating storage, and compute resources on demand.</p>
 <p>The <a href="https://www.cancergenomicscloud.org/" class="external-link">Cancer Genomics Cloud (CGC)</a>, powered by <a href="https://www.sevenbridges.com/" class="external-link">Seven Bridges</a>, is also a cloud-based computation environment. It was built as one of three pilot systems funded by the <a href="https://www.cancer.gov" class="external-link">National Cancer Institute</a> to explore the paradigm of colocalizing massive genomics datasets, like The <a href="https://cancergenome.nih.gov" class="external-link">Cancer Genomics Atlas (TCGA)</a>, alongside secure and scalable computational resources to analyze them. The CGC makes more than a petabyte of multi-dimensional data available immediately to authorized researchers. You can add your data to analyze alongside TCGA using predefined analytical workflows or your own tools.</p>
 <p><a href="http://www.cavatica.org/" class="external-link">Cavatica</a>, powered by <a href="https://www.sevenbridges.com" class="external-link">Seven Bridges</a>, is a data analysis and sharing platform designed to accelerate discovery in a scalable, cloud-based compute environment where data, results, and workflows are shared among the world’s research community. Cavatica is built in collaboration with the Children Hospital of Philadelphia and it is focused on pediatric data.</p>
+<p>The <a href="https://platform.sb.biodatacatalyst.nhlbi.nih.gov/" class="external-link">BioData Catalyst</a>, powered by <a href="https://www.sevenbridges.com" class="external-link">Seven Bridges</a>, is a computational environment on the cloud. It hosts several genomic datasets, alongside tools for analyzing genomic information, and features for collaboration.</p>
+</div>
+<div class="section level2">
+<h2 id="table-of-contents-">Table of Contents <!-- omit in toc -->
+<a class="anchor" aria-label="anchor" href="#table-of-contents-"></a>
+</h2>
+<ul>
+<li>
+<a href="#installation">Installation</a>
+<ul>
+<li><a href="#development-version">Development Version</a></li>
+</ul>
+</li>
+<li>
+<a href="#features">Features</a>
+<ul>
+<li><a href="#flexible-authentication-methods">Flexible Authentication Methods</a></li>
+<li><a href="#complete-api-r-client">Complete API R Client</a></li>
+<li><a href="#cross-environment-support">Cross Environment Support</a></li>
+</ul>
+</li>
+<li><a href="#contribute">Contribute</a></li>
+<li><a href="#copyright">Copyright</a></li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>Easiest way is to install package from CRAN:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Install package from CRAN:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"sevenbridges2"</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="development-version">Development version<a class="anchor" aria-label="anchor" href="#development-version"></a>
+</h3>
+<p>To get a bug fix or to use a feature from the development version, you can install the development version of sevenbridges2 from GitHub.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"sbg/sevenbridges-r2@develop"</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
+</h2>
+<p>The <code>sevenbridges2</code> package includes the following features:</p>
+<div class="section level3">
+<h3 id="flexible-authentication-methods">Flexible Authentication Methods<a class="anchor" aria-label="anchor" href="#flexible-authentication-methods"></a>
+</h3>
+<p>Multiple authentication methods support.</p>
+<div class="section level4">
+<h4 id="direct-authentication">Direct authentication<a class="anchor" aria-label="anchor" href="#direct-authentication"></a>
+</h4>
+<p>To use direct authentication, users need to specify one of <code>platform</code> or <code>url</code>, with the corresponding <code>token</code>. Examples of direct authentication:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Direct authentication with setting platform parameter</span></span>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Auth.html">Auth</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  token <span class="op">=</span> <span class="st">"&lt;your_token&gt;"</span>,</span>
+<span>  platform <span class="op">=</span> <span class="st">"aws-us"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="authentication-via-system-environment-variables">Authentication via system environment variables<a class="anchor" aria-label="anchor" href="#authentication-via-system-environment-variables"></a>
+</h4>
+<p>To set the two environment variables in your system, you could use the function <code>sbg_set_env()</code>. For example:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Set environment variables</span></span>
+<span><span class="fu">sevenbridges2</span><span class="fu">:::</span><span class="fu">sbg_set_env</span><span class="op">(</span></span>
+<span>  url <span class="op">=</span> <span class="st">"https://cgc-api.sbgenomics.com/v2"</span>,</span>
+<span>  token <span class="op">=</span> <span class="st">"&lt;your_token&gt;"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Authenticate using environment variables</span></span>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Auth.html">Auth</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>from <span class="op">=</span> <span class="st">"env"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="authentication-via-a-user-configuration-file">Authentication via a user configuration file<a class="anchor" aria-label="anchor" href="#authentication-via-a-user-configuration-file"></a>
+</h4>
+<p>You collect and manage your credentials for multiple accounts across various Seven Bridges environments:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Authenticate using file configuration and specific profile</span></span>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Auth.html">Auth</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>from <span class="op">=</span> <span class="st">"file"</span>, profile_name <span class="op">=</span> <span class="st">"aws-us-&lt;username&gt;"</span><span class="op">)</span></span></code></pre></div>
+<p>Please check <code><a href="articles/Authentication_and_Billing.html">vignette("Authentication_and_Billing", package = "sevenbridges2")</a></code> for technical details about all available authentication methods.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="complete-api-r-client">Complete API R Client<a class="anchor" aria-label="anchor" href="#complete-api-r-client"></a>
+</h3>
+<p>A complete API R client with a user-friendly, object-oriented API with printing and support operations for API requests relating to users, billing, projects, files, apps, and tasks. Short examples are also included, as shown below:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Get a project by pattern-matching its name</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">projects</span><span class="op">$</span><span class="fu">query</span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Get a project by its id</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">project</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"username/demo"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># List files in project</span></span>
+<span><span class="va">p</span><span class="op">$</span><span class="fu">list_files</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create upload job and set destination project</span></span>
+<span><span class="va">upload_job</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="fu">upload</span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="st">"/path/to/your/file.txt"</span>,</span>
+<span>  project <span class="op">=</span> <span class="va">destination_project</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  init <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Please check <code><a href="articles/quickstart.html">vignette("quickstart", package = "sevenbridges2")</a></code> for technical details about all available API methods and features.</p>
+</div>
+<div class="section level3">
+<h3 id="cross-environment-support">Cross Environment Support<a class="anchor" aria-label="anchor" href="#cross-environment-support"></a>
+</h3>
+<p>Cross-platform support for Seven Bridges environments, such as <a href="https://www.sevenbridges.com/" class="external-link">Seven Bridges Platform</a> (US, EU, China), <a href="https://www.cancergenomicscloud.org/" class="external-link">Cancer Genomics Cloud</a>, <a href="http://www.cavatica.org/" class="external-link">Cavatica</a>, and <a href="https://platform.sb.biodatacatalyst.nhlbi.nih.gov/" class="external-link">BioData Catalyst Powered by Seven Bridges</a> on either Amazon Web Services or Google Cloud Platform.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h2>
 <p><a href="https://r-stack.pages.sbgenomics.com/sevenbridges2/" class="external-link">Docs website</a></p>
+</div>
+<div class="section level2">
+<h2 id="contribute">Contribute<a class="anchor" aria-label="anchor" href="#contribute"></a>
+</h2>
+<p>Please file bug reports/feature requests on the <a href="https://github.com/sbg/sevenbridges-r2/issues" class="external-link">issue page</a>, or create pull requests <a href="https://github.com/sbg/sevenbridges-r2/pulls" class="external-link">here</a>.</p>
+<p>Contributors should sign the <a href="https://secure.na1.echosign.com/public/esignWidget?wid=CBFCIBAA3AAABLblqZhAqt_9rHEqy2MggS0uWRmKHUN2HYi8DWNjkgg5N68iKAhRFTy7k2AOEpRHMMorxc_0*" class="external-link">Seven Bridges Contributor Agreement</a> before submitting a pull request.</p>
+</div>
+<div class="section level2">
+<h2 id="copyright">Copyright<a class="anchor" aria-label="anchor" href="#copyright"></a>
+</h2>
+<p>© 2023 Seven Bridges Genomics, Inc. All rights reserved.</p>
+<p>This project is licensed under the terms of the <a href="LICENSE">Apache License 2.0</a>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -129,7 +253,7 @@
 <li>Marko Trifunovic <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Vladimir Obucina <br><small class="roles"> Author </small>  </li>
 <li>Marija Jovanovic <br><small class="roles"> Author </small>  </li>
-<li>Seven Bridges Genomics <br><small class="roles"> Copyright holder, funder </small>  </li>
+<li>Seven Bridges Genomics Inc. <br><small class="roles"> Copyright holder, funder </small>  </li>
 </ul>
 </div>
 
@@ -146,7 +270,7 @@
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics.</p>
+<p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">

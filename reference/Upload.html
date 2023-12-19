@@ -195,12 +195,43 @@ the file you want to upload. However, it can be changed to new name.</p></dd>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Upload</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ upload_object &lt;- Upload$new(
+                    path = "path/to/my/file.txt",
+                    project = project_object,
+                    auth = auth
+                   )
+
+ # Print upload object information
+ upload_object$print(name = name)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Upload-init"></a><div class="section">
 <h3 id="method-init-">Method <code>init()</code><a class="anchor" aria-label="anchor" href="#method-init-"></a></h3>
 <p>Initialize new multipart file upload.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Upload</span><span class="op">$</span><span class="fu">init</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ upload_object &lt;- Upload$new(
+                    path = "path/to/my/file.txt",
+                    project = project_object,
+                    auth = auth
+                   )
+
+ # Initialize multipart file upload object
+ upload_object$init()
+}
+</code></pre></div><p></p></div>
 </div>
 
 
@@ -222,6 +253,21 @@ there are lot of parts.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ upload_object &lt;- Upload$new(
+                    path = "path/to/my/file.txt",
+                    project = project_object,
+                    auth = auth
+                   )
+
+ # Get upload job status information
+ upload_object$info()
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Upload-start"></a><div class="section">
 <h3 id="method-start-">Method <code><a href="https://rdrr.io/r/stats/start.html" class="external-link">start()</a></code><a class="anchor" aria-label="anchor" href="#method-start-"></a></h3>
@@ -234,6 +280,25 @@ there are lot of parts.</p></dd>
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p><code><a href="File.html">File</a></code> object.</p>
 </div>
+<div class="section">
+<h4 id="examples-3">Examples<a class="anchor" aria-label="anchor" href="#examples-3"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ upload_object &lt;- Upload$new(
+                    path = "path/to/my/file.txt",
+                    project = project_object,
+                    auth = auth
+                   )
+
+ # Initialize multipart file upload object
+ upload_object$init()
+
+ # Start upload process
+ upload_object$start()
+}
+
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-Upload-abort"></a><div class="section">
 <h3 id="method-abort-">Method <code>abort()</code><a class="anchor" aria-label="anchor" href="#method-abort-"></a></h3>
@@ -241,6 +306,21 @@ there are lot of parts.</p></dd>
 This call aborts an ongoing upload.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Upload</span><span class="op">$</span><span class="fu">abort</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="examples-4">Examples<a class="anchor" aria-label="anchor" href="#examples-4"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ upload_object &lt;- Upload$new(
+                    path = "path/to/my/file.txt",
+                    project = project_object,
+                    auth = auth
+                   )
+
+ # Abort upload process
+ upload_object$abort()
+}
+</code></pre></div><p></p></div>
 </div>
 
 
@@ -264,12 +344,96 @@ This call aborts an ongoing upload.</p><div class="section">
 
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Upload$print`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">upload_object</span> <span class="op">&lt;-</span> <span class="va">Upload</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    path <span class="op">=</span> <span class="st">"path/to/my/file.txt"</span>,</span></span>
+<span class="r-in"><span>                    project <span class="op">=</span> <span class="va">project_object</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Print upload object information</span></span></span>
+<span class="r-in"><span> <span class="va">upload_object</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span>name <span class="op">=</span> <span class="va">name</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Upload$init`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">upload_object</span> <span class="op">&lt;-</span> <span class="va">Upload</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    path <span class="op">=</span> <span class="st">"path/to/my/file.txt"</span>,</span></span>
+<span class="r-in"><span>                    project <span class="op">=</span> <span class="va">project_object</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Initialize multipart file upload object</span></span></span>
+<span class="r-in"><span> <span class="va">upload_object</span><span class="op">$</span><span class="fu">init</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Upload$info`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">upload_object</span> <span class="op">&lt;-</span> <span class="va">Upload</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    path <span class="op">=</span> <span class="st">"path/to/my/file.txt"</span>,</span></span>
+<span class="r-in"><span>                    project <span class="op">=</span> <span class="va">project_object</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Get upload job status information</span></span></span>
+<span class="r-in"><span> <span class="va">upload_object</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Upload$start`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">upload_object</span> <span class="op">&lt;-</span> <span class="va">Upload</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    path <span class="op">=</span> <span class="st">"path/to/my/file.txt"</span>,</span></span>
+<span class="r-in"><span>                    project <span class="op">=</span> <span class="va">project_object</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Initialize multipart file upload object</span></span></span>
+<span class="r-in"><span> <span class="va">upload_object</span><span class="op">$</span><span class="fu">init</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Start upload process</span></span></span>
+<span class="r-in"><span> <span class="va">upload_object</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Upload$abort`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">upload_object</span> <span class="op">&lt;-</span> <span class="va">Upload</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    path <span class="op">=</span> <span class="st">"path/to/my/file.txt"</span>,</span></span>
+<span class="r-in"><span>                    project <span class="op">=</span> <span class="va">project_object</span>,</span></span>
+<span class="r-in"><span>                    auth <span class="op">=</span> <span class="va">auth</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Abort upload process</span></span></span>
+<span class="r-in"><span> <span class="va">upload_object</span><span class="op">$</span><span class="fu">abort</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics.</p>
+  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">
