@@ -116,7 +116,7 @@ Projects <- R6::R6Class(
     #' @description Method that allows you to delete project from a platform.
     #' It can only be successfully made if you have admin status for the
     #' project. \cr Projects are specified by their IDs, which you can obtain by
-    #'  using \code{\link{Projects$query()}} to list projects or by getting a
+    #'  using \code{Projects$query()} to list projects or by getting a
     #'  single project using \code{Projects$get()}.
     #' Please be careful when using this method and note that calling it will
     #' permanently delete the project from the platform.
