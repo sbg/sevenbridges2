@@ -6,6 +6,74 @@
 \description{
 R6 Class representing Files resource.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Files$query`
+## ------------------------------------------------
+
+\dontrun{
+ files_object <- Files$new(auth = auth)
+
+ # Query files in a project
+ files_object$query(project = project)
+}
+
+
+## ------------------------------------------------
+## Method `Files$get`
+## ------------------------------------------------
+
+\dontrun{
+ files_object <- Files$new(auth = auth)
+
+ # Get file using id
+ files_object$get(id = id)
+}
+
+
+## ------------------------------------------------
+## Method `Files$delete`
+## ------------------------------------------------
+
+\dontrun{
+ files_object <- Files$new(auth = auth)
+
+ # Delete a file
+ files_object$delete(file = file)
+}
+
+
+## ------------------------------------------------
+## Method `Files$copy`
+## ------------------------------------------------
+
+\dontrun{
+ files_object <- Files$new(auth = auth)
+
+ # Copy files to a project
+ files_object$copy(
+               file = file,
+               destination_project = project
+              )
+}
+
+
+## ------------------------------------------------
+## Method `Files$create_folder`
+## ------------------------------------------------
+
+\dontrun{
+ files_object <- Files$new(auth = auth)
+
+ # Create folder in a project
+ files_object$create_folder(
+                name = name,
+                project = project
+               )
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Files}
 }
@@ -126,6 +194,20 @@ as 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Collection}} of \code{\link{File}} objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ files_object <- Files$new(auth = auth)
+
+ # Query files in a project
+ files_object$query(project = project)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Files-get"></a>}}
@@ -152,6 +234,20 @@ as 'fields', etc.}
 \subsection{Returns}{
 \code{\link{File}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ files_object <- Files$new(auth = auth)
+
+ # Get file using id
+ files_object$get(id = id)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Files-delete"></a>}}
@@ -175,6 +271,20 @@ as 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ files_object <- Files$new(auth = auth)
+
+ # Delete a file
+ files_object$delete(file = file)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Files-copy"></a>}}
@@ -200,6 +310,23 @@ where you want to copy files into.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ files_object <- Files$new(auth = auth)
+
+ # Copy files to a project
+ files_object$copy(
+               file = file,
+               destination_project = project
+              )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Files-create_folder"></a>}}
@@ -228,6 +355,23 @@ object which must be of type \code{FOLDER}.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ files_object <- Files$new(auth = auth)
+
+ # Create folder in a project
+ files_object$create_folder(
+                name = name,
+                project = project
+               )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Files-clone"></a>}}

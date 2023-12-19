@@ -6,6 +6,337 @@
 \description{
 R6 Class representing a central resource for managing projects.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Project$print`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print project object
+ project_object$print()
+}
+
+
+## ------------------------------------------------
+## Method `Project$detailed_print`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print project object in detail
+ project_object$detailed_print()
+}
+
+
+## ------------------------------------------------
+## Method `Project$reload`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload project object
+ project_object$reload()
+}
+
+
+## ------------------------------------------------
+## Method `Project$update`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Change project object name
+ project_object$update(name = name)
+}
+
+
+## ------------------------------------------------
+## Method `Project$delete`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Delete project object
+ project_object$delete()
+}
+
+
+## ------------------------------------------------
+## Method `Project$list_members`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List members in a project
+ project_object$list_members()
+}
+
+
+## ------------------------------------------------
+## Method `Project$add_member`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Add member to a project
+ project_object$add_member(
+}
+
+
+## ------------------------------------------------
+## Method `Project$remove_member`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Remove member from a project
+ project_object$remove_member(user = user)
+}
+
+
+## ------------------------------------------------
+## Method `Project$get_member`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get member from a project
+ project_object$get_member(user = user)
+}
+
+
+## ------------------------------------------------
+## Method `Project$modify_member_permissions`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Modify member permissions in a project
+ project_object$modify_member_permissions(
+                  user = user,
+                  permission = list(read = TRUE, copy = FALSE)
+                  )
+}
+
+
+## ------------------------------------------------
+## Method `Project$list_files`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List files in a project
+ project_object$list_files()
+}
+
+
+## ------------------------------------------------
+## Method `Project$create_folder`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List files in a project
+ project_object$create_folder(name = "new_folder")
+}
+
+
+## ------------------------------------------------
+## Method `Project$get_root_folder`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get root folder in a project
+ project_object$get_root_folder()
+}
+
+
+## ------------------------------------------------
+## Method `Project$list_apps`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List apps in a project
+ project_object$list_apps(query_terms = query_term)
+}
+
+
+## ------------------------------------------------
+## Method `Project$create_app`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Create app in a project
+ project_object$create_app(raw = raw)
+}
+
+
+## ------------------------------------------------
+## Method `Project$list_tasks`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List tasks in a project
+ project_object$list_tasks()
+}
+
+
+## ------------------------------------------------
+## Method `Project$list_imports`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List import jobs in a project
+ project_object$list_imports()
+}
+
+
+## ------------------------------------------------
+## Method `Project$create_task`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Create a task in a project
+ project_object$create_task(
+                  app = app
+                  )
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{Project}
 }
@@ -125,6 +456,26 @@ Basic print method for Project class.
 \if{html}{\out{<div class="r">}}\preformatted{Project$print()}\if{html}{\out{</div>}}
 }
 
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print project object
+ project_object$print()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-detailed_print"></a>}}
@@ -138,6 +489,26 @@ Detailed print method for Project class.
 \subsection{Details}{
 This method allows users to print all the fields from the
 Project object more descriptively.
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print project object in detail
+ project_object$detailed_print()
+}
+
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -158,6 +529,26 @@ like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload project object
+ project_object$reload()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-update"></a>}}
@@ -200,6 +591,26 @@ like 'limit', 'offset', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Change project object name
+ project_object$update(name = name)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-delete"></a>}}
@@ -212,6 +623,26 @@ Please be careful when using this method and note that calling it will
 permanently delete the project from the platform.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Project$delete()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Delete project object
+ project_object$delete()
+}
+
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -248,6 +679,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Collection}} of \code{\link{Member}} objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List members in a project
+ project_object$list_members()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-add_member"></a>}}
@@ -303,6 +754,26 @@ Example:
 \subsection{Returns}{
 \code{\link{Member}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Add member to a project
+ project_object$add_member(
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-remove_member"></a>}}
@@ -323,6 +794,26 @@ user's username.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Remove member from a project
+ project_object$remove_member(user = user)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-get_member"></a>}}
@@ -349,6 +840,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Member}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get member from a project
+ project_object$get_member(user = user)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-modify_member_permissions"></a>}}
@@ -392,6 +903,29 @@ Example:
 \subsection{Returns}{
 \code{\link{Permission}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Modify member permissions in a project
+ project_object$modify_member_permissions(
+                  user = user,
+                  permission = list(read = TRUE, copy = FALSE)
+                  )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-list_files"></a>}}
@@ -426,6 +960,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Collection}} of \code{\link{File}} objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List files in a project
+ project_object$list_files()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-create_folder"></a>}}
@@ -450,6 +1004,26 @@ within this root folder by using this function.
 \subsection{Returns}{
 \code{\link{File}} object of type 'FOLDER'.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List files in a project
+ project_object$create_folder(name = "new_folder")
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-get_root_folder"></a>}}
@@ -458,6 +1032,29 @@ within this root folder by using this function.
 Get project's root folder object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Project$get_root_folder()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+\code{\link{File}} object of type 'FOLDER'.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get root folder in a project
+ project_object$get_root_folder()
+}
+
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -501,6 +1098,26 @@ like other query parameters or 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Collection}} of \code{\link{App}} objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List apps in a project
+ project_object$list_apps(query_terms = query_term)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-create_app"></a>}}
@@ -538,6 +1155,26 @@ characters or spaces).}
 \subsection{Returns}{
 \code{\link{App}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Create app in a project
+ project_object$create_app(raw = raw)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-list_tasks"></a>}}
@@ -635,6 +1272,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Collection}} of \code{\link{Task}} objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List tasks in a project
+ project_object$list_tasks()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-list_imports"></a>}}
@@ -687,6 +1344,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Collection}} of \code{\link{Import}} objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List import jobs in a project
+ project_object$list_imports()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-create_task"></a>}}
@@ -867,6 +1544,28 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Task}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when project is requested
+ project_object <- Project$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Create a task in a project
+ project_object$create_task(
+                  app = app
+                  )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Project-clone"></a>}}

@@ -86,6 +86,21 @@ Import <- R6::R6Class(
     #' @importFrom purrr discard
     #' @importFrom glue glue_col
     #' @importFrom cli cli_h1 cli_li cli_end
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when import is requested
+    #'  import_object <- Import$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Print import object
+    #'  import_object$print()
+    #' }
+    #'
     print = function() {
       x <- as.list(self)
 
@@ -118,6 +133,20 @@ Import <- R6::R6Class(
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when import is requested
+    #'  import_object <- Import$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Reload import object
+    #'  import_object$reload()
+    #' }
     #'
     #' @return \code{\link{Import}} object.
     reload = function(...) {

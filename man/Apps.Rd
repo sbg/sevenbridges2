@@ -6,6 +6,68 @@
 \description{
 R6 Class representing apps resource endpoint.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Apps$query`
+## ------------------------------------------------
+
+\dontrun{
+ apps_object <- Apps$new(
+   auth = auth
+ )
+
+ # List public apps
+ apps_object$query(visibility = "public")
+}
+
+
+## ------------------------------------------------
+## Method `Apps$get`
+## ------------------------------------------------
+
+\dontrun{
+ apps_object <- Apps$new(
+   auth = auth
+ )
+
+ # Get app object
+ apps_object$$get(id = "<some_id>")
+}
+
+
+## ------------------------------------------------
+## Method `Apps$copy`
+## ------------------------------------------------
+
+\dontrun{
+ apps_object <- Apps$new(
+   auth = auth
+ )
+ # Copy app object to a project
+ apps_object$copy(app = app, project = project)
+}
+
+
+## ------------------------------------------------
+## Method `Apps$create`
+## ------------------------------------------------
+
+\dontrun{
+ apps_object <- Apps$new(
+   auth = auth
+ )
+
+ # Create new app object
+ apps_object$create(
+  raw = raw,
+  project = project,
+  name = name,
+  raw_format = YAML
+ )
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Apps}
 }
@@ -108,6 +170,22 @@ time-consuming.}
 \subsection{Returns}{
 \code{\link{Collection}} containing \code{\link{App}} objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ apps_object <- Apps$new(
+   auth = auth
+ )
+
+ # List public apps
+ apps_object$query(visibility = "public")
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Apps-get"></a>}}
@@ -141,6 +219,22 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{App}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ apps_object <- Apps$new(
+   auth = auth
+ )
+
+ # Get app object
+ apps_object$$get(id = "<some_id>")
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Apps-copy"></a>}}
@@ -195,6 +289,21 @@ like 'fields', etc.}
 \subsection{Returns}{
 Copied \code{\link{App}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ apps_object <- Apps$new(
+   auth = auth
+ )
+ # Copy app object to a project
+ apps_object$copy(app = app, project = project)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Apps-create"></a>}}
@@ -239,6 +348,27 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{App}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ apps_object <- Apps$new(
+   auth = auth
+ )
+
+ # Create new app object
+ apps_object$create(
+  raw = raw,
+  project = project,
+  name = name,
+  raw_format = YAML
+ )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Apps-clone"></a>}}

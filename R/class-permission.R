@@ -61,6 +61,24 @@ Permission <- R6::R6Class(
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_end
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when permission is requested
+    #'  permission_object <- Permission$new(
+    #'                     write = x$write,
+    #'                     read = x$read,
+    #'                     copy = x$copy,
+    #'                     execute = x$execute,
+    #'                     admin = x$admin,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'  # Print permission object
+    #'  permission_object$print()
+    #' }
+    #'
     print = function() {
       x <- as.list(self)
       x <- purrr::discard(x, .p = is.list)
@@ -81,6 +99,25 @@ Permission <- R6::R6Class(
 
     # Reload Permission object ------------------------------------------------
     #' @description Reload Permission object information.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when permission is requested
+    #'  permission_object <- Permission$new(
+    #'                     write = x$write,
+    #'                     read = x$read,
+    #'                     copy = x$copy,
+    #'                     execute = x$execute,
+    #'                     admin = x$admin,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Reload permission object
+    #'  permission_object$reload()
+    #' }
+    #'
     reload = function() {
       rlang::inform("Reloading Permission objects is not possible.")
     } # nocov end

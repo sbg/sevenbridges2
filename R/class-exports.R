@@ -58,6 +58,16 @@ Exports <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_character assert_subset
     #'
+    #' @examples
+    #' \dontrun{
+    #'  exports_object <- Exports$new(
+    #'    auth = auth
+    #'  )
+    #'
+    #'  # List all your running or failed export jobs on the volume
+    #'  exports_object$query(volume = volume, state = c("RUNNING", "FAILED"))
+    #' }
+    #'
     #' @return \code{\link{Collection}} of \code{\link{Export}} objects.
     query = function(volume = NULL, state = NULL,
                      limit = getOption("sevenbridges2")$limit,
@@ -96,6 +106,16 @@ Exports <- R6::R6Class(
     #' @param id The export job identifier (id).
     #' @param ... Other arguments that can be passed to core `api()` function
     #' like 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  exports_object <- Exports$new(
+    #'    auth = auth
+    #'  )
+    #'
+    #'  # Get export job by ID
+    #'  exports_object$get(id = id)
+    #' }
     #'
     #' @return \code{\link{Export}} object.
     get = function(id, ...) {
@@ -180,6 +200,20 @@ Exports <- R6::R6Class(
     #' @importFrom checkmate test_r6 assert_string assert_logical assert_list
     #' @importFrom glue glue glue_col
     #' @importFrom rlang abort
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  exports_object <- Exports$new(
+    #'    auth = auth
+    #'  )
+    #'
+    #'  # Submit export job
+    #'  exp_job1 <- exports_object$submit_export(
+    #                           source_file = test_file,
+    #                           destination_volume = vol1,
+    #                           destination_location = "new_volume_file.txt"
+    #                 )
+    #' }
     #'
     #' @return \code{\link{Export}} object.
     submit_export = function(source_file, destination_volume,

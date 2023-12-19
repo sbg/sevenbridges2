@@ -6,6 +6,263 @@
 \description{
 R6 Class representing a resource for managing files and folders.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `File$print`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print file object
+ file_object$print()
+}
+
+
+## ------------------------------------------------
+## Method `File$detailed_print`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Detailed print of file object
+ file_object$detailed_print()
+}
+
+
+## ------------------------------------------------
+## Method `File$reload`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload file object
+ file_object$reload()
+}
+
+
+## ------------------------------------------------
+## Method `File$update`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Update file object
+ file_object$update(name = "new_name")
+}
+
+
+## ------------------------------------------------
+## Method `File$add_tag`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Add new tag to file object
+ file_object$add_tag(tags = c("new_tag"))
+}
+
+
+## ------------------------------------------------
+## Method `File$copy_to`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Copy file object to project
+ file_object$copy_to(project = project)
+}
+
+
+## ------------------------------------------------
+## Method `File$get_download_url`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get download url for file object
+ file_object$get_download_url()
+}
+
+
+## ------------------------------------------------
+## Method `File$get_metadata`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get metadata for file object
+ file_object$get_metadata()
+}
+
+
+## ------------------------------------------------
+## Method `File$set_metadata`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Set metadata for file object
+ file_object$set_metadata(metadata_fields = list("field_1" = "value_1"))
+}
+
+
+## ------------------------------------------------
+## Method `File$move_to_folder`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Move file object to a project
+ file_object$move_to_folder(parent = "parent-folder-id")
+}
+
+
+## ------------------------------------------------
+## Method `File$list_contents`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List folder's content
+ file_object$list_contents()
+}
+
+
+## ------------------------------------------------
+## Method `File$delete`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Delete file object
+ file_object$delete()
+}
+
+
+## ------------------------------------------------
+## Method `File$download`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Download file object
+ file_object$download()
+}
+
+
+## ------------------------------------------------
+## Method `File$submit_export`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when file is requested
+ file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Export file object to a volume
+ file_object$submit_export(
+               destination_volume = volume,
+               destination_location = location
+             )
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{File}
 }
@@ -93,6 +350,26 @@ Print method for File class.
 \if{html}{\out{<div class="r">}}\preformatted{File$print()}\if{html}{\out{</div>}}
 }
 
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print file object
+ file_object$print()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-detailed_print"></a>}}
@@ -121,6 +398,26 @@ on the Platform.
 }
 }
 
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Detailed print of file object
+ file_object$detailed_print()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-reload"></a>}}
@@ -142,6 +439,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{File}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload file object
+ file_object$reload()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-update"></a>}}
@@ -174,6 +491,26 @@ like 'limit', 'offset', 'fields', etc.}
 \subsection{Returns}{
 Updated \code{\link{File}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Update file object
+ file_object$update(name = "new_name")
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-add_tag"></a>}}
@@ -202,6 +539,26 @@ Default: \code{FALSE}.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Add new tag to file object
+ file_object$add_tag(tags = c("new_tag"))
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-copy_to"></a>}}
@@ -237,6 +594,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 Copied \code{\link{File}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Copy file object to project
+ file_object$copy_to(project = project)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-get_download_url"></a>}}
@@ -256,6 +633,26 @@ like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get download url for file object
+ file_object$get_download_url()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-get_metadata"></a>}}
@@ -275,6 +672,26 @@ like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get metadata for file object
+ file_object$get_metadata()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-set_metadata"></a>}}
@@ -302,6 +719,26 @@ like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Set metadata for file object
+ file_object$set_metadata(metadata_fields = list("field_1" = "value_1"))
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-move_to_folder"></a>}}
@@ -327,6 +764,26 @@ If you want to use the same name, omit this key.}
 \subsection{Returns}{
 Moved \code{\link{File}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Move file object to a project
+ file_object$move_to_folder(parent = "parent-folder-id")
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-list_contents"></a>}}
@@ -361,6 +818,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Collection}} of \code{\link{File}} objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List folder's content
+ file_object$list_contents()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-delete"></a>}}
@@ -369,6 +846,26 @@ like 'fields', etc.}
 Delete method for File objects.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{File$delete()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Delete file object
+ file_object$delete()
+}
+
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -407,6 +904,26 @@ parameter is set to \code{curl}.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when file is requested
+file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Download file object
+ file_object$download()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-submit_export"></a>}}
@@ -493,6 +1010,32 @@ like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+\code{\link{Export}} object.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when file is requested
+ file_object <- File$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Export file object to a volume
+ file_object$submit_export(
+               destination_volume = volume,
+               destination_location = location
+             )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-File-clone"></a>}}

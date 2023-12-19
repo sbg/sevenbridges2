@@ -79,6 +79,21 @@ Export <- R6::R6Class(
     #' @importFrom purrr discard
     #' @importFrom glue glue_col
     #' @importFrom cli cli_h1 cli_li cli_end
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when export is requested
+    #' export_object <- Export$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Print export object
+    #'  export_object$print()
+    #' }
+    #'
     print = function() {
       x <- as.list(self)
 
@@ -113,6 +128,20 @@ Export <- R6::R6Class(
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when export is requested
+    #' export_object <- Export$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Reload export object
+    #'  export_object$reload()
+    #' }
     #'
     #' @return \code{\link{Export}} object.
     reload = function(...) {

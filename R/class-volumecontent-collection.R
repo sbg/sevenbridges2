@@ -43,6 +43,22 @@ VolumeContentCollection <- R6::R6Class(
     #' @importFrom cli cli_text cli_h2
     #' @importFrom checkmate test_atomic
     #' @importFrom glue glue_col
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume content collection is requested
+    #' vol_con_col_object <- VolumeContentCollection$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     links = x$links,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Print volume content collection object
+    #'  vol_con_col_object$print()
+    #' }
+    #'
     print = function(n = 10) {
       x <- as.list(self)
 
@@ -99,6 +115,22 @@ VolumeContentCollection <- R6::R6Class(
     #'  core `api()` function like 'advance_access', 'fields' etc.
     #'
     #' @importFrom rlang abort
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume content collection is requested
+    #' vol_con_col_object <- VolumeContentCollection$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     links = x$links,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Get next page of results
+    #'  vol_con_col_object$next_page()
+    #' }
+    #'
     next_page = function(...) {
       checkmate::assert_list(self$links, null.ok = TRUE)
       if (length(self$links) == 0) {
@@ -125,6 +157,22 @@ VolumeContentCollection <- R6::R6Class(
     #' @description Return previous page of results.
     #'
     #' @importFrom rlang abort
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume content collection is requested
+    #' vol_con_col_object <- VolumeContentCollection$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     links = x$links,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Get previous page of results
+    #'  vol_con_col_object$prev_page()
+    #' }
+    #'
     prev_page = function() {
       rlang::abort("Cannot paginate backwards.")
     },
@@ -136,6 +184,22 @@ VolumeContentCollection <- R6::R6Class(
     #'  core `api()` function like 'advance_access', 'fields' etc.
     #'
     #' @importFrom rlang abort
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume content collection is requested
+    #' vol_con_col_object <- VolumeContentCollection$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     links = x$links,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Get all results
+    #'  vol_con_col_object$all()
+    #' }
+    #'
     all = function(...) {
       if (is.null(self$href)) {
         rlang::abort("Resource URL is empty or you've already fetched all results.") # nolint

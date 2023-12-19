@@ -140,6 +140,23 @@ Auth <- R6::R6Class(
     #'
     #' @importFrom rlang inform abort
     #'
+    #' @examples
+    #' \dontrun{
+    #'  # Multiple ways to create Auth object
+    #'
+    #'  # Using authentication token
+    #'  a <- Auth$new(
+    #'   token = "<your_token>",
+    #'   platform = "aws-us"
+    #'  )
+    #'
+    #'  # Authenticate using environment variables
+    #'  a <- Auth$new(from = "env")
+    #'
+    #'  # Authenticate using file configuration
+    #'  a <- Auth$new(from = "file")
+    #'
+    #' }
     #' @return `Auth` class object.
     initialize = function(from = c("direct", "env", "file"),
                           platform = NA,
@@ -334,6 +351,18 @@ Auth <- R6::R6Class(
     #' @description Returns the authentication token read from
     #'  system environment variable.
     #'
+    #' @examples
+    #' \dontrun{
+    #'  # Authenticate using authentication token
+    #'  a <- Auth$new(
+    #'   token = "<your_token>",
+    #'   platform = "aws-us"
+    #'  )
+    #'
+    #'  # Get that same token
+    #'  a$get_token()
+    #' }
+    #'
     #' @return An API authentication token in form of a string.
     get_token = function() {
       if (self$from == "env" || self$from == "file") {
@@ -367,6 +396,19 @@ Auth <- R6::R6Class(
     # nolint end
     #' @param ... Other arguments passed to core `api()` function, like `path`,
     #'  `query` parameters or full `url` to some resource.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # Authenticate using authentication token
+    #'  a <- Auth$new(
+    #'   token = "<your_token>",
+    #'   platform = "aws-us"
+    #'  )
+    #'
+    #'  # Create API request using request parameters directly
+    #'  a$api(params)
+    #' }
+    #'
     api = function(...,
                    limit = getOption("sevenbridges2")$"limit",
                    offset = getOption("sevenbridges2")$"offset",
@@ -389,6 +431,18 @@ Auth <- R6::R6Class(
     #' @param username The username of a user for whom you want to get basic
     #'  account information. If not provided, information about the currently
     #'  authenticated user will be returned.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # Authenticate using authentication token
+    #'  a <- Auth$new(
+    #'   token = "<your_token>",
+    #'   platform = "aws-us"
+    #'  )
+    #'
+    #'  # Get information about the currently authenticated user
+    #'  a$user()
+    #' }
     #' @return `User` class object.
     user = function(username = NULL) {
       if (is.null(username)) {
@@ -419,6 +473,18 @@ Auth <- R6::R6Class(
     #'  This call returns information about your current rate limit. This is the
     #'  number of API calls you can make in one hour. This call also returns
     #'  information about your current instance limit.
+    #' @examples
+    #' \dontrun{
+    #'  # Authenticate using authentication token
+    #'  a <- Auth$new(
+    #'   token = "<your_token>",
+    #'   platform = "aws-us"
+    #'  )
+    #'
+    #'  # Get current rate limit
+    #'  a$rate_limit()
+    #' }
+    #'
     rate_limit = function() {
       res <- sevenbridges2::api(
         path = "rate_limit",
@@ -464,6 +530,23 @@ Auth <- R6::R6Class(
     #'
     #' @importFrom checkmate test_r6 test_class assert_logical
     #' @importFrom rlang abort
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # Authenticate using authentication token
+    #'  a <- Auth$new(
+    #'   token = "<your_token>",
+    #'   platform = "aws-us"
+    #'  )
+    #'
+    #'  # Create upload job and set destination project
+    #'  upload_job <- a$upload(
+    #'    path = "/path/to/your/file.txt",
+    #'    project = destination_project,
+    #'    overwrite = TRUE,
+    #'    init = TRUE
+    #'  )
+    #' }
     upload = function(path,
                       project = NULL,
                       parent = NULL,
@@ -541,6 +624,18 @@ Auth <- R6::R6Class(
     #'
     #' @importFrom cli cli_h1 cli_li cli_end
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # Authenticate using authentication token
+    #'  a <- Auth$new(
+    #'   token = "<your_token>",
+    #'   platform = "aws-us"
+    #'  )
+    #'
+    #'  # List ongoing uploads
+    #' . a$list_ongoing_uploads()
+    #' }
     list_ongoing_uploads = function() {
       # Run API call based on id parameter
       res <- sevenbridges2::api(
@@ -582,6 +677,18 @@ Auth <- R6::R6Class(
     #' @importFrom rlang abort inform
     #' @importFrom checkmate assert_character
     #' @importFrom glue glue_col
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # Authenticate using authentication token
+    #'  a <- Auth$new(
+    #'   token = "<your_token>",
+    #'   platform = "aws-us"
+    #'  )
+    #'
+    #'  # Abort upload
+    #'  a$abort_upload(upload_id = "<id_of_the_upload_process>")
+    #' }
     upload_abort = function(upload_id) {
       upload_id <- check_and_transform_id(upload_id, "Upload")
 
@@ -612,6 +719,21 @@ Auth <- R6::R6Class(
     #'
     #' @importFrom rlang inform
     #' @importFrom checkmate assert_string
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # Authenticate using authentication token
+    #'  a <- Auth$new(
+    #'   token = "<your_token>",
+    #'   platform = "aws-us"
+    #'  )
+    #'
+    #'  # Send feedback
+    #'  a$send_feedback(
+    #'   "This is a test for sending feedback via API.",
+    #'   type = "thought"
+    #   )
+    #' }
     send_feedback = function(text,
                              type = c("idea", "thought", "problem"),
                              referrer = NULL) {
@@ -637,9 +759,7 @@ Auth <- R6::R6Class(
         base_url = self$url
       )
 
-      rlang::inform(
-        "Thank you for your feedback!"
-      )
+      rlang::inform("Thank you for your feedback!")
     } # nocov end
   )
 )

@@ -6,6 +6,36 @@
 \description{
 R6 Class representing billing groups resource endpoints.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Billing_groups$query`
+## ------------------------------------------------
+
+\dontrun{
+ billing_groups_object <- Billing_groups$new(
+   auth = auth
+ )
+
+ # List all your billing groups
+ billing_groups_object$query()
+}
+
+
+## ------------------------------------------------
+## Method `Billing_groups$get`
+## ------------------------------------------------
+
+\dontrun{
+ billing_groups_object <- Billing_groups$new(
+   auth = auth
+ )
+
+ # Get single billing group
+ billing_groups_object$get(id = id)
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Billing_groups}
 }
@@ -83,6 +113,22 @@ like query parameters, 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Collection}} of \code{\link{Billing}} groups.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ billing_groups_object <- Billing_groups$new(
+   auth = auth
+ )
+
+ # List all your billing groups
+ billing_groups_object$query()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Billing_groups-get"></a>}}
@@ -110,6 +156,22 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Billing}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ billing_groups_object <- Billing_groups$new(
+   auth = auth
+ )
+
+ # Get single billing group
+ billing_groups_object$get(id = id)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Billing_groups-clone"></a>}}

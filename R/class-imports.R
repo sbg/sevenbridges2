@@ -64,6 +64,16 @@ Imports <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_character assert_subset
     #'
+    #' @examples
+    #' \dontrun{
+    #'  imports_object <- Imports$new(
+    #'                     auth = auth
+    #'                    )
+    #'
+    #'  # List import job
+    #'  imports_object$query()
+    #' }
+    #'
     #' @return \code{\link{Collection}} of \code{\link{Import}} objects.
     query = function(volume = NULL, project = NULL, state = NULL,
                      limit = getOption("sevenbridges2")$limit,
@@ -106,6 +116,16 @@ Imports <- R6::R6Class(
     #' @param id The import job identifier (id).
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  imports_object <- Imports$new(
+    #'                     auth = auth,
+    #'                    )
+    #'
+    #'  # List import job
+    #'  imports_object$get(id = id)
+    #' }
     #'
     #' @return \code{\link{Import}} object.
     get = function(id, ...) {
@@ -180,6 +200,20 @@ Imports <- R6::R6Class(
     #' @importFrom checkmate test_r6 assert_string assert_logical
     #' @importFrom glue glue
     #' @importFrom rlang abort
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  imports_object <- Imports$new(
+    #'                     auth = auth
+    #'                    )
+    #'
+    #'  # Submit new import into a project
+    #'  imports_object$submit_import(
+    #'   source_location = volume_file_object,
+    #'   destination_project = test_project_object,
+    #'   autorename = TRUE
+    #'  )
+    #' }
     #'
     #' @return \code{\link{Import}} object.
     submit_import = function(source_volume = NULL, source_location,

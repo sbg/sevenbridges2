@@ -6,6 +6,169 @@
 \description{
 R6 Class representing volumes resource endpoints.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Volumes$query`
+## ------------------------------------------------
+
+\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ # Query volumes
+ volumes_object$query()
+}
+
+
+## ------------------------------------------------
+## Method `Volumes$get`
+## ------------------------------------------------
+
+\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ # Get volumes
+ volumes_object$get(id = id)
+}
+
+
+## ------------------------------------------------
+## Method `Volumes$delete`
+## ------------------------------------------------
+
+\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ # Get volumes
+ volumes_object$delete(volume = volume)
+}
+
+
+## ------------------------------------------------
+## Method `Volumes$create_s3_using_iam_user`
+## ------------------------------------------------
+
+\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ # Create new AWS Volume (IAM Usser)
+ aws_iam_user_volume <- volumes_object$create_s3_using_iam_user(
+                                      name = "my_new_aws_user_volume",
+                                      bucket = "<bucket-name>",
+                                      description = "AWS IAM User Vol",
+                                      access_key_id = "<access-key>",
+                                      secret_access_key = "<secret-access-key>" # nolint
+                                    )
+}
+
+
+## ------------------------------------------------
+## Method `Volumes$create_s3_using_iam_role`
+## ------------------------------------------------
+
+\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ # Create new AWS Volume (IAM Role)
+ aws_iam_role_volume <- volumes_object$create_s3_using_iam_role(
+                                      name = "my_new_aws_user_volume",
+                                      bucket = "<bucket-name>",
+                                      description = "AWS IAM Role Vol",
+                                      role_arn = "<role-arn-key>",
+                                      external_id = "<external-id>"
+                                    )
+}
+
+
+## ------------------------------------------------
+## Method `Volumes$create_google_using_iam_user`
+## ------------------------------------------------
+
+\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ #  Create Google cloud volume using IAM User authentication type
+ gc_iam_user_volume <- volumes_object$create_google_using_iam_user(
+                                      name = "my_new_gc_user_volume",
+                                      access_mode = "RW",
+                                      bucket = "<bucket-name>",
+                                      description = "GC IAM User volume",
+                                      client_email = "<client_email>",
+                                      private_key = "<private_key-string>" # nolint
+                                    )
+}
+
+
+## ------------------------------------------------
+## Method `Volumes$create_google_using_iam_role`
+## ------------------------------------------------
+
+\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ #  Create Google cloud volume using IAM User authentication type
+ gc_iam_role_volume <- volumes_object$create_google_using_iam_role(
+                                    name = "my_new_gc_role_volume",
+                                    access_mode = "RO",
+                                    bucket = "<bucket-name>",
+                                    description = "GC IAM Role volume",
+                                    configuration = list(
+                                              type = "<type-name>",
+                                              audience = "<audience-link>",
+                                              subject_token_type = "<subject_token_type>",
+                                              service_account_impersonation_url = "<service_account_impersonation_url>",
+                                              token_url = "<token_url>",
+                                              credential_source = list(
+                                                  environment_id = "<environment_id>",
+                                                  region_url = "<region_url>",
+                                                  url = "<url>",
+                                                  regional_cred_verification_url = "<regional_cred_verification_url>"
+                                              )
+                                            )
+                                    )
+}
+
+
+## ------------------------------------------------
+## Method `Volumes$create_azure`
+## ------------------------------------------------
+
+\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ # Create Azure volume
+ azure_volume <- volumes_object$create_azure(
+   name = "my_new_azure_volume",
+   description = "Azure volume",
+   endpoint = "<endpoint>",
+   container = "<bucket-name",
+   storage_account = "<storage_account-name>",
+   tenant_id = "<tenant_id>",
+   client_id = "<client_id>",
+   client_secret = "<client_secret>",
+   resource_id = "<resource_id>"
+  )
+}
+
+
+## ------------------------------------------------
+## Method `Volumes$create_ali_oss`
+## ------------------------------------------------
+
+\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ # Create Ali cloud volume
+ali_volume <- volumes_object$create_ali_oss(
+  name = "my_new_azure_volume",
+  description = "Ali volume",
+  endpoint = "<endpoint>",
+  bucket = "<bucket-name",
+  access_key_id = "<access_key_id>",
+  secret_access_key = "<secret_access_key>"
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Volumes}
 }
@@ -69,6 +232,20 @@ like 'limit', 'offset', 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Collection}} of \code{\link{Volume}} objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ # Query volumes
+ volumes_object$query()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volumes-get"></a>}}
@@ -95,6 +272,20 @@ for a volume by making the call to list all volumes you've registered.}
 \subsection{Returns}{
 \code{\link{Volume}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ # Get volumes
+ volumes_object$get(id = id)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volumes-delete"></a>}}
@@ -122,6 +313,20 @@ as 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ # Get volumes
+ volumes_object$delete(volume = volume)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volumes-create_s3_using_iam_user"></a>}}
@@ -213,6 +418,26 @@ overwrite all previous parameters set.}
 \subsection{Returns}{
 \code{\link{Volume}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ # Create new AWS Volume (IAM Usser)
+ aws_iam_user_volume <- volumes_object$create_s3_using_iam_user(
+                                      name = "my_new_aws_user_volume",
+                                      bucket = "<bucket-name>",
+                                      description = "AWS IAM User Vol",
+                                      access_key_id = "<access-key>",
+                                      secret_access_key = "<secret-access-key>" # nolint
+                                    )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volumes-create_s3_using_iam_role"></a>}}
@@ -307,6 +532,26 @@ overwrite all previous parameters set.}
 \subsection{Returns}{
 \code{\link{Volume}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ # Create new AWS Volume (IAM Role)
+ aws_iam_role_volume <- volumes_object$create_s3_using_iam_role(
+                                      name = "my_new_aws_user_volume",
+                                      bucket = "<bucket-name>",
+                                      description = "AWS IAM Role Vol",
+                                      role_arn = "<role-arn-key>",
+                                      external_id = "<external-id>"
+                                    )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volumes-create_google_using_iam_user"></a>}}
@@ -383,6 +628,27 @@ overwrite all previous parameters set.}
 \subsection{Returns}{
 \code{\link{Volume}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ #  Create Google cloud volume using IAM User authentication type
+ gc_iam_user_volume <- volumes_object$create_google_using_iam_user(
+                                      name = "my_new_gc_user_volume",
+                                      access_mode = "RW",
+                                      bucket = "<bucket-name>",
+                                      description = "GC IAM User volume",
+                                      client_email = "<client_email>",
+                                      private_key = "<private_key-string>" # nolint
+                                    )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volumes-create_google_using_iam_role"></a>}}
@@ -457,6 +723,38 @@ overwrite all previous parameters set.}
 \subsection{Returns}{
 \code{\link{Volume}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ #  Create Google cloud volume using IAM User authentication type
+ gc_iam_role_volume <- volumes_object$create_google_using_iam_role(
+                                    name = "my_new_gc_role_volume",
+                                    access_mode = "RO",
+                                    bucket = "<bucket-name>",
+                                    description = "GC IAM Role volume",
+                                    configuration = list(
+                                              type = "<type-name>",
+                                              audience = "<audience-link>",
+                                              subject_token_type = "<subject_token_type>",
+                                              service_account_impersonation_url = "<service_account_impersonation_url>",
+                                              token_url = "<token_url>",
+                                              credential_source = list(
+                                                  environment_id = "<environment_id>",
+                                                  region_url = "<region_url>",
+                                                  url = "<url>",
+                                                  regional_cred_verification_url = "<regional_cred_verification_url>"
+                                              )
+                                            )
+                                    )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volumes-create_azure"></a>}}
@@ -528,6 +826,30 @@ information for registering a volume.}
 \subsection{Returns}{
 \code{\link{Volume}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ # Create Azure volume
+ azure_volume <- volumes_object$create_azure(
+   name = "my_new_azure_volume",
+   description = "Azure volume",
+   endpoint = "<endpoint>",
+   container = "<bucket-name",
+   storage_account = "<storage_account-name>",
+   tenant_id = "<tenant_id>",
+   client_id = "<client_id>",
+   client_secret = "<client_secret>",
+   resource_id = "<resource_id>"
+  )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volumes-create_ali_oss"></a>}}
@@ -589,6 +911,26 @@ information for registering a volume.}
 \subsection{Returns}{
 \code{\link{Volume}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ volumes_object <- Volumes$new(auth = auth)
+
+ # Create Ali cloud volume
+ali_volume <- volumes_object$create_ali_oss(
+  name = "my_new_azure_volume",
+  description = "Ali volume",
+  endpoint = "<endpoint>",
+  bucket = "<bucket-name",
+  access_key_id = "<access_key_id>",
+  secret_access_key = "<secret_access_key>"
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volumes-clone"></a>}}

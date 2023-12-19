@@ -38,8 +38,12 @@ App <- R6::R6Class(
 
     # Initialize App object --------------------------------------------------
     #' @description Create a new App object.
+    #'
     #' @param res Response containing App object information.
+    #'
     #' @param ... Other response arguments.
+    #'
+    #' @return A new `App` object.
     initialize = function(res = NA, ...) {
       # Initialize Item class
       super$initialize(...)
@@ -52,9 +56,11 @@ App <- R6::R6Class(
       self$copy_of <- ifelse(!is.null(res$raw$`sbg:copyOf`),
         res$raw$`sbg:copyOf`, NA
       )
-      self$latest_revision <- ifelse(!is.null(res$raw$`sbg:latestRevision`),
-        res$raw$`sbg:latestRevision`, NA
-      )
+      self$latest_revision <-
+        ifelse(!is.null(res$raw$`sbg:latestRevision`),
+          res$raw$`sbg:latestRevision`,
+          NA
+        )
     },
 
     # nocov start
@@ -64,6 +70,18 @@ App <- R6::R6Class(
     #' @importFrom purrr discard
     #' @importFrom glue glue_col
     #' @importFrom cli cli_h1 cli_li cli_end
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when app is requested
+    #'  app_object <- App$new(
+    #'    res = x,
+    #'    href = x$href,
+    #'    auth = auth,
+    #'    response = attr(x, "response")
+    #'  )
+    #'  app_object$print()
+    #' }
     print = function() {
       x <- as.list(self)
 
@@ -96,6 +114,17 @@ App <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when app is requested
+    #'  app_object <- App$new(
+    #'    res = x,
+    #'    href = x$href,
+    #'    auth = auth,
+    #'    response = attr(x, "response")
+    #'  )
+    #'  app_object$reload()
+    #' }
     #' @return \code{\link{App}} object.
     reload = function(...) {
       super$reload(
@@ -103,7 +132,8 @@ App <- R6::R6Class(
         ...
       )
       rlang::inform("App object is refreshed!")
-    }, # nocov end
+    },
+    # nocov end
 
     # Copy App ---------------------------------------------------------------
     #' @description A method that copies the current app to the
@@ -135,8 +165,24 @@ App <- R6::R6Class(
     #' @importFrom checkmate assert_string assert_logical
     #' @importFrom glue glue
     #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when app is requested
+    #'  app_object <- App$new(
+    #'    res = x,
+    #'    href = x$href,
+    #'    auth = auth,
+    #'    response = attr(x, "response")
+    #'  )
+    #'  app_object$copy(project)
+    #' }
+    #'
     #' @return Copied \code{\link{App}} object.
-    copy = function(project, name = NULL, strategy = "clone", use_revision = FALSE, ...) { # nolint
+    copy = function(project,
+                    name = NULL,
+                    strategy = "clone",
+                    use_revision = FALSE,
+                    ...) {
       if (is_missing(project)) {
         rlang::abort("Project parameter must be provided!")
       }
@@ -181,7 +227,11 @@ App <- R6::R6Class(
         ...
       )
 
-      rlang::inform(glue::glue_col("App {green {self$name}} has been copied to {green {project}} project.")) # nolint
+      rlang::inform(
+        glue::glue_col(
+          "App {green {self$name}} has been copied to {green {project}} project." # nolint
+        )
+      )
 
       # Return newly created app
       return(asApp(res, auth = self$auth))
@@ -204,14 +254,32 @@ App <- R6::R6Class(
     #' @importFrom checkmate assert_numeric assert_logical
     #' @importFrom glue glue
     #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when app is requested
+    #'  app_object <- App$new(
+    #'    res = x,
+    #'    href = x$href,
+    #'    auth = auth,
+    #'    response = attr(x, "response")
+    #'  )
+    #'  app_object$get_revision()
+    #' }
+    #'
     #' @return \code{\link{App}} object.
-    get_revision = function(revision = self$revision, in_place = FALSE, ...) {
+    get_revision = function(revision = self$revision,
+                            in_place = FALSE,
+                            ...) {
       # Check if revision is positive number and convert it to integer
       checkmate::assert_numeric(revision, lower = 0, len = 1)
       revision <- as.integer(revision)
 
       # Check in_place parameter to be logical
-      checkmate::assert_logical(in_place, len = 1, any.missing = FALSE, null.ok = FALSE) # nolint
+      checkmate::assert_logical(in_place,
+        len = 1,
+        any.missing = FALSE,
+        null.ok = FALSE
+      )
 
       path <- glue::glue(self$URL[["get_revision"]])
 
@@ -273,20 +341,49 @@ App <- R6::R6Class(
     #' @importFrom yaml yaml.load
     #' @importFrom readr read_file
     #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when app is requested
+    #'  app_object <- App$new(
+    #'    res = x,
+    #'    href = x$href,
+    #'    auth = auth,
+    #'    response = attr(x, "response")
+    #'  )
+    #'  # Create App object using raw CWL
+    #'  app_object$create_revision(raw)
+    #' }
+    #'
     #' @return \code{\link{App}} object.
-    create_revision = function(raw = NULL, from_path = NULL, raw_format = c("JSON", "YAML"), in_place = FALSE, ...) { # nolint
+    create_revision = function(raw = NULL,
+                               from_path = NULL,
+                               raw_format = c("JSON", "YAML"),
+                               in_place = FALSE,
+                               ...) {
       if (is_missing(raw) && is_missing(from_path)) {
-        rlang::abort(glue::glue_col("Both parameters {magenta raw} and {magenta from_path} are missing. Please provide one of them.")) # nolint
+        rlang::abort(
+          glue::glue_col(
+            "Both parameters {magenta raw} and {magenta from_path} are missing. Please provide one of them." # nolint
+          )
+        )
       }
 
       if (!is_missing(raw) && !is_missing(from_path)) {
-        rlang::abort(glue::glue_col("Both parameters {magenta raw} and {magenta from_path} are provided. Please use only one of them.")) # nolint
+        rlang::abort(
+          glue::glue_col(
+            "Both parameters {magenta raw} and {magenta from_path} are provided. Please use only one of them." # nolint
+          )
+        )
       }
 
       raw_format <- match.arg(raw_format)
 
       # Check in_place parameter to be logical
-      checkmate::assert_logical(in_place, len = 1, any.missing = FALSE, null.ok = FALSE) # nolint
+      checkmate::assert_logical(in_place,
+        len = 1,
+        any.missing = FALSE,
+        null.ok = FALSE
+      )
 
       if (!is_missing(raw)) {
         # Check if raw parameter is a list
@@ -306,7 +403,8 @@ App <- R6::R6Class(
         # Check raw_format and read the file with the appropriate function
         if (raw_format == "JSON") {
           jsonlite::validate(raw_body)
-          raw_cwl <- jsonlite::fromJSON(raw_body, simplifyDataFrame = FALSE)
+          raw_cwl <-
+            jsonlite::fromJSON(raw_body, simplifyDataFrame = FALSE)
         }
 
         if (raw_format == "YAML") {
@@ -319,7 +417,7 @@ App <- R6::R6Class(
       path <- glue::glue(self$URL[["create_revision"]])
 
       res <- sevenbridges2::api(
-        path = path, # nolint
+        path = path,
         method = "POST",
         body = raw_cwl,
         token = self$auth$get_token(),
@@ -327,10 +425,17 @@ App <- R6::R6Class(
         ...
       )
 
-      rlang::inform(glue::glue_col("New {green {self$name}} app revision with number {green {self$latest_revision + 1}} has been created.")) # nolint
+      rlang::inform(
+        glue::glue_col(
+          "New {green {self$name}} app revision with number {green {self$latest_revision + 1}} has been created." # nolint
+        )
+      )
 
       # Return new or reload current object with newly created revision
-      return(self$get_revision(revision = self$latest_revision + 1, in_place = in_place)) # nolint
+      return(self$get_revision(
+        revision = self$latest_revision + 1,
+        in_place = in_place
+      ))
     },
 
     # Synchronize Apps -------------------------------------------------------
@@ -344,6 +449,19 @@ App <- R6::R6Class(
     #'  like 'fields', etc.
     #'
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when app is requested
+    #'  app_object <- App$new(
+    #'    res = x,
+    #'    href = x$href,
+    #'    auth = auth,
+    #'    response = attr(x, "response")
+    #'  )
+    #'
+    #'   app_object$sync()
+    #' }
     #'
     #' @return \code{\link{App}} object.
     sync = function(...) {
@@ -544,6 +662,19 @@ App <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when app is requested
+    #'  app_object <- App$new(
+    #'    res = x,
+    #'    href = x$href,
+    #'    auth = auth,
+    #'    response = attr(x, "response")
+    #'  )
+    #'  # Create a DRAFT task
+    #'  app_object$create_task(project = project)
+    #' }
     #'
     #' @return \code{\link{Task}} object.
     create_task = function(project,

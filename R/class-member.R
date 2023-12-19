@@ -42,6 +42,21 @@ Member <- R6::R6Class(
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when member is requested
+    #'  member_object <- Member$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Print member object
+    #'  member_object$print()
+    #' }
+    #'
     print = function() {
       x <- as.list(self)
 
@@ -80,6 +95,21 @@ Member <- R6::R6Class(
 
     # Reload Member object ---------------------------------------------------
     #' @description Reload Member object information.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when member is requested
+    #'  member_object <- Member$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Reload member object
+    #'  member_object$reload()
+    #' }
+    #'
     reload = function() {
       rlang::inform("Reloading Member objects is not possible.")
     }

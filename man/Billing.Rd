@@ -9,6 +9,98 @@ R6 Class representing a central resource for managing billing groups.
 \details{
 This is main object for Billing
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Billing$print`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when billing group is requested
+ billing_object <- Billing$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print billing group
+ billing_object$print()
+}
+
+
+## ------------------------------------------------
+## Method `Billing$reload`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when billing group is requested
+ billing_object <- Billing$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload billing group
+ billing_object$reload()
+}
+
+
+## ------------------------------------------------
+## Method `Billing$analysis_breakdown`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when billing group is requested
+ billing_object <- Billing$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get analysis breakdown
+ billing_object$analysis_breakdown()
+}
+
+
+## ------------------------------------------------
+## Method `Billing$storage_breakdown`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when billing group is requested
+ billing_object <- Billing$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get storage breakdown
+ billing_object$storage_breakdown()
+}
+
+
+## ------------------------------------------------
+## Method `Billing$egress_breakdown`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when billing group is requested
+ billing_object <- Billing$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get egress breakdown
+ billing_object$egress_breakdown()
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{Billing}
 }
@@ -73,6 +165,26 @@ Print billing group information as a bullet list.
 \if{html}{\out{<div class="r">}}\preformatted{Billing$print()}\if{html}{\out{</div>}}
 }
 
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when billing group is requested
+ billing_object <- Billing$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print billing group
+ billing_object$print()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Billing-reload"></a>}}
@@ -94,6 +206,26 @@ like 'limit', 'offset', 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Billing}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when billing group is requested
+ billing_object <- Billing$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload billing group
+ billing_object$reload()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Billing-analysis_breakdown"></a>}}
@@ -141,6 +273,26 @@ This is a pagination-specific attribute.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when billing group is requested
+ billing_object <- Billing$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get analysis breakdown
+ billing_object$analysis_breakdown()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Billing-storage_breakdown"></a>}}
@@ -188,6 +340,26 @@ This is a pagination-specific attribute.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when billing group is requested
+ billing_object <- Billing$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get storage breakdown
+ billing_object$storage_breakdown()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Billing-egress_breakdown"></a>}}
@@ -235,6 +407,26 @@ This is a pagination-specific attribute.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when billing group is requested
+ billing_object <- Billing$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get egress breakdown
+ billing_object$egress_breakdown()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Billing-clone"></a>}}

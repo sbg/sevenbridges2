@@ -83,6 +83,14 @@ Files <- R6::R6Class(
     #' @importFrom checkmate assert_string assert_character
     #' @importFrom rlang abort
     #'
+    #' @examples
+    #' \dontrun{
+    #'  files_object <- Files$new(auth = auth)
+    #'
+    #'  # Query files in a project
+    #'  files_object$query(project = project)
+    #' }
+    #'
     #' @return \code{\link{Collection}} of \code{\link{File}} objects.
     query = function(project = NULL,
                      parent = NULL,
@@ -170,6 +178,14 @@ Files <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #' as 'fields', etc.
     #'
+    #' @examples
+    #' \dontrun{
+    #'  files_object <- Files$new(auth = auth)
+    #'
+    #'  # Get file using id
+    #'  files_object$get(id = id)
+    #' }
+    #'
     #' @return \code{\link{File}} object.
     get = function(id, ...) {
       res <- super$get(
@@ -189,6 +205,14 @@ Files <- R6::R6Class(
     #' @param file \code{\link{File}} object or file ID.
     #' @param ... Other arguments that can be passed to core `api()` function
     #' as 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  files_object <- Files$new(auth = auth)
+    #'
+    #'  # Delete a file
+    #'  files_object$delete(file = file)
+    #' }
     #'
     delete = function(file, ...) {
       id <- check_and_transform_id(file, "File")
@@ -219,6 +243,18 @@ Files <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_list
     #' @importFrom glue glue_col
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  files_object <- Files$new(auth = auth)
+    #'
+    #'  # Copy files to a project
+    #'  files_object$copy(
+    #'                file = file,
+    #'                destination_project = project
+    #'               )
+    #' }
+    #'
     copy = function(files, destination_project) {
       if (is_missing(files) || is_missing(destination_project)) {
         rlang::abort(
@@ -288,6 +324,18 @@ Files <- R6::R6Class(
     #'
     #' @importFrom rlang abort inform
     #' @importFrom glue glue_col
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  files_object <- Files$new(auth = auth)
+    #'
+    #'  # Create folder in a project
+    #'  files_object$create_folder(
+    #'                 name = name,
+    #'                 project = project
+    #'                )
+    #' }
+    #'
     create_folder = function(name,
                              parent = NULL,
                              project = NULL) {

@@ -10,6 +10,44 @@ R6 Class representing invoice information.
 This object contains information about a selected invoice,
 including the costs for analysis and storage, and the invoice period.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Invoice$print`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when invoice is requested
+ invoice_object <- Invoice$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print invoice object
+ invoice_object$print()
+}
+
+
+## ------------------------------------------------
+## Method `Invoice$reload`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when invoice is requested
+ invoice_object <- Invoice$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload invoice object
+ invoice_object$reload()
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{Invoice}
 }
@@ -71,6 +109,26 @@ Print invoice information as a bullet list.
 \if{html}{\out{<div class="r">}}\preformatted{Invoice$print()}\if{html}{\out{</div>}}
 }
 
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when invoice is requested
+ invoice_object <- Invoice$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print invoice object
+ invoice_object$print()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Invoice-reload"></a>}}
@@ -92,6 +150,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Invoice}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when invoice is requested
+ invoice_object <- Invoice$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload invoice object
+ invoice_object$reload()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Invoice-clone"></a>}}

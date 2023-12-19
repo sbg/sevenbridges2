@@ -6,6 +6,44 @@
 \description{
 R6 Class representing a resource for managing volume export jobs.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Export$print`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when export is requested
+export_object <- Export$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print export object
+ export_object$print()
+}
+
+
+## ------------------------------------------------
+## Method `Export$reload`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when export is requested
+export_object <- Export$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload export object
+ export_object$reload()
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{Export}
 }
@@ -84,6 +122,26 @@ Print method for Export class.
 \if{html}{\out{<div class="r">}}\preformatted{Export$print()}\if{html}{\out{</div>}}
 }
 
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when export is requested
+export_object <- Export$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print export object
+ export_object$print()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Export-reload"></a>}}
@@ -105,6 +163,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Export}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when export is requested
+export_object <- Export$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload export object
+ export_object$reload()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Export-clone"></a>}}

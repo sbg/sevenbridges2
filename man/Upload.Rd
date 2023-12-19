@@ -6,6 +6,88 @@
 \description{
 R6 Class representing a resource for managing files' uploads.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Upload$print`
+## ------------------------------------------------
+
+\dontrun{
+ upload_object <- Upload$new(
+                    path = "path/to/my/file.txt",
+                    project = project_object,
+                    auth = auth
+                   )
+
+ # Print upload object information
+ upload_object$print(name = name)
+}
+
+
+## ------------------------------------------------
+## Method `Upload$init`
+## ------------------------------------------------
+
+\dontrun{
+ upload_object <- Upload$new(
+                    path = "path/to/my/file.txt",
+                    project = project_object,
+                    auth = auth
+                   )
+
+ # Initialize multipart file upload object
+ upload_object$init()
+}
+
+## ------------------------------------------------
+## Method `Upload$info`
+## ------------------------------------------------
+
+\dontrun{
+ upload_object <- Upload$new(
+                    path = "path/to/my/file.txt",
+                    project = project_object,
+                    auth = auth
+                   )
+
+ # Get upload job status information
+ upload_object$info()
+}
+
+## ------------------------------------------------
+## Method `Upload$start`
+## ------------------------------------------------
+
+\dontrun{
+ upload_object <- Upload$new(
+                    path = "path/to/my/file.txt",
+                    project = project_object,
+                    auth = auth
+                   )
+
+ # Initialize multipart file upload object
+ upload_object$init()
+
+ # Start upload process
+ upload_object$start()
+}
+
+
+## ------------------------------------------------
+## Method `Upload$abort`
+## ------------------------------------------------
+
+\dontrun{
+ upload_object <- Upload$new(
+                    path = "path/to/my/file.txt",
+                    project = project_object,
+                    auth = auth
+                   )
+
+ # Abort upload process
+ upload_object$abort()
+}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -103,6 +185,24 @@ Print method for Upload class.
 \if{html}{\out{<div class="r">}}\preformatted{Upload$print()}\if{html}{\out{</div>}}
 }
 
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ upload_object <- Upload$new(
+                    path = "path/to/my/file.txt",
+                    project = project_object,
+                    auth = auth
+                   )
+
+ # Print upload object information
+ upload_object$print(name = name)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Upload-init"></a>}}
@@ -111,6 +211,23 @@ Print method for Upload class.
 Initialize new multipart file upload.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Upload$init()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ upload_object <- Upload$new(
+                    path = "path/to/my/file.txt",
+                    project = project_object,
+                    auth = auth
+                   )
+
+ # Initialize multipart file upload object
+ upload_object$init()
+}
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -133,6 +250,23 @@ there are lot of parts.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ upload_object <- Upload$new(
+                    path = "path/to/my/file.txt",
+                    project = project_object,
+                    auth = auth
+                   )
+
+ # Get upload job status information
+ upload_object$info()
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Upload-start"></a>}}
@@ -146,6 +280,27 @@ Start the file upload
 \subsection{Returns}{
 \code{\link{File}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ upload_object <- Upload$new(
+                    path = "path/to/my/file.txt",
+                    project = project_object,
+                    auth = auth
+                   )
+
+ # Initialize multipart file upload object
+ upload_object$init()
+
+ # Start upload process
+ upload_object$start()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Upload-abort"></a>}}
@@ -155,6 +310,23 @@ Abort the multipart upload
 This call aborts an ongoing upload.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Upload$abort()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ upload_object <- Upload$new(
+                    path = "path/to/my/file.txt",
+                    project = project_object,
+                    auth = auth
+                   )
+
+ # Abort upload process
+ upload_object$abort()
+}
+}
+\if{html}{\out{</div>}}
+
 }
 
 }

@@ -6,6 +6,191 @@
 \description{
 R6 Class representing a resource for managing tasks.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Task$print`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print task object
+ task_object$print()
+}
+
+
+## ------------------------------------------------
+## Method `Task$reload`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload task object
+ task_object$reload()
+}
+
+
+## ------------------------------------------------
+## Method `Task$run`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Run task
+ task_object$run()
+}
+
+
+## ------------------------------------------------
+## Method `Task$abort`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+. # Run task
+ task_object$run()
+
+ # Then abort task
+ task_object$abort()
+}
+
+
+## ------------------------------------------------
+## Method `Task$clone_task`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Clone task object
+ task_object$clone_task()
+}
+
+
+## ------------------------------------------------
+## Method `Task$get_execution_details`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get task execution details
+ task_object$get_execution_details()
+}
+
+
+## ------------------------------------------------
+## Method `Task$list_batch_children`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List batch children of a task
+ task_object$list_batch_children()
+}
+
+
+## ------------------------------------------------
+## Method `Task$delete`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Delete task
+ task_object$delete()
+}
+
+
+## ------------------------------------------------
+## Method `Task$rerun`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Rerun task
+ task_object$rerun()
+}
+
+
+## ------------------------------------------------
+## Method `Task$update`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Update task
+ task_object$update(name = new_name)
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{Task}
 }
@@ -132,6 +317,26 @@ Print method for Task class.
 \if{html}{\out{<div class="r">}}\preformatted{Task$print()}\if{html}{\out{</div>}}
 }
 
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print task object
+ task_object$print()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Task-reload"></a>}}
@@ -153,6 +358,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Task}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload task object
+ task_object$reload()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Task-run"></a>}}
@@ -192,6 +417,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Task}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Run task
+ task_object$run()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Task-abort"></a>}}
@@ -217,6 +462,29 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Task}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+. # Run task
+ task_object$run()
+
+ # Then abort task
+ task_object$abort()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Task-clone_task"></a>}}
@@ -243,6 +511,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Task}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Clone task object
+ task_object$clone_task()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Task-get_execution_details"></a>}}
@@ -283,6 +571,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 List of execution details.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get task execution details
+ task_object$get_execution_details()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Task-list_batch_children"></a>}}
@@ -374,6 +682,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Collection}} of \code{\link{Task}} objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List batch children of a task
+ task_object$list_batch_children()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Task-delete"></a>}}
@@ -394,6 +722,26 @@ like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Delete task
+ task_object$delete()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Task-rerun"></a>}}
@@ -415,6 +763,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Task}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Rerun task
+ task_object$rerun()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Task-update"></a>}}
@@ -584,6 +952,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Task}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when task is requested
+task_object <- Task$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Update task
+ task_object$update(name = new_name)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Task-clone"></a>}}

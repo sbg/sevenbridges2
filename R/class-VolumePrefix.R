@@ -45,6 +45,21 @@ VolumePrefix <- R6::R6Class(
     #' @importFrom purrr discard
     #' @importFrom glue glue_col
     #' @importFrom cli cli_h1 cli_li cli_end
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume prefix is requested
+    #' volume_prefix_object <- VolumePrefix$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Print volume prefix object
+    #'  volume_prefix_object$print()
+    #' }
+    #'
     print = function() {
       x <- as.list(self)
 
@@ -73,6 +88,21 @@ VolumePrefix <- R6::R6Class(
 
     # Reload VolumePrefix object ---------------------------------------------
     #' @description Reload VolumePrefix object information.
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume prefix is requested
+    #' volume_prefix_object <- VolumePrefix$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Reload volume prefix object
+    #'  volume_prefix_object$reload()
+    #' }
+    #'
     reload = function() {
       rlang::inform(
         "Reload operation is not available for VolumePrefix objects."
@@ -94,6 +124,20 @@ VolumePrefix <- R6::R6Class(
     #'  With fields parameter you can specify a subset of fields to include in
     #'  the response. You can use: `href`, `location`, `volume`, `type`,
     #'  `metadata`, `_all`. Default: `_all`.
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume prefix is requested
+    #' volume_prefix_object <- VolumePrefix$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # List volume prefix object contents
+    #'  volume_prefix_object$list_contents()
+    #' }
     #'
     #' @return \code{\link{VolumeContentCollection}} object containing list of
     #' \code{\link{VolumeFile}} and  \code{\link{VolumePrefix}} objects.
@@ -170,6 +214,20 @@ VolumePrefix <- R6::R6Class(
     #'  files alongside with other files if they exist.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume prefix is requested
+    #' volume_prefix_object <- VolumePrefix$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # List volume prefix object contents
+    #'  volume_prefix_object$import(destination_project = destination_project)
+    #' }
     #'
     #' @return \code{\link{Import}} object.
     import = function(destination_project = NULL, destination_parent = NULL,

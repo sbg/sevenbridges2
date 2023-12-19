@@ -89,6 +89,19 @@ Upload <- R6::R6Class(
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end cli_bullets
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  upload_object <- Upload$new(
+    #'                     path = "path/to/my/file.txt",
+    #'                     project = project_object,
+    #'                     auth = auth
+    #'                    )
+    #'
+    #'  # Print upload object information
+    #'  upload_object$print(name = name)
+    #' }
+    #'
     print = function() {
       x <- as.list(self)
 
@@ -110,6 +123,18 @@ Upload <- R6::R6Class(
     #'
     #' @importFrom glue glue glue_col
     #' @importFrom rlang abort
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  upload_object <- Upload$new(
+    #'                     path = "path/to/my/file.txt",
+    #'                     project = project_object,
+    #'                     auth = auth
+    #'                    )
+    #'
+    #'  # Initialize multipart file upload object
+    #'  upload_object$init()
+    #' }
     init = function() {
       if (self$initialized) {
         rlang::abort("Upload has already been initialized.")
@@ -173,6 +198,18 @@ Upload <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_logical
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  upload_object <- Upload$new(
+    #'                     path = "path/to/my/file.txt",
+    #'                     project = project_object,
+    #'                     auth = auth
+    #'                    )
+    #'
+    #'  # Get upload job status information
+    #'  upload_object$info()
+    #' }
     info = function(list_parts = FALSE) {
       if (!self$initialized) {
         rlang::abort("Upload has not been initialized yet.")
@@ -211,6 +248,21 @@ Upload <- R6::R6Class(
     #'
     #' @importFrom rlang abort
     #' @importFrom httr PUT
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  upload_object <- Upload$new(
+    #'                     path = "path/to/my/file.txt",
+    #'                     project = project_object,
+    #'                     auth = auth
+    #'                    )
+    #'
+    #'  # Initialize multipart file upload object
+    #'  upload_object$init()
+    #'
+    #'  # Start upload process
+    #'  upload_object$start()
+    #' }
     #'
     #' @return \code{\link{File}} object.
     start = function() {
@@ -269,6 +321,18 @@ Upload <- R6::R6Class(
     #'
     #' @importFrom glue glue glue_col
     #' @importFrom rlang abort
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  upload_object <- Upload$new(
+    #'                     path = "path/to/my/file.txt",
+    #'                     project = project_object,
+    #'                     auth = auth
+    #'                    )
+    #'
+    #'  # Abort upload process
+    #'  upload_object$abort()
+    #' }
     abort = function() {
       if (!self$initialized) {
         rlang::abort("Upload has not been initialized yet.")
@@ -426,6 +490,18 @@ Part <- R6::R6Class(
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end cli_bullets
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  upload_part_object <- Part$new(
+    #'                         part_number = part_number,
+    #'                         part_size = part_size,
+    #'                         auth = auth
+    #'                       )
+    #'
+    #'  # Print upload part information
+    #'  upload_part_object$print()
+    #' }
     print = function() {
       x <- as.list(self)
 
@@ -449,6 +525,18 @@ Part <- R6::R6Class(
     #'  belongs to.
     #'
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  upload_part_object <- Part$new(
+    #'                         part_number = part_number,
+    #'                         part_size = part_size,
+    #'                         auth = auth
+    #'                       )
+    #'
+    #'  # Get upload part status information
+    #'  upload_part_object$upload_info_part(upload_id = upload_id)
+    #' }
     upload_info_part = function(upload_id) {
       upload_id <- check_and_transform_id(upload_id, "Upload")
       # nocov start
@@ -475,6 +563,18 @@ Part <- R6::R6Class(
     #'  belongs to.
     #'
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  upload_part_object <- Part$new(
+    #'                         part_number = part_number,
+    #'                         part_size = part_size,
+    #'                         auth = auth
+    #'                       )
+    #'
+    #'  # Report an uploaded part
+    #'  upload_part_object$upload_complete_part(upload_id = upload_id)
+    #' }
     upload_complete_part = function(upload_id) {
       upload_id <- check_and_transform_id(upload_id, "Upload")
       # nocov start

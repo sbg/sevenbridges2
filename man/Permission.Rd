@@ -6,6 +6,51 @@
 \description{
 R6 Class representing member's permissions.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Permission$print`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when permission is requested
+ permission_object <- Permission$new(
+                    write = x$write,
+                    read = x$read,
+                    copy = x$copy,
+                    execute = x$execute,
+                    admin = x$admin,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+ # Print permission object
+ permission_object$print()
+}
+
+
+## ------------------------------------------------
+## Method `Permission$reload`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when permission is requested
+ permission_object <- Permission$new(
+                    write = x$write,
+                    read = x$read,
+                    copy = x$copy,
+                    execute = x$execute,
+                    admin = x$admin,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload permission object
+ permission_object$reload()
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{Permission}
 }
@@ -89,6 +134,29 @@ Print method for Permission class.
 \if{html}{\out{<div class="r">}}\preformatted{Permission$print()}\if{html}{\out{</div>}}
 }
 
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when permission is requested
+ permission_object <- Permission$new(
+                    write = x$write,
+                    read = x$read,
+                    copy = x$copy,
+                    execute = x$execute,
+                    admin = x$admin,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+ # Print permission object
+ permission_object$print()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Permission-reload"></a>}}
@@ -97,6 +165,30 @@ Print method for Permission class.
 Reload Permission object information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Permission$reload()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when permission is requested
+ permission_object <- Permission$new(
+                    write = x$write,
+                    read = x$read,
+                    copy = x$copy,
+                    execute = x$execute,
+                    admin = x$admin,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload permission object
+ permission_object$reload()
+}
+
+}
+\if{html}{\out{</div>}}
+
 }
 
 }

@@ -6,6 +6,50 @@
 \description{
 R6 Class representing storage exports resource endpoints.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Exports$query`
+## ------------------------------------------------
+
+\dontrun{
+ exports_object <- Exports$new(
+   auth = auth
+ )
+
+ # List all your running or failed export jobs on the volume
+ exports_object$query(volume = volume, state = c("RUNNING", "FAILED"))
+}
+
+
+## ------------------------------------------------
+## Method `Exports$get`
+## ------------------------------------------------
+
+\dontrun{
+ exports_object <- Exports$new(
+   auth = auth
+ )
+
+ # Get export job by ID
+ exports_object$get(id = id)
+}
+
+
+## ------------------------------------------------
+## Method `Exports$submit_export`
+## ------------------------------------------------
+
+\dontrun{
+ exports_object <- Exports$new(
+   auth = auth
+ )
+
+ # Submit export job
+ exp_job1 <- exports_object$submit_export(
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Exports}
 }
@@ -96,6 +140,22 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Collection}} of \code{\link{Export}} objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ exports_object <- Exports$new(
+   auth = auth
+ )
+
+ # List all your running or failed export jobs on the volume
+ exports_object$query(volume = volume, state = c("RUNNING", "FAILED"))
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Exports-get"></a>}}
@@ -119,6 +179,22 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Export}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ exports_object <- Exports$new(
+   auth = auth
+ )
+
+ # Get export job by ID
+ exports_object$get(id = id)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Exports-submit_export"></a>}}
@@ -212,6 +288,22 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Export}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ exports_object <- Exports$new(
+   auth = auth
+ )
+
+ # Submit export job
+ exp_job1 <- exports_object$submit_export(
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Exports-delete"></a>}}
