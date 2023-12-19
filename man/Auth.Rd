@@ -7,7 +7,8 @@
 Authentication object with methods to access API endpoints.
 Every object could be requested from this Auth object and any action
 could start from this object using cascading style. Please check
-\code{vignette("api")} for more information.
+\code{vignette("Authentication_and_Billing", package = "sevenbridges2")}
+for more information.
 }
 \details{
 This is the main object for authentication to platforms powered by

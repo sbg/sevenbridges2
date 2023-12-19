@@ -170,8 +170,8 @@ like 'fields', etc.}
 \subsection{Method \code{delete()}}{
 This call deletes a task from the Seven Bridges Platform.
 Tasks are specified by their IDs, which you can obtain by using
-\code{\link{Tasks$query()}} to list tasks or by getting a single task
-using \code{\link{Tasks$get()}}.
+\code{Tasks$query()} to list tasks or by getting a single task
+using \code{Tasks$get()}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Tasks$delete(task, ...)}\if{html}{\out{</div>}}
 }

@@ -159,8 +159,8 @@ as 'fields', etc.}
 \subsection{Method \code{delete()}}{
 This call removes a file from the Seven Bridges Platform.
 Files are specified by their IDs, which you can obtain by using
-\code{\link{Files$query()}} to list files or by getting a single file
-using \code{\link{Files$get()}}.
+\code{Files$query()} to list files or by getting a single file
+using \code{Files$get()}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Files$delete(file, ...)}\if{html}{\out{</div>}}
 }

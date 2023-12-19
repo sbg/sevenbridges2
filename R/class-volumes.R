@@ -84,8 +84,8 @@ Volumes <- R6::R6Class(
     #' files on the Platform that were previously imported from the volume.
     #'
     #' Volumes are specified by their IDs, which you can obtain by using
-    #' \code{\link{Volumes$query()}} to list files or by getting a single file
-    #' using \code{\link{Volumes$get()}}.
+    #' \code{Volumes$query()} to list files or by getting a single file
+    #' using \code{Volumes$get()}.
     #'
     #' @param volume \code{\link{Volume}} object or volume ID.
     #' @param ... Other arguments that can be passed to core `api()` function

@@ -216,8 +216,8 @@ Tasks <- R6::R6Class(
     # Delete task  ----------------------------------------------------------
     #' @description This call deletes a task from the Seven Bridges Platform.
     #' Tasks are specified by their IDs, which you can obtain by using
-    #' \code{\link{Tasks$query()}} to list tasks or by getting a single task
-    #' using \code{\link{Tasks$get()}}.
+    #' \code{Tasks$query()} to list tasks or by getting a single task
+    #' using \code{Tasks$get()}.
     #'
     #' @param task \code{\link{Task}} object or task ID.
     #' @param ... Other arguments that can be passed to core `api()` function
