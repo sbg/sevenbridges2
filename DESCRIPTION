@@ -1,7 +1,7 @@
 Package: sevenbridges2
 Type: Package
 Title: Seven Bridges Platform API Client in R
-Version: 0.0.1
+Version: 0.1.0
 Authors@R: c(
     person("Vladimir", "Obucina", email = "vladimir.obucina@velsera.com", role = c("aut", "cre")),
     person("Marko", "Trifunovic", email = "marko.trifunovic@sevenbridges.com", role = c("aut")),
