@@ -106,8 +106,8 @@ delete a volume, you first need to deactivate it and then delete all
 files on the Platform that were previously imported from the volume.
 
 Volumes are specified by their IDs, which you can obtain by using
-\code{\link{Volumes$query()}} to list files or by getting a single file
-using \code{\link{Volumes$get()}}.
+\code{Volumes$query()} to list files or by getting a single file
+using \code{Volumes$get()}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volumes$delete(volume, ...)}\if{html}{\out{</div>}}
 }

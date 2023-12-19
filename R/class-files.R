@@ -183,8 +183,8 @@ Files <- R6::R6Class(
     # Delete file --------------------------------------------------------------
     #' @description This call removes a file from the Seven Bridges Platform.
     #' Files are specified by their IDs, which you can obtain by using
-    #' \code{\link{Files$query()}} to list files or by getting a single file
-    #' using \code{\link{Files$get()}}.
+    #' \code{Files$query()} to list files or by getting a single file
+    #' using \code{Files$get()}.
     #'
     #' @param file \code{\link{File}} object or file ID.
     #' @param ... Other arguments that can be passed to core `api()` function

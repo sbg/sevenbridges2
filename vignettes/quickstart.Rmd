@@ -385,6 +385,7 @@ API paths for some of the environments are:
 
 <div align="right"><a href="#top">top</a></div>
 
+Please check `vignette("Authentication_and_Billing", package = "sevenbridges2")` for more technical details about all available authentication methods.
 
 ## Get User Information
 
@@ -424,6 +425,8 @@ a$user(username = "<username>")
 
 <div align="right"><a href="#top">top</a></div>
 
+Please check `vignette("Authentication_and_Billing", package = "sevenbridges2")` for more technical details about
+getting user information.
 
 ## Rate Limit
 
@@ -448,6 +451,9 @@ a$rate_limit()
 ```
 
 <div align="right"><a href="#top">top</a></div>
+
+Please check `vignette("Authentication_and_Billing", package = "sevenbridges2")` for more technical details about
+rate limit information.
 
 ## Show Billing Information
 
@@ -505,6 +511,9 @@ a$billing_groups$get(id = "<billing_group_id>")
 
 <div align="right"><a href="#top">top</a></div>
 
+Please check `vignette("Authentication_and_Billing", package = "sevenbridges2")` for more technical details about
+billing informations.
+
 ## List and query projects
 
 Projects are the core building blocks of the platform. Each project corresponds 
@@ -535,6 +544,9 @@ Note that the output is the `Collection` object and the results (list of
 `Project` objects) can be found within the `items` field.
 
 <div align="right"><a href="#top">top</a></div>
+
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
+projects.
 
 ## Create a new project
 
@@ -584,6 +596,8 @@ The **new project** is created on the platform. Notice also that the variable
 project. The facility also has several methods that allow you to perform 
 basic platform operations on the project.
 
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
+projects.
 
 ## Get details of a specified project
 
@@ -616,7 +630,10 @@ a$projects$get(id = "<your_username_or_division>/api-testing")
   • use_elastic_disk: FALSE
 ```
 
-## Copy an app to the project
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
+apps.
+
+## Copy app into the project
 
 Seven Bridges maintains workflows and tools available to all of its users in 
 the Public Apps repository.
@@ -688,7 +705,10 @@ star_app$copy(
 
 Next, we would like to run a task with this app. Let's see what is required.
 
-## Create a new task
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
+tasks.
+
+## Execute a new task
 
 ### Find your app inputs
 
@@ -812,6 +832,9 @@ copied_star_app$output_matrix()
 
 <div align="right"><a href="#top">top</a></div>
 
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
+tasks.
+
 ## Run a Task
 
 Now, we are ready to run our task.
@@ -871,6 +894,9 @@ Alternatively, you can delete the draft task if you no longer wish to run it.
 
 <div align="right"><a href="#top">top</a></div>
 
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
+running tasks.
+
 ## Run tasks using spot instances
 
 Running tasks with [spot instances](https://docs.sevenbridges.com/docs/about-spot-instances)
@@ -922,6 +948,9 @@ by setting `use_interruptible_instances = FALSE` in `create_task()` explicitly.
 
 <div align="right"><a href="#top">top</a></div>
 
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
+running tasks using spot instances.
+
 ## Execution hints per task run
 
 During workflow development and benchmarking, sometimes we need to view and 
@@ -948,6 +977,9 @@ tsk <- p$create_task(
 For details about `execution_settings`, please check [create a new draft task](https://docs.sevenbridges.com/reference/create-a-new-task).
 
 <div align="right"><a href="#top">top</a></div>
+
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
+execution hints.
 
 ## Draft a batch task
 
@@ -1011,3 +1043,6 @@ child2_details <- child_tasks$items[[2]]$get_execution_details()
 ```
 
 <div align="right"><a href="#top">top</a></div>
+
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
+running batch tasks.
