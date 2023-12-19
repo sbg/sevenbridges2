@@ -1,0 +1,11 @@
+a {
+    color: #0c5099;
+}
+
+a:hover, a:focus {
+    color: #051f3a;
+}
+
+pre {
+    background-color: #F8F8F8;
+}

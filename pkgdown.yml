@@ -1,0 +1,10 @@
+pandoc: 2.19.2
+pkgdown: 2.0.7
+pkgdown_sha: ~
+articles:
+  Authentication_and_Billing: Authentication_and_Billing.html
+  Files_upload_and_Volumes: Files_upload_and_Volumes.html
+  Introduction_and_Quickstart: Introduction_and_Quickstart.html
+  Projects_and_Tasks_execution: Projects_and_Tasks_execution.html
+last_built: 2023-12-19T10:54Z
+
