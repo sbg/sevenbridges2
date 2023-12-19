@@ -80,7 +80,7 @@ the `remotes` package:
 ```{r}
 # Install package from github
 remotes::install_github(
-  "sbg/sevenbridges-r2",
+  "sbg/sevenbridges2",
   build_vignettes = TRUE, dependencies = TRUE
 )
 ```
