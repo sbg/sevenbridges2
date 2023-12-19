@@ -6,6 +6,44 @@
 \description{
 R6 Class representing a resource for managing project members.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Member$print`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when member is requested
+ member_object <- Member$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print member object
+ member_object$print()
+}
+
+
+## ------------------------------------------------
+## Method `Member$reload`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when member is requested
+ member_object <- Member$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload member object
+ member_object$reload()
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{Member}
 }
@@ -61,6 +99,26 @@ Print method for Member class.
 \if{html}{\out{<div class="r">}}\preformatted{Member$print()}\if{html}{\out{</div>}}
 }
 
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when member is requested
+ member_object <- Member$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print member object
+ member_object$print()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Member-reload"></a>}}
@@ -69,6 +127,26 @@ Print method for Member class.
 Reload Member object information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Member$reload()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when member is requested
+ member_object <- Member$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload member object
+ member_object$reload()
+}
+
+}
+\if{html}{\out{</div>}}
+
 }
 
 }

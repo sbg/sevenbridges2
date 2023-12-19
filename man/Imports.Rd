@@ -6,6 +6,54 @@
 \description{
 R6 Class representing storage imports resource endpoints.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Imports$query`
+## ------------------------------------------------
+
+\dontrun{
+ imports_object <- Imports$new(
+                    auth = auth
+                   )
+
+ # List import job
+ imports_object$query()
+}
+
+
+## ------------------------------------------------
+## Method `Imports$get`
+## ------------------------------------------------
+
+\dontrun{
+ imports_object <- Imports$new(
+                    auth = auth,
+                   )
+
+ # List import job
+ imports_object$get(id = id)
+}
+
+
+## ------------------------------------------------
+## Method `Imports$submit_import`
+## ------------------------------------------------
+
+\dontrun{
+ imports_object <- Imports$new(
+                    auth = auth
+                   )
+
+ # Submit new import into a project
+ imports_object$submit_import(
+  source_location = volume_file_object,
+  destination_project = test_project_object,
+  autorename = TRUE
+ )
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Imports}
 }
@@ -104,6 +152,22 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Collection}} of \code{\link{Import}} objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ imports_object <- Imports$new(
+                    auth = auth
+                   )
+
+ # List import job
+ imports_object$query()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Imports-get"></a>}}
@@ -127,6 +191,22 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Import}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ imports_object <- Imports$new(
+                    auth = auth,
+                   )
+
+ # List import job
+ imports_object$get(id = id)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Imports-submit_import"></a>}}
@@ -216,6 +296,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Import}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ imports_object <- Imports$new(
+                    auth = auth
+                   )
+
+ # Submit new import into a project
+ imports_object$submit_import(
+  source_location = volume_file_object,
+  destination_project = test_project_object,
+  autorename = TRUE
+ )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Imports-delete"></a>}}

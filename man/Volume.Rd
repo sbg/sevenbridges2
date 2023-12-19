@@ -6,6 +6,290 @@
 \description{
 R6 Class representing a resource for managing volumes.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Volume$print`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print volume object
+ volume_object$print()
+}
+
+
+## ------------------------------------------------
+## Method `Volume$reload`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload volume object
+ volume_object$reload()
+}
+
+
+## ------------------------------------------------
+## Method `Volume$update`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Update volume object
+ volume_object$update(description = description)
+}
+
+
+## ------------------------------------------------
+## Method `Volume$deactivate`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Deactivate volume
+ volume_object$deactivate()
+}
+
+
+## ------------------------------------------------
+## Method `Volume$reactivate`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Deactivate volume
+ volume_object$deactivate()
+
+ # Reactivate volume
+ volume_object$reactivate()
+}
+
+
+## ------------------------------------------------
+## Method `Volume$delete`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Delete volume
+ volume_object$delete()
+}
+
+
+## ------------------------------------------------
+## Method `Volume$list_contents`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List volume contents
+ volume_object$list_contents()
+}
+
+
+## ------------------------------------------------
+## Method `Volume$get_file`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get volume file
+ volume_object$get_file(location = location)
+}
+
+
+## ------------------------------------------------
+## Method `Volume$list_members`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List volume members
+ volume_object$list_members()
+}
+
+
+## ------------------------------------------------
+## Method `Volume$add_member`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Add volume member
+ volume_object$add_member(
+                user = user,
+                permissions = list(read = TRUE, copy = FALSE)
+              )
+}
+
+
+## ------------------------------------------------
+## Method `Volume$remove_member`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Remove volume member
+ volume_object$remove_member(user = user)
+}
+
+
+## ------------------------------------------------
+## Method `Volume$get_member`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get volume member
+ volume_object$get_member(user = user)
+}
+
+
+## ------------------------------------------------
+## Method `Volume$modify_member_permissions`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Modify volume member permissions
+ volume_object$modify_member_permissions(
+                    user = user,
+                    permission = list(read = TRUE, copy = TRUE)
+                  )
+}
+
+
+## ------------------------------------------------
+## Method `Volume$list_imports`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List volume imports
+ volume_object$list_imports(
+                    project = project,
+                    state = c("RUNNING", "FAILED")
+                  )
+}
+
+
+## ------------------------------------------------
+## Method `Volume$list_exports`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List volume exports
+ volume_object$list_exports(state = c("RUNNING", "FAILED"))
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{Volume}
 }
@@ -92,6 +376,26 @@ Print method for Volume class.
 \if{html}{\out{<div class="r">}}\preformatted{Volume$print()}\if{html}{\out{</div>}}
 }
 
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print volume object
+ volume_object$print()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-reload"></a>}}
@@ -113,6 +417,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Volume}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload volume object
+ volume_object$reload()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-update"></a>}}
@@ -144,6 +468,26 @@ mapping of the volume to the cloud service where the data is stored.}
 \subsection{Returns}{
 \code{\link{Volume}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Update volume object
+ volume_object$update(description = description)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-deactivate"></a>}}
@@ -172,6 +516,26 @@ Use it within query parameter, like \code{query = list(force = TRUE)}.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Deactivate volume
+ volume_object$deactivate()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-reactivate"></a>}}
@@ -193,6 +557,32 @@ Use it within query parameter, like \code{query = list(force = TRUE)}.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+\code{\link{Volume}} object.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Deactivate volume
+ volume_object$deactivate()
+
+ # Reactivate volume
+ volume_object$reactivate()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-delete"></a>}}
@@ -206,6 +596,26 @@ delete all files on the Platform that were previously imported from
 the volume.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$delete()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Delete volume
+ volume_object$delete()
+}
+
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -255,6 +665,26 @@ Default: \verb{_all}.}
 \code{\link{VolumeContentCollection}} object containing
 list of \code{\link{VolumeFile}} and \code{\link{VolumePrefix}} objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List volume contents
+ volume_object$list_contents()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-get_file"></a>}}
@@ -283,6 +713,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{VolumeFile}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get volume file
+ volume_object$get_file(location = location)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-list_members"></a>}}
@@ -318,6 +768,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Collection}} containing \code{\link{Member}} objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List volume members
+ volume_object$list_members()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-add_member"></a>}}
@@ -357,6 +827,29 @@ Example:
 \subsection{Returns}{
 \code{\link{Member}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Add volume member
+ volume_object$add_member(
+                user = user,
+                permissions = list(read = TRUE, copy = FALSE)
+              )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-remove_member"></a>}}
@@ -377,6 +870,26 @@ user's username.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Remove volume member
+ volume_object$remove_member(user = user)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-get_member"></a>}}
@@ -403,6 +916,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Member}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get volume member
+ volume_object$get_member(user = user)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-modify_member_permissions"></a>}}
@@ -445,6 +978,29 @@ Example:
 \subsection{Returns}{
 \code{\link{Permission}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Modify volume member permissions
+ volume_object$modify_member_permissions(
+                    user = user,
+                    permission = list(read = TRUE, copy = TRUE)
+                  )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-list_imports"></a>}}
@@ -495,6 +1051,29 @@ like 'fields', etc.}
 \code{\link{Collection}} containing list of
 \code{\link{Import}} job objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List volume imports
+ volume_object$list_imports(
+                    project = project,
+                    state = c("RUNNING", "FAILED")
+                  )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-list_exports"></a>}}
@@ -543,6 +1122,26 @@ like 'fields', etc.}
 \code{\link{Collection}} containing list of
 \code{\link{Export}} job objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List volume exports
+ volume_object$list_exports(state = c("RUNNING", "FAILED"))
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-clone"></a>}}

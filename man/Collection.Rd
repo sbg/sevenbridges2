@@ -10,6 +10,88 @@ Among the actual collection items it contains information regarding
 the total number of entries available on the server and
 resource API request URL (href).
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Collection$print`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when collection object is requested
+ collection_object <- Collection$new(
+                                   href = x$href,
+                                   items = x$items,
+                                   links = x$links,
+                                   total = x$total,
+                                   auth = auth,
+                                   response = attr(x, "response")
+                                 )
+
+ # Print collection object
+ collection_object$print()
+}
+
+
+## ------------------------------------------------
+## Method `Collection$next_page`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when collection object is requested
+ collection_object <- Collection$new(
+                                   href = x$href,
+                                   items = x$items,
+                                   links = x$links,
+                                   total = x$total,
+                                   auth = auth,
+                                   response = attr(x, "response")
+                                 )
+
+ # Get next page of collection results
+ collection_object$next_page()
+}
+
+
+## ------------------------------------------------
+## Method `Collection$prev_page`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when collection object is requested
+ collection_object <- Collection$new(
+                                   href = x$href,
+                                   items = x$items,
+                                   links = x$links,
+                                   total = x$total,
+                                   auth = auth,
+                                   response = attr(x, "response")
+                                 )
+
+ # Get previous page of collection results
+ collection_object$prev_page()
+}
+
+
+## ------------------------------------------------
+## Method `Collection$all`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when collection object is requested
+ collection_object <- Collection$new(
+                                   href = x$href,
+                                   items = x$items,
+                                   links = x$links,
+                                   total = x$total,
+                                   auth = auth,
+                                   response = attr(x, "response")
+                                 )
+
+ # Get all results of collection
+ collection_object$all()
+}
+
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -90,6 +172,28 @@ Print method for Collection class.
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when collection object is requested
+ collection_object <- Collection$new(
+                                   href = x$href,
+                                   items = x$items,
+                                   links = x$links,
+                                   total = x$total,
+                                   auth = auth,
+                                   response = attr(x, "response")
+                                 )
+
+ # Print collection object
+ collection_object$print()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Collection-next_page"></a>}}
@@ -108,6 +212,28 @@ like 'advanced_access', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when collection object is requested
+ collection_object <- Collection$new(
+                                   href = x$href,
+                                   items = x$items,
+                                   links = x$links,
+                                   total = x$total,
+                                   auth = auth,
+                                   response = attr(x, "response")
+                                 )
+
+ # Get next page of collection results
+ collection_object$next_page()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Collection-prev_page"></a>}}
@@ -126,6 +252,28 @@ like 'advanced_access', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when collection object is requested
+ collection_object <- Collection$new(
+                                   href = x$href,
+                                   items = x$items,
+                                   links = x$links,
+                                   total = x$total,
+                                   auth = auth,
+                                   response = attr(x, "response")
+                                 )
+
+ # Get previous page of collection results
+ collection_object$prev_page()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Collection-all"></a>}}
@@ -145,6 +293,28 @@ like 'advanced_access', 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when collection object is requested
+ collection_object <- Collection$new(
+                                   href = x$href,
+                                   items = x$items,
+                                   links = x$links,
+                                   total = x$total,
+                                   auth = auth,
+                                   response = attr(x, "response")
+                                 )
+
+ # Get all results of collection
+ collection_object$all()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Collection-clone"></a>}}

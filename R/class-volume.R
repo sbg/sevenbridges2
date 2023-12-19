@@ -74,6 +74,21 @@ Volume <- R6::R6Class(
     #' @importFrom purrr discard
     #' @importFrom glue glue_col
     #' @importFrom cli cli_h1 cli_li cli_end
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume is requested
+    #' volume_object <- Volume$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Print volume object
+    #'  volume_object$print()
+    #' }
+    #'
     print = function() {
       x <- as.list(self)
 
@@ -107,6 +122,21 @@ Volume <- R6::R6Class(
     #' @description Reload Volume object information.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume is requested
+    #' volume_object <- Volume$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Reload volume object
+    #'  volume_object$reload()
+    #' }
+    #'
     #' @return \code{\link{Volume}} object.
     reload = function(...) {
       super$reload(
@@ -133,6 +163,20 @@ Volume <- R6::R6Class(
     #'  mapping of the volume to the cloud service where the data is stored.
     #'
     #' @importFrom checkmate assert_character assert_list
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume is requested
+    #' volume_object <- Volume$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Update volume object
+    #'  volume_object$update(description = description)
+    #' }
     #'
     #' @return \code{\link{Volume}} object.
     update = function(description = NULL, access_mode = NULL,
@@ -192,6 +236,21 @@ Volume <- R6::R6Class(
     #'
     #' @importFrom rlang abort inform
     #' @importFrom glue glue glue_col
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume is requested
+    #' volume_object <- Volume$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Deactivate volume
+    #'  volume_object$deactivate()
+    #' }
+    #'
     deactivate = function(...) {
       if (!self$active) {
         rlang::abort(
@@ -227,6 +286,25 @@ Volume <- R6::R6Class(
     #'
     #' @importFrom rlang abort inform
     #' @importFrom glue glue glue_col
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume is requested
+    #' volume_object <- Volume$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Deactivate volume
+    #'  volume_object$deactivate()
+    #'
+    #'  # Reactivate volume
+    #'  volume_object$reactivate()
+    #' }
+    #'
+    #' @return \code{\link{Volume}} object.
     reactivate = function(...) {
       if (self$active) {
         rlang::abort(
@@ -262,6 +340,21 @@ Volume <- R6::R6Class(
     #'
     #' @importFrom rlang abort inform
     #' @importFrom glue glue glue_col
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume is requested
+    #' volume_object <- Volume$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Delete volume
+    #'  volume_object$delete()
+    #' }
+    #'
     delete = function() {
       if (self$active) {
         rlang::abort(
@@ -310,6 +403,20 @@ Volume <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_character
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume is requested
+    #' volume_object <- Volume$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # List volume contents
+    #'  volume_object$list_contents()
+    #' }
     #'
     #' @return \code{\link{VolumeContentCollection}} object containing
     #' list of \code{\link{VolumeFile}} and \code{\link{VolumePrefix}} objects.
@@ -362,6 +469,20 @@ Volume <- R6::R6Class(
     #' @importFrom checkmate assert_character
     #' @importFrom rlang abort
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume is requested
+    #' volume_object <- Volume$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Get volume file
+    #'  volume_object$get_file(location = location)
+    #' }
     #'
     #' @return \code{\link{VolumeFile}} object.
     get_file = function(location = NULL, link = NULL, ...) {
@@ -417,6 +538,20 @@ Volume <- R6::R6Class(
     #'
     #' @importFrom glue glue
     #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume is requested
+    #' volume_object <- Volume$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # List volume members
+    #'  volume_object$list_members()
+    #' }
+    #'
     #' @return \code{\link{Collection}} containing \code{\link{Member}} objects.
     list_members = function(limit = getOption("sevenbridges2")$limit,
                             offset = getOption("sevenbridges2")$offset,
@@ -462,6 +597,23 @@ Volume <- R6::R6Class(
     #'  ```
     #' @importFrom checkmate assert_list assert_subset
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume is requested
+    #' volume_object <- Volume$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Add volume member
+    #'  volume_object$add_member(
+    #'                 user = user,
+    #'                 permissions = list(read = TRUE, copy = FALSE)
+    #'               )
+    #' }
     #'
     #' @return \code{\link{Member}} object.
     add_member = function(user, permissions = list(
@@ -509,8 +661,22 @@ Volume <- R6::R6Class(
     #' @param user The Seven Bridges Platform username of the person
     #'  you want to remove from the volume or object of class Member containing
     #'  user's username.
-    #'
     #' @importFrom glue glue glue_col
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume is requested
+    #' volume_object <- Volume$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Remove volume member
+    #'  volume_object$remove_member(user = user)
+    #' }
+    #'
     remove_member = function(user) {
       username <- check_and_transform_id(user,
         class_name = "Member",
@@ -542,6 +708,20 @@ Volume <- R6::R6Class(
     #'  like 'fields', etc.
     #'
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume is requested
+    #' volume_object <- Volume$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Get volume member
+    #'  volume_object$get_member(user = user)
+    #' }
     #'
     #' @return \code{\link{Member}} object.
     get_member = function(user, ...) {
@@ -589,6 +769,23 @@ Volume <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_list
     #' @importFrom glue glue glue_col
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume is requested
+    #' volume_object <- Volume$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Modify volume member permissions
+    #'  volume_object$modify_member_permissions(
+    #'                     user = user,
+    #'                     permission = list(read = TRUE, copy = TRUE)
+    #'                   )
+    #' }
     #'
     #' @return \code{\link{Permission}} object.
     modify_member_permissions = function(user, permissions = list(
@@ -654,6 +851,23 @@ Volume <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume is requested
+    #' volume_object <- Volume$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # List volume imports
+    #'  volume_object$list_imports(
+    #'                     project = project,
+    #'                     state = c("RUNNING", "FAILED")
+    #'                   )
+    #' }
+    #'
     #' @return \code{\link{Collection}} containing list of
     #' \code{\link{Import}} job objects.
     list_imports = function(project = NULL, state = NULL,
@@ -693,6 +907,20 @@ Volume <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume is requested
+    #' volume_object <- Volume$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # List volume exports
+    #'  volume_object$list_exports(state = c("RUNNING", "FAILED"))
+    #' }
     #'
     #' @return \code{\link{Collection}} containing list of
     #' \code{\link{Export}} job objects.

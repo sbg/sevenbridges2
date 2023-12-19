@@ -6,6 +6,53 @@
 \description{
 R6 Class representing a resource for managing parts of the files' uploads.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Part$print`
+## ------------------------------------------------
+
+\dontrun{
+ upload_part_object <- Part$new(
+                        part_number = part_number,
+                        part_size = part_size,
+                        auth = auth
+                      )
+
+ # Print upload part information
+ upload_part_object$print()
+}
+
+## ------------------------------------------------
+## Method `Part$upload_info_part`
+## ------------------------------------------------
+
+\dontrun{
+ upload_part_object <- Part$new(
+                        part_number = part_number,
+                        part_size = part_size,
+                        auth = auth
+                      )
+
+ # Get upload part status information
+ upload_part_object$upload_info_part(upload_id = upload_id)
+}
+
+## ------------------------------------------------
+## Method `Part$upload_complete_part`
+## ------------------------------------------------
+
+\dontrun{
+ upload_part_object <- Part$new(
+                        part_number = part_number,
+                        part_size = part_size,
+                        auth = auth
+                      )
+
+ # Report an uploaded part
+ upload_part_object$upload_complete_part(upload_id = upload_id)
+}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -105,6 +152,23 @@ Print method for Part class.
 \if{html}{\out{<div class="r">}}\preformatted{Part$print()}\if{html}{\out{</div>}}
 }
 
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ upload_part_object <- Part$new(
+                        part_number = part_number,
+                        part_size = part_size,
+                        auth = auth
+                      )
+
+ # Print upload part information
+ upload_part_object$print()
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Part-upload_info_part"></a>}}
@@ -123,6 +187,23 @@ belongs to.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ upload_part_object <- Part$new(
+                        part_number = part_number,
+                        part_size = part_size,
+                        auth = auth
+                      )
+
+ # Get upload part status information
+ upload_part_object$upload_info_part(upload_id = upload_id)
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Part-upload_complete_part"></a>}}
@@ -141,6 +222,23 @@ belongs to.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ upload_part_object <- Part$new(
+                        part_number = part_number,
+                        part_size = part_size,
+                        auth = auth
+                      )
+
+ # Report an uploaded part
+ upload_part_object$upload_complete_part(upload_id = upload_id)
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Part-clone"></a>}}

@@ -58,6 +58,21 @@ Invoice <- R6::R6Class(
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_ul cli_li
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when invoice is requested
+    #'  invoice_object <- Invoice$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Print invoice object
+    #'  invoice_object$print()
+    #' }
+    #'
     print = function() {
       x <- as.list(self)
       if (!is.null(x$invoice_period)) {
@@ -133,6 +148,20 @@ Invoice <- R6::R6Class(
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when invoice is requested
+    #'  invoice_object <- Invoice$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Reload invoice object
+    #'  invoice_object$reload()
+    #' }
     #'
     #' @return \code{\link{Invoice}} object.
     reload = function(...) {

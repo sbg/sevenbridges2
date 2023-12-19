@@ -6,6 +6,84 @@
 \description{
 R6 Class representing a resource for managing volume content collections.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `VolumeContentCollection$print`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume content collection is requested
+vol_con_col_object <- VolumeContentCollection$new(
+                    res = x,
+                    href = x$href,
+                    links = x$links,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print volume content collection object
+ vol_con_col_object$print()
+}
+
+
+## ------------------------------------------------
+## Method `VolumeContentCollection$next_page`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume content collection is requested
+vol_con_col_object <- VolumeContentCollection$new(
+                    res = x,
+                    href = x$href,
+                    links = x$links,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get next page of results
+ vol_con_col_object$next_page()
+}
+
+
+## ------------------------------------------------
+## Method `VolumeContentCollection$prev_page`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume content collection is requested
+vol_con_col_object <- VolumeContentCollection$new(
+                    res = x,
+                    href = x$href,
+                    links = x$links,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get previous page of results
+ vol_con_col_object$prev_page()
+}
+
+
+## ------------------------------------------------
+## Method `VolumeContentCollection$all`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume content collection is requested
+vol_con_col_object <- VolumeContentCollection$new(
+                    res = x,
+                    href = x$href,
+                    links = x$links,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get all results
+ vol_con_col_object$all()
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Collection]{sevenbridges2::Collection}} -> \code{VolumeContentCollection}
 }
@@ -62,6 +140,27 @@ Print method for VolumeContentCollection class.
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume content collection is requested
+vol_con_col_object <- VolumeContentCollection$new(
+                    res = x,
+                    href = x$href,
+                    links = x$links,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print volume content collection object
+ vol_con_col_object$print()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VolumeContentCollection-next_page"></a>}}
@@ -80,6 +179,27 @@ core \code{api()} function like 'advance_access', 'fields' etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume content collection is requested
+vol_con_col_object <- VolumeContentCollection$new(
+                    res = x,
+                    href = x$href,
+                    links = x$links,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get next page of results
+ vol_con_col_object$next_page()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VolumeContentCollection-prev_page"></a>}}
@@ -88,6 +208,27 @@ core \code{api()} function like 'advance_access', 'fields' etc.}
 Return previous page of results.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{VolumeContentCollection$prev_page()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume content collection is requested
+vol_con_col_object <- VolumeContentCollection$new(
+                    res = x,
+                    href = x$href,
+                    links = x$links,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get previous page of results
+ vol_con_col_object$prev_page()
+}
+
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -108,6 +249,27 @@ core \code{api()} function like 'advance_access', 'fields' etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume content collection is requested
+vol_con_col_object <- VolumeContentCollection$new(
+                    res = x,
+                    href = x$href,
+                    links = x$links,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Get all results
+ vol_con_col_object$all()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VolumeContentCollection-clone"></a>}}

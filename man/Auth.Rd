@@ -14,6 +14,159 @@ for more information.
 This is the main object for authentication to platforms powered by
 Seven Bridges.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Auth$new`
+## ------------------------------------------------
+
+\dontrun{
+ # Multiple ways to create Auth object
+
+ # Using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # Authenticate using environment variables
+ a <- Auth$new(from = "env")
+
+ # Authenticate using file configuration
+ a <- Auth$new(from = "file")
+
+}
+
+## ------------------------------------------------
+## Method `Auth$get_token`
+## ------------------------------------------------
+
+\dontrun{
+ # Authenticate using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # Get that same token
+ a$get_token()
+}
+
+
+## ------------------------------------------------
+## Method `Auth$api`
+## ------------------------------------------------
+
+\dontrun{
+ # Authenticate using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # Create API request using request parameters directly
+ a$api(params)
+}
+
+
+## ------------------------------------------------
+## Method `Auth$user`
+## ------------------------------------------------
+
+\dontrun{
+ # Authenticate using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # Get information about the currently authenticated user
+ a$user()
+}
+
+## ------------------------------------------------
+## Method `Auth$rate_limit`
+## ------------------------------------------------
+
+\dontrun{
+ # Authenticate using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # Get current rate limit
+ a$rate_limit()
+}
+
+
+## ------------------------------------------------
+## Method `Auth$upload`
+## ------------------------------------------------
+
+\dontrun{
+ # Authenticate using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # Create upload job and set destination project
+ upload_job <- a$upload(
+   path = "/path/to/your/file.txt",
+   project = destination_project,
+   overwrite = TRUE,
+   init = TRUE
+ )
+}
+
+## ------------------------------------------------
+## Method `Auth$list_ongoing_uploads`
+## ------------------------------------------------
+
+\dontrun{
+ # Authenticate using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # List ongoing uploads
+. a$list_ongoing_uploads()
+}
+
+## ------------------------------------------------
+## Method `Auth$upload_abort`
+## ------------------------------------------------
+
+\dontrun{
+ # Authenticate using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # Abort upload
+ a$abort_upload(upload_id = "<id_of_the_upload_process>")
+}
+
+## ------------------------------------------------
+## Method `Auth$send_feedback`
+## ------------------------------------------------
+
+\dontrun{
+ # Authenticate using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # Send feedback
+ a$send_feedback(
+  "This is a test for sending feedback via API.",
+  type = "thought"
+}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -160,6 +313,29 @@ Seven Bridges single sign-on (\code{TRUE})?}
 \subsection{Returns}{
 \code{Auth} class object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # Multiple ways to create Auth object
+
+ # Using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # Authenticate using environment variables
+ a <- Auth$new(from = "env")
+
+ # Authenticate using file configuration
+ a <- Auth$new(from = "file")
+
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Auth-get_token"></a>}}
@@ -174,6 +350,24 @@ system environment variable.
 \subsection{Returns}{
 An API authentication token in form of a string.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # Authenticate using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # Get that same token
+ a$get_token()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Auth-api"></a>}}
@@ -217,6 +411,24 @@ More details please check
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # Authenticate using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # Create API request using request parameters directly
+ a$api(params)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Auth-user"></a>}}
@@ -239,6 +451,23 @@ authenticated user will be returned.}
 \subsection{Returns}{
 \code{User} class object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # Authenticate using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # Get information about the currently authenticated user
+ a$user()
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Auth-rate_limit"></a>}}
@@ -250,6 +479,24 @@ number of API calls you can make in one hour. This call also returns
 information about your current instance limit.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$rate_limit()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # Authenticate using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # Get current rate limit
+ a$rate_limit()
+}
+
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -310,6 +557,28 @@ and start the upload process immediately.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # Authenticate using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # Create upload job and set destination project
+ upload_job <- a$upload(
+   path = "/path/to/your/file.txt",
+   project = destination_project,
+   overwrite = TRUE,
+   init = TRUE
+ )
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Auth-list_ongoing_uploads"></a>}}
@@ -318,6 +587,23 @@ and start the upload process immediately.}
 This method returns the list of all ongoing uploads.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$list_ongoing_uploads()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # Authenticate using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # List ongoing uploads
+. a$list_ongoing_uploads()
+}
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -338,6 +624,23 @@ to abort.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # Authenticate using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # Abort upload
+ a$abort_upload(upload_id = "<id_of_the_upload_process>")
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Auth-send_feedback"></a>}}
@@ -367,6 +670,25 @@ You can send one feedback item per minute.
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # Authenticate using authentication token
+ a <- Auth$new(
+  token = "<your_token>",
+  platform = "aws-us"
+ )
+
+ # Send feedback
+ a$send_feedback(
+  "This is a test for sending feedback via API.",
+  type = "thought"
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Auth-clone"></a>}}

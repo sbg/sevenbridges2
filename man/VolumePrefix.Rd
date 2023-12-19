@@ -6,6 +6,80 @@
 \description{
 R6 Class representing a resource for managing VolumePrefix objects.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `VolumePrefix$print`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume prefix is requested
+volume_prefix_object <- VolumePrefix$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print volume prefix object
+ volume_prefix_object$print()
+}
+
+
+## ------------------------------------------------
+## Method `VolumePrefix$reload`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume prefix is requested
+volume_prefix_object <- VolumePrefix$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload volume prefix object
+ volume_prefix_object$reload()
+}
+
+
+## ------------------------------------------------
+## Method `VolumePrefix$list_contents`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume prefix is requested
+volume_prefix_object <- VolumePrefix$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List volume prefix object contents
+ volume_prefix_object$list_contents()
+}
+
+
+## ------------------------------------------------
+## Method `VolumePrefix$import`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume prefix is requested
+volume_prefix_object <- VolumePrefix$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List volume prefix object contents
+ volume_prefix_object$import(destination_project = destination_project)
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{VolumePrefix}
 }
@@ -59,6 +133,26 @@ Print method for VolumePrefix class.
 \if{html}{\out{<div class="r">}}\preformatted{VolumePrefix$print()}\if{html}{\out{</div>}}
 }
 
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume prefix is requested
+volume_prefix_object <- VolumePrefix$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print volume prefix object
+ volume_prefix_object$print()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VolumePrefix-reload"></a>}}
@@ -67,6 +161,26 @@ Print method for VolumePrefix class.
 Reload VolumePrefix object information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{VolumePrefix$reload()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume prefix is requested
+volume_prefix_object <- VolumePrefix$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload volume prefix object
+ volume_prefix_object$reload()
+}
+
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -107,6 +221,26 @@ the response. You can use: \code{href}, \code{location}, \code{volume}, \code{ty
 \code{\link{VolumeContentCollection}} object containing list of
 \code{\link{VolumeFile}} and  \code{\link{VolumePrefix}} objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume prefix is requested
+volume_prefix_object <- VolumePrefix$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List volume prefix object contents
+ volume_prefix_object$list_contents()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VolumePrefix-import"></a>}}
@@ -182,6 +316,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Import}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume prefix is requested
+volume_prefix_object <- VolumePrefix$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # List volume prefix object contents
+ volume_prefix_object$import(destination_project = destination_project)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VolumePrefix-clone"></a>}}

@@ -49,6 +49,21 @@ VolumeFile <- R6::R6Class(
     #' @importFrom purrr discard
     #' @importFrom glue glue_col
     #' @importFrom cli cli_h1 cli_li cli_end
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume file is requested
+    #' volume_file_object <- VolumeFile$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Print volume file object
+    #'  volume_file_object$print()
+    #' }
+    #'
     print = function() {
       x <- as.list(self)
 
@@ -80,6 +95,20 @@ VolumeFile <- R6::R6Class(
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume file is requested
+    #' volume_file_object <- VolumeFile$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Reload volume file object
+    #'  volume_file_object$reload()
+    #' }
     #'
     #' @return \code{\link{VolumeFile}} object.
     reload = function(...) {
@@ -152,6 +181,20 @@ VolumeFile <- R6::R6Class(
     #'  be renamed, not the whole folder.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume file is requested
+    #' volume_file_object <- VolumeFile$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Import volume file object
+    #'  volume_file_object$import(destination_project = destination_project)
+    #' }
     #'
     #' @return \code{\link{Import}} object.
     import = function(destination_project = NULL, destination_parent = NULL,

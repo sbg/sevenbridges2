@@ -134,6 +134,21 @@ Task <- R6::R6Class(
     #' @importFrom purrr discard
     #' @importFrom glue glue_col
     #' @importFrom cli cli_h1 cli_li cli_end
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when task is requested
+    #' task_object <- Task$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Print task object
+    #'  task_object$print()
+    #' }
+    #'
     print = function() {
       x <- as.list(self)
 
@@ -170,6 +185,20 @@ Task <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when task is requested
+    #' task_object <- Task$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Reload task object
+    #'  task_object$reload()
+    #' }
+    #'
     #' @return \code{\link{Task}} object.
     reload = function(...) {
       super$reload(
@@ -198,6 +227,20 @@ Task <- R6::R6Class(
     #'  like 'fields', etc.
     #'
     #' @importFrom checkmate assert_logical
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when task is requested
+    #' task_object <- Task$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Run task
+    #'  task_object$run()
+    #' }
     #'
     #' @return \code{\link{Task}} object.
     run = function(batch = NULL,
@@ -256,6 +299,23 @@ Task <- R6::R6Class(
     #' @importFrom glue glue glue_col
     #' @importFrom rlang inform
     #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when task is requested
+    #' task_object <- Task$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #' . # Run task
+    #'  task_object$run()
+    #'
+    #'  # Then abort task
+    #'  task_object$abort()
+    #' }
+    #'
     #' @return \code{\link{Task}} object.
     abort = function(in_place = TRUE, ...) {
       checkmate::assert_logical(in_place, null.ok = FALSE)
@@ -301,6 +361,20 @@ Task <- R6::R6Class(
     #' @importFrom checkmate assert_logical
     #' @importFrom glue glue glue_col
     #' @importFrom rlang inform
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when task is requested
+    #' task_object <- Task$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Clone task object
+    #'  task_object$clone_task()
+    #' }
     #'
     #' @return \code{\link{Task}} object.
     clone_task = function(run = FALSE, ...) {
@@ -359,6 +433,20 @@ Task <- R6::R6Class(
     #'
     #' @importFrom glue glue
     #' @importFrom rlang inform
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when task is requested
+    #' task_object <- Task$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Get task execution details
+    #'  task_object$get_execution_details()
+    #' }
     #'
     #' @return List of execution details.
     get_execution_details = function(...) {
@@ -428,6 +516,20 @@ Task <- R6::R6Class(
     #'
     #' @importFrom rlang abort
     #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when task is requested
+    #' task_object <- Task$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # List batch children of a task
+    #'  task_object$list_batch_children()
+    #' }
+    #'
     #' @return \code{\link{Collection}} of \code{\link{Task}} objects.
     list_batch_children = function(status = NULL,
                                    project = NULL,
@@ -477,6 +579,21 @@ Task <- R6::R6Class(
     #'
     #' @importFrom glue glue glue_col
     #' @importFrom rlang inform
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when task is requested
+    #' task_object <- Task$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Delete task
+    #'  task_object$delete()
+    #' }
+    #'
     delete = function(...) {
       # nocov start
       path <- glue::glue(self$URL[["task"]])
@@ -503,6 +620,20 @@ Task <- R6::R6Class(
     #'  like 'fields', etc.
     #'
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when task is requested
+    #' task_object <- Task$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Rerun task
+    #'  task_object$rerun()
+    #' }
     #'
     #' @return \code{\link{Task}} object.
     rerun = function(...) {
@@ -657,6 +788,20 @@ Task <- R6::R6Class(
     #' @importFrom checkmate assert_string assert_list assert_logical
     #' @importFrom rlang abort
     #' @importFrom glue glue glue_col
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when task is requested
+    #' task_object <- Task$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Update task
+    #'  task_object$update(name = new_name)
+    #' }
     #'
     #' @return \code{\link{Task}} object.
     update = function(name = NULL,

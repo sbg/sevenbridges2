@@ -58,6 +58,14 @@ Projects <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_string
     #'
+    #' @examples
+    #' \dontrun{
+    #'  projects_object <- Projects$new(auth = auth)
+    #'
+    #'  # Query projects
+    #'  projects_object$query(name = name)
+    #' }
+    #'
     #' @return \code{\link{Collection}} of \code{\link{Project}} objects.
     query = function(name = NULL,
                      owner = NULL,
@@ -102,6 +110,14 @@ Projects <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
+    #' @examples
+    #' \dontrun{
+    #'  projects_object <- Projects$new(auth = auth)
+    #'
+    #'  # Get project by id
+    #'  projects_object$get(id = id)
+    #' }
+    #'
     #' @return \code{\link{Project}} object.
     get = function(id, ...) {
       res <- super$get(
@@ -124,6 +140,14 @@ Projects <- R6::R6Class(
     #' @param project \code{\link{Project}} object or project ID.
     #' @param ... Other arguments that can be passed to core `api()` function
     #' as 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  projects_object <- Projects$new(auth = auth)
+    #'
+    #'  # Delete a project
+    #'  projects_object$delete(project = project)
+    #' }
     #'
     #' @importFrom glue glue
     delete = function(project, ...) {
@@ -180,6 +204,18 @@ Projects <- R6::R6Class(
     #' @importFrom rlang inform abort
     #' @importFrom glue glue
     #' @importFrom checkmate assert_string test_character
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  projects_object <- Projects$new(auth = auth)
+    #'
+    #'  # Create a project
+    #'  projects_object$create(
+    #'                     name = name,
+    #'                     billing_group = billing_group
+    #'                     description = description
+    #'                   )
+    #' }
     #'
     #' @return \code{\link{Project}} object.
     create = function(name,

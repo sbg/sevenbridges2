@@ -61,6 +61,21 @@ Billing <- R6::R6Class(
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when billing group is requested
+    #'  billing_object <- Billing$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Print billing group
+    #'  billing_object$print()
+    #' }
+    #'
     print = function() {
       x <- as.list(self)
       if (!is.null(x$balance)) {
@@ -95,6 +110,20 @@ Billing <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'limit', 'offset', 'fields', etc.
     #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when billing group is requested
+    #'  billing_object <- Billing$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Reload billing group
+    #'  billing_object$reload()
+    #' }
+    #'
     #' @return \code{\link{Billing}} object.
     reload = function(...) {
       super$reload(
@@ -124,6 +153,21 @@ Billing <- R6::R6Class(
     #' @param fields Selector specifying a subset of fields to include in the
     #'  response.
     #' @param ... Other arguments that can be passed to core `api()` function.
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when billing group is requested
+    #'  billing_object <- Billing$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Get analysis breakdown
+    #'  billing_object$analysis_breakdown()
+    #' }
+    #'
     analysis_breakdown = function(date_from = NULL,
                                   date_to = NULL,
                                   invoice = NULL,
@@ -182,6 +226,21 @@ Billing <- R6::R6Class(
     #' @param fields Selector specifying a subset of fields to include in the
     #'  response.
     #' @param ... Other arguments that can be passed to core `api()` function.
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when billing group is requested
+    #'  billing_object <- Billing$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Get storage breakdown
+    #'  billing_object$storage_breakdown()
+    #' }
+    #'
     storage_breakdown = function(date_from = NULL,
                                  date_to = NULL,
                                  invoice = NULL,
@@ -240,6 +299,21 @@ Billing <- R6::R6Class(
     #' @param fields Selector specifying a subset of fields to include in the
     #'  response.
     #' @param ... Other arguments that can be passed to core `api()` function.
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when billing group is requested
+    #'  billing_object <- Billing$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Get egress breakdown
+    #'  billing_object$egress_breakdown()
+    #' }
+    #'
     egress_breakdown = function(date_from = NULL,
                                 date_to = NULL,
                                 invoice = NULL,

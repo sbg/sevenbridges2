@@ -6,6 +6,62 @@
 \description{
 R6 Class representing a resource for managing VolumeFile objects.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `VolumeFile$print`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume file is requested
+volume_file_object <- VolumeFile$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print volume file object
+ volume_file_object$print()
+}
+
+
+## ------------------------------------------------
+## Method `VolumeFile$reload`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume file is requested
+volume_file_object <- VolumeFile$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload volume file object
+ volume_file_object$reload()
+}
+
+
+## ------------------------------------------------
+## Method `VolumeFile$import`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume file is requested
+volume_file_object <- VolumeFile$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Import volume file object
+ volume_file_object$import(destination_project = destination_project)
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{VolumeFile}
 }
@@ -63,6 +119,26 @@ Print method for VolumeFile class.
 \if{html}{\out{<div class="r">}}\preformatted{VolumeFile$print()}\if{html}{\out{</div>}}
 }
 
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume file is requested
+volume_file_object <- VolumeFile$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print volume file object
+ volume_file_object$print()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VolumeFile-reload"></a>}}
@@ -84,6 +160,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{VolumeFile}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume file is requested
+volume_file_object <- VolumeFile$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload volume file object
+ volume_file_object$reload()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VolumeFile-import"></a>}}
@@ -151,6 +247,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Import}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume file is requested
+volume_file_object <- VolumeFile$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Import volume file object
+ volume_file_object$import(destination_project = destination_project)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VolumeFile-clone"></a>}}

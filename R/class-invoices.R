@@ -46,6 +46,16 @@ Invoices <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like query parameters or 'fields', etc.
     #'
+    #' @examples
+    #' \dontrun{
+    #'  invoices_object <- Invoices$new(
+    #'    auth = auth
+    #'  )
+    #'
+    #'  # List all your invoices
+    #'  invoices_object$query(billing_group = billing_group)
+    #' }
+    #'
     #' @return \code{\link{Collection}} of \code{\link{Invoice}} objects.
     query = function(billing_group = NULL,
                      limit = getOption("sevenbridges2")$limit,
@@ -78,6 +88,16 @@ Invoices <- R6::R6Class(
     #' @param id The ID of the invoice you are querying.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  invoices_object <- Invoices$new(
+    #'    auth = auth
+    #'  )
+    #'
+    #'  # Get single invoice by id
+    #'  invoices_object$get(id = id)
+    #' }
     #'
     #' @return \code{\link{Invoice}} object.
     get = function(id, ...) {

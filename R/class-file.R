@@ -85,6 +85,21 @@ File <- R6::R6Class(
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end cli_bullets
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when file is requested
+    #' file_object <- File$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Print file object
+    #'  file_object$print()
+    #' }
+    #'
     print = function() {
       x <- as.list(self)
 
@@ -126,6 +141,21 @@ File <- R6::R6Class(
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when file is requested
+    #' file_object <- File$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Detailed print of file object
+    #'  file_object$detailed_print()
+    #' }
+    #'
     detailed_print = function() {
       x <- as.list(self)
 
@@ -203,6 +233,21 @@ File <- R6::R6Class(
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when file is requested
+    #' file_object <- File$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Reload file object
+    #'  file_object$reload()
+    #' }
+    #'
     #' @return \code{\link{File}} object.
     reload = function(...) {
       super$reload(
@@ -210,7 +255,8 @@ File <- R6::R6Class(
         ...
       )
       rlang::inform("File object is refreshed!")
-    }, # nocov end
+    },
+    # nocov end
 
     # Update file ------------------------------------------------------------
     #' @description Updates the name, the full set metadata, and tags
@@ -228,6 +274,20 @@ File <- R6::R6Class(
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when file is requested
+    #' file_object <- File$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Update file object
+    #'  file_object$update(name = "new_name")
+    #' }
     #'
     #' @return Updated \code{\link{File}} object.
     update = function(name = NULL,
@@ -266,7 +326,8 @@ File <- R6::R6Class(
         auth = self$auth
       )
       rlang::inform("File has been updated!")
-    }, # nocov end
+    },
+    # nocov end
 
     # Add file tags -----------------------------------------------------------
     #' @description This method allows you to tag files on the Platform.
@@ -285,6 +346,21 @@ File <- R6::R6Class(
     #' @importFrom checkmate assert_logical
     #' @importFrom glue glue
     #' @importFrom rlang abort
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when file is requested
+    #' file_object <- File$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Add new tag to file object
+    #'  file_object$add_tag(tags = c("new_tag"))
+    #' }
+    #'
     add_tag = function(tags, overwrite = FALSE, ...) {
       if (is_missing(tags)) {
         # nolint start
@@ -316,7 +392,8 @@ File <- R6::R6Class(
       } else {
         self$tags <- unique(c(self$tags, tags))
       }
-    }, # nocov end
+    },
+    # nocov end
 
     # Copy file -----------------------------------------------------------
     #' @description This call copies the specified file to a new project.
@@ -339,6 +416,20 @@ File <- R6::R6Class(
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when file is requested
+    #' file_object <- File$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Copy file object to project
+    #'  file_object$copy_to(project = project)
+    #' }
     #'
     #' @return Copied \code{\link{File}} object.
     copy_to = function(project, name = NULL, ...) {
@@ -374,6 +465,21 @@ File <- R6::R6Class(
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when file is requested
+    #' file_object <- File$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Get download url for file object
+    #'  file_object$get_download_url()
+    #' }
+    #'
     get_download_url = function(...) {
       res <- sevenbridges2::api(
         path = glue::glue(self$URL[["download_url"]]),
@@ -398,6 +504,21 @@ File <- R6::R6Class(
     #'
     #' @importFrom DescTools StripAttr
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when file is requested
+    #' file_object <- File$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Get metadata for file object
+    #'  file_object$get_metadata()
+    #' }
+    #'
     get_metadata = function(...) {
       res <- sevenbridges2::api(
         path = glue::glue(self$URL[["metadata"]]),
@@ -411,7 +532,8 @@ File <- R6::R6Class(
         DescTools::StripAttr(res, attr_names = "response")
 
       return(self$metadata)
-    }, # nocov end
+    },
+    # nocov end
 
     # Set file's metadata -----------------------------------------------------
     #' @description This call changes the metadata values for the specified
@@ -432,6 +554,21 @@ File <- R6::R6Class(
     #' @importFrom checkmate assert_logical
     #' @importFrom rlang abort
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when file is requested
+    #' file_object <- File$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Set metadata for file object
+    #'  file_object$set_metadata(metadata_fields = list("field_1" = "value_1"))
+    #' }
+    #'
     set_metadata = function(metadata_fields, overwrite = FALSE, ...) {
       if (is_missing(metadata_fields)) {
         # nolint start
@@ -463,7 +600,8 @@ File <- R6::R6Class(
         DescTools::StripAttr(res, attr_names = "response")
 
       return(self$metadata)
-    }, # nocov end
+    },
+    # nocov end
 
     # Move file to folder -----------------------------------------------------
     #' @description This call moves a file from one folder to another.
@@ -477,6 +615,20 @@ File <- R6::R6Class(
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when file is requested
+    #' file_object <- File$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Move file object to a project
+    #'  file_object$move_to_folder(parent = "parent-folder-id")
+    #' }
     #'
     #' @return Moved \code{\link{File}} object.
     move_to_folder = function(parent, name = NULL) {
@@ -522,6 +674,20 @@ File <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when file is requested
+    #' file_object <- File$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # List folder's content
+    #'  file_object$list_contents()
+    #' }
+    #'
     #' @return \code{\link{Collection}} of \code{\link{File}} objects.
     list_contents = function(limit = getOption("sevenbridges2")$"limit",
                              offset = getOption("sevenbridges2")$"offset",
@@ -550,6 +716,21 @@ File <- R6::R6Class(
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end cli_bullets
     #' @importFrom rlang inform abort
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when file is requested
+    #' file_object <- File$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Delete file object
+    #'  file_object$delete()
+    #' }
+    #'
     delete = function() {
       res <- sevenbridges2::api(
         path = glue::glue(self$URL[["file"]]),
@@ -559,7 +740,8 @@ File <- R6::R6Class(
       )
 
       rlang::inform(message = glue::glue("File {self$id} has been deleted."))
-    }, # nocov end
+    },
+    # nocov end
 
     # Download file from platform ---------------------------------------------
     #' @description Download method for File objects. It allows download a
@@ -577,6 +759,21 @@ File <- R6::R6Class(
     #'
     #' @importFrom rlang inform warn abort
     #' @importFrom glue glue_col
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when file is requested
+    #' file_object <- File$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Download file object
+    #'  file_object$download()
+    #' }
+    #'
     download = function(directory_path = getwd(),
                         filename = self$name,
                         method = "curl",
@@ -710,6 +907,25 @@ File <- R6::R6Class(
     #'  }
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when file is requested
+    #'  file_object <- File$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Export file object to a volume
+    #'  file_object$submit_export(
+    #'                destination_volume = volume,
+    #'                destination_location = location
+    #'              )
+    #' }
+    #'
+    #' @return \code{\link{Export}} object.
     submit_export = function(destination_volume,
                              destination_location,
                              overwrite = FALSE,
@@ -725,14 +941,6 @@ File <- R6::R6Class(
         properties = properties,
         ...
       )
-      # nolint start
-      rlang::inform(
-        glue::glue_col(
-          "File {green {self$name}} has been exported to the {green {destination_volume}} volume.
-                                   Please, reload file object to fetch updated information."
-        )
-      )
-      # nolint end
     }
   ),
   private = list(

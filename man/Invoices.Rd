@@ -6,6 +6,36 @@
 \description{
 R6 Class representing invoice resource endpoints
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Invoices$query`
+## ------------------------------------------------
+
+\dontrun{
+ invoices_object <- Invoices$new(
+   auth = auth
+ )
+
+ # List all your invoices
+ invoices_object$query(billing_group = billing_group)
+}
+
+
+## ------------------------------------------------
+## Method `Invoices$get`
+## ------------------------------------------------
+
+\dontrun{
+ invoices_object <- Invoices$new(
+   auth = auth
+ )
+
+ # Get single invoice by id
+ invoices_object$get(id = id)
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Invoices}
 }
@@ -89,6 +119,22 @@ like query parameters or 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Collection}} of \code{\link{Invoice}} objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ invoices_object <- Invoices$new(
+   auth = auth
+ )
+
+ # List all your invoices
+ invoices_object$query(billing_group = billing_group)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Invoices-get"></a>}}
@@ -115,6 +161,22 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Invoice}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ invoices_object <- Invoices$new(
+   auth = auth
+ )
+
+ # Get single invoice by id
+ invoices_object$get(id = id)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Invoices-clone"></a>}}

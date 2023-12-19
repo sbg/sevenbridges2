@@ -59,6 +59,23 @@ Collection <- R6::R6Class(
     #' @importFrom cli cli_text cli_h2
     #' @importFrom checkmate test_atomic
     #' @importFrom glue glue_col
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when collection object is requested
+    #'  collection_object <- Collection$new(
+    #'                                    href = x$href,
+    #'                                    items = x$items,
+    #'                                    links = x$links,
+    #'                                    total = x$total,
+    #'                                    auth = auth,
+    #'                                    response = attr(x, "response")
+    #'                                  )
+    #'
+    #'  # Print collection object
+    #'  collection_object$print()
+    #' }
+    #'
     print = function(n = 10) {
       x <- as.list(self)
       if (length(x$items) == 0) {
@@ -90,6 +107,23 @@ Collection <- R6::R6Class(
     #'  like 'advanced_access', 'fields', etc.
     #'
     #' @importFrom rlang abort
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when collection object is requested
+    #'  collection_object <- Collection$new(
+    #'                                    href = x$href,
+    #'                                    items = x$items,
+    #'                                    links = x$links,
+    #'                                    total = x$total,
+    #'                                    auth = auth,
+    #'                                    response = attr(x, "response")
+    #'                                  )
+    #'
+    #'  # Get next page of collection results
+    #'  collection_object$next_page()
+    #' }
+    #'
     next_page = function(...) {
       checkmate::assert_list(self$links, null.ok = TRUE)
       if (length(self$links) == 0) {
@@ -123,6 +157,23 @@ Collection <- R6::R6Class(
     #'  like 'advanced_access', 'fields', etc.
     #'
     #' @importFrom rlang abort
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when collection object is requested
+    #'  collection_object <- Collection$new(
+    #'                                    href = x$href,
+    #'                                    items = x$items,
+    #'                                    links = x$links,
+    #'                                    total = x$total,
+    #'                                    auth = auth,
+    #'                                    response = attr(x, "response")
+    #'                                  )
+    #'
+    #'  # Get previous page of collection results
+    #'  collection_object$prev_page()
+    #' }
+    #'
     prev_page = function(...) {
       checkmate::assert_list(self$links, null.ok = TRUE)
       if (length(self$links) == 0) {
@@ -157,6 +208,23 @@ Collection <- R6::R6Class(
     #'  like 'advanced_access', 'fields', etc.
     #'
     #' @importFrom rlang abort
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when collection object is requested
+    #'  collection_object <- Collection$new(
+    #'                                    href = x$href,
+    #'                                    items = x$items,
+    #'                                    links = x$links,
+    #'                                    total = x$total,
+    #'                                    auth = auth,
+    #'                                    response = attr(x, "response")
+    #'                                  )
+    #'
+    #'  # Get all results of collection
+    #'  collection_object$all()
+    #' }
+    #'
     all = function(...) {
       if (is.null(self$href)) {
         rlang::abort("Resource URL is empty or you've already fetched all results.") # nolint

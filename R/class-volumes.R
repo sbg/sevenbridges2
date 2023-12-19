@@ -36,6 +36,14 @@ Volumes <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'limit', 'offset', 'fields', etc.
     #'
+    #' @examples
+    #' \dontrun{
+    #'  volumes_object <- Volumes$new(auth = auth)
+    #'
+    #'  # Query volumes
+    #'  volumes_object$query()
+    #' }
+    #'
     #' @return \code{\link{Collection}} of \code{\link{Volume}} objects.
     query = function(...) {
       # nocov start
@@ -61,6 +69,14 @@ Volumes <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  volumes_object <- Volumes$new(auth = auth)
+    #'
+    #'  # Get volumes
+    #'  volumes_object$get(id = id)
+    #' }
     #'
     #' @return \code{\link{Volume}} object.
     get = function(id) {
@@ -90,6 +106,15 @@ Volumes <- R6::R6Class(
     #' @param volume \code{\link{Volume}} object or volume ID.
     #' @param ... Other arguments that can be passed to core `api()` function
     #' as 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  volumes_object <- Volumes$new(auth = auth)
+    #'
+    #'  # Get volumes
+    #'  volumes_object$delete(volume = volume)
+    #' }
+    #'
     delete = function(volume, ...) {
       id <- check_and_transform_id(volume, "Volume")
       # nocov start
@@ -168,6 +193,20 @@ Volumes <- R6::R6Class(
     #' @importFrom glue glue
     #' @importFrom rlang abort
     #' @importFrom jsonlite fromJSON
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  volumes_object <- Volumes$new(auth = auth)
+    #'
+    #'  # Create new AWS Volume (IAM Usser)
+    #'  aws_iam_user_volume <- volumes_object$create_s3_using_iam_user(
+    #'                                       name = "my_new_aws_user_volume",
+    #'                                       bucket = "<bucket-name>",
+    #'                                       description = "AWS IAM User Vol",
+    #'                                       access_key_id = "<access-key>",
+    #'                                       secret_access_key = "<secret-access-key>" # nolint
+    #'                                     )
+    #' }
     #'
     #' @return \code{\link{Volume}} object.
     create_s3_using_iam_user = function(name = NULL,
@@ -301,6 +340,20 @@ Volumes <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom jsonlite fromJSON
     #'
+    #' @examples
+    #' \dontrun{
+    #'  volumes_object <- Volumes$new(auth = auth)
+    #'
+    #'  # Create new AWS Volume (IAM Role)
+    #'  aws_iam_role_volume <- volumes_object$create_s3_using_iam_role(
+    #'                                       name = "my_new_aws_user_volume",
+    #'                                       bucket = "<bucket-name>",
+    #'                                       description = "AWS IAM Role Vol",
+    #'                                       role_arn = "<role-arn-key>",
+    #'                                       external_id = "<external-id>"
+    #'                                     )
+    #' }
+    #'
     #' @return \code{\link{Volume}} object.
     create_s3_using_iam_role = function(name = NULL,
                                         access_mode = "RW",
@@ -412,6 +465,21 @@ Volumes <- R6::R6Class(
     #' @importFrom glue glue
     #' @importFrom rlang abort
     #' @importFrom jsonlite fromJSON
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  volumes_object <- Volumes$new(auth = auth)
+    #'
+    #'  #  Create Google cloud volume using IAM User authentication type
+    #'  gc_iam_user_volume <- volumes_object$create_google_using_iam_user(
+    #'                                       name = "my_new_gc_user_volume",
+    #'                                       access_mode = "RW",
+    #'                                       bucket = "<bucket-name>",
+    #'                                       description = "GC IAM User volume",
+    #'                                       client_email = "<client_email>",
+    #'                                       private_key = "<private_key-string>" # nolint
+    #'                                     )
+    #' }
     #'
     #' @return \code{\link{Volume}} object.
     create_google_using_iam_user = function(name = NULL,
@@ -525,6 +593,34 @@ Volumes <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom jsonlite fromJSON
     #'
+    #' @examples
+    #' \dontrun{
+    #'  volumes_object <- Volumes$new(auth = auth)
+    #'
+    #'  #  Create Google cloud volume using IAM User authentication type
+    #'  gc_iam_role_volume <- volumes_object$create_google_using_iam_role(
+    #'                                     name = "my_new_gc_role_volume",
+    #'                                     access_mode = "RO",
+    #'                                     bucket = "<bucket-name>",
+    #'                                     description = "GC IAM Role volume",
+    #'                                     configuration = list(
+    # nolint start
+    #'                                               type = "<type-name>",
+    #'                                               audience = "<audience-link>",
+    #'                                               subject_token_type = "<subject_token_type>",
+    #'                                               service_account_impersonation_url = "<service_account_impersonation_url>",
+    #'                                               token_url = "<token_url>",
+    #'                                               credential_source = list(
+    #'                                                   environment_id = "<environment_id>",
+    #'                                                   region_url = "<region_url>",
+    #'                                                   url = "<url>",
+    #'                                                   regional_cred_verification_url = "<regional_cred_verification_url>"
+    # nolint end
+    #'                                               )
+    #'                                             )
+    #'                                     )
+    #' }
+    #'
     #' @return \code{\link{Volume}} object.
     create_google_using_iam_role = function(name = NULL,
                                             access_mode = "RW",
@@ -595,6 +691,7 @@ Volumes <- R6::R6Class(
     # Create new AZURE Volume  -------------------------------------------------
     #' @description This call creates a new volume by attaching a Microsoft
     #'  Azure storage container to the Platform.
+    #'
     #' @param name The name of the volume. It must be unique from all
     #'  other volumes for this user. Required if `from_path` parameter
     #'  is not provided.
@@ -629,6 +726,24 @@ Volumes <- R6::R6Class(
     #' @importFrom glue glue
     #' @importFrom rlang abort
     #' @importFrom jsonlite fromJSON
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  volumes_object <- Volumes$new(auth = auth)
+    #'
+    #'  # Create Azure volume
+    #'  azure_volume <- volumes_object$create_azure(
+    #'    name = "my_new_azure_volume",
+    #'    description = "Azure volume",
+    #'    endpoint = "<endpoint>",
+    #'    container = "<bucket-name",
+    #'    storage_account = "<storage_account-name>",
+    #'    tenant_id = "<tenant_id>",
+    #'    client_id = "<client_id>",
+    #'    client_secret = "<client_secret>",
+    #'    resource_id = "<resource_id>"
+    #'   )
+    #' }
     #'
     #' @return \code{\link{Volume}} object.
     create_azure = function(name = NULL,
@@ -709,6 +824,7 @@ Volumes <- R6::R6Class(
     # Create new ALI (OSS) Volume  ---------------------------------------------
     #' @description Create new volume to connect to your bucket on ALI (OSS)
     #'  platform.
+    #'
     #' @param name The name of the volume. It must be unique from all
     #'  other volumes for this user. Required if from_path parameter
     #'  is not provided.
@@ -737,6 +853,21 @@ Volumes <- R6::R6Class(
     #' @importFrom glue glue
     #' @importFrom rlang abort
     #' @importFrom jsonlite fromJSON
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  volumes_object <- Volumes$new(auth = auth)
+    #'
+    #'  # Create Ali cloud volume
+    #' ali_volume <- volumes_object$create_ali_oss(
+    #'   name = "my_new_azure_volume",
+    #'   description = "Ali volume",
+    #'   endpoint = "<endpoint>",
+    #'   bucket = "<bucket-name",
+    #'   access_key_id = "<access_key_id>",
+    #'   secret_access_key = "<secret_access_key>"
+    #   )
+    #' }
     #'
     #' @return \code{\link{Volume}} object.
     create_ali_oss = function(name = NULL,

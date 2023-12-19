@@ -26,6 +26,7 @@ Apps <- R6::R6Class(
 
     # Initialize Apps object --------------------------------------------------
     #' @description Create new Apps resource object.
+    #'
     #' @param ... Other response arguments.
     initialize = function(...) {
       # Initialize Resource class
@@ -62,6 +63,15 @@ Apps <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function.
     #'
     #' @importFrom checkmate assert_list
+    #' @examples
+    #' \dontrun{
+    #'  apps_object <- Apps$new(
+    #'    auth = auth
+    #'  )
+    #'
+    #'  # List public apps
+    #'  apps_object$query(visibility = "public")
+    #' }
     #'
     #' @return \code{\link{Collection}} containing \code{\link{App}} objects.
     query = function(project = NULL,
@@ -129,6 +139,16 @@ Apps <- R6::R6Class(
     #' @importFrom checkmate assert_int
     #' @importFrom rlang abort
     #'
+    #' @examples
+    #' \dontrun{
+    #'  apps_object <- Apps$new(
+    #'    auth = auth
+    #'  )
+    #'
+    #'  # Get app object
+    #'  apps_object$$get(id = "<some_id>")
+    #' }
+    #'
     #' @return \code{\link{App}} object.
     get = function(id, revision = NULL, ...) {
       if (is_missing(id)) {
@@ -182,6 +202,15 @@ Apps <- R6::R6Class(
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  apps_object <- Apps$new(
+    #'    auth = auth
+    #'  )
+    #'  # Copy app object to a project
+    #'  apps_object$copy(app = app, project = project)
+    #' }
     #'
     #' @return Copied \code{\link{App}} object.
     copy = function(app,
@@ -247,6 +276,21 @@ Apps <- R6::R6Class(
     #' @importFrom jsonlite validate fromJSON
     #' @importFrom rlang abort
     #' @importFrom readr read_file
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  apps_object <- Apps$new(
+    #'    auth = auth
+    #'  )
+    #'
+    #'  # Create new app object
+    #'  apps_object$create(
+    #'   raw = raw,
+    #'   project = project,
+    #'   name = name,
+    #'   raw_format = YAML
+    #'  )
+    #' }
     #'
     #' @return \code{\link{App}} object.
     create = function(raw = NULL,

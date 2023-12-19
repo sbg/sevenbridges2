@@ -6,6 +6,60 @@
 \description{
 R6 Class representing Projects resource.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Projects$query`
+## ------------------------------------------------
+
+\dontrun{
+ projects_object <- Projects$new(auth = auth)
+
+ # Query projects
+ projects_object$query(name = name)
+}
+
+
+## ------------------------------------------------
+## Method `Projects$get`
+## ------------------------------------------------
+
+\dontrun{
+ projects_object <- Projects$new(auth = auth)
+
+ # Get project by id
+ projects_object$get(id = id)
+}
+
+
+## ------------------------------------------------
+## Method `Projects$delete`
+## ------------------------------------------------
+
+\dontrun{
+ projects_object <- Projects$new(auth = auth)
+
+ # Delete a project
+ projects_object$delete(project = project)
+}
+
+
+## ------------------------------------------------
+## Method `Projects$create`
+## ------------------------------------------------
+
+\dontrun{
+ projects_object <- Projects$new(auth = auth)
+
+ # Create a project
+ projects_object$create(
+                    name = name,
+                    billing_group = billing_group
+                    description = description
+                  )
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Projects}
 }
@@ -94,6 +148,20 @@ like other query parameters or 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Collection}} of \code{\link{Project}} objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ projects_object <- Projects$new(auth = auth)
+
+ # Query projects
+ projects_object$query(name = name)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Projects-get"></a>}}
@@ -121,6 +189,20 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Project}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ projects_object <- Projects$new(auth = auth)
+
+ # Get project by id
+ projects_object$get(id = id)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Projects-delete"></a>}}
@@ -147,6 +229,20 @@ as 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ projects_object <- Projects$new(auth = auth)
+
+ # Delete a project
+ projects_object$delete(project = project)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Projects-create"></a>}}
@@ -221,6 +317,24 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Project}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ projects_object <- Projects$new(auth = auth)
+
+ # Create a project
+ projects_object$create(
+                    name = name,
+                    billing_group = billing_group
+                    description = description
+                  )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Projects-clone"></a>}}

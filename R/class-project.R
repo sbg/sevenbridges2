@@ -107,6 +107,21 @@ Project <- R6::R6Class(
     #' @description  Basic print method for Project class.
     #'
     #' @importFrom glue glue_col
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Print project object
+    #'  project_object$print()
+    #' }
+    #'
     print = function() {
       cat(glue::glue_col("{blue  Project name: } {self$name}"), "\n") # nocov
       cat(glue::glue_col("{blue  Project id: } {self$id}"), "\n") # nocov
@@ -121,6 +136,21 @@ Project <- R6::R6Class(
     #' @importFrom purrr discard
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Print project object in detail
+    #'  project_object$detailed_print()
+    #' }
+    #'
     detailed_print = function() {
       x <- as.list(self)
 
@@ -193,6 +223,21 @@ Project <- R6::R6Class(
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Reload project object
+    #'  project_object$reload()
+    #' }
+    #'
     reload = function(...) {
       super$reload(
         cls = self,
@@ -224,6 +269,21 @@ Project <- R6::R6Class(
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Change project object name
+    #'  project_object$update(name = name)
+    #' }
+    #'
     update = function(name = NULL,
                       description = NULL,
                       billing_group = NULL,
@@ -281,6 +341,21 @@ Project <- R6::R6Class(
     #' @importFrom rlang abort inform
     #' @importFrom httr content
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Delete project object
+    #'  project_object$delete()
+    #' }
+    #'
     delete = function() {
       # nocov start
       res <- sevenbridges2::api(
@@ -290,9 +365,7 @@ Project <- R6::R6Class(
         base_url = self$auth$url
       )
 
-      rlang::inform(
-        message = glue::glue("Project {self$id} has been deleted.")
-      )
+      rlang::inform(message = glue::glue("Project {self$id} has been deleted."))
     },
     # nocov end
 
@@ -310,6 +383,20 @@ Project <- R6::R6Class(
     #'  like 'fields', etc.
     #'
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # List members in a project
+    #'  project_object$list_members()
+    #' }
     #'
     #' @return \code{\link{Collection}} of \code{\link{Member}} objects.
     list_members = function(limit = getOption("sevenbridges2")$limit,
@@ -367,6 +454,23 @@ Project <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom glue glue glue_col
     #' @importFrom checkmate assert_character assert_list assert_subset
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Add member to a project
+    #'  project_object$add_member(
+    #       user = "<username_of_a_user_you_want_to_add>",
+    #       permissions = list(write = TRUE, execute = TRUE)
+    #   )
+    #' }
     #'
     #' @return \code{\link{Member}} object.
     add_member = function(user = NULL,
@@ -438,6 +542,21 @@ Project <- R6::R6Class(
     #'
     #' @importFrom rlang abort inform
     #' @importFrom glue glue glue_col
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Remove member from a project
+    #'  project_object$remove_member(user = user)
+    #' }
+    #'
     remove_member = function(user) {
       if (is_missing(user)) {
         rlang::abort(
@@ -479,6 +598,20 @@ Project <- R6::R6Class(
     #'
     #' @importFrom rlang abort
     #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Get member from a project
+    #'  project_object$get_member(user = user)
+    #' }
     #'
     #' @return \code{\link{Member}} object.
     get_member = function(user, ...) {
@@ -527,6 +660,23 @@ Project <- R6::R6Class(
     #' @importFrom rlang abort
     #' @importFrom glue glue glue_col
     #' @importFrom checkmate assert_list assert_subset
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Modify member permissions in a project
+    #'  project_object$modify_member_permissions(
+    #'                   user = user,
+    #'                   permission = list(read = TRUE, copy = FALSE)
+    #'                   )
+    #' }
     #'
     #' @return \code{\link{Permission}} object.
     modify_member_permissions = function(user = NULL,
@@ -597,6 +747,20 @@ Project <- R6::R6Class(
     #'
     #' @importFrom glue glue
     #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # List files in a project
+    #'  project_object$list_files()
+    #' }
+    #'
     #' @return \code{\link{Collection}} of \code{\link{File}} objects.
     list_files = function(limit = getOption("sevenbridges2")$limit,
                           offset = getOption("sevenbridges2")$offset,
@@ -630,6 +794,20 @@ Project <- R6::R6Class(
     #' @importFrom glue glue_col
     #' @importFrom rlang inform
     #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # List files in a project
+    #'  project_object$create_folder(name = "new_folder")
+    #' }
+    #'
     #' @return \code{\link{File}} object of type 'FOLDER'.
     create_folder = function(name) {
       check_folder_name(name)
@@ -655,6 +833,22 @@ Project <- R6::R6Class(
 
     # Get project's root folder -----------------------------------------------
     #' @description  Get project's root folder object
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Get root folder in a project
+    #'  project_object$get_root_folder()
+    #' }
+    #'
+    #' @return \code{\link{File}} object of type 'FOLDER'.
     get_root_folder = function() {
       self$auth$files$get(id = self$root_folder)
     },
@@ -674,6 +868,20 @@ Project <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like other query parameters or 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # List apps in a project
+    #'  project_object$list_apps(query_terms = query_term)
+    #' }
     #'
     #' @return \code{\link{Collection}} of \code{\link{App}} objects.
     list_apps = function(query_terms = NULL,
@@ -705,6 +913,20 @@ Project <- R6::R6Class(
     #' @param name A short name for the app (without any non-alphanumeric
     #'  characters or spaces).
     #' @param raw_format The type of format used (`JSON` or `YAML`).
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Create app in a project
+    #'  project_object$create_app(raw = raw)
+    #' }
     #'
     #' @return \code{\link{App}} object.
     create_app = function(raw = NULL,
@@ -776,6 +998,20 @@ Project <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # List tasks in a project
+    #'  project_object$list_tasks()
+    #' }
+    #'
     #' @return \code{\link{Collection}} of \code{\link{Task}} objects.
     list_tasks = function(status = NULL,
                           parent = NULL,
@@ -839,6 +1075,20 @@ Project <- R6::R6Class(
     #'  This is a pagination-specific attribute.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # List import jobs in a project
+    #'  project_object$list_imports()
+    #' }
     #'
     #' @return \code{\link{Collection}} of \code{\link{Import}} objects.
     list_imports = function(volume = NULL,
@@ -1008,6 +1258,22 @@ Project <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_string
     #' @importFrom rlang abort
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # x is API response when project is requested
+    #'  project_object <- Project$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Create a task in a project
+    #'  project_object$create_task(
+    #'                   app = app
+    #'                   )
+    #' }
     #'
     #' @return \code{\link{Task}} object.
     create_task = function(app,

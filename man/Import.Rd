@@ -6,6 +6,44 @@
 \description{
 R6 Class representing a resource for managing volume import jobs.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Import$print`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when import is requested
+ import_object <- Import$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print import object
+ import_object$print()
+}
+
+
+## ------------------------------------------------
+## Method `Import$reload`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when import is requested
+ import_object <- Import$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload import object
+ import_object$reload()
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{Import}
 }
@@ -90,6 +128,26 @@ Print method for Import class.
 \if{html}{\out{<div class="r">}}\preformatted{Import$print()}\if{html}{\out{</div>}}
 }
 
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when import is requested
+ import_object <- Import$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Print import object
+ import_object$print()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Import-reload"></a>}}
@@ -111,6 +169,26 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Import}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when import is requested
+ import_object <- Import$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Reload import object
+ import_object$reload()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Import-clone"></a>}}

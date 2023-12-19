@@ -6,6 +6,121 @@
 \description{
 R6 Class representing a resource for managing apps.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `App$print`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when app is requested
+ app_object <- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ app_object$print()
+}
+
+## ------------------------------------------------
+## Method `App$reload`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when app is requested
+ app_object <- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ app_object$reload()
+}
+
+## ------------------------------------------------
+## Method `App$copy`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when app is requested
+ app_object <- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ app_object$copy(project)
+}
+
+
+## ------------------------------------------------
+## Method `App$get_revision`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when app is requested
+ app_object <- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ app_object$get_revision()
+}
+
+
+## ------------------------------------------------
+## Method `App$create_revision`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when app is requested
+ app_object <- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ # Create App object using raw CWL
+ app_object$create_revision(raw)
+}
+
+
+## ------------------------------------------------
+## Method `App$sync`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when app is requested
+ app_object <- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+
+  app_object$sync()
+}
+
+
+## ------------------------------------------------
+## Method `App$create_task`
+## ------------------------------------------------
+
+\dontrun{
+ # x is API response when app is requested
+ app_object <- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ # Create a DRAFT task
+ app_object$create_task(project = project)
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{App}
 }
@@ -64,6 +179,9 @@ Create a new App object.
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+A new \code{App} object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-App-print"></a>}}
@@ -72,6 +190,23 @@ Create a new App object.
 Print method for App class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App$print()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when app is requested
+ app_object <- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ app_object$print()
+}
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -97,6 +232,23 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{App}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when app is requested
+ app_object <- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ app_object$reload()
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-App-copy"></a>}}
@@ -142,6 +294,24 @@ like 'fields', etc.}
 \subsection{Returns}{
 Copied \code{\link{App}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when app is requested
+ app_object <- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ app_object$copy(project)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-App-get_revision"></a>}}
@@ -173,6 +343,24 @@ app, which is not necessarily the most recent version.
 \subsection{Returns}{
 \code{\link{App}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when app is requested
+ app_object <- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ app_object$get_revision()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-App-create_revision"></a>}}
@@ -227,6 +415,25 @@ More documentation about how to create the app via API can be found
 \subsection{Returns}{
 \code{\link{App}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when app is requested
+ app_object <- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ # Create App object using raw CWL
+ app_object$create_revision(raw)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-App-sync"></a>}}
@@ -253,6 +460,25 @@ has been copied.
 \subsection{Returns}{
 \code{\link{App}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when app is requested
+ app_object <- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+
+  app_object$sync()
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-App-input_matrix"></a>}}
@@ -462,6 +688,25 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Task}} object.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # x is API response when app is requested
+ app_object <- App$new(
+   res = x,
+   href = x$href,
+   auth = auth,
+   response = attr(x, "response")
+ )
+ # Create a DRAFT task
+ app_object$create_task(project = project)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-App-clone"></a>}}
