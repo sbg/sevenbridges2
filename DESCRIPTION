@@ -3,8 +3,8 @@ Type: Package
 Title: Seven Bridges Platform API Client in R
 Version: 0.0.1
 Authors@R: c(
-    person("Marko", "Trifunovic", email = "marko.trifunovic@sevenbridges.com", role = c("aut", "cre")),
-    person("Vladimir", "Obucina", role = c("aut")),
+    person("Vladimir", "Obucina", email = "vladimir.obucina@velsera.com", role = c("aut", "cre")),
+    person("Marko", "Trifunovic", email = "marko.trifunovic@sevenbridges.com", role = c("aut")),
     person("Marija", "Jovanovic", role = c("aut")),
     person("Seven Bridges Genomics Inc.", role = c("cph", "fnd"))
     )
