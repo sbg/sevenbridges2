@@ -1,5 +1,6 @@
 ^.*\.Rproj$
 ^.covrignore
+^CRAN-SUBMISSION$
 ^\.DS_Store$
 ^\.Rproj\.user$
 ^\.github$
