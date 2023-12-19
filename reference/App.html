@@ -24,10 +24,10 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/Authentication_and_Billing.html">Authentication and Billing</a>
-    <a class="dropdown-item" href="../articles/Files_upload_and_Volumes.html">Files upload and Volumes</a>
-    <a class="dropdown-item" href="../articles/Introduction_and_Quickstart.html">Introduction and Quickstart</a>
-    <a class="dropdown-item" href="../articles/Projects_and_Tasks_execution.html">Projects and Tasks execution</a>
+    <a class="dropdown-item" href="../articles/Authentication_and_Billing.html">Authentication and Billing reference guide for Seven Bridges API R Client</a>
+    <a class="dropdown-item" href="../articles/Files_upload_and_Volumes.html">File upload and Volumes reference guide for Seven Bridges API R Client</a>
+    <a class="dropdown-item" href="../articles/Projects_and_Tasks_execution.html">Projects, Files, Apps and Tasks execution with Seven Bridges API R Client</a>
+    <a class="dropdown-item" href="../articles/quickstart.html">Introduction and Quickstart for Seven Bridges API R Client</a>
   </div>
 </li>
 <li class="nav-item">
@@ -112,6 +112,8 @@
 <li><p><a href="#method-App-get_revision"><code>App$get_revision()</code></a></p></li>
 <li><p><a href="#method-App-create_revision"><code>App$create_revision()</code></a></p></li>
 <li><p><a href="#method-App-sync"><code>App$sync()</code></a></p></li>
+<li><p><a href="#method-App-input_matrix"><code>App$input_matrix()</code></a></p></li>
+<li><p><a href="#method-App-output_matrix"><code>App$output_matrix()</code></a></p></li>
 <li><p><a href="#method-App-create_task"><code>App$create_task()</code></a></p></li>
 <li><p><a href="#method-App-clone"><code>App$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-App-new"></a><div class="section">
@@ -144,7 +146,9 @@
 
 </div><p></p><hr><a id="method-App-reload"></a><div class="section">
 <h3 id="method-reload-">Method <code>reload()</code><a class="anchor" aria-label="anchor" href="#method-reload-"></a></h3>
-<p>Reload App object information.</p><div class="section">
+<p>Reload App object information.
+Suitable also for loading raw CWL in the 'raw' field, if it's not
+already populated.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">App</span><span class="op">$</span><span class="fu">reload</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -315,7 +319,7 @@ More documentation about how to create the app via API can be found
 
 </div><p></p><hr><a id="method-App-sync"></a><div class="section">
 <h3 id="method-sync-">Method <code>sync()</code><a class="anchor" aria-label="anchor" href="#method-sync-"></a></h3>
-<p>Synchronize a copied app with its parent app</p><div class="section">
+<p>Synchronize a copied app with its parent app.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">App</span><span class="op">$</span><span class="fu">sync</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -340,6 +344,34 @@ has been copied.</p>
 <p><code>App</code> object.</p>
 </div>
 
+</div><p></p><hr><a id="method-App-input_matrix"></a><div class="section">
+<h3 id="method-input-matrix-">Method <code>input_matrix()</code><a class="anchor" aria-label="anchor" href="#method-input-matrix-"></a></h3>
+<p>Get inputs matrix for the app - what are expected inputs
+required or not, with their details about the expected types,
+descriptions etc.</p><div class="section">
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">App</span><span class="op">$</span><span class="fu">input_matrix</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<p>Data frame.</p>
+</div>
+
+</div><p></p><hr><a id="method-App-output_matrix"></a><div class="section">
+<h3 id="method-output-matrix-">Method <code>output_matrix()</code><a class="anchor" aria-label="anchor" href="#method-output-matrix-"></a></h3>
+<p>Get outputs matrix for the app - what are the expected
+outputs of the task running this app, with their details about the
+expected types, descriptions etc.</p><div class="section">
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">App</span><span class="op">$</span><span class="fu">output_matrix</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<p>Data frame.</p>
+</div>
+
 </div><p></p><hr><a id="method-App-create_task"></a><div class="section">
 <h3 id="method-create-task-">Method <code>create_task()</code><a class="anchor" aria-label="anchor" href="#method-create-task-"></a></h3>
 <p>This call creates a new task. You can create either a single
@@ -349,7 +381,7 @@ specifies criteria by which to batch its inputs into a series of further
 sub-tasks, called child tasks. The documentation on
 <a href="https://docs.sevenbridges.com/docs/about-batch-analyses" class="external-link">batching tasks</a>
 for more details on batching criteria.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">App</span><span class="op">$</span><span class="fu">create_task</span><span class="op">(</span></span>
 <span>  <span class="va">project</span>,</span>
 <span>  revision <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -525,14 +557,14 @@ like 'fields', etc.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p><code><a href="Task.html">Task</a></code> object.</p>
 </div>
 
 </div><p></p><hr><a id="method-App-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">App</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 

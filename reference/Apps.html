@@ -24,10 +24,10 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/Authentication_and_Billing.html">Authentication and Billing</a>
-    <a class="dropdown-item" href="../articles/Files_upload_and_Volumes.html">Files upload and Volumes</a>
-    <a class="dropdown-item" href="../articles/Introduction_and_Quickstart.html">Introduction and Quickstart</a>
-    <a class="dropdown-item" href="../articles/Projects_and_Tasks_execution.html">Projects and Tasks execution</a>
+    <a class="dropdown-item" href="../articles/Authentication_and_Billing.html">Authentication and Billing reference guide for Seven Bridges API R Client</a>
+    <a class="dropdown-item" href="../articles/Files_upload_and_Volumes.html">File upload and Volumes reference guide for Seven Bridges API R Client</a>
+    <a class="dropdown-item" href="../articles/Projects_and_Tasks_execution.html">Projects, Files, Apps and Tasks execution with Seven Bridges API R Client</a>
+    <a class="dropdown-item" href="../articles/quickstart.html">Introduction and Quickstart for Seven Bridges API R Client</a>
   </div>
 </li>
 <li class="nav-item">
@@ -111,6 +111,7 @@
 <span>  id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  limit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"sevenbridges2"</span><span class="op">)</span><span class="op">$</span><span class="va">limit</span>,</span>
 <span>  offset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"sevenbridges2"</span><span class="op">)</span><span class="op">$</span><span class="va">offset</span>,</span>
+<span>  fields <span class="op">=</span> <span class="st">"!raw"</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -152,9 +153,16 @@ of the first item to return. The default value is <code>0</code>.
 This is a pagination-specific attribute.</p></dd>
 
 
+<dt><code>fields</code></dt>
+<dd><p>Selector specifying a subset of fields to include in the
+response. For querying apps it is set to return all fields except 'raw'
+which stores CWL in form of a list. Please, be careful when setting to
+return all fields, since the execution of this API request could be
+time-consuming.</p></dd>
+
+
 <dt><code>...</code></dt>
-<dd><p>Other arguments that can be passed to core <code><a href="api.html">api()</a></code> function
-like other query parameters or 'fields', etc.</p></dd>
+<dd><p>Other arguments that can be passed to core <code><a href="api.html">api()</a></code> function.</p></dd>
 
 
 </dl><p></p></div>

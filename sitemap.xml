@@ -13,13 +13,13 @@
     <loc>/articles/Files_upload_and_Volumes.html</loc>
   </url>
   <url>
-    <loc>/articles/Introduction_and_Quickstart.html</loc>
-  </url>
-  <url>
     <loc>/articles/Projects_and_Tasks_execution.html</loc>
   </url>
   <url>
     <loc>/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>/articles/quickstart.html</loc>
   </url>
   <url>
     <loc>/authors.html</loc>
