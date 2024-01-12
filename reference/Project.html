@@ -1164,7 +1164,7 @@ for more details on batching criteria.</p><div class="section">
 <p></p><div class="arguments"><dl><dt><code>app</code></dt>
 <dd><p>The ID of an app or an App object you want to run.
 Recall that apps are specified by their projects, in the form
-<code>{project_id}/{app_name}</code>.</p></dd>
+<code>&lt;project_id&gt;/&lt;app_name&gt;</code>.</p></dd>
 
 
 <dt><code>revision</code></dt>
@@ -1257,15 +1257,13 @@ explicitly defined through nodes_location is either placed in
 main_location (if defined) or at the project files root if a main
 output location is not defined for the task.</p></li>
 <li><p><code>nodes_location</code>: List of output paths for individual
-task output nodes in the following format for each output node:
-<output-node-id> = list(
-"output_location" = "<output-path>",
-"output_location_alias" = "<alias-path>"
-)
-<code>{r} b64html = list( "output_location" = "volumes://outputs/tasks/mar-19", "output_location_alias" = "/rfranklin/tasks/picard" ) </code>
+task output nodes in the following format for each output node: <br><code>&lt;output-node-id&gt; = list(
+       "output_location" = "&lt;output-path&gt;",
+       "output_location_alias" = "&lt;alias-path&gt;"
+     )</code> <br><code>{r} b64html = list( "output_location" = "volumes://outputs/tasks/mar-19", "output_location_alias" = "/rfranklin/tasks/picard" ) </code>
 In the example above, b64html is the ID of the output node for which
 you want to define the output location, while the parameters are
-defined as follows:</alias-path></output-path></output-node-id></p><ul><li><p><code>output_location</code> - Can be a path within the project in which
+defined as follows:</p><ul><li><p><code>output_location</code> - Can be a path within the project in which
 the task is created, for example
 <code>/Analysis/&lt;task_id&gt;_&lt;task_name&gt;/</code>
 or a path on an attached volume, such as
@@ -1371,7 +1369,7 @@ like 'fields', etc.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Vladimir Obucina, Marko Trifunovic, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
+  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">

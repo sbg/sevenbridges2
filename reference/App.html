@@ -596,15 +596,14 @@ explicitly defined through nodes_location is either placed in
 main_location (if defined) or at the project files root if a main
 output location is not defined for the task.</p></li>
 <li><p><code>nodes_location</code>: List of output paths for individual
-task output nodes in the following format for each output node:
-<output-node-id> = list(
-"output_location" = "<output-path>",
-"output_location_alias" = "<alias-path>"
-)
-<code>{r} b64html = list( "output_location" = "volumes://outputs/tasks/mar-19", "output_location_alias" = "/rfranklin/tasks/picard" ) </code>
-In the example above, b64html is the ID of the output node for which
-you want to define the output location, while the parameters are
-defined as follows:</alias-path></output-path></output-node-id></p><ul><li><p><code>output_location</code> - Can be a path within the project in which
+task output nodes in the following format for each output node: <br><code>&lt;output-node-id&gt; = list(
+       "output_location" = "&lt;output-path&gt;",
+       "output_location_alias" = "&lt;alias-path&gt;"
+     )</code> <br><code>{r} b64html = list( "output_location" = "volumes://outputs/tasks/mar-19", "output_location_alias" = "/rfranklin/tasks/picard" ) </code></p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a> In the example above, b64html is the ID of the output node <span class="cf">for</span> which</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a> you want to define the output location, <span class="cf">while</span> the parameters are</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a> defined as follows<span class="sc">:</span></span></code></pre><p></p></div>
+<ul><li><p><code>output_location</code> - Can be a path within the project in which
 the task is created, for example
 <code>/Analysis/&lt;task_id&gt;_&lt;task_name&gt;/</code>
 or a path on an attached volume, such as
@@ -820,7 +819,7 @@ like 'fields', etc.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Vladimir Obucina, Marko Trifunovic, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
+  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">

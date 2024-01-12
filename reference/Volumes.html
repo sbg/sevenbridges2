@@ -324,14 +324,14 @@ overwrite all previous parameters set.</p></dd>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
  volumes_object &lt;- Volumes$new(auth = auth)
 
- # Create new AWS Volume (IAM Usser)
+ # Create new AWS Volume (IAM User)
  aws_iam_user_volume &lt;- volumes_object$create_s3_using_iam_user(
-                                      name = "my_new_aws_user_volume",
-                                      bucket = "&lt;bucket-name&gt;",
-                                      description = "AWS IAM User Vol",
-                                      access_key_id = "&lt;access-key&gt;",
-                                      secret_access_key = "&lt;secret-access-key&gt;" # nolint
-                                    )
+    name = "my_new_aws_user_volume",
+    bucket = "&lt;bucket-name&gt;",
+    description = "AWS IAM User Vol",
+    access_key_id = "&lt;access-key&gt;",
+    secret_access_key = "&lt;secret-access-key&gt;"
+ )
 }
 
 </code></pre></div><p></p></div>
@@ -453,12 +453,12 @@ overwrite all previous parameters set.</p></dd>
 
  # Create new AWS Volume (IAM Role)
  aws_iam_role_volume &lt;- volumes_object$create_s3_using_iam_role(
-                                      name = "my_new_aws_user_volume",
-                                      bucket = "&lt;bucket-name&gt;",
-                                      description = "AWS IAM Role Vol",
-                                      role_arn = "&lt;role-arn-key&gt;",
-                                      external_id = "&lt;external-id&gt;"
-                                    )
+    name = "my_new_aws_user_volume",
+    bucket = "&lt;bucket-name&gt;",
+    description = "AWS IAM Role Vol",
+    role_arn = "&lt;role-arn-key&gt;",
+    external_id = "&lt;external-id&gt;"
+ )
 }
 
 </code></pre></div><p></p></div>
@@ -565,13 +565,13 @@ overwrite all previous parameters set.</p></dd>
 
  #  Create Google cloud volume using IAM User authentication type
  gc_iam_user_volume &lt;- volumes_object$create_google_using_iam_user(
-                                      name = "my_new_gc_user_volume",
-                                      access_mode = "RW",
-                                      bucket = "&lt;bucket-name&gt;",
-                                      description = "GC IAM User volume",
-                                      client_email = "&lt;client_email&gt;",
-                                      private_key = "&lt;private_key-string&gt;" # nolint
-                                    )
+    name = "my_new_gc_user_volume",
+    access_mode = "RW",
+    bucket = "&lt;bucket-name&gt;",
+    description = "GC IAM User volume",
+    client_email = "&lt;client_email&gt;",
+    private_key = "&lt;private_key-string&gt;"
+ )
 }
 
 </code></pre></div><p></p></div>
@@ -674,24 +674,24 @@ overwrite all previous parameters set.</p></dd>
 
  #  Create Google cloud volume using IAM User authentication type
  gc_iam_role_volume &lt;- volumes_object$create_google_using_iam_role(
-                                    name = "my_new_gc_role_volume",
-                                    access_mode = "RO",
-                                    bucket = "&lt;bucket-name&gt;",
-                                    description = "GC IAM Role volume",
-                                    configuration = list(
-                                              type = "&lt;type-name&gt;",
-                                              audience = "&lt;audience-link&gt;",
-                                              subject_token_type = "&lt;subject_token_type&gt;",
-                                              service_account_impersonation_url = "&lt;service_account_impersonation_url&gt;",
-                                              token_url = "&lt;token_url&gt;",
-                                              credential_source = list(
-                                                  environment_id = "&lt;environment_id&gt;",
-                                                  region_url = "&lt;region_url&gt;",
-                                                  url = "&lt;url&gt;",
-                                                  regional_cred_verification_url = "&lt;regional_cred_verification_url&gt;"
-                                              )
-                                            )
-                                    )
+    name = "my_new_gc_role_volume",
+    access_mode = "RO",
+    bucket = "&lt;bucket-name&gt;",
+    description = "GC IAM Role volume",
+    configuration = list(
+        type = "&lt;type-name&gt;",
+        audience = "&lt;audience-link&gt;",
+        subject_token_type = "&lt;subject_token_type&gt;",
+        service_account_impersonation_url = "&lt;service_account_impersonation_url&gt;",
+        token_url = "&lt;token_url&gt;",
+        credential_source = list(
+           environment_id = "&lt;environment_id&gt;",
+           region_url = "&lt;region_url&gt;",
+           url = "&lt;url&gt;",
+           regional_cred_verification_url = "&lt;regional_cred_verification_url&gt;"
+         )
+   )
+ )
 }
 
 </code></pre></div><p></p></div>
@@ -804,7 +804,7 @@ information for registering a volume.</p></dd>
    client_id = "&lt;client_id&gt;",
    client_secret = "&lt;client_secret&gt;",
    resource_id = "&lt;resource_id&gt;"
-  )
+ )
 }
 
 </code></pre></div><p></p></div>
@@ -935,7 +935,7 @@ ali_volume &lt;- volumes_object$create_ali_oss(
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Vladimir Obucina, Marko Trifunovic, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
+  <p></p><p>Developed by Marko Trifunovic, Vladimir Obucina, Marija Jovanovic, Seven Bridges Genomics Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">
