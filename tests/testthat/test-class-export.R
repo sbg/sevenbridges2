@@ -27,5 +27,6 @@ test_that("Export initialization works", {
 
 test_that("Export print method works", {
   testthat::skip_on_ci()
+  testthat::skip_on_cran()
   testthat::expect_snapshot(setup_export_obj$print())
 })

@@ -135,8 +135,8 @@ This call lists all the apps available to you.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{project}}{Project ID string in the form
-{project_owner}/{project_short_name} or
-{division_name}/{project_short_name} or Project object, to restrict
+\verb{<project_owner>/<project_short_name>} or
+\verb{<division_name>/<project_short_name>} or Project object, to restrict
 the results to apps from that project only.}
 
 \item{\code{visibility}}{Set this to \code{public} to see all public apps on
@@ -205,7 +205,7 @@ More about this operation you can find in our
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{The full {project_id}/{app_short_name}
+\item{\code{id}}{The full \verb{<project_id>/<app_short_name>}
 path for this API call is known as App ID. You can also get the App ID
 for an app by making the call to list all apps available to you.}
 
@@ -259,7 +259,7 @@ member, or a publicly available app that has been copied to the project.
 \describe{
 \item{\code{app}}{App object or the short name of the app you are copying.
 Optionally, to copy a specific revision of the app, use the
-\code{{app_short_name}/{revision_number}} format, for example
+\verb{<app_short_name>/<revision_number>} format, for example
 \code{rfranklin/my-project/bamtools-index-2-4-0/1}}
 
 \item{\code{project}}{The Project object or project ID you want to copy the app

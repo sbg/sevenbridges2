@@ -198,14 +198,14 @@ Volumes <- R6::R6Class(
     #' \dontrun{
     #'  volumes_object <- Volumes$new(auth = auth)
     #'
-    #'  # Create new AWS Volume (IAM Usser)
+    #'  # Create new AWS Volume (IAM User)
     #'  aws_iam_user_volume <- volumes_object$create_s3_using_iam_user(
-    #'                                       name = "my_new_aws_user_volume",
-    #'                                       bucket = "<bucket-name>",
-    #'                                       description = "AWS IAM User Vol",
-    #'                                       access_key_id = "<access-key>",
-    #'                                       secret_access_key = "<secret-access-key>" # nolint
-    #'                                     )
+    #'     name = "my_new_aws_user_volume",
+    #'     bucket = "<bucket-name>",
+    #'     description = "AWS IAM User Vol",
+    #'     access_key_id = "<access-key>",
+    #'     secret_access_key = "<secret-access-key>"
+    #'  )
     #' }
     #'
     #' @return \code{\link{Volume}} object.
@@ -346,12 +346,12 @@ Volumes <- R6::R6Class(
     #'
     #'  # Create new AWS Volume (IAM Role)
     #'  aws_iam_role_volume <- volumes_object$create_s3_using_iam_role(
-    #'                                       name = "my_new_aws_user_volume",
-    #'                                       bucket = "<bucket-name>",
-    #'                                       description = "AWS IAM Role Vol",
-    #'                                       role_arn = "<role-arn-key>",
-    #'                                       external_id = "<external-id>"
-    #'                                     )
+    #'     name = "my_new_aws_user_volume",
+    #'     bucket = "<bucket-name>",
+    #'     description = "AWS IAM Role Vol",
+    #'     role_arn = "<role-arn-key>",
+    #'     external_id = "<external-id>"
+    #'  )
     #' }
     #'
     #' @return \code{\link{Volume}} object.
@@ -472,13 +472,13 @@ Volumes <- R6::R6Class(
     #'
     #'  #  Create Google cloud volume using IAM User authentication type
     #'  gc_iam_user_volume <- volumes_object$create_google_using_iam_user(
-    #'                                       name = "my_new_gc_user_volume",
-    #'                                       access_mode = "RW",
-    #'                                       bucket = "<bucket-name>",
-    #'                                       description = "GC IAM User volume",
-    #'                                       client_email = "<client_email>",
-    #'                                       private_key = "<private_key-string>" # nolint
-    #'                                     )
+    #'     name = "my_new_gc_user_volume",
+    #'     access_mode = "RW",
+    #'     bucket = "<bucket-name>",
+    #'     description = "GC IAM User volume",
+    #'     client_email = "<client_email>",
+    #'     private_key = "<private_key-string>"
+    #'  )
     #' }
     #'
     #' @return \code{\link{Volume}} object.
@@ -599,26 +599,26 @@ Volumes <- R6::R6Class(
     #'
     #'  #  Create Google cloud volume using IAM User authentication type
     #'  gc_iam_role_volume <- volumes_object$create_google_using_iam_role(
-    #'                                     name = "my_new_gc_role_volume",
-    #'                                     access_mode = "RO",
-    #'                                     bucket = "<bucket-name>",
-    #'                                     description = "GC IAM Role volume",
-    #'                                     configuration = list(
+    #'     name = "my_new_gc_role_volume",
+    #'     access_mode = "RO",
+    #'     bucket = "<bucket-name>",
+    #'     description = "GC IAM Role volume",
     # nolint start
-    #'                                               type = "<type-name>",
-    #'                                               audience = "<audience-link>",
-    #'                                               subject_token_type = "<subject_token_type>",
-    #'                                               service_account_impersonation_url = "<service_account_impersonation_url>",
-    #'                                               token_url = "<token_url>",
-    #'                                               credential_source = list(
-    #'                                                   environment_id = "<environment_id>",
-    #'                                                   region_url = "<region_url>",
-    #'                                                   url = "<url>",
-    #'                                                   regional_cred_verification_url = "<regional_cred_verification_url>"
+    #'     configuration = list(
+    #'         type = "<type-name>",
+    #'         audience = "<audience-link>",
+    #'         subject_token_type = "<subject_token_type>",
+    #'         service_account_impersonation_url = "<service_account_impersonation_url>",
+    #'         token_url = "<token_url>",
+    #'         credential_source = list(
+    #'            environment_id = "<environment_id>",
+    #'            region_url = "<region_url>",
+    #'            url = "<url>",
+    #'            regional_cred_verification_url = "<regional_cred_verification_url>"
+    #'          )
     # nolint end
-    #'                                               )
-    #'                                             )
-    #'                                     )
+    #'    )
+    #'  )
     #' }
     #'
     #' @return \code{\link{Volume}} object.
@@ -742,7 +742,7 @@ Volumes <- R6::R6Class(
     #'    client_id = "<client_id>",
     #'    client_secret = "<client_secret>",
     #'    resource_id = "<resource_id>"
-    #'   )
+    #'  )
     #' }
     #'
     #' @return \code{\link{Volume}} object.

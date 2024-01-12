@@ -1,5 +1,6 @@
 ACL
 ACLs
+ae
 AES
 AliCloud
 amazonaws
@@ -59,6 +60,7 @@ dockerPull
 dropdown
 DRS
 eastus
+eb
 ec
 enquiring
 enum
@@ -140,6 +142,7 @@ nocov
 nolint
 Noto
 Obucina
+obucina
 onwards
 OSS
 outputBinding
@@ -157,6 +160,8 @@ readr
 rect
 reproducibility
 req
+resubmission
+Resubmission
 rfranklin
 rlang
 rmarkdown
@@ -205,6 +210,7 @@ Velsera
 velsera
 Verdana
 VignetteBuilder
+vladimir
 VolumeContentCollection
 VolumeFile
 VolumeFileCollection

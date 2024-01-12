@@ -15,5 +15,6 @@ test_that("Invoice initialization works", {
 
 test_that("Invoice print method works", {
   testthat::skip_on_ci()
+  testthat::skip_on_cran()
   testthat::expect_snapshot(setup_invoice_obj$print())
 })

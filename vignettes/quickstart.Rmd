@@ -41,14 +41,14 @@ public API. The supported platforms include the
 
 Learn more from our documentation on the 
 [Seven Bridges Platform](https://docs.sevenbridges.com/page/api), 
-[Cancer Genomics Cloud (CGC)](http://docs.cancergenomicscloud.org/v1.0/page/the-cgc-api),
+[Cancer Genomics Cloud (CGC)](https://docs.cancergenomicscloud.org/v1.0/page/the-cgc-api),
 [BioData Catalyst (BDC)](https://sb-biodatacatalyst.readme.io/reference/new-1)
 and [CAVATICA](https://docs.cavatica.org/reference/the-api).
 
 Unlike the current `sevenbridges` package that is built on top of 
-[Reference classes]("http://adv-r.had.co.nz/R5.html"), 
+[Reference classes](http://adv-r.had.co.nz/R5.html), 
 the `sevenbridges2` package is based on more modern and lightweight 
-[R6]("https://adv-r.hadley.nz/r6.html) classes. 
+[R6](https://adv-r.hadley.nz/r6.html) classes. 
 However, the basic idea and way of constructing API requests is largely 
 preserved.
 
@@ -91,7 +91,7 @@ If you have trouble with `pandoc` and do not want to install it, set
 
 There are two ways of constructing API calls. For instance, you can use 
 low-level API calls which use arguments like `path`, `query`, and `body`. 
-These are documented in the API reference libraries for the [Seven Bridges Platform](https://docs.sevenbridges.com/reference#list-all-api-paths) and the [CGC](http://docs.cancergenomicscloud.org/docs/new-1). An example of a low-level
+These are documented in the API reference libraries for the [Seven Bridges Platform](https://docs.sevenbridges.com/reference#list-all-api-paths) and the [CGC](https://docs.cancergenomicscloud.org/docs/new-1). An example of a low-level
 request to "list all projects" is shown below. 
 In this request, you can also pass `query` and `body` as a list.
 

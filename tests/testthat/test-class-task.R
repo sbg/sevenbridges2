@@ -20,6 +20,7 @@ test_that("Task initialization works", {
 
 test_that("Task print method works", {
   testthat::skip_on_ci()
+  testthat::skip_on_cran()
   testthat::expect_snapshot(setup_task_obj$print())
 })
 

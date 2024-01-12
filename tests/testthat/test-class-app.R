@@ -15,6 +15,7 @@ test_that("App initialization works", {
 
 test_that("App print method works", {
   testthat::skip_on_ci()
+  testthat::skip_on_cran()
   testthat::expect_snapshot(setup_app_obj$print())
 })
 

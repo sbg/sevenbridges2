@@ -34,7 +34,7 @@ which stores the following information:
 - Your authentication token. This is used to authenticate your credentials 
 with the API. Learn more about obtaining your authentication token on the 
 [Seven Bridges Platform](https://docs.sevenbridges.com/v1.0/docs/get-your-authentication-token), 
-[Cancer Genomics Cloud (CGC)](http://docs.cancergenomicscloud.org/v1.0/docs/get-your-authentication-token),
+[Cancer Genomics Cloud (CGC)](https://docs.cancergenomicscloud.org/v1.0/docs/get-your-authentication-token),
 [BioData Catalyst (BDC)](https://sb-biodatacatalyst.readme.io/docs/get-your-authentication-token#find-your-authentication-token), and [CAVATICA](https://docs.cavatica.org/docs/get-your-authentication-token#your-authentication-token).
 
 The approach for obtaining the authentication token also applies to the other 

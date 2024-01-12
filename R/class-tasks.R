@@ -253,7 +253,7 @@ Tasks <- R6::R6Class(
     #'  want to create the task in.
     #' @param app The ID of an app or an App object you want to run.
     #'  Recall that apps are specified by their projects, in the form
-    #'  `{project_id}/{app_name}`.
+    #'  `<project_id>/<app_name>`.
     #' @param revision The app
     #' [revision (version)](https://docs.sevenbridges.com/docs/app-versions)
     #'  number.
@@ -340,17 +340,18 @@ Tasks <- R6::R6Class(
     #'      main_location (if defined) or at the project files root if a main
     #'      output location is not defined for the task.
     #'    \item `nodes_location`: List of output paths for individual
-    #'      task output nodes in the following format for each output node:
-    #'      <output-node-id> = list(
+    #'      task output nodes in the following format for each output node:\cr
+    #'      \code{<output-node-id> = list(
     #'        "output_location" = "<output-path>",
     #'        "output_location_alias" = "<alias-path>"
-    #'      )
+    #'      )} \cr
     #'      ```{r}
     #'      b64html = list(
     #'      "output_location" = "volumes://outputs/tasks/mar-19",
     #'      "output_location_alias" = "/rfranklin/tasks/picard"
     #'      )
     #'      ```
+    #'
     #'      In the example above, b64html is the ID of the output node for which
     #'      you want to define the output location, while the parameters are
     #'      defined as follows:

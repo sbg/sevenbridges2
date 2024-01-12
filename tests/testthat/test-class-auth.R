@@ -219,6 +219,7 @@ testthat::test_that("Calling the api method with no arguments returns a list of
   )
 
   testthat::skip_on_ci()
+  testthat::skip_on_cran()
   api_paths <- setup_auth_object$api()
 
   testthat::expect_equal(is.list(api_paths), TRUE)

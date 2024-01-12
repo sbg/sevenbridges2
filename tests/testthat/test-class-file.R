@@ -19,12 +19,14 @@ test_that("File initialization works", {
 
 test_that("File print method works", {
   testthat::skip_on_ci()
+  testthat::skip_on_cran()
   testthat::expect_snapshot(setup_file_obj$print())
 })
 
 
 test_that("File detailed_print method works", {
   testthat::skip_on_ci()
+  testthat::skip_on_cran()
   testthat::expect_snapshot(setup_file_obj$detailed_print())
 })
 

@@ -37,8 +37,8 @@ Apps <- R6::R6Class(
     #' @description This call lists all the apps available to you.
     #'
     #' @param project Project ID string in the form
-    #'  {project_owner}/{project_short_name} or
-    #'  {division_name}/{project_short_name} or Project object, to restrict
+    #'  `<project_owner>/<project_short_name>` or
+    #'  `<division_name>/<project_short_name>` or Project object, to restrict
     #'  the results to apps from that project only.
     #' @param visibility Set this to `public` to see all public apps on
     #'  the Seven Bridges Platform.
@@ -129,7 +129,7 @@ Apps <- R6::R6Class(
     #'  [API documentation](https://docs.sevenbridges.com/reference/get-details-of-an-app).
     # nolint end
 
-    #' @param id The full {project_id}/{app_short_name}
+    #' @param id The full `<project_id>/<app_short_name>`
     #'  path for this API call is known as App ID. You can also get the App ID
     #'  for an app by making the call to list all apps available to you.
     #' @param revision The number of the app revision you want to get.
@@ -176,7 +176,7 @@ Apps <- R6::R6Class(
     #'
     #' @param app App object or the short name of the app you are copying.
     #'  Optionally, to copy a specific revision of the app, use the
-    #'  `{app_short_name}/{revision_number}` format, for example
+    #'  `<app_short_name>/<revision_number>` format, for example
     #'  `rfranklin/my-project/bamtools-index-2-4-0/1`
     #' @param project The Project object or project ID you want to copy the app
     #'  to.
