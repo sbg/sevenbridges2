@@ -25,6 +25,7 @@ test_that("Billing initialization works", {
 
 test_that("Billing print method works", {
   testthat::skip_on_ci()
+  testthat::skip_on_cran()
   testthat::expect_snapshot(setup_billing_obj$print())
 })
 

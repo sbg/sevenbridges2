@@ -32,6 +32,7 @@ test_that("VolumePrefix initialization works", {
 
 test_that("VolumePrefix print method works", {
   testthat::skip_on_ci()
+  testthat::skip_on_cran()
   testthat::expect_snapshot(setup_volume_prefix_obj$print())
 })
 

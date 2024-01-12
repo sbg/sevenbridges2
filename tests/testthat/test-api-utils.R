@@ -1,5 +1,6 @@
 testthat::test_that("Utility function parse_time works", {
   testthat::skip_on_ci()
+  testthat::skip_on_cran()
   # unix timestamp doesn't contain the information about milliseconds
   test_unix_timestamp <- 1489700093
 

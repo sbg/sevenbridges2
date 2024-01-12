@@ -225,7 +225,7 @@ want to create the task in.}
 
 \item{\code{app}}{The ID of an app or an App object you want to run.
 Recall that apps are specified by their projects, in the form
-\code{{project_id}/{app_name}}.}
+\verb{<project_id>/<app_name>}.}
 
 \item{\code{revision}}{The app
 \href{https://docs.sevenbridges.com/docs/app-versions}{revision (version)}
@@ -316,15 +316,18 @@ explicitly defined through nodes_location is either placed in
 main_location (if defined) or at the project files root if a main
 output location is not defined for the task.
 \item \code{nodes_location}: List of output paths for individual
-task output nodes in the following format for each output node:
-\if{html}{\out{<output-node-id>}} = list(
-"output_location" = "\if{html}{\out{<output-path>}}",
-"output_location_alias" = "\if{html}{\out{<alias-path>}}"
-)
+task output nodes in the following format for each output node:\cr
+\code{<output-node-id> = list(
+       "output_location" = "<output-path>",
+       "output_location_alias" = "<alias-path>"
+     )} \cr
 \verb{\{r\} b64html = list( "output_location" = "volumes://outputs/tasks/mar-19", "output_location_alias" = "/rfranklin/tasks/picard" ) }
-In the example above, b64html is the ID of the output node for which
-you want to define the output location, while the parameters are
-defined as follows:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ In the example above, b64html is the ID of the output node for which
+ you want to define the output location, while the parameters are
+ defined as follows:
+}\if{html}{\out{</div>}}
+
 \itemize{
 \item \code{output_location} - Can be a path within the project in which
 the task is created, for example

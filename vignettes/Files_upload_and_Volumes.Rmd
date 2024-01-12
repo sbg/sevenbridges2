@@ -244,7 +244,7 @@ environment to use them as inputs for computation. Similarly, you can write
 files from the Seven Bridges environment to your cloud storage by 'exporting' 
 them to your volume.
 
-Learn more about volumes on the [Seven Bridges Platform](https://docs.sevenbridges.com/docs/connecting-cloud-storage-overview), [CGC](http://docs.cancergenomicscloud.org/docs/connect-cloud-storage-overview),
+Learn more about volumes on the [Seven Bridges Platform](https://docs.sevenbridges.com/docs/connecting-cloud-storage-overview), [CGC](https://docs.cancergenomicscloud.org/docs/connect-cloud-storage-overview),
 [BDC](https://sb-biodatacatalyst.readme.io/docs/connect-cloud-storage-overview)
 and [CAVATICA](https://docs.cavatica.org/reference/connect-cloud-storage-overview).
 

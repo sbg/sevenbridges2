@@ -6,13 +6,13 @@
 
 ## Overview <!-- omit in toc -->
 
-sevenbridges2 is an API client package that provides an interface for the [Seven Bridges Platform](https://www.sevenbridges.com/) (US, EU, China), [Cancer Genomics Cloud](https://www.cancergenomicscloud.org/), [CAVATICA](http://www.cavatica.org/), and [BioData Catalyst Powered by Seven Bridges](https://platform.sb.biodatacatalyst.nhlbi.nih.gov/) public APIs.
+sevenbridges2 is an API client package that provides an interface for the [Seven Bridges Platform](https://www.sevenbridges.com/) (US, EU, China), [Cancer Genomics Cloud](https://www.cancergenomicscloud.org/), [CAVATICA](https://www.cavatica.org/), and [BioData Catalyst Powered by Seven Bridges](https://platform.sb.biodatacatalyst.nhlbi.nih.gov/) public APIs.
 
 The [Seven Bridges Platform](https://www.sevenbridges.com/) is a cloud-based environment for conducting bioinformatics analysis. It is a central hub for teams to store, analyze, and jointly interpret their bioinformatic data. The Platform co-locates analysis pipelines alongside the largest genomic datasets to optimize processing, allocating storage, and compute resources on demand.
 
-The [Cancer Genomics Cloud (CGC)](https://www.cancergenomicscloud.org/), powered by [Seven Bridges](https://www.sevenbridges.com/), is also a cloud-based computation environment. It was built as one of three pilot systems funded by the [National Cancer Institute](https://www.cancer.gov) to explore the paradigm of colocalizing massive genomics datasets, like The [Cancer Genomics Atlas (TCGA)](https://cancergenome.nih.gov), alongside secure and scalable computational resources to analyze them. The CGC makes more than a petabyte of multi-dimensional data available immediately to authorized researchers. You can add your data to analyze alongside TCGA using predefined analytical workflows or your own tools.
+The [Cancer Genomics Cloud (CGC)](https://www.cancergenomicscloud.org/), powered by [Seven Bridges](https://www.sevenbridges.com/), is also a cloud-based computation environment. It was built as one of three pilot systems funded by the [National Cancer Institute](https://www.cancer.gov) to explore the paradigm of colocalizing massive genomics datasets, like The [Cancer Genomics Atlas (TCGA)](https://www.cancer.gov/ccg/research/genome-sequencing/tcga), alongside secure and scalable computational resources to analyze them. The CGC makes more than a petabyte of multi-dimensional data available immediately to authorized researchers. You can add your data to analyze alongside TCGA using predefined analytical workflows or your own tools.
 
-[CAVATICA](http://www.cavatica.org/), powered by [Seven Bridges](https://www.sevenbridges.com), is a data analysis and sharing platform designed to accelerate discovery in a scalable, cloud-based compute environment where data, results, and workflows are shared among the world's research community. CAVATICA is built in collaboration with the Children Hospital of Philadelphia and it is focused on pediatric data.
+[CAVATICA](https://www.cavatica.org/), powered by [Seven Bridges](https://www.sevenbridges.com), is a data analysis and sharing platform designed to accelerate discovery in a scalable, cloud-based compute environment where data, results, and workflows are shared among the world's research community. CAVATICA is built in collaboration with the Children Hospital of Philadelphia and it is focused on pediatric data.
 
 The [BioData Catalyst](https://platform.sb.biodatacatalyst.nhlbi.nih.gov/), powered by [Seven Bridges](https://www.sevenbridges.com), is a computational environment on the cloud. It hosts several genomic datasets, alongside tools for analyzing genomic information, and features for collaboration.
 
@@ -122,7 +122,7 @@ Please check `vignette("quickstart", package = "sevenbridges2")` for technical d
 
 ### Cross Environment Support
 
-Cross-platform support for Seven Bridges environments, such as [Seven Bridges Platform](https://www.sevenbridges.com/) (US, EU, China), [Cancer Genomics Cloud](https://www.cancergenomicscloud.org/), [CAVATICA](http://www.cavatica.org/), and [BioData Catalyst Powered by Seven Bridges](https://platform.sb.biodatacatalyst.nhlbi.nih.gov/) on either Amazon Web Services or Google Cloud Platform.
+Cross-platform support for Seven Bridges environments, such as [Seven Bridges Platform](https://www.sevenbridges.com/) (US, EU, China), [Cancer Genomics Cloud](https://www.cancergenomicscloud.org/), [CAVATICA](https://www.cavatica.org/), and [BioData Catalyst Powered by Seven Bridges](https://platform.sb.biodatacatalyst.nhlbi.nih.gov/) on either Amazon Web Services or Google Cloud Platform.
 
 ## Documentation
 
@@ -130,7 +130,7 @@ Cross-platform support for Seven Bridges environments, such as [Seven Bridges Pl
 
 ## Contribute
 
-Please file bug reports/feature requests on the [issue page](https://github.com/sbg/sevenbridges/issues), or create pull requests [here](https://github.com/sbg/sevenbridges2/pulls).
+Please file bug reports/feature requests on the [issue page](https://github.com/sbg/sevenbridges2/issues), or create pull requests [here](https://github.com/sbg/sevenbridges2/pulls).
 
 Contributors should sign the [Seven Bridges Contributor Agreement](https://secure.na1.echosign.com/public/esignWidget?wid=CBFCIBAA3AAABLblqZhAqt_9rHEqy2MggS0uWRmKHUN2HYi8DWNjkgg5N68iKAhRFTy7k2AOEpRHMMorxc_0*) before submitting a pull request.
 
