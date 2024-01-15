@@ -230,7 +230,7 @@ like 'fields', etc.</p></dd>
  )
 
  # Get app object
- apps_object$$get(id = "&lt;some_id&gt;")
+ apps_object$get(id = "&lt;some_id&gt;")
 }
 
 </code></pre></div><p></p></div>
@@ -374,7 +374,7 @@ like 'fields', etc.</p></dd>
   raw = raw,
   project = project,
   name = name,
-  raw_format = YAML
+  raw_format = "YAML"
  )
 }
 
@@ -404,7 +404,67 @@ like 'fields', etc.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Apps$query`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">apps_object</span> <span class="op">&lt;-</span> <span class="va">Apps</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   auth <span class="op">=</span> <span class="va">auth</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># List public apps</span></span></span>
+<span class="r-in"><span> <span class="va">apps_object</span><span class="op">$</span><span class="fu">query</span><span class="op">(</span>visibility <span class="op">=</span> <span class="st">"public"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Apps$get`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">apps_object</span> <span class="op">&lt;-</span> <span class="va">Apps</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   auth <span class="op">=</span> <span class="va">auth</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Get app object</span></span></span>
+<span class="r-in"><span> <span class="va">apps_object</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"&lt;some_id&gt;"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Apps$copy`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">apps_object</span> <span class="op">&lt;-</span> <span class="va">Apps</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   auth <span class="op">=</span> <span class="va">auth</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="co"># Copy app object to a project</span></span></span>
+<span class="r-in"><span> <span class="va">apps_object</span><span class="op">$</span><span class="fu">copy</span><span class="op">(</span>app <span class="op">=</span> <span class="va">app</span>, project <span class="op">=</span> <span class="va">project</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Apps$create`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">apps_object</span> <span class="op">&lt;-</span> <span class="va">Apps</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   auth <span class="op">=</span> <span class="va">auth</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Create new app object</span></span></span>
+<span class="r-in"><span> <span class="va">apps_object</span><span class="op">$</span><span class="fu">create</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  raw <span class="op">=</span> <span class="va">raw</span>,</span></span>
+<span class="r-in"><span>  project <span class="op">=</span> <span class="va">project</span>,</span></span>
+<span class="r-in"><span>  name <span class="op">=</span> <span class="va">name</span>,</span></span>
+<span class="r-in"><span>  raw_format <span class="op">=</span> <span class="st">"YAML"</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

@@ -900,6 +900,7 @@ ali_volume &lt;- volumes_object$create_ali_oss(
   bucket = "&lt;bucket-name",
   access_key_id = "&lt;access_key_id&gt;",
   secret_access_key = "&lt;secret_access_key&gt;"
+ )
 }
 
 </code></pre></div><p></p></div>
@@ -928,7 +929,169 @@ ali_volume &lt;- volumes_object$create_ali_oss(
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volumes$query`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">volumes_object</span> <span class="op">&lt;-</span> <span class="va">Volumes</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>auth <span class="op">=</span> <span class="va">auth</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Query volumes</span></span></span>
+<span class="r-in"><span> <span class="va">volumes_object</span><span class="op">$</span><span class="fu">query</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volumes$get`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">volumes_object</span> <span class="op">&lt;-</span> <span class="va">Volumes</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>auth <span class="op">=</span> <span class="va">auth</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Get volumes</span></span></span>
+<span class="r-in"><span> <span class="va">volumes_object</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="va">id</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volumes$delete`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">volumes_object</span> <span class="op">&lt;-</span> <span class="va">Volumes</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>auth <span class="op">=</span> <span class="va">auth</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Get volumes</span></span></span>
+<span class="r-in"><span> <span class="va">volumes_object</span><span class="op">$</span><span class="fu">delete</span><span class="op">(</span>volume <span class="op">=</span> <span class="va">volume</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volumes$create_s3_using_iam_user`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">volumes_object</span> <span class="op">&lt;-</span> <span class="va">Volumes</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>auth <span class="op">=</span> <span class="va">auth</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Create new AWS Volume (IAM User)</span></span></span>
+<span class="r-in"><span> <span class="va">aws_iam_user_volume</span> <span class="op">&lt;-</span> <span class="va">volumes_object</span><span class="op">$</span><span class="fu">create_s3_using_iam_user</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"my_new_aws_user_volume"</span>,</span></span>
+<span class="r-in"><span>    bucket <span class="op">=</span> <span class="st">"&lt;bucket-name&gt;"</span>,</span></span>
+<span class="r-in"><span>    description <span class="op">=</span> <span class="st">"AWS IAM User Vol"</span>,</span></span>
+<span class="r-in"><span>    access_key_id <span class="op">=</span> <span class="st">"&lt;access-key&gt;"</span>,</span></span>
+<span class="r-in"><span>    secret_access_key <span class="op">=</span> <span class="st">"&lt;secret-access-key&gt;"</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volumes$create_s3_using_iam_role`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">volumes_object</span> <span class="op">&lt;-</span> <span class="va">Volumes</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>auth <span class="op">=</span> <span class="va">auth</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Create new AWS Volume (IAM Role)</span></span></span>
+<span class="r-in"><span> <span class="va">aws_iam_role_volume</span> <span class="op">&lt;-</span> <span class="va">volumes_object</span><span class="op">$</span><span class="fu">create_s3_using_iam_role</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"my_new_aws_user_volume"</span>,</span></span>
+<span class="r-in"><span>    bucket <span class="op">=</span> <span class="st">"&lt;bucket-name&gt;"</span>,</span></span>
+<span class="r-in"><span>    description <span class="op">=</span> <span class="st">"AWS IAM Role Vol"</span>,</span></span>
+<span class="r-in"><span>    role_arn <span class="op">=</span> <span class="st">"&lt;role-arn-key&gt;"</span>,</span></span>
+<span class="r-in"><span>    external_id <span class="op">=</span> <span class="st">"&lt;external-id&gt;"</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volumes$create_google_using_iam_user`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">volumes_object</span> <span class="op">&lt;-</span> <span class="va">Volumes</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>auth <span class="op">=</span> <span class="va">auth</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co">#  Create Google cloud volume using IAM User authentication type</span></span></span>
+<span class="r-in"><span> <span class="va">gc_iam_user_volume</span> <span class="op">&lt;-</span> <span class="va">volumes_object</span><span class="op">$</span><span class="fu">create_google_using_iam_user</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"my_new_gc_user_volume"</span>,</span></span>
+<span class="r-in"><span>    access_mode <span class="op">=</span> <span class="st">"RW"</span>,</span></span>
+<span class="r-in"><span>    bucket <span class="op">=</span> <span class="st">"&lt;bucket-name&gt;"</span>,</span></span>
+<span class="r-in"><span>    description <span class="op">=</span> <span class="st">"GC IAM User volume"</span>,</span></span>
+<span class="r-in"><span>    client_email <span class="op">=</span> <span class="st">"&lt;client_email&gt;"</span>,</span></span>
+<span class="r-in"><span>    private_key <span class="op">=</span> <span class="st">"&lt;private_key-string&gt;"</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volumes$create_google_using_iam_role`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">volumes_object</span> <span class="op">&lt;-</span> <span class="va">Volumes</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>auth <span class="op">=</span> <span class="va">auth</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co">#  Create Google cloud volume using IAM User authentication type</span></span></span>
+<span class="r-in"><span> <span class="va">gc_iam_role_volume</span> <span class="op">&lt;-</span> <span class="va">volumes_object</span><span class="op">$</span><span class="fu">create_google_using_iam_role</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"my_new_gc_role_volume"</span>,</span></span>
+<span class="r-in"><span>    access_mode <span class="op">=</span> <span class="st">"RO"</span>,</span></span>
+<span class="r-in"><span>    bucket <span class="op">=</span> <span class="st">"&lt;bucket-name&gt;"</span>,</span></span>
+<span class="r-in"><span>    description <span class="op">=</span> <span class="st">"GC IAM Role volume"</span>,</span></span>
+<span class="r-in"><span>    configuration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        type <span class="op">=</span> <span class="st">"&lt;type-name&gt;"</span>,</span></span>
+<span class="r-in"><span>        audience <span class="op">=</span> <span class="st">"&lt;audience-link&gt;"</span>,</span></span>
+<span class="r-in"><span>        subject_token_type <span class="op">=</span> <span class="st">"&lt;subject_token_type&gt;"</span>,</span></span>
+<span class="r-in"><span>        service_account_impersonation_url <span class="op">=</span> <span class="st">"&lt;service_account_impersonation_url&gt;"</span>,</span></span>
+<span class="r-in"><span>        token_url <span class="op">=</span> <span class="st">"&lt;token_url&gt;"</span>,</span></span>
+<span class="r-in"><span>        credential_source <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>           environment_id <span class="op">=</span> <span class="st">"&lt;environment_id&gt;"</span>,</span></span>
+<span class="r-in"><span>           region_url <span class="op">=</span> <span class="st">"&lt;region_url&gt;"</span>,</span></span>
+<span class="r-in"><span>           url <span class="op">=</span> <span class="st">"&lt;url&gt;"</span>,</span></span>
+<span class="r-in"><span>           regional_cred_verification_url <span class="op">=</span> <span class="st">"&lt;regional_cred_verification_url&gt;"</span></span></span>
+<span class="r-in"><span>         <span class="op">)</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volumes$create_azure`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">volumes_object</span> <span class="op">&lt;-</span> <span class="va">Volumes</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>auth <span class="op">=</span> <span class="va">auth</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Create Azure volume</span></span></span>
+<span class="r-in"><span> <span class="va">azure_volume</span> <span class="op">&lt;-</span> <span class="va">volumes_object</span><span class="op">$</span><span class="fu">create_azure</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   name <span class="op">=</span> <span class="st">"my_new_azure_volume"</span>,</span></span>
+<span class="r-in"><span>   description <span class="op">=</span> <span class="st">"Azure volume"</span>,</span></span>
+<span class="r-in"><span>   endpoint <span class="op">=</span> <span class="st">"&lt;endpoint&gt;"</span>,</span></span>
+<span class="r-in"><span>   container <span class="op">=</span> <span class="st">"&lt;bucket-name"</span>,</span></span>
+<span class="r-in"><span>   storage_account <span class="op">=</span> <span class="st">"&lt;storage_account-name&gt;"</span>,</span></span>
+<span class="r-in"><span>   tenant_id <span class="op">=</span> <span class="st">"&lt;tenant_id&gt;"</span>,</span></span>
+<span class="r-in"><span>   client_id <span class="op">=</span> <span class="st">"&lt;client_id&gt;"</span>,</span></span>
+<span class="r-in"><span>   client_secret <span class="op">=</span> <span class="st">"&lt;client_secret&gt;"</span>,</span></span>
+<span class="r-in"><span>   resource_id <span class="op">=</span> <span class="st">"&lt;resource_id&gt;"</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Volumes$create_ali_oss`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">volumes_object</span> <span class="op">&lt;-</span> <span class="va">Volumes</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>auth <span class="op">=</span> <span class="va">auth</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Create Ali cloud volume</span></span></span>
+<span class="r-in"><span><span class="va">ali_volume</span> <span class="op">&lt;-</span> <span class="va">volumes_object</span><span class="op">$</span><span class="fu">create_ali_oss</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  name <span class="op">=</span> <span class="st">"my_new_azure_volume"</span>,</span></span>
+<span class="r-in"><span>  description <span class="op">=</span> <span class="st">"Ali volume"</span>,</span></span>
+<span class="r-in"><span>  endpoint <span class="op">=</span> <span class="st">"&lt;endpoint&gt;"</span>,</span></span>
+<span class="r-in"><span>  bucket <span class="op">=</span> <span class="st">"&lt;bucket-name"</span>,</span></span>
+<span class="r-in"><span>  access_key_id <span class="op">=</span> <span class="st">"&lt;access_key_id&gt;"</span>,</span></span>
+<span class="r-in"><span>  secret_access_key <span class="op">=</span> <span class="st">"&lt;secret_access_key&gt;"</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

@@ -315,6 +315,10 @@ like 'fields', etc.</p></dd>
 
  # Submit export job
  exp_job1 &lt;- exports_object$submit_export(
+                          source_file = test_file,
+                          destination_volume = vol1,
+                          destination_location = "new_volume_file.txt"
+                )
 }
 
 </code></pre></div><p></p></div>
@@ -351,7 +355,53 @@ like 'fields', etc.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Exports$query`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">exports_object</span> <span class="op">&lt;-</span> <span class="va">Exports</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   auth <span class="op">=</span> <span class="va">auth</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># List all your running or failed export jobs on the volume</span></span></span>
+<span class="r-in"><span> <span class="va">exports_object</span><span class="op">$</span><span class="fu">query</span><span class="op">(</span>volume <span class="op">=</span> <span class="va">volume</span>, state <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RUNNING"</span>, <span class="st">"FAILED"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Exports$get`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">exports_object</span> <span class="op">&lt;-</span> <span class="va">Exports</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   auth <span class="op">=</span> <span class="va">auth</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Get export job by ID</span></span></span>
+<span class="r-in"><span> <span class="va">exports_object</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="va">id</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Exports$submit_export`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">exports_object</span> <span class="op">&lt;-</span> <span class="va">Exports</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   auth <span class="op">=</span> <span class="va">auth</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Submit export job</span></span></span>
+<span class="r-in"><span> <span class="va">exp_job1</span> <span class="op">&lt;-</span> <span class="va">exports_object</span><span class="op">$</span><span class="fu">submit_export</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                          source_file <span class="op">=</span> <span class="va">test_file</span>,</span></span>
+<span class="r-in"><span>                          destination_volume <span class="op">=</span> <span class="va">vol1</span>,</span></span>
+<span class="r-in"><span>                          destination_location <span class="op">=</span> <span class="st">"new_volume_file.txt"</span></span></span>
+<span class="r-in"><span>                <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
