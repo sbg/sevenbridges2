@@ -595,10 +595,12 @@ explicitly defined through nodes_location is either placed in
 main_location (if defined) or at the project files root if a main
 output location is not defined for the task.</p></li>
 <li><p><code>nodes_location</code>: List of output paths for individual
-task output nodes in the following format for each output node: <br><code>&lt;output-node-id&gt; = <br> list(
-       "output_location" = "&lt;output-path&gt;", <br>
-       "output_location_alias" = "&lt;alias-path&gt;" <br>
-     )</code> <br><code>{r} b64html = list( \cr "output_location" = "volumes://outputs/tasks/mar-19", \cr "output_location_alias" = "/rfranklin/tasks/picard" \cr ) </code></p>
+task output nodes in the following format for each output node: <br><code>&lt;output-node-id&gt; = list(</code> <br><code>"output_location" = "&lt;output-path&gt;",</code> <br><code>"output_location_alias" = "&lt;alias-path&gt;"</code> <br><code>)</code> <br>
+Example:</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">b64html</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span> <span class="st">"output_location"</span> <span class="op">=</span> <span class="st">"volumes://outputs/tasks/mar-19"</span>,</span>
+<span> <span class="st">"output_location_alias"</span> <span class="op">=</span> <span class="st">"/rfranklin/tasks/picard"</span></span>
+<span><span class="op">)</span></span></code></pre><p></p></div>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a> In the example above, b64html is the ID of the output node <span class="cf">for</span> which</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a> you want to define the output location, <span class="cf">while</span> the parameters are</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a> defined as follows<span class="sc">:</span></span></code></pre><p></p></div>
