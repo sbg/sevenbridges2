@@ -612,17 +612,17 @@ App <- R6::R6Class(
     #'      output location is not defined for the task.
     #'    \item `nodes_location`: List of output paths for individual
     #'      task output nodes in the following format for each output node: \cr
-    #'      \code{<output-node-id> = \cr list(
-    #'        "output_location" = "<output-path>", \cr
-    #'        "output_location_alias" = "<alias-path>" \cr
-    #'      )} \cr
-    #'      ```{r}
-    #'      b64html = list( \cr
-    #'      "output_location" = "volumes://outputs/tasks/mar-19", \cr
-    #'      "output_location_alias" = "/rfranklin/tasks/picard" \cr
-    #'      )
-    #'      ```
-    #'
+    #'      `<output-node-id> = list(` \cr
+    #'        `"output_location" = "<output-path>",` \cr
+    #'        `"output_location_alias" = "<alias-path>"` \cr
+    #'      `)` \cr
+    #'  Example:
+    #'  ```{r}
+    #'  b64html = list(
+    #'   "output_location" = "volumes://outputs/tasks/mar-19",
+    #'   "output_location_alias" = "/rfranklin/tasks/picard"
+    #'  )
+    #'  ```
     #'      In the example above, b64html is the ID of the output node for which
     #'      you want to define the output location, while the parameters are
     #'      defined as follows:
