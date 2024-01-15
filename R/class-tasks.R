@@ -62,9 +62,9 @@ Tasks <- R6::R6Class(
     #' @param ended_to Enter the ending date string for querying tasks that
     #'  ended until a specified date.
     #' @param order_by Order returned results by the specified field.
-    #'  Allowed values: `created_time`, `start_time`, `name`, `end_time` and
-    #'  `created_by`. Sort can be done only by one column. The default value is
-    #'  `created_time`.
+    #'  Allowed values: \cr `created_time`, `start_time`, `name`, `end_time` and
+    #'  `created_by`. \cr Sort can be done only by one column. The default
+    #'  value is `created_time`.
     #' @param order Sort results in ascending or descending order by
     #'  specifying `asc` or `desc`, respectively. Only taken into account if
     #'  `order_by` is explicitly specified. The default value is `asc`.

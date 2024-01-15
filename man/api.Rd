@@ -22,11 +22,10 @@ api(
 )
 }
 \arguments{
-\item{token}{API authentication token or \code{access_token} for
-Seven Bridges single sign-on.
-Authentication token uniquely identifies you on the
-⁨Seven Bridges⁩ Platform and has all your data access, app management
-and task execution permissions. Read more about the its usage
+\item{token}{API authentication token or \code{access_token} for Seven Bridges
+single sign-on. Authentication token uniquely identifies you on the Seven
+Bridges Platform and has all your data access, app management and task
+execution permissions. Read more about its usage
 \href{https://docs.sevenbridges.com/docs/get-your-authentication-token}{here}.}
 
 \item{path}{Path connected with \code{base_url}.}

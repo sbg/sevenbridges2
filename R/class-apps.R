@@ -37,9 +37,9 @@ Apps <- R6::R6Class(
     #' @description This call lists all the apps available to you.
     #'
     #' @param project Project ID string in the form
-    #'  `<project_owner>/<project_short_name>` or
-    #'  `<division_name>/<project_short_name>` or Project object, to restrict
-    #'  the results to apps from that project only.
+    #'  `<project_owner>/<project_short_name>` or \cr
+    #'  `<division_name>/<project_short_name>` or Project object, \cr
+    #'  to restrict the results to apps from that project only.
     #' @param visibility Set this to `public` to see all public apps on
     #'  the Seven Bridges Platform.
     #' @param query_terms Enter one or more search terms to query apps.

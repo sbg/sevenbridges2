@@ -156,7 +156,7 @@ Volumes <- R6::R6Class(
     #'  includes them, the API will attempt to create any missing folders
     #'  when it outputs a file.
     #' @param bucket The name of the AWS S3 bucket you wish to register
-    #'  as a volume. Required if `from_path` parameter is not provided.
+    #'  as a volume. \cr Required if `from_path` parameter is not provided.
     #' @param endpoint AWS API endpoint to use when accessing this
     #'  bucket. Default: `s3.amazonaws.com`.
     #' @param access_key_id AWS access key ID in form of string of the IAM user
@@ -301,7 +301,7 @@ Volumes <- R6::R6Class(
     #'  includes them, the API will attempt to create any missing folders
     #'  when it outputs a file.
     #' @param bucket The name of the AWS S3 bucket you wish to register
-    #'  as a volume. Required if `from_path` parameter is not provided.
+    #'  as a volume. \cr Required if `from_path` parameter is not provided.
     #' @param endpoint AWS API endpoint to use when accessing this
     #'  bucket. Default: `s3.amazonaws.com`.
     #' @param role_arn The ARN (Amazon Resource Name) of your role that
@@ -446,7 +446,7 @@ Volumes <- R6::R6Class(
     #' @param bucket The name of the GCS bucket you wish to register
     #'  as a volume. Required if `from_path` parameter is not provided.
     #' @param root_url Google Cloud Storage API endpoint for accessing
-    #'  this bucket. Default: `https://www.googleapis.com`.
+    #'  this bucket. \cr Default: `https://www.googleapis.com`.
     #' @param client_email The client email address for the Google Cloud
     #'  service account to use for operations on this bucket. This can be found
     #'  in the JSON containing your service account credentials.
@@ -575,7 +575,7 @@ Volumes <- R6::R6Class(
     #' @param bucket The name of the GCS bucket you wish to register
     #'  as a volume. Required if `from_path` parameter is not provided.
     #' @param root_url Google Cloud Storage API endpoint for accessing
-    #'  this bucket. Default: `https://www.googleapis.com`.
+    #'  this bucket. \cr Default: `https://www.googleapis.com`.
     #' @param configuration Connection configuration parameters in JSON format
     #'  downloaded from the Google Cloud Console once prerequisites have been
     #'  set up. Could be provided as a named list, or as path to the downloaded

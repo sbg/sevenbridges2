@@ -135,9 +135,9 @@ This call lists all the apps available to you.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{project}}{Project ID string in the form
-\verb{<project_owner>/<project_short_name>} or
-\verb{<division_name>/<project_short_name>} or Project object, to restrict
-the results to apps from that project only.}
+\verb{<project_owner>/<project_short_name>} or \cr
+\verb{<division_name>/<project_short_name>} or Project object, \cr
+to restrict the results to apps from that project only.}
 
 \item{\code{visibility}}{Set this to \code{public} to see all public apps on
 the Seven Bridges Platform.}

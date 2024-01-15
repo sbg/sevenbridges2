@@ -285,10 +285,11 @@ Other possible values include:
 want to specify a platform that is not in the \code{platform} list
 above, and also leaving \code{platform} unspecified.}
 
-\item{\code{token}}{Your authentication token.
-Authentication token uniquely identifies you on the
-⁨Seven Bridges⁩ Platform and has all your data access, app management
-and task execution permissions. Read more about the its usage
+\item{\code{token}}{API authentication token or \code{access_token} for
+Seven Bridges single sign-on. Authentication token uniquely identifies
+you on the Seven Bridges Platform and has all your data access,
+app management and task execution permissions.
+Read more about its usage
 \href{https://docs.sevenbridges.com/docs/get-your-authentication-token}{here}.}
 
 \item{\code{sysenv_url}}{Name of the system environment variable storing
@@ -297,7 +298,7 @@ the API base URL. By default: \code{"SB_API_ENDPOINT"}.}
 \item{\code{sysenv_token}}{Name of the system environment variable storing
 the auth token. By default: \code{"SB_AUTH_TOKEN"}.}
 
-\item{\code{config_file}}{Location of the user configuration file.
+\item{\code{config_file}}{Location of the user configuration file. \cr
 By default: \code{"~/.sevenbridges/credentials"}.}
 
 \item{\code{profile_name}}{Profile name in the user configuration file.
@@ -542,11 +543,11 @@ have the same name as the original file provided with the \code{path}
 parameter. If its name will not change, omit this key.}
 
 \item{\code{overwrite}}{In case there is already a file with the same name in
-the selected platform project/folder, this option allows you to control
-whether that file will be overwritten or not. If overwrite is set to
-\code{TRUE} and a file already exists under the name specified in the
-request, the existing file will be deleted and a new one created in its
-place.}
+the selected platform project or folder, this option allows you to
+control whether that file will be overwritten or not.
+If overwrite is set to \code{TRUE} and a file already exists under the name
+specified in the request, the existing file will be deleted and a new
+one created in its place.}
 
 \item{\code{part_size}}{The preferred size for upload parts in bytes. If omitted
 or set to a value that is incompatible with the cloud storage provider,

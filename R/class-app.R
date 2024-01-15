@@ -141,8 +141,9 @@ App <- R6::R6Class(
     #'
     #' @param project Project object or project ID. If you opt for the latter,
     #'  remember that the project ID should be specified in
-    #'  `<project_owner>/<project-name>` format, e.g. `rfranklin/my-project`,
-    #'  or as `<division>/<project-name>` depending on the account type.
+    #'  `<project_owner>/<project-name>` format, e.g. \cr
+    #'  `rfranklin/my-project`, or as `<division>/<project-name>`
+    #'  depending on the account \cr type.
     #' @param name The new name the app will have in the target project.
     #'  Optional.
     #' @param strategy The method for copying the app. Supported strategies:
@@ -587,9 +588,9 @@ App <- R6::R6Class(
     #'  \itemize{
     #'    \item `main_location` - Defines the output location for all
     #'      output nodes in the task. Can be a string path within the project in
-    #'      which the task is created, for example
+    #'      which the task is created, for example \cr
     #'      `/Analysis/<task_id>_<task_name>/`
-    #'      or a path on an attached volume, such as
+    #'      or a path on an attached volume, \cr such as
     #'      `volumes://volume_name/<project_id>/html`.
     #'      Parts of the path enclosed in angle brackets <> are tokens that are
     #'      dynamically replaced with corresponding values during task
@@ -611,14 +612,14 @@ App <- R6::R6Class(
     #'      output location is not defined for the task.
     #'    \item `nodes_location`: List of output paths for individual
     #'      task output nodes in the following format for each output node: \cr
-    #'      \code{<output-node-id> = list(
-    #'        "output_location" = "<output-path>",
-    #'        "output_location_alias" = "<alias-path>"
+    #'      \code{<output-node-id> = \cr list(
+    #'        "output_location" = "<output-path>", \cr
+    #'        "output_location_alias" = "<alias-path>" \cr
     #'      )} \cr
     #'      ```{r}
-    #'      b64html = list(
-    #'      "output_location" = "volumes://outputs/tasks/mar-19",
-    #'      "output_location_alias" = "/rfranklin/tasks/picard"
+    #'      b64html = list( \cr
+    #'      "output_location" = "volumes://outputs/tasks/mar-19", \cr
+    #'      "output_location_alias" = "/rfranklin/tasks/picard" \cr
     #'      )
     #'      ```
     #'
@@ -627,9 +628,9 @@ App <- R6::R6Class(
     #'      defined as follows:
     #'    \itemize{
     #'      \item `output_location` - Can be a path within the project in which
-    #'        the task is created, for example
+    #'        the task is created, for example \cr
     #'        `/Analysis/<task_id>_<task_name>/`
-    #'        or a path on an attached volume, such as
+    #'        or a path on an attached volume, \cr such as
     #'        `volumes://volume_name/<project_id>/html`. Also accepts tokens.
     #'      \item `output_location_alias` - The location (path) in the project
     #'        that will point to the exact location where the output is stored.

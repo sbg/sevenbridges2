@@ -378,7 +378,7 @@ includes them, the API will attempt to create any missing folders
 when it outputs a file.}
 
 \item{\code{bucket}}{The name of the AWS S3 bucket you wish to register
-as a volume. Required if \code{from_path} parameter is not provided.}
+as a volume. \cr Required if \code{from_path} parameter is not provided.}
 
 \item{\code{endpoint}}{AWS API endpoint to use when accessing this
 bucket. Default: \code{s3.amazonaws.com}.}
@@ -491,7 +491,7 @@ includes them, the API will attempt to create any missing folders
 when it outputs a file.}
 
 \item{\code{bucket}}{The name of the AWS S3 bucket you wish to register
-as a volume. Required if \code{from_path} parameter is not provided.}
+as a volume. \cr Required if \code{from_path} parameter is not provided.}
 
 \item{\code{endpoint}}{AWS API endpoint to use when accessing this
 bucket. Default: \code{s3.amazonaws.com}.}
@@ -605,7 +605,7 @@ when it outputs a file.}
 as a volume. Required if \code{from_path} parameter is not provided.}
 
 \item{\code{root_url}}{Google Cloud Storage API endpoint for accessing
-this bucket. Default: \verb{https://www.googleapis.com}.}
+this bucket. \cr Default: \verb{https://www.googleapis.com}.}
 
 \item{\code{client_email}}{The client email address for the Google Cloud
 service account to use for operations on this bucket. This can be found
@@ -703,7 +703,7 @@ when it outputs a file.}
 as a volume. Required if \code{from_path} parameter is not provided.}
 
 \item{\code{root_url}}{Google Cloud Storage API endpoint for accessing
-this bucket. Default: \verb{https://www.googleapis.com}.}
+this bucket. \cr Default: \verb{https://www.googleapis.com}.}
 
 \item{\code{configuration}}{Connection configuration parameters in JSON format
 downloaded from the Google Cloud Console once prerequisites have been

@@ -265,8 +265,9 @@ specified project.
 \describe{
 \item{\code{project}}{Project object or project ID. If you opt for the latter,
 remember that the project ID should be specified in
-\verb{<project_owner>/<project-name>} format, e.g. \code{rfranklin/my-project},
-or as \verb{<division>/<project-name>} depending on the account type.}
+\verb{<project_owner>/<project-name>} format, e.g. \cr
+\code{rfranklin/my-project}, or as \verb{<division>/<project-name>}
+depending on the account \cr type.}
 
 \item{\code{name}}{The new name the app will have in the target project.
 Optional.}
@@ -611,9 +612,9 @@ See below for more details.
 \itemize{
 \item \code{main_location} - Defines the output location for all
 output nodes in the task. Can be a string path within the project in
-which the task is created, for example
+which the task is created, for example \cr
 \verb{/Analysis/<task_id>_<task_name>/}
-or a path on an attached volume, such as
+or a path on an attached volume, \cr such as
 \verb{volumes://volume_name/<project_id>/html}.
 Parts of the path enclosed in angle brackets <> are tokens that are
 dynamically replaced with corresponding values during task
@@ -635,11 +636,11 @@ main_location (if defined) or at the project files root if a main
 output location is not defined for the task.
 \item \code{nodes_location}: List of output paths for individual
 task output nodes in the following format for each output node: \cr
-\code{<output-node-id> = list(
-       "output_location" = "<output-path>",
-       "output_location_alias" = "<alias-path>"
+\code{<output-node-id> = \cr list(
+       "output_location" = "<output-path>", \cr
+       "output_location_alias" = "<alias-path>" \cr
      )} \cr
-\verb{\{r\} b64html = list( "output_location" = "volumes://outputs/tasks/mar-19", "output_location_alias" = "/rfranklin/tasks/picard" ) }
+\verb{\{r\} b64html = list( \\cr "output_location" = "volumes://outputs/tasks/mar-19", \\cr "output_location_alias" = "/rfranklin/tasks/picard" \\cr ) }
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{ In the example above, b64html is the ID of the output node for which
  you want to define the output location, while the parameters are
@@ -648,9 +649,9 @@ task output nodes in the following format for each output node: \cr
 
 \itemize{
 \item \code{output_location} - Can be a path within the project in which
-the task is created, for example
+the task is created, for example \cr
 \verb{/Analysis/<task_id>_<task_name>/}
-or a path on an attached volume, such as
+or a path on an attached volume, \cr such as
 \verb{volumes://volume_name/<project_id>/html}. Also accepts tokens.
 \item \code{output_location_alias} - The location (path) in the project
 that will point to the exact location where the output is stored.

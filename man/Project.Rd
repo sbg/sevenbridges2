@@ -1248,9 +1248,9 @@ that ended on a specified date.}
 ended until a specified date.}
 
 \item{\code{order_by}}{Order returned results by the specified field.
-Allowed values: \code{created_time}, \code{start_time}, \code{name}, \code{end_time} and
-\code{created_by}. Sort can be done only by one column. The default value is
-\code{created_time}.}
+Allowed values: \cr \code{created_time}, \code{start_time}, \code{name}, \code{end_time} and
+\code{created_by}. \cr Sort can be done only by one column. The default
+value is \code{created_time}.}
 
 \item{\code{order}}{Sort results in ascending or descending order by
 specifying \code{asc} or \code{desc}, respectively. Only taken into account if

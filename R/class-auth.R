@@ -114,19 +114,21 @@ Auth <- R6::R6Class(
     #'  want to specify a platform that is not in the `platform` list
     #'  above, and also leaving `platform` unspecified.
     #'
-    #' @param token Your authentication token.
-    #'  Authentication token uniquely identifies you on the
-    #'  ⁨Seven Bridges⁩ Platform and has all your data access, app management
-    #'  and task execution permissions. Read more about the its usage
-    #' [here](https://docs.sevenbridges.com/docs/get-your-authentication-token).
-    #'
+    #' @param token API authentication token or `access_token` for
+    #'  Seven Bridges single sign-on. Authentication token uniquely identifies
+    #'  you on the Seven Bridges Platform and has all your data access,
+    #'  app management and task execution permissions.
+    #'  Read more about its usage
+    # nolint start
+    #'  [here](https://docs.sevenbridges.com/docs/get-your-authentication-token).
+    # nolint end
     #' @param sysenv_url Name of the system environment variable storing
     #'  the API base URL. By default: `"SB_API_ENDPOINT"`.
     #'
     #' @param sysenv_token Name of the system environment variable storing
     #'  the auth token. By default: `"SB_AUTH_TOKEN"`.
     #'
-    #' @param config_file Location of the user configuration file.
+    #' @param config_file Location of the user configuration file. \cr
     #'  By default: `"~/.sevenbridges/credentials"`.
     #'
     #' @param profile_name Profile name in the user configuration file.
@@ -516,11 +518,11 @@ Auth <- R6::R6Class(
     #'  have the same name as the original file provided with the `path`
     #'  parameter. If its name will not change, omit this key.
     #' @param overwrite In case there is already a file with the same name in
-    #'  the selected platform project/folder, this option allows you to control
-    #'  whether that file will be overwritten or not. If overwrite is set to
-    #'  `TRUE` and a file already exists under the name specified in the
-    #'  request, the existing file will be deleted and a new one created in its
-    #'  place.
+    #'  the selected platform project or folder, this option allows you to
+    #'  control whether that file will be overwritten or not.
+    #'  If overwrite is set to `TRUE` and a file already exists under the name
+    #'  specified in the request, the existing file will be deleted and a new
+    #'  one created in its place.
     #' @param part_size The preferred size for upload parts in bytes. If omitted
     #'  or set to a value that is incompatible with the cloud storage provider,
     #'  a default value will be used.
