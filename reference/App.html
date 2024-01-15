@@ -214,8 +214,8 @@ specified project.</p><div class="section">
 <p></p><div class="arguments"><dl><dt><code>project</code></dt>
 <dd><p>Project object or project ID. If you opt for the latter,
 remember that the project ID should be specified in
-<code>&lt;project_owner&gt;/&lt;project-name&gt;</code> format, e.g. <code>rfranklin/my-project</code>,
-or as <code>&lt;division&gt;/&lt;project-name&gt;</code> depending on the account type.</p></dd>
+<code>&lt;project_owner&gt;/&lt;project-name&gt;</code> format, e.g. <br><code>rfranklin/my-project</code>, or as <code>&lt;division&gt;/&lt;project-name&gt;</code>
+depending on the account <br> type.</p></dd>
 
 
 <dt><code>name</code></dt>
@@ -573,9 +573,8 @@ setting the nodes_override parameter to true and defining individual
 output node locations within nodes_location.
 See below for more details.</p><ul><li><p><code>main_location</code> - Defines the output location for all
 output nodes in the task. Can be a string path within the project in
-which the task is created, for example
-<code>/Analysis/&lt;task_id&gt;_&lt;task_name&gt;/</code>
-or a path on an attached volume, such as
+which the task is created, for example <br><code>/Analysis/&lt;task_id&gt;_&lt;task_name&gt;/</code>
+or a path on an attached volume, <br> such as
 <code>volumes://volume_name/&lt;project_id&gt;/html</code>.
 Parts of the path enclosed in angle brackets &lt;&gt; are tokens that are
 dynamically replaced with corresponding values during task
@@ -596,17 +595,16 @@ explicitly defined through nodes_location is either placed in
 main_location (if defined) or at the project files root if a main
 output location is not defined for the task.</p></li>
 <li><p><code>nodes_location</code>: List of output paths for individual
-task output nodes in the following format for each output node: <br><code>&lt;output-node-id&gt; = list(
-       "output_location" = "&lt;output-path&gt;",
-       "output_location_alias" = "&lt;alias-path&gt;"
-     )</code> <br><code>{r} b64html = list( "output_location" = "volumes://outputs/tasks/mar-19", "output_location_alias" = "/rfranklin/tasks/picard" ) </code></p>
+task output nodes in the following format for each output node: <br><code>&lt;output-node-id&gt; = <br> list(
+       "output_location" = "&lt;output-path&gt;", <br>
+       "output_location_alias" = "&lt;alias-path&gt;" <br>
+     )</code> <br><code>{r} b64html = list( \cr "output_location" = "volumes://outputs/tasks/mar-19", \cr "output_location_alias" = "/rfranklin/tasks/picard" \cr ) </code></p>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a> In the example above, b64html is the ID of the output node <span class="cf">for</span> which</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a> you want to define the output location, <span class="cf">while</span> the parameters are</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a> defined as follows<span class="sc">:</span></span></code></pre><p></p></div>
 <ul><li><p><code>output_location</code> - Can be a path within the project in which
-the task is created, for example
-<code>/Analysis/&lt;task_id&gt;_&lt;task_name&gt;/</code>
-or a path on an attached volume, such as
+the task is created, for example <br><code>/Analysis/&lt;task_id&gt;_&lt;task_name&gt;/</code>
+or a path on an attached volume, <br> such as
 <code>volumes://volume_name/&lt;project_id&gt;/html</code>. Also accepts tokens.</p></li>
 <li><p><code>output_location_alias</code> - The location (path) in the project
 that will point to the exact location where the output is stored.

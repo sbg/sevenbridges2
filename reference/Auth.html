@@ -228,10 +228,11 @@ above, and also leaving <code>platform</code> unspecified.</p></dd>
 
 
 <dt><code>token</code></dt>
-<dd><p>Your authentication token.
-Authentication token uniquely identifies you on the
-⁨Seven Bridges⁩ Platform and has all your data access, app management
-and task execution permissions. Read more about the its usage
+<dd><p>API authentication token or <code>access_token</code> for
+Seven Bridges single sign-on. Authentication token uniquely identifies
+you on the Seven Bridges Platform and has all your data access,
+app management and task execution permissions.
+Read more about its usage
 <a href="https://docs.sevenbridges.com/docs/get-your-authentication-token" class="external-link">here</a>.</p></dd>
 
 
@@ -246,7 +247,7 @@ the auth token. By default: <code>"SB_AUTH_TOKEN"</code>.</p></dd>
 
 
 <dt><code>config_file</code></dt>
-<dd><p>Location of the user configuration file.
+<dd><p>Location of the user configuration file. <br>
 By default: <code>"~/.sevenbridges/credentials"</code>.</p></dd>
 
 
@@ -497,11 +498,11 @@ parameter. If its name will not change, omit this key.</p></dd>
 
 <dt><code>overwrite</code></dt>
 <dd><p>In case there is already a file with the same name in
-the selected platform project/folder, this option allows you to control
-whether that file will be overwritten or not. If overwrite is set to
-<code>TRUE</code> and a file already exists under the name specified in the
-request, the existing file will be deleted and a new one created in its
-place.</p></dd>
+the selected platform project or folder, this option allows you to
+control whether that file will be overwritten or not.
+If overwrite is set to <code>TRUE</code> and a file already exists under the name
+specified in the request, the existing file will be deleted and a new
+one created in its place.</p></dd>
 
 
 <dt><code>part_size</code></dt>
