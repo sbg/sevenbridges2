@@ -15,7 +15,8 @@ License: Apache License 2.0 | file LICENSE
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
-URL: https://www.sevenbridges.com, https://github.com/sbg/sevenbridges2
+URL: https://www.sevenbridges.com, https://sbg.github.io/sevenbridges2/, 
+    https://github.com/sbg/sevenbridges2
 Depends:
     R (>= 4.2.0)
 RoxygenNote: 7.2.3

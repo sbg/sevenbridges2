@@ -10,7 +10,6 @@
 ^_pkgdown\.yml$
 ^config\.yml$
 ^cran-comments\.md$
-^docs$
 ^pkgdown$
 ^renv$
 ^renv\.lock$

@@ -126,7 +126,7 @@ Cross-platform support for Seven Bridges environments, such as [Seven Bridges Pl
 
 ## Documentation
 
-[Docs website](https://r-stack.pages.sbgenomics.com/sevenbridges2/)
+[Docs website](https://sbg.github.io/sevenbridges2/index.html)
 
 ## Contribute
 
