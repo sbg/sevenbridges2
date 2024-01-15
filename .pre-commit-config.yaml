@@ -57,6 +57,7 @@ repos:
           (.*/|)renv/settings\.dcf|
           (.*/|)renv\.lock|
           (.*/|)WORDLIST|
+          CRAN-SUBMISSION|
           \.github/workflows/.*|
           data/.*|
           )$
