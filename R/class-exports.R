@@ -209,10 +209,10 @@ Exports <- R6::R6Class(
     #'
     #'  # Submit export job
     #'  exp_job1 <- exports_object$submit_export(
-    #                           source_file = test_file,
-    #                           destination_volume = vol1,
-    #                           destination_location = "new_volume_file.txt"
-    #                 )
+    #'                           source_file = test_file,
+    #'                           destination_volume = vol1,
+    #'                           destination_location = "new_volume_file.txt"
+    #'                 )
     #' }
     #'
     #' @return \code{\link{Export}} object.

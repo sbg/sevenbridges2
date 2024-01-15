@@ -634,7 +634,7 @@ Auth <- R6::R6Class(
     #'  )
     #'
     #'  # List ongoing uploads
-    #' . a$list_ongoing_uploads()
+    #'  a$list_ongoing_uploads()
     #' }
     list_ongoing_uploads = function() {
       # Run API call based on id parameter
@@ -732,7 +732,7 @@ Auth <- R6::R6Class(
     #'  a$send_feedback(
     #'   "This is a test for sending feedback via API.",
     #'   type = "thought"
-    #   )
+    #'  )
     #' }
     send_feedback = function(text,
                              type = c("idea", "thought", "problem"),

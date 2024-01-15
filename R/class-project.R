@@ -467,9 +467,9 @@ Project <- R6::R6Class(
     #'
     #'  # Add member to a project
     #'  project_object$add_member(
-    #       user = "<username_of_a_user_you_want_to_add>",
-    #       permissions = list(write = TRUE, execute = TRUE)
-    #   )
+    #'       user = "<username_of_a_user_you_want_to_add>",
+    #'       permissions = list(write = TRUE, execute = TRUE)
+    #'   )
     #' }
     #'
     #' @return \code{\link{Member}} object.
@@ -1270,9 +1270,7 @@ Project <- R6::R6Class(
     #'                    )
     #'
     #'  # Create a task in a project
-    #'  project_object$create_task(
-    #'                   app = app
-    #'                   )
+    #'  project_object$create_task(app = app)
     #' }
     #'
     #' @return \code{\link{Task}} object.

@@ -212,7 +212,7 @@ Projects <- R6::R6Class(
     #'  # Create a project
     #'  projects_object$create(
     #'                     name = name,
-    #'                     billing_group = billing_group
+    #'                     billing_group = billing_group,
     #'                     description = description
     #'                   )
     #' }

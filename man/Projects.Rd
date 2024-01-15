@@ -54,7 +54,7 @@ R6 Class representing Projects resource.
  # Create a project
  projects_object$create(
                     name = name,
-                    billing_group = billing_group
+                    billing_group = billing_group,
                     description = description
                   )
 }
@@ -325,7 +325,7 @@ like 'fields', etc.}
  # Create a project
  projects_object$create(
                     name = name,
-                    billing_group = billing_group
+                    billing_group = billing_group,
                     description = description
                   )
 }

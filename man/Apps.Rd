@@ -32,7 +32,7 @@ R6 Class representing apps resource endpoint.
  )
 
  # Get app object
- apps_object$$get(id = "<some_id>")
+ apps_object$get(id = "<some_id>")
 }
 
 
@@ -63,7 +63,7 @@ R6 Class representing apps resource endpoint.
   raw = raw,
   project = project,
   name = name,
-  raw_format = YAML
+  raw_format = "YAML"
  )
 }
 
@@ -227,7 +227,7 @@ like 'fields', etc.}
  )
 
  # Get app object
- apps_object$$get(id = "<some_id>")
+ apps_object$get(id = "<some_id>")
 }
 
 }
@@ -360,7 +360,7 @@ like 'fields', etc.}
   raw = raw,
   project = project,
   name = name,
-  raw_format = YAML
+  raw_format = "YAML"
  )
 }
 

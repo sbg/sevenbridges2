@@ -131,6 +131,9 @@ R6 Class representing a central resource for managing projects.
 
  # Add member to a project
  project_object$add_member(
+      user = "<username_of_a_user_you_want_to_add>",
+      permissions = list(write = TRUE, execute = TRUE)
+  )
 }
 
 
@@ -331,9 +334,7 @@ R6 Class representing a central resource for managing projects.
                    )
 
  # Create a task in a project
- project_object$create_task(
-                  app = app
-                  )
+ project_object$create_task(app = app)
 }
 
 }
@@ -767,6 +768,9 @@ Example:
 
  # Add member to a project
  project_object$add_member(
+      user = "<username_of_a_user_you_want_to_add>",
+      permissions = list(write = TRUE, execute = TRUE)
+  )
 }
 
 }
@@ -1556,9 +1560,7 @@ like 'fields', etc.}
                    )
 
  # Create a task in a project
- project_object$create_task(
-                  app = app
-                  )
+ project_object$create_task(app = app)
 }
 
 }

@@ -47,6 +47,10 @@ R6 Class representing storage exports resource endpoints.
 
  # Submit export job
  exp_job1 <- exports_object$submit_export(
+                          source_file = test_file,
+                          destination_volume = vol1,
+                          destination_location = "new_volume_file.txt"
+                )
 }
 
 }
@@ -297,6 +301,10 @@ like 'fields', etc.}
 
  # Submit export job
  exp_job1 <- exports_object$submit_export(
+                          source_file = test_file,
+                          destination_volume = vol1,
+                          destination_location = "new_volume_file.txt"
+                )
 }
 
 }

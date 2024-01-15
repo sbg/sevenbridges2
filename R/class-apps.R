@@ -63,6 +63,7 @@ Apps <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function.
     #'
     #' @importFrom checkmate assert_list
+    #'
     #' @examples
     #' \dontrun{
     #'  apps_object <- Apps$new(
@@ -128,7 +129,7 @@ Apps <- R6::R6Class(
     # nolint start
     #'  [API documentation](https://docs.sevenbridges.com/reference/get-details-of-an-app).
     # nolint end
-
+    #'
     #' @param id The full `<project_id>/<app_short_name>`
     #'  path for this API call is known as App ID. You can also get the App ID
     #'  for an app by making the call to list all apps available to you.
@@ -146,7 +147,7 @@ Apps <- R6::R6Class(
     #'  )
     #'
     #'  # Get app object
-    #'  apps_object$$get(id = "<some_id>")
+    #'  apps_object$get(id = "<some_id>")
     #' }
     #'
     #' @return \code{\link{App}} object.
@@ -288,7 +289,7 @@ Apps <- R6::R6Class(
     #'   raw = raw,
     #'   project = project,
     #'   name = name,
-    #'   raw_format = YAML
+    #'   raw_format = "YAML"
     #'  )
     #' }
     #'

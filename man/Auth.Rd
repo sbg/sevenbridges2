@@ -132,7 +132,7 @@ Seven Bridges.
  )
 
  # List ongoing uploads
-. a$list_ongoing_uploads()
+ a$list_ongoing_uploads()
 }
 
 ## ------------------------------------------------
@@ -165,6 +165,7 @@ Seven Bridges.
  a$send_feedback(
   "This is a test for sending feedback via API.",
   type = "thought"
+ )
 }
 }
 \section{Public fields}{
@@ -599,7 +600,7 @@ This method returns the list of all ongoing uploads.
  )
 
  # List ongoing uploads
-. a$list_ongoing_uploads()
+ a$list_ongoing_uploads()
 }
 }
 \if{html}{\out{</div>}}
@@ -683,6 +684,7 @@ You can send one feedback item per minute.
  a$send_feedback(
   "This is a test for sending feedback via API.",
   type = "thought"
+ )
 }
 }
 \if{html}{\out{</div>}}

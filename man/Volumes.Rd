@@ -166,6 +166,7 @@ ali_volume <- volumes_object$create_ali_oss(
   bucket = "<bucket-name",
   access_key_id = "<access_key_id>",
   secret_access_key = "<secret_access_key>"
+ )
 }
 
 }
@@ -924,6 +925,7 @@ ali_volume <- volumes_object$create_ali_oss(
   bucket = "<bucket-name",
   access_key_id = "<access_key_id>",
   secret_access_key = "<secret_access_key>"
+ )
 }
 
 }
