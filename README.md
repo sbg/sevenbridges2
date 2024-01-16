@@ -118,7 +118,7 @@ upload_job <- a$upload(
 )
 ```
 
-Please check `vignette("1_Quickstart", package = "sevenbridges2")` for technical details about all available API methods and features.
+Please check `vignette("quickstart", package = "sevenbridges2")` for technical details about all available API methods and features.
 
 ### Cross Environment Support
 
