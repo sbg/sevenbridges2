@@ -2,9 +2,9 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
+  1_Quickstart: 1_Quickstart.html
   Authentication_and_Billing: Authentication_and_Billing.html
   Files_upload_and_Volumes: Files_upload_and_Volumes.html
   Projects_and_Tasks_execution: Projects_and_Tasks_execution.html
-  quickstart: quickstart.html
-last_built: 2024-01-15T21:21Z
+last_built: 2024-01-16T16:16Z
 
