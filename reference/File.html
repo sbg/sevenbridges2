@@ -693,7 +693,7 @@ your download, you should provide the path to the destination directory
 as <code>directory_path</code> parameter.</p><div class="section">
 <h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">File</span><span class="op">$</span><span class="fu">download</span><span class="op">(</span></span>
-<span>  directory_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">directory_path</span>,</span>
 <span>  filename <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">name</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"curl"</span>,</span>
 <span>  retry_count <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"sevenbridges2"</span><span class="op">)</span><span class="op">$</span><span class="va">default_retry_count</span>,</span>
@@ -739,7 +739,7 @@ file_object &lt;- File$new(
                    )
 
  # Download file object
- file_object$download()
+ file_object$download(directory_path = ".")
 }
 
 </code></pre></div><p></p></div>
@@ -1114,7 +1114,7 @@ like 'fields', etc.</p></dd>
 <span class="r-in"><span>                   <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="co"># Download file object</span></span></span>
-<span class="r-in"><span> <span class="va">file_object</span><span class="op">$</span><span class="fu">download</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">file_object</span><span class="op">$</span><span class="fu">download</span><span class="op">(</span>directory_path <span class="op">=</span> <span class="st">"."</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
@@ -1145,7 +1145,7 @@ like 'fields', etc.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Marija Jovanovic, Marko Trifunovic, Vladimir Obucina, Seven Bridges Genomics Inc..</p>
+  <p></p><p>Developed by Marija Gacic, Marko Trifunovic, Vladimir Obucina, Velsera.</p>
 </div>
 
 <div class="pkgdown-footer-right">
