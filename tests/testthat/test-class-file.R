@@ -227,6 +227,12 @@ test_that("File download method throws error when expected", {
     retry_count = 5, retry_timeout = NULL
   )
 
+  # Test with no directory path set
+  testthat::expect_error(
+    setup_file_obj$download(),
+    regexp = "Please, provide directory path where to download your file.", # nolint
+    fixed = TRUE
+  )
   # Test with bad directory path
   testthat::expect_error(
     do.call(setup_file_obj$download, bad_directory_path_param),

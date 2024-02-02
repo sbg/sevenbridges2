@@ -231,7 +231,7 @@ test_that("check_download_path function throws error when parameters are not val
   filename_invalid_values <- c(NA, NULL)
   for (filename in filename_invalid_values) {
     testthat::expect_error(
-      check_download_path(directory_path = getwd(), filename = filename),
+      check_download_path(directory_path = tempdir(), filename = filename),
       "The filename parameter is missing."
     )
   }
@@ -243,7 +243,7 @@ test_that("check_download_path function throws error when parameters are not val
   )
   for (filename in filename_invalid_values) {
     testthat::expect_error(
-      check_download_path(directory_path = getwd(), filename = filename),
+      check_download_path(directory_path = tempdir(), filename = filename),
       "The filename parameter should be a length-one string."
     )
   }

@@ -2,7 +2,7 @@
 
     Code
       setup_project_obj$print()
-    Output
+    Message
       Project name:  Project name 
       Project id:  project_id 
 

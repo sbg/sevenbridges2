@@ -4,6 +4,7 @@ ae
 AES
 AliCloud
 amazonaws
+apache
 api
 arg
 Arial
@@ -83,6 +84,7 @@ fnd
 FQ
 fromJSON
 FS
+Gacic
 GC
 GCP
 GCS
@@ -90,6 +92,7 @@ gcs
 genomeFastaFiles
 geometricPrecision
 getenv
+getwd
 GFF
 Github
 github
@@ -120,6 +123,8 @@ knitr
 LazyData
 len
 li
+licensable
+Licensor
 lifecycle
 Lifecycle
 linearGradient
@@ -133,6 +138,7 @@ marko
 Marko
 members's
 memoization
+MERCHANTABILITY
 microsoft
 na
 namelookup
@@ -165,6 +171,7 @@ resubmission
 Resubmission
 rfranklin
 rlang
+rlang's
 rmarkdown
 RO
 Roboto
@@ -190,6 +197,7 @@ str
 stringi
 stringr
 subfields
+sublicense
 subprocess
 svg
 Sys

@@ -771,10 +771,10 @@ File <- R6::R6Class(
     #'                    )
     #'
     #'  # Download file object
-    #'  file_object$download()
+    #'  file_object$download(directory_path = ".")
     #' }
     #'
-    download = function(directory_path = getwd(),
+    download = function(directory_path,
                         filename = self$name,
                         method = "curl",
                         # nolint start
@@ -786,8 +786,12 @@ File <- R6::R6Class(
         self$url <- self$get_download_url()
       }
 
-      # check if directory exists
-      check_download_path(directory_path, filename)
+      if (is_missing(directory_path)) {
+        rlang::abort("Please, provide directory path where to download your file.") # nolint
+      } else {
+        # check if directory exists
+        check_download_path(directory_path, filename)
+      }
 
       # check retry parameters
       check_retry_params(retry_count, parameter_to_validate = "count")
@@ -833,12 +837,12 @@ File <- R6::R6Class(
             }
             # wait for 5 seconds before new attemt - print the countdown message
             for (seconds_left in retry_timeout:1) {
-              cat(glue::glue_col("Retrying in {green {seconds_left}} seconds...", "\r")) # nolint
+              rlang::inform(glue::glue_col("Retrying in {green {seconds_left}} seconds...", "\r")) # nolint
               Sys.sleep(1)
             }
 
             # print a blank line to clear the countdown message
-            cat("\r", "                              ", "\r")
+            rlang::inform(glue::glue("\r", "                              ", "\r")) # nolint
           }
         )
       }

@@ -238,7 +238,7 @@ file_object <- File$new(
                    )
 
  # Download file object
- file_object$download()
+ file_object$download(directory_path = ".")
 }
 
 
@@ -879,7 +879,7 @@ your download, you should provide the path to the destination directory
 as \code{directory_path} parameter.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{File$download(
-  directory_path = getwd(),
+  directory_path,
   filename = self$name,
   method = "curl",
   retry_count = getOption("sevenbridges2")$default_retry_count,
@@ -916,7 +916,7 @@ file_object <- File$new(
                    )
 
  # Download file object
- file_object$download()
+ file_object$download(directory_path = ".")
 }
 
 }

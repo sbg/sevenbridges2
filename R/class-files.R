@@ -243,6 +243,7 @@ Files <- R6::R6Class(
     #'
     #' @importFrom checkmate assert_list
     #' @importFrom glue glue_col
+    #' @importFrom rlang inform
     #'
     #' @examples
     #' \dontrun{
@@ -288,22 +289,13 @@ Files <- R6::R6Class(
         )
         element <- setNames(list(element), names(res[i]))
         result <- append(result, element)
-        cat(
-          glue::glue_col("{blue  Original file id: }
-                           {names(res[i])}"),
-          "\n"
+        rlang::inform(
+          glue::glue_col(
+            "{blue  Original file id:} {names(res[i])}", "\n",
+            "{blue  Copied file id:} {res[[i]]$new_file_id}", "\n",
+            "{blue  Copied file name:} {res[[i]]$new_file_name}", "\n"
+          )
         )
-        cat(
-          glue::glue_col("{blue  Copied file id: }
-                           {res[[i]]$new_file_id}"),
-          "\n"
-        )
-        cat(
-          glue::glue_col("{blue  Copied file name: }
-                           {res[[i]]$new_file_name}"),
-          "\n"
-        )
-        cat("\n")
       }
       invisible(result)
     }, # nocov end

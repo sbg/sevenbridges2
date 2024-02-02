@@ -1,17 +1,18 @@
 Package: sevenbridges2
 Type: Package
-Title: Seven Bridges Platform API Client in R
+Title: The 'Seven Bridges Platform' API Client
 Version: 0.1.0
 Authors@R: c(
-    person("Marija", "Jovanovic", email = "marija.jovanovic@velsera.com", role = c("aut", "cre")),
+    person("Marija", "Gacic", email = "marija.jovanovic@velsera.com", role = c("aut", "cre")),
     person("Marko", "Trifunovic", email = "marko.trifunovic@sevenbridges.com", role = c("aut")),
     person("Vladimir", "Obucina", email = "vladimir.obucina@velsera.com", role = c("aut")),
-    person("Seven Bridges Genomics Inc.", role = c("cph", "fnd"))
+    person("Velsera", role = c("cph", "fnd"))
     )
-Maintainer: Marija Jovanovic <marija.jovanovic@velsera.com>
-Description: R client and utilities for Seven Bridges platform API, from Cancer
-    Genomics Cloud to other Seven Bridges supported platforms.
-License: Apache License 2.0 | file LICENSE
+Maintainer: Marija Gacic <marija.jovanovic@velsera.com>
+Description: R client and utilities for 'Seven Bridges Platform' API, from 'Cancer Genomics Cloud' 
+    to other 'Seven Bridges' supported platforms. API documentation is hosted publicly 
+    at <https://docs.sevenbridges.com/docs/the-api>.
+License: Apache License 2.0
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr

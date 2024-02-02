@@ -123,9 +123,12 @@ Project <- R6::R6Class(
     #' }
     #'
     print = function() {
-      cat(glue::glue_col("{blue  Project name: } {self$name}"), "\n") # nocov
-      cat(glue::glue_col("{blue  Project id: } {self$id}"), "\n") # nocov
-    },
+      # nocov start
+      rlang::inform(glue::glue_col(
+        "{blue  Project name: } {self$name} ", "\n",
+        "{blue  Project id: } {self$id} ", "\n"
+      ))
+    }, # nocov end
 
     # Print Project object in detail ------------------------------------------
     #' @description Detailed print method for Project class.
