@@ -136,6 +136,6 @@ Contributors should sign the [Seven Bridges Contributor Agreement](https://secur
 
 ## Copyright
 
-© 2023 Seven Bridges Genomics, Inc. All rights reserved.
+© 2024 Velsera, Inc. All rights reserved.
 
-This project is licensed under the terms of the [Apache License 2.0](LICENSE).
+This project is licensed under the terms of the Apache License 2.0.
