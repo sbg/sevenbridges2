@@ -273,12 +273,10 @@ Files <- R6::R6Class(
         "file_ids" = file_ids
       )
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["copy"]]),
         method = "POST",
-        body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url
+        body = body
       )
 
       result <- list()
@@ -362,12 +360,10 @@ Files <- R6::R6Class(
         )
       }
       # nocov start
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["query"]]),
-        token = self$auth$get_token(),
         body = body,
-        method = "POST",
-        base_url = self$auth$url
+        method = "POST"
       )
 
       rlang::inform(glue::glue_col("New folder {green {name}} has been created.")) # nolint

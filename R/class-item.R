@@ -51,11 +51,9 @@ Item <- R6::R6Class(
       if (inherits(cls, "App")) {
         revision <- cls$revision
       }
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         url = reload_url,
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         path = glue::glue(cls$URL[["get"]]),
         ...
       )

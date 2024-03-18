@@ -266,12 +266,10 @@ Projects <- R6::R6Class(
         )
       )
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = self$URL[["create"]],
-        token = self$auth$get_token(),
         body = body,
         method = "POST",
-        base_url = self$auth$url,
         ...
       )
 
