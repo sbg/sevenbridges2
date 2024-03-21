@@ -414,7 +414,7 @@ Auth <- R6::R6Class(
     api = function(...,
                    limit = getOption("sevenbridges2")$"limit",
                    offset = getOption("sevenbridges2")$"offset",
-                   fields = NULL) {
+                   fields = "_all") {
       # nocov start
       res <- sevenbridges2::api(
         token = self$get_token(),

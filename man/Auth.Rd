@@ -382,7 +382,7 @@ pass arguments to core \code{api()} function.
   ...,
   limit = getOption("sevenbridges2")$limit,
   offset = getOption("sevenbridges2")$offset,
-  fields = NULL
+  fields = "_all"
 )}\if{html}{\out{</div>}}
 }
 
