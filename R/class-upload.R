@@ -247,7 +247,7 @@ Upload <- R6::R6Class(
     #' @description Start the file upload
     #'
     #' @importFrom rlang abort
-    #' @importFrom httr PUT
+    #' @importFrom httr PUT headers
     #'
     #' @examples
     #' \dontrun{
@@ -284,7 +284,7 @@ Upload <- R6::R6Class(
           url = url,
           body = readBin(con, "raw", current_part$part_size)
         )
-        current_part$etag <- headers(res)$etag
+        current_part$etag <- httr::headers(res)$etag
 
         current_part$upload_complete_part(self$upload_id)
         self$parts[[i]] <- current_part
