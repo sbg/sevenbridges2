@@ -378,8 +378,14 @@ set_headers <- function(authorization = FALSE,
   checkmate::assert_logical(advance_access, len = 1, null.ok = FALSE)
 
   if (authorization) {
+    # nocov start
     headers <-
-      c("Authorization" = paste("Bearer", token, sep = " ")) # nocov
+      c(
+        "Authorization" = paste("Bearer", token, sep = " "),
+        "Accept" = "application/json",
+        "Content-Type" = "application/json",
+        "User-Agent" = client_info
+      ) # nocov end
   } else {
     headers <- c(
       "X-SBG-Auth-Token" = token,

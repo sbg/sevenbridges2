@@ -151,13 +151,11 @@ Upload <- R6::R6Class(
         body[["parent"]] <- self$parent
       }
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["init"]]),
         method = "POST",
         query = list(overwrite = self$overwrite),
-        body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url
+        body = body
       )
 
       self$upload_id <- res$upload_id
@@ -217,12 +215,10 @@ Upload <- R6::R6Class(
       checkmate::assert_logical(list_parts)
 
       # nocov start
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["upload_job"]]),
         method = "GET",
-        query = list(list_parts = list_parts),
-        token = self$auth$get_token(),
-        base_url = self$auth$url
+        query = list(list_parts = list_parts)
       )
 
 
@@ -338,11 +334,9 @@ Upload <- R6::R6Class(
         rlang::abort("Upload has not been initialized yet.")
       }
       # nocov start
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["upload_job"]]),
-        method = "DELETE",
-        token = self$auth$get_token(),
-        base_url = self$auth$url
+        method = "DELETE"
       )
 
       rlang::inform(
@@ -392,12 +386,10 @@ Upload <- R6::R6Class(
         )
       })
       body <- list(parts = all_parts)
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["upload_complete_all"]]),
         method = "POST",
-        body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url
+        body = body
       )
 
       res
@@ -540,11 +532,9 @@ Part <- R6::R6Class(
     upload_info_part = function(upload_id) {
       upload_id <- check_and_transform_id(upload_id, "Upload")
       # nocov start
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["part_info"]]),
-        method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url
+        method = "GET"
       )
       self$url <- res$url
       self$etag <- res$etag
@@ -583,12 +573,10 @@ Part <- R6::R6Class(
         response = list(headers = list(ETag = self$etag))
       )
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["complete_part"]]),
         method = "POST",
-        body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url
+        body = body
       )
     } # nocov end
   )
