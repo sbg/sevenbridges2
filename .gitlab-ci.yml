@@ -1,4 +1,4 @@
-image: rocker/r-ver:4.2.2
+image: rocker/r-ver:4.4.0
 
 stages:
   - build
@@ -29,7 +29,7 @@ before_script:
   - apt-get install -y nodejs
   - apt-get install -y npm
   - R -e "install.packages(c('remotes', 'devtools', 'covr'), repos='http://cran.us.r-project.org')"
-  - R -e "if (!requireNamespace('renv', quietly = TRUE)) remotes::install_version('renv', version = '0.16')"
+  - R -e "if (!requireNamespace('renv', quietly = TRUE)) remotes::install_version('renv', version = '1.0.7')"
   - R -e "renv::restore(lockfile = 'renv.lock')"
 
 buildbinary:
