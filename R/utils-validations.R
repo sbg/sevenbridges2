@@ -136,7 +136,8 @@ check_offset <- function(offset) {
 #'
 #' @noRd
 check_tags <- function(tags) {
-  if (!checkmate::test_list(tags,
+  if (!checkmate::test_list(
+    tags,
     types = "character",
     null.ok = TRUE,
     names = "unnamed"
@@ -371,16 +372,11 @@ check_upload_params <- function(size, part_size) {
     null.ok = FALSE
   )
 
-  if (!(size >= 0 &&
-    size <= getOption("sevenbridges2")$MAXIMUM_OBJECT_SIZE)) {
-    # nolint start
+  if (!(size >= 0 && size <= getOption("sevenbridges2")$MAXIMUM_OBJECT_SIZE)) {
     rlang::abort("File size must be between 0 - 5497558138880 (5TB), inclusive")
-    # nolint end
   }
-  if (!(
-    part_size <= getOption("sevenbridges2")$MAXIMUM_PART_SIZE &&
-      part_size >= getOption("sevenbridges2")$MINIMUM_PART_SIZE
-  )) {
+  if (!(part_size <= getOption("sevenbridges2")$MAXIMUM_PART_SIZE &&
+    part_size >= getOption("sevenbridges2")$MINIMUM_PART_SIZE)) {
     # nolint start
     rlang::abort("Parameter part_size must be 5 MB to 5 GB, last part can be < 5 MB")
     # nolint end

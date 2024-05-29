@@ -183,8 +183,7 @@ Volume <- R6::R6Class(
                       service = NULL) {
       checkmate::assert_character(description, null.ok = TRUE)
       checkmate::assert_character(access_mode, null.ok = TRUE)
-      if (!is_missing(access_mode) &&
-        !(access_mode %in% c("RW", "RO"))) {
+      if (!is_missing(access_mode) && !(access_mode %in% c("RW", "RO"))) {
         rlang::abort("Access mode must be RW or RO.")
       }
       checkmate::assert_list(service,
@@ -616,7 +615,8 @@ Volume <- R6::R6Class(
     #' }
     #'
     #' @return \code{\link{Member}} object.
-    add_member = function(user, permissions = list(
+    add_member = function(user,
+                          permissions = list(
                             read = TRUE,
                             copy = FALSE,
                             write = FALSE,
@@ -788,7 +788,8 @@ Volume <- R6::R6Class(
     #' }
     #'
     #' @return \code{\link{Permission}} object.
-    modify_member_permissions = function(user, permissions = list(
+    modify_member_permissions = function(user,
+                                         permissions = list(
                                            read = TRUE,
                                            copy = FALSE,
                                            write = FALSE,

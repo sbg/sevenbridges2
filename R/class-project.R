@@ -195,13 +195,13 @@ Project <- R6::R6Class(
       cli::cli_li(string)
 
 
-      ifelse(exists("project_settings") &&
-        !is.null(project_settings),
-      {
-        cli::cli_li("settings")
-        cli::cli_ul(string_project_settings)
-      },
-      ""
+      ifelse(
+        exists("project_settings") && !is.null(project_settings),
+        {
+          cli::cli_li("settings")
+          cli::cli_ul(string_project_settings)
+        },
+        ""
       )
       ifelse(exists("project_tags") && !is.null(project_tags),
         {
