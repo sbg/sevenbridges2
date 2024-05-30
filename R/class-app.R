@@ -219,12 +219,10 @@ App <- R6::R6Class(
 
       path <- glue::glue(self$URL[["copy"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "POST",
         body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         ...
       )
 
@@ -285,11 +283,9 @@ App <- R6::R6Class(
       path <- glue::glue(self$URL[["get_revision"]])
 
       # nocov start
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         ...
       )
 
@@ -417,12 +413,10 @@ App <- R6::R6Class(
       revision <- self$latest_revision + 1
       path <- glue::glue(self$URL[["create_revision"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "POST",
         body = raw_cwl,
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         ...
       )
 
@@ -467,11 +461,9 @@ App <- R6::R6Class(
     #' @return \code{\link{App}} object.
     sync = function(...) {
       path <- glue::glue(self$URL[["sync"]])
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "POST",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         ...
       )
 
