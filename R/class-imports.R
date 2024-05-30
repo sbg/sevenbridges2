@@ -292,12 +292,10 @@ Imports <- R6::R6Class(
 
       path <- glue::glue(self$URL[["create"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "POST",
         body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE,
         ...
       )
