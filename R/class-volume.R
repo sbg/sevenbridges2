@@ -200,12 +200,10 @@ Volume <- R6::R6Class(
 
       path <- glue::glue(self$URL[["volume"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "PATCH",
         body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE
       )
 
@@ -258,12 +256,10 @@ Volume <- R6::R6Class(
       }
       path <- glue::glue(self$URL[["volume"]]) # nocov start
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "PATCH",
         body = list("active" = FALSE),
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE,
         ...
       )
@@ -312,12 +308,10 @@ Volume <- R6::R6Class(
       }
       path <- glue::glue(self$URL[["volume"]]) # nocov start
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "PATCH",
         body = list("active" = TRUE),
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE,
         ...
       )
@@ -362,11 +356,9 @@ Volume <- R6::R6Class(
       }
       path <- glue::glue(self$URL[["volume"]]) # nocov start
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "DELETE",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE
       )
 
@@ -439,13 +431,11 @@ Volume <- R6::R6Class(
 
       path <- glue::glue(self$URL[["list"]]) # nocov start
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         url = link,
         path = path,
         query = list(prefix = prefix, continuation_token = continuation_token),
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE,
         limit = limit,
         ...
@@ -506,13 +496,11 @@ Volume <- R6::R6Class(
 
       path <- glue::glue(self$URL[["volume_file"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         url = link,
         path = path,
         query = list(location = location),
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE,
         ...
       )
@@ -558,11 +546,9 @@ Volume <- R6::R6Class(
       # nocov start
       path <- glue::glue(self$URL[["members"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE,
         limit = limit,
         offset = offset,
@@ -641,12 +627,10 @@ Volume <- R6::R6Class(
         username = username,
         permissions = permissions
       )
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "POST",
         body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE
       )
 
@@ -685,11 +669,9 @@ Volume <- R6::R6Class(
       # nocov start
       path <- glue::glue(self$URL[["member_username"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "DELETE",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE
       )
 
@@ -732,11 +714,9 @@ Volume <- R6::R6Class(
       # nocov start
       path <- glue::glue(self$URL[["member_username"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE,
         ...
       )
@@ -812,12 +792,10 @@ Volume <- R6::R6Class(
 
       path <- glue::glue(self$URL[["member_permissions"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "PATCH",
         body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE
       )
 

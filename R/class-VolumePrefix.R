@@ -151,15 +151,13 @@ VolumePrefix <- R6::R6Class(
       # nocov start
       path <- glue::glue(self$URL[["list"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         query = list(
           prefix = self$prefix,
           continuation_token = continuation_token
         ),
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE,
         limit = limit,
         ...
