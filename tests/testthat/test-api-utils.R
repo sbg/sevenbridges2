@@ -612,3 +612,20 @@ test_that("Utility function output_matrix works as expected", {
     all(c("id", "label", "type") %in% names(outputs_info))
   )
 })
+
+test_that("Utility function lists_eq works as expected", {
+  list2_to_compare <- list1_to_compare
+  testthat::expect_true(lists_eq(list1_to_compare, list2_to_compare))
+})
+
+test_that("Utility function lists_eq throws error when expected", {
+  list2_to_compare <- list1_to_compare
+  list2_to_compare$error <- list(error = "error message")
+
+  testthat::expect_false(lists_eq(list1_to_compare, list2_to_compare))
+
+  list3_to_compare <- list1_to_compare
+  list3_to_compare$content <- c("123", "345", "4t45")
+
+  testthat::expect_false(lists_eq(list1_to_compare, list3_to_compare))
+})
