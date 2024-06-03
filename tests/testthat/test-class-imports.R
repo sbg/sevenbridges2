@@ -92,7 +92,7 @@ test_that("Imports submit_import() throws error when needed", {
   )
   testthat::expect_error(
     do.call(setup_imports_obj$submit_import, bad_volume_and_location),
-    regexp = "Volume id must be provided if source location is provided as string.", # nolint
+    regexp = "Volume ID must be provided as string or Volume object.",
     fixed = TRUE
   )
 
@@ -116,16 +116,10 @@ test_that("Imports submit_import() throws error when needed", {
     fixed = TRUE
   )
   # 3. Test with location missing and of wrong type/class
-  no_location <- list(source_location = NULL)
+  no_location <- list(source_volume = "volume-id", source_location = NULL)
   testthat::expect_error(
     do.call(setup_imports_obj$submit_import, no_location),
-    regexp = "Source file/folder location must be provided as a string or VolumeFile object!", # nolint
-    fixed = TRUE
-  )
-  bad_location_class_wo_volume <- list(source_location = setup_file_obj)
-  testthat::expect_error(
-    do.call(setup_imports_obj$submit_import, bad_location_class_wo_volume),
-    regexp = "Volume id must be provided if source location is provided as string. \nSource file/folder location must be provided as a string or VolumeFile object.", # nolint
+    regexp = "Source file/folder location/prefix must be provided as a string.",
     fixed = TRUE
   )
   bad_location_class_w_volume <- list(
@@ -134,7 +128,7 @@ test_that("Imports submit_import() throws error when needed", {
   )
   testthat::expect_error(
     do.call(setup_imports_obj$submit_import, bad_location_class_w_volume),
-    regexp = "Assertion on 'source_location' failed: Must inherit from class 'VolumeFile', but has classes 'File','Item','R6'.", # nolint
+    regexp = "Assertion on 'source_location' failed: Must be of type 'string', not 'File/Item/R6'", # nolint
     fixed = TRUE
   )
   bad_location_type <- list(
@@ -143,18 +137,22 @@ test_that("Imports submit_import() throws error when needed", {
   )
   testthat::expect_error(
     do.call(setup_imports_obj$submit_import, bad_location_type),
-    regexp = "Assertion on 'source_location' failed: Must be of type 'character', not 'double'.", # nolint
+    regexp = "Assertion on 'source_location' failed: Must be of type 'string', not 'double'.", # nolint
     fixed = TRUE
   )
   # 4. Test with project and parent params when both missing or both provided
-  proj_parent_missing <- list(source_location = setup_volume_file_obj)
+  proj_parent_missing <- list(
+    source_volume = "volume-id",
+    source_location = "location"
+  )
   testthat::expect_error(
     do.call(setup_imports_obj$submit_import, proj_parent_missing),
     regexp = "Please, provide either destination project or parent parameter.",
     fixed = TRUE
   )
   proj_parent_provided <- list(
-    source_location = setup_volume_file_obj,
+    source_volume = "volume-id",
+    source_location = "location",
     destination_project = "project-id",
     destination_parent = "parent-id"
   )
@@ -165,7 +163,8 @@ test_that("Imports submit_import() throws error when needed", {
   )
   # 5. Test with invalid project parameter
   bad_project_class <- list(
-    source_location = setup_volume_file_obj,
+    source_volume = "volume-id",
+    source_location = "location",
     destination_project = setup_file_obj
   )
   testthat::expect_error(
@@ -174,7 +173,8 @@ test_that("Imports submit_import() throws error when needed", {
     fixed = TRUE
   )
   bad_project_type <- list(
-    source_location = setup_volume_file_obj,
+    source_volume = "volume-id",
+    source_location = "location",
     destination_project = 1234
   )
   testthat::expect_error(
@@ -184,7 +184,8 @@ test_that("Imports submit_import() throws error when needed", {
   )
   # 6. Test with bad parent class/type and when File class with 'file' type
   bad_parent_class <- list(
-    source_location = setup_volume_file_obj,
+    source_volume = "volume-id",
+    source_location = "location",
     destination_parent = setup_project_obj
   )
   testthat::expect_error(
@@ -193,7 +194,8 @@ test_that("Imports submit_import() throws error when needed", {
     fixed = TRUE
   )
   parent_file_class_type_file <- list(
-    source_location = setup_volume_file_obj,
+    source_volume = "volume-id",
+    source_location = "location",
     destination_parent = setup_file_obj
   )
   testthat::expect_error(
@@ -202,7 +204,8 @@ test_that("Imports submit_import() throws error when needed", {
     fixed = TRUE
   )
   bad_parent_type <- list(
-    source_location = setup_volume_file_obj,
+    source_volume = "volume-id",
+    source_location = "location",
     destination_parent = 1234
   )
   testthat::expect_error(
@@ -212,7 +215,8 @@ test_that("Imports submit_import() throws error when needed", {
   )
   # 7. Test with bad name parameter
   bad_name_type <- list(
-    source_location = setup_volume_file_obj,
+    source_volume = "volume-id",
+    source_location = "location",
     destination_project = setup_project_obj,
     name = 1234
   )
@@ -223,7 +227,8 @@ test_that("Imports submit_import() throws error when needed", {
   )
   # 8. Test with bad overwrite parameter
   bad_overwrite_type <- list(
-    source_location = setup_volume_file_obj,
+    source_volume = "volume-id",
+    source_location = "location",
     destination_project = setup_project_obj,
     overwrite = "TRUE"
   )
@@ -234,7 +239,8 @@ test_that("Imports submit_import() throws error when needed", {
   )
   # 9. Test with bad autorename parameter
   bad_autorename_type <- list(
-    source_location = setup_volume_file_obj,
+    source_volume = "volume-id",
+    source_location = "location",
     destination_project = setup_project_obj,
     autorename = 1234
   )
@@ -245,7 +251,8 @@ test_that("Imports submit_import() throws error when needed", {
   )
   # 10. Test with bad preserve_folder_structure parameter
   bad_preserve_f_structure_type <- list(
-    source_location = setup_volume_file_obj,
+    source_volume = "volume-id",
+    source_location = "location",
     destination_project = setup_project_obj,
     preserve_folder_structure = "FALSE"
   )

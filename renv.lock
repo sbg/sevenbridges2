@@ -471,6 +471,20 @@
       ],
       "Hash": "411ca2c03b1ce5f548345d2fc2685f7a"
     },
+    "cyclocomp": {
+      "Package": "cyclocomp",
+      "Version": "1.1.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "callr",
+        "crayon",
+        "desc",
+        "remotes",
+        "withr"
+      ],
+      "Hash": "cdc4a473222b0112d4df0bcfbed12d44"
+    },
     "data.table": {
       "Package": "data.table",
       "Version": "1.15.4",
@@ -988,6 +1002,27 @@
         "rlang"
       ],
       "Hash": "b8552d117e1b808b09a832f589b79035"
+    },
+    "lintr": {
+      "Package": "lintr",
+      "Version": "3.1.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "backports",
+        "codetools",
+        "cyclocomp",
+        "digest",
+        "glue",
+        "knitr",
+        "rex",
+        "stats",
+        "utils",
+        "xml2",
+        "xmlparsedata"
+      ],
+      "Hash": "08cff46381a242d44c0d8dd0aabd9f71"
     },
     "lmom": {
       "Package": "lmom",
@@ -1693,6 +1728,25 @@
       ],
       "Hash": "960e2ae9e09656611e0b8214ad543207"
     },
+    "styler": {
+      "Package": "styler",
+      "Version": "1.10.3",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "R.cache",
+        "cli",
+        "magrittr",
+        "purrr",
+        "rlang",
+        "rprojroot",
+        "tools",
+        "vctrs",
+        "withr"
+      ],
+      "Hash": "93a2b1beac2437bdcc4724f8bf867e2c"
+    },
     "survival": {
       "Package": "survival",
       "Version": "3.5-8",
@@ -1982,6 +2036,16 @@
         "rlang"
       ],
       "Hash": "1d0336142f4cd25d8d23cd3ba7a8fb61"
+    },
+    "xmlparsedata": {
+      "Package": "xmlparsedata",
+      "Version": "1.0.5",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R"
+      ],
+      "Hash": "45e4bf3c46476896e821fc0a408fb4fc"
     },
     "xopen": {
       "Package": "xopen",

@@ -156,11 +156,10 @@ Imports <- R6::R6Class(
     #'  Bulk operations will be implemented in next releases.
     #'
     #' @param source_volume Volume id or Volume object you want to import
-    #'  files or folders from. Required if `source_location` parameter is
-    #'  provided as a string.
-    #' @param source_location File/folder location name on the volume or
-    #'  VolumeFile object you would like to import into some project/folder on
-    #'  the platform.
+    #'  files or folders from.
+    #' @param source_location File location name or folder prefix name on the
+    #'  volume you would like to import into some project/folder
+    #'  on the Platform.
     #' @param destination_project Destination project id or Project
     #'  object. Not required, but either `destination_project` or
     #'  `destination_parent` directory must be provided.
@@ -216,33 +215,25 @@ Imports <- R6::R6Class(
     #' }
     #'
     #' @return \code{\link{Import}} object.
-    submit_import = function(source_volume = NULL, source_location,
+    submit_import = function(source_volume, source_location,
                              destination_project = NULL,
                              destination_parent = NULL,
                              name = NULL, overwrite = FALSE,
                              autorename = FALSE,
                              preserve_folder_structure = NULL, ...) {
-      if (is_missing(source_location)) {
-        rlang::abort("Source file/folder location must be provided as a string or VolumeFile object!") # nolint
-      }
       if (is_missing(source_volume)) {
-        if (checkmate::test_r6(source_location, classes = "VolumeFile")) {
-          volume <- check_and_transform_id(source_location,
-            class_name = "VolumeFile",
-            field_name = "volume"
-          )
-        } else {
-          rlang::abort(
-            "Volume id must be provided if source location is provided as string. \nSource file/folder location must be provided as a string or VolumeFile object." # nolint
-          )
-        }
+        rlang::abort(
+          "Volume ID must be provided as string or Volume object."
+        )
       } else {
         volume <- check_and_transform_id(source_volume, class_name = "Volume")
       }
-      location <- check_and_transform_id(source_location,
-        class_name = "VolumeFile",
-        field_name = "location"
-      )
+
+      if (is_missing(source_location)) {
+        rlang::abort("Source file/folder location/prefix must be provided as a string.") # nolint
+      }
+      checkmate::assert_string(source_location, na.ok = FALSE, null.ok = FALSE)
+
       if (is_missing(destination_project) &&
         is_missing(destination_parent)) {
         rlang::abort("Please, provide either destination project or parent parameter.") # nolint
@@ -278,7 +269,7 @@ Imports <- R6::R6Class(
       body <- list(
         source = list(
           volume = volume,
-          location = location
+          location = source_location
         ),
         destination = list(
           project = destination_project,
