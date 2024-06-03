@@ -226,7 +226,7 @@ in bulk considering the API rate limit (\href{https://docs.sevenbridges.com/docs
 Bulk operations will be implemented in next releases.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Imports$submit_import(
-  source_volume = NULL,
+  source_volume,
   source_location,
   destination_project = NULL,
   destination_parent = NULL,
@@ -242,12 +242,11 @@ Bulk operations will be implemented in next releases.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{source_volume}}{Volume id or Volume object you want to import
-files or folders from. Required if \code{source_location} parameter is
-provided as a string.}
+files or folders from.}
 
-\item{\code{source_location}}{File/folder location name on the volume or
-VolumeFile object you would like to import into some project/folder on
-the platform.}
+\item{\code{source_location}}{File location name or folder prefix name on the
+volume you would like to import into some project/folder
+on the Platform.}
 
 \item{\code{destination_project}}{Destination project id or Project
 object. Not required, but either \code{destination_project} or

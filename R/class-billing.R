@@ -187,11 +187,9 @@ Billing <- R6::R6Class(
         date_to <- check_and_transform_datetime(date_to)
       }
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["breakdown_analysis"]]),
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         query = list(
           invoice_id = invoice,
           date_from = date_from,
@@ -260,11 +258,9 @@ Billing <- R6::R6Class(
         date_to <- check_and_transform_datetime(date_to)
       }
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["storage_breakdown"]]),
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         query = list(
           invoice_id = invoice,
           date_from = date_from,
@@ -333,11 +329,9 @@ Billing <- R6::R6Class(
         date_to <- check_and_transform_datetime(date_to)
       }
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["egress_breakdown"]]),
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         query = list(
           invoice_id = invoice,
           date_from = date_from,

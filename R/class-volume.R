@@ -183,8 +183,7 @@ Volume <- R6::R6Class(
                       service = NULL) {
       checkmate::assert_character(description, null.ok = TRUE)
       checkmate::assert_character(access_mode, null.ok = TRUE)
-      if (!is_missing(access_mode) &&
-        !(access_mode %in% c("RW", "RO"))) {
+      if (!is_missing(access_mode) && !(access_mode %in% c("RW", "RO"))) {
         rlang::abort("Access mode must be RW or RO.")
       }
       checkmate::assert_list(service,
@@ -201,12 +200,10 @@ Volume <- R6::R6Class(
 
       path <- glue::glue(self$URL[["volume"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "PATCH",
         body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE
       )
 
@@ -259,12 +256,10 @@ Volume <- R6::R6Class(
       }
       path <- glue::glue(self$URL[["volume"]]) # nocov start
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "PATCH",
         body = list("active" = FALSE),
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE,
         ...
       )
@@ -313,12 +308,10 @@ Volume <- R6::R6Class(
       }
       path <- glue::glue(self$URL[["volume"]]) # nocov start
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "PATCH",
         body = list("active" = TRUE),
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE,
         ...
       )
@@ -363,11 +356,9 @@ Volume <- R6::R6Class(
       }
       path <- glue::glue(self$URL[["volume"]]) # nocov start
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "DELETE",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE
       )
 
@@ -440,13 +431,11 @@ Volume <- R6::R6Class(
 
       path <- glue::glue(self$URL[["list"]]) # nocov start
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         url = link,
         path = path,
         query = list(prefix = prefix, continuation_token = continuation_token),
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE,
         limit = limit,
         ...
@@ -507,13 +496,11 @@ Volume <- R6::R6Class(
 
       path <- glue::glue(self$URL[["volume_file"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         url = link,
         path = path,
         query = list(location = location),
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE,
         ...
       )
@@ -559,11 +546,9 @@ Volume <- R6::R6Class(
       # nocov start
       path <- glue::glue(self$URL[["members"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE,
         limit = limit,
         offset = offset,
@@ -616,7 +601,8 @@ Volume <- R6::R6Class(
     #' }
     #'
     #' @return \code{\link{Member}} object.
-    add_member = function(user, permissions = list(
+    add_member = function(user,
+                          permissions = list(
                             read = TRUE,
                             copy = FALSE,
                             write = FALSE,
@@ -641,12 +627,10 @@ Volume <- R6::R6Class(
         username = username,
         permissions = permissions
       )
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "POST",
         body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE
       )
 
@@ -685,11 +669,9 @@ Volume <- R6::R6Class(
       # nocov start
       path <- glue::glue(self$URL[["member_username"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "DELETE",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE
       )
 
@@ -732,11 +714,9 @@ Volume <- R6::R6Class(
       # nocov start
       path <- glue::glue(self$URL[["member_username"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE,
         ...
       )
@@ -788,7 +768,8 @@ Volume <- R6::R6Class(
     #' }
     #'
     #' @return \code{\link{Permission}} object.
-    modify_member_permissions = function(user, permissions = list(
+    modify_member_permissions = function(user,
+                                         permissions = list(
                                            read = TRUE,
                                            copy = FALSE,
                                            write = FALSE,
@@ -811,12 +792,10 @@ Volume <- R6::R6Class(
 
       path <- glue::glue(self$URL[["member_permissions"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "PATCH",
         body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         advance_access = TRUE
       )
 

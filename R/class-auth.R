@@ -414,7 +414,7 @@ Auth <- R6::R6Class(
     api = function(...,
                    limit = getOption("sevenbridges2")$"limit",
                    offset = getOption("sevenbridges2")$"offset",
-                   fields = NULL) {
+                   fields = "_all") {
       # nocov start
       res <- sevenbridges2::api(
         token = self$get_token(),
@@ -448,21 +448,17 @@ Auth <- R6::R6Class(
     #' @return `User` class object.
     user = function(username = NULL) {
       if (is.null(username)) {
-        res <- sevenbridges2::api(
-          token = self$get_token(),
+        res <- self$api(
           path = "user/",
-          method = "GET",
-          base_url = self$url
+          method = "GET"
         )
         # nolint start
         rlang::inform("Username not provided, showing the currently authenticated user information.")
         # nolint end
       } else {
-        res <- sevenbridges2::api(
-          token = self$get_token(),
+        res <- self$api(
           path = paste0("users/", username),
-          method = "GET",
-          base_url = self$url
+          method = "GET"
         )
       }
 
@@ -488,11 +484,9 @@ Auth <- R6::R6Class(
     #' }
     #'
     rate_limit = function() {
-      res <- sevenbridges2::api(
+      res <- self$api(
         path = "rate_limit",
-        method = "GET",
-        token = self$get_token(),
-        base_url = self$url
+        method = "GET"
       )
 
       return(asRate(res, auth = self)) # nocov end
@@ -640,11 +634,9 @@ Auth <- R6::R6Class(
     #' }
     list_ongoing_uploads = function() {
       # Run API call based on id parameter
-      res <- sevenbridges2::api(
+      res <- self$api(
         path = "upload/multipart",
-        method = "GET",
-        token = self$get_token(),
-        base_url = self$url
+        method = "GET"
       )
 
       # Print information about ongoing uploads
@@ -694,11 +686,9 @@ Auth <- R6::R6Class(
     upload_abort = function(upload_id) {
       upload_id <- check_and_transform_id(upload_id, "Upload")
 
-      res <- sevenbridges2::api(
+      res <- self$api(
         path = glue::glue("upload/multipart/{upload_id}"),
-        method = "DELETE",
-        token = self$get_token(),
-        base_url = self$url
+        method = "DELETE"
       )
 
       rlang::inform(
@@ -753,12 +743,10 @@ Auth <- R6::R6Class(
         referrer = referrer
       )
 
-      res <- sevenbridges2::api(
+      res <- self$api(
         path = "action/notifications/feedback",
         method = "POST",
-        body = body,
-        token = self$get_token(),
-        base_url = self$url
+        body = body
       )
 
       rlang::inform("Thank you for your feedback!")

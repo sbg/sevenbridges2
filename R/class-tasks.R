@@ -476,13 +476,11 @@ Tasks <- R6::R6Class(
       params[["action"]] <- action
       params[["batch"]] <- batch
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = self$URL[["query"]],
         method = "POST",
         query = params,
-        body = task_data,
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
+        body = task_data
       )
 
       return(asTask(res, auth = self$auth))

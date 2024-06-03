@@ -49,11 +49,9 @@ Resource <- R6::R6Class(
       args[c("advance_access", "limit", "offset", "fields")] <- NULL
 
       # nocov start
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         query = args,
         advance_access = adv_access,
         limit = limit,
@@ -99,11 +97,9 @@ Resource <- R6::R6Class(
       path <- glue::glue(url)
 
       # nocov start
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "GET",
-        token = auth$get_token(),
-        base_url = auth$url,
         ...
       )
 
@@ -132,11 +128,9 @@ Resource <- R6::R6Class(
       path <- glue::glue("{url}/{id}")
 
       # nocov start
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "DELETE",
-        token = auth$get_token(),
-        base_url = auth$url,
         ...
       )
 

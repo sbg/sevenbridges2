@@ -173,7 +173,7 @@ api <- function(token = NULL, path = NULL,
     count <- 0
     for (i in seq_along(error_handlers)) {
       handled_response <- error_handlers[[i]](req)
-      if (!setequal(req, handled_response)) {
+      if (!lists_eq(req, handled_response)) {
         req <- handled_response
         break
       }

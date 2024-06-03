@@ -139,11 +139,9 @@ VolumeContentCollection <- R6::R6Class(
       # nocov start
       for (link in self$links) {
         if (length(link[["next"]]) > 0) {
-          res <- sevenbridges2::api(
+          res <- self$auth$api(
             url = link[["next"]],
             method = "GET",
-            token = self$auth$get_token(),
-            base_url = self$auth$url,
             advance_access = TRUE,
             ...
           )

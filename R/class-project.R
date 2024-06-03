@@ -195,13 +195,13 @@ Project <- R6::R6Class(
       cli::cli_li(string)
 
 
-      ifelse(exists("project_settings") &&
-        !is.null(project_settings),
-      {
-        cli::cli_li("settings")
-        cli::cli_ul(string_project_settings)
-      },
-      ""
+      ifelse(
+        exists("project_settings") && !is.null(project_settings),
+        {
+          cli::cli_li("settings")
+          cli::cli_ul(string_project_settings)
+        },
+        ""
       )
       ifelse(exists("project_tags") && !is.null(project_tags),
         {
@@ -315,12 +315,10 @@ Project <- R6::R6Class(
         rlang::abort("Please provide updated information.")
       }
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["project"]]),
         method = "PATCH",
         body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         ...
       )
 
@@ -361,11 +359,9 @@ Project <- R6::R6Class(
     #'
     delete = function() {
       # nocov start
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["project"]]),
-        method = "DELETE",
-        token = self$auth$get_token(),
-        base_url = self$auth$url
+        method = "DELETE"
       )
 
       rlang::inform(message = glue::glue("Project {self$id} has been deleted."))
@@ -406,11 +402,9 @@ Project <- R6::R6Class(
                             offset = getOption("sevenbridges2")$offset,
                             ...) {
       # nocov start
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["members"]]),
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         limit = limit,
         offset = offset,
         ...
@@ -522,13 +516,10 @@ Project <- R6::R6Class(
         "permissions" = permissions
       )
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["members"]]),
         method = "POST",
-        token = self$auth$get_token(),
-        body = body,
-        authorization = self$auth$authorization,
-        base_url = self$auth$url
+        body = body
       )
 
       return(asMember(res, auth = self$auth))
@@ -571,12 +562,9 @@ Project <- R6::R6Class(
         class_name = "Member",
         field_name = "username"
       )
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["member"]]),
-        method = "DELETE",
-        token = self$auth$get_token(),
-        authorization = self$auth$authorization,
-        base_url = self$auth$url
+        method = "DELETE"
       )
 
       rlang::inform(
@@ -626,11 +614,9 @@ Project <- R6::R6Class(
         class_name = "Member",
         field_name = "username"
       )
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["member"]]),
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         ...
       )
 
@@ -720,13 +706,10 @@ Project <- R6::R6Class(
         rlang::abort("Please provide updated information.")
       }
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["member_permissions"]]),
         method = "PATCH",
-        token = self$auth$get_token(),
-        body = body,
-        authorization = self$auth$authorization,
-        base_url = self$auth$url
+        body = body
       )
 
       rlang::inform(glue::glue_col("Permissions for {green {username}} have been changed.")) # nolint
@@ -769,11 +752,9 @@ Project <- R6::R6Class(
                           offset = getOption("sevenbridges2")$offset,
                           ...) {
       # nocov start
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["files"]]),
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         limit = limit,
         offset = offset,
         ...
@@ -821,12 +802,10 @@ Project <- R6::R6Class(
         "type" = "FOLDER"
       )
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = "files",
         method = "POST",
-        body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url
+        body = body
       )
 
       rlang::inform(glue::glue_col("New folder {green {name}} has been created.")) # nolint

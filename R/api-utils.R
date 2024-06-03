@@ -378,8 +378,14 @@ set_headers <- function(authorization = FALSE,
   checkmate::assert_logical(advance_access, len = 1, null.ok = FALSE)
 
   if (authorization) {
+    # nocov start
     headers <-
-      c("Authorization" = paste("Bearer", token, sep = " ")) # nocov
+      c(
+        "Authorization" = paste("Bearer", token, sep = " "),
+        "Accept" = "application/json",
+        "Content-Type" = "application/json",
+        "User-Agent" = client_info
+      ) # nocov end
   } else {
     headers <- c(
       "X-SBG-Auth-Token" = token,
@@ -706,7 +712,30 @@ find_type <- function(type) {
 #'
 #' @noRd
 is_required <- function(x) {
-  !((checkmate::test_list(x$type) && x$type[[1]] == "null") ||
-    (checkmate::test_string(x$type) &&
-      grepl(pattern = "?", x = x$type, fixed = TRUE)))
+  !((checkmate::test_list(x$type) && x$type[[1]] == "null") || (checkmate::test_string(x$type) && grepl(pattern = "?", x = x$type, fixed = TRUE))) # nolint
+}
+
+#' @description Compare two lists.
+#'  Compare two lists whether they are equal.
+#'  The function checks content first, since this could be a large vector,
+#'  after that unlists the lists and compare their values using setequal method.
+#'
+#' @param x First list to compare.
+#' @param y Second list to compare.
+#'
+#' @return Boolean.
+#'
+#' @noRd
+lists_eq <- function(x, y) {
+  list1 <- x
+  list2 <- y
+
+  if (setequal(list1$content, list2$content)) {
+    list1$content <- NULL
+    list2$content <- NULL
+    list1_unlisted <- unlist(list1)
+    list2_unlisted <- unlist(list2)
+    return(setequal(list1_unlisted, list2_unlisted))
+  }
+  return(FALSE)
 }

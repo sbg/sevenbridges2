@@ -117,11 +117,9 @@ VolumeFile <- R6::R6Class(
         reload_url <- self$href
       }
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         url = reload_url,
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         path = glue::glue(self$URL[["get"]]),
         query = list(
           location = self$location

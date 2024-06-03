@@ -9,7 +9,7 @@ testthat::test_that("Utility function parse_time works", {
     time_zone = "GMT"
   )
 
-  testthat::expect_equal(human_readable_date, "2017-03-16 21:34:53 ",
+  testthat::expect_equal(human_readable_date, "2017-03-16 21:34:53 GMT",
     label = "Epoch conversion to human-readable date went wrong."
   )
 
@@ -21,7 +21,7 @@ testthat::test_that("Utility function parse_time works", {
     time_zone = "GMT", use_milliseconds = TRUE
   )
 
-  testthat::expect_equal(human_readable_date, "2050-12-30 ",
+  testthat::expect_equal(human_readable_date, "2050-12-30 GMT",
     label = "Epoch conversion to human-readable date went wrong."
   )
 
@@ -188,8 +188,7 @@ testthat::test_that("Utility function build_url2 works", {
   testthat::expect_equal(err$message, "Cannot set password without username")
 })
 
-testthat::test_that("Utility function set_headers works
-                    when authorization = FALSE", {
+testthat::test_that("Utility function set_headers works when authorization = FALSE", { # nolint
   token <- stringi::stri_rand_strings(1, 32, pattern = "[a-z0-9]")
 
   # Test set_headers when authorization parameter is FALSE (default)
@@ -218,8 +217,7 @@ testthat::test_that("Utility function set_headers works
   )
 })
 
-testthat::test_that("Utility function set_headers works when authorization =
-                    FALSE and advance_access = TRUE", {
+testthat::test_that("Utility function set_headers works when authorization = FALSE and advance_access = TRUE", { # nolint
   token <- stringi::stri_rand_strings(1, 32, pattern = "[a-z0-9]")
 
   # Test set_headers when authorization parameter is FALSE (default)
@@ -249,29 +247,37 @@ testthat::test_that("Utility function set_headers works when authorization =
   )
 })
 
-testthat::test_that("Utility function set_headers works when authorization =
-                    TRUE", {
+testthat::test_that("Utility function set_headers works when authorization = TRUE", { # nolint
   token <- stringi::stri_rand_strings(1, 32, pattern = "[a-z0-9]")
 
   # Test set_headers when authorization parameter is TRUE
-  headers <- set_headers(authorization = TRUE, token = token)
+  headers <- set_headers(
+    authorization = TRUE,
+    token = token,
+    client_info = "info"
+  )
 
   testthat::expect_equal(typeof(headers), "character",
-    label = glue::glue("Headers should a character, not {typeof(headers)}.")
+    label = glue::glue("Headers should be a named character vector, not {typeof(headers)}.") # nolint
   )
-  testthat::expect_equal(length(headers), 1L,
-    label = "Headers should have only one value."
+  testthat::expect_equal(
+    length(headers),
+    expected = 4,
+    label = "Headers should have four values."
   )
-  testthat::expect_equal(names(headers), "Authorization",
-    label = "The name of the headers element should be Authorization."
+  testthat::expect_equal(
+    object = names(headers),
+    expected = c("Authorization", "Accept", "Content-Type", "User-Agent"),
+    label = "The header names should be Authorization, Accept, Content-Type, User-Agent." # nolint
   )
-  testthat::expect_equal(unname(headers), glue::glue("Bearer {token}"),
+  testthat::expect_equal(
+    unname(headers["Authorization"]),
+    glue::glue("Bearer {token}"),
     label = "Headers element is not as-expected."
   )
 })
 
-testthat::test_that("Utility function set_headers throws an error if token is
-                    not provided", {
+testthat::test_that("Utility function set_headers throws an error if token isnot provided", { # nolint
   err <- testthat::expect_error(set_headers(token = NULL))
   testthat::expect_equal(err$message, "Token is missing.")
 })
@@ -605,4 +611,21 @@ test_that("Utility function output_matrix works as expected", {
   testthat::expect_true(
     all(c("id", "label", "type") %in% names(outputs_info))
   )
+})
+
+test_that("Utility function lists_eq works as expected", {
+  list2_to_compare <- list1_to_compare
+  testthat::expect_true(lists_eq(list1_to_compare, list2_to_compare))
+})
+
+test_that("Utility function lists_eq throws error when expected", {
+  list2_to_compare <- list1_to_compare
+  list2_to_compare$error <- list(error = "error message")
+
+  testthat::expect_false(lists_eq(list1_to_compare, list2_to_compare))
+
+  list3_to_compare <- list1_to_compare
+  list3_to_compare$content <- c("123", "345", "4t45")
+
+  testthat::expect_false(lists_eq(list1_to_compare, list3_to_compare))
 })

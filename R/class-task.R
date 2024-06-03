@@ -259,13 +259,11 @@ Task <- R6::R6Class(
       params[["use_interruptible_instances"]] <-
         use_interruptible_instances
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "POST",
         query = params,
         body = list(),
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         ...
       )
 
@@ -321,13 +319,9 @@ Task <- R6::R6Class(
       checkmate::assert_logical(in_place, null.ok = FALSE)
 
       # nocov start
-      path <- glue::glue(self$URL[["abort"]])
-
-      res <- sevenbridges2::api(
-        path = path,
+      res <- self$auth$api(
+        path = glue::glue(self$URL[["abort"]]),
         method = "POST",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         ...
       )
 
@@ -390,11 +384,9 @@ Task <- R6::R6Class(
 
       params <- list("action" = action)
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "POST",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         query = params,
         ...
       )
@@ -451,13 +443,9 @@ Task <- R6::R6Class(
     #' @return List of execution details.
     get_execution_details = function(...) {
       # nocov start
-      path <- glue::glue(self$URL[["execution_details"]])
-
-      res <- sevenbridges2::api(
-        path = path,
+      res <- self$auth$api(
+        path = glue::glue(self$URL[["execution_details"]]),
         method = "GET",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         ...
       )
 
@@ -596,13 +584,9 @@ Task <- R6::R6Class(
     #'
     delete = function(...) {
       # nocov start
-      path <- glue::glue(self$URL[["task"]])
-
-      res <- sevenbridges2::api(
-        path = path,
+      res <- self$auth$api(
+        path = glue::glue(self$URL[["task"]]),
         method = "DELETE",
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         ...
       )
 
@@ -638,9 +622,7 @@ Task <- R6::R6Class(
     #' @return \code{\link{Task}} object.
     rerun = function(...) {
       # nocov start
-      path <- glue::glue(self$URL[["clone"]])
-
-      self$clone_task(run = TRUE)
+      self$clone_task(run = TRUE, ...)
     }, # nocov end
 
     # Update task -----------------------------------------------------------
@@ -851,12 +833,10 @@ Task <- R6::R6Class(
       task_data[["execution_settings"]] <- execution_settings
       task_data[["batch"]] <- batch
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = glue::glue(self$URL[["task"]]),
         method = "PATCH",
         body = task_data,
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         ...
       )
 

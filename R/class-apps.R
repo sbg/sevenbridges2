@@ -244,12 +244,10 @@ Apps <- R6::R6Class(
 
       path <- glue::glue(self$URL[["copy"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "POST",
         body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         ...
       )
 
@@ -347,12 +345,10 @@ Apps <- R6::R6Class(
       id <- glue::glue("{project_id}/{name}")
       path <- glue::glue(self$URL[["raw"]])
 
-      res <- sevenbridges2::api(
+      res <- self$auth$api(
         path = path,
         method = "POST",
         body = body,
-        token = self$auth$get_token(),
-        base_url = self$auth$url,
         ...
       )
 
