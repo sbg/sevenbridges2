@@ -72,6 +72,8 @@ R6 Class representing storage imports resource endpoints.
 \item \href{#method-Imports-get}{\code{Imports$get()}}
 \item \href{#method-Imports-submit_import}{\code{Imports$submit_import()}}
 \item \href{#method-Imports-delete}{\code{Imports$delete()}}
+\item \href{#method-Imports-bulk_get}{\code{Imports$bulk_get()}}
+\item \href{#method-Imports-bulk_submit_import}{\code{Imports$bulk_submit_import()}}
 \item \href{#method-Imports-clone}{\code{Imports$clone()}}
 }
 }
@@ -325,6 +327,90 @@ Deleting import jobs is not possible.
 \if{html}{\out{<div class="r">}}\preformatted{Imports$delete()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Imports-bulk_get"></a>}}
+\if{latex}{\out{\hypertarget{method-Imports-bulk_get}{}}}
+\subsection{Method \code{bulk_get()}}{
+This call returns the details of a bulk import job.
+Note that when you import files from your volume on a cloud storage
+provider (Amazon Web Services or Google Cloud Storage), you create
+an alias on the Platform which points to the files in your cloud
+storage bucket. Aliases appear as files on the Platform and can
+be copied, executed, and modified.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Imports$bulk_get(import_ids)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{import_ids}}{The IDs of the import jobs as returned by the call
+to start a bulk import job.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{Import}} objects list.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Imports-bulk_submit_import"></a>}}
+\if{latex}{\out{\hypertarget{method-Imports-bulk_submit_import}{}}}
+\subsection{Method \code{bulk_submit_import()}}{
+This call lets you perform a bulk import of files from
+your volume (either Amazon Web Services or Google Cloud Storage)
+into your project on the Platform.
+
+You can use this call to either import files to a specific folder
+or a project but you can also use it to import a folder and its files
+into another destination folder while preserving folder structure.
+One call can contain up to 100 items.
+Learn more about using the Volumes API for \href{https://docs.sevenbridges.com/docs/aws-cloud-storage-tutorial}{Amazon S3} and
+for \href{https://docs.sevenbridges.com/docs/google-cloud-storage-tutorial}{Google Cloud Storage}.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Imports$bulk_submit_import(items)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{items}}{Nested list of elements containing information about each
+file/folder to be imported.
+Example of the list:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{items <- list(
+          list(
+            source = list(volume = 'rfranklin/my-volume',
+                          location = 'chimeras.html.gz'),
+            destination = list(project = 'rfranklin/my-project')
+          ),
+          list(
+            source = list(volume = 'rfranklin/my-volume',
+                          location = 'my-folder/'),
+            destination = list(project = 'rfranklin/my-project'),
+            autorename = TRUE,
+            preserve_folder_structure = TRUE
+          ),
+          list(
+            source = list(volume = 'rfranklin/my-volume',
+                          location = 'my-volume-folder/'),
+            destination = list(name = 'new-folder-name',
+                               parent = '567890abc1e5339df0414123'),
+            autorename = TRUE,
+            preserve_folder_structure = TRUE
+          )
+        )
+}\if{html}{\out{</div>}}
+
+More details of how to import folders from your volume into the project
+or some project's folder you can read \href{https://docs.sevenbridges.com/reference/start-a-bulk-import-job#import-a-volume-folder-into-a-specific-folder}{here}}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+List of Import objects.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Imports-clone"></a>}}

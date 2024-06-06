@@ -16,7 +16,9 @@ Imports <- R6::R6Class(
     URL = list(
       "query" = "storage/imports",
       "get" = "storage/imports/{id}",
-      "create" = "storage/imports"
+      "create" = "storage/imports",
+      "bulk_get" = "bulk/storage/imports/get",
+      "bulk_create" = "bulk/storage/imports/create"
     ),
 
     # Initialize Imports object -----------------------------------------------
@@ -304,6 +306,118 @@ Imports <- R6::R6Class(
     #' @importFrom rlang inform
     delete = function() {
       rlang::inform("Deleting import jobs is not possible.")
-    } # nocov end
+    }, # nocov end
+
+    # Get bulk import jobs ----------------------------------------------------
+    #' @description This call returns the details of a bulk import job.
+    #'  Note that when you import files from your volume on a cloud storage
+    #'  provider (Amazon Web Services or Google Cloud Storage), you create
+    #'  an alias on the Platform which points to the files in your cloud
+    #'  storage bucket. Aliases appear as files on the Platform and can
+    #'  be copied, executed, and modified.
+    #'
+    #' @param import_ids The IDs of the import jobs as returned by the call
+    #'  to start a bulk import job.
+    #'
+    #' @return \code{\link{Import}} objects list.
+    bulk_get = function(import_ids) {
+      checkmate::assert_list(import_ids)
+      unlisted_ids <- unlist(import_ids)
+
+      # Build body
+      # nocov start
+      body <- list(
+        import_ids = unlisted_ids
+      )
+
+      path <- glue::glue(self$URL[["bulk_get"]])
+
+      res <- self$auth$api(
+        path = path,
+        method = "POST",
+        body = body,
+        advance_access = TRUE,
+        ...
+      )
+
+      imports_list <- asImportList(res, auth = self$auth, bulk = TRUE)
+
+      return(imports_list)
+      # nocov end
+    },
+
+    # Start bulk import job ---------------------------------------------------
+    #' @description This call lets you perform a bulk import of files from
+    #'  your volume (either Amazon Web Services or Google Cloud Storage)
+    #'  into your project on the Platform.
+    #'
+    #'  You can use this call to either import files to a specific folder
+    #'  or a project but you can also use it to import a folder and its files
+    #'  into another destination folder while preserving folder structure.
+    #'  One call can contain up to 100 items.
+    # nolint start
+    #'  Learn more about using the Volumes API for [Amazon S3](https://docs.sevenbridges.com/docs/aws-cloud-storage-tutorial) and
+    #'  for [Google Cloud Storage](https://docs.sevenbridges.com/docs/google-cloud-storage-tutorial).
+    # nolint end
+    #'
+    #' @param items Nested list of elements containing information about each
+    #'  file/folder to be imported.
+    #'  Example of the list:
+    #'  ```{r}
+    #'  items <- list(
+    #'            list(
+    #'              source = list(volume = 'rfranklin/my-volume',
+    #'                            location = 'chimeras.html.gz'),
+    #'              destination = list(project = 'rfranklin/my-project')
+    #'            ),
+    #'            list(
+    #'              source = list(volume = 'rfranklin/my-volume',
+    #'                            location = 'my-folder/'),
+    #'              destination = list(project = 'rfranklin/my-project'),
+    #'              autorename = TRUE,
+    #'              preserve_folder_structure = TRUE
+    #'            ),
+    #'            list(
+    #'              source = list(volume = 'rfranklin/my-volume',
+    #'                            location = 'my-volume-folder/'),
+    #'              destination = list(name = 'new-folder-name',
+    #'                                 parent = '567890abc1e5339df0414123'),
+    #'              autorename = TRUE,
+    #'              preserve_folder_structure = TRUE
+    #'            )
+    #'          )
+    #' ```
+    #'  More details of how to import folders from your volume into the project
+    # nolint start
+    #'  or some project's folder you can read [here](https://docs.sevenbridges.com/reference/start-a-bulk-import-job#import-a-volume-folder-into-a-specific-folder)
+    # nolint end
+    #'
+    #' @return List of Import objects.
+    bulk_submit_import = function(items) {
+      checkmate::assert_list(items)
+
+      # Build body
+      # nocov start
+      body <- list(
+        items = items
+      )
+
+      path <- glue::glue(self$URL[["bulk_create"]])
+
+      res <- self$auth$api(
+        path = path,
+        method = "POST",
+        body = body,
+        advance_access = TRUE,
+        ...
+      )
+
+      imports_list <- asImportList(res, auth = self$auth, bulk = TRUE)
+
+      rlang::inform(glue::glue_col("New import jobs have started!"))
+
+      return(imports_list)
+      # nocov end
+    }
   )
 )

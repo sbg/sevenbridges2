@@ -160,7 +160,10 @@ Import <- R6::R6Class(
 )
 # nocov start
 # Helper functions for creating Import objects ---------------------------
-asImport <- function(x = NULL, auth = NULL) {
+asImport <- function(x = NULL, auth = NULL, bulk = FALSE) {
+  if (bulk) {
+    x <- x$resource
+  }
   Import$new(
     res = x,
     href = x$href,
