@@ -573,6 +573,100 @@ a$files$copy(
 
 <div align="right"><a href="#top">top</a></div>
 
+## Get details of multiple files
+
+The `bulk_get()` method allows you to retrieve details for multiple files
+efficiently - in a single API call. This method accepts an argument,
+`files`, which can be either a list of File objects or a vector of strings
+representing file IDs.
+
+File id can also be extracted from the URL in the Platform's visual interface.
+
+```{r}
+# Get details of multiple files by providing their IDs
+a$files$bulk_get(files = c("<file_1_id>", "<file_2_id>"))
+```
+```
+── 1 ──
+
+── File ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 52e0ed0de4b069f418bc13c7
+• modified_on: 2022-01-11T11:41:17Z
+• created_on: 2016-06-17T16:43:52Z
+• project: admin/sbg-public-data
+• size: 2780048573 bytes
+• name: mouse_mm10_ucsc.fasta
+• id: 5772b6dc507c1752674486eb
+• href: https://api.sbgenomics.com/v2/files/5772b6dc507c1752674486eb
+
+── 2 ──
+
+── File ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+• type: file
+• parent: 52e0ed0de4b069f418bc13c7
+• modified_on: 2022-01-11T11:41:17Z
+• created_on: 2016-06-17T16:42:50Z
+• project: admin/sbg-public-data
+• size: 3189750467 bytes
+• name: human_g1k_v37_decoy.fasta
+• id: 5772b6d8507c1752674486e6
+• href: https://api.sbgenomics.com/v2/files/5772b6d8507c1752674486e6
+```
+<div align="right"><a href="#top">top</a></div>
+
+## Update details of multiple files
+
+The `bulk_update()` method updates the details for multiple specified files. It
+requires a single argument, `files`, which should be a list of `File` objects.
+
+Use this call to set new information for the files, thus replacing all existing
+information and erasing omitted parameters. For each of the specified files,
+the call sets a new name, new tags and metadata.
+
+When editing fields in the File objects you wish to update, keep the
+following in mind:
+
+- The `name` filed should be a string representing the new name of the file.
+- The `metadata` field should be a named list of key-value pairs. The keys and
+  values should be strings.
+- The `tags` filed should be an unnamed list of values.
+
+The maximum number of files you can update the details for per call is 100.
+
+```{r}
+# Update details of multiple files
+a$files$bulk_update(files = list(file1, file2))
+```
+<div align="right"><a href="#top">top</a></div>
+
+
+## Edit details of multiple files
+
+The `bulk_edit()` method edits the details for multiple specified files. It
+requires a single argument, `files`, which should be a list of `File` objects.
+
+Use this call to modify the existing information for the files or add new
+information while preserving omitted parameters. For each of the specified
+files, the call edits its name, tags, and metadata.
+
+When editing fields in the File objects you wish to update, keep the
+following in mind:
+
+- The `name` filed should be a string representing the new name of the file.
+- The `metadata` field should be a named list of key-value pairs. The keys and
+  values should be strings.
+- The `tags` filed should be an unnamed list of values.
+
+The maximum number of files you can edit the details for per call is 100.
+
+```{r}
+# Edit details of multiple files
+a$files$bulk_edit(files = list(file1, file2))
+```
+
+<div align="right"><a href="#top">top</a></div>
+
 ## Create a folder within the destination project or parent folder
 
 To create a new folder on the Platform, use the `Auth$files` method
