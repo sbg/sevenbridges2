@@ -368,6 +368,194 @@ Files <- R6::R6Class(
 
       rlang::inform(glue::glue_col("New folder {green {name}} has been created.")) # nolint
       # nocov end
+    },
+
+    # Get details of multiple files
+    #'
+    #' @description This call returns the details of multiple specified files,
+    #'  including file names and file metadata. The maximum number of files you
+    #'  can retrieve the details for per call is 100.
+    #'
+    #' @param files A list of File objects or vector of strings (IDs) of the
+    #' files you are querying for details.
+    #'
+    #' @importFrom rlang abort
+    #'
+    #' @return Collection (list of File objects).
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  files_object <- Files$new(auth = auth)
+    #'
+    #'  # Get details of multiple files
+    #'  files_object$bulk_get(
+    #'                files = files
+    #'               )
+    #' }
+    #'
+    bulk_get = function(files = NULL) {
+      # check_file_ids(file_ids)
+
+      if (is_missing(files)) {
+        rlang::abort(
+          "Please provide 'files' parameter!"
+        )
+      }
+
+      files <- lapply(files, check_and_transform_id, "File")
+      # nocov start
+      body <- list(
+        "file_ids" = files
+      )
+
+      res <- self$auth$api(
+        path = "bulk/files/get",
+        method = "POST",
+        body = body
+      )
+
+      res$items <- asFileList(res, auth = self$auth, bulk = TRUE)
+
+      return(asCollection(res, auth = self$auth))
+      # nocov end
+    },
+
+    # Update details of multiple files
+    #'
+    #' @description A method that sets new information for specified files,
+    #' replacing all existing information and erasing omitted parameters.
+    #'
+    #' @details For each of the specified files, the call sets a new `name`,
+    #' new `tags` and `metadata`.
+    #'
+    #' When editing fields in the File objects you wish to update, keep the
+    #' following in mind:
+    #'
+    #' \itemize{
+    #'   \item The `name` filed should be a string representing the new name of
+    #'    the file.
+    #'   \item The `metadata` field should be a named list of key-value pairs.
+    #'    The keys and values should be strings.
+    #'   \item The `tags` filed should be an unnamed list of values.
+    #' }
+    #'
+    #' The maximum number of files you can update the details for per call is
+    #'  100.
+    #'
+    #' @param files List of File objects.
+    #'
+    #' @importFrom rlang abort inform
+    #' @importFrom checkmate assert_list
+    #' @importFrom cli cli_text qty
+    #'
+    #' @return Collection (list of File objects).
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  files_object <- Files$new(auth = auth)
+    #'
+    #'  # Update details of multiple files
+    #'  files_object$bulk_update(
+    #'                files = files
+    #'               )
+    #' }
+    #'
+    bulk_update = function(files = NULL) {
+      if (is_missing(files)) {
+        rlang::abort(
+          "Please provide 'files' parameter!"
+        )
+      }
+
+      checkmate::assert_list(files, types = "File")
+
+      # nocov start
+      body <- list(
+        items = lapply(files, function(file) {
+          check_and_process_file_details(file)
+        })
+      )
+
+      res <- self$auth$api(
+        path = "bulk/files/update",
+        method = "POST",
+        body = body
+      )
+
+      rlang::inform(cli::cli_text("The following {cli::qty(length(files))} file{?s} {?has/have} been updated:")) # nolint
+
+      res$items <- asFileList(res, auth = self$auth, bulk = TRUE)
+
+      return(asCollection(res, auth = self$auth))
+      # nocov end
+    },
+
+    # Edit details of multiple files
+    #'
+    #' @description This method modifies the existing information for specified
+    #'  files or add new information while preserving omitted parameters.
+    #'
+    #' @details For each of the specified files, the call edits its `name`,
+    #' `tags` and `metadata`.
+    #'
+    #' When editing fields in the File objects you wish to update, keep the
+    #' following in mind:
+    #'
+    #' \itemize{
+    #'   \item The `name` filed should be a string representing the new name of
+    #'    the file.
+    #'   \item The `metadata` field should be a named list of key-value pairs.
+    #'    The keys and values should be strings.
+    #'   \item The `tags` filed should be an unnamed list of values.
+    #' }
+    #'
+    #' The maximum number of files you can update the details for per call is
+    #'  100.
+    #'
+    #' @param files List of File objects.
+    #'
+    #' @importFrom rlang abort inform
+    #' @importFrom checkmate assert_list
+    #' @importFrom cli cli_text qty
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  files_object <- Files$new(auth = auth)
+    #'
+    #'  # Edit details of multiple files
+    #'  files_object$bulk_edit(
+    #'                files = files
+    #'               )
+    #' }
+    #'
+    bulk_edit = function(files = NULL) {
+      if (is_missing(files)) {
+        rlang::abort(
+          "Please provide 'files' parameter!"
+        )
+      }
+
+      checkmate::assert_list(files, types = "File")
+
+      # nocov start
+      body <- list(
+        items = lapply(files, function(file) {
+          check_and_process_file_details(file)
+        })
+      )
+
+      res <- self$auth$api(
+        path = "bulk/files/edit",
+        method = "POST",
+        body = body
+      )
+
+      rlang::inform(cli::cli_text("The following {cli::qty(length(files))} file{?s} {?has/have} been updated:")) # nolint
+
+      res$items <- asFileList(res, auth = self$auth, bulk = TRUE)
+
+      return(asCollection(res, auth = self$auth))
+      # nocov end
     }
   )
 )
