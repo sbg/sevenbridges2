@@ -339,19 +339,20 @@ an alias on the Platform which points to the files in your cloud
 storage bucket. Aliases appear as files on the Platform and can
 be copied, executed, and modified.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Imports$bulk_get(import_ids)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Imports$bulk_get(imports)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{import_ids}}{The IDs of the import jobs as returned by the call
-to start a bulk import job.}
+\item{\code{imports}}{The IDs of the import jobs as returned by the call
+to start a bulk import job or list of \code{\link{Import}} objects.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\code{\link{Import}} objects list.
+\code{\link{Collection}} with list of \code{\link{Import}}
+objects.
 }
 }
 \if{html}{\out{<hr>}}
@@ -376,27 +377,65 @@ for \href{https://docs.sevenbridges.com/docs/google-cloud-storage-tutorial}{Goog
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{items}}{Nested list of elements containing information about each
-file/folder to be imported.
+file/folder to be imported. For each element, users must provide:
+
+\itemize{
+\item \code{source_volume} - Volume object or its ID to import
+files/folders from,
+\item \code{source_location} - Volume-specific location pointing to the
+file or folder to import.
+This location should be recognizable to the underlying cloud
+service as a valid key or path to the item. If the item being
+imported is a folder, its path should end with a /.
+Please note that if this volume was configured with a prefix
+parameter when it was created, the value of prefix will be
+prepended to location before attempting to locate the item on
+the volume.
+\item \code{destination_project} - Project object or ID to import
+files/folders into. Should not be used together with
+destination_parent. If project is used, the items will be imported
+to the root of the project's files.
+\item \code{destination_parent} - File object of type 'folder' or its ID
+to import files/folders into. Should not be used together with
+destination_project. If parent is used, the import will take
+place into the specified folder, within the project to which the
+folder belongs.
+\item \code{name} - The name of the alias to create.
+This name should be unique to the project. If the name is already
+in use in the project, you should use the \code{overwrite} parameter
+in this call to force any file with that name to be deleted
+before the alias is created. If name is omitted, the alias name
+will default to the last segment of the complete location
+(including the prefix) on the volume. Segments are considered to
+be separated with forward slashes ('/').
+\item \code{autorename} - Whether to automatically rename the item
+(by prefixing its name with an underscore and number) if another
+one with the same name already exists at the destination.
+\item \code{preserve_folder_structure} - Whether to keep the exact source
+folder structure. The default value is TRUE if the item being
+imported is a folder. Should not be used if you are importing a
+file.
+}
 Example of the list:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{items <- list(
           list(
-            source = list(volume = 'rfranklin/my-volume',
-                          location = 'chimeras.html.gz'),
-            destination = list(project = 'rfranklin/my-project')
+            source_volume = 'rfranklin/my-volume',
+            source_location = 'chimeras.html.gz',
+            destination_project = 'rfranklin/my-project'
           ),
           list(
-            source = list(volume = 'rfranklin/my-volume',
-                          location = 'my-folder/'),
-            destination = list(project = 'rfranklin/my-project'),
+            source_volume = 'rfranklin/my-volume',
+            source_location = 'my-folder/',
+            destination_project = 'rfranklin/my-project',
             autorename = TRUE,
             preserve_folder_structure = TRUE
           ),
           list(
-            source = list(volume = 'rfranklin/my-volume',
-                          location = 'my-volume-folder/'),
-            destination = list(name = 'new-folder-name',
-                               parent = '567890abc1e5339df0414123'),
+            source_volume = 'rfranklin/my-volume',
+            source_location = 'my-volume-folder/',
+            destination_parent = '567890abc1e5339df0414123',
+            name = 'new-folder-name',
             autorename = TRUE,
             preserve_folder_structure = TRUE
           )
@@ -409,7 +448,8 @@ or some project's folder you can read \href{https://docs.sevenbridges.com/refere
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-List of Import objects.
+\code{\link{Collection}} with list of \code{\link{Import}}
+objects.
 }
 }
 \if{html}{\out{<hr>}}

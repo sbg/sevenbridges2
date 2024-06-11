@@ -172,8 +172,8 @@ asImport <- function(x = NULL, auth = NULL, bulk = FALSE) {
   )
 }
 
-asImportList <- function(x, auth) {
-  obj <- lapply(x$items, asImport, auth = auth)
+asImportList <- function(x, auth, bulk = FALSE) {
+  obj <- lapply(x$items, asImport, auth = auth, bulk = bulk)
   obj
 }
 # nocov end
