@@ -559,3 +559,36 @@ test_that("check_and_transform_datetime works as expected", {
     expected = "2016-04-01 14:25:50"
   )
 })
+
+test_that("check_and_process_file_details throws error for invalid name type", {
+  file_with_wrong_name <- setup_file_obj
+  file_with_wrong_name$name <- 123
+
+  testthat::expect_error(
+    do.call(check_and_process_file_details, file_with_wrong_name),
+    regexp = "Assertion on 'file$name' failed: Must be of type 'string', not 'double'.", # nolint
+    fixed = TRUE
+  )
+})
+
+test_that("check_and_process_file_details throws error for invalid tags type", {
+  file_with_invalid_tags <- setup_file_obj
+  file_with_invalid_tags$tags <- "test-tag"
+
+  testthat::expect_error(
+    do.call(check_and_process_file_details, file_with_invalid_tags),
+    regexp = "Assertion on 'file$tags' failed: Must be of type 'list', not 'character'.", # nolint
+    fixed = TRUE
+  )
+})
+
+test_that("check_and_process_file_details throws error for invalid metadata type", { # nolint
+  file_with_invalid_metadata <- setup_file_obj
+  file_with_invalid_metadata$metadata <- c("sample_id", "acdc")
+
+  testthat::expect_error(
+    do.call(check_and_process_file_details, file_with_invalid_tags),
+    regexp = "Assertion on 'file$metadata' failed: Must be of type 'list', not 'character'.", # nolint
+    fixed = TRUE
+  )
+})
