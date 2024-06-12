@@ -319,7 +319,7 @@ Imports <- R6::R6Class(
     #' @param imports The list of the import job IDs as returned by the call
     #'  to start a bulk import job or list of \code{\link{Import}} objects.
     #'
-    #' @importFrom checkmate test_list assert_list
+    #' @importFrom checkmate assert_list
     #' @importFrom rlang abort
     #' @importFrom glue glue
     #'
@@ -338,16 +338,12 @@ Imports <- R6::R6Class(
     #' @return \code{\link{Collection}} with list of \code{\link{Import}}
     #'  objects.
     bulk_get = function(imports) {
-      if (!is_missing(imports)) {
-        if (checkmate::test_list(imports, types = "character")) {
-          unlisted_ids <- unlist(imports)
-        } else {
-          checkmate::assert_list(imports, types = "Import")
-          unlisted_ids <- sapply(imports, function(x) x$id)
-        }
-      } else {
+      if (is_missing(imports)) {
         rlang::abort("Imports should be set as list of import job IDs or as list of Import objects.") # nolint
       }
+
+      checkmate::assert_list(imports)
+      unlisted_ids <- sapply(imports, check_and_transform_id, "Import")
 
       # Build body
       # nocov start
@@ -489,6 +485,9 @@ Imports <- R6::R6Class(
     #' @return \code{\link{Collection}} with list of \code{\link{Import}}
     #'  objects.
     bulk_submit_import = function(items) {
+      if (is_missing(items)) {
+        rlang::abort("Items parameter should be set as nested list of files/folder information you want to import.") # nolint
+      }
       checkmate::assert_list(items)
 
       body_elements <- list()
