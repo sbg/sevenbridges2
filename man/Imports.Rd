@@ -53,6 +53,51 @@ R6 Class representing storage imports resource endpoints.
  )
 }
 
+
+## ------------------------------------------------
+## Method `Imports$bulk_get`
+## ------------------------------------------------
+
+\dontrun{
+ imports_object <- Imports$new(
+                    auth = auth,
+                   )
+
+ # List import job
+ imports_object$bulk_get(
+  imports = list("import-job-id-1", "import-job-id-2")
+  )
+}
+
+
+## ------------------------------------------------
+## Method `Imports$bulk_submit_import`
+## ------------------------------------------------
+
+\dontrun{
+ imports_object <- Imports$new(
+                    auth = auth
+                   )
+
+ # Submit new import into a project
+ imports_object$bulk_submit_import(items = list(
+   list(
+     source_volume = "rfranklin/my-volume",
+     source_location = "my-file.txt",
+     destination_project = test_project_object,
+     autorename = TRUE
+   ),
+   list(
+     source_volume = "rfranklin/my-volume",
+     source_location = "my-folder/",
+     destination_parent = "parent-folder-id",
+     autorename = FALSE,
+     preserve_folder_structure = TRUE
+   )
+  )
+ )
+}
+
 }
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Imports}
@@ -345,7 +390,7 @@ be copied, executed, and modified.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{imports}}{The IDs of the import jobs as returned by the call
+\item{\code{imports}}{The list of the import job IDs as returned by the call
 to start a bulk import job or list of \code{\link{Import}} objects.}
 }
 \if{html}{\out{</div>}}
@@ -354,6 +399,24 @@ to start a bulk import job or list of \code{\link{Import}} objects.}
 \code{\link{Collection}} with list of \code{\link{Import}}
 objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ imports_object <- Imports$new(
+                    auth = auth,
+                   )
+
+ # List import job
+ imports_object$bulk_get(
+  imports = list("import-job-id-1", "import-job-id-2")
+  )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Imports-bulk_submit_import"></a>}}
@@ -386,7 +449,7 @@ files/folders from,
 file or folder to import.
 This location should be recognizable to the underlying cloud
 service as a valid key or path to the item. If the item being
-imported is a folder, its path should end with a /.
+imported is a folder, its path should end with a /. \cr
 Please note that if this volume was configured with a prefix
 parameter when it was created, the value of prefix will be
 prepended to location before attempting to locate the item on
@@ -402,12 +465,13 @@ place into the specified folder, within the project to which the
 folder belongs.
 \item \code{name} - The name of the alias to create.
 This name should be unique to the project. If the name is already
-in use in the project, you should use the \code{overwrite} parameter
-in this call to force any file with that name to be deleted
-before the alias is created. If name is omitted, the alias name
-will default to the last segment of the complete location
-(including the prefix) on the volume. Segments are considered to
-be separated with forward slashes ('/').
+in use in the project, you should use the \code{autorename} parameter
+in this call to automatically rename the item (by prefixing its
+name with an underscore and number). \cr
+If name is omitted, the alias name will default to the last
+segment of the complete location (including the prefix) on the
+volume. Segments are considered to be separated with forward
+slashes ('/').
 \item \code{autorename} - Whether to automatically rename the item
 (by prefixing its name with an underscore and number) if another
 one with the same name already exists at the destination.
@@ -451,6 +515,37 @@ or some project's folder you can read \href{https://docs.sevenbridges.com/refere
 \code{\link{Collection}} with list of \code{\link{Import}}
 objects.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ imports_object <- Imports$new(
+                    auth = auth
+                   )
+
+ # Submit new import into a project
+ imports_object$bulk_submit_import(items = list(
+   list(
+     source_volume = "rfranklin/my-volume",
+     source_location = "my-file.txt",
+     destination_project = test_project_object,
+     autorename = TRUE
+   ),
+   list(
+     source_volume = "rfranklin/my-volume",
+     source_location = "my-folder/",
+     destination_parent = "parent-folder-id",
+     autorename = FALSE,
+     preserve_folder_structure = TRUE
+   )
+  )
+ )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Imports-clone"></a>}}
