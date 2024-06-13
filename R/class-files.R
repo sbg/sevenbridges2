@@ -17,7 +17,10 @@ Files <- R6::R6Class(
       "query" = "files",
       "get" = "files/{id}",
       "copy" = "action/files/copy",
-      "delete" = "files"
+      "delete" = "files",
+      "bulk_get" = "bulk/files/get",
+      "bulk_update" = "bulk/files/update",
+      "bulk_edit" = "bulk/files/edit"
     ),
 
     # Initialize Files object -----------------------------------------------
@@ -381,6 +384,7 @@ Files <- R6::R6Class(
     #'
     #' @importFrom rlang abort
     #' @importFrom checkmate assert_list
+    #' @importFrom glue glue
     #'
     #' @return \code{\link{Collection}} (list of \code{\link{File}} objects).
     #'
@@ -409,8 +413,10 @@ Files <- R6::R6Class(
         "file_ids" = files
       )
 
+      path <- glue::glue(self$URL[["bulk_get"]])
+
       res <- self$auth$api(
-        path = "bulk/files/get",
+        path = path,
         method = "POST",
         body = body
       )
@@ -450,6 +456,7 @@ Files <- R6::R6Class(
     #' @importFrom rlang abort inform
     #' @importFrom checkmate assert_list
     #' @importFrom cli cli_text qty
+    #' @importFrom glue glue
     #'
     #' @return \code{\link{Collection}} (list of \code{\link{File}} objects).
     #'
@@ -479,8 +486,10 @@ Files <- R6::R6Class(
         })
       )
 
+      path <- glue::glue(self$URL[["bulk_update"]])
+
       res <- self$auth$api(
-        path = "bulk/files/update",
+        path = path,
         method = "POST",
         body = body
       )
@@ -522,6 +531,7 @@ Files <- R6::R6Class(
     #' @importFrom rlang abort inform
     #' @importFrom checkmate assert_list
     #' @importFrom cli cli_text qty
+    #' @importFrom glue glue
     #'
     #' @return \code{\link{Collection}} (list of \code{\link{File}} objects).
     #'
@@ -551,8 +561,10 @@ Files <- R6::R6Class(
         })
       )
 
+      path <- glue::glue(self$URL[["bulk_edit"]])
+
       res <- self$auth$api(
-        path = "bulk/files/edit",
+        path = path,
         method = "POST",
         body = body
       )
