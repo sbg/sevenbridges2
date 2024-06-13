@@ -892,6 +892,24 @@ demo_folder$delete()
 
 <div align="right"><a href="#top">top</a></div>
 
+### Delete multiple files/folders
+
+To delete multiple files in a single API call, use the `bulk_delete()` method.
+This method accepts either a list of `File` objects or a vector of strings
+(IDs) representing the files you intend to delete.
+
+The method also works with `folders`. However, please note that a `folder` can
+only be deleted if it is empty.
+
+```{r}
+# Delete two files by providing their IDs
+a$files$delete(files = c("<file_1_ID>", "<file_2_ID>"))
+
+# Delete two files by providing a list of File objects
+a$files$delete(files = list("<File_Object_1>", "<File_Object_2>"))
+```
+<div align="right"><a href="#top">top</a></div>
+
 ### Reload a file
 
 To keep your local `File` object up to date with the file on the platform, 
