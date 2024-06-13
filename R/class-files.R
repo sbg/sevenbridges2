@@ -376,12 +376,13 @@ Files <- R6::R6Class(
     #'  including file names and file metadata. The maximum number of files you
     #'  can retrieve the details for per call is 100.
     #'
-    #' @param files A list of File objects or vector of strings (IDs) of the
-    #' files you are querying for details.
+    #' @param files A list of \code{\link{File}} objects or list of strings
+    #'  (IDs) of the files you are querying for details.
     #'
     #' @importFrom rlang abort
+    #' @importFrom checkmate assert_list
     #'
-    #' @return Collection (list of File objects).
+    #' @return \code{\link{Collection}} (list of \code{\link{File}} objects).
     #'
     #' @examples
     #' \dontrun{
@@ -389,20 +390,20 @@ Files <- R6::R6Class(
     #'
     #'  # Get details of multiple files
     #'  files_object$bulk_get(
-    #'                files = files
+    #'                files = list("file_1_id", "file_2_id")
     #'               )
     #' }
     #'
-    bulk_get = function(files = NULL) {
-      # check_file_ids(file_ids)
-
+    bulk_get = function(files) {
       if (is_missing(files)) {
         rlang::abort(
-          "Please provide 'files' parameter!"
+          "Please provide 'files' parameter."
         )
       }
 
-      files <- lapply(files, check_and_transform_id, "File")
+      checkmate::assert_list(files)
+
+      files <- sapply(files, check_and_transform_id, "File")
       # nocov start
       body <- list(
         "file_ids" = files
@@ -423,32 +424,34 @@ Files <- R6::R6Class(
     # Update details of multiple files
     #'
     #' @description A method that sets new information for specified files,
-    #' replacing all existing information and erasing omitted parameters.
+    #'  replacing all existing information and erasing omitted parameters.
     #'
     #' @details For each of the specified files, the call sets a new `name`,
-    #' new `tags` and `metadata`.
+    #'  new `tags` and `metadata`.
     #'
-    #' When editing fields in the File objects you wish to update, keep the
-    #' following in mind:
+    #'  When editing fields in the \code{\link{File}} objects you wish to
+    #'   update, keep the following in mind:
     #'
-    #' \itemize{
-    #'   \item The `name` filed should be a string representing the new name of
-    #'    the file.
-    #'   \item The `metadata` field should be a named list of key-value pairs.
-    #'    The keys and values should be strings.
-    #'   \item The `tags` filed should be an unnamed list of values.
-    #' }
+    # nolint start
+    #'  \itemize{
+    #'      \item The `name` field should be a string representing the new name of
+    #'       the file.
+    #'      \item The `metadata` field should be a named list of key-value pairs.
+    #'       The keys and values should be strings.
+    #'      \item The `tags` field should be an unnamed list of values.
+    #'  }
+    # nolint end
     #'
-    #' The maximum number of files you can update the details for per call is
+    #'  The maximum number of files you can update the details for per call is
     #'  100.
     #'
-    #' @param files List of File objects.
+    #' @param files List of \code{\link{File}} objects.
     #'
     #' @importFrom rlang abort inform
     #' @importFrom checkmate assert_list
     #' @importFrom cli cli_text qty
     #'
-    #' @return Collection (list of File objects).
+    #' @return \code{\link{Collection}} (list of \code{\link{File}} objects).
     #'
     #' @examples
     #' \dontrun{
@@ -456,14 +459,14 @@ Files <- R6::R6Class(
     #'
     #'  # Update details of multiple files
     #'  files_object$bulk_update(
-    #'                files = files
+    #'                files = list("file_object_1", "file_object_2")
     #'               )
     #' }
     #'
-    bulk_update = function(files = NULL) {
+    bulk_update = function(files) {
       if (is_missing(files)) {
         rlang::abort(
-          "Please provide 'files' parameter!"
+          "Please provide 'files' parameter."
         )
       }
 
@@ -496,27 +499,31 @@ Files <- R6::R6Class(
     #'  files or add new information while preserving omitted parameters.
     #'
     #' @details For each of the specified files, the call edits its `name`,
-    #' `tags` and `metadata`.
+    #'  `tags` and `metadata`.
     #'
-    #' When editing fields in the File objects you wish to update, keep the
-    #' following in mind:
+    #'  When editing fields in the \code{\link{File}} objects you wish to
+    #'  update, keep the following in mind:
     #'
-    #' \itemize{
-    #'   \item The `name` filed should be a string representing the new name of
-    #'    the file.
-    #'   \item The `metadata` field should be a named list of key-value pairs.
-    #'    The keys and values should be strings.
-    #'   \item The `tags` filed should be an unnamed list of values.
-    #' }
+    # nolint start
+    #'  \itemize{
+    #'      \item The `name` field should be a string representing the new name of
+    #'       the file.
+    #'      \item The `metadata` field should be a named list of key-value pairs.
+    #'       The keys and values should be strings.
+    #'      \item The `tags` field should be an unnamed list of values.
+    #'  }
+    # nolint end
     #'
-    #' The maximum number of files you can update the details for per call is
+    #'  The maximum number of files you can update the details for per call is
     #'  100.
     #'
-    #' @param files List of File objects.
+    #' @param files List of \code{\link{File}} objects.
     #'
     #' @importFrom rlang abort inform
     #' @importFrom checkmate assert_list
     #' @importFrom cli cli_text qty
+    #'
+    #' @return \code{\link{Collection}} (list of \code{\link{File}} objects).
     #'
     #' @examples
     #' \dontrun{
@@ -524,14 +531,14 @@ Files <- R6::R6Class(
     #'
     #'  # Edit details of multiple files
     #'  files_object$bulk_edit(
-    #'                files = files
+    #'                files = list("file_object_1", "file_object_2")
     #'               )
     #' }
     #'
-    bulk_edit = function(files = NULL) {
+    bulk_edit = function(files) {
       if (is_missing(files)) {
         rlang::abort(
-          "Please provide 'files' parameter!"
+          "Please provide 'files' parameter."
         )
       }
 

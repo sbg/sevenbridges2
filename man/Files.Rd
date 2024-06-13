@@ -84,7 +84,7 @@ R6 Class representing Files resource.
 
  # Get details of multiple files
  files_object$bulk_get(
-               files = files
+               files = list("file_1_id", "file_2_id")
               )
 }
 
@@ -99,7 +99,7 @@ R6 Class representing Files resource.
 
  # Update details of multiple files
  files_object$bulk_update(
-               files = files
+               files = list("file_object_1", "file_object_2")
               )
 }
 
@@ -114,7 +114,7 @@ R6 Class representing Files resource.
 
  # Edit details of multiple files
  files_object$bulk_edit(
-               files = files
+               files = list("file_object_1", "file_object_2")
               )
 }
 
@@ -430,19 +430,19 @@ This call returns the details of multiple specified files,
 including file names and file metadata. The maximum number of files you
 can retrieve the details for per call is 100.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Files$bulk_get(files = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Files$bulk_get(files)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{files}}{A list of File objects or vector of strings (IDs) of the
-files you are querying for details.}
+\item{\code{files}}{A list of \code{\link{File}} objects or list of strings
+(IDs) of the files you are querying for details.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Collection (list of File objects).
+\code{\link{Collection}} (list of \code{\link{File}} objects).
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -451,7 +451,7 @@ Collection (list of File objects).
 
  # Get details of multiple files
  files_object$bulk_get(
-               files = files
+               files = list("file_1_id", "file_2_id")
               )
 }
 
@@ -469,13 +469,13 @@ Collection (list of File objects).
 A method that sets new information for specified files,
 replacing all existing information and erasing omitted parameters.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Files$bulk_update(files = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Files$bulk_update(files)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{files}}{List of File objects.}
+\item{\code{files}}{List of \code{\link{File}} objects.}
 }
 \if{html}{\out{</div>}}
 }
@@ -483,15 +483,15 @@ replacing all existing information and erasing omitted parameters.
 For each of the specified files, the call sets a new \code{name},
 new \code{tags} and \code{metadata}.
 
-When editing fields in the File objects you wish to update, keep the
-following in mind:
+When editing fields in the \code{\link{File}} objects you wish to
+update, keep the following in mind:
 
 \itemize{
-\item The \code{name} filed should be a string representing the new name of
+\item The \code{name} field should be a string representing the new name of
 the file.
 \item The \code{metadata} field should be a named list of key-value pairs.
 The keys and values should be strings.
-\item The \code{tags} filed should be an unnamed list of values.
+\item The \code{tags} field should be an unnamed list of values.
 }
 
 The maximum number of files you can update the details for per call is
@@ -499,7 +499,7 @@ The maximum number of files you can update the details for per call is
 }
 
 \subsection{Returns}{
-Collection (list of File objects).
+\code{\link{Collection}} (list of \code{\link{File}} objects).
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -508,7 +508,7 @@ Collection (list of File objects).
 
  # Update details of multiple files
  files_object$bulk_update(
-               files = files
+               files = list("file_object_1", "file_object_2")
               )
 }
 
@@ -526,13 +526,13 @@ Collection (list of File objects).
 This method modifies the existing information for specified
 files or add new information while preserving omitted parameters.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Files$bulk_edit(files = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Files$bulk_edit(files)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{files}}{List of File objects.}
+\item{\code{files}}{List of \code{\link{File}} objects.}
 }
 \if{html}{\out{</div>}}
 }
@@ -540,21 +540,24 @@ files or add new information while preserving omitted parameters.
 For each of the specified files, the call edits its \code{name},
 \code{tags} and \code{metadata}.
 
-When editing fields in the File objects you wish to update, keep the
-following in mind:
+When editing fields in the \code{\link{File}} objects you wish to
+update, keep the following in mind:
 
 \itemize{
-\item The \code{name} filed should be a string representing the new name of
+\item The \code{name} field should be a string representing the new name of
 the file.
 \item The \code{metadata} field should be a named list of key-value pairs.
 The keys and values should be strings.
-\item The \code{tags} filed should be an unnamed list of values.
+\item The \code{tags} field should be an unnamed list of values.
 }
 
 The maximum number of files you can update the details for per call is
 100.
 }
 
+\subsection{Returns}{
+\code{\link{Collection}} (list of \code{\link{File}} objects).
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
@@ -562,7 +565,7 @@ The maximum number of files you can update the details for per call is
 
  # Edit details of multiple files
  files_object$bulk_edit(
-               files = files
+               files = list("file_object_1", "file_object_2")
               )
 }
 

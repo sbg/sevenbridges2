@@ -315,7 +315,7 @@ test_that("Files bulk_get() throws error when expected", {
   # Bulk get fails when files param is not provided
   testthat::expect_error(
     do.call(setup_files_obj$bulk_get, test_missing_file_ids),
-    regexp = "Please provide 'files' parameter!",
+    regexp = "Please provide 'files' parameter.",
     fixed = TRUE
   )
 })
@@ -330,7 +330,7 @@ test_that("Files bulk_update() throws error when expected", {
   # Bulk update fails when files param is not provided
   testthat::expect_error(
     do.call(setup_files_obj$bulk_update, test_missing_files),
-    regexp = "Please provide 'files' parameter!",
+    regexp = "Please provide 'files' parameter.",
     fixed = TRUE
   )
 
@@ -349,7 +349,7 @@ test_that("Files bulk_edit() throws error when expected", {
   # Bulk edit fails when files param is not provided
   testthat::expect_error(
     do.call(setup_files_obj$bulk_edit, test_missing_files),
-    regexp = "Please provide 'files' parameter!",
+    regexp = "Please provide 'files' parameter.",
     fixed = TRUE
   )
 
