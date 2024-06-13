@@ -73,6 +73,22 @@ R6 Class representing Files resource.
                )
 }
 
+
+
+## ------------------------------------------------
+## Method `Files$bulk_delete`
+## ------------------------------------------------
+
+\dontrun{
+ # Delete two files by providing their IDs
+ a$files$delete(files = c("<file_1_ID>", "<file_2_ID>"))
+}
+
+\dontrun{
+ # Delete two files by providing a list of File objects
+ a$files$delete(files = list(<File_Object_1>, <File_Object_2>))
+}
+
 }
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Files}
@@ -93,6 +109,7 @@ R6 Class representing Files resource.
 \item \href{#method-Files-delete}{\code{Files$delete()}}
 \item \href{#method-Files-copy}{\code{Files$copy()}}
 \item \href{#method-Files-create_folder}{\code{Files$create_folder()}}
+\item \href{#method-Files-bulk_delete}{\code{Files$bulk_delete()}}
 \item \href{#method-Files-clone}{\code{Files$clone()}}
 }
 }
@@ -365,6 +382,48 @@ object which must be of type \code{FOLDER}.}
                 name = name,
                 project = project
                )
+}
+
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Files-bulk_delete"></a>}}
+\if{latex}{\out{\hypertarget{method-Files-bulk_delete}{}}}
+\subsection{Method \code{bulk_delete()}}{
+This method facilitates bulk file deletion. It accepts
+either a list of \code{\link{File}} objects or a vector containing
+files' IDs.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Files$bulk_delete(files = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{files}}{Either a list of \code{\link{File}} objects or a vector
+of strings (IDs) representing the files you intend to delete.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+None. The function only displays the IDs of the deleted files in
+the console.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # Delete two files by providing their IDs
+ a$files$delete(files = c("<file_1_ID>", "<file_2_ID>"))
+}
+
+\dontrun{
+ # Delete two files by providing a list of File objects
+ a$files$delete(files = list(<File_Object_1>, <File_Object_2>))
 }
 
 }

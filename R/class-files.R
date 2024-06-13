@@ -368,6 +368,55 @@ Files <- R6::R6Class(
 
       rlang::inform(glue::glue_col("New folder {green {name}} has been created.")) # nolint
       # nocov end
+    },
+
+    # Bulk deletion of files
+    #'
+    #' @description This method facilitates bulk file deletion. It accepts
+    #' either a list of \code{\link{File}} objects or a vector containing
+    #' files' IDs.
+    #'
+    #' @param files Either a list of \code{\link{File}} objects or a vector
+    #' of strings (IDs) representing the files you intend to delete.
+    #'
+    #' @importFrom rlang abort inform format_error_bullets
+    #' @importFrom cli cli_text qty
+    #'
+    #' @return None. The function only displays the IDs of the deleted files in
+    #' the console.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # Delete two files by providing their IDs
+    #'  a$files$delete(files = c("<file_1_ID>", "<file_2_ID>"))
+    #' }
+    #'
+    #' \dontrun{
+    #'  # Delete two files by providing a list of File objects
+    #'  a$files$delete(files = list(<File_Object_1>, <File_Object_2>))
+    #' }
+    #'
+    bulk_delete = function(files = NULL) {
+      if (is_missing(files)) {
+        rlang::abort(
+          "Please provide 'files' parameter!"
+        )
+      }
+
+      files <- sapply(files, check_and_transform_id, "File")
+      # nocov start
+      body <- list(
+        "file_ids" = files
+      )
+
+      res <- self$auth$api(
+        path = "bulk/files/delete",
+        method = "POST",
+        body = body
+      )
+
+      check_response_and_notify_user(files, res)
+      # nocov end
     }
   )
 )
