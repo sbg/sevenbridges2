@@ -302,3 +302,20 @@ test_that("Files create_folder() throws error when expected", {
     fixed = TRUE
   )
 })
+
+
+test_that("Files bulk_delete() method throws error when expected", {
+  # Setup test parameters for test
+  test_bad_files <- list(files = 1)
+  test_missing_files <- list(files = NULL)
+
+  # Bulk delete fails when bad files param is provided
+  testthat::expect_error(setup_files_obj$bulk_delete(test_bad_files))
+
+  # Bulk delete fails when files param is not provided
+  testthat::expect_error(
+    setup_files_obj$bulk_delete(test_missing_files),
+    regexp = "Please provide 'files' parameter!",
+    fixed = TRUE
+  )
+})

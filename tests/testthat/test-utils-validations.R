@@ -559,3 +559,29 @@ test_that("check_and_transform_datetime works as expected", {
     expected = "2016-04-01 14:25:50"
   )
 })
+
+test_that("check_response_and_notify_user works as expected", {
+  files <- c("file_id_1", "file_id_2", "file_id_3")
+  res <- list(items = list(
+    list(error = list(status = 404, code = 5002, message = "Requested file does not exist.")), # nolint
+    list(resource = list(id = "file_id_2")),
+    list(error = list(status = 404, code = 5002, message = "Requested file does not exist.")) # nolint
+  ))
+
+  # Fails when no files are provided
+  testthat::expect_error(check_response_and_notify_user(res = res),
+    regexp = "Files parameter is required!",
+    fixed = TRUE
+  )
+
+  # Fails when res parameter is not provided
+  testthat::expect_error(check_response_and_notify_user(files = files),
+    regexp = "Res parameter is required!",
+    fixed = TRUE
+  )
+
+  # Generates the expected console output
+  testthat::skip_on_ci()
+  testthat::skip_on_cran()
+  testthat::expect_snapshot(check_response_and_notify_user(files, res))
+})
