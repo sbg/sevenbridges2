@@ -577,14 +577,14 @@ a$files$copy(
 
 The `bulk_get()` method allows you to retrieve details for multiple files
 efficiently - in a single API call. This method accepts an argument,
-`files`, which can be either a list of File objects or a vector of strings
+`files`, which can be either a list of File objects or a list of strings
 representing file IDs.
 
 File id can also be extracted from the URL in the Platform's visual interface.
 
 ```{r}
 # Get details of multiple files by providing their IDs
-a$files$bulk_get(files = c("<file_1_id>", "<file_2_id>"))
+a$files$bulk_get(files = list("<file_1_id>", "<file_2_id>"))
 ```
 ```
 ── 1 ──

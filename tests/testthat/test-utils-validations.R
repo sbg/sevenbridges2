@@ -593,4 +593,30 @@ test_that("check_and_process_file_details throws error for invalid metadata type
     fixed = TRUE
   )
 })
+
+
+test_that("check_and_process_file_details works as expected", {
+  # Call the function with a valid File object
+  result <- check_and_process_file_details(setup_file_obj)
+
+  # Create the expected result list
+  expected_result <- list(
+    id = "file-id",
+    name = "File name",
+    tags = list("tag_1"),
+    metadata = list(
+      sbg_public_files_category = "test",
+      reference_genome = "HG19_Broad_variant",
+      sample_id = "HCC1143_1M",
+      case_id = "CCLE-HCC1143",
+      investigation = "CCLE-BRCA"
+    )
+  )
+
+  # Check that the result is a list
+  testthat::expect_type(result, "list")
+
+  # Check that the result matches the expected result
+  testthat::expect_equal(result, expected_result)
+})
 # nolint end

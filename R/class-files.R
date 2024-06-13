@@ -407,8 +407,8 @@ Files <- R6::R6Class(
 
       checkmate::assert_list(files)
 
-      files <- sapply(files, check_and_transform_id, "File")
       # nocov start
+      files <- sapply(files, check_and_transform_id, "File")
       body <- list(
         "file_ids" = files
       )
