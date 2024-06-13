@@ -560,6 +560,43 @@ test_that("check_and_transform_datetime works as expected", {
   )
 })
 
+test_that("check_response_and_notify_user throws an error when expected", {
+  test_valid_files_param <- c("file_id_1", "file_id_2", "file_id_3")
+  test_valid_res_param <- list(items = list(
+    list(error = list(status = 404, code = 5002, message = "Requested file does not exist.")), # nolint
+    list(resource = list(id = "file_id_2")),
+    list(error = list(status = 404, code = 5002, message = "Requested file does not exist.")) # nolint
+  ))
+
+  # Fails when no files are provided
+  testthat::expect_error(check_response_and_notify_user(res = test_valid_res_param), # nolint
+    regexp = "Files parameter is required.",
+    fixed = TRUE
+  )
+
+  # Fails when res parameter is not provided
+  testthat::expect_error(check_response_and_notify_user(files = test_valid_files_param), # nolint
+    regexp = "Res parameter is required.",
+    fixed = TRUE
+  )
+
+  # Fails when bad files parameter is provided
+  test_bad_files_param <- c(1, 2, 3)
+  testthat::expect_error(
+    check_response_and_notify_user(files = test_bad_files_param, res = test_valid_res_param), # nolint
+    regexp = "Assertion on 'files' failed: Must be of type 'character', not 'double'.", # nolint
+    fixed = TRUE
+  )
+
+  # Fails when bad res parameter is provided
+  test_bad_res_param <- 42
+  testthat::expect_error(
+    check_response_and_notify_user(files = test_valid_files_param, res = test_bad_res_param), # nolint
+    regexp = "Assertion on 'res' failed: Must be of type 'list', not 'double'.", # nolint
+    fixed = TRUE
+  )
+})
+
 test_that("check_response_and_notify_user works as expected", {
   files <- c("file_id_1", "file_id_2", "file_id_3")
   res <- list(items = list(
@@ -567,18 +604,6 @@ test_that("check_response_and_notify_user works as expected", {
     list(resource = list(id = "file_id_2")),
     list(error = list(status = 404, code = 5002, message = "Requested file does not exist.")) # nolint
   ))
-
-  # Fails when no files are provided
-  testthat::expect_error(check_response_and_notify_user(res = res),
-    regexp = "Files parameter is required!",
-    fixed = TRUE
-  )
-
-  # Fails when res parameter is not provided
-  testthat::expect_error(check_response_and_notify_user(files = files),
-    regexp = "Res parameter is required!",
-    fixed = TRUE
-  )
 
   # Generates the expected console output
   testthat::skip_on_ci()

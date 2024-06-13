@@ -903,10 +903,12 @@ only be deleted if it is empty.
 
 ```{r}
 # Delete two files by providing their IDs
-a$files$delete(files = c("<file_1_ID>", "<file_2_ID>"))
+a$files$delete(files = list("<file_1_ID>", "<file_2_ID>"))
 
 # Delete two files by providing a list of File objects
-a$files$delete(files = list("<File_Object_1>", "<File_Object_2>"))
+file_object_1 <- a$files$get(id = "<file_1_ID>")
+file_object_2 <- a$files$get(id = "<file_2_ID>")
+a$files$delete(files = list(file_object_1, file_object_2))
 ```
 <div align="right"><a href="#top">top</a></div>
 

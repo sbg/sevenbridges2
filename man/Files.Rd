@@ -81,7 +81,7 @@ R6 Class representing Files resource.
 
 \dontrun{
  # Delete two files by providing their IDs
- a$files$delete(files = c("<file_1_ID>", "<file_2_ID>"))
+ a$files$delete(files = list("<file_1_ID>", "<file_2_ID>"))
 }
 
 \dontrun{
@@ -396,16 +396,16 @@ object which must be of type \code{FOLDER}.}
 \if{latex}{\out{\hypertarget{method-Files-bulk_delete}{}}}
 \subsection{Method \code{bulk_delete()}}{
 This method facilitates bulk file deletion. It accepts
-either a list of \code{\link{File}} objects or a vector containing
+either a list of \code{\link{File}} objects or a list containing
 files' IDs.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Files$bulk_delete(files = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Files$bulk_delete(files)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{files}}{Either a list of \code{\link{File}} objects or a vector
+\item{\code{files}}{Either a list of \code{\link{File}} objects or a list
 of strings (IDs) representing the files you intend to delete.}
 }
 \if{html}{\out{</div>}}
@@ -418,7 +418,7 @@ the console.
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
  # Delete two files by providing their IDs
- a$files$delete(files = c("<file_1_ID>", "<file_2_ID>"))
+ a$files$delete(files = list("<file_1_ID>", "<file_2_ID>"))
 }
 
 \dontrun{

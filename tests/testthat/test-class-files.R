@@ -315,7 +315,7 @@ test_that("Files bulk_delete() method throws error when expected", {
   # Bulk delete fails when files param is not provided
   testthat::expect_error(
     setup_files_obj$bulk_delete(test_missing_files),
-    regexp = "Please provide 'files' parameter!",
+    regexp = "Please provide 'files' parameter.",
     fixed = TRUE
   )
 })

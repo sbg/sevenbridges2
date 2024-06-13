@@ -585,22 +585,22 @@ check_execution_settings <- function(execution_settings = NULL) {
 # Check the bulk delete response and notify the user of the action's outcome.
 #'
 #' @description This function processes the response from a bulk delete API
-#' call and informs the user about the results. It distinguishes between
-#' successfully deleted files and files that could not be deleted because they
-#' do not exist.
+#'  call and informs the user about the results. It distinguishes between
+#'  successfully deleted files and files that could not be deleted because they
+#'  do not exist.
 #'
 #' @param files A character vector of file IDs that were requested to be
-#' deleted.
+#'  deleted.
 #' @param res Bulk delete API call response containing the `items` field where
-#' each item indicates whether the corresponding file was successfully deleted
-#' or not.
+#'  each item indicates whether the corresponding file was successfully deleted
+#'  or not.
 #'
 #' @importFrom rlang abort inform format_error_bullets
 #' @importFrom cli cli_text qty cli_end
 #' @importFrom checkmate assert_character assert_list
 #'
 #' @return None. This function only provides console output to inform the user
-#' about the status of the file deletions.
+#'  about the status of the file deletions.
 #'
 #' @examples
 #' \dontrun{
@@ -614,13 +614,13 @@ check_execution_settings <- function(execution_settings = NULL) {
 #' }
 #'
 #' @noRd
-check_response_and_notify_user <- function(files = NULL, res = NULL) {
-  if (missing(files)) {
-    rlang::abort("Files parameter is required!")
+check_response_and_notify_user <- function(files, res) {
+  if (is_missing(files)) {
+    rlang::abort("Files parameter is required.")
   }
 
-  if (missing(res)) {
-    rlang::abort("Res parameter is required!")
+  if (is_missing(res)) {
+    rlang::abort("Res parameter is required.")
   }
 
   checkmate::assert_character(files,

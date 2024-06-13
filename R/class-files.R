@@ -17,7 +17,8 @@ Files <- R6::R6Class(
       "query" = "files",
       "get" = "files/{id}",
       "copy" = "action/files/copy",
-      "delete" = "files"
+      "delete" = "files",
+      "bulk_delete" = "bulk/files/delete"
     ),
 
     # Initialize Files object -----------------------------------------------
@@ -373,22 +374,24 @@ Files <- R6::R6Class(
     # Bulk deletion of files
     #'
     #' @description This method facilitates bulk file deletion. It accepts
-    #' either a list of \code{\link{File}} objects or a vector containing
-    #' files' IDs.
+    #'  either a list of \code{\link{File}} objects or a list containing
+    #'  files' IDs.
     #'
-    #' @param files Either a list of \code{\link{File}} objects or a vector
-    #' of strings (IDs) representing the files you intend to delete.
+    #' @param files Either a list of \code{\link{File}} objects or a list
+    #'  of strings (IDs) representing the files you intend to delete.
     #'
     #' @importFrom rlang abort inform format_error_bullets
+    #' @importFrom checkmate assert_list
     #' @importFrom cli cli_text qty
+    #' @importFrom glue glue
     #'
     #' @return None. The function only displays the IDs of the deleted files in
-    #' the console.
+    #'  the console.
     #'
     #' @examples
     #' \dontrun{
     #'  # Delete two files by providing their IDs
-    #'  a$files$delete(files = c("<file_1_ID>", "<file_2_ID>"))
+    #'  a$files$delete(files = list("<file_1_ID>", "<file_2_ID>"))
     #' }
     #'
     #' \dontrun{
@@ -396,12 +399,14 @@ Files <- R6::R6Class(
     #'  a$files$delete(files = list(<File_Object_1>, <File_Object_2>))
     #' }
     #'
-    bulk_delete = function(files = NULL) {
+    bulk_delete = function(files) {
       if (is_missing(files)) {
         rlang::abort(
-          "Please provide 'files' parameter!"
+          "Please provide 'files' parameter."
         )
       }
+
+      checkmate::assert_list(files)
 
       files <- sapply(files, check_and_transform_id, "File")
       # nocov start
@@ -409,8 +414,10 @@ Files <- R6::R6Class(
         "file_ids" = files
       )
 
+      path <- glue::glue(self$URL[["bulk_delete"]])
+
       res <- self$auth$api(
-        path = "bulk/files/delete",
+        path = path,
         method = "POST",
         body = body
       )
