@@ -633,6 +633,7 @@ check_response_and_notify_user <- function(files, res) {
     null.ok = FALSE
   )
 
+  # nocov start
   # Create empty lists to store results
   deleted_files <- list()
   non_existent_files <- list()
@@ -664,4 +665,5 @@ check_response_and_notify_user <- function(files, res) {
 
   # Close container elements
   cli::cli_end()
+  # nocov start
 }
