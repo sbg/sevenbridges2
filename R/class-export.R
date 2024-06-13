@@ -155,7 +155,10 @@ Export <- R6::R6Class(
 )
 # nocov start
 # Helper functions for creating Export objects --------------------------------
-asExport <- function(x = NULL, auth = NULL) {
+asExport <- function(x = NULL, auth = NULL, bulk = FALSE) {
+  if (bulk) {
+    x <- x$resource
+  }
   Export$new(
     res = x,
     href = x$href,
@@ -164,8 +167,8 @@ asExport <- function(x = NULL, auth = NULL) {
   )
 }
 
-asExportList <- function(x, auth) {
-  obj <- lapply(x$items, asExport, auth = auth)
+asExportList <- function(x, auth, bulk = FALSE) {
+  obj <- lapply(x$items, asExport, auth = auth, bulk = bulk)
   obj
 }
 # nocov end

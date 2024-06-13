@@ -53,6 +53,22 @@ R6 Class representing storage exports resource endpoints.
                 )
 }
 
+
+## ------------------------------------------------
+## Method `Exports$bulk_get`
+## ------------------------------------------------
+
+\dontrun{
+ exports_object <- Exports$new(
+                    auth = auth,
+                   )
+
+ # List export jobs
+ exports_object$bulk_get(
+  exports = list("export-job-id-1", "export-job-id-2")
+  )
+}
+
 }
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Exports}
@@ -72,6 +88,7 @@ R6 Class representing storage exports resource endpoints.
 \item \href{#method-Exports-get}{\code{Exports$get()}}
 \item \href{#method-Exports-submit_export}{\code{Exports$submit_export()}}
 \item \href{#method-Exports-delete}{\code{Exports$delete()}}
+\item \href{#method-Exports-bulk_get}{\code{Exports$bulk_get()}}
 \item \href{#method-Exports-clone}{\code{Exports$clone()}}
 }
 }
@@ -320,6 +337,49 @@ like 'fields', etc.}
 Deleting export jobs is not possible.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Exports$delete()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Exports-bulk_get"></a>}}
+\if{latex}{\out{\hypertarget{method-Exports-bulk_get}{}}}
+\subsection{Method \code{bulk_get()}}{
+This call returns the details of a bulk export job.
+When you export files from a project on the Platform into a volume,
+you write to your cloud storage bucket. This call obtains the details
+of that job.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Exports$bulk_get(exports)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{exports}}{The list of the export job IDs as returned by the call
+to start a bulk export job or list of \code{\link{Export}} objects.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{Collection}} with list of \code{\link{Export}}
+objects.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ exports_object <- Exports$new(
+                    auth = auth,
+                   )
+
+ # List export jobs
+ exports_object$bulk_get(
+  exports = list("export-job-id-1", "export-job-id-2")
+  )
+}
+
+}
+\if{html}{\out{</div>}}
+
 }
 
 }

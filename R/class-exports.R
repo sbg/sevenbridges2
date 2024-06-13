@@ -16,7 +16,8 @@ Exports <- R6::R6Class(
     URL = list(
       "query" = "storage/exports",
       "get" = "storage/exports/{id}",
-      "create" = "storage/exports"
+      "create" = "storage/exports",
+      "bulk_get" = "bulk/storage/export/get"
     ),
 
     # Initialize Exports object -----------------------------------------------
@@ -283,6 +284,62 @@ Exports <- R6::R6Class(
     #' @importFrom rlang inform
     delete = function() {
       rlang::inform("Deleting export jobs is not possible.")
-    } # nocov end
+    }, # nocov end
+
+    # Get bulk export jobs ----------------------------------------------------
+    #' @description This call returns the details of a bulk export job.
+    #'  When you export files from a project on the Platform into a volume,
+    #'  you write to your cloud storage bucket. This call obtains the details
+    #'  of that job.
+    #'
+    #' @param exports The list of the export job IDs as returned by the call
+    #'  to start a bulk export job or list of \code{\link{Export}} objects.
+    #'
+    #' @importFrom checkmate assert_list
+    #' @importFrom rlang abort
+    #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  exports_object <- Exports$new(
+    #'                     auth = auth,
+    #'                    )
+    #'
+    #'  # List export jobs
+    #'  exports_object$bulk_get(
+    #'   exports = list("export-job-id-1", "export-job-id-2")
+    #'   )
+    #' }
+    #'
+    #' @return \code{\link{Collection}} with list of \code{\link{Export}}
+    #'  objects.
+    bulk_get = function(exports) {
+      if (is_missing(exports)) {
+        rlang::abort("Exports should be set as list of export job IDs or as list of Export objects.") # nolint
+      }
+
+      checkmate::assert_list(exports)
+      unlisted_ids <- sapply(exports, check_and_transform_id, "Export")
+
+      # Build body
+      # nocov start
+      body <- list(
+        export_ids = unlisted_ids
+      )
+
+      path <- glue::glue(self$URL[["bulk_get"]])
+
+      res <- self$auth$api(
+        path = path,
+        method = "POST",
+        body = body,
+        advance_access = TRUE
+      )
+
+      res$items <- asExportList(res, auth = self$auth, bulk = TRUE)
+
+      return(asCollection(res, auth = self$auth))
+      # nocov end
+    }
   )
 )
