@@ -408,7 +408,7 @@ Files <- R6::R6Class(
       checkmate::assert_list(files)
 
       # nocov start
-      files <- sapply(files, check_and_transform_id, "File")
+      files <- lapply(files, check_and_transform_id, "File")
       body <- list(
         "file_ids" = files
       )
@@ -494,7 +494,7 @@ Files <- R6::R6Class(
         body = body
       )
 
-      rlang::inform(cli::cli_text("The following {cli::qty(length(files))} file{?s} {?has/have} been updated:")) # nolint
+      rlang::inform(cli::cli_text("{cli::qty(length(files))} File{?s} {?has/have} been updated!")) # nolint
 
       res$items <- asFileList(res, auth = self$auth, bulk = TRUE)
 
@@ -569,7 +569,7 @@ Files <- R6::R6Class(
         body = body
       )
 
-      rlang::inform(cli::cli_text("The following {cli::qty(length(files))} file{?s} {?has/have} been updated:")) # nolint
+      rlang::inform(cli::cli_text("{cli::qty(length(files))} File{?s} {?has/have} been updated!")) # nolint
 
       res$items <- asFileList(res, auth = self$auth, bulk = TRUE)
 

@@ -635,11 +635,25 @@ following in mind:
 The maximum number of files you can update the details for per call is 100.
 
 ```{r}
-# Update details of multiple files
-a$files$bulk_update(files = list(file1, file2))
-```
-<div align="right"><a href="#top">top</a></div>
+# Get files
+file_obj_1 <- a$files$get(id = "<file_1_ID>")
+file_obj_2 <- a$files$get(id = "<file_2_ID>")
 
+# Edit file_obj_1 fields
+file_obj_1$name <- "new_file_1_name.txt"
+file_obj_1$metadata <- list("new_metadata_field" = "123")
+file_obj_1$tags <- list("bulk_update_tag")
+
+# Edit file_obj_2 fields
+file_obj_2$name <- "new_file_2_name.txt"
+file_obj_2$metadata <- list("new_metadata_field" = "123")
+file_obj_2$tags <- list("bulk_update_tag")
+
+# Bulk update
+a$files$bulk_update(files = list(file_obj_1, file_obj_2))
+```
+
+<div align="right"><a href="#top">top</a></div>
 
 ## Edit details of multiple files
 
@@ -661,8 +675,22 @@ following in mind:
 The maximum number of files you can edit the details for per call is 100.
 
 ```{r}
-# Edit details of multiple files
-a$files$bulk_edit(files = list(file1, file2))
+# Get files
+file_obj_1 <- a$files$get(id = "<file_1_ID>")
+file_obj_2 <- a$files$get(id = "<file_2_ID>")
+
+# Edit file_obj_1 fields
+file_obj_1$name <- "new_file_1_name.txt"
+file_obj_1$metadata <- list("new_metadata_field" = "123")
+file_obj_1$tags <- list("bulk_edit_tag")
+
+# Edit file_obj_2 fields
+file_obj_2$name <- "new_file_2_name.txt"
+file_obj_2$metadata <- list("new_metadata_field" = "123")
+file_obj_2$tags <- list("bulk_edit_tag")
+
+# Bulk edit
+a$files$bulk_edit(files = list(file_obj_1, file_obj_2))
 ```
 
 <div align="right"><a href="#top">top</a></div>
