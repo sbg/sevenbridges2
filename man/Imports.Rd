@@ -28,7 +28,7 @@ R6 Class representing storage imports resource endpoints.
 
 \dontrun{
  imports_object <- Imports$new(
-                    auth = auth,
+                    auth = auth
                    )
 
  # List import job
@@ -60,7 +60,7 @@ R6 Class representing storage imports resource endpoints.
 
 \dontrun{
  imports_object <- Imports$new(
-                    auth = auth,
+                    auth = auth
                    )
 
  # List import job
@@ -242,7 +242,7 @@ like 'fields', etc.}
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
  imports_object <- Imports$new(
-                    auth = auth,
+                    auth = auth
                    )
 
  # List import job
@@ -403,7 +403,7 @@ objects.
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
  imports_object <- Imports$new(
-                    auth = auth,
+                    auth = auth
                    )
 
  # List import job

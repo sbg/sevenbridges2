@@ -20,7 +20,8 @@ Files <- R6::R6Class(
       "delete" = "files",
       "bulk_get" = "bulk/files/get",
       "bulk_update" = "bulk/files/update",
-      "bulk_edit" = "bulk/files/edit"
+      "bulk_edit" = "bulk/files/edit",
+      "bulk_delete" = "bulk/files/delete"
     ),
 
     # Initialize Files object -----------------------------------------------
@@ -370,6 +371,61 @@ Files <- R6::R6Class(
       )
 
       rlang::inform(glue::glue_col("New folder {green {name}} has been created.")) # nolint
+      # nocov end
+    },
+
+    # Bulk deletion of files
+    #'
+    #' @description This method facilitates bulk file deletion. It accepts
+    #'  either a list of \code{\link{File}} objects or a list containing
+    #'  files' IDs.
+    #'
+    #' @param files Either a list of \code{\link{File}} objects or a list
+    #'  of strings (IDs) representing the files you intend to delete.
+    #'
+    #' @importFrom rlang abort inform format_error_bullets
+    #' @importFrom checkmate assert_list
+    #' @importFrom cli cli_text qty
+    #' @importFrom glue glue
+    #'
+    #' @return None. The function only displays the IDs of the deleted files in
+    #'  the console.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # Delete two files by providing their IDs
+    #'  a$files$delete(files = list("<file_1_ID>", "<file_2_ID>"))
+    #' }
+    #'
+    #' \dontrun{
+    #'  # Delete two files by providing a list of File objects
+    #'  a$files$delete(files = list(<File_Object_1>, <File_Object_2>))
+    #' }
+    #'
+    bulk_delete = function(files) {
+      if (is_missing(files)) {
+        rlang::abort(
+          "Please provide 'files' parameter."
+        )
+      }
+
+      checkmate::assert_list(files)
+
+      # nocov start
+      files <- lapply(files, check_and_transform_id, "File")
+      body <- list(
+        "file_ids" = files
+      )
+
+      path <- glue::glue(self$URL[["bulk_delete"]])
+
+      res <- self$auth$api(
+        path = path,
+        method = "POST",
+        body = body
+      )
+
+      check_response_and_notify_user(files, res)
       # nocov end
     },
 
