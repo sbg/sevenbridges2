@@ -665,5 +665,5 @@ check_response_and_notify_user <- function(files, res) {
 
   # Close container elements
   cli::cli_end()
-  # nocov start
+  # nocov end
 }
