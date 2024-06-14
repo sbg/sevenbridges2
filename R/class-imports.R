@@ -16,7 +16,9 @@ Imports <- R6::R6Class(
     URL = list(
       "query" = "storage/imports",
       "get" = "storage/imports/{id}",
-      "create" = "storage/imports"
+      "create" = "storage/imports",
+      "bulk_get" = "bulk/storage/imports/get",
+      "bulk_create" = "bulk/storage/imports/create"
     ),
 
     # Initialize Imports object -----------------------------------------------
@@ -120,7 +122,7 @@ Imports <- R6::R6Class(
     #' @examples
     #' \dontrun{
     #'  imports_object <- Imports$new(
-    #'                     auth = auth,
+    #'                     auth = auth
     #'                    )
     #'
     #'  # List import job
@@ -304,6 +306,294 @@ Imports <- R6::R6Class(
     #' @importFrom rlang inform
     delete = function() {
       rlang::inform("Deleting import jobs is not possible.")
-    } # nocov end
+    }, # nocov end
+
+    # Get bulk import jobs ----------------------------------------------------
+    #' @description This call returns the details of a bulk import job.
+    #'  Note that when you import files from your volume on a cloud storage
+    #'  provider (Amazon Web Services or Google Cloud Storage), you create
+    #'  an alias on the Platform which points to the files in your cloud
+    #'  storage bucket. Aliases appear as files on the Platform and can
+    #'  be copied, executed, and modified.
+    #'
+    #' @param imports The list of the import job IDs as returned by the call
+    #'  to start a bulk import job or list of \code{\link{Import}} objects.
+    #'
+    #' @importFrom checkmate assert_list
+    #' @importFrom rlang abort
+    #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  imports_object <- Imports$new(
+    #'                     auth = auth
+    #'                    )
+    #'
+    #'  # List import job
+    #'  imports_object$bulk_get(
+    #'   imports = list("import-job-id-1", "import-job-id-2")
+    #'   )
+    #' }
+    #'
+    #' @return \code{\link{Collection}} with list of \code{\link{Import}}
+    #'  objects.
+    bulk_get = function(imports) {
+      if (is_missing(imports)) {
+        rlang::abort("Imports should be set as list of import job IDs or as list of Import objects.") # nolint
+      }
+
+      checkmate::assert_list(imports)
+      unlisted_ids <- lapply(imports, check_and_transform_id, "Import")
+
+      # Build body
+      # nocov start
+      body <- list(
+        import_ids = unlisted_ids
+      )
+
+      path <- glue::glue(self$URL[["bulk_get"]])
+
+      res <- self$auth$api(
+        path = path,
+        method = "POST",
+        body = body,
+        advance_access = TRUE
+      )
+
+      res$items <- asImportList(res, auth = self$auth, bulk = TRUE)
+
+      return(asCollection(res, auth = self$auth))
+      # nocov end
+    },
+
+    # Start bulk import job ---------------------------------------------------
+    #' @description This call lets you perform a bulk import of files from
+    #'  your volume (either Amazon Web Services or Google Cloud Storage)
+    #'  into your project on the Platform.
+    #'
+    #'  You can use this call to either import files to a specific folder
+    #'  or a project but you can also use it to import a folder and its files
+    #'  into another destination folder while preserving folder structure.
+    #'  One call can contain up to 100 items.
+    # nolint start
+    #'  Learn more about using the Volumes API for [Amazon S3](https://docs.sevenbridges.com/docs/aws-cloud-storage-tutorial) and
+    #'  for [Google Cloud Storage](https://docs.sevenbridges.com/docs/google-cloud-storage-tutorial).
+    # nolint end
+    #'
+    #' @param items Nested list of elements containing information about each
+    #'  file/folder to be imported. For each element, users must provide:
+    #'
+    # nolint start
+    #'  \itemize{
+    #'      \item `source_volume` - Volume object or its ID to import
+    #'        files/folders from,
+    #'      \item `source_location` - Volume-specific location pointing to the
+    #'        file or folder to import.
+    #'        This location should be recognizable to the underlying cloud
+    #'        service as a valid key or path to the item. If the item being
+    #'        imported is a folder, its path should end with a /. \cr
+    #'        Please note that if this volume was configured with a prefix
+    #'        parameter when it was created, the value of prefix will be
+    #'        prepended to location before attempting to locate the item on
+    #'        the volume.
+    #'      \item `destination_project` - Project object or ID to import
+    #'        files/folders into. Should not be used together with
+    #'        destination_parent. If project is used, the items will be imported
+    #'        to the root of the project's files.
+    #'      \item `destination_parent` - File object of type 'folder' or its ID
+    #'        to import files/folders into. Should not be used together with
+    #'        destination_project. If parent is used, the import will take
+    #'        place into the specified folder, within the project to which the
+    #'        folder belongs.
+    #'      \item `name` - The name of the alias to create.
+    #'        This name should be unique to the project. If the name is already
+    #'        in use in the project, you should use the `autorename` parameter
+    #'        in this call to automatically rename the item (by prefixing its
+    #'        name with an underscore and number). \cr
+    #'        If name is omitted, the alias name will default to the last
+    #'        segment of the complete location (including the prefix) on the
+    #'        volume. Segments are considered to be separated with forward
+    #'        slashes ('/').
+    #'      \item `autorename` - Whether to automatically rename the item
+    #'        (by prefixing its name with an underscore and number) if another
+    #'        one with the same name already exists at the destination.
+    #'      \item `preserve_folder_structure` - Whether to keep the exact source
+    #'        folder structure. The default value is TRUE if the item being
+    #'        imported is a folder. Should not be used if you are importing a
+    #'        file.
+    #'  }
+    # nolint end
+    #'  Example of the list:
+    #'  ```{r}
+    #'  items <- list(
+    #'            list(
+    #'              source_volume = 'rfranklin/my-volume',
+    #'              source_location = 'chimeras.html.gz',
+    #'              destination_project = 'rfranklin/my-project'
+    #'            ),
+    #'            list(
+    #'              source_volume = 'rfranklin/my-volume',
+    #'              source_location = 'my-folder/',
+    #'              destination_project = 'rfranklin/my-project',
+    #'              autorename = TRUE,
+    #'              preserve_folder_structure = TRUE
+    #'            ),
+    #'            list(
+    #'              source_volume = 'rfranklin/my-volume',
+    #'              source_location = 'my-volume-folder/',
+    #'              destination_parent = '567890abc1e5339df0414123',
+    #'              name = 'new-folder-name',
+    #'              autorename = TRUE,
+    #'              preserve_folder_structure = TRUE
+    #'            )
+    #'          )
+    #' ```
+    #'  More details of how to import folders from your volume into the project
+    # nolint start
+    #'  or some project's folder you can read [here](https://docs.sevenbridges.com/reference/start-a-bulk-import-job#import-a-volume-folder-into-a-specific-folder)
+    # nolint end
+    #'
+    #' @importFrom checkmate assert_list assert_string test_r6 assert_logical
+    #' @importFrom rlang abort inform
+    #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  imports_object <- Imports$new(
+    #'                     auth = auth
+    #'                    )
+    #'
+    #'  # Submit new import into a project
+    #'  imports_object$bulk_submit_import(items = list(
+    #'    list(
+    #'      source_volume = "rfranklin/my-volume",
+    #'      source_location = "my-file.txt",
+    #'      destination_project = test_project_object,
+    #'      autorename = TRUE
+    #'    ),
+    #'    list(
+    #'      source_volume = "rfranklin/my-volume",
+    #'      source_location = "my-folder/",
+    #'      destination_parent = "parent-folder-id",
+    #'      autorename = FALSE,
+    #'      preserve_folder_structure = TRUE
+    #'    )
+    #'   )
+    #'  )
+    #' }
+    #'
+    #' @return \code{\link{Collection}} with list of \code{\link{Import}}
+    #'  objects.
+    bulk_submit_import = function(items) {
+      if (is_missing(items)) {
+        rlang::abort("Items parameter should be set as nested list of files/folder information you want to import.") # nolint
+      }
+      checkmate::assert_list(items)
+
+      body_elements <- list()
+
+      for (i in seq_len(length(items))) {
+        item <- items[[i]]
+        checkmate::assert_list(item)
+        body_element <- list()
+
+        if (is_missing(item[["source_volume"]])) {
+          rlang::abort(
+            glue::glue("Volume ID must be provided as string or Volume object in element {i}."), # nolint
+          )
+        } else {
+          volume <- check_and_transform_id(item[["source_volume"]],
+            class_name = "Volume"
+          )
+        }
+
+        if (is_missing(item[["source_location"]])) {
+          rlang::abort(
+            glue::glue("Source file/folder location/prefix must be provided as a string in element {i}.") # nolint
+          )
+        }
+        checkmate::assert_string(
+          item[["source_location"]],
+          na.ok = FALSE, null.ok = FALSE
+        )
+
+        body_element$source <- list(
+          volume = volume,
+          location = item[["source_location"]]
+        )
+
+        if (is_missing(item[["destination_project"]]) &&
+          is_missing(item[["destination_parent"]])) {
+          rlang::abort(
+            glue::glue("Please, provide either destination project or parent parameter in element {i}.") # nolint
+          )
+        }
+        if (!is_missing(item[["destination_project"]]) &&
+          !is_missing(item[["destination_parent"]])) {
+          rlang::abort(
+            glue::glue("Either destination project or parent parameter must be proveded in element {i}, not both.") # nolint
+          )
+        }
+        if (!is_missing(item[["destination_project"]])) {
+          destination_project <- check_and_transform_id(
+            item[["destination_project"]],
+            class_name = "Project"
+          )
+          body_element$destination <- list(
+            project = destination_project
+          )
+        }
+        if (!is_missing(item[["destination_parent"]])) {
+          if (checkmate::test_r6(
+            item[["destination_parent"]],
+            classes = "File"
+          ) &&
+            tolower(item[["destination_parent"]]$type) != "folder") {
+            rlang::abort(
+              glue::glue("Destination parent directory parameter must contain folder id or File object with type = 'folder' in element {i}.") # nolint
+            )
+          }
+          destination_parent <- check_and_transform_id(
+            x = item[["destination_parent"]],
+            class_name = "File"
+          )
+          body_element$destination <- list(
+            parent = destination_parent
+          )
+        }
+        if (!is_missing(item[["name"]])) {
+          checkmate::assert_string(item[["name"]], null.ok = TRUE)
+          body_element$destination$name <- item[["name"]]
+        }
+        checkmate::assert_logical(item[["autorename"]], len = 1, null.ok = TRUE)
+        body_element$autorename <- item[["autorename"]]
+
+        checkmate::assert_logical(item[["preserve_folder_structure"]], len = 1, null.ok = TRUE) # nolint
+        body_element$preserve_folder_structure <- item[["preserve_folder_structure"]] # nolint
+        body_elements <- append(body_elements, list(body_element))
+      }
+
+      # Build body
+      # nocov start
+      body <- list(
+        items = body_elements
+      )
+
+      path <- glue::glue(self$URL[["bulk_create"]])
+
+      res <- self$auth$api(
+        path = path,
+        method = "POST",
+        body = body,
+        advance_access = TRUE
+      )
+
+      res$items <- asImportList(res, auth = self$auth, bulk = TRUE)
+
+      rlang::inform(glue::glue("New import jobs have started!"))
+
+      return(asCollection(res, auth = self$auth))
+      # nocov end
+    }
   )
 )

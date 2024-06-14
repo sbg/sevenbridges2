@@ -812,6 +812,22 @@ imp_obj <- a$imports$get(id = "<import_job_id>")
 
 <div align="right"><a href="#top">top</a></div>
 
+## Get bulk import jobs
+
+Users are able to fetch details for multiple import jobs by calling one bulk action - `bulk_get()` method. The accepted input can be a list of
+import job IDs or a list of import job objects (of class Import).
+The result will be a Collection object containing list of (updated) 
+import jobs.
+
+```{r}
+# Get multiple import jobs details
+import_jobs <- a$imports$bulk_get(
+  imports = list("<import_job_id-1>", "<import_job_id-1>")
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
 ## Submit new import - import a volume file into the project
 
 In order to import volume files into a project, users can use the
@@ -834,7 +850,7 @@ volume_file_import <- vol1_content$items[[3]]
 
 ## Perform a file import
 imp_job1 <- a$imports$submit_import(
-  source_location = volume_file_import,
+  source_location = volume_file_import$location,
   destination_project = test_proj,
   autorename = TRUE
 )
@@ -861,7 +877,7 @@ volume_folder_import <- vol1_content$prefixes[[1]]
 
 # Perform a folder import
 imp_job2 <- a$imports$submit_import(
-  source_location = volume_folder_import,
+  source_location = volume_folder_import$prefix,
   destination_project = test_proj,
   overwrite = TRUE,
   preserve_folder_structure = TRUE
@@ -891,6 +907,81 @@ imp_job1$reload()
 ```
 
 <div align="right"><a href="#top">top</a></div>
+
+## Submit bulk import - import multiple volume files or folders into the project
+
+Users are able to perform bulk action under multiple volume files or folders and
+import them into a project using a single call of the method 
+`bulk_submit_import()` from the `Auth$imports` path.
+
+The required input should be a nested list of elements for each file/folder you
+want to import containing specific fields: `source_volume`, `source_location`, 
+`destination_project`, `destination_parent`, `name`, `autorename` and 
+`perserve_folder_structure.`
+
+```{r}
+## First, get the volume you want to import files from
+vol1 <- a$volumes$get(id = "<volume_owner_or_division>/<volume_name>")
+
+## Then, get the project object/id where you want to import files
+test_proj <- a$projects$get("<project_id>")
+
+## List all volume files on the volume
+vol1_content <- vol1$list_contents()
+
+## Preview the content and select one VolumeFile object and two VolumePrefix
+## objects (folders) for the purpose of this example
+volume_file_import <- vol1_content$items[[1, 2]]
+volume_file_import
+
+volume_folder_import <- vol1_content$prefixes[[1]]
+volume_folder_import
+
+## Construct the inputs list by filling the necessary information for each
+# file/folder to import
+to_import <- list(
+  list(
+    source_volume = "rfranklin/my-volume",
+    source_location = "chimeras.html.gz",
+    destination_project = "rfranklin/my-project"
+  ),
+  list(
+    source_volume = vol1,
+    source_location = "my-folder/",
+    destination_project = test_proj,
+    autorename = TRUE,
+    preserve_folder_structure = TRUE
+  ),
+  list(
+    source_volume = "rfranklin/my-volume",
+    source_location = "my-volume-folder/",
+    destination_parent = "parent-id",
+    name = "new-folder-name",
+    autorename = TRUE,
+    preserve_folder_structure = FALSE
+  )
+)
+bulk_import_jobs <- a$imports$bulk_submit_import(items = to_import)
+
+# Preview the results
+bulk_import_jobs
+
+# Get updated status by fetching details with bulk_get() and by passing the
+# list of import jobs created in previous step
+a$imports$bulk_get(imports = bulk_import_jobs$items)
+```
+
+As you may see from the example above, users are able to import folders from the 
+volume into the project or some project's directory, with the option to 
+preserve or not to preserve folder structure.
+
+Moreover, you are able to pass the objects of classes Volume, Project or File 
+(with type = 'folder') for `source_volume`, `destination_project` and 
+`destination_parent` fields when constructing the inputs list, besides using 
+their string IDs.
+
+<div align="right"><a href="#top">top</a></div>
+
 
 # Exports
 

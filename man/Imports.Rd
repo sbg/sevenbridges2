@@ -53,6 +53,51 @@ R6 Class representing storage imports resource endpoints.
  )
 }
 
+
+## ------------------------------------------------
+## Method `Imports$bulk_get`
+## ------------------------------------------------
+
+\dontrun{
+ imports_object <- Imports$new(
+                    auth = auth,
+                   )
+
+ # List import job
+ imports_object$bulk_get(
+  imports = list("import-job-id-1", "import-job-id-2")
+  )
+}
+
+
+## ------------------------------------------------
+## Method `Imports$bulk_submit_import`
+## ------------------------------------------------
+
+\dontrun{
+ imports_object <- Imports$new(
+                    auth = auth
+                   )
+
+ # Submit new import into a project
+ imports_object$bulk_submit_import(items = list(
+   list(
+     source_volume = "rfranklin/my-volume",
+     source_location = "my-file.txt",
+     destination_project = test_project_object,
+     autorename = TRUE
+   ),
+   list(
+     source_volume = "rfranklin/my-volume",
+     source_location = "my-folder/",
+     destination_parent = "parent-folder-id",
+     autorename = FALSE,
+     preserve_folder_structure = TRUE
+   )
+  )
+ )
+}
+
 }
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Imports}
@@ -72,6 +117,8 @@ R6 Class representing storage imports resource endpoints.
 \item \href{#method-Imports-get}{\code{Imports$get()}}
 \item \href{#method-Imports-submit_import}{\code{Imports$submit_import()}}
 \item \href{#method-Imports-delete}{\code{Imports$delete()}}
+\item \href{#method-Imports-bulk_get}{\code{Imports$bulk_get()}}
+\item \href{#method-Imports-bulk_submit_import}{\code{Imports$bulk_submit_import()}}
 \item \href{#method-Imports-clone}{\code{Imports$clone()}}
 }
 }
@@ -323,6 +370,180 @@ like 'fields', etc.}
 Deleting import jobs is not possible.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Imports$delete()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Imports-bulk_get"></a>}}
+\if{latex}{\out{\hypertarget{method-Imports-bulk_get}{}}}
+\subsection{Method \code{bulk_get()}}{
+This call returns the details of a bulk import job.
+Note that when you import files from your volume on a cloud storage
+provider (Amazon Web Services or Google Cloud Storage), you create
+an alias on the Platform which points to the files in your cloud
+storage bucket. Aliases appear as files on the Platform and can
+be copied, executed, and modified.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Imports$bulk_get(imports)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{imports}}{The list of the import job IDs as returned by the call
+to start a bulk import job or list of \code{\link{Import}} objects.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{Collection}} with list of \code{\link{Import}}
+objects.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ imports_object <- Imports$new(
+                    auth = auth,
+                   )
+
+ # List import job
+ imports_object$bulk_get(
+  imports = list("import-job-id-1", "import-job-id-2")
+  )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Imports-bulk_submit_import"></a>}}
+\if{latex}{\out{\hypertarget{method-Imports-bulk_submit_import}{}}}
+\subsection{Method \code{bulk_submit_import()}}{
+This call lets you perform a bulk import of files from
+your volume (either Amazon Web Services or Google Cloud Storage)
+into your project on the Platform.
+
+You can use this call to either import files to a specific folder
+or a project but you can also use it to import a folder and its files
+into another destination folder while preserving folder structure.
+One call can contain up to 100 items.
+Learn more about using the Volumes API for \href{https://docs.sevenbridges.com/docs/aws-cloud-storage-tutorial}{Amazon S3} and
+for \href{https://docs.sevenbridges.com/docs/google-cloud-storage-tutorial}{Google Cloud Storage}.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Imports$bulk_submit_import(items)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{items}}{Nested list of elements containing information about each
+file/folder to be imported. For each element, users must provide:
+
+\itemize{
+\item \code{source_volume} - Volume object or its ID to import
+files/folders from,
+\item \code{source_location} - Volume-specific location pointing to the
+file or folder to import.
+This location should be recognizable to the underlying cloud
+service as a valid key or path to the item. If the item being
+imported is a folder, its path should end with a /. \cr
+Please note that if this volume was configured with a prefix
+parameter when it was created, the value of prefix will be
+prepended to location before attempting to locate the item on
+the volume.
+\item \code{destination_project} - Project object or ID to import
+files/folders into. Should not be used together with
+destination_parent. If project is used, the items will be imported
+to the root of the project's files.
+\item \code{destination_parent} - File object of type 'folder' or its ID
+to import files/folders into. Should not be used together with
+destination_project. If parent is used, the import will take
+place into the specified folder, within the project to which the
+folder belongs.
+\item \code{name} - The name of the alias to create.
+This name should be unique to the project. If the name is already
+in use in the project, you should use the \code{autorename} parameter
+in this call to automatically rename the item (by prefixing its
+name with an underscore and number). \cr
+If name is omitted, the alias name will default to the last
+segment of the complete location (including the prefix) on the
+volume. Segments are considered to be separated with forward
+slashes ('/').
+\item \code{autorename} - Whether to automatically rename the item
+(by prefixing its name with an underscore and number) if another
+one with the same name already exists at the destination.
+\item \code{preserve_folder_structure} - Whether to keep the exact source
+folder structure. The default value is TRUE if the item being
+imported is a folder. Should not be used if you are importing a
+file.
+}
+Example of the list:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{items <- list(
+          list(
+            source_volume = 'rfranklin/my-volume',
+            source_location = 'chimeras.html.gz',
+            destination_project = 'rfranklin/my-project'
+          ),
+          list(
+            source_volume = 'rfranklin/my-volume',
+            source_location = 'my-folder/',
+            destination_project = 'rfranklin/my-project',
+            autorename = TRUE,
+            preserve_folder_structure = TRUE
+          ),
+          list(
+            source_volume = 'rfranklin/my-volume',
+            source_location = 'my-volume-folder/',
+            destination_parent = '567890abc1e5339df0414123',
+            name = 'new-folder-name',
+            autorename = TRUE,
+            preserve_folder_structure = TRUE
+          )
+        )
+}\if{html}{\out{</div>}}
+
+More details of how to import folders from your volume into the project
+or some project's folder you can read \href{https://docs.sevenbridges.com/reference/start-a-bulk-import-job#import-a-volume-folder-into-a-specific-folder}{here}}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{Collection}} with list of \code{\link{Import}}
+objects.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ imports_object <- Imports$new(
+                    auth = auth
+                   )
+
+ # Submit new import into a project
+ imports_object$bulk_submit_import(items = list(
+   list(
+     source_volume = "rfranklin/my-volume",
+     source_location = "my-file.txt",
+     destination_project = test_project_object,
+     autorename = TRUE
+   ),
+   list(
+     source_volume = "rfranklin/my-volume",
+     source_location = "my-folder/",
+     destination_parent = "parent-folder-id",
+     autorename = FALSE,
+     preserve_folder_structure = TRUE
+   )
+  )
+ )
+}
+
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
