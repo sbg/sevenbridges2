@@ -122,7 +122,7 @@ Imports <- R6::R6Class(
     #' @examples
     #' \dontrun{
     #'  imports_object <- Imports$new(
-    #'                     auth = auth,
+    #'                     auth = auth
     #'                    )
     #'
     #'  # List import job
@@ -326,7 +326,7 @@ Imports <- R6::R6Class(
     #' @examples
     #' \dontrun{
     #'  imports_object <- Imports$new(
-    #'                     auth = auth,
+    #'                     auth = auth
     #'                    )
     #'
     #'  # List import job
@@ -343,7 +343,7 @@ Imports <- R6::R6Class(
       }
 
       checkmate::assert_list(imports)
-      unlisted_ids <- sapply(imports, check_and_transform_id, "Import")
+      unlisted_ids <- lapply(imports, check_and_transform_id, "Import")
 
       # Build body
       # nocov start
@@ -454,7 +454,7 @@ Imports <- R6::R6Class(
     # nolint end
     #'
     #' @importFrom checkmate assert_list assert_string test_r6 assert_logical
-    #' @importFrom rlang abort
+    #' @importFrom rlang abort inform
     #' @importFrom glue glue
     #'
     #' @examples
@@ -590,7 +590,7 @@ Imports <- R6::R6Class(
 
       res$items <- asImportList(res, auth = self$auth, bulk = TRUE)
 
-      rlang::inform(glue::glue_col("New import jobs have started!"))
+      rlang::inform(glue::glue("New import jobs have started!"))
 
       return(asCollection(res, auth = self$auth))
       # nocov end
