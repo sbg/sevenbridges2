@@ -582,7 +582,7 @@ check_execution_settings <- function(execution_settings = NULL) {
 }
 
 
-# Check the bulk delete response and notify the user of the action's outcome.
+# Check the bulk delete response and notify the user of the action's outcome
 #'
 #' @description This function processes the response from a bulk delete API
 #'  call and informs the user about the results. It distinguishes between
@@ -666,4 +666,53 @@ check_response_and_notify_user <- function(files, res) {
   # Close container elements
   cli::cli_end()
   # nocov end
+}
+
+
+# Check and process file object details --------------------------------------
+#'
+#' @description This function takes a provided File object where the user has
+#' manually modified certain fields such as name, tags, and metadata. It
+#' verifies that all fields are of the desired type and assembles them into a
+#' list required for creating the body for the `bulk_update`/ `bulk_edit` API
+#' call.
+#'
+#' @param file File object.
+#'
+#' @importFrom checkmate assert_string assert_list
+#'
+#' @return A list containing the following four fields from the File object:
+#' \itemize{
+#'   \item `id` The ID of the File object.
+#'   \item `name` File's name.
+#'   \item `tags` File tags.
+#'   \item `metadata` Metadata associated with the File object.
+#' }
+#'
+#' @noRd
+check_and_process_file_details <- function(file) {
+  # Check if 'name' is a string
+  checkmate::assert_string(file$name,
+    null.ok = FALSE
+  )
+
+  # Check if 'tags' is an unnamed list
+  checkmate::assert_list(file$tags,
+    types = "character",
+    names = "unnamed"
+  )
+
+  # Check if 'metadata' is a named list with string keys and values
+  checkmate::assert_list(file$metadata,
+    types = "character",
+    names = "named"
+  )
+
+  # Return the processed file details
+  list(
+    id = file$id,
+    name = file$name,
+    tags = file$tags,
+    metadata = file$metadata
+  )
 }
