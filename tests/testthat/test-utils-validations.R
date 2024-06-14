@@ -559,3 +559,64 @@ test_that("check_and_transform_datetime works as expected", {
     expected = "2016-04-01 14:25:50"
   )
 })
+
+# nolint start
+test_that("check_and_process_file_details throws error for invalid name type", {
+  file_with_wrong_name <- list2env(as.list(setup_file_obj), envir = new.env())
+  file_with_wrong_name$name <- 123
+
+  testthat::expect_error(
+    check_and_process_file_details(file_with_wrong_name),
+    regexp = "Assertion on 'file$name' failed: Must be of type 'string', not 'double'.",
+    fixed = TRUE
+  )
+})
+
+test_that("check_and_process_file_details throws error for invalid tags type", {
+  file_with_invalid_tags <- list2env(as.list(setup_file_obj), envir = new.env())
+  file_with_invalid_tags$tags <- "test-tag"
+
+  testthat::expect_error(
+    check_and_process_file_details(file_with_invalid_tags),
+    regexp = "Assertion on 'file$tags' failed: Must be of type 'list', not 'character'.",
+    fixed = TRUE
+  )
+})
+
+test_that("check_and_process_file_details throws error for invalid metadata type", {
+  file_with_invalid_metadata <- list2env(as.list(setup_file_obj), envir = new.env())
+  file_with_invalid_metadata$metadata <- c("sample_id", "acdc")
+
+  testthat::expect_error(
+    check_and_process_file_details(file_with_invalid_metadata),
+    regexp = "Assertion on 'file$metadata' failed: Must be of type 'list', not 'character'.",
+    fixed = TRUE
+  )
+})
+
+
+test_that("check_and_process_file_details works as expected", {
+  # Call the function with a valid File object
+  result <- check_and_process_file_details(setup_file_obj)
+
+  # Create the expected result list
+  expected_result <- list(
+    id = "file-id",
+    name = "File name",
+    tags = list("tag_1"),
+    metadata = list(
+      sbg_public_files_category = "test",
+      reference_genome = "HG19_Broad_variant",
+      sample_id = "HCC1143_1M",
+      case_id = "CCLE-HCC1143",
+      investigation = "CCLE-BRCA"
+    )
+  )
+
+  # Check that the result is a list
+  testthat::expect_type(result, "list")
+
+  # Check that the result matches the expected result
+  testthat::expect_equal(result, expected_result)
+})
+# nolint end

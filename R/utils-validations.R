@@ -580,3 +580,52 @@ check_execution_settings <- function(execution_settings = NULL) {
     )
   }
 }
+
+
+# Check and process file object details
+#'
+#' @description This function takes a provided File object where the user has
+#' manually modified certain fields such as name, tags, and metadata. It
+#' verifies that all fields are of the desired type and assembles them into a
+#' list required for creating the body for the `bulk_update`/ `bulk_edit` API
+#' call.
+#'
+#' @param file File object.
+#'
+#' @importFrom checkmate assert_string assert_list
+#'
+#' @return A list containing the following four fields from the File object:
+#' \itemize{
+#'   \item `id` The ID of the File object.
+#'   \item `name` File's name.
+#'   \item `tags` File tags.
+#'   \item `metadata` Metadata associated with the File object.
+#' }
+#'
+#' @noRd
+check_and_process_file_details <- function(file) {
+  # Check if 'name' is a string
+  checkmate::assert_string(file$name,
+    null.ok = FALSE
+  )
+
+  # Check if 'tags' is an unnamed list
+  checkmate::assert_list(file$tags,
+    types = "character",
+    names = "unnamed"
+  )
+
+  # Check if 'metadata' is a named list with string keys and values
+  checkmate::assert_list(file$metadata,
+    types = "character",
+    names = "named"
+  )
+
+  # Return the processed file details
+  list(
+    id = file$id,
+    name = file$name,
+    tags = file$tags,
+    metadata = file$metadata
+  )
+}
