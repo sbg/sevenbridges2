@@ -17,7 +17,8 @@ Exports <- R6::R6Class(
       "query" = "storage/exports",
       "get" = "storage/exports/{id}",
       "create" = "storage/exports",
-      "bulk_get" = "bulk/storage/export/get"
+      "bulk_get" = "bulk/storage/exports/get",
+      "bulk_create" = "bulk/storage/exports/create"
     ),
 
     # Initialize Exports object -----------------------------------------------
@@ -319,7 +320,7 @@ Exports <- R6::R6Class(
       }
 
       checkmate::assert_list(exports)
-      unlisted_ids <- sapply(exports, check_and_transform_id, "Export")
+      unlisted_ids <- lapply(exports, check_and_transform_id, "Export")
 
       # Build body
       # nocov start
@@ -386,8 +387,6 @@ Exports <- R6::R6Class(
     #'      \item `overwrite` - Set to `TRUE` if you want to overwrite the
     #'        item if another one with the same name already exists at the
     #'        destination.
-    #'      \item `copy_only` - If set to true, the file will be copied to
-    #'        a volume but the source file will remain on the Platform.
     #'      \item `properties` - Named list of additional volume properties,
     #'        like:
     #'        \itemize{
@@ -415,8 +414,8 @@ Exports <- R6::R6Class(
     #'              destination_location = "new_volume_file.txt"
     #'            ),
     #'            list(
-    #'              source_file = test_file_obj,
-    #'              destination_volume = test_volume_obj,
+    #'              source_file = "test_file_obj",
+    #'              destination_volume = "test_volume_obj",
     #'              destination_location = "/volume_folder/exported_file.txt",
     #'              overwrite = TRUE,
     #'              copy_only = TRUE
@@ -435,6 +434,8 @@ Exports <- R6::R6Class(
     # nolint start
     #'  or some volume's folder you can read [here](https://docs.sevenbridges.com/reference/start-a-bulk-export-job)
     # nolint end
+    #' @param copy_only If set to true, the files will be copied to a volume
+    #'  but the source files will remain on the Platform.
     #'
     #' @importFrom checkmate assert_list assert_string test_r6 assert_logical
     #' @importFrom rlang abort
@@ -465,7 +466,7 @@ Exports <- R6::R6Class(
     #'      destination_volume = "volume-id",
     #'      destination_location = "project_file_3.txt",
     #'      properties = list(
-    #'      sse_algorithm = "AES256"
+    #'       sse_algorithm = "AES256"
     #'      )
     #'    )
     #'   )
@@ -474,11 +475,14 @@ Exports <- R6::R6Class(
     #'
     #' @return \code{\link{Collection}} with list of \code{\link{Export}}
     #'  objects.
-    bulk_submit_export = function(items) {
+    bulk_submit_export = function(items, copy_only = FALSE) {
       if (is_missing(items)) {
         rlang::abort("Items parameter should be set as nested list of files information you want to export.") # nolint
       }
       checkmate::assert_list(items)
+
+      checkmate::assert_logical(copy_only, len = 1, null.ok = TRUE)
+
 
       body_elements <- list()
 
@@ -487,79 +491,43 @@ Exports <- R6::R6Class(
         checkmate::assert_list(item)
         body_element <- list()
 
-        if (is_missing(item[["source_volume"]])) {
-          rlang::abort(
-            glue::glue("Volume ID must be provided as string or Volume object in element {i}."), # nolint
-          )
-        } else {
-          volume <- check_and_transform_id(item[["source_volume"]],
-            class_name = "Volume"
-          )
+        if (is_missing(item[["source_file"]])) {
+          rlang::abort(glue::glue("Source file must be provided as a string or File object in element {i}.")) # nolint
         }
-
-        if (is_missing(item[["source_location"]])) {
-          rlang::abort(
-            glue::glue("Source file/folder location/prefix must be provided as a string in element {i}.") # nolint
-          )
+        if (checkmate::test_r6(item[["source_file"]], classes = "File") &&
+          tolower(item[["source_file"]]$type) == "folder") {
+          rlang::abort(glue::glue("Folders cannot be exported. Please, provide single file id or File object with type = 'file' in element {i}.")) # nolint
         }
-        checkmate::assert_string(
-          item[["source_location"]],
-          na.ok = FALSE, null.ok = FALSE
-        )
-
         body_element$source <- list(
-          volume = volume,
-          location = item[["source_location"]]
-        )
-
-        if (is_missing(item[["destination_project"]]) &&
-          is_missing(item[["destination_parent"]])) {
-          rlang::abort(
-            glue::glue("Please, provide either destination project or parent parameter in element {i}.") # nolint
-          )
-        }
-        if (!is_missing(item[["destination_project"]]) &&
-          !is_missing(item[["destination_parent"]])) {
-          rlang::abort(
-            glue::glue("Either destination project or parent parameter must be proveded in element {i}, not both.") # nolint
-          )
-        }
-        if (!is_missing(item[["destination_project"]])) {
-          destination_project <- check_and_transform_id(
-            item[["destination_project"]],
-            class_name = "Project"
-          )
-          body_element$destination <- list(
-            project = destination_project
-          )
-        }
-        if (!is_missing(item[["destination_parent"]])) {
-          if (checkmate::test_r6(
-            item[["destination_parent"]],
-            classes = "File"
-          ) &&
-            tolower(item[["destination_parent"]]$type) != "folder") {
-            rlang::abort(
-              glue::glue("Destination parent directory parameter must contain folder id or File object with type = 'folder' in element {i}.") # nolint
-            )
-          }
-          destination_parent <- check_and_transform_id(
-            x = item[["destination_parent"]],
+          file = check_and_transform_id(item[["source_file"]],
             class_name = "File"
           )
-          body_element$destination <- list(
-            parent = destination_parent
-          )
-        }
-        if (!is_missing(item[["name"]])) {
-          checkmate::assert_string(item[["name"]], null.ok = TRUE)
-          body_element$destination$name <- item[["name"]]
-        }
-        checkmate::assert_logical(item[["autorename"]], len = 1, null.ok = TRUE)
-        body_element$autorename <- item[["autorename"]]
+        )
 
-        checkmate::assert_logical(item[["preserve_folder_structure"]], len = 1, null.ok = TRUE) # nolint
-        body_element$preserve_folder_structure <- item[["preserve_folder_structure"]] # nolint
+        if (is_missing(item[["destination_volume"]])) {
+          rlang::abort(glue::glue("Destination volume must be provided as a string or Volume object in element {i}.")) # nolint
+        }
+        destination_volume <- check_and_transform_id(
+          item[["destination_volume"]],
+          class_name = "Volume"
+        )
+        if (is_missing(item[["destination_location"]])) {
+          rlang::abort(glue::glue("Destination location name must be provided as a string in element {i}.")) # nolint
+        }
+        checkmate::assert_string(
+          item[["destination_location"]],
+          null.ok = FALSE
+        )
+        body_element$destination <- list(
+          volume = destination_volume,
+          location = item[["destination_location"]]
+        )
+        checkmate::assert_logical(item[["overwrite"]], len = 1, null.ok = TRUE)
+        body_element$overwrite <- item[["overwrite"]]
+
+        checkmate::assert_list(item[["properties"]], null.ok = TRUE)
+        body_element$properties <- item[["properties"]]
+
         body_elements <- append(body_elements, list(body_element))
       }
 
@@ -573,14 +541,33 @@ Exports <- R6::R6Class(
 
       res <- self$auth$api(
         path = path,
+        query = list(copy_only = copy_only),
         method = "POST",
         body = body,
         advance_access = TRUE
       )
 
-      res$items <- asImportList(res, auth = self$auth, bulk = TRUE)
+      failed_export_tries <- list()
+      # Process the response items when returned errors
+      for (i in seq_along(res$items)) {
+        item <- res$items[[i]]
+        if (!is.null(item$error)) {
+          res$items[[i]]$resource$error <- item$error
+          failed_export_tries <- append(failed_export_tries, list(item))
+        }
+      }
 
-      rlang::inform(glue::glue_col("New import jobs have started!"))
+      if (length(failed_export_tries) == length(res$items)) {
+        rlang::abort("All files cannot to be exported. Please, check the limitations of files export in the API documentation.") # nolint
+      }
+
+      res$items <- asExportList(res, auth = self$auth, bulk = TRUE)
+      rlang::inform(glue::glue("New export jobs have started!"))
+
+      if (length(failed_export_tries) > 0) {
+        rlang::inform(glue::glue("However, some files cannot be exported.
+                                 Please, check the limitations of files export in the API documentation.")) # nolint
+      }
 
       return(asCollection(res, auth = self$auth))
       # nocov end

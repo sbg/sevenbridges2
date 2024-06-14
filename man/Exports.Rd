@@ -98,7 +98,7 @@ R6 Class representing storage exports resource endpoints.
      destination_volume = "volume-id",
      destination_location = "project_file_3.txt",
      properties = list(
-     sse_algorithm = "AES256"
+      sse_algorithm = "AES256"
      )
    )
   )
@@ -443,7 +443,7 @@ the Platform and cannot be exported again.
 Learn more about using the Volumes API for \href{https://docs.sevenbridges.com/docs/aws-cloud-storage-tutorial}{Amazon S3} and
 for \href{https://docs.sevenbridges.com/docs/google-cloud-storage-tutorial}{Google Cloud Storage}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Exports$bulk_submit_export(items)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Exports$bulk_submit_export(items, copy_only = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -470,8 +470,6 @@ to location before attempting to create the file on the volume.
  \\item `overwrite` - Set to `TRUE` if you want to overwrite the
    item if another one with the same name already exists at the
    destination.
- \\item `copy_only` - If set to true, the file will be copied to
-   a volume but the source file will remain on the Platform.
  \\item `properties` - Named list of additional volume properties,
    like:
    \\itemize\{
@@ -493,15 +491,15 @@ to location before attempting to create the file on the volume.
 }
 Example of the list:
 
-\if{html}{\out{<div class="sourceCode {r}">}}\preformatted{items <- list(
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{items <- list(
           list(
             source_file = "test_file-id",
             destination_volume = "volume-id",
             destination_location = "new_volume_file.txt"
           ),
           list(
-            source_file = test_file_obj,
-            destination_volume = test_volume_obj,
+            source_file = "test_file_obj",
+            destination_volume = "test_volume_obj",
             destination_location = "/volume_folder/exported_file.txt",
             overwrite = TRUE,
             copy_only = TRUE
@@ -519,6 +517,9 @@ Example of the list:
 
 More details of how to export files from your project into the volume
 or some volume's folder you can read \href{https://docs.sevenbridges.com/reference/start-a-bulk-export-job}{here}}
+
+\item{\code{copy_only}}{If set to true, the files will be copied to a volume
+but the source files will remain on the Platform.}
 }
 \if{html}{\out{</div>}}
 }
@@ -552,7 +553,7 @@ objects.
      destination_volume = "volume-id",
      destination_location = "project_file_3.txt",
      properties = list(
-     sse_algorithm = "AES256"
+      sse_algorithm = "AES256"
      )
    )
   )

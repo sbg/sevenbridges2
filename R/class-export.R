@@ -113,12 +113,14 @@ Export <- R6::R6Class(
       # Remove it's empty (NA)
       x <- purrr::discard(x, .p = is.na)
 
-      string <- glue::glue_col("{green {names(x)}}: {x}")
-
-      cli::cli_h1("Export job")
-
-      cli::cli_li(string)
-
+      if (length(x) == 0) {
+        string <- "No job created due to error status message."
+        cli::cli_h2(string)
+      } else {
+        string <- glue::glue_col("{green {names(x)}}: {x}")
+        cli::cli_h1("Export job")
+        cli::cli_li(string)
+      }
       # Close container elements
       cli::cli_end()
     },
