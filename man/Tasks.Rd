@@ -6,6 +6,22 @@
 \description{
 R6 Class representing tasks resource endpoints.
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Tasks$bulk_get`
+## ------------------------------------------------
+
+\dontrun{
+ task_object <- Tasks$new(auth = auth)
+
+ # Get details of multiple tasks
+ task_object$bulk_get(
+               tasks = list("task_1_id", "task_2_id")
+              )
+}
+
+}
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Tasks}
 }
@@ -24,6 +40,7 @@ R6 Class representing tasks resource endpoints.
 \item \href{#method-Tasks-get}{\code{Tasks$get()}}
 \item \href{#method-Tasks-delete}{\code{Tasks$delete()}}
 \item \href{#method-Tasks-create}{\code{Tasks$create()}}
+\item \href{#method-Tasks-bulk_get}{\code{Tasks$bulk_get()}}
 \item \href{#method-Tasks-clone}{\code{Tasks$clone()}}
 }
 }
@@ -379,6 +396,43 @@ like 'fields', etc.}
 \subsection{Returns}{
 \code{\link{Task}} object.
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Tasks-bulk_get"></a>}}
+\if{latex}{\out{\hypertarget{method-Tasks-bulk_get}{}}}
+\subsection{Method \code{bulk_get()}}{
+This call returns statistics for all specified tasks.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Tasks$bulk_get(tasks)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{tasks}}{A list of \code{\link{Task}} objects or list of strings
+(IDs) of the tasks you are requesting the statistics for.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{Collection}} (list of \code{\link{Task}} objects).
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ task_object <- Tasks$new(auth = auth)
+
+ # Get details of multiple tasks
+ task_object$bulk_get(
+               tasks = list("task_1_id", "task_2_id")
+              )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Tasks-clone"></a>}}

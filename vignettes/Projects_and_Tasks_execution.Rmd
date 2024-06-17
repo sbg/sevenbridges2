@@ -1546,6 +1546,9 @@ authentication object, which also inherits the `Resource` class and implements
 single task and deleting tasks. Besides these, users are able to create new
 tasks with the `create()` operation from this `Auth$tasks` path.
 
+Furthermore, users can retrieve details for multiple tasks with a single API
+call using the `bulk_get()` method, also available from `Auth$tasks`.
+
 When you operate with a single task, it is represented as an object of the 
 `Task` class. 
 The `Task` object contains all task information and additional methods that can 
@@ -1597,6 +1600,30 @@ it using the `tasks$get()` method using its id as parameter.
 ```{r}
 # Get specific task by ID
 a$tasks$get(id = "<task_id>")
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Get details of multiple tasks
+
+To retrieve details of multiple tasks in a single API call, use the 
+`tasks$bulk_get()` method. 
+
+The `tasks$bulk_get()` method allows you to retrieve details of multiple tasks
+efficiently - in a single API call. This method accepts a single argument,
+`tasks`, which can be either a list of Task objects or a list of strings
+representing task IDs.
+
+Task ID can be extracted from the URL in the Platform's visual interface.
+
+```{r}
+# Get details of multiple tasks by providing their IDs
+a$tasks$bulk_get(tasks = list("<task_1_id>", "task_2_id"))
+
+# Get details of multiple tasks by providing Task objects
+task_obj_1 <- a$tasks$get("<task_1_id>")
+task_obj_2 <- a$tasks$get("<task_2_id>")
+a$tasks$bulk_get(tasks = list(task_obj_1, task_obj_2))
 ```
 
 <div align="right"><a href="#top">top</a></div>

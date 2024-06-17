@@ -17,7 +17,8 @@ Tasks <- R6::R6Class(
     URL = list(
       "query" = "tasks/",
       "get" = "tasks/{id}",
-      "delete" = "tasks"
+      "delete" = "tasks",
+      "bulk_get" = "bulk/tasks/get"
     ),
 
     #' @description Create new Tasks resource object.
@@ -484,7 +485,59 @@ Tasks <- R6::R6Class(
       )
 
       return(asTask(res, auth = self$auth))
-    } # nocov end
+    }, # nocov end
+
+    # Get details of multiple tasks
+    #'
+    #' @description This call returns statistics for all specified tasks.
+    #'
+    #' @param tasks A list of \code{\link{Task}} objects or list of strings
+    #'  (IDs) of the tasks you are requesting the statistics for.
+    #'
+    #' @importFrom rlang abort
+    #' @importFrom checkmate assert_list
+    #' @importFrom glue glue
+    #'
+    #' @return \code{\link{Collection}} (list of \code{\link{Task}} objects).
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  task_object <- Tasks$new(auth = auth)
+    #'
+    #'  # Get details of multiple tasks
+    #'  task_object$bulk_get(
+    #'                tasks = list("task_1_id", "task_2_id")
+    #'               )
+    #' }
+    #'
+    bulk_get = function(tasks) {
+      if (is_missing(tasks)) {
+        rlang::abort(
+          "Please provide 'tasks' parameter."
+        )
+      }
+
+      checkmate::assert_list(tasks)
+
+      # nocov start
+      tasks <- lapply(tasks, check_and_transform_id, "Task")
+      body <- list(
+        "task_ids" = tasks
+      )
+
+      path <- glue::glue(self$URL[["bulk_get"]])
+
+      res <- self$auth$api(
+        path = path,
+        method = "POST",
+        body = body
+      )
+
+      res$items <- asTaskList(res, auth = self$auth, bulk = TRUE)
+
+      return(asCollection(res, auth = self$auth))
+      # nocov end
+    }
   ),
   private = list(
     # Serialize input values  --------------------------------------------------

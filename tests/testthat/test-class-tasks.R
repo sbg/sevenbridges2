@@ -224,3 +224,19 @@ test_that("Tasks create() throws error when needed", {
   # Test bad action parameter
   testthat::expect_error(do.call(setup_tasks_obj$create, test_bad_action))
 })
+
+test_that("Tasks bulk_get() throws error when expected", {
+  # Setup test parameters for test
+  test_bad_tasks_param <- list(tasks = 1)
+  test_missing_tasks_param <- list(tasks = NULL)
+
+  # Bulk get fails when bad tasks param is provided
+  testthat::expect_error(do.call(setup_tasks_obj$bulk_get, test_bad_tasks_param)) # nolint
+
+  # Bulk get fails when tasks param is not provided
+  testthat::expect_error(
+    do.call(setup_tasks_obj$bulk_get, test_missing_tasks_param),
+    regexp = "Please provide 'tasks' parameter.",
+    fixed = TRUE
+  )
+})
