@@ -459,7 +459,21 @@ test_that("Imports bulk_get() throws error when needed", {
 })
 
 test_that("Imports bulk_submit_import() throws error when needed", {
-  # 1. Test with volume missing, but location set as string
+  # 1. Test with items parameter being set as NULL or of some non-list type
+  items_null <- list(items = NULL)
+  testthat::expect_error(
+    do.call(setup_imports_obj$bulk_submit_import, items_null),
+    regexp = "Items parameter should be set as nested list of files/folder information you want to import.", # nolint
+    fixed = TRUE
+  )
+  items_non_list <- list(items = c("import"))
+  testthat::expect_error(
+    do.call(setup_imports_obj$bulk_submit_import, items_non_list),
+    regexp = "Assertion on 'items' failed: Must be of type 'list', not 'character'.", # nolint
+    fixed = TRUE
+  )
+
+  # 2. Test with volume missing, but location set as string
   bad_volume_and_location <- list(
     source_volume = NULL,
     source_location = "location"
@@ -470,7 +484,7 @@ test_that("Imports bulk_submit_import() throws error when needed", {
     fixed = TRUE
   )
 
-  # 2. Test with volume of wrong class and type
+  # 3. Test with volume of wrong class and type
   bad_volume_class <- list(
     source_volume = setup_project_obj,
     source_location = "location"
@@ -489,7 +503,7 @@ test_that("Imports bulk_submit_import() throws error when needed", {
     regexp = "Assertion on 'item[[\"source_volume\"]]' failed: Must be of type 'character', not 'double'.", # nolint
     fixed = TRUE
   )
-  # 3. Test with location missing and of wrong type/class
+  # 4. Test with location missing and of wrong type/class
   no_location <- list(source_volume = "volume-id", source_location = NULL)
   testthat::expect_error(
     setup_imports_obj$bulk_submit_import(items = list(no_location)),
@@ -514,7 +528,7 @@ test_that("Imports bulk_submit_import() throws error when needed", {
     regexp = "Assertion on 'item[[\"source_location\"]]' failed: Must be of type 'string', not 'double'.", # nolint
     fixed = TRUE
   )
-  # 4. Test with project and parent params when both missing or both provided
+  # 5. Test with project and parent params when both missing or both provided
   ## in element 1
   proj_parent_missing <- list(
     source_volume = "volume-id",
@@ -553,7 +567,7 @@ test_that("Imports bulk_submit_import() throws error when needed", {
     regexp = "Either destination project or parent parameter must be proveded in element 1, not both.", # nolint
     fixed = TRUE
   )
-  # 5. Test with invalid project parameter
+  # 6. Test with invalid project parameter
   bad_project_class <- list(
     source_volume = "volume-id",
     source_location = "location",
@@ -574,7 +588,7 @@ test_that("Imports bulk_submit_import() throws error when needed", {
     regexp = "Assertion on 'item[[\"destination_project\"]]' failed: Must be of type 'character', not 'double'.", # nolint
     fixed = TRUE
   )
-  # 6. Test with bad parent class/type and when File class with 'file' type
+  # 7. Test with bad parent class/type and when File class with 'file' type
   bad_parent_class <- list(
     source_volume = "volume-id",
     source_location = "location",
@@ -605,7 +619,7 @@ test_that("Imports bulk_submit_import() throws error when needed", {
     regexp = "Assertion on 'item[[\"destination_parent\"]]' failed: Must be of type 'character', not 'double'.", # nolint
     fixed = TRUE
   )
-  # 7. Test with bad name parameter
+  # 8. Test with bad name parameter
   bad_name_type <- list(
     source_volume = "volume-id",
     source_location = "location",
@@ -617,7 +631,7 @@ test_that("Imports bulk_submit_import() throws error when needed", {
     regexp = "Assertion on 'item[[\"name\"]]' failed: Must be of type 'string' (or 'NULL'), not 'double'.", # nolint
     fixed = TRUE
   )
-  # 8. Test with bad autorename parameter
+  # 9. Test with bad autorename parameter
   bad_autorename_type <- list(
     source_volume = "volume-id",
     source_location = "location",
@@ -629,7 +643,7 @@ test_that("Imports bulk_submit_import() throws error when needed", {
     regexp = "Assertion on 'item[[\"autorename\"]]' failed: Must be of type 'logical' (or 'NULL'), not 'double'.", # nolint
     fixed = TRUE
   )
-  # 9. Test with bad preserve_folder_structure parameter
+  # 10. Test with bad preserve_folder_structure parameter
   bad_preserve_f_structure_type <- list(
     source_volume = "volume-id",
     source_location = "location",

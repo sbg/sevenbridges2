@@ -90,8 +90,7 @@ R6 Class representing storage exports resource endpoints.
      source_file = test_file_obj,
      destination_volume = test_volume_obj,
      destination_location = "/volume_folder/exported_file.txt",
-     overwrite = TRUE,
-     copy_only = TRUE
+     overwrite = TRUE
    ),
    list(
      source_file = "project_file_3_id",
@@ -101,7 +100,7 @@ R6 Class representing storage exports resource endpoints.
       sse_algorithm = "AES256"
      )
    )
-  )
+  ), copy_only = TRUE
  )
 }
 
@@ -501,8 +500,7 @@ Example of the list:
             source_file = "test_file_obj",
             destination_volume = "test_volume_obj",
             destination_location = "/volume_folder/exported_file.txt",
-            overwrite = TRUE,
-            copy_only = TRUE
+            overwrite = TRUE
           ),
           list(
             source_file = "project_file_3_id",
@@ -545,8 +543,7 @@ objects.
      source_file = test_file_obj,
      destination_volume = test_volume_obj,
      destination_location = "/volume_folder/exported_file.txt",
-     overwrite = TRUE,
-     copy_only = TRUE
+     overwrite = TRUE
    ),
    list(
      source_file = "project_file_3_id",
@@ -556,7 +553,7 @@ objects.
       sse_algorithm = "AES256"
      )
    )
-  )
+  ), copy_only = TRUE
  )
 }
 

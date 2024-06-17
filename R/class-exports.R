@@ -417,8 +417,7 @@ Exports <- R6::R6Class(
     #'              source_file = "test_file_obj",
     #'              destination_volume = "test_volume_obj",
     #'              destination_location = "/volume_folder/exported_file.txt",
-    #'              overwrite = TRUE,
-    #'              copy_only = TRUE
+    #'              overwrite = TRUE
     #'            ),
     #'            list(
     #'              source_file = "project_file_3_id",
@@ -458,8 +457,7 @@ Exports <- R6::R6Class(
     #'      source_file = test_file_obj,
     #'      destination_volume = test_volume_obj,
     #'      destination_location = "/volume_folder/exported_file.txt",
-    #'      overwrite = TRUE,
-    #'      copy_only = TRUE
+    #'      overwrite = TRUE
     #'    ),
     #'    list(
     #'      source_file = "project_file_3_id",
@@ -469,7 +467,7 @@ Exports <- R6::R6Class(
     #'       sse_algorithm = "AES256"
     #'      )
     #'    )
-    #'   )
+    #'   ), copy_only = TRUE
     #'  )
     #' }
     #'
