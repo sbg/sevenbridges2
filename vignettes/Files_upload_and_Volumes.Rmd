@@ -1056,6 +1056,22 @@ exp_obj <- auth$exports$get(id = "<export_job_id>")
 
 <div align="right"><a href="#top">top</a></div>
 
+## Get bulk export jobs
+
+Users are able to fetch details for multiple export jobs by calling one bulk action - `bulk_get()` method. The accepted input can be a list of
+export job IDs or a list of export job objects (of class Export).
+The result will be a Collection object containing list of (updated) 
+export jobs.
+
+```{r}
+# Get multiple export jobs details
+export_jobs <- a$exports$bulk_get(
+  exports = list("<export_job_id-1>", "<export_job_id-1>")
+)
+```
+
+<div align="right"><a href="#top">top</a></div>
+
 ## Submit a new export - export a file from the platform to a volume
 
 In order to export platform files into volumes, users can use the  
@@ -1129,5 +1145,78 @@ its state, you can always call the `reload()` function:
 # Reload export object
 exp_job1$reload()
 ```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Submit bulk export - export multiple files into the volume
+
+Users are able to perform bulk action under multiple project files and
+export them into a volume using a single call of the method 
+`bulk_submit_export()` from the `Auth$exports` path.
+
+The required input should be a nested list of elements for each file you
+want to export containing specific fields: `source_file`, `destination_volume`, 
+`destination_location`, `overwrite` and 
+`properties` that accepts list with fields: `sse_algorithm`, 
+`sse_aws_kms_key_id` and/or `aws_canned_acl`.
+
+```{r}
+## First, get the project and files you want to export
+test_proj <- a$projects$get("<project_id>")
+proj_files <- test_proj$list_files()
+
+## Choose first 3 files to export
+files_to_export <- proj_files$items[1:3]
+
+## Then, get the volume you want to export files into
+vol1 <- a$volumes$get(id = "<volume_owner_or_division>/<volume_name>")
+
+## Construct the inputs list by filling the necessary information for each
+# file to export
+to_export <- list(
+  list(
+    source_file = files_to_export[[1]],
+    destination_volume = vol1,
+    destination_location = files_to_export[[1]]$name
+  ),
+  list(
+    source_file = "second-file-id",
+    destination_volume = vol1,
+    destination_location = "my-folder/exported_second_file.txt",
+    overwrite = TRUE
+  ),
+  list(
+    source_file = files_to_export[[3]],
+    destination_volume = vol1,
+    destination_location = files_to_export[[3]]$name,
+    overwrite = FALSE,
+    properties = list(
+      sse_algorithm = "AES256"
+    )
+  ),
+  copy_only = FALSE
+)
+bulk_export_jobs <- a$exports$bulk_submit_export(items = to_export)
+
+# Preview the results
+bulk_export_jobs
+
+# Get updated status by fetching details with bulk_get() and by passing the
+# list of export jobs created in previous step
+a$exports$bulk_get(exports = bulk_export_jobs$items)
+```
+
+As you may see from the example above, users are able to export files into some 
+volume's folder.
+
+Moreover, you are able to pass the objects of classes Volume or File 
+(with type = 'file' only, since folders are not possible to be exported) when 
+constructing the inputs list, besides using their string IDs for `source_file` 
+and `destination_volume` fields. However, `destination_location` on the volume 
+must be set as character field. 
+
+Lastly, `copy_only` field will apply to all files being exported, meaning, each 
+file would be copied to the volume, while source location would remain on the 
+Platform if `copy_only` is set to TRUE.
 
 <div align="right"><a href="#top">top</a></div>
