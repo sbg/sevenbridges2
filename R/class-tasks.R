@@ -513,7 +513,7 @@ Tasks <- R6::R6Class(
     bulk_get = function(tasks) {
       if (is_missing(tasks)) {
         rlang::abort(
-          "Please provide 'tasks' parameter."
+          "Please provide 'tasks' parameter as a list of task IDs or Task objects." # nolint
         )
       }
 
