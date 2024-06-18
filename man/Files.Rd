@@ -73,6 +73,67 @@ R6 Class representing Files resource.
                )
 }
 
+
+
+## ------------------------------------------------
+## Method `Files$bulk_delete`
+## ------------------------------------------------
+
+\dontrun{
+ # Delete two files by providing their IDs
+ a$files$delete(files = list("<file_1_ID>", "<file_2_ID>"))
+}
+
+\dontrun{
+ # Delete two files by providing a list of File objects
+ a$files$delete(files = list(<File_Object_1>, <File_Object_2>))
+}
+
+
+
+## ------------------------------------------------
+## Method `Files$bulk_get`
+## ------------------------------------------------
+
+\dontrun{
+ files_object <- Files$new(auth = auth)
+
+ # Get details of multiple files
+ files_object$bulk_get(
+               files = list("file_1_id", "file_2_id")
+              )
+}
+
+
+
+## ------------------------------------------------
+## Method `Files$bulk_update`
+## ------------------------------------------------
+
+\dontrun{
+ files_object <- Files$new(auth = auth)
+
+ # Update details of multiple files
+ files_object$bulk_update(
+               files = list("file_object_1", "file_object_2")
+              )
+}
+
+
+
+## ------------------------------------------------
+## Method `Files$bulk_edit`
+## ------------------------------------------------
+
+\dontrun{
+ files_object <- Files$new(auth = auth)
+
+ # Edit details of multiple files
+ files_object$bulk_edit(
+               files = list("file_object_1", "file_object_2")
+              )
+}
+
 }
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Files}
@@ -93,6 +154,10 @@ R6 Class representing Files resource.
 \item \href{#method-Files-delete}{\code{Files$delete()}}
 \item \href{#method-Files-copy}{\code{Files$copy()}}
 \item \href{#method-Files-create_folder}{\code{Files$create_folder()}}
+\item \href{#method-Files-bulk_delete}{\code{Files$bulk_delete()}}
+\item \href{#method-Files-bulk_get}{\code{Files$bulk_get()}}
+\item \href{#method-Files-bulk_update}{\code{Files$bulk_update()}}
+\item \href{#method-Files-bulk_edit}{\code{Files$bulk_edit()}}
 \item \href{#method-Files-clone}{\code{Files$clone()}}
 }
 }
@@ -365,6 +430,202 @@ object which must be of type \code{FOLDER}.}
                 name = name,
                 project = project
                )
+}
+
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Files-bulk_delete"></a>}}
+\if{latex}{\out{\hypertarget{method-Files-bulk_delete}{}}}
+\subsection{Method \code{bulk_delete()}}{
+This method facilitates bulk file deletion. It accepts
+either a list of \code{\link{File}} objects or a list containing
+files' IDs.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Files$bulk_delete(files)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{files}}{Either a list of \code{\link{File}} objects or a list
+of strings (IDs) representing the files you intend to delete.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+None. The function only displays the IDs of the deleted files in
+the console.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # Delete two files by providing their IDs
+ a$files$delete(files = list("<file_1_ID>", "<file_2_ID>"))
+}
+
+\dontrun{
+ # Delete two files by providing a list of File objects
+ a$files$delete(files = list(<File_Object_1>, <File_Object_2>))
+}
+
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Files-bulk_get"></a>}}
+\if{latex}{\out{\hypertarget{method-Files-bulk_get}{}}}
+\subsection{Method \code{bulk_get()}}{
+This call returns the details of multiple specified files,
+including file names and file metadata. The maximum number of files you
+can retrieve the details for per call is 100.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Files$bulk_get(files)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{files}}{A list of \code{\link{File}} objects or list of strings
+(IDs) of the files you are querying for details.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{Collection}} (list of \code{\link{File}} objects).
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ files_object <- Files$new(auth = auth)
+
+ # Get details of multiple files
+ files_object$bulk_get(
+               files = list("file_1_id", "file_2_id")
+              )
+}
+
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Files-bulk_update"></a>}}
+\if{latex}{\out{\hypertarget{method-Files-bulk_update}{}}}
+\subsection{Method \code{bulk_update()}}{
+A method that sets new information for specified files,
+replacing all existing information and erasing omitted parameters.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Files$bulk_update(files)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{files}}{List of \code{\link{File}} objects.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+For each of the specified files, the call sets a new \code{name},
+new \code{tags} and \code{metadata}.
+
+When editing fields in the \code{\link{File}} objects you wish to
+update, keep the following in mind:
+
+\itemize{
+\item The \code{name} field should be a string representing the new name of
+the file.
+\item The \code{metadata} field should be a named list of key-value pairs.
+The keys and values should be strings.
+\item The \code{tags} field should be an unnamed list of values.
+}
+
+The maximum number of files you can update the details for per call is
+100.
+}
+
+\subsection{Returns}{
+\code{\link{Collection}} (list of \code{\link{File}} objects).
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ files_object <- Files$new(auth = auth)
+
+ # Update details of multiple files
+ files_object$bulk_update(
+               files = list("file_object_1", "file_object_2")
+              )
+}
+
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Files-bulk_edit"></a>}}
+\if{latex}{\out{\hypertarget{method-Files-bulk_edit}{}}}
+\subsection{Method \code{bulk_edit()}}{
+This method modifies the existing information for specified
+files or add new information while preserving omitted parameters.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Files$bulk_edit(files)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{files}}{List of \code{\link{File}} objects.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+For each of the specified files, the call edits its \code{name},
+\code{tags} and \code{metadata}.
+
+When editing fields in the \code{\link{File}} objects you wish to
+update, keep the following in mind:
+
+\itemize{
+\item The \code{name} field should be a string representing the new name of
+the file.
+\item The \code{metadata} field should be a named list of key-value pairs.
+The keys and values should be strings.
+\item The \code{tags} field should be an unnamed list of values.
+}
+
+The maximum number of files you can update the details for per call is
+100.
+}
+
+\subsection{Returns}{
+\code{\link{Collection}} (list of \code{\link{File}} objects).
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ files_object <- Files$new(auth = auth)
+
+ # Edit details of multiple files
+ files_object$bulk_edit(
+               files = list("file_object_1", "file_object_2")
+              )
 }
 
 }

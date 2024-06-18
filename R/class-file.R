@@ -945,7 +945,10 @@ File <- R6::R6Class(
 )
 
 # Helper functions for creating File objects ---------------------------------
-asFile <- function(x = NULL, auth = NULL) {
+asFile <- function(x = NULL, auth = NULL, bulk = FALSE) {
+  if (bulk) {
+    x <- x$resource
+  }
   File$new(
     res = x,
     href = x$href,
@@ -954,8 +957,8 @@ asFile <- function(x = NULL, auth = NULL) {
   )
 }
 
-asFileList <- function(x, auth) {
-  obj <- lapply(x$items, asFile, auth = auth)
+asFileList <- function(x, auth, bulk = FALSE) {
+  obj <- lapply(x$items, asFile, auth = auth, bulk = bulk)
   obj
 }
 # nocov end
