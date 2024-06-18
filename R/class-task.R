@@ -912,7 +912,10 @@ Task <- R6::R6Class(
 
 # nocov start
 # Helper functions for creating Task objects --------------------------------
-asTask <- function(x = NULL, auth = NULL) {
+asTask <- function(x = NULL, auth = NULL, bulk = FALSE) {
+  if (bulk) {
+    x <- x$resource
+  }
   Task$new(
     res = x,
     href = x$href,
@@ -921,8 +924,8 @@ asTask <- function(x = NULL, auth = NULL) {
   )
 }
 
-asTaskList <- function(x, auth) {
-  obj <- lapply(x$items, asTask, auth = auth)
+asTaskList <- function(x, auth, bulk = FALSE) {
+  obj <- lapply(x$items, asTask, auth = auth, bulk = bulk)
   obj
 }
 # nocov end
