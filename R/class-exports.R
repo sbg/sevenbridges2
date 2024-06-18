@@ -16,7 +16,9 @@ Exports <- R6::R6Class(
     URL = list(
       "query" = "storage/exports",
       "get" = "storage/exports/{id}",
-      "create" = "storage/exports"
+      "create" = "storage/exports",
+      "bulk_get" = "bulk/storage/exports/get",
+      "bulk_create" = "bulk/storage/exports/create"
     ),
 
     # Initialize Exports object -----------------------------------------------
@@ -283,6 +285,290 @@ Exports <- R6::R6Class(
     #' @importFrom rlang inform
     delete = function() {
       rlang::inform("Deleting export jobs is not possible.")
-    } # nocov end
+    }, # nocov end
+
+    # Get bulk export jobs ----------------------------------------------------
+    #' @description This call returns the details of a bulk export job.
+    #'  When you export files from a project on the Platform into a volume,
+    #'  you write to your cloud storage bucket. This call obtains the details
+    #'  of that job.
+    #'
+    #' @param exports The list of the export job IDs as returned by the call
+    #'  to start a bulk export job or list of \code{\link{Export}} objects.
+    #'
+    #' @importFrom checkmate assert_list
+    #' @importFrom rlang abort
+    #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  exports_object <- Exports$new(
+    #'                     auth = auth,
+    #'                    )
+    #'
+    #'  # List export jobs
+    #'  exports_object$bulk_get(
+    #'   exports = list("export-job-id-1", "export-job-id-2")
+    #'   )
+    #' }
+    #'
+    #' @return \code{\link{Collection}} with list of \code{\link{Export}}
+    #'  objects.
+    bulk_get = function(exports) {
+      if (is_missing(exports)) {
+        rlang::abort("Exports should be set as list of export job IDs or as list of Export objects.") # nolint
+      }
+
+      checkmate::assert_list(exports)
+      unlisted_ids <- lapply(exports, check_and_transform_id, "Export")
+
+      # Build body
+      # nocov start
+      body <- list(
+        export_ids = unlisted_ids
+      )
+
+      path <- glue::glue(self$URL[["bulk_get"]])
+
+      res <- self$auth$api(
+        path = path,
+        method = "POST",
+        body = body,
+        advance_access = TRUE
+      )
+
+      res$items <- asExportList(res, auth = self$auth, bulk = TRUE)
+
+      return(asCollection(res, auth = self$auth))
+      # nocov end
+    },
+
+    # Start bulk export job ---------------------------------------------------
+    #' @description Bulk export files from your project on the Seven Bridges
+    #'  Platform into your volume. One call can contain up to 100 items.
+    #'  Files selected for export must not be public files or aliases.
+    #'  Aliases are objects stored in your cloud storage bucket which have
+    #'  been made available on the Platform. The volume you are exporting to
+    #'  must be configured for read-write access. To do this, set the
+    #'  `access_mode` parameter to RW when creating or modifying a volume.
+    #'
+    #'  Essentially, the call writes to your cloud storage bucket via the
+    #'  volume. If this call is successful, the original project files will
+    #'  become aliases to the newly exported objects on the volume.
+    #'  Source files will be deleted from the Platform and, if no more copies
+    #'  of the files exist, they will no longer count towards your total
+    #'  storage price on the Platform. In summary, once you export files from
+    #'  the Platform to a volume, they are no longer part of the storage on
+    #'  the Platform and cannot be exported again.
+    # nolint start
+    #'  Learn more about using the Volumes API for [Amazon S3](https://docs.sevenbridges.com/docs/aws-cloud-storage-tutorial) and
+    #'  for [Google Cloud Storage](https://docs.sevenbridges.com/docs/google-cloud-storage-tutorial).
+    # nolint end
+    #'
+    #' @param items Nested list of elements containing information about each
+    #'  file to be exported. For each element, users must provide:
+    #'
+    # nolint start
+    #'  \itemize{
+    #'      \item `source_file` - File id or File object you want to export to
+    #'        the volume,
+    #'      \item `destination_volume` - Volume id or Volume object you want to
+    #'        export files into.
+    #'      \item `destination_location` - Volume-specific location to which
+    #'        the file will be exported. This location should be recognizable
+    #'        to the underlying cloud service as a valid key or path to a
+    #'        new file. Please note that if this volume has been configured
+    #'        with a `prefix` parameter, the value of `prefix` will be prepended
+    #'        to location before attempting to create the file on the volume.
+    #'
+    #'        If you would like to export the file into some folder on the
+    #'        volume, please add folder name as prefix before file name
+    #'        in form `<folder-name>/<file-name>`.
+    #'      \item `overwrite` - Set to `TRUE` if you want to overwrite the
+    #'        item if another one with the same name already exists at the
+    #'        destination.
+    #'      \item `properties` - Named list of additional volume properties,
+    #'        like:
+    #'        \itemize{
+    #'          \item `sse_algorithm` - S3 server-side encryption to use when
+    #'            exporting to this bucket. Supported values:
+    #'            `AES256` (SSE-S3 encryption), `aws:kms`, `null`
+    #'            (no server-side encryption). Default: `AES256`.
+    #'          \item `sse_aws_kms_key_id`: Applies to type: `s3`.
+    #'            If AWS KMS encryption is used, this should be set to the
+    #'            required KMS key. If not set and `aws:kms` is set as
+    #'            `sse_algorithm`, default KMS key is used.
+    #'          \item `aws_canned_acl`: S3 canned ACL to apply on the object
+    #'            on during export. Supported values: any one of
+    #'      [S3 canned ACLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl);
+    #'      `null` (do not apply canned ACLs). Default: `null`.
+    #'      }
+    #'  }
+    # nolint end
+    #'  Example of the list:
+    #'  ```{r}
+    #'  items <- list(
+    #'            list(
+    #'              source_file = "test_file-id",
+    #'              destination_volume = "volume-id",
+    #'              destination_location = "new_volume_file.txt"
+    #'            ),
+    #'            list(
+    #'              source_file = "test_file_obj",
+    #'              destination_volume = "test_volume_obj",
+    #'              destination_location = "/volume_folder/exported_file.txt",
+    #'              overwrite = TRUE
+    #'            ),
+    #'            list(
+    #'              source_file = "project_file_3_id",
+    #'              destination_volume = "volume-id",
+    #'              destination_location = "project_file_3.txt",
+    #'              properties = list(
+    #'                sse_algorithm = "AES256"
+    #'              )
+    #'            )
+    #'          )
+    #' ```
+    #'  More details of how to export files from your project into the volume
+    # nolint start
+    #'  or some volume's folder you can read [here](https://docs.sevenbridges.com/reference/start-a-bulk-export-job)
+    # nolint end
+    #' @param copy_only If set to true, the files will be copied to a volume
+    #'  but the source files will remain on the Platform.
+    #'
+    #' @importFrom checkmate assert_list assert_string test_r6 assert_logical
+    #' @importFrom rlang abort
+    #' @importFrom glue glue
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  exports_object <- Exports$new(
+    #'                     auth = auth
+    #'                    )
+    #'
+    #'  # Submit new bulk export into a volume
+    #'  exports_object$bulk_submit_export(items = list(
+    #'    list(
+    #'      source_file = "test_file-id",
+    #'      destination_volume = "volume-id",
+    #'      destination_location = "new_volume_file.txt"
+    #'    ),
+    #'    list(
+    #'      source_file = test_file_obj,
+    #'      destination_volume = test_volume_obj,
+    #'      destination_location = "/volume_folder/exported_file.txt",
+    #'      overwrite = TRUE
+    #'    ),
+    #'    list(
+    #'      source_file = "project_file_3_id",
+    #'      destination_volume = "volume-id",
+    #'      destination_location = "project_file_3.txt",
+    #'      properties = list(
+    #'       sse_algorithm = "AES256"
+    #'      )
+    #'    )
+    #'   ), copy_only = TRUE
+    #'  )
+    #' }
+    #'
+    #' @return \code{\link{Collection}} with list of \code{\link{Export}}
+    #'  objects.
+    bulk_submit_export = function(items, copy_only = FALSE) {
+      if (is_missing(items)) {
+        rlang::abort("Items parameter should be set as nested list of files information you want to export.") # nolint
+      }
+      checkmate::assert_list(items)
+
+      checkmate::assert_logical(copy_only, len = 1, null.ok = TRUE)
+
+
+      body_elements <- list()
+
+      for (i in seq_len(length(items))) {
+        item <- items[[i]]
+        checkmate::assert_list(item)
+        body_element <- list()
+
+        if (is_missing(item[["source_file"]])) {
+          rlang::abort(glue::glue("Source file must be provided as a string or File object in element {i}.")) # nolint
+        }
+        if (checkmate::test_r6(item[["source_file"]], classes = "File") &&
+          tolower(item[["source_file"]]$type) == "folder") {
+          rlang::abort(glue::glue("Folders cannot be exported. Please, provide single file id or File object with type = 'file' in element {i}.")) # nolint
+        }
+        body_element$source <- list(
+          file = check_and_transform_id(item[["source_file"]],
+            class_name = "File"
+          )
+        )
+
+        if (is_missing(item[["destination_volume"]])) {
+          rlang::abort(glue::glue("Destination volume must be provided as a string or Volume object in element {i}.")) # nolint
+        }
+        destination_volume <- check_and_transform_id(
+          item[["destination_volume"]],
+          class_name = "Volume"
+        )
+        if (is_missing(item[["destination_location"]])) {
+          rlang::abort(glue::glue("Destination location name must be provided as a string in element {i}.")) # nolint
+        }
+        checkmate::assert_string(
+          item[["destination_location"]],
+          null.ok = FALSE
+        )
+        body_element$destination <- list(
+          volume = destination_volume,
+          location = item[["destination_location"]]
+        )
+        checkmate::assert_logical(item[["overwrite"]], len = 1, null.ok = TRUE)
+        body_element$overwrite <- item[["overwrite"]]
+
+        checkmate::assert_list(item[["properties"]], null.ok = TRUE)
+        body_element$properties <- item[["properties"]]
+
+        body_elements <- append(body_elements, list(body_element))
+      }
+
+      # Build body
+      # nocov start
+      body <- list(
+        items = body_elements
+      )
+
+      path <- glue::glue(self$URL[["bulk_create"]])
+
+      res <- self$auth$api(
+        path = path,
+        query = list(copy_only = copy_only),
+        method = "POST",
+        body = body,
+        advance_access = TRUE
+      )
+
+      failed_export_tries <- list()
+      # Process the response items when returned errors
+      for (i in seq_along(res$items)) {
+        item <- res$items[[i]]
+        if (!is.null(item$error)) {
+          res$items[[i]]$resource$error <- item$error
+          failed_export_tries <- append(failed_export_tries, list(item))
+        }
+      }
+
+      if (length(failed_export_tries) == length(res$items)) {
+        rlang::abort("All files cannot to be exported. Please, check the limitations of files export in the API documentation.") # nolint
+      }
+
+      res$items <- asExportList(res, auth = self$auth, bulk = TRUE)
+      rlang::inform(glue::glue("New export jobs have started!"))
+
+      if (length(failed_export_tries) > 0) {
+        rlang::inform(glue::glue("However, some files cannot be exported.
+                                 Please, check the limitations of files export in the API documentation.")) # nolint
+      }
+
+      return(asCollection(res, auth = self$auth))
+      # nocov end
+    }
   )
 )

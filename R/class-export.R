@@ -113,12 +113,14 @@ Export <- R6::R6Class(
       # Remove it's empty (NA)
       x <- purrr::discard(x, .p = is.na)
 
-      string <- glue::glue_col("{green {names(x)}}: {x}")
-
-      cli::cli_h1("Export job")
-
-      cli::cli_li(string)
-
+      if (length(x) == 0) {
+        string <- "No job created due to error status message."
+        cli::cli_h2(string)
+      } else {
+        string <- glue::glue_col("{green {names(x)}}: {x}")
+        cli::cli_h1("Export job")
+        cli::cli_li(string)
+      }
       # Close container elements
       cli::cli_end()
     },
@@ -155,7 +157,10 @@ Export <- R6::R6Class(
 )
 # nocov start
 # Helper functions for creating Export objects --------------------------------
-asExport <- function(x = NULL, auth = NULL) {
+asExport <- function(x = NULL, auth = NULL, bulk = FALSE) {
+  if (bulk) {
+    x <- x$resource
+  }
   Export$new(
     res = x,
     href = x$href,
@@ -164,8 +169,8 @@ asExport <- function(x = NULL, auth = NULL) {
   )
 }
 
-asExportList <- function(x, auth) {
-  obj <- lapply(x$items, asExport, auth = auth)
+asExportList <- function(x, auth, bulk = FALSE) {
+  obj <- lapply(x$items, asExport, auth = auth, bulk = bulk)
   obj
 }
 # nocov end

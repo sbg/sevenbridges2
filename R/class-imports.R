@@ -341,7 +341,6 @@ Imports <- R6::R6Class(
       if (is_missing(imports)) {
         rlang::abort("Imports should be set as list of import job IDs or as list of Import objects.") # nolint
       }
-
       checkmate::assert_list(imports)
       unlisted_ids <- lapply(imports, check_and_transform_id, "Import")
 
