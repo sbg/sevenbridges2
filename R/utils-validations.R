@@ -623,7 +623,8 @@ check_response_and_notify_user <- function(files, res) {
     rlang::abort("Res parameter is required.")
   }
 
-  checkmate::assert_character(files,
+  checkmate::assert_list(files,
+    types = "character",
     min.len = 1,
     any.missing = FALSE,
     null.ok = FALSE

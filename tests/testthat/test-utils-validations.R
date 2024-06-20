@@ -621,7 +621,7 @@ test_that("check_and_process_file_details works as expected", {
 # nolint end
 
 test_that("check_response_and_notify_user throws an error when expected", {
-  test_valid_files_param <- c("file_id_1", "file_id_2", "file_id_3")
+  test_valid_files_param <- list("file_id_1", "file_id_2", "file_id_3")
   test_valid_res_param <- list(items = list(
     list(error = list(status = 404, code = 5002, message = "Requested file does not exist.")), # nolint
     list(resource = list(id = "file_id_2")),
@@ -640,11 +640,19 @@ test_that("check_response_and_notify_user throws an error when expected", {
     fixed = TRUE
   )
 
-  # Fails when bad files parameter is provided
-  test_bad_files_param <- c(1, 2, 3)
+  # Fails when bad files parameter is provided (list of numeric values)
+  test_bad_files_param_1 <- list(1, 2, 3)
   testthat::expect_error(
-    check_response_and_notify_user(files = test_bad_files_param, res = test_valid_res_param), # nolint
-    regexp = "Assertion on 'files' failed: Must be of type 'character', not 'double'.", # nolint
+    check_response_and_notify_user(files = test_bad_files_param_1, res = test_valid_res_param), # nolint
+    regexp = "Assertion on 'files' failed: May only contain the following types: {character}, but element 1 has type 'numeric'.", # nolint
+    fixed = TRUE
+  )
+
+  # Fails when bad files parameter is provided (vector of strings)
+  test_bad_files_param_2 <- c("file_1_id", "file_2_id", "file_3_id")
+  testthat::expect_error(
+    check_response_and_notify_user(files = test_bad_files_param_2, res = test_valid_res_param), # nolint
+    regexp = "Assertion on 'files' failed: Must be of type 'list', not 'character'.", # nolint
     fixed = TRUE
   )
 
@@ -658,7 +666,7 @@ test_that("check_response_and_notify_user throws an error when expected", {
 })
 
 test_that("check_response_and_notify_user works as expected", {
-  files <- c("file_id_1", "file_id_2", "file_id_3")
+  files <- list("file_id_1", "file_id_2", "file_id_3")
   res <- list(items = list(
     list(error = list(status = 404, code = 5002, message = "Requested file does not exist.")), # nolint
     list(resource = list(id = "file_id_2")),
