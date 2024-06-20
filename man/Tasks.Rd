@@ -13,11 +13,9 @@ R6 Class representing tasks resource endpoints.
 ## ------------------------------------------------
 
 \dontrun{
- task_object <- Tasks$new(auth = auth)
-
  # Get details of multiple tasks
- task_object$bulk_get(
-               tasks = list("task_1_id", "task_2_id")
+ a$tasks$bulk_get(
+               tasks = list("task_1_ID", "task_2_ID")
               )
 }
 
@@ -420,11 +418,9 @@ This call returns statistics for all specified tasks.
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
- task_object <- Tasks$new(auth = auth)
-
  # Get details of multiple tasks
- task_object$bulk_get(
-               tasks = list("task_1_id", "task_2_id")
+ a$tasks$bulk_get(
+               tasks = list("task_1_ID", "task_2_ID")
               )
 }
 

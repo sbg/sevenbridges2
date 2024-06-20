@@ -81,12 +81,12 @@ R6 Class representing Files resource.
 
 \dontrun{
  # Delete two files by providing their IDs
- a$files$delete(files = list("<file_1_ID>", "<file_2_ID>"))
+ a$files$delete(files = list("file_1_ID", "file_2_ID"))
 }
 
 \dontrun{
  # Delete two files by providing a list of File objects
- a$files$delete(files = list(<File_Object_1>, <File_Object_2>))
+ a$files$delete(files = list(File_Object_1, File_Object_2))
 }
 
 
@@ -96,11 +96,9 @@ R6 Class representing Files resource.
 ## ------------------------------------------------
 
 \dontrun{
- files_object <- Files$new(auth = auth)
-
  # Get details of multiple files
- files_object$bulk_get(
-               files = list("file_1_id", "file_2_id")
+ a$files$bulk_get(
+               files = list("file_1_ID", "file_2_ID")
               )
 }
 
@@ -111,11 +109,9 @@ R6 Class representing Files resource.
 ## ------------------------------------------------
 
 \dontrun{
- files_object <- Files$new(auth = auth)
-
  # Update details of multiple files
- files_object$bulk_update(
-               files = list("file_object_1", "file_object_2")
+ a$files$bulk_update(
+               files = list(File_Object_1, File_Object_2)
               )
 }
 
@@ -126,11 +122,9 @@ R6 Class representing Files resource.
 ## ------------------------------------------------
 
 \dontrun{
- files_object <- Files$new(auth = auth)
-
  # Edit details of multiple files
- files_object$bulk_edit(
-               files = list("file_object_1", "file_object_2")
+ a$files$bulk_edit(
+               files = list(File_Object_1, File_Object_2)
               )
 }
 
@@ -466,12 +460,12 @@ the console.
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
  # Delete two files by providing their IDs
- a$files$delete(files = list("<file_1_ID>", "<file_2_ID>"))
+ a$files$delete(files = list("file_1_ID", "file_2_ID"))
 }
 
 \dontrun{
  # Delete two files by providing a list of File objects
- a$files$delete(files = list(<File_Object_1>, <File_Object_2>))
+ a$files$delete(files = list(File_Object_1, File_Object_2))
 }
 
 
@@ -506,11 +500,9 @@ can retrieve the details for per call is 100.
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
- files_object <- Files$new(auth = auth)
-
  # Get details of multiple files
- files_object$bulk_get(
-               files = list("file_1_id", "file_2_id")
+ a$files$bulk_get(
+               files = list("file_1_ID", "file_2_ID")
               )
 }
 
@@ -563,11 +555,9 @@ The maximum number of files you can update the details for per call is
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
- files_object <- Files$new(auth = auth)
-
  # Update details of multiple files
- files_object$bulk_update(
-               files = list("file_object_1", "file_object_2")
+ a$files$bulk_update(
+               files = list(File_Object_1, File_Object_2)
               )
 }
 
@@ -620,11 +610,9 @@ The maximum number of files you can update the details for per call is
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
- files_object <- Files$new(auth = auth)
-
  # Edit details of multiple files
- files_object$bulk_edit(
-               files = list("file_object_1", "file_object_2")
+ a$files$bulk_edit(
+               files = list(File_Object_1, File_Object_2)
               )
 }
 

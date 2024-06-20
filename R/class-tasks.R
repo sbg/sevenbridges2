@@ -502,11 +502,9 @@ Tasks <- R6::R6Class(
     #'
     #' @examples
     #' \dontrun{
-    #'  task_object <- Tasks$new(auth = auth)
-    #'
     #'  # Get details of multiple tasks
-    #'  task_object$bulk_get(
-    #'                tasks = list("task_1_id", "task_2_id")
+    #'  a$tasks$bulk_get(
+    #'                tasks = list("task_1_ID", "task_2_ID")
     #'               )
     #' }
     #'
