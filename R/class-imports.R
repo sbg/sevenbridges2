@@ -452,6 +452,10 @@ Imports <- R6::R6Class(
     #'  or some project's folder you can read [here](https://docs.sevenbridges.com/reference/start-a-bulk-import-job#import-a-volume-folder-into-a-specific-folder)
     # nolint end
     #'
+    #'  Utility function \code{\link{prepare_items_for_bulk_import}}
+    #'  can help you to prepare the `items` parameter based on the provided
+    #'  list of \code{\link{VolumeFile}} or \code{\link{VolumePrefix}} objects.
+    #'
     #' @importFrom checkmate assert_list assert_string test_r6 assert_logical
     #' @importFrom rlang abort inform
     #' @importFrom glue glue
