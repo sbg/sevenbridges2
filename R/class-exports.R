@@ -433,6 +433,10 @@ Exports <- R6::R6Class(
     # nolint start
     #'  or some volume's folder you can read [here](https://docs.sevenbridges.com/reference/start-a-bulk-export-job)
     # nolint end
+    #'
+    #'  Utility function \code{\link{prepare_items_for_bulk_export}} can help
+    #'  you to prepare the `items` parameter for `bulk_submit_export()` method.
+    #'
     #' @param copy_only If set to true, the files will be copied to a volume
     #'  but the source files will remain on the Platform.
     #'

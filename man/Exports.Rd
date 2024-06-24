@@ -514,7 +514,10 @@ Example of the list:
 }\if{html}{\out{</div>}}
 
 More details of how to export files from your project into the volume
-or some volume's folder you can read \href{https://docs.sevenbridges.com/reference/start-a-bulk-export-job}{here}}
+or some volume's folder you can read \href{https://docs.sevenbridges.com/reference/start-a-bulk-export-job}{here}
+
+Utility function \code{\link{prepare_items_for_bulk_export}} can help
+you to prepare the \code{items} parameter for \code{bulk_submit_export()} method.}
 
 \item{\code{copy_only}}{If set to true, the files will be copied to a volume
 but the source files will remain on the Platform.}
