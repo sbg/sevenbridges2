@@ -22,7 +22,7 @@ the volume to which the file will be exported.}
 \item{destination_location_prefix}{Character. If the volume has been
 configured with a prefix parameter, \code{destination_location_prefix} value
 will be prepended to location before attempting to create the file on the
-volume. This parameter can be treated as a path path to a new file on the
+volume. This parameter can be treated as a path to a new file on the
 volume. The default value is \code{NULL}.
 
 If you would like to export the file into some folder on the volume,
@@ -85,6 +85,12 @@ However, keep in mind that there are certain constraints:
 .      resulting list.
 \item The same applies to \code{overwrite} and \code{properties}
 parameters.
+\item By default, the \code{destination_location} field is populated with
+the source file name. Upon retrieval of the list of items for bulk
+export, you can manually update the \code{destination_location} field
+for each element of the list as needed. Additionally, you have the
+flexibility to manually modify any other fields in the list if
+required.
 }
 }
 \examples{
@@ -97,8 +103,7 @@ file_object_3 <- a$files$get(id = "file_3_ID")
 files_to_export <- list(file_object_1, file_object_2, file_object_3)
 
 prepare_items_for_bulk_export(files_to_export,
-  destination_volume = "aws_example_volume",
-  destination_location_prefix = "example_folder/"
+  destination_volume = "aws_example_volume"
 )
 }
 \dontrun{
@@ -112,7 +117,7 @@ files_to_export <- list(file_object_1, file_object_2, file_object_3)
 
 prepare_items_for_bulk_export(files_to_export,
   destination_volume = "aws_example_volume",
-  destination_location = "example_folder/"
+  destination_location_prefix = "example_folder/"
 )
 }
 

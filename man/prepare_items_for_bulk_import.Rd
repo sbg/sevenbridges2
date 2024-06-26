@@ -5,7 +5,7 @@
 \title{Prepare items for bulk import}
 \usage{
 prepare_items_for_bulk_import(
-  volumes,
+  volume_items,
   destination_project = NULL,
   destination_parent = NULL,
   autorename = FALSE,
@@ -13,14 +13,14 @@ prepare_items_for_bulk_import(
 )
 }
 \arguments{
-\item{volumes}{A list of \code{\link{VolumeFile}} or
+\item{volume_items}{A list of \code{\link{VolumeFile}} or
 \code{\link{VolumePrefix}} objects to be imported.}
 
 \item{destination_project}{Destination project ID or \code{\link{Project}}
 object. Not required, but either \code{destination_project} or
 \code{destination_parent} directory must be provided.}
 
-\item{destination_parent}{Folder ID or \code{\link{Project}} object
+\item{destination_parent}{Folder ID or \code{\link{File}} object
 (with \code{type = 'FOLDER'}). Not required, but either \code{destination_project} or
 \code{destination_parent} directory must be provided.}
 
@@ -87,7 +87,7 @@ volumes_to_import <- list(volume_obj_1, volume_obj_2)
 destination_project <- a$projects$get(id = "project_id")
 
 prepare_items_for_bulk_import(
-  volumes = volumes_to_import,
+  volume_items = volumes_to_import,
   destination_project = destination_project
 )
 }
@@ -102,7 +102,7 @@ volumes_to_import <- list(volume_obj_1, volume_obj_2)
 destination_parent <- a$files$get(id = "folder_id")
 
 prepare_items_for_bulk_import(
-  volumes = volumes_to_import,
+  volume_items = volumes_to_import,
   destination_parent = destination_parent
 )
 }

@@ -30,23 +30,23 @@ test_that("prepare_items_for_bulk_export() throws error when needed", {
   )
 
   # 3. Test with missing destination_volume
-  volume_file_id_1 <- "file_1_id"
-  volume_file_id_2 <- "file_2_id"
+  file_id_1 <- "file_1_id"
+  file_id_2 <- "file_2_id"
   testthat::expect_error(
-    prepare_items_for_bulk_export(files = list(volume_file_id_1, volume_file_id_2)), # nolint
+    prepare_items_for_bulk_export(files = list(file_id_1, file_id_2)), # nolint
     regexp = "Missing 'destination_volume' parameter. Destination volume must be provided either as a string or a Volume object.", # nolint
     fixed = TRUE
   )
 
   bad_destination_volume_type <- 1234
   testthat::expect_error(
-    prepare_items_for_bulk_export(files = list(volume_file_id_1, volume_file_id_2), destination_volume = bad_destination_volume_type), # nolint
+    prepare_items_for_bulk_export(files = list(file_id_1, file_id_2), destination_volume = bad_destination_volume_type), # nolint
     regexp = "Assertion on 'destination_volume' failed: Must be of type 'character', not 'double'.", # nolint
     fixed = TRUE
   )
 
   testthat::expect_error(
-    prepare_items_for_bulk_export(files = list(volume_file_id_1, volume_file_id_2), destination_volume = setup_project_obj), # nolint
+    prepare_items_for_bulk_export(files = list(file_id_1, file_id_2), destination_volume = setup_project_obj), # nolint
     regexp = "Assertion on 'destination_volume' failed: Must inherit from class 'Volume', but has classes 'Project','Item','R6'.", # nolint
     fixed = TRUE
   )
@@ -54,7 +54,7 @@ test_that("prepare_items_for_bulk_export() throws error when needed", {
   # 4. Test with destination_location_prefix missing of wrong type
   bad_location_prefix <- 1234
   testthat::expect_error(
-    prepare_items_for_bulk_export(files = list(volume_file_id_1, volume_file_id_2), destination_volume = "volume-id", destination_location_prefix = bad_location_prefix), # nolint
+    prepare_items_for_bulk_export(files = list(file_id_1, file_id_2), destination_volume = "volume-id", destination_location_prefix = bad_location_prefix), # nolint
     regexp = "Assertion on 'destination_location_prefix' failed: Must be of type 'string' (or 'NULL'), not 'double'.", # nolint
     fixed = TRUE
   )
@@ -62,7 +62,7 @@ test_that("prepare_items_for_bulk_export() throws error when needed", {
   # 5. Test with bad overwrite parameter
   bad_overwrite_type <- "TRUE"
   testthat::expect_error(
-    prepare_items_for_bulk_export(files = list(volume_file_id_1, volume_file_id_2), destination_volume = "volume-id", overwrite = bad_overwrite_type), # nolint
+    prepare_items_for_bulk_export(files = list(file_id_1, file_id_2), destination_volume = "volume-id", overwrite = bad_overwrite_type), # nolint
     regexp = "Assertion on 'overwrite' failed: Must be of type 'logical' (or 'NULL'), not 'character'.", # nolint
     fixed = TRUE
   )
@@ -70,15 +70,15 @@ test_that("prepare_items_for_bulk_export() throws error when needed", {
   # 6. Test with bad properties parameter
   bad_properties_type <- "list"
   testthat::expect_error(
-    prepare_items_for_bulk_export(files = list(volume_file_id_1, volume_file_id_2), destination_volume = "volume-id", properties = bad_properties_type), # nolint
+    prepare_items_for_bulk_export(files = list(file_id_1, file_id_2), destination_volume = "volume-id", properties = bad_properties_type), # nolint
     regexp = "Assertion on 'properties' failed: Must be of type 'list' (or 'NULL'), not 'character'.", # nolint
     fixed = TRUE
   )
 })
 
 test_that("prepare_items_for_bulk_export() works as expected", {
-  volume_file_1 <- setup_file_obj
-  volume_file_2 <- setup_file_obj
+  file_1 <- setup_file_obj
+  file_2 <- setup_file_obj
   destination_volume <- "volume-id"
   overwrite <- TRUE
   properties <- list(
@@ -87,23 +87,23 @@ test_that("prepare_items_for_bulk_export() works as expected", {
 
   expected_output_list <- list(
     list(
-      "source_file" = volume_file_1,
+      "source_file" = file_1,
       "destination_volume" = destination_volume,
-      "destination_location" = volume_file_1$name, # nolint
+      "destination_location" = file_1$name, # nolint
       "overwrite" = overwrite,
       "properties" = properties
     ),
     list(
-      "source_file" = volume_file_2,
+      "source_file" = file_2,
       "destination_volume" = destination_volume,
-      "destination_location" = volume_file_2$name, # nolint
+      "destination_location" = file_2$name, # nolint
       "overwrite" = overwrite,
       "properties" = properties
     )
   )
 
   output <- prepare_items_for_bulk_export(
-    files = list(volume_file_1, volume_file_2), # nolint
+    files = list(file_1, file_2), # nolint
     destination_volume = destination_volume, # nolint-
     destination_location_prefix = NULL,
     overwrite = overwrite,

@@ -980,6 +980,60 @@ Moreover, you are able to pass the objects of classes Volume, Project or File
 `destination_parent` fields when constructing the inputs list, besides using 
 their string IDs.
 
+
+In the example above, the list of items for a bulk import job was manually
+created. Alternatively, you can use the `prepare_items_for_bulk_import()`
+utility function to generate the items list.
+
+This function allows you to prepare the list of bulk import items based on the
+provided `VolumeFile` or `VolumePrefix` objects, filling the following fields
+for each item: `source_volume`, `source_location`, `destination_project` or
+`destination_parent`, `autorename`, `preserve_folder_structure`.
+
+Note that the same `destination_project`/`destination_parent` and `autorename`
+values will be applied uniformly across all items in the resulting list.
+The `preserve_folder_structure` parameter, if provided, applies exclusively to
+`VolumePrefix` items.
+
+```{r}
+## First, get the volume you want to import files from
+vol1 <- a$volumes$get(id = "<volume_owner_or_division>/<volume_name>")
+
+## Then, get the project object/id where you want to import files
+test_proj <- a$projects$get("<project_id>")
+
+## List all volume files on the volume
+vol1_content <- vol1$list_contents()
+
+## Select two VolumeFile objects
+volume_file_1_import <- vol1_content$items[[1]]
+volume_file_2_import <- vol1_content$items[[2]]
+
+volume_files_to_import <- list(volume_file_1_import, volume_file_2_import)
+
+## Construct the inputs list using the prepare_items_for_bulk_import() utility
+# function
+to_import <- prepare_items_for_bulk_import(
+  volume_items = volume_files_to_import,
+  destination_project = test_proj
+)
+
+bulk_import_jobs <- a$imports$bulk_submit_import(items = to_import)
+
+# Preview the results
+bulk_import_jobs
+
+# Get updated status by fetching details with bulk_get() and by passing the
+# list of import jobs created in previous step
+a$imports$bulk_get(imports = bulk_import_jobs$items)
+```
+
+Keep in mind that `prepare_items_for_bulk_import()` is designed solely to
+assist in constructing the list of items for submitting a bulk import job. It
+operates under certain constraints; refer to the function's documentation for
+further details. After obtaining the function's output, you can manually adjust
+individual items as needed.
+
 <div align="right"><a href="#top">top</a></div>
 
 
@@ -1218,5 +1272,56 @@ must be set as character field.
 Lastly, `copy_only` field will apply to all files being exported, meaning, each 
 file would be copied to the volume, while source location would remain on the 
 Platform if `copy_only` is set to TRUE.
+
+In the example above, the list of items for a bulk export job was manually
+created. Alternatively, you can use the `prepare_items_for_bulk_export()`
+utility function to generate the items list.
+
+This function allows you to prepare the list of bulk export items based on the
+provided `File` objects, filling the following fields for each item: 
+`source_file`, `destination_volume`, `destination_location`, `overwrite`,
+`properties`.
+
+Check function's documentation and [API documentation](https://docs.sevenbridges.com/reference/start-a-bulk-export-job)
+for more details.
+
+
+```{r}
+## First, get the project and files you want to export
+test_proj <- a$projects$get("<project_id>")
+proj_files <- test_proj$list_files()
+
+## Then, get the volume you want to export files into
+vol1 <- a$volumes$get(id = "<volume_owner_or_division>/<volume_name>")
+
+## Select two File objects
+file_1_export <- proj_files[[1]]
+file_2_export <- proj_files[[2]]
+
+files_to_export <- list(file_1_export, file_2_export)
+
+## Construct the inputs list using the prepare_items_for_bulk_export() utility
+# function
+to_export <- prepare_items_for_bulk_export(
+  files = files_to_export,
+  destination_volume = vol1,
+  destination_location_prefix = "my-folder/"
+)
+
+bulk_export_jobs <- a$exports$bulk_submit_export(items = to_export)
+
+# Preview the results
+bulk_export_jobs
+
+# Get updated status by fetching details with bulk_get() and by passing the
+# list of export jobs created in previous step
+a$exports$bulk_get(exports = bulk_export_jobs$items)
+```
+
+Keep in mind that `prepare_items_for_bulk_export()` is designed solely to
+assist in constructing the list of items for submitting a bulk export job. It
+operates under certain constraints; refer to the function's documentation for
+further details. After obtaining the function's output, you can manually adjust
+individual items as needed.
 
 <div align="right"><a href="#top">top</a></div>

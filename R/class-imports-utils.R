@@ -28,12 +28,12 @@
 #'       you can manually add the `name` field to certain items if necessary.
 #'  }
 #'
-#' @param volumes A list of \code{\link{VolumeFile}} or
+#' @param volume_items A list of \code{\link{VolumeFile}} or
 #'  \code{\link{VolumePrefix}} objects to be imported.
 #' @param destination_project Destination project ID or \code{\link{Project}}
 #'  object. Not required, but either `destination_project` or
 #'  `destination_parent` directory must be provided.
-#' @param destination_parent Folder ID or \code{\link{Project}} object
+#' @param destination_parent Folder ID or \code{\link{File}} object
 #'  (with `type = 'FOLDER'`). Not required, but either `destination_project` or
 #'  `destination_parent` directory must be provided.
 #' @param autorename Logical indicating whether to autorename conflicting
@@ -61,6 +61,8 @@
 #' @return A list of elements containing information about each file/folder to
 #'  be imported.
 #'
+#' @export
+#'
 #' @examples
 #' \dontrun{
 #' # Example 1: Prepare 2 items for bulk import action - provide destination
@@ -73,7 +75,7 @@
 #' destination_project <- a$projects$get(id = "project_id")
 #'
 #' prepare_items_for_bulk_import(
-#'   volumes = volumes_to_import,
+#'   volume_items = volumes_to_import,
 #'   destination_project = destination_project
 #' )
 #' }
@@ -88,18 +90,22 @@
 #' destination_parent <- a$files$get(id = "folder_id")
 #'
 #' prepare_items_for_bulk_import(
-#'   volumes = volumes_to_import,
+#'   volume_items = volumes_to_import,
 #'   destination_parent = destination_parent
 #' )
 #' }
 #'
-prepare_items_for_bulk_import <- function(volumes, destination_project = NULL, destination_parent = NULL, autorename = FALSE, preserve_folder_structure = TRUE) { # nolint
-  # Check 'volumes' parameter
-  if (is_missing(volumes)) {
-    rlang::abort("Parameter 'volumes' is missing. Please provide a list of VolumeFile or VolumePrefix objects.") # nolint
+prepare_items_for_bulk_import <- function(volume_items,
+                                          destination_project = NULL,
+                                          destination_parent = NULL,
+                                          autorename = FALSE,
+                                          preserve_folder_structure = TRUE) {
+  # Check 'volume_items' parameter
+  if (is_missing(volume_items)) {
+    rlang::abort("Parameter 'volume_items' is missing. Please provide a list of VolumeFile or VolumePrefix objects.") # nolint
   }
 
-  checkmate::assert_list(volumes,
+  checkmate::assert_list(volume_items,
     types = c("VolumeFile", "VolumePrefix"),
     min.len = 1,
     any.missing = FALSE
@@ -139,7 +145,7 @@ prepare_items_for_bulk_import <- function(volumes, destination_project = NULL, d
   checkmate::assert_logical(preserve_folder_structure, len = 1) # nolint
 
 
-  result <- lapply(volumes,
+  result <- lapply(volume_items,
     prepare_volume_import_item,
     destination_field_name = destination_field_name,
     destination = destination,
@@ -155,7 +161,7 @@ prepare_items_for_bulk_import <- function(volumes, destination_project = NULL, d
 #' @description The function constructs a list representing a single body item
 #'  for `bulk_submit_import()` method.
 #'
-#' @param volume_object Either a \code{\link{VolumeFile}} object or a
+#' @param volume_item Either a \code{\link{VolumeFile}} object or a
 #'  \code{\link{VolumePrefix}} object.
 #' @param destination_field_name String. Specifies the destination-specific
 #'  field to be added to the imported item. This parameter must be either
@@ -196,7 +202,7 @@ prepare_items_for_bulk_import <- function(volumes, destination_project = NULL, d
 #' \dontrun{
 #' # Example 1: Prepare volume item with destination project
 #' prepare_volume_import_item(
-#'   volume_object = VolumeFileObject,
+#'   volume_item = VolumeFileObject,
 #'   destination_field_name = "destination_project",
 #'   destination = "project_id",
 #'   autorename = TRUE
@@ -204,7 +210,7 @@ prepare_items_for_bulk_import <- function(volumes, destination_project = NULL, d
 #'
 #' # Example 2: Prepare volume item with destination parent directory
 #' prepare_volume_import_item(
-#'   volume_object = VolumePrefixObject,
+#'   volume_item = VolumePrefixObject,
 #'   destination_parent = "destination_parent",
 #'   destination = "parent_folder_id",
 #'   autorename = TRUE,
@@ -213,18 +219,18 @@ prepare_items_for_bulk_import <- function(volumes, destination_project = NULL, d
 #' }
 #'
 #' @noRd
-prepare_volume_import_item <- function(volume_object, destination_field_name, destination, autorename = FALSE, preserve_folder_structure = TRUE) { # nolint
-  if (is_missing(volume_object)) {
-    rlang::abort("Parameter 'volume_object' is missing. Please provide either a VolumeFile or a VolumePrefix object.") # nolint
+prepare_volume_import_item <- function(volume_item, destination_field_name, destination, autorename = FALSE, preserve_folder_structure = TRUE) { # nolint
+  if (is_missing(volume_item)) {
+    rlang::abort("Parameter 'volume_item' is missing. Please provide either a VolumeFile or a VolumePrefix object.") # nolint
   }
 
-  if (!checkmate::test_r6(volume_object, classes = "VolumeFile") && !checkmate::test_r6(volume_object, classes = "VolumePrefix")) { # nolint
-    rlang::abort("Please make sure that the provided 'volume_object' parameter is either a VolumeFile or a VolumePrefix object.") # nolint
+  if (!checkmate::test_r6(volume_item, classes = "VolumeFile") && !checkmate::test_r6(volume_item, classes = "VolumePrefix")) { # nolint
+    rlang::abort("Please make sure that the provided 'volume_item' parameter is either a VolumeFile or a VolumePrefix object.") # nolint
   }
 
   # Check destination_field_name parameter
   if (is_missing(destination_field_name)) {
-    rlang::abort("Parameter 'destination_field_name' is missing. It should be one of the following two strings: 'destination_project' or 'destination_parrent'") # nolint
+    rlang::abort("Parameter 'destination_field_name' is missing. It should be one of the following two strings: 'destination_project' or 'destination_parent'") # nolint
   }
   checkmate::assert_string(destination_field_name, null.ok = FALSE)
   checkmate::assert_subset(destination_field_name, c("destination_project", "destination_parent")) # nolint
@@ -242,24 +248,23 @@ prepare_volume_import_item <- function(volume_object, destination_field_name, de
 
 
   # ---------------------------------------------------------------------------
-  if (checkmate::test_class(volume_object, "VolumeFile")) {
-    item <- list(
-      "source_volume" = volume_object$volume,
-      "source_location" = volume_object$location,
-      autorename = autorename
-    )
-    # Add and populate destination field
-    item[[destination_field_name]] <- destination
-  } else if (checkmate::test_class(volume_object, "VolumePrefix")) {
-    item <- list(
-      "source_volume" = volume_object$volume,
-      "source_location" = volume_object$prefix,
-      autorename = autorename,
-      preserve_folder_structure = preserve_folder_structure
-    )
-    # Add and populate destination field
-    item[[destination_field_name]] <- destination
+  # Initialize item list
+  item <- list()
+
+  # Add bulk import related fields
+  if (checkmate::test_class(volume_item, "VolumeFile")) {
+    item$source_volume <- volume_item$volume
+    item$source_location <- volume_item$location
+  } else if (checkmate::test_class(volume_item, "VolumePrefix")) {
+    item$source_volume <- volume_item$volume
+    item$source_location <- volume_item$prefix
+    item$preserve_folder_structure <- preserve_folder_structure
   }
+
+  # Add and populate autorename field
+  item$autorename <- autorename
+  # Add and populate destination field
+  item[[destination_field_name]] <- destination
   # ---------------------------------------------------------------------------
   return(item)
 }
