@@ -507,7 +507,11 @@ Example of the list:
 }\if{html}{\out{</div>}}
 
 More details of how to import folders from your volume into the project
-or some project's folder you can read \href{https://docs.sevenbridges.com/reference/start-a-bulk-import-job#import-a-volume-folder-into-a-specific-folder}{here}}
+or some project's folder you can read \href{https://docs.sevenbridges.com/reference/start-a-bulk-import-job#import-a-volume-folder-into-a-specific-folder}{here}
+
+Utility function \code{\link{prepare_items_for_bulk_import}}
+can help you to prepare the \code{items} parameter based on the provided
+list of \code{\link{VolumeFile}} or \code{\link{VolumePrefix}} objects.}
 }
 \if{html}{\out{</div>}}
 }
