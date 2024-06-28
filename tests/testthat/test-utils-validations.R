@@ -149,7 +149,7 @@ test_that("check_folder_name function throws error when expected", {
 
   testthat::expect_error(
     do.call(check_folder_name, missing_name),
-    regexp = "Please, provide the folder's name.",
+    regexp = "Please provide the folder's name.",
     fixed = TRUE
   )
   testthat::expect_error(
@@ -441,21 +441,21 @@ test_that("transform_configuration_param throws error when needed", {
   # Provide configuration as NULL
   testthat::expect_error(
     transform_configuration_param(configuration = NULL),
-    regexp = "Invalid configuration parameter! \n Please, provide a string path to the JSON file or a named list.", # nolint
+    regexp = "Invalid configuration parameter! \n Please provide a string path to the JSON file or a named list.", # nolint
     fixed = TRUE
   )
 
   # Provide configuration as empty list
   testthat::expect_error(
     transform_configuration_param(configuration = list()),
-    regexp = "Invalid configuration parameter! \n Please, provide a string path to the JSON file or a named list.", # nolint
+    regexp = "Invalid configuration parameter! \n Please provide a string path to the JSON file or a named list.", # nolint
     fixed = TRUE
   )
 
   # Provide configuration as unnamed list
   testthat::expect_error(
     transform_configuration_param(configuration = list("unnamed list")),
-    regexp = "Invalid configuration parameter! \n Please, provide a string path to the JSON file or a named list.", # nolint
+    regexp = "Invalid configuration parameter! \n Please provide a string path to the JSON file or a named list.", # nolint
     fixed = TRUE
   )
 
@@ -535,7 +535,7 @@ test_that("check_upload_params throws error when needed", {
   # Fails when part length is too big
   testthat::expect_error(
     do.call(check_upload_params, test_bad_part_length),
-    regexp = "Total number of parts must be from 1 to 10,000 (inclusive). Please, modify part_size.", # nolint
+    regexp = "Total number of parts must be from 1 to 10,000 (inclusive). Please modify part_size.", # nolint
     fixed = TRUE
   )
 })

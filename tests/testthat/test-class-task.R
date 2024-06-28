@@ -138,7 +138,7 @@ test_that("Task method update() throws error when expected", {
   # Test missing batch input parameters
   testthat::expect_error(
     do.call(setup_task_obj$update, test_missing_batch_inputs),
-    regexp = "Batch is set to TRUE, therefore, please, set batching criteria (batch_by) and batch inputs.", # nolint
+    regexp = "Batch is set to TRUE, therefore, please set batching criteria (batch_by) and batch inputs.", # nolint
     fixed = TRUE
   )
 })

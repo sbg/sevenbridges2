@@ -155,7 +155,7 @@ test_that("Volume get_file method throws error when expected", {
   # Check empty args
   testthat::expect_error(
     setup_s3_volume_obj$get_file(),
-    regexp = "Empty arguments are not allowed. Please, provide either location or link.", # nolint
+    regexp = "Empty arguments are not allowed. Please provide either location or link.", # nolint
     fixed = TRUE
   )
   # Check if both args are provided
@@ -164,7 +164,7 @@ test_that("Volume get_file method throws error when expected", {
       location = "file-location",
       link = "link"
     ),
-    regexp = "Please, provide either location or link, not both.",
+    regexp = "Please provide either location or link, not both.",
     fixed = TRUE
   )
 })

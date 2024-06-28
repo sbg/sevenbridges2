@@ -283,7 +283,7 @@ test_that("Creating GC volumes with IAM Role type throws error when needed", {
   )
   testthat::expect_error(
     setup_volumes_obj$create_google_using_iam_role(from_path = no_creds_json),
-    regexp = "Configuration parameter within credentials is mandatory. \n Please, provide a path to JSON configuration file or a named list containing all configuration values.", # nolint
+    regexp = "Configuration parameter within credentials is mandatory. \n Please provide a path to JSON configuration file or a named list containing all configuration values.", # nolint
     fixed = TRUE
   )
 

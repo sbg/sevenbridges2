@@ -25,7 +25,7 @@ test_that("prepare_items_for_bulk_export() throws error when needed", {
   folder_type_file <- setup_folder_obj
   testthat::expect_error(
     prepare_items_for_bulk_export(files = list(valid_file_class, folder_type_file), destination_volume = "volume-id"), # nolint
-    regexp = "Provided list contains folder objects which cannot be exported. Please make sure to remove all folder objects (type = 'folder') and try again.", # nolint
+    regexp = "Provided list contains folder objects, which cannot be exported. Please make sure to remove all folder objects (type = 'folder') and try again.", # nolint
     fixed = TRUE
   )
 

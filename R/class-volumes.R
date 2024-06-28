@@ -643,7 +643,7 @@ Volumes <- R6::R6Class(
           configuration <- transform_configuration_param(config_params)
           args[["credentials"]][["configuration"]] <- configuration
         } else {
-          rlang::abort("Configuration parameter within credentials is mandatory. \n Please, provide a path to JSON configuration file or a named list containing all configuration values.") # nolint
+          rlang::abort("Configuration parameter within credentials is mandatory. \n Please provide a path to JSON configuration file or a named list containing all configuration values.") # nolint
         }
       }
 

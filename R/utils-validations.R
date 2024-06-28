@@ -248,7 +248,7 @@ check_settings <- function(settings) {
 #' @noRd
 check_folder_name <- function(name) {
   if (is_missing(name)) {
-    rlang::abort("Please, provide the folder's name.")
+    rlang::abort("Please provide the folder's name.")
   }
   checkmate::assert_string(name)
   if (substr(name, 1, 2) == "__") {
@@ -387,7 +387,7 @@ check_upload_params <- function(size, part_size) {
   if (part_length < 1 ||
     part_length > getOption("sevenbridges2")$MAXIMUM_TOTAL_PARTS) {
     # nolint start
-    rlang::abort("Total number of parts must be from 1 to 10,000 (inclusive). Please, modify part_size.")
+    rlang::abort("Total number of parts must be from 1 to 10,000 (inclusive). Please modify part_size.")
     # nolint end
   }
 }
@@ -507,7 +507,7 @@ transform_configuration_param <- function(configuration) {
     config_json_string <- readr::read_file(configuration)
   } else {
     rlang::abort(
-      "Invalid configuration parameter! \n Please, provide a string path to the JSON file or a named list." # nolint
+      "Invalid configuration parameter! \n Please provide a string path to the JSON file or a named list." # nolint
     )
   }
   return(config_json_string)

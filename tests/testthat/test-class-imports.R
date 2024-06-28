@@ -147,7 +147,7 @@ test_that("Imports submit_import() throws error when needed", {
   )
   testthat::expect_error(
     do.call(setup_imports_obj$submit_import, proj_parent_missing),
-    regexp = "Please, provide either destination project or parent parameter.",
+    regexp = "Please provide either destination project or parent parameter.",
     fixed = TRUE
   )
   proj_parent_provided <- list(
@@ -284,7 +284,7 @@ test_that("Imports bulk_submit_import() throws error when needed", {
   items_null <- list(items = NULL)
   testthat::expect_error(
     do.call(setup_imports_obj$bulk_submit_import, items_null),
-    regexp = "Items parameter should be set as nested list of files/folder information you want to import.", # nolint
+    regexp = "Items parameter should be set as a nested list of information on files/folders you want to import.", # nolint
     fixed = TRUE
   )
   items_non_list <- list(items = c("import"))
@@ -357,7 +357,7 @@ test_that("Imports bulk_submit_import() throws error when needed", {
   )
   testthat::expect_error(
     setup_imports_obj$bulk_submit_import(items = list(proj_parent_missing)),
-    regexp = "Please, provide either destination project or parent parameter in element 1.", # nolint
+    regexp = "Please provide either destination project or parent parameter in element 1.", # nolint
     fixed = TRUE
   )
   ## in element 2
@@ -374,7 +374,7 @@ test_that("Imports bulk_submit_import() throws error when needed", {
   )
   testthat::expect_error(
     setup_imports_obj$bulk_submit_import(items = proj_parent_missing),
-    regexp = "Please, provide either destination project or parent parameter in element 2.", # nolint
+    regexp = "Please provide either destination project or parent parameter in element 2.", # nolint
     fixed = TRUE
   )
   proj_parent_provided <- list(

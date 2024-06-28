@@ -163,8 +163,9 @@ Imports <- R6::R6Class(
     #'  volume you would like to import into some project/folder
     #'  on the Platform.
     #' @param destination_project Destination project id or Project
-    #'  object. Not required, but either `destination_project` or
-    #'  `destination_parent` directory must be provided.
+    #'  object. Not required, but either \cr
+    #'  `destination_project` or `destination_parent` directory must be
+    #'  provided.
     #' @param destination_parent Folder id or File object
     #'  (with `type = 'FOLDER'`). Not required, but either `destination_project`
     #'  or `destination_parent` directory must be provided.
@@ -176,10 +177,10 @@ Imports <- R6::R6Class(
     #'  If name is omitted, the alias name will default to the last segment of
     #'  the complete location (including the prefix) on the volume. \cr
     #'
-    #'  Segments are considered to be separated with forward slashes /.
+    #'  Segments are considered to be separated with forward slashes `/`.
     #'  Allowed characters in file names are all alphanumeric and special
-    #'  characters except forward slash /, while folder names can contain
-    #'  alphanumeric and special characters _, - and ..
+    #'  characters except forward slash `/`, while folder names can contain
+    #'  alphanumeric and special characters `_`, `-` and `.`.
     #' @param overwrite Set to `TRUE` if you want to overwrite the item if
     #'  another one with the same name already exists at the destination.
     #'  Bear in mind that if used with folders import, the folder's content
@@ -238,7 +239,7 @@ Imports <- R6::R6Class(
 
       if (is_missing(destination_project) &&
         is_missing(destination_parent)) {
-        rlang::abort("Please, provide either destination project or parent parameter.") # nolint
+        rlang::abort("Please provide either destination project or parent parameter.") # nolint
       }
       if (!is_missing(destination_project) &&
         !is_missing(destination_parent)) {
@@ -339,7 +340,7 @@ Imports <- R6::R6Class(
     #'  objects.
     bulk_get = function(imports) {
       if (is_missing(imports)) {
-        rlang::abort("Imports should be set as list of import job IDs or as list of Import objects.") # nolint
+        rlang::abort("Imports should be set as a list of import job IDs or list of Import objects.") # nolint
       }
       checkmate::assert_list(imports)
       unlisted_ids <- lapply(imports, check_and_transform_id, "Import")
@@ -390,10 +391,10 @@ Imports <- R6::R6Class(
     #'        file or folder to import.
     #'        This location should be recognizable to the underlying cloud
     #'        service as a valid key or path to the item. If the item being
-    #'        imported is a folder, its path should end with a /. \cr
+    #'        imported is a folder, its path should end with a `/`. \cr
     #'        Please note that if this volume was configured with a prefix
     #'        parameter when it was created, the value of prefix will be
-    #'        prepended to location before attempting to locate the item on
+    #'        prepended to the location before attempting to locate the item on
     #'        the volume.
     #'      \item `destination_project` - Project object or ID to import
     #'        files/folders into. Should not be used together with
@@ -447,13 +448,12 @@ Imports <- R6::R6Class(
     #'            )
     #'          )
     #' ```
-    #'  More details of how to import folders from your volume into the project
     # nolint start
-    #'  or some project's folder you can read [here](https://docs.sevenbridges.com/reference/start-a-bulk-import-job#import-a-volume-folder-into-a-specific-folder)
+    #'  Read more on how to [import folders from your volume into a project or a project folder](https://docs.sevenbridges.com/reference/start-a-bulk-import-job#import-a-volume-folder-into-a-specific-folder).
     # nolint end
     #'
     #'  Utility function \code{\link{prepare_items_for_bulk_import}}
-    #'  can help you to prepare the `items` parameter based on the provided
+    #'  can help you prepare the `items` parameter based on the provided
     #'  list of \code{\link{VolumeFile}} or \code{\link{VolumePrefix}} objects.
     #'
     #' @importFrom checkmate assert_list assert_string test_r6 assert_logical
@@ -489,7 +489,7 @@ Imports <- R6::R6Class(
     #'  objects.
     bulk_submit_import = function(items) {
       if (is_missing(items)) {
-        rlang::abort("Items parameter should be set as nested list of files/folder information you want to import.") # nolint
+        rlang::abort("Items parameter should be set as a nested list of information on files/folders you want to import.") # nolint
       }
       checkmate::assert_list(items)
 
@@ -528,7 +528,7 @@ Imports <- R6::R6Class(
         if (is_missing(item[["destination_project"]]) &&
           is_missing(item[["destination_parent"]])) {
           rlang::abort(
-            glue::glue("Please, provide either destination project or parent parameter in element {i}.") # nolint
+            glue::glue("Please provide either destination project or parent parameter in element {i}.") # nolint
           )
         }
         if (!is_missing(item[["destination_project"]]) &&
@@ -593,7 +593,7 @@ Imports <- R6::R6Class(
 
       res$items <- asImportList(res, auth = self$auth, bulk = TRUE)
 
-      rlang::inform(glue::glue("New import jobs have started!"))
+      rlang::inform(glue::glue("New import jobs have started."))
 
       return(asCollection(res, auth = self$auth))
       # nocov end

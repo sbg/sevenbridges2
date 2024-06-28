@@ -769,7 +769,7 @@ File <- R6::R6Class(
       }
 
       if (is_missing(directory_path)) {
-        rlang::abort("Please, provide directory path where to download your file.") # nolint
+        rlang::abort("Please provide directory path where to download your file.") # nolint
       } else {
         # check if directory exists
         check_download_path(directory_path, filename)

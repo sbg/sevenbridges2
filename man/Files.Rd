@@ -81,12 +81,12 @@ R6 Class representing Files resource.
 
 \dontrun{
  # Delete two files by providing their IDs
- a$files$delete(files = list("file_1_ID", "file_2_ID"))
+ a$files$bulk_delete(files = list("file_1_ID", "file_2_ID"))
 }
 
 \dontrun{
  # Delete two files by providing a list of File objects
- a$files$delete(files = list(File_Object_1, File_Object_2))
+ a$files$bulk_delete(files = list(File_Object_1, File_Object_2))
 }
 
 
@@ -460,12 +460,12 @@ the console.
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
  # Delete two files by providing their IDs
- a$files$delete(files = list("file_1_ID", "file_2_ID"))
+ a$files$bulk_delete(files = list("file_1_ID", "file_2_ID"))
 }
 
 \dontrun{
  # Delete two files by providing a list of File objects
- a$files$delete(files = list(File_Object_1, File_Object_2))
+ a$files$bulk_delete(files = list(File_Object_1, File_Object_2))
 }
 
 
@@ -532,7 +532,7 @@ replacing all existing information and erasing omitted parameters.
 }
 \subsection{Details}{
 For each of the specified files, the call sets a new \code{name},
-new \code{tags} and \code{metadata}.
+new \code{tags}, and \code{metadata}.
 
 When editing fields in the \code{\link{File}} objects you wish to
 update, keep the following in mind:
@@ -573,7 +573,7 @@ The maximum number of files you can update the details for per call is
 \if{latex}{\out{\hypertarget{method-Files-bulk_edit}{}}}
 \subsection{Method \code{bulk_edit()}}{
 This method modifies the existing information for specified
-files or add new information while preserving omitted parameters.
+files or adds new information while preserving omitted parameters.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Files$bulk_edit(files)}\if{html}{\out{</div>}}
 }
@@ -587,7 +587,7 @@ files or add new information while preserving omitted parameters.
 }
 \subsection{Details}{
 For each of the specified files, the call edits its \code{name},
-\code{tags} and \code{metadata}.
+\code{tags}, and \code{metadata}.
 
 When editing fields in the \code{\link{File}} objects you wish to
 update, keep the following in mind:

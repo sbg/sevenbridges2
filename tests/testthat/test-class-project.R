@@ -85,7 +85,7 @@ test_that("Project create_folder method throws error when expected", {
   # Test with missing_folder_name
   testthat::expect_error(
     do.call(setup_project_obj$create_folder, missing_folder_name),
-    regexp = "Please, provide the folder's name.",
+    regexp = "Please provide the folder's name.",
     fixed = TRUE
   )
   # Test with bad_format_folder_name

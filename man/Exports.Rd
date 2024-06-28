@@ -439,6 +439,7 @@ of the files exist, they will no longer count towards your total
 storage price on the Platform. In summary, once you export files from
 the Platform to a volume, they are no longer part of the storage on
 the Platform and cannot be exported again.
+
 Learn more about using the Volumes API for \href{https://docs.sevenbridges.com/docs/aws-cloud-storage-tutorial}{Amazon S3} and
 for \href{https://docs.sevenbridges.com/docs/google-cloud-storage-tutorial}{Google Cloud Storage}.
 \subsection{Usage}{
@@ -450,44 +451,42 @@ for \href{https://docs.sevenbridges.com/docs/google-cloud-storage-tutorial}{Goog
 \describe{
 \item{\code{items}}{Nested list of elements containing information about each
 file to be exported. For each element, users must provide:
-
 \itemize{
-\item \code{source_file} - File id or File object you want to export to
+\item \code{source_file} - File ID or File object you want to export to
 the volume,
-\item \code{destination_volume} - Volume id or Volume object you want to
+\item \code{destination_volume} - Volume ID or Volume object you want to
 export files into.
 \item \code{destination_location} - Volume-specific location to which
 the file will be exported. This location should be recognizable
 to the underlying cloud service as a valid key or path to a
 new file. Please note that if this volume has been configured
-with a \code{prefix} parameter, the value of \code{prefix} will be prepended
-to location before attempting to create the file on the volume.
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{   If you would like to export the file into some folder on the
-   volume, please add folder name as prefix before file name
-   in form `<folder-name>/<file-name>`.
- \\item `overwrite` - Set to `TRUE` if you want to overwrite the
-   item if another one with the same name already exists at the
-   destination.
- \\item `properties` - Named list of additional volume properties,
-   like:
-   \\itemize\{
-     \\item `sse_algorithm` - S3 server-side encryption to use when
-       exporting to this bucket. Supported values:
-       `AES256` (SSE-S3 encryption), `aws:kms`, `null`
-       (no server-side encryption). Default: `AES256`.
-     \\item `sse_aws_kms_key_id`: Applies to type: `s3`.
-       If AWS KMS encryption is used, this should be set to the
-       required KMS key. If not set and `aws:kms` is set as
-       `sse_algorithm`, default KMS key is used.
-     \\item `aws_canned_acl`: S3 canned ACL to apply on the object
-       on during export. Supported values: any one of
- [S3 canned ACLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl);
- `null` (do not apply canned ACLs). Default: `null`.
- \}
-}\if{html}{\out{</div>}}
-
+with a \code{prefix} parameter, the value of \code{prefix} will be
+prepended to the location before attempting to create the file on
+the volume. \cr
+If you would like to export the file into a folder on
+the volume, please add folder name as a prefix before the file
+name in the \verb{<folder-name>/<file-name>} form.
+\item \code{overwrite} - Set to \code{TRUE} if you want to overwrite the
+item with the same name if it already exists at the
+destination.
+\item \code{properties} - Named list of additional volume properties,
+like:
+\itemize{
+\item \code{sse_algorithm} - S3 server-side encryption to use when
+exporting to this bucket. Supported values:
+\code{AES256} (SSE-S3 encryption), \code{aws:kms}, \code{null}
+(no server-side encryption). Default: \code{AES256}.
+\item \code{sse_aws_kms_key_id}: Applies to type: \code{s3}.
+If AWS KMS encryption is used, this should be set to the
+required KMS key. If not set and \code{aws:kms} is set as
+\code{sse_algorithm}, default KMS key is used.
+\item \code{aws_canned_acl}: S3 canned ACL to apply on the object
+during export. Supported values: any one of
+\href{https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl}{S3 canned ACLs};
+\code{null} (do not apply canned ACLs). Default: \code{null}.
 }
+}
+
 Example of the list:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{items <- list(
@@ -513,11 +512,11 @@ Example of the list:
         )
 }\if{html}{\out{</div>}}
 
-More details of how to export files from your project into the volume
-or some volume's folder you can read \href{https://docs.sevenbridges.com/reference/start-a-bulk-export-job}{here}
+Read more on how to \href{https://docs.sevenbridges.com/reference/start-a-bulk-export-job}{export files from your project to a volume or a volume folder}.
 
 Utility function \code{\link{prepare_items_for_bulk_export}} can help
-you to prepare the \code{items} parameter for \code{bulk_submit_export()} method.}
+you prepare the \code{items} parameter for the \code{bulk_submit_export()}
+method.}
 
 \item{\code{copy_only}}{If set to true, the files will be copied to a volume
 but the source files will remain on the Platform.}

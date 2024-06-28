@@ -280,7 +280,7 @@ like 'advanced_access', 'fields', etc.}
 \if{latex}{\out{\hypertarget{method-Collection-all}{}}}
 \subsection{Method \code{all()}}{
 Fetches all available items by iterating through all pages.
-Please, be aware of the API rate limit for your request.
+Please be aware of the API rate limit for your request.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Collection$all(...)}\if{html}{\out{</div>}}
 }

@@ -318,10 +318,10 @@ Tasks <- R6::R6Class(
     #'  \itemize{
     #'    \item `main_location` - Defines the output location for all
     #'      output nodes in the task. Can be a string path within the project in
-    #'      which the task is created, for example
-    #'      `/Analysis/<task_id>_<task_name>/`
-    #'      or a path on an attached volume, such as
-    #'      `volumes://volume_name/<project_id>/html`.
+    #'      which the task is created, for example \cr
+    #'      `/Analysis/<task_id>_<task_name>/` \cr
+    #'      or a path on an attached volume, such as \cr
+    #'      `volumes://volume_name/<project_id>/html`. \cr
     #'      Parts of the path enclosed in angle brackets <> are tokens that are
     #'      dynamically replaced with corresponding values during task
     #'      execution.
@@ -457,7 +457,7 @@ Tasks <- R6::R6Class(
           task_data[["batch_input"]] <- batch_input
           task_data[["batch_by"]] <- batch_by
         } else {
-          rlang::abort("Batch is set to TRUE, therefore, please, set batching criteria (batch_by) and batch inputs.") # nolint
+          rlang::abort("Batch is set to TRUE, therefore, please set batching criteria (batch_by) and batch inputs.") # nolint
         }
       }
 
@@ -511,7 +511,7 @@ Tasks <- R6::R6Class(
     bulk_get = function(tasks) {
       if (is_missing(tasks)) {
         rlang::abort(
-          "Please provide 'tasks' parameter as a list of task IDs or Task objects." # nolint
+          "Please provide the 'tasks' parameter as a list of task IDs or Task objects." # nolint
         )
       }
 

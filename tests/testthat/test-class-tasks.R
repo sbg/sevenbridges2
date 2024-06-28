@@ -214,7 +214,7 @@ test_that("Tasks create() throws error when needed", {
   # Test missing batch input parameters
   testthat::expect_error(
     do.call(setup_tasks_obj$create, test_missing_batch_inputs),
-    regexp = "Batch is set to TRUE, therefore, please, set batching criteria (batch_by) and batch inputs.", # nolint
+    regexp = "Batch is set to TRUE, therefore, please set batching criteria (batch_by) and batch inputs.", # nolint
     fixed = TRUE
   )
 
@@ -236,7 +236,7 @@ test_that("Tasks bulk_get() throws error when expected", {
   # Bulk get fails when tasks param is not provided
   testthat::expect_error(
     do.call(setup_tasks_obj$bulk_get, test_missing_tasks_param),
-    regexp = "Please provide 'tasks' parameter as a list of task IDs or Task objects.", # nolint
+    regexp = "Please provide the 'tasks' parameter as a list of task IDs or Task objects.", # nolint
     fixed = TRUE
   )
 })

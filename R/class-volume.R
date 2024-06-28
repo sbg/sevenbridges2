@@ -484,10 +484,10 @@ Volume <- R6::R6Class(
         typed.missing = TRUE
       )
       if (!is_missing(location) && !is_missing(link)) {
-        rlang::abort("Please, provide either location or link, not both.")
+        rlang::abort("Please provide either location or link, not both.")
       }
       if (is_missing(location) && is_missing(link)) {
-        rlang::abort("Empty arguments are not allowed. Please, provide either location or link.") # nolint
+        rlang::abort("Empty arguments are not allowed. Please provide either location or link.") # nolint
       }
       # nocov start
       if (!is_missing(link)) {

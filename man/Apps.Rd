@@ -159,7 +159,7 @@ This is a pagination-specific attribute.}
 
 \item{\code{fields}}{Selector specifying a subset of fields to include in the
 response. For querying apps it is set to return all fields except 'raw'
-which stores CWL in form of a list. Please, be careful when setting to
+which stores CWL in form of a list. Please be careful when setting to
 return all fields, since the execution of this API request could be
 time-consuming.}
 

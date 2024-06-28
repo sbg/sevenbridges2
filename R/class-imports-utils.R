@@ -34,8 +34,8 @@
 #'  object. Not required, but either `destination_project` or
 #'  `destination_parent` directory must be provided.
 #' @param destination_parent Folder ID or \code{\link{File}} object
-#'  (with `type = 'FOLDER'`). Not required, but either `destination_project` or
-#'  `destination_parent` directory must be provided.
+#'  (with `type = 'FOLDER'`). Not required, but either \cr
+#'  `destination_project` or `destination_parent` directory must be provided.
 #' @param autorename Logical indicating whether to autorename conflicting
 #'  files (default is `FALSE`). Set to `TRUE` if you want to automatically
 #'  rename the item (by prefixing its name with an underscore and number) if
@@ -48,8 +48,8 @@
 #'  exact source folder structure. The default value is `TRUE` if the item
 #'  being imported is a folder. Should not be used if you are importing a
 #'  file. Bear in mind that if you use `preserve_folder_structure = FALSE`,
-#'  that the response will be the parent folder object containing imported
-#'  files alongside with other files if they exist. Keep in mind that the same
+#'  the response will be the parent folder object containing imported files
+#'  alongside with other files if they exist. Keep in mind that the same
 #'  `preserve_folder_structure` option will be applied to all folders.
 #'
 #' @importFrom rlang abort
@@ -118,7 +118,7 @@ prepare_items_for_bulk_import <- function(volume_items,
   }
   if (!is_missing(destination_project) &&
     !is_missing(destination_parent)) {
-    rlang::abort("Either destination project or parent parameter must be proveded, not both.") # nolint
+    rlang::abort("Either destination project or parent parameter must be provided, not both.") # nolint
   }
   if (!is_missing(destination_project)) {
     destination <- check_and_transform_id(
@@ -130,7 +130,7 @@ prepare_items_for_bulk_import <- function(volume_items,
   if (!is_missing(destination_parent)) {
     if (checkmate::test_r6(destination_parent, classes = "File") &&
       tolower(destination_parent$type) != "folder") {
-      rlang::abort("Destination parent directory parameter must contain folder id or File object with type = 'folder'.") # nolint
+      rlang::abort("Destination parent directory parameter must contain folder ID or File object with type = 'folder'.") # nolint
     }
     destination <- check_and_transform_id(
       x = destination_parent,

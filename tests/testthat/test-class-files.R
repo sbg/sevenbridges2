@@ -238,7 +238,7 @@ test_that("Files create_folder() throws error when expected", {
   # Copy fails when name is missing
   testthat::expect_error(
     do.call(setup_files_obj$create_folder, missing_name_param),
-    regexp = "Please, provide the folder's name.", # nolint
+    regexp = "Please provide the folder's name.", # nolint
     fixed = TRUE
   )
 
@@ -314,7 +314,7 @@ test_that("Files bulk_get() throws error when expected", {
   # Bulk get fails when files param is not provided
   testthat::expect_error(
     do.call(setup_files_obj$bulk_get, test_missing_file_ids),
-    regexp = "Please provide 'files' parameter.",
+    regexp = "Please provide the 'files' parameter.",
     fixed = TRUE
   )
 })
@@ -328,7 +328,7 @@ test_that("Files bulk_update() throws error when expected", {
   # Bulk update fails when files param is not provided
   testthat::expect_error(
     do.call(setup_files_obj$bulk_update, test_missing_files),
-    regexp = "Please provide 'files' parameter.",
+    regexp = "Please provide the 'files' parameter.",
     fixed = TRUE
   )
 
@@ -345,7 +345,7 @@ test_that("Files bulk_edit() throws error when expected", {
   # Bulk edit fails when files param is not provided
   testthat::expect_error(
     do.call(setup_files_obj$bulk_edit, test_missing_files),
-    regexp = "Please provide 'files' parameter.",
+    regexp = "Please provide the 'files' parameter.",
     fixed = TRUE
   )
 
@@ -364,7 +364,7 @@ test_that("Files bulk_delete() method throws error when expected", {
   # Bulk delete fails when files param is not provided
   testthat::expect_error(
     setup_files_obj$bulk_delete(test_missing_files),
-    regexp = "Please provide 'files' parameter.",
+    regexp = "Please provide the 'files' parameter.",
     fixed = TRUE
   )
 })

@@ -226,7 +226,7 @@ Exports <- R6::R6Class(
       }
       if (checkmate::test_r6(source_file, classes = "File") &&
         tolower(source_file$type) == "folder") {
-        rlang::abort("Folders cannot be exported. Please, provide single file id or File object with type = 'file'.") # nolint
+        rlang::abort("Folders cannot be exported. Please provide a single file ID or File object with type = 'file'.") # nolint
       }
       file <- check_and_transform_id(source_file, class_name = "File")
 
@@ -316,7 +316,7 @@ Exports <- R6::R6Class(
     #'  objects.
     bulk_get = function(exports) {
       if (is_missing(exports)) {
-        rlang::abort("Exports should be set as list of export job IDs or as list of Export objects.") # nolint
+        rlang::abort("Exports should be set as a list of export job IDs or list of Export objects.") # nolint
       }
 
       checkmate::assert_list(exports)
@@ -360,6 +360,7 @@ Exports <- R6::R6Class(
     #'  storage price on the Platform. In summary, once you export files from
     #'  the Platform to a volume, they are no longer part of the storage on
     #'  the Platform and cannot be exported again.
+    #'
     # nolint start
     #'  Learn more about using the Volumes API for [Amazon S3](https://docs.sevenbridges.com/docs/aws-cloud-storage-tutorial) and
     #'  for [Google Cloud Storage](https://docs.sevenbridges.com/docs/google-cloud-storage-tutorial).
@@ -367,25 +368,23 @@ Exports <- R6::R6Class(
     #'
     #' @param items Nested list of elements containing information about each
     #'  file to be exported. For each element, users must provide:
-    #'
-    # nolint start
     #'  \itemize{
-    #'      \item `source_file` - File id or File object you want to export to
+    #'      \item `source_file` - File ID or File object you want to export to
     #'        the volume,
-    #'      \item `destination_volume` - Volume id or Volume object you want to
+    #'      \item `destination_volume` - Volume ID or Volume object you want to
     #'        export files into.
     #'      \item `destination_location` - Volume-specific location to which
     #'        the file will be exported. This location should be recognizable
     #'        to the underlying cloud service as a valid key or path to a
     #'        new file. Please note that if this volume has been configured
-    #'        with a `prefix` parameter, the value of `prefix` will be prepended
-    #'        to location before attempting to create the file on the volume.
-    #'
-    #'        If you would like to export the file into some folder on the
-    #'        volume, please add folder name as prefix before file name
-    #'        in form `<folder-name>/<file-name>`.
+    #'        with a `prefix` parameter, the value of `prefix` will be
+    #'        prepended to the location before attempting to create the file on
+    #'        the volume. \cr
+    #'        If you would like to export the file into a folder on
+    #'        the volume, please add folder name as a prefix before the file
+    #'        name in the `<folder-name>/<file-name>` form.
     #'      \item `overwrite` - Set to `TRUE` if you want to overwrite the
-    #'        item if another one with the same name already exists at the
+    #'        item with the same name if it already exists at the
     #'        destination.
     #'      \item `properties` - Named list of additional volume properties,
     #'        like:
@@ -399,12 +398,15 @@ Exports <- R6::R6Class(
     #'            required KMS key. If not set and `aws:kms` is set as
     #'            `sse_algorithm`, default KMS key is used.
     #'          \item `aws_canned_acl`: S3 canned ACL to apply on the object
-    #'            on during export. Supported values: any one of
+    #'            during export. Supported values: any one of
+    # nolint start
     #'      [S3 canned ACLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl);
     #'      `null` (do not apply canned ACLs). Default: `null`.
     #'      }
     #'  }
     # nolint end
+    #'
+    #'
     #'  Example of the list:
     #'  ```{r}
     #'  items <- list(
@@ -429,13 +431,14 @@ Exports <- R6::R6Class(
     #'            )
     #'          )
     #' ```
-    #'  More details of how to export files from your project into the volume
+    #'
     # nolint start
-    #'  or some volume's folder you can read [here](https://docs.sevenbridges.com/reference/start-a-bulk-export-job)
+    #'  Read more on how to [export files from your project to a volume or a volume folder](https://docs.sevenbridges.com/reference/start-a-bulk-export-job).
     # nolint end
     #'
     #'  Utility function \code{\link{prepare_items_for_bulk_export}} can help
-    #'  you to prepare the `items` parameter for `bulk_submit_export()` method.
+    #'  you prepare the `items` parameter for the `bulk_submit_export()`
+    #'  method.
     #'
     #' @param copy_only If set to true, the files will be copied to a volume
     #'  but the source files will remain on the Platform.
@@ -479,7 +482,7 @@ Exports <- R6::R6Class(
     #'  objects.
     bulk_submit_export = function(items, copy_only = FALSE) {
       if (is_missing(items)) {
-        rlang::abort("Items parameter should be set as nested list of files information you want to export.") # nolint
+        rlang::abort("Items parameter should be set as a nested list of information on files you want to export.") # nolint
       }
       checkmate::assert_list(items)
 
@@ -498,7 +501,7 @@ Exports <- R6::R6Class(
         }
         if (checkmate::test_r6(item[["source_file"]], classes = "File") &&
           tolower(item[["source_file"]]$type) == "folder") {
-          rlang::abort(glue::glue("Folders cannot be exported. Please, provide single file id or File object with type = 'file' in element {i}.")) # nolint
+          rlang::abort(glue::glue("Folders cannot be exported. Please provide a single file ID or File object with type = 'file' in element {i}.")) # nolint
         }
         body_element$source <- list(
           file = check_and_transform_id(item[["source_file"]],
@@ -560,15 +563,15 @@ Exports <- R6::R6Class(
       }
 
       if (length(failed_export_tries) == length(res$items)) {
-        rlang::abort("All files cannot to be exported. Please, check the limitations of files export in the API documentation.") # nolint
+        rlang::abort("None of the files can be exported. Please check file export limitations in the API documentation.") # nolint
       }
 
       res$items <- asExportList(res, auth = self$auth, bulk = TRUE)
-      rlang::inform(glue::glue("New export jobs have started!"))
+      rlang::inform(glue::glue("New export jobs have started."))
 
       if (length(failed_export_tries) > 0) {
         rlang::inform(glue::glue("However, some files cannot be exported.
-                                 Please, check the limitations of files export in the API documentation.")) # nolint
+                                 Please check file export limitations in the API documentation.")) # nolint
       }
 
       return(asCollection(res, auth = self$auth))

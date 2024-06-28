@@ -245,7 +245,7 @@ Get the details of an active multipart upload.
 \describe{
 \item{\code{list_parts}}{If \code{TRUE}, also return a list of parts
 that have been reported as completed for this multipart upload.
-Please, bear in mind that the output could be heavy for printing if
+Please bear in mind that the output could be heavy for printing if
 there are lot of parts.}
 }
 \if{html}{\out{</div>}}

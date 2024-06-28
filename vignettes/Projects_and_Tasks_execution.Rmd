@@ -580,7 +580,7 @@ efficiently - in a single API call. This method accepts an argument,
 `files`, which can be either a list of File objects or a list of strings
 representing file IDs.
 
-File id can also be extracted from the URL in the Platform's visual interface.
+File ID can also be extracted from the URL in the Platform's visual interface.
 
 ```{r}
 # Get details of multiple files by providing their IDs
@@ -622,15 +622,15 @@ requires a single argument, `files`, which should be a list of `File` objects.
 
 Use this call to set new information for the files, thus replacing all existing
 information and erasing omitted parameters. For each of the specified files,
-the call sets a new name, new tags and metadata.
+the call sets a new name, new tags, and metadata.
 
 When editing fields in the File objects you wish to update, keep the
 following in mind:
 
-- The `name` filed should be a string representing the new name of the file.
+- The `name` field should be a string representing the new name of the file.
 - The `metadata` field should be a named list of key-value pairs. The keys and
   values should be strings.
-- The `tags` filed should be an unnamed list of values.
+- The `tags` field should be an unnamed list of values.
 
 The maximum number of files you can update the details for per call is 100.
 
@@ -667,10 +667,10 @@ files, the call edits its name, tags, and metadata.
 When editing fields in the File objects you wish to update, keep the
 following in mind:
 
-- The `name` filed should be a string representing the new name of the file.
+- The `name` field should be a string representing the new name of the file.
 - The `metadata` field should be a named list of key-value pairs. The keys and
   values should be strings.
-- The `tags` filed should be an unnamed list of values.
+- The `tags` field should be an unnamed list of values.
 
 The maximum number of files you can edit the details for per call is 100.
 
@@ -772,7 +772,7 @@ demo_file$print()
 • size: 56 bytes
 • name: Drop-seq_small_example.bam
 • id: 643530c286c9522d9222213d17
-• href: https://api.sbgenomics.com/v2/files/643530c286c9522d9222213d17
+• href: `https://api.sbgenomics.com/v2/files/643530c286c9522d9222213d17`
 ```
 
 But if you want to see all the details about a file in a specific format, 
@@ -782,6 +782,7 @@ you can use the `detailed_print()` method:
 # Pretty print
 demo_file$detailed_print()
 ```
+
 ```
 ── File ────────────────────────────────────────────────────────────────────────────────────────────────────────
 • type: file
@@ -793,7 +794,7 @@ demo_file$detailed_print()
 • size: 56 bytes
 • name: Drop-seq_small_example.bam
 • id: 643530c286c9522d9222213d17
-• href: https://api.sbgenomics.com/v2/files/643530c286c9522d9222213d17
+• href: `https://api.sbgenomics.com/v2/files/643530c286c9522d9222213d17`
 • tags
   • tag_1: TEST
   • tag_2: SEQ
