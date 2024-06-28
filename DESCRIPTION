@@ -1,14 +1,14 @@
 Package: sevenbridges2
 Type: Package
 Title: The 'Seven Bridges Platform' API Client
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
-    person("Marija", "Gacic", email = "marija.jovanovic@velsera.com", role = c("aut", "cre")),
-    person("Marko", "Trifunovic", email = "marko.trifunovic@sevenbridges.com", role = c("aut")),
+    person("Marko", "Trifunovic", email = "marko.trifunovic@velsera.com", role = c("aut", "cre")),
+    person("Marija", "Gacic", email = "marija.jovanovic@velsera.com", role = c("aut")),
     person("Vladimir", "Obucina", email = "vladimir.obucina@velsera.com", role = c("aut")),
     person("Velsera", role = c("cph", "fnd"))
     )
-Maintainer: Marija Gacic <marija.jovanovic@velsera.com>
+Maintainer: Marko Trifunovic <marko.trifunovic@velsera.com>
 Description: R client and utilities for 'Seven Bridges Platform' API, from 'Cancer Genomics Cloud' 
     to other 'Seven Bridges' supported platforms. API documentation is hosted publicly 
     at <https://docs.sevenbridges.com/docs/the-api>.
@@ -48,4 +48,5 @@ Suggests:
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Roxygen: list(markdown = TRUE)
+Language: en-US
 BugReports: https://github.com/sbg/sevenbridges2/issues
