@@ -198,7 +198,7 @@ Collection <- R6::R6Class(
 
     # Get all results ---------------------------------------------------------
     #' @description Fetches all available items by iterating through all pages.
-    #'  Please, be aware of the API rate limit for your request.
+    #'  Please be aware of the API rate limit for your request.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'advanced_access', 'fields', etc.

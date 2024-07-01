@@ -21,8 +21,8 @@ object. Not required, but either \code{destination_project} or
 \code{destination_parent} directory must be provided.}
 
 \item{destination_parent}{Folder ID or \code{\link{File}} object
-(with \code{type = 'FOLDER'}). Not required, but either \code{destination_project} or
-\code{destination_parent} directory must be provided.}
+(with \code{type = 'FOLDER'}). Not required, but either \cr
+\code{destination_project} or \code{destination_parent} directory must be provided.}
 
 \item{autorename}{Logical indicating whether to autorename conflicting
 files (default is \code{FALSE}). Set to \code{TRUE} if you want to automatically
@@ -37,8 +37,8 @@ folder structure. Set to \code{TRUE} if you want to keep the
 exact source folder structure. The default value is \code{TRUE} if the item
 being imported is a folder. Should not be used if you are importing a
 file. Bear in mind that if you use \code{preserve_folder_structure = FALSE},
-that the response will be the parent folder object containing imported
-files alongside with other files if they exist. Keep in mind that the same
+the response will be the parent folder object containing imported files
+alongside with other files if they exist. Keep in mind that the same
 \code{preserve_folder_structure} option will be applied to all folders.}
 }
 \value{

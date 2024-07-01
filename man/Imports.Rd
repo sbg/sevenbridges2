@@ -296,8 +296,9 @@ volume you would like to import into some project/folder
 on the Platform.}
 
 \item{\code{destination_project}}{Destination project id or Project
-object. Not required, but either \code{destination_project} or
-\code{destination_parent} directory must be provided.}
+object. Not required, but either \cr
+\code{destination_project} or \code{destination_parent} directory must be
+provided.}
 
 \item{\code{destination_parent}}{Folder id or File object
 (with \code{type = 'FOLDER'}). Not required, but either \code{destination_project}
@@ -311,10 +312,10 @@ that name to be deleted before the alias is created.
 If name is omitted, the alias name will default to the last segment of
 the complete location (including the prefix) on the volume. \cr
 
-Segments are considered to be separated with forward slashes /.
+Segments are considered to be separated with forward slashes \code{/}.
 Allowed characters in file names are all alphanumeric and special
-characters except forward slash /, while folder names can contain
-alphanumeric and special characters _, - and ..}
+characters except forward slash \code{/}, while folder names can contain
+alphanumeric and special characters \verb{_}, \code{-} and \code{.}.}
 
 \item{\code{overwrite}}{Set to \code{TRUE} if you want to overwrite the item if
 another one with the same name already exists at the destination.
@@ -449,10 +450,10 @@ files/folders from,
 file or folder to import.
 This location should be recognizable to the underlying cloud
 service as a valid key or path to the item. If the item being
-imported is a folder, its path should end with a /. \cr
+imported is a folder, its path should end with a \code{/}. \cr
 Please note that if this volume was configured with a prefix
 parameter when it was created, the value of prefix will be
-prepended to location before attempting to locate the item on
+prepended to the location before attempting to locate the item on
 the volume.
 \item \code{destination_project} - Project object or ID to import
 files/folders into. Should not be used together with
@@ -506,11 +507,10 @@ Example of the list:
         )
 }\if{html}{\out{</div>}}
 
-More details of how to import folders from your volume into the project
-or some project's folder you can read \href{https://docs.sevenbridges.com/reference/start-a-bulk-import-job#import-a-volume-folder-into-a-specific-folder}{here}
+Read more on how to \href{https://docs.sevenbridges.com/reference/start-a-bulk-import-job#import-a-volume-folder-into-a-specific-folder}{import folders from your volume into a project or a project folder}.
 
 Utility function \code{\link{prepare_items_for_bulk_import}}
-can help you to prepare the \code{items} parameter based on the provided
+can help you prepare the \code{items} parameter based on the provided
 list of \code{\link{VolumeFile}} or \code{\link{VolumePrefix}} objects.}
 }
 \if{html}{\out{</div>}}

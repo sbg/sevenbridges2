@@ -213,7 +213,7 @@ test_that("prepare_items_for_bulk_import() throws error when needed", {
       destination_project = valid_destination_project,
       destination_parent = valid_destination_parent
     ),
-    regexp = "Either destination project or parent parameter must be proveded, not both.",
+    regexp = "Either destination project or parent parameter must be provided, not both.",
     fixed = TRUE
   )
   # nolint end
@@ -263,7 +263,7 @@ test_that("prepare_items_for_bulk_import() throws error when needed", {
   bad_dest_parent_class_file <- setup_file_obj
   testthat::expect_error(
     prepare_items_for_bulk_import(volume_items = list(valid_volume_item), destination_parent = bad_dest_parent_class_file), # nolint
-    regexp = "Destination parent directory parameter must contain folder id or File object with type = 'folder'.", # nolint
+    regexp = "Destination parent directory parameter must contain folder ID or File object with type = 'folder'.", # nolint
     fixed = TRUE
   )
 

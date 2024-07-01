@@ -14,21 +14,21 @@ prepare_items_for_bulk_export(
 }
 \arguments{
 \item{files}{A list of \code{\link{File}} objects or list of strings
-(IDs) of the files you are about to export to a volume..}
+(IDs) of the files you are about to export to a volume.}
 
 \item{destination_volume}{Either a \code{\link{Volume}} object or the ID of
 the volume to which the file will be exported.}
 
 \item{destination_location_prefix}{Character. If the volume has been
-configured with a prefix parameter, \code{destination_location_prefix} value
-will be prepended to location before attempting to create the file on the
-volume. This parameter can be treated as a path to a new file on the
-volume. The default value is \code{NULL}.
+configured with a prefix parameter, \cr
+\code{destination_location_prefix} value will be prepended to location before
+attempting to create the file on the volume. This parameter can be treated
+as a path to a new file on the volume. The default value is \code{NULL}.
 
-If you would like to export the file into some folder on the volume,
-please add folder name as prefix before file name in form
-\verb{<folder-name>/}. Remember to put a slash character at the end of a
-string.
+If you would like to export the file into a folder on the volume,
+please add folder name as the prefix before the file name in the
+\code{"<folder-name>/"} form. Remember to put a slash character ("/") at the end
+of the string.
 
 Keep in mind that the same prefix will be added to all items (files) in the
 resulting list.}
@@ -51,13 +51,13 @@ If AWS KMS encryption is used, this should be set to the required
 KMS key. If not set and \code{aws:kms} is set as \code{sse_algorithm},
 default KMS key is used.
 \item \code{aws_canned_acl}: S3 canned ACL to apply on the object
-on during export. Supported values: any one of
+during export. Supported values: any one of
 \href{https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl}{S3 canned ACLs};
 \code{null} (do not apply canned ACLs). Default: \code{null}.
 }
 
-Keep in mind that the same properties options will be applied to all items
-(files) in the resulting list.}
+Keep in mind that the same properties will be applied to all items (files)
+in the resulting list.}
 }
 \value{
 List of body params items for for staring an export job.

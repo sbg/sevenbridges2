@@ -30,19 +30,19 @@
 #'  }
 #'
 #' @param files A list of \code{\link{File}} objects or list of strings
-#'  (IDs) of the files you are about to export to a volume..
+#'  (IDs) of the files you are about to export to a volume.
 #' @param destination_volume Either a \code{\link{Volume}} object or the ID of
 #'  the volume to which the file will be exported.
 #' @param destination_location_prefix Character. If the volume has been
-#'  configured with a prefix parameter, `destination_location_prefix` value
-#'  will be prepended to location before attempting to create the file on the
-#'  volume. This parameter can be treated as a path to a new file on the
-#'  volume. The default value is `NULL`.
+#'  configured with a prefix parameter, \cr
+#'  `destination_location_prefix` value will be prepended to location before
+#'  attempting to create the file on the volume. This parameter can be treated
+#'  as a path to a new file on the volume. The default value is `NULL`.
 #'
-#'  If you would like to export the file into some folder on the volume,
-#'  please add folder name as prefix before file name in form
-#'  `<folder-name>/`. Remember to put a slash character at the end of a
-#'  string.
+#'  If you would like to export the file into a folder on the volume,
+#'  please add folder name as the prefix before the file name in the
+#'  `"<folder-name>/"` form. Remember to put a slash character ("/") at the end
+#'  of the string.
 #'
 #'  Keep in mind that the same prefix will be added to all items (files) in the
 #'  resulting list.
@@ -63,15 +63,15 @@
 #'      KMS key. If not set and `aws:kms` is set as `sse_algorithm`,
 #'      default KMS key is used.
 #'    \item `aws_canned_acl`: S3 canned ACL to apply on the object
-#'      on during export. Supported values: any one of
+#'      during export. Supported values: any one of
 # nolint start
 #'      [S3 canned ACLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl);
 # nolint end
 #'      `null` (do not apply canned ACLs). Default: `null`.
 #'  }
 #'
-#'  Keep in mind that the same properties options will be applied to all items
-#'  (files) in the resulting list.
+#'  Keep in mind that the same properties will be applied to all items (files)
+#'  in the resulting list.
 #'
 #' @seealso \code{\link{Exports}}, \code{\link{File}}, \code{\link{Volume}}
 #'
@@ -123,7 +123,7 @@ prepare_items_for_bulk_export <- function(files, destination_volume, destination
   for (file in files) {
     if (checkmate::test_r6(file, classes = "File") &&
       tolower(file$type) == "folder") {
-      rlang::abort("Provided list contains folder objects which cannot be exported. Please make sure to remove all folder objects (type = 'folder') and try again.") # nolint
+      rlang::abort("Provided list contains folder objects, which cannot be exported. Please make sure to remove all folder objects (type = 'folder') and try again.") # nolint
     }
   }
 

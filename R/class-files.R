@@ -394,18 +394,18 @@ Files <- R6::R6Class(
     #' @examples
     #' \dontrun{
     #'  # Delete two files by providing their IDs
-    #'  a$files$delete(files = list("file_1_ID", "file_2_ID"))
+    #'  a$files$bulk_delete(files = list("file_1_ID", "file_2_ID"))
     #' }
     #'
     #' \dontrun{
     #'  # Delete two files by providing a list of File objects
-    #'  a$files$delete(files = list(File_Object_1, File_Object_2))
+    #'  a$files$bulk_delete(files = list(File_Object_1, File_Object_2))
     #' }
     #'
     bulk_delete = function(files) {
       if (is_missing(files)) {
         rlang::abort(
-          "Please provide 'files' parameter."
+          "Please provide the 'files' parameter."
         )
       }
 
@@ -455,7 +455,7 @@ Files <- R6::R6Class(
     bulk_get = function(files) {
       if (is_missing(files)) {
         rlang::abort(
-          "Please provide 'files' parameter."
+          "Please provide the 'files' parameter."
         )
       }
 
@@ -487,7 +487,7 @@ Files <- R6::R6Class(
     #'  replacing all existing information and erasing omitted parameters.
     #'
     #' @details For each of the specified files, the call sets a new `name`,
-    #'  new `tags` and `metadata`.
+    #'  new `tags`, and `metadata`.
     #'
     #'  When editing fields in the \code{\link{File}} objects you wish to
     #'   update, keep the following in mind:
@@ -525,7 +525,7 @@ Files <- R6::R6Class(
     bulk_update = function(files) {
       if (is_missing(files)) {
         rlang::abort(
-          "Please provide 'files' parameter."
+          "Please provide the 'files' parameter."
         )
       }
 
@@ -546,7 +546,7 @@ Files <- R6::R6Class(
         body = body
       )
 
-      rlang::inform(cli::cli_text("{cli::qty(length(files))} File{?s} {?has/have} been updated!")) # nolint
+      rlang::inform(cli::cli_text("{cli::qty(length(files))} File{?s} {?has/have} been updated.")) # nolint
 
       res$items <- asFileList(res, auth = self$auth, bulk = TRUE)
 
@@ -557,10 +557,10 @@ Files <- R6::R6Class(
     # Edit details of multiple files
     #'
     #' @description This method modifies the existing information for specified
-    #'  files or add new information while preserving omitted parameters.
+    #'  files or adds new information while preserving omitted parameters.
     #'
     #' @details For each of the specified files, the call edits its `name`,
-    #'  `tags` and `metadata`.
+    #'  `tags`, and `metadata`.
     #'
     #'  When editing fields in the \code{\link{File}} objects you wish to
     #'  update, keep the following in mind:
@@ -598,7 +598,7 @@ Files <- R6::R6Class(
     bulk_edit = function(files) {
       if (is_missing(files)) {
         rlang::abort(
-          "Please provide 'files' parameter."
+          "Please provide the 'files' parameter."
         )
       }
 
@@ -619,7 +619,7 @@ Files <- R6::R6Class(
         body = body
       )
 
-      rlang::inform(cli::cli_text("{cli::qty(length(files))} File{?s} {?has/have} been updated!")) # nolint
+      rlang::inform(cli::cli_text("{cli::qty(length(files))} File{?s} {?has/have} been updated.")) # nolint
 
       res$items <- asFileList(res, auth = self$auth, bulk = TRUE)
 

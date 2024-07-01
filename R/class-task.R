@@ -701,9 +701,9 @@ Task <- R6::R6Class(
     #'  \itemize{
     #'    \item `main_location` - Defines the output location for all
     #'      output nodes in the task. Can be a string path within the project in
-    #'      which the task is created, for example
+    #'      which the task is created, for example \cr
     #'      `/Analysis/<task_id>_<task_name>/`
-    #'      or a path on an attached volume, such as
+    #'      or a path on an attached volume, such as \cr
     #'      `volumes://volume_name/<project_id>/html`.
     #'      Parts of the path enclosed in angle brackets <> are tokens that are
     #'      dynamically replaced with corresponding values during task
@@ -818,7 +818,7 @@ Task <- R6::R6Class(
           task_data[["batch_input"]] <- batch_input
           task_data[["batch_by"]] <- batch_by
         } else {
-          rlang::abort("Batch is set to TRUE, therefore, please, set batching criteria (batch_by) and batch inputs.") # nolint
+          rlang::abort("Batch is set to TRUE, therefore, please set batching criteria (batch_by) and batch inputs.") # nolint
         }
       }
       # nocov start

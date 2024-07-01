@@ -882,9 +882,9 @@ See below for more details.
 \itemize{
 \item \code{main_location} - Defines the output location for all
 output nodes in the task. Can be a string path within the project in
-which the task is created, for example
+which the task is created, for example \cr
 \verb{/Analysis/<task_id>_<task_name>/}
-or a path on an attached volume, such as
+or a path on an attached volume, such as \cr
 \verb{volumes://volume_name/<project_id>/html}.
 Parts of the path enclosed in angle brackets <> are tokens that are
 dynamically replaced with corresponding values during task

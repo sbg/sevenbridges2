@@ -85,7 +85,7 @@ test_that("Exports submit_export() throws error when needed", {
   folder_type_file <- list(source_file = setup_folder_obj)
   testthat::expect_error(
     do.call(setup_exports_obj$submit_export, folder_type_file),
-    regexp = "Folders cannot be exported. Please, provide single file id or File object with type = 'file'.", # nolint
+    regexp = "Folders cannot be exported. Please provide a single file ID or File object with type = 'file'.", # nolint
     fixed = TRUE
   )
 
@@ -198,7 +198,7 @@ test_that("Exports bulk_submit_export() throws error when needed", {
   items_null <- list(items = NULL)
   testthat::expect_error(
     do.call(setup_exports_obj$bulk_submit_export, items_null),
-    regexp = "Items parameter should be set as nested list of files information you want to export.", # nolint
+    regexp = "Items parameter should be set as a nested list of information on files you want to export.", # nolint
     fixed = TRUE
   )
   items_non_list <- list(items = c("export"))
@@ -224,7 +224,7 @@ test_that("Exports bulk_submit_export() throws error when needed", {
   folder_type_file <- list(source_file = setup_folder_obj)
   testthat::expect_error(
     setup_exports_obj$bulk_submit_export(items = list(folder_type_file)),
-    regexp = "Folders cannot be exported. Please, provide single file id or File object with type = 'file' in element 1.", # nolint
+    regexp = "Folders cannot be exported. Please provide a single file ID or File object with type = 'file' in element 1.", # nolint
     fixed = TRUE
   )
   # Wrong file in element 2:
@@ -240,7 +240,7 @@ test_that("Exports bulk_submit_export() throws error when needed", {
         folder_type_file
       )
     ),
-    regexp = "Folders cannot be exported. Please, provide single file id or File object with type = 'file' in element 2.", # nolint
+    regexp = "Folders cannot be exported. Please provide a single file ID or File object with type = 'file' in element 2.", # nolint
     fixed = TRUE
   )
 
