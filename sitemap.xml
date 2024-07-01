@@ -126,4 +126,10 @@
   <url>
     <loc>/reference/index.html</loc>
   </url>
+  <url>
+    <loc>/reference/prepare_items_for_bulk_export.html</loc>
+  </url>
+  <url>
+    <loc>/reference/prepare_items_for_bulk_import.html</loc>
+  </url>
 </urlset>
