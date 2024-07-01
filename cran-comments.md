@@ -28,5 +28,3 @@ These changes aim to enhance functionality and maintain compatibility with curre
     sub-directories of 1Mb or more:
       R     2.0Mb
       doc   5.2Mb
-
-## revdepcheck results
