@@ -45,7 +45,11 @@ Projects <- R6::R6Class(
     #'
     #' @param name Project's name.
     #' @param owner The username of the owner whose projects you want to query.
-    #' @param tags The list of project tags.
+    #' @param tags A list of project tags used to filter the query results.
+    #'  Each tag should be provided as a string within the list, and tags may
+    #'  include spaces. For example, both "my_tag_1" and "tag with spaces" are
+    #'  valid tag values. The method will return only projects that have all
+    #'  the specified tags.
     #' @param limit The maximum number of collection items to return
     #'  for a single request. Minimum value is `1`.
     #'  The maximum value is `100` and the default value is `50`.
@@ -73,9 +77,20 @@ Projects <- R6::R6Class(
                      limit = getOption("sevenbridges2")$limit,
                      offset = getOption("sevenbridges2")$offset,
                      ...) {
-      checkmate::assert_string(name, null.ok = TRUE)
+      # Check input parameters
+      if (!is_missing(name)) {
+        checkmate::assert_string(name, null.ok = TRUE)
+        # Transform into a list with name 'name'
+        name_list <- list("name" = lapply(name, c))
+        name <- transform_multiple_vals(name_list)
+      }
       checkmate::assert_string(owner, null.ok = TRUE)
-      check_tags(tags)
+      if (!is_missing(tags)) {
+        check_tags(tags)
+        # Transform into a list with name 'tags'
+        tags_list <- list("tags" = lapply(tags, c))
+        tags <- transform_multiple_vals(tags_list)
+      }
 
       # nocov start
       if (!is_missing(owner)) {

@@ -129,7 +129,11 @@ More details on how to query projects, you can find in our
 
 \item{\code{owner}}{The username of the owner whose projects you want to query.}
 
-\item{\code{tags}}{The list of project tags.}
+\item{\code{tags}}{A list of project tags used to filter the query results.
+Each tag should be provided as a string within the list, and tags may
+include spaces. For example, both "my_tag_1" and "tag with spaces" are
+valid tag values. The method will return only projects that have all
+the specified tags.}
 
 \item{\code{limit}}{The maximum number of collection items to return
 for a single request. Minimum value is \code{1}.
