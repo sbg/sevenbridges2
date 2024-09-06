@@ -86,7 +86,7 @@ Files <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  as 'fields', etc.
     #'
-    #' @importFrom checkmate assert_string assert_character
+    #' @importFrom checkmate assert_character
     #' @importFrom rlang abort
     #'
     #' @examples
@@ -127,7 +127,7 @@ Files <- R6::R6Class(
         origin_task_id <- NULL
       }
       if (!is_missing(tag)) {
-        checkmate::assert_character(tag, null.ok = TRUE)
+        check_tags(tag)
         # Transform into a list with name 'tag'
         tag_list <- list("tag" = lapply(tag, c))
         tag <- transform_multiple_vals(tag_list)

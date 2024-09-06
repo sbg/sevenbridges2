@@ -97,7 +97,7 @@ test_that("Files query() throws error when expected", {
   # Query fails when origin param is invalid
   testthat::expect_error(
     do.call(setup_files_obj$query, test_bad_tag),
-    regexp = "Assertion on 'tag' failed: Must be of type 'character' (or 'NULL'), not 'double'.", # nolint
+    regexp = "Tags parameter must be an unnamed list of tags. For example: tags <- list('my_tag_1', 'my_tag_2')", # nolint
     fixed = TRUE
   )
 })
