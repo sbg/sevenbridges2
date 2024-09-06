@@ -71,9 +71,11 @@ Files <- R6::R6Class(
     #'  metadata fields are represented as a named list. You can also define
     #'  multiple instances of the same metadata field.
     #' @param origin Task object. List only files produced by task.
-    #' @param tag List files containing this tag. Note that the tag must be an
-    #'  exact complete string for the results to match. Multiple tags can be
-    #'  represented by vector of values.
+    #' @param tag Filters the files based on the specified tag(s). Each tag
+    #'  must be an exact, complete match, for the results to match. Tags may
+    #'  include spaces. Multiple tags should be provided as a vector of
+    #'  strings. The method will return files that have any of the specified
+    #'  tags.
     #' @param limit The maximum number of collection items to return
     #'  for a single request. Minimum value is `1`.
     #'  The maximum value is `100` and the default value is `50`.
