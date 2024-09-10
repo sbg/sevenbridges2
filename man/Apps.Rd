@@ -142,9 +142,17 @@ to restrict the results to apps from that project only.}
 \item{\code{visibility}}{Set this to \code{public} to see all public apps on
 the Seven Bridges Platform.}
 
-\item{\code{query_terms}}{Enter one or more search terms to query apps.
-Read more about how to use the query_terms parameter in our
-\href{https://docs.sevenbridges.com/reference/list-all-apps-available-to-you#query-apps}{API documentation}.}
+\item{\code{query_terms}}{A list of search terms used to filter apps based on
+their details. Each term is case-insensitive and can relate to the
+app's name, label, toolkit, toolkit version, category, tagline, or
+description.
+You can provide a single term (e.g., \code{list("Compressor")}) or multiple
+terms (e.g., \code{list("Expression", "Abundance")}) to search for apps
+that match all the specified terms. If a term matches any part of the
+app's details, the app will be included in the results.
+Search terms can also include phrases
+(e.g., \code{list("Abundance estimates input")}), which will search for
+exact matches within app descriptions or other fields.}
 
 \item{\code{id}}{Use this parameter to query apps based on their ID.}
 
