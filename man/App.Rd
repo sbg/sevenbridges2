@@ -530,7 +530,7 @@ for more details on batching criteria.
   description = NULL,
   execution_settings = NULL,
   inputs = NULL,
-  output_location = output_location,
+  output_location = NULL,
   batch = NULL,
   batch_input = NULL,
   batch_by = NULL,
