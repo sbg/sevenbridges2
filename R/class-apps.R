@@ -68,7 +68,8 @@ Apps <- R6::R6Class(
     #'  time-consuming.
     #' @param ... Other arguments that can be passed to core `api()` function.
     #'
-    #' @importFrom checkmate assert_list
+    #' @importFrom checkmate assert_list assert_string
+    #' @importFrom utils URLencode
     #'
     #' @examples
     #' \dontrun{
@@ -101,16 +102,16 @@ Apps <- R6::R6Class(
         null.ok = TRUE
       )
 
-      query_terms_list <- list("query_terms" = lapply(query_terms, c))
-      query_terms <- transform_multiple_vals(query_terms_list)
-
       checkmate::assert_string(id, null.ok = TRUE)
 
       # Collapse query terms to a URL-encoded string with space between values
       if (!is.null(query_terms)) {
-        query_terms <- paste(lapply(query_terms, utils::URLencode,
-          reserved = TRUE
-        ), collapse = "%20")
+        query_terms <- paste(
+          lapply(query_terms, utils::URLencode,
+            reserved = TRUE
+          ),
+          collapse = "%20"
+        )
       }
 
       # nocov start
