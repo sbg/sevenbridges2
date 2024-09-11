@@ -42,11 +42,17 @@ Apps <- R6::R6Class(
     #'  to restrict the results to apps from that project only.
     #' @param visibility Set this to `public` to see all public apps on
     #'  the Seven Bridges Platform.
-    #' @param query_terms Enter one or more search terms to query apps.
-    #'  Read more about how to use the query_terms parameter in our
-    # nolint start
-    #'  [API documentation](https://docs.sevenbridges.com/reference/list-all-apps-available-to-you#query-apps).
-    # nolint end
+    #' @param query_terms A list of search terms used to filter apps based on
+    #'  their details. Each term is case-insensitive and can relate to the
+    #'  app's name, label, toolkit, toolkit version, category, tagline, or
+    #'  description.
+    #'  You can provide a single term (e.g., `list("Compressor")`) or multiple
+    #'  terms (e.g., `list("Expression", "Abundance")`) to search for apps
+    #'  that match all the specified terms. If a term matches any part of the
+    #'  app's details, the app will be included in the results.
+    #'  Search terms can also include phrases
+    #'  (e.g., `list("Abundance estimates input")`), which will search for
+    #'  exact matches within app descriptions or other fields.
     #' @param id Use this parameter to query apps based on their ID.
     #' @param limit The maximum number of collection items to return
     #'  for a single request. Minimum value is `1`.
@@ -62,7 +68,8 @@ Apps <- R6::R6Class(
     #'  time-consuming.
     #' @param ... Other arguments that can be passed to core `api()` function.
     #'
-    #' @importFrom checkmate assert_list
+    #' @importFrom checkmate assert_list assert_string
+    #' @importFrom utils URLencode
     #'
     #' @examples
     #' \dontrun{
@@ -97,10 +104,16 @@ Apps <- R6::R6Class(
 
       checkmate::assert_string(id, null.ok = TRUE)
 
-      # Collapse query terms to a string with space between values
+      # Collapse query terms to a URL-encoded string with space between values
       if (!is.null(query_terms)) {
-        query_terms <- paste(query_terms, collapse = " ")
+        query_terms <- paste(
+          lapply(query_terms, utils::URLencode,
+            reserved = TRUE
+          ),
+          collapse = "%20"
+        )
       }
+
       # nocov start
       res <- super$query(
         path = self$URL[["query"]],

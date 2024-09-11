@@ -71,9 +71,11 @@ Files <- R6::R6Class(
     #'  metadata fields are represented as a named list. You can also define
     #'  multiple instances of the same metadata field.
     #' @param origin Task object. List only files produced by task.
-    #' @param tag List files containing this tag. Note that the tag must be an
-    #'  exact complete string for the results to match. Multiple tags can be
-    #'  represented by vector of values.
+    #' @param tag Filters the files based on the specified tag(s). Each tag
+    #'  must be an exact, complete match, for the results to match. Tags may
+    #'  include spaces. Multiple tags should be provided as a vector of
+    #'  strings. The method will return files that have any of the specified
+    #'  tags.
     #' @param limit The maximum number of collection items to return
     #'  for a single request. Minimum value is `1`.
     #'  The maximum value is `100` and the default value is `50`.
@@ -84,7 +86,7 @@ Files <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  as 'fields', etc.
     #'
-    #' @importFrom checkmate assert_string assert_character
+    #' @importFrom checkmate assert_character
     #' @importFrom rlang abort
     #'
     #' @examples
@@ -125,7 +127,7 @@ Files <- R6::R6Class(
         origin_task_id <- NULL
       }
       if (!is_missing(tag)) {
-        checkmate::assert_character(tag, null.ok = TRUE)
+        check_tags(tag)
         # Transform into a list with name 'tag'
         tag_list <- list("tag" = lapply(tag, c))
         tag <- transform_multiple_vals(tag_list)

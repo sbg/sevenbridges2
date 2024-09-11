@@ -232,9 +232,11 @@ multiple instances of the same metadata field.}
 
 \item{\code{origin}}{Task object. List only files produced by task.}
 
-\item{\code{tag}}{List files containing this tag. Note that the tag must be an
-exact complete string for the results to match. Multiple tags can be
-represented by vector of values.}
+\item{\code{tag}}{Filters the files based on the specified tag(s). Each tag
+must be an exact, complete match, for the results to match. Tags may
+include spaces. Multiple tags should be provided as a vector of
+strings. The method will return files that have any of the specified
+tags.}
 
 \item{\code{limit}}{The maximum number of collection items to return
 for a single request. Minimum value is \code{1}.
