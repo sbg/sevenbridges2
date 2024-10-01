@@ -7,19 +7,6 @@ stages:
   - sonar        # Perform SonarQube analysis to report code quality
   - deploy       # Deploy the package site using pkgdown
 
-variables:
-  IMAGE: dockerhub.sbgenomics.com/$CI_PROJECT_NAME
-  RENV_PATHS_CACHE: ${CI_PROJECT_DIR}/cache
-  RENV_PATHS_LIBRARY: ${CI_PROJECT_DIR}/renv/library
-  RENV_CONFIG_REPOS_OVERRIDE: http://cran.r-project.org
-  LIBRARY_NAME: examplePackage
-
-cache:
-  key: $CI_JOB_NAME
-  paths:
-    - ${RENV_PATHS_CACHE}
-    - ${RENV_PATHS_LIBRARY}
-
 buildbinary:
   stage: build
   script:
