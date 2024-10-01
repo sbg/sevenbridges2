@@ -1,0 +1,21 @@
+FROM rocker/r-ver:4.4.0
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git libssl-dev libcurl4-openssl-dev \
+    libfreetype6-dev libfribidi-dev libharfbuzz-dev libxml2-dev \
+    libfontconfig1-dev libgit2-dev pandoc libicu-dev libz-dev \
+    libjpeg-dev libpng-dev libtiff-dev make zlib1g-dev \
+    nodejs npm \
+    && rm -rf /var/lib/apt/lists/*
+
+
+COPY renv.lock /renv.lock
+
+RUN Rscript -e 'install.packages(c("remotes", "devtools", "covr"), repos = "http://cran.r-project.org")'
+
+RUN Rscript -e 'if (!requireNamespace("renv", quietly = TRUE)) remotes::install_version("renv", version = "1.0.7")'
+
+RUN Rscript -e 'renv::restore(lockfile = "renv.lock")'
+
+COPY Dockerfile.CI /opt/Dockerfile
