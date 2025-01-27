@@ -52,9 +52,9 @@ AsyncJob <- R6::R6Class(
       self$result <- res$result
       self$total_files <- res$total_files
       self$completed_files <- res$completed_files
-      self$failed_files <- self$failed_files
+      self$failed_files <- res$failed_files
       self$started_on <- res$started_on
-      self$finished_on <- self$finished_on
+      self$finished_on <- res$finished_on
     },
 
     # nocov start
@@ -127,3 +127,20 @@ AsyncJob <- R6::R6Class(
     }
   )
 )
+
+# nocov start
+# Helper functions for creating AsyncJob objects ------------------------------
+asAsyncJob <- function(x = NULL, auth = NULL) {
+  AsyncJob$new(
+    res = x,
+    href = x$href,
+    auth = auth,
+    response = attr(x, "response")
+  )
+}
+
+asAsyncJobList <- function(x, auth) {
+  obj <- lapply(x$items, asAsyncJob, auth = auth)
+  obj
+}
+# nocov end

@@ -21,7 +21,9 @@ Files <- R6::R6Class(
       "bulk_get" = "bulk/files/get",
       "bulk_update" = "bulk/files/update",
       "bulk_edit" = "bulk/files/edit",
-      "bulk_delete" = "bulk/files/delete"
+      "bulk_delete" = "bulk/files/delete",
+      "async_bulk_copy" = "async/files/copy",
+      "async_get_copy_job" = "async/files/copy/{job_id}"
     ),
 
     # Initialize Files object -----------------------------------------------
@@ -376,8 +378,7 @@ Files <- R6::R6Class(
       # nocov end
     },
 
-    # Bulk deletion of files
-    #'
+    # Bulk deletion of files --------------------------------------------------
     #' @description This method facilitates bulk file deletion. It accepts
     #'  either a list of \code{\link{File}} objects or a list containing
     #'  files' IDs.
@@ -431,8 +432,7 @@ Files <- R6::R6Class(
       # nocov end
     },
 
-    # Get details of multiple files
-    #'
+    # Get details of multiple files -------------------------------------------
     #' @description This call returns the details of multiple specified files,
     #'  including file names and file metadata. The maximum number of files you
     #'  can retrieve the details for per call is 100.
@@ -483,8 +483,7 @@ Files <- R6::R6Class(
       # nocov end
     },
 
-    # Update details of multiple files
-    #'
+    # Update details of multiple files ----------------------------------------
     #' @description A method that sets new information for specified files,
     #'  replacing all existing information and erasing omitted parameters.
     #'
@@ -556,8 +555,7 @@ Files <- R6::R6Class(
       # nocov end
     },
 
-    # Edit details of multiple files
-    #'
+    # Edit details of multiple files ------------------------------------------
     #' @description This method modifies the existing information for specified
     #'  files or adds new information while preserving omitted parameters.
     #'
@@ -626,6 +624,221 @@ Files <- R6::R6Class(
       res$items <- asFileList(res, auth = self$auth, bulk = TRUE)
 
       return(asCollection(res, auth = self$auth))
+      # nocov end
+    },
+
+    # Asynchronous (bulk) action for coping multiple files --------------------
+    #' @description This call lets you perform a bulk copy operation of files
+    #'  and folders. Any underlying folder structure will be preserved.
+    #'  You can copy:
+    #'  \itemize{
+    #'       \item to a folder within the same project,
+    #'       \item to another project,
+    #'       \item to a folder in another project.
+    #'       }
+    #'
+    #' @param items Nested list of elements containing information about each
+    #'  file/folder to be copied. For each element, users must provide:
+    #'
+    # nolint start
+    #'  \itemize{
+    #'      \item `file` - The ID of the file or folder you are copying.
+    #'        Copying the project root folder is not allowed.
+    #'        Use the API call for listing all files to obtain the ID.
+    #'      \item `parent` - The ID of the folder you are copying files to.
+    #'        Should not be used together with project. If project is used,
+    #'        the items will be imported to the root of the project's files.
+    #'        If parent is used, the import will take place into the specified
+    #'        folder, within the project to which the folder belongs.
+    #'      \item `project` - The project you are copying the file to.
+    #'        Should not be used together with parent. If parent is used,
+    #'        the import will take place into the specified folder, within the
+    #'        project to which the folder belongs. If project is used, the
+    #'        items will be imported to the root of the project's files.
+    #'      \item `name` - Enter the new name for the file if you want to
+    #'        rename it in the destination folder.
+    #'  }
+    # nolint end
+    #'  Example of the list:
+    #'  ```{r}
+    #'  items <- list(
+    #'            list(
+    #'              file = '<file-id-1>',
+    #'              parent = '<foolder-id>'
+    #'            ),
+    #'            list(
+    #'              file = '<file-id-2>',
+    #'              project = '<project-id-1>',
+    #'              name = 'copied_file.txt'
+    #'            ),
+    #'            list(
+    #'              file = '<file-id-3>',
+    #'              parent = '<parent-id-2>',
+    #'              name = 'copied_file2.txt'
+    #'            )
+    #'          )
+    #' ```
+    # nolint start
+    #'  Read more on how to [perform async copy action on multiple files](https://docs.sevenbridges.com/reference/copy-multiple-files).
+    # nolint end
+    #'
+    #'  Utility function \code{\link{prepare_items_for_async_bulk_copy}}
+    #'  can help you prepare the `items` parameter based on the provided
+    #'  list of \code{\link{File}} objects.
+    #'
+    #'
+    #' @importFrom rlang abort inform
+    #' @importFrom checkmate assert_list
+    #' @importFrom cli cli_text qty
+    #' @importFrom glue glue
+    #'
+    #' @return \code{\link{AsyncJob}} object.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # Edit details of multiple files
+    #'  a$files$async_bulk_copy(
+    #'    items = list(
+    #'            list(
+    #'              file = '<file-id-1>',
+    #'              parent = '<foolder-id>'
+    #'            ),
+    #'            list(
+    #'              file = '<file-id-2>',
+    #'              project = '<project-id-1>',
+    #'              name = 'copied_file.txt'
+    #'            ),
+    #'            list(
+    #'              file = '<file-id-3>',
+    #'              parent = '<parent-id-2>',
+    #'              name = 'copied_file2.txt'
+    #'            )
+    #'          )
+    #'   )
+    #' }
+    #'
+    async_bulk_copy = function(items) {
+      if (is_missing(items)) {
+        rlang::abort("Items parameter should be set as a nested list of information on files/folders you want to copy.") # nolint
+      }
+      checkmate::assert_list(items)
+
+      body_elements <- list()
+
+      for (i in seq_len(length(items))) {
+        item <- items[[i]]
+        checkmate::assert_list(item)
+        body_element <- list()
+
+        if (is_missing(item[["file"]])) {
+          rlang::abort(
+            glue::glue("File ID must be provided as string or File object in element {i}."), # nolint
+          )
+        } else {
+          body_element$file <- check_and_transform_id(item[["file"]],
+            class_name = "File"
+          )
+        }
+
+        if (is_missing(item[["project"]]) &&
+          is_missing(item[["parent"]])) {
+          rlang::abort(
+            glue::glue("Please provide either destination project or parent parameter in element {i}.") # nolint
+          )
+        }
+        if (!is_missing(item[["project"]]) &&
+          !is_missing(item[["parent"]])) {
+          rlang::abort(
+            glue::glue("Either destination project or parent parameter must be proveded in element {i}, not both.") # nolint
+          )
+        }
+        if (!is_missing(item[["project"]])) {
+          body_element$project <- check_and_transform_id(
+            item[["project"]],
+            class_name = "Project"
+          )
+        }
+        if (!is_missing(item[["parent"]])) {
+          if (checkmate::test_r6(
+            item[["parent"]],
+            classes = "File"
+          ) &&
+            tolower(item[["parent"]]$type) != "folder") {
+            rlang::abort(
+              glue::glue("Destination parent directory parameter must contain folder id or File object with type = 'folder' in element {i}.") # nolint
+            )
+          }
+          body_element$parent <- check_and_transform_id(
+            x = item[["parent"]],
+            class_name = "File"
+          )
+        }
+        if (!is_missing(item[["name"]])) {
+          checkmate::assert_string(item[["name"]], null.ok = TRUE)
+          body_element$name <- item[["name"]]
+        }
+        body_elements <- append(body_elements, list(body_element))
+      }
+
+      # Build body
+      # nocov start
+      body <- list(
+        items = body_elements
+      )
+
+      path <- glue::glue(self$URL[["async_bulk_copy"]])
+
+      res <- self$auth$api(
+        path = path,
+        method = "POST",
+        body = body
+      )
+
+      rlang::inform(glue::glue("New asynchronous job for coping files has started.")) # nolint
+
+      return(asAsyncJob(res, auth = self$auth))
+      # nocov end
+    },
+
+    # Get details of asynchronous job for coping multiple files ---------------
+    #' @description This call gets the details of an asynchronous bulk copy job.
+    #'  This information will be available for up to a month after the job has
+    #'  been completed.
+    #'
+    #' @param job_id The ID of the copy job you are querying.
+    #'  This ID can be found within the API response for the call for copying
+    #'  files.
+    #'
+    #' @importFrom rlang abort
+    #' @importFrom checkmate assert_list
+    #' @importFrom glue glue
+    #'
+    #' @return \code{\link{AsyncJob}} object.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # Get details of async copy job
+    #'  a$files$async_get_copy_job(job_id = "job-id")
+    #' }
+    #'
+    async_get_copy_job = function(job_id) {
+      if (is_missing(job_id)) {
+        rlang::abort(
+          "Please provide the 'job_id' parameter."
+        )
+      }
+
+      job_id <- check_and_transform_id(job_id, class_name = "AsyncJob")
+
+      # nocov start
+      path <- glue::glue(self$URL[["async_get_copy_job"]])
+
+      res <- self$auth$api(
+        path = path,
+        method = "GET"
+      )
+
+      return(asAsyncJob(res, auth = self$auth))
       # nocov end
     }
   )

@@ -74,7 +74,6 @@ R6 Class representing Files resource.
 }
 
 
-
 ## ------------------------------------------------
 ## Method `Files$bulk_delete`
 ## ------------------------------------------------
@@ -90,7 +89,6 @@ R6 Class representing Files resource.
 }
 
 
-
 ## ------------------------------------------------
 ## Method `Files$bulk_get`
 ## ------------------------------------------------
@@ -101,7 +99,6 @@ R6 Class representing Files resource.
                files = list("file_1_ID", "file_2_ID")
               )
 }
-
 
 
 ## ------------------------------------------------
@@ -116,7 +113,6 @@ R6 Class representing Files resource.
 }
 
 
-
 ## ------------------------------------------------
 ## Method `Files$bulk_edit`
 ## ------------------------------------------------
@@ -126,6 +122,43 @@ R6 Class representing Files resource.
  a$files$bulk_edit(
                files = list(File_Object_1, File_Object_2)
               )
+}
+
+
+## ------------------------------------------------
+## Method `Files$async_bulk_copy`
+## ------------------------------------------------
+
+\dontrun{
+ # Edit details of multiple files
+ a$files$async_bulk_copy(
+   items = list(
+           list(
+             file = '<file-id-1>',
+             parent = '<foolder-id>'
+           ),
+           list(
+             file = '<file-id-2>',
+             project = '<project-id-1>',
+             name = 'copied_file.txt'
+           ),
+           list(
+             file = '<file-id-3>',
+             parent = '<parent-id-2>',
+             name = 'copied_file2.txt'
+           )
+         )
+  )
+}
+
+
+## ------------------------------------------------
+## Method `Files$async_get_copy_job`
+## ------------------------------------------------
+
+\dontrun{
+ # Get details of async copy job
+ a$files$async_get_copy_job(job_id = "job-id")
 }
 
 }
@@ -152,6 +185,8 @@ R6 Class representing Files resource.
 \item \href{#method-Files-bulk_get}{\code{Files$bulk_get()}}
 \item \href{#method-Files-bulk_update}{\code{Files$bulk_update()}}
 \item \href{#method-Files-bulk_edit}{\code{Files$bulk_edit()}}
+\item \href{#method-Files-async_bulk_copy}{\code{Files$async_bulk_copy()}}
+\item \href{#method-Files-async_get_copy_job}{\code{Files$async_get_copy_job()}}
 \item \href{#method-Files-clone}{\code{Files$clone()}}
 }
 }
@@ -428,7 +463,6 @@ object which must be of type \code{FOLDER}.}
                )
 }
 
-
 }
 \if{html}{\out{</div>}}
 
@@ -470,7 +504,6 @@ the console.
  a$files$bulk_delete(files = list(File_Object_1, File_Object_2))
 }
 
-
 }
 \if{html}{\out{</div>}}
 
@@ -507,7 +540,6 @@ can retrieve the details for per call is 100.
                files = list("file_1_ID", "file_2_ID")
               )
 }
-
 
 }
 \if{html}{\out{</div>}}
@@ -563,7 +595,6 @@ The maximum number of files you can update the details for per call is
               )
 }
 
-
 }
 \if{html}{\out{</div>}}
 
@@ -616,6 +647,142 @@ The maximum number of files you can update the details for per call is
  a$files$bulk_edit(
                files = list(File_Object_1, File_Object_2)
               )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Files-async_bulk_copy"></a>}}
+\if{latex}{\out{\hypertarget{method-Files-async_bulk_copy}{}}}
+\subsection{Method \code{async_bulk_copy()}}{
+This call lets you perform a bulk copy operation of files
+and folders. Any underlying folder structure will be preserved.
+You can copy:
+\itemize{
+\item to a folder within the same project,
+\item to another project,
+\item to a folder in another project.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Files$async_bulk_copy(items)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{items}}{Nested list of elements containing information about each
+file/folder to be copied. For each element, users must provide:
+
+\itemize{
+\item \code{file} - The ID of the file or folder you are copying.
+Copying the project root folder is not allowed.
+Use the API call for listing all files to obtain the ID.
+\item \code{parent} - The ID of the folder you are copying files to.
+Should not be used together with project. If project is used,
+the items will be imported to the root of the project's files.
+If parent is used, the import will take place into the specified
+folder, within the project to which the folder belongs.
+\item \code{project} - The project you are copying the file to.
+Should not be used together with parent. If parent is used,
+the import will take place into the specified folder, within the
+project to which the folder belongs. If project is used, the
+items will be imported to the root of the project's files.
+\item \code{name} - Enter the new name for the file if you want to
+rename it in the destination folder.
+}
+Example of the list:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{items <- list(
+          list(
+            file = '<file-id-1>',
+            parent = '<foolder-id>'
+          ),
+          list(
+            file = '<file-id-2>',
+            project = '<project-id-1>',
+            name = 'copied_file.txt'
+          ),
+          list(
+            file = '<file-id-3>',
+            parent = '<parent-id-2>',
+            name = 'copied_file2.txt'
+          )
+        )
+}\if{html}{\out{</div>}}
+
+Read more on how to \href{https://docs.sevenbridges.com/reference/copy-multiple-files}{perform async copy action on multiple files}.
+
+Utility function \code{\link{prepare_items_for_async_bulk_copy}}
+can help you prepare the \code{items} parameter based on the provided
+list of \code{\link{File}} objects.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{AsyncJob}} object.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # Edit details of multiple files
+ a$files$async_bulk_copy(
+   items = list(
+           list(
+             file = '<file-id-1>',
+             parent = '<foolder-id>'
+           ),
+           list(
+             file = '<file-id-2>',
+             project = '<project-id-1>',
+             name = 'copied_file.txt'
+           ),
+           list(
+             file = '<file-id-3>',
+             parent = '<parent-id-2>',
+             name = 'copied_file2.txt'
+           )
+         )
+  )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Files-async_get_copy_job"></a>}}
+\if{latex}{\out{\hypertarget{method-Files-async_get_copy_job}{}}}
+\subsection{Method \code{async_get_copy_job()}}{
+This call gets the details of an asynchronous bulk copy job.
+This information will be available for up to a month after the job has
+been completed.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Files$async_get_copy_job(job_id)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{job_id}}{The ID of the copy job you are querying.
+This ID can be found within the API response for the call for copying
+files.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{AsyncJob}} object.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # Get details of async copy job
+ a$files$async_get_copy_job(job_id = "job-id")
 }
 
 }
