@@ -2,6 +2,7 @@
 
 export(App)
 export(Apps)
+export(AsyncJob)
 export(Auth)
 export(Billing_groups)
 export(Collection)

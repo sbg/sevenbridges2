@@ -712,7 +712,7 @@ find_type <- function(type) {
 #'
 #' @noRd
 is_required <- function(x) {
-  !((checkmate::test_list(x$type) && x$type[[1]] == "null") || (checkmate::test_string(x$type) && grepl(pattern = "?", x = x$type, fixed = TRUE))) # nolint
+  !((checkmate::test_list(x$type) && checkmate::test_list(x$type[[1]]) && x$type[[1]]$type == "array") || (checkmate::test_list(x$type) && x$type[[1]] == "null") || (checkmate::test_string(x$type) && grepl(pattern = "?", x = x$type, fixed = TRUE))) # nolint
 }
 
 #' @description Compare two lists.
