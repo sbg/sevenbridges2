@@ -837,5 +837,22 @@ list1_to_compare <- structure(list(
 ), class = "response")
 
 
+# Setup AsyncJob object
+asyncjob_res <- list(
+  id = "some-id",
+  href = "some-href",
+  type = "type",
+  state = "FINISHED",
+  result = "result",
+  total_files = 6,
+  completed_files = 6,
+  failed_files = 0,
+  started_on = "2025-01-31",
+  finished_on = "2025-01-31"
+)
+
+setup_async_job_obj <- asAsyncJob(x = asyncjob_res, auth = setup_auth_object)
+
+
 # Close session at the end of tests
 withr::defer(teardown_env())
