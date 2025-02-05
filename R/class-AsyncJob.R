@@ -128,7 +128,6 @@ AsyncJob <- R6::R6Class(
   )
 )
 
-# nocov start
 # Helper functions for creating AsyncJob objects ------------------------------
 asAsyncJob <- function(x = NULL, auth = NULL) {
   AsyncJob$new(
