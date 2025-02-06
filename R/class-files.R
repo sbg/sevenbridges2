@@ -23,7 +23,9 @@ Files <- R6::R6Class(
       "bulk_edit" = "bulk/files/edit",
       "bulk_delete" = "bulk/files/delete",
       "async_bulk_copy" = "async/files/copy",
-      "async_get_copy_job" = "async/files/copy/{job_id}"
+      "async_bulk_delete" = "async/files/delete",
+      "async_get_copy_job" = "async/files/copy/{job_id}",
+      "async_get_delete_job" = "async/files/delete/{job_id}"
     ),
 
     # Initialize Files object -----------------------------------------------
@@ -682,21 +684,16 @@ Files <- R6::R6Class(
     #'  Read more on how to [perform async copy action on multiple files](https://docs.sevenbridges.com/reference/copy-multiple-files).
     # nolint end
     #'
-    #'  Utility function \code{\link{prepare_items_for_async_bulk_copy}}
-    #'  can help you prepare the `items` parameter based on the provided
-    #'  list of \code{\link{File}} objects.
-    #'
     #'
     #' @importFrom rlang abort inform
-    #' @importFrom checkmate assert_list
-    #' @importFrom cli cli_text qty
+    #' @importFrom checkmate assert_list test_r6
     #' @importFrom glue glue
     #'
     #' @return \code{\link{AsyncJob}} object.
     #'
     #' @examples
     #' \dontrun{
-    #'  # Edit details of multiple files
+    #'  # Copy multiple files
     #'  a$files$async_bulk_copy(
     #'    items = list(
     #'            list(
@@ -800,6 +797,67 @@ Files <- R6::R6Class(
       # nocov end
     },
 
+    # Asynchronous (bulk) action for deleting multiple files ------------------
+    #' @description This call lets you perform perform an asynchronous bulk
+    #' deletion of files or folders. Deleting folders which aren't empty is
+    #' allowed.
+    #'
+    #' @param items List of File objects (both `file` or `folder` type) or list
+    #'  of IDs of files/folders you want to delete.
+    # nolint start
+    #'  Read more on how to [perform async delete action on multiple files](https://docs.sevenbridges.com/reference/delete-multiple-files-and-folders).
+    # nolint end
+    #'
+    #'
+    #' @importFrom rlang abort inform
+    #' @importFrom checkmate assert_list
+    #' @importFrom glue glue
+    #'
+    #' @return \code{\link{AsyncJob}} object.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # Delete multiple files
+    #'  a$files$async_bulk_delete(
+    #'    items = list(file_obj1, file_obj2, "<folder-id-string>", "<file-id>")
+    #'  )
+    #' }
+    #'
+    async_bulk_delete = function(items) {
+      if (is_missing(items)) {
+        rlang::abort("Items parameter should be a list of files' or folders' IDs or `File` objects you want to delete.") # nolint
+      }
+      checkmate::assert_list(items)
+
+      body_elements <- list()
+
+      for (i in seq_len(length(items))) {
+        item <- items[[i]]
+        file_id <- check_and_transform_id(item, class_name = "File")
+        element <- list("file" = file_id)
+        body_elements <- append(body_elements, list(element))
+      }
+
+      # Build body
+      # nocov start
+      body <- list(
+        items = body_elements
+      )
+
+      path <- glue::glue(self$URL[["async_bulk_delete"]])
+
+      res <- self$auth$api(
+        path = path,
+        method = "POST",
+        body = body
+      )
+
+      rlang::inform(glue::glue("New asynchronous job for deleting files has started.")) # nolint
+
+      return(asAsyncJob(res, auth = self$auth))
+      # nocov end
+    },
+
     # Get details of asynchronous job for coping multiple files ---------------
     #' @description This call gets the details of an asynchronous bulk copy job.
     #'  This information will be available for up to a month after the job has
@@ -832,6 +890,48 @@ Files <- R6::R6Class(
 
       # nocov start
       path <- glue::glue(self$URL[["async_get_copy_job"]])
+
+      res <- self$auth$api(
+        path = path,
+        method = "GET"
+      )
+
+      return(asAsyncJob(res, auth = self$auth))
+      # nocov end
+    },
+
+    # Get details of asynchronous job for deleting multiple files -------------
+    #' @description This call gets the details of an asynchronous bulk deletion
+    #'  job. This information will be available for up to a month after the job
+    #'  has been completed.
+    #'
+    #' @param job_id The ID of the copy job you are querying.
+    #'  This ID can be found within the API response for the call for deleting
+    #'  files.
+    #'
+    #' @importFrom rlang abort
+    #' @importFrom checkmate assert_list
+    #' @importFrom glue glue
+    #'
+    #' @return \code{\link{AsyncJob}} object.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # Get details of async delete job
+    #'  a$files$async_get_delete_job(job_id = "job-id")
+    #' }
+    #'
+    async_get_delete_job = function(job_id) {
+      if (is_missing(job_id)) {
+        rlang::abort(
+          "Please provide the 'job_id' parameter."
+        )
+      }
+
+      job_id <- check_and_transform_id(job_id, class_name = "AsyncJob")
+
+      # nocov start
+      path <- glue::glue(self$URL[["async_get_delete_job"]])
 
       res <- self$auth$api(
         path = path,
