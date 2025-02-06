@@ -573,6 +573,48 @@ a$files$copy(
 
 <div align="right"><a href="#top">top</a></div>
 
+### Asynchronous copy action on multiple files 
+
+This operation lets you perform a bulk copy operation of files and folders. 
+Any underlying folder structure will be preserved. You can copy:
+
+- to a folder within the same project
+- to another project
+- to a folder in another project. 
+
+```{r}
+# Fetch files by id to copy into the api-testing project
+file1 <- a$files$get(id = "6435367997d9446ecb66cfb2")
+file2 <- a$files$get(id = "6435367997d9446ecb66cgr2")
+
+# Copy files to the project
+async_job_copy <- a$files$async_bulk_copy(
+  items = list(
+    list(
+      file = file1,
+      project = "<username_or_division>/api-testing"
+    ),
+    list(
+      file = file2,
+      parent = "<destination-folder-id>",
+      name = "copied_file_new_name"
+    )
+  )
+)
+
+# Reload object to check status
+async_job_copy$reload()
+async_job_copy
+
+# Or fetch async copy job object by id
+async_job_copy <- a$files$async_get_copy_job(job_id = "<job-id>")
+async_job_copy
+```
+
+This operation allows you to perform bulk copy action and to continue your work 
+in R session. The status of the copy operation can be previewed by reloading
+the AsyncJob object or by calling the operation `a$files$async_get_copy_job()`.
+
 ## Get details of multiple files
 
 The `bulk_get()` method allows you to retrieve details for multiple files
