@@ -550,6 +550,37 @@ a$files$delete(file = "<file_object_or_id>")
 
 <div align="right"><a href="#top">top</a></div>
 
+### Asynchronous delete action on multiple files/folders
+
+To delete multiple files at once, you can use async action for bulk delete. 
+It can be called from the `Auth$files` path and accepts a list of file/folder 
+IDs or `File` objects. Non-empty folders are allowed to be deleted together 
+with their content.
+
+```{r}
+# Delete multiple files
+async_delete_job <- a$files$async_bulk_delete(
+  items = list("file1-id", "file2-id", file_obj)
+)
+```
+
+Since the response returned is asynchronous job of class `AsyncJob`, you can
+check its status by reloading the object or by calling the function 
+`a$files$async_get_delete_job()`.
+
+```{r}
+# Reload object to check status
+async_delete_job$reload()
+async_delete_job
+
+# Or fetch async delete job object by id
+async_delete_job <- a$files$async_get_delete_job(job_id = "<job-id>")
+async_delete_job
+```
+
+<div align="right"><a href="#top">top</a></div>
+
+
 ## Copy files
 
 The `copy()` method allows you to copy multiple files between projects at a 
