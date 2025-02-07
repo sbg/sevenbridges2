@@ -664,7 +664,7 @@ Files <- R6::R6Class(
     #'  items <- list(
     #'            list(
     #'              file = '<file-id-1>',
-    #'              parent = '<foolder-id>'
+    #'              parent = '<folder-id>'
     #'            ),
     #'            list(
     #'              file = '<file-id-2>',
@@ -719,20 +719,20 @@ Files <- R6::R6Class(
     #'
     async_bulk_copy = function(items) {
       if (is_missing(items)) {
-        rlang::abort("Items parameter should be set as a nested list of information on files/folders you want to copy.") # nolint
+        rlang::abort("The items parameter should be a nested list containing information about the files and folders to be copied.") # nolint
       }
       checkmate::assert_list(items)
 
       body_elements <- list()
 
-      for (i in seq_len(length(items))) {
+      for (i in seq_along(items)) {
         item <- items[[i]]
         checkmate::assert_list(item)
         body_element <- list()
 
         if (is_missing(item[["file"]])) {
           rlang::abort(
-            glue::glue("File ID must be provided as string or File object in element {i}."), # nolint
+            glue::glue("The file ID must be provided as a string or a File object in element {i}."), # nolint
           )
         } else {
           body_element$file <- check_and_transform_id(item[["file"]],
@@ -743,13 +743,13 @@ Files <- R6::R6Class(
         if (is_missing(item[["project"]]) &&
           is_missing(item[["parent"]])) {
           rlang::abort(
-            glue::glue("Please provide either destination project or parent parameter in element {i}.") # nolint
+            glue::glue("Please provide either the destination project or the parent parameter in element {i}.") # nolint
           )
         }
         if (!is_missing(item[["project"]]) &&
           !is_missing(item[["parent"]])) {
           rlang::abort(
-            glue::glue("Either destination project or parent parameter must be proveded in element {i}, not both.") # nolint
+            glue::glue("Either the destination project or the parent parameter must be provided in element {i}, but not both.") # nolint
           )
         }
         if (!is_missing(item[["project"]])) {
@@ -765,7 +765,7 @@ Files <- R6::R6Class(
           ) &&
             tolower(item[["parent"]]$type) != "folder") {
             rlang::abort(
-              glue::glue("Destination parent directory parameter must contain folder id or File object with type = 'folder' in element {i}.") # nolint
+              glue::glue("The destination parent directory parameter must contain folder id or File object with type = 'folder' in element {i}.") # nolint
             )
           }
           body_element$parent <- check_and_transform_id(
@@ -794,7 +794,7 @@ Files <- R6::R6Class(
         body = body
       )
 
-      rlang::inform(glue::glue("New asynchronous job for coping files has started.")) # nolint
+      rlang::inform(glue::glue("New asynchronous job for copying files has started.")) # nolint
 
       return(asAsyncJob(res, auth = self$auth))
       # nocov end

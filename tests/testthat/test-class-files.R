@@ -375,7 +375,7 @@ test_that("Files async_bulk_copy() method throws error when expected", {
   items <- NA
   testthat::expect_error(
     setup_files_obj$async_bulk_copy(items),
-    regexp = "Items parameter should be set as a nested list of information on files/folders you want to copy." # nolint
+    regexp = "The items parameter should be a nested list containing information about the files and folders to be copied." # nolint
   )
 
   # 2. Items is not a list
@@ -397,7 +397,7 @@ test_that("Files async_bulk_copy() method throws error when expected", {
   )
   testthat::expect_error(
     setup_files_obj$async_bulk_copy(items),
-    regexp = "File ID must be provided as string or File object in element 2."
+    regexp = "The file ID must be provided as a string or a File object in element 2." # nolint
   )
 
   # 4. File is provided as numeric or other class in 2nd element
@@ -434,7 +434,7 @@ test_that("Files async_bulk_copy() method throws error when expected", {
   )
   testthat::expect_error(
     setup_files_obj$async_bulk_copy(items),
-    regexp = "Either destination project or parent parameter must be proveded in element 2, not both." # nolint
+    regexp = "Either the destination project or the parent parameter must be provided in element 2, but not both." # nolint
   )
 
   # 6. Neither parent or project are provided
@@ -449,7 +449,7 @@ test_that("Files async_bulk_copy() method throws error when expected", {
   )
   testthat::expect_error(
     setup_files_obj$async_bulk_copy(items),
-    regexp = "Please provide either destination project or parent parameter in element 2." # nolint
+    regexp = "Please provide either the destination project or the parent parameter in element 2." # nolint
   )
 
   # 7. Neither parent or project are provided
@@ -464,7 +464,7 @@ test_that("Files async_bulk_copy() method throws error when expected", {
   )
   testthat::expect_error(
     setup_files_obj$async_bulk_copy(items),
-    regexp = "Please provide either destination project or parent parameter in element 2." # nolint
+    regexp = "Please provide either the destination project or the parent parameter in element 2." # nolint
   )
 
   # 8. Project provided as numeric
@@ -496,7 +496,7 @@ test_that("Files async_bulk_copy() method throws error when expected", {
   )
   testthat::expect_error(
     setup_files_obj$async_bulk_copy(items),
-    regexp = "Destination parent directory parameter must contain folder id or File object with type = 'folder' in element 1." # nolint
+    regexp = "The destination parent directory parameter must contain folder id or File object with type = 'folder' in element 1." # nolint
   )
 
   # 10. Name provided is not string

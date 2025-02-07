@@ -14,7 +14,7 @@ AsyncJob <- R6::R6Class(
   public = list(
     #' @field id Asynchronous job ID.
     id = NULL,
-    #' @field type The type of job.
+    #' @field type The type of job. Can be one of: COPY, DELETE, MOVE.
     type = NULL,
     #' @field state The following states are available: SUBMITTED, RESOLVING,
     #'  RUNNING and FINISHED.

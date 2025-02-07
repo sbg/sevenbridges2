@@ -46,7 +46,7 @@ R6 Class representing a resource for managing asynchronous jobs.
 \describe{
 \item{\code{id}}{Asynchronous job ID.}
 
-\item{\code{type}}{The type of job.}
+\item{\code{type}}{The type of job. Can be one of: COPY, DELETE, MOVE.}
 
 \item{\code{state}}{The following states are available: SUBMITTED, RESOLVING,
 RUNNING and FINISHED.}

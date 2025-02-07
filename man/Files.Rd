@@ -699,7 +699,7 @@ Example of the list:
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{items <- list(
           list(
             file = '<file-id-1>',
-            parent = '<foolder-id>'
+            parent = '<folder-id>'
           ),
           list(
             file = '<file-id-2>',
