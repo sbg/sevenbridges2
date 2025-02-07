@@ -525,3 +525,41 @@ test_that("Files async_get_copy_job() method throws error when expected", {
     regexp = "Assertion on 'job_id' failed: Must inherit from class 'AsyncJob', but has classes 'File','Item','R6'." # nolint
   )
 })
+
+test_that("Files async_bulk_delete() method throws error when expected", {
+  # 1. Items is empty/missing
+  items <- NA
+  testthat::expect_error(
+    setup_files_obj$async_bulk_delete(items),
+    regexp = "Items parameter should be a list of files' or folders' IDs or `File` objects you want to delete." # nolint
+  )
+
+  # 2. Items is not a list
+  items <- 45
+  testthat::expect_error(
+    setup_files_obj$async_bulk_delete(items),
+    regexp = "Assertion on 'items' failed: Must be of type 'list', not 'double'." # nolint
+  )
+
+  # 3. Object of other class in 2nd element
+  items <- list("file-id", setup_project_obj)
+
+  testthat::expect_error(
+    setup_files_obj$async_bulk_delete(items),
+    regexp = "Assertion on 'item' failed: Must inherit from class 'File', but has classes 'Project','Item','R6'." # nolint
+  )
+})
+
+test_that("Files async_get_delete_job() method throws error when expected", {
+  # Job id is empty/missing or not of right class
+  job_id <- NA
+  testthat::expect_error(
+    setup_files_obj$async_get_delete_job(job_id),
+    regexp = "Please provide the 'job_id' parameter." # nolint
+  )
+  job_id <- setup_file_obj
+  testthat::expect_error(
+    setup_files_obj$async_get_delete_job(job_id),
+    regexp = "Assertion on 'job_id' failed: Must inherit from class 'AsyncJob', but has classes 'File','Item','R6'." # nolint
+  )
+})
