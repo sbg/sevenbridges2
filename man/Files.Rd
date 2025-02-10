@@ -130,7 +130,7 @@ R6 Class representing Files resource.
 ## ------------------------------------------------
 
 \dontrun{
- # Edit details of multiple files
+ # Copy multiple files
  a$files$async_bulk_copy(
    items = list(
            list(
@@ -153,12 +153,34 @@ R6 Class representing Files resource.
 
 
 ## ------------------------------------------------
+## Method `Files$async_bulk_delete`
+## ------------------------------------------------
+
+\dontrun{
+ # Delete multiple files
+ a$files$async_bulk_delete(
+   items = list(file_obj1, file_obj2, "<folder-id-string>", "<file-id>")
+ )
+}
+
+
+## ------------------------------------------------
 ## Method `Files$async_get_copy_job`
 ## ------------------------------------------------
 
 \dontrun{
  # Get details of async copy job
  a$files$async_get_copy_job(job_id = "job-id")
+}
+
+
+## ------------------------------------------------
+## Method `Files$async_get_delete_job`
+## ------------------------------------------------
+
+\dontrun{
+ # Get details of async delete job
+ a$files$async_get_delete_job(job_id = "job-id")
 }
 
 }
@@ -186,7 +208,9 @@ R6 Class representing Files resource.
 \item \href{#method-Files-bulk_update}{\code{Files$bulk_update()}}
 \item \href{#method-Files-bulk_edit}{\code{Files$bulk_edit()}}
 \item \href{#method-Files-async_bulk_copy}{\code{Files$async_bulk_copy()}}
+\item \href{#method-Files-async_bulk_delete}{\code{Files$async_bulk_delete()}}
 \item \href{#method-Files-async_get_copy_job}{\code{Files$async_get_copy_job()}}
+\item \href{#method-Files-async_get_delete_job}{\code{Files$async_get_delete_job()}}
 \item \href{#method-Files-clone}{\code{Files$clone()}}
 }
 }
@@ -714,11 +738,7 @@ Example of the list:
         )
 }\if{html}{\out{</div>}}
 
-Read more on how to \href{https://docs.sevenbridges.com/reference/copy-multiple-files}{perform async copy action on multiple files}.
-
-Utility function \code{\link{prepare_items_for_async_bulk_copy}}
-can help you prepare the \code{items} parameter based on the provided
-list of \code{\link{File}} objects.}
+Read more on how to \href{https://docs.sevenbridges.com/reference/copy-multiple-files}{perform async copy action on multiple files}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -728,7 +748,7 @@ list of \code{\link{File}} objects.}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
- # Edit details of multiple files
+ # Copy multiple files
  a$files$async_bulk_copy(
    items = list(
            list(
@@ -756,6 +776,44 @@ list of \code{\link{File}} objects.}
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Files-async_bulk_delete"></a>}}
+\if{latex}{\out{\hypertarget{method-Files-async_bulk_delete}{}}}
+\subsection{Method \code{async_bulk_delete()}}{
+This call lets you perform an asynchronous bulk
+deletion of files or folders. Deleting folders which aren't empty is
+allowed.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Files$async_bulk_delete(items)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{items}}{List of File objects (both \code{file} or \code{folder} type) or list
+of IDs of files/folders you want to delete.
+Read more on how to \href{https://docs.sevenbridges.com/reference/delete-multiple-files-and-folders}{perform async delete action on multiple files}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{AsyncJob}} object.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # Delete multiple files
+ a$files$async_bulk_delete(
+   items = list(file_obj1, file_obj2, "<folder-id-string>", "<file-id>")
+ )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Files-async_get_copy_job"></a>}}
 \if{latex}{\out{\hypertarget{method-Files-async_get_copy_job}{}}}
 \subsection{Method \code{async_get_copy_job()}}{
@@ -771,7 +829,8 @@ been completed.
 \describe{
 \item{\code{job_id}}{The ID of the copy job you are querying.
 This ID can be found within the API response for the call for copying
-files.}
+files.
+The function accepts also the AsyncJob object and extracts ID for you.}
 }
 \if{html}{\out{</div>}}
 }
@@ -783,6 +842,43 @@ files.}
 \preformatted{\dontrun{
  # Get details of async copy job
  a$files$async_get_copy_job(job_id = "job-id")
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Files-async_get_delete_job"></a>}}
+\if{latex}{\out{\hypertarget{method-Files-async_get_delete_job}{}}}
+\subsection{Method \code{async_get_delete_job()}}{
+This call gets the details of an asynchronous bulk deletion
+job. This information will be available for up to a month after the job
+has been completed.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Files$async_get_delete_job(job_id)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{job_id}}{The ID of the delete job you are querying.
+This ID can be found within the API response for the call for deleting
+files.
+The function accepts also the AsyncJob object and extracts ID for you.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{AsyncJob}} object.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # Get details of async delete job
+ a$files$async_get_delete_job(job_id = "job-id")
 }
 
 }
