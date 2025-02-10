@@ -798,7 +798,7 @@ Files <- R6::R6Class(
     },
 
     # Asynchronous (bulk) action for deleting multiple files ------------------
-    #' @description This call lets you perform perform an asynchronous bulk
+    #' @description This call lets you perform an asynchronous bulk
     #' deletion of files or folders. Deleting folders which aren't empty is
     #' allowed.
     #'
@@ -825,13 +825,13 @@ Files <- R6::R6Class(
     #'
     async_bulk_delete = function(items) {
       if (is_missing(items)) {
-        rlang::abort("Items parameter should be a list of files' or folders' IDs or `File` objects you want to delete.") # nolint
+        rlang::abort("The 'items' parameter should be a list of file/folder IDs or File objects you want to delete.") # nolint
       }
       checkmate::assert_list(items)
 
       body_elements <- list()
 
-      for (i in seq_len(length(items))) {
+      for (i in seq_along(items)) {
         item <- items[[i]]
         file_id <- check_and_transform_id(item, class_name = "File")
         element <- list("file" = file_id)
@@ -866,9 +866,9 @@ Files <- R6::R6Class(
     #' @param job_id The ID of the copy job you are querying.
     #'  This ID can be found within the API response for the call for copying
     #'  files.
+    #'  The function accepts also the AsyncJob object and extracts ID for you.
     #'
     #' @importFrom rlang abort
-    #' @importFrom checkmate assert_list
     #' @importFrom glue glue
     #'
     #' @return \code{\link{AsyncJob}} object.
@@ -905,12 +905,12 @@ Files <- R6::R6Class(
     #'  job. This information will be available for up to a month after the job
     #'  has been completed.
     #'
-    #' @param job_id The ID of the copy job you are querying.
+    #' @param job_id The ID of the delete job you are querying.
     #'  This ID can be found within the API response for the call for deleting
     #'  files.
+    #'  The function accepts also the AsyncJob object and extracts ID for you.
     #'
     #' @importFrom rlang abort
-    #' @importFrom checkmate assert_list
     #' @importFrom glue glue
     #'
     #' @return \code{\link{AsyncJob}} object.

@@ -779,7 +779,7 @@ Read more on how to \href{https://docs.sevenbridges.com/reference/copy-multiple-
 \if{html}{\out{<a id="method-Files-async_bulk_delete"></a>}}
 \if{latex}{\out{\hypertarget{method-Files-async_bulk_delete}{}}}
 \subsection{Method \code{async_bulk_delete()}}{
-This call lets you perform perform an asynchronous bulk
+This call lets you perform an asynchronous bulk
 deletion of files or folders. Deleting folders which aren't empty is
 allowed.
 \subsection{Usage}{
@@ -829,7 +829,8 @@ been completed.
 \describe{
 \item{\code{job_id}}{The ID of the copy job you are querying.
 This ID can be found within the API response for the call for copying
-files.}
+files.
+The function accepts also the AsyncJob object and extracts ID for you.}
 }
 \if{html}{\out{</div>}}
 }
@@ -863,9 +864,10 @@ has been completed.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{job_id}}{The ID of the copy job you are querying.
+\item{\code{job_id}}{The ID of the delete job you are querying.
 This ID can be found within the API response for the call for deleting
-files.}
+files.
+The function accepts also the AsyncJob object and extracts ID for you.}
 }
 \if{html}{\out{</div>}}
 }

@@ -564,7 +564,7 @@ async_delete_job <- a$files$async_bulk_delete(
 )
 ```
 
-Since the response returned is asynchronous job of class `AsyncJob`, you can
+Since the response returned is an asynchronous job of class `AsyncJob`, you can
 check its status by reloading the object or by calling the function 
 `a$files$async_get_delete_job()`.
 

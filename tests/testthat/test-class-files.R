@@ -531,7 +531,7 @@ test_that("Files async_bulk_delete() method throws error when expected", {
   items <- NA
   testthat::expect_error(
     setup_files_obj$async_bulk_delete(items),
-    regexp = "Items parameter should be a list of files' or folders' IDs or `File` objects you want to delete." # nolint
+    regexp = "The 'items' parameter should be a list of file/folder IDs or File objects you want to delete." # nolint
   )
 
   # 2. Items is not a list
