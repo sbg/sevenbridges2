@@ -452,22 +452,7 @@ test_that("Files async_bulk_copy() method throws error when expected", {
     regexp = "Please provide either the destination project or the parent parameter in element 2." # nolint
   )
 
-  # 7. Neither parent or project are provided
-  items <- list(
-    list(
-      file = "file-id",
-      project = "proj-id"
-    ),
-    list(
-      file = setup_file_obj
-    )
-  )
-  testthat::expect_error(
-    setup_files_obj$async_bulk_copy(items),
-    regexp = "Please provide either the destination project or the parent parameter in element 2." # nolint
-  )
-
-  # 8. Project provided as numeric
+  # 7. Project provided as numeric
   items <- list(
     list(
       file = "file-id",
@@ -478,7 +463,7 @@ test_that("Files async_bulk_copy() method throws error when expected", {
     setup_files_obj$async_bulk_copy(items)
   )
 
-  # 9. Parent provided as numeric or File with file type
+  # 8. Parent provided as numeric or File with file type
   items <- list(
     list(
       file = "file-id",
@@ -499,7 +484,7 @@ test_that("Files async_bulk_copy() method throws error when expected", {
     regexp = "The destination parent directory parameter must contain folder id or File object with type = 'folder' in element 1." # nolint
   )
 
-  # 10. Name provided is not string
+  # 9. Name provided is not string
   items <- list(
     list(
       file = "file-id",
@@ -646,22 +631,7 @@ test_that("Files async_bulk_move() method throws an error when expected", {
     regexp = "Please provide either the destination project or the parent parameter in element 2." # nolint
   )
 
-  # 7. Neither parent or project are provided
-  items <- list(
-    list(
-      file = "file-id",
-      project = "proj-id"
-    ),
-    list(
-      file = setup_file_obj
-    )
-  )
-  testthat::expect_error(
-    setup_files_obj$async_bulk_move(items),
-    regexp = "Please provide either the destination project or the parent parameter in element 2." # nolint
-  )
-
-  # 8. Project provided as numeric
+  # 7. Project provided as numeric
   items <- list(
     list(
       file = "file-id",
@@ -672,7 +642,7 @@ test_that("Files async_bulk_move() method throws an error when expected", {
     setup_files_obj$async_bulk_move(items)
   )
 
-  # 9. Parent provided as numeric or File with file type
+  # 8. Parent provided as numeric or File with file type
   items <- list(
     list(
       file = "file-id",
@@ -693,7 +663,7 @@ test_that("Files async_bulk_move() method throws an error when expected", {
     regexp = "The destination parent directory parameter must contain folder id or File object with type = 'folder' in element 1." # nolint
   )
 
-  # 10. Name provided is not string
+  # 9. Name provided is not string
   items <- list(
     list(
       file = "file-id",

@@ -886,7 +886,7 @@ Files <- R6::R6Class(
     #' }
     #'
     #' @param items Nested list of elements containing information about each
-    #'  file/folder to be moved For each element, users must provide:
+    #'  file/folder to be moved. For each element, users must provide:
     #'
     # nolint start
     #'  \itemize{
@@ -939,7 +939,7 @@ Files <- R6::R6Class(
     #' @examples
     #' \dontrun{
     #'  # Move multiple files
-    #'  a$files$async_bulk_copy(
+    #'  a$files$async_bulk_move(
     #'    items = list(
     #'            list(
     #'              file = '<file-id-1>',

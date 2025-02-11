@@ -170,7 +170,7 @@ R6 Class representing Files resource.
 
 \dontrun{
  # Move multiple files
- a$files$async_bulk_copy(
+ a$files$async_bulk_move(
    items = list(
            list(
              file = '<file-id-1>',
@@ -872,7 +872,7 @@ project.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{items}}{Nested list of elements containing information about each
-file/folder to be moved For each element, users must provide:
+file/folder to be moved. For each element, users must provide:
 
 \itemize{
 \item \code{file} - The ID of the file or folder you are moving. Use the
@@ -937,7 +937,7 @@ and destination folders.
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
  # Move multiple files
- a$files$async_bulk_copy(
+ a$files$async_bulk_move(
    items = list(
            list(
              file = '<file-id-1>',
