@@ -183,6 +183,16 @@ R6 Class representing Files resource.
  a$files$async_get_delete_job(job_id = "job-id")
 }
 
+
+## ------------------------------------------------
+## Method `Files$async_list_file_jobs`
+## ------------------------------------------------
+
+\dontrun{
+ # Get details of first 5 async jobs
+ a$files$async_list_file_jobs(limit = 5)
+}
+
 }
 \section{Super class}{
 \code{\link[sevenbridges2:Resource]{sevenbridges2::Resource}} -> \code{Files}
@@ -211,6 +221,7 @@ R6 Class representing Files resource.
 \item \href{#method-Files-async_bulk_delete}{\code{Files$async_bulk_delete()}}
 \item \href{#method-Files-async_get_copy_job}{\code{Files$async_get_copy_job()}}
 \item \href{#method-Files-async_get_delete_job}{\code{Files$async_get_delete_job()}}
+\item \href{#method-Files-async_list_file_jobs}{\code{Files$async_list_file_jobs()}}
 \item \href{#method-Files-clone}{\code{Files$clone()}}
 }
 }
@@ -879,6 +890,51 @@ The function accepts also the AsyncJob object and extracts ID for you.}
 \preformatted{\dontrun{
  # Get details of async delete job
  a$files$async_get_delete_job(job_id = "job-id")
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Files-async_list_file_jobs"></a>}}
+\if{latex}{\out{\hypertarget{method-Files-async_list_file_jobs}{}}}
+\subsection{Method \code{async_list_file_jobs()}}{
+This call gets the details for all asynchronous bulk
+jobs you have started. This information will be available for up to a
+month after the job has been completed.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Files$async_list_file_jobs(
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
+
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{Collection}} object containing list of
+\code{\link{AsyncJob}} objects.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+ # Get details of first 5 async jobs
+ a$files$async_list_file_jobs(limit = 5)
 }
 
 }

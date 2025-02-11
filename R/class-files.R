@@ -25,7 +25,8 @@ Files <- R6::R6Class(
       "async_bulk_copy" = "async/files/copy",
       "async_bulk_delete" = "async/files/delete",
       "async_get_copy_job" = "async/files/copy/{job_id}",
-      "async_get_delete_job" = "async/files/delete/{job_id}"
+      "async_get_delete_job" = "async/files/delete/{job_id}",
+      "async_list_file_jobs" = "async/files"
     ),
 
     # Initialize Files object -----------------------------------------------
@@ -939,6 +940,49 @@ Files <- R6::R6Class(
       )
 
       return(asAsyncJob(res, auth = self$auth))
+      # nocov end
+    },
+
+    # Get details of all asynchronous jobs ---------------------------------
+    #' @description This call gets the details for all asynchronous bulk
+    #'  jobs you have started. This information will be available for up to a
+    #'  month after the job has been completed.
+    #'
+    #' @param limit The maximum number of collection items to return
+    #'  for a single request. Minimum value is `1`.
+    #'  The maximum value is `100` and the default value is `50`.
+    #'  This is a pagination-specific attribute.
+    #' @param offset The zero-based starting index in the entire collection
+    #'  of the first item to return. The default value is `0`.
+    #'  This is a pagination-specific attribute.
+    #'
+    #' @importFrom glue glue
+    #'
+    #' @return \code{\link{Collection}} object containing list of
+    #'  \code{\link{AsyncJob}} objects.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # Get details of first 5 async jobs
+    #'  a$files$async_list_file_jobs(limit = 5)
+    #' }
+    #'
+    async_list_file_jobs = function(limit = getOption("sevenbridges2")$limit,
+                                    offset = getOption("sevenbridges2")$offset) { # nolint
+      # nocov start
+      params_list <- list(
+        limit = limit,
+        offset = offset,
+        path = glue::glue(self$URL[["async_list_file_jobs"]])
+      )
+      res <- do.call(
+        super$query,
+        params_list
+      )
+
+      res$items <- asAsyncJobList(res, auth = self$auth)
+
+      return(asCollection(res, auth = self$auth))
       # nocov end
     }
   )

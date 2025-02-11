@@ -768,6 +768,21 @@ a$files$bulk_edit(files = list(file_obj_1, file_obj_2))
 
 <div align="right"><a href="#top">top</a></div>
 
+## Get details of all asynchronous file jobs
+
+The `async_list_file_jobs()` method allows you to retrieve details all 
+asynchronous file jobs (async_copy, async_delete, async_move) in a single 
+API call. This method accepts `limit` and `offset` arguments to control the 
+number of results returned. The output is a `Collection` object containing a 
+list of those `AsyncJob` objects with details as their type, id, status, 
+when they started/finished etc.
+
+```{r}
+# Get details of all async file jobs
+all_jobs <- a$files$async_list_file_jobs()
+all_jobs
+```
+
 ## Create a folder within the destination project or parent folder
 
 To create a new folder on the Platform, use the `Auth$files` method
