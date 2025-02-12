@@ -958,12 +958,12 @@ Files <- R6::R6Class(
     #'
     #' @importFrom glue glue
     #'
-    #' @return \code{\link{Collection}} object containing list of
+    #' @return A \code{\link{Collection}} object containing a list of
     #'  \code{\link{AsyncJob}} objects.
     #'
     #' @examples
     #' \dontrun{
-    #'  # Get details of first 5 async jobs
+    #'  # Get details of the first 5 async jobs
     #'  a$files$async_list_file_jobs(limit = 5)
     #' }
     #'
