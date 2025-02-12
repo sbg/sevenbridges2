@@ -604,7 +604,7 @@ a$files$copy(
 
 <div align="right"><a href="#top">top</a></div>
 
-### Asynchronous copy action on multiple files 
+### Asynchronous bulk copy of multiple files 
 
 This operation lets you perform a bulk copy operation of files and folders. 
 Any underlying folder structure will be preserved. You can copy:
@@ -645,6 +645,8 @@ async_job_copy
 This operation allows you to perform bulk copy action and to continue your work 
 in R session. The status of the copy operation can be previewed by reloading
 the AsyncJob object or by calling the operation `a$files$async_get_copy_job()`.
+
+<div align="right"><a href="#top">top</a></div>
 
 ## Get details of multiple files
 
@@ -830,6 +832,61 @@ demo_folder <- a$files$create_folder(
   parent = "<folder_id>"
 )
 ```
+
+<div align="right"><a href="#top">top</a></div>
+
+## Asynchronous bulk move of multiple files 
+
+This operation lets you perform a bulk move operation of files and folders. 
+You can move:
+
+- to a root project folder
+- to a subfolder within the same project or a different project 
+
+Rules for moving files and folders:
+
+- The file ID is preserved after the move.
+- The folder ID is changed after the move.
+- The destination has to be an existing folder.
+- If the target folder contains a folder with the same name, the contents of
+both folders will be merged.
+- If a file with the same name already exists, the source file will be
+automatically renamed (by adding a numeric prefix).
+- You need to have `WRITE` permissions for both the source and destination
+folders.
+
+```{r}
+# Fetch files by ID to move them into the "api-testing" project
+file1 <- a$files$get(id = "<file-1-id>")
+file2 <- a$files$get(id = "<file-2-id>")
+
+# Move files to the project
+async_job_move <- a$files$async_bulk_move(
+  items = list(
+    list(
+      file = file1,
+      project = "<username_or_division>/api-testing"
+    ),
+    list(
+      file = file2,
+      parent = "<destination-folder-id>",
+      name = "moved_file_new_name"
+    )
+  )
+)
+
+# Reload the object to check the status
+async_job_move$reload()
+async_job_move
+
+# Or fetch the async move job object by id
+async_job_move <- a$files$async_get_move_job(job_id = "<job-id>")
+async_job_move
+```
+
+This operation enables you to perform a bulk move action while continuing your
+work in the R session. You can check the status of the move operation by
+reloading the `AsyncJob` object or calling `a$files$async_get_move_job()`.
 
 <div align="right"><a href="#top">top</a></div>
 

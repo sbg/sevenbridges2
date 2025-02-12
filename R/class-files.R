@@ -24,8 +24,10 @@ Files <- R6::R6Class(
       "bulk_delete" = "bulk/files/delete",
       "async_bulk_copy" = "async/files/copy",
       "async_bulk_delete" = "async/files/delete",
+      "async_bulk_move" = "async/files/move",
       "async_get_copy_job" = "async/files/copy/{job_id}",
       "async_get_delete_job" = "async/files/delete/{job_id}",
+      "async_get_move_job" = "async/files/move/{job_id}",
       "async_list_file_jobs" = "async/files"
     ),
 
@@ -630,7 +632,7 @@ Files <- R6::R6Class(
       # nocov end
     },
 
-    # Asynchronous (bulk) action for coping multiple files --------------------
+    # Asynchronous (bulk) action for copying multiple files --------------------
     #' @description This call lets you perform a bulk copy operation of files
     #'  and folders. Any underlying folder structure will be preserved.
     #'  You can copy:
@@ -699,7 +701,7 @@ Files <- R6::R6Class(
     #'    items = list(
     #'            list(
     #'              file = '<file-id-1>',
-    #'              parent = '<foolder-id>'
+    #'              parent = '<folder-id>'
     #'            ),
     #'            list(
     #'              file = '<file-id-2>',
@@ -859,7 +861,189 @@ Files <- R6::R6Class(
       # nocov end
     },
 
-    # Get details of asynchronous job for coping multiple files ---------------
+    # Asynchronous (bulk) action for moving multiple files --------------------
+    #' @description This call lets you perform a bulk move operation of files
+    #'  and folders.
+    #'  You can move:
+    #'  \itemize{
+    #'       \item to a root project folder,
+    #'       \item to a subfolder within the same project or a different
+    #'        project.
+    #'       }
+    #'
+    #' @details
+    #' Rules for moving files and folders:
+    #' \itemize{
+    #'      \item The file ID is preserved after the move.
+    #'      \item The folder ID is changed after the move.
+    #'      \item The destination has to be an existing folder.
+    #'      \item If the target folder contains a folder with the same
+    #'       name, the contents of both folders will be merged.
+    #'      \item If a file with the same name already exists, the source
+    #'       file will be automatically renamed (by adding a numeric
+    #'       prefix).
+    #'      \item You need to have WRITE permissions for both the source
+    #'       and destination folders.
+    #' }
+    #'
+    #' @param items Nested list of elements containing information about each
+    #'  file/folder to be moved. For each element, users must provide:
+    #'
+    # nolint start
+    #'  \itemize{
+    #'      \item `file` - The ID of the file or folder you are moving. Use the
+    #'       API call for listing all files or folders to obtain the ID.
+    #'      \item `parent` - The ID of the folder you are moving files to.
+    #'       Should not be used together with project. If project is used, the
+    #'       items will be imported to the root of the project's files. If
+    #'       parent is used, the import will take place into the specified
+    #'       folder, within the project to which the folder belongs.
+    #'      \item `project` - The project you are moving the files to. Should
+    #'       not be used together with parent. If parent is used, the import
+    #'       will take place into the specified folder, within the project to
+    #'       which the folder belongs. If project is used, the items will be
+    #'       imported to the root of the project's files.
+    #'      \item `name` - Enter the new name for the file or folder if you
+    #'       want to rename at the destination.
+    #'  }
+    # nolint end
+    #'  Example of the list:
+    #'  ```{r}
+    #'  items <- list(
+    #'            list(
+    #'              file = '<file-id-1>',
+    #'              parent = '<folder-id>'
+    #'            ),
+    #'            list(
+    #'              file = '<file-id-2>',
+    #'              project = '<project-id-1>',
+    #'              name = 'moved_file.txt'
+    #'            ),
+    #'            list(
+    #'              file = '<file-id-3>',
+    #'              parent = '<parent-id-2>',
+    #'              name = 'moved_file2.txt'
+    #'            )
+    #'          )
+    #' ```
+    # nolint start
+    #'  Read more on how to [perform async move action on multiple files](https://docs.sevenbridges.com/reference/move-multiple-files-or-folders).
+    # nolint end
+    #'
+    #'
+    #' @importFrom rlang abort inform
+    #' @importFrom checkmate assert_list test_r6
+    #' @importFrom glue glue
+    #'
+    #' @return \code{\link{AsyncJob}} object.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # Move multiple files
+    #'  a$files$async_bulk_move(
+    #'    items = list(
+    #'            list(
+    #'              file = '<file-id-1>',
+    #'              parent = '<folder-id>'
+    #'            ),
+    #'            list(
+    #'              file = '<file-id-2>',
+    #'              project = '<project-id-1>',
+    #'              name = 'moved_file.txt'
+    #'            ),
+    #'            list(
+    #'              file = '<file-id-3>',
+    #'              parent = '<parent-id-2>',
+    #'              name = 'moved_file2.txt'
+    #'            )
+    #'          )
+    #'   )
+    #' }
+    #'
+    async_bulk_move = function(items) {
+      if (is_missing(items)) {
+        rlang::abort("The items parameter should be a nested list containing information about the files and folders to be moved.") # nolint
+      }
+      checkmate::assert_list(items)
+
+      body_elements <- list()
+
+      for (i in seq_along(items)) {
+        item <- items[[i]]
+        checkmate::assert_list(item)
+        body_element <- list()
+
+        if (is_missing(item[["file"]])) {
+          rlang::abort(
+            glue::glue("The file ID must be provided as a string or a File object in element {i}."), # nolint
+          )
+        } else {
+          body_element$file <- check_and_transform_id(item[["file"]],
+            class_name = "File"
+          )
+        }
+
+        if (is_missing(item[["project"]]) &&
+          is_missing(item[["parent"]])) {
+          rlang::abort(
+            glue::glue("Please provide either the destination project or the parent parameter in element {i}.") # nolint
+          )
+        }
+        if (!is_missing(item[["project"]]) &&
+          !is_missing(item[["parent"]])) {
+          rlang::abort(
+            glue::glue("Either the destination project or the parent parameter must be provided in element {i}, but not both.") # nolint
+          )
+        }
+        if (!is_missing(item[["project"]])) {
+          body_element$project <- check_and_transform_id(
+            item[["project"]],
+            class_name = "Project"
+          )
+        }
+        if (!is_missing(item[["parent"]])) {
+          if (checkmate::test_r6(
+            item[["parent"]],
+            classes = "File"
+          ) &&
+            tolower(item[["parent"]]$type) != "folder") {
+            rlang::abort(
+              glue::glue("The destination parent directory parameter must contain folder id or File object with type = 'folder' in element {i}.") # nolint
+            )
+          }
+          body_element$parent <- check_and_transform_id(
+            x = item[["parent"]],
+            class_name = "File"
+          )
+        }
+        if (!is_missing(item[["name"]])) {
+          checkmate::assert_string(item[["name"]], null.ok = TRUE)
+          body_element$name <- item[["name"]]
+        }
+        body_elements <- append(body_elements, list(body_element))
+      }
+
+      # Build body
+      # nocov start
+      body <- list(
+        items = body_elements
+      )
+
+      path <- glue::glue(self$URL[["async_bulk_move"]])
+
+      res <- self$auth$api(
+        path = path,
+        method = "POST",
+        body = body
+      )
+
+      rlang::inform(glue::glue("New asynchronous job for moving files has started.")) # nolint
+
+      return(asAsyncJob(res, auth = self$auth))
+      # nocov end
+    },
+
+    # Get details of asynchronous job for copying multiple files ---------------
     #' @description This call gets the details of an asynchronous bulk copy job.
     #'  This information will be available for up to a month after the job has
     #'  been completed.
@@ -867,7 +1051,8 @@ Files <- R6::R6Class(
     #' @param job_id The ID of the copy job you are querying.
     #'  This ID can be found within the API response for the call for copying
     #'  files.
-    #'  The function accepts also the AsyncJob object and extracts ID for you.
+    #'  The function also accepts an AsyncJob object and extracts the ID for
+    #'  you.
     #'
     #' @importFrom rlang abort
     #' @importFrom glue glue
@@ -909,7 +1094,8 @@ Files <- R6::R6Class(
     #' @param job_id The ID of the delete job you are querying.
     #'  This ID can be found within the API response for the call for deleting
     #'  files.
-    #'  The function accepts also the AsyncJob object and extracts ID for you.
+    #'  The function also accepts an AsyncJob object and extracts the ID for
+    #'  you.
     #'
     #' @importFrom rlang abort
     #' @importFrom glue glue
@@ -933,6 +1119,49 @@ Files <- R6::R6Class(
 
       # nocov start
       path <- glue::glue(self$URL[["async_get_delete_job"]])
+
+      res <- self$auth$api(
+        path = path,
+        method = "GET"
+      )
+
+      return(asAsyncJob(res, auth = self$auth))
+      # nocov end
+    },
+
+    # Get details of asynchronous job for moving multiple files ---------------
+    #' @description This call gets the details of an asynchronous bulk move
+    #'  job. This information will be available for up to a month after the job
+    #'  has been completed.
+    #'
+    #' @param job_id The ID of the move job you are querying. This ID can be
+    #'  found within the API response for the call for moving files.
+    #'  The function also accepts an AsyncJob object and extracts the ID for
+    #'  you.
+    #'
+    #' @importFrom rlang abort
+    #' @importFrom glue glue
+    #'
+    #' @return An \code{\link{AsyncJob}} object containing details of the move
+    #'  job.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'  # Get details of async move job
+    #'  a$files$async_get_move_job(job_id = "job-id")
+    #' }
+    #'
+    async_get_move_job = function(job_id) {
+      if (is_missing(job_id)) {
+        rlang::abort(
+          "Please provide the 'job_id' parameter."
+        )
+      }
+
+      job_id <- check_and_transform_id(job_id, class_name = "AsyncJob")
+
+      # nocov start
+      path <- glue::glue(self$URL[["async_get_move_job"]])
 
       res <- self$auth$api(
         path = path,

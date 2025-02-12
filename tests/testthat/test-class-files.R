@@ -452,22 +452,7 @@ test_that("Files async_bulk_copy() method throws error when expected", {
     regexp = "Please provide either the destination project or the parent parameter in element 2." # nolint
   )
 
-  # 7. Neither parent or project are provided
-  items <- list(
-    list(
-      file = "file-id",
-      project = "proj-id"
-    ),
-    list(
-      file = setup_file_obj
-    )
-  )
-  testthat::expect_error(
-    setup_files_obj$async_bulk_copy(items),
-    regexp = "Please provide either the destination project or the parent parameter in element 2." # nolint
-  )
-
-  # 8. Project provided as numeric
+  # 7. Project provided as numeric
   items <- list(
     list(
       file = "file-id",
@@ -478,7 +463,7 @@ test_that("Files async_bulk_copy() method throws error when expected", {
     setup_files_obj$async_bulk_copy(items)
   )
 
-  # 9. Parent provided as numeric or File with file type
+  # 8. Parent provided as numeric or File with file type
   items <- list(
     list(
       file = "file-id",
@@ -499,7 +484,7 @@ test_that("Files async_bulk_copy() method throws error when expected", {
     regexp = "The destination parent directory parameter must contain folder id or File object with type = 'folder' in element 1." # nolint
   )
 
-  # 10. Name provided is not string
+  # 9. Name provided is not string
   items <- list(
     list(
       file = "file-id",
@@ -560,6 +545,147 @@ test_that("Files async_get_delete_job() method throws error when expected", {
   job_id <- setup_file_obj
   testthat::expect_error(
     setup_files_obj$async_get_delete_job(job_id),
+    regexp = "Assertion on 'job_id' failed: Must inherit from class 'AsyncJob', but has classes 'File','Item','R6'." # nolint
+  )
+})
+
+test_that("Files async_bulk_move() method throws an error when expected", {
+  # 1. Items is empty/missing
+  items <- NA
+  testthat::expect_error(
+    setup_files_obj$async_bulk_move(items),
+    regexp = "The items parameter should be a nested list containing information about the files and folders to be moved." # nolint
+  )
+
+  # 2. Items is not a list
+  items <- 45
+  testthat::expect_error(
+    setup_files_obj$async_bulk_move(items),
+    regexp = "Assertion on 'items' failed: Must be of type 'list', not 'double'." # nolint
+  )
+
+  # 3. File missing in 2nd element
+  items <- list(
+    list(
+      file = "file-id",
+      project = "proj-id"
+    ),
+    list(
+      project = "proj-id"
+    )
+  )
+  testthat::expect_error(
+    setup_files_obj$async_bulk_move(items),
+    regexp = "The file ID must be provided as a string or a File object in element 2." # nolint
+  )
+
+  # 4. File is provided as numeric or other class in 2nd element
+  items <- list(
+    list(
+      file = 123,
+      project = "proj-id"
+    )
+  )
+  testthat::expect_error(
+    setup_files_obj$async_bulk_move(items)
+  )
+  items <- list(
+    list(
+      file = setup_project_obj,
+      project = "proj-id"
+    )
+  )
+  testthat::expect_error(
+    setup_files_obj$async_bulk_move(items)
+  )
+
+  # 5. Both parent and project provided
+  items <- list(
+    list(
+      file = "file-id",
+      project = "proj-id"
+    ),
+    list(
+      file = setup_file_obj,
+      project = "proj-id",
+      parent = "parent-id"
+    )
+  )
+  testthat::expect_error(
+    setup_files_obj$async_bulk_move(items),
+    regexp = "Either the destination project or the parent parameter must be provided in element 2, but not both." # nolint
+  )
+
+  # 6. Neither parent or project are provided
+  items <- list(
+    list(
+      file = "file-id",
+      project = "proj-id"
+    ),
+    list(
+      file = setup_file_obj
+    )
+  )
+  testthat::expect_error(
+    setup_files_obj$async_bulk_move(items),
+    regexp = "Please provide either the destination project or the parent parameter in element 2." # nolint
+  )
+
+  # 7. Project provided as numeric
+  items <- list(
+    list(
+      file = "file-id",
+      project = 123
+    )
+  )
+  testthat::expect_error(
+    setup_files_obj$async_bulk_move(items)
+  )
+
+  # 8. Parent provided as numeric or File with file type
+  items <- list(
+    list(
+      file = "file-id",
+      parent = 123
+    )
+  )
+  testthat::expect_error(
+    setup_files_obj$async_bulk_move(items)
+  )
+  items <- list(
+    list(
+      file = "file-id",
+      parent = setup_file_obj
+    )
+  )
+  testthat::expect_error(
+    setup_files_obj$async_bulk_move(items),
+    regexp = "The destination parent directory parameter must contain folder id or File object with type = 'folder' in element 1." # nolint
+  )
+
+  # 9. Name provided is not string
+  items <- list(
+    list(
+      file = "file-id",
+      parent = "parent-id",
+      name = 123
+    )
+  )
+  testthat::expect_error(
+    setup_files_obj$async_bulk_move(items)
+  )
+})
+
+test_that("Files async_get_move_job() method throws an error when expected", {
+  # Job id is empty/missing or not of right class
+  job_id <- NA
+  testthat::expect_error(
+    setup_files_obj$async_get_move_job(job_id),
+    regexp = "Please provide the 'job_id' parameter." # nolint
+  )
+  job_id <- setup_file_obj
+  testthat::expect_error(
+    setup_files_obj$async_get_move_job(job_id),
     regexp = "Assertion on 'job_id' failed: Must inherit from class 'AsyncJob', but has classes 'File','Item','R6'." # nolint
   )
 })
