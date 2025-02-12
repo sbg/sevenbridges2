@@ -689,3 +689,41 @@ test_that("Files async_get_move_job() method throws an error when expected", {
     regexp = "Assertion on 'job_id' failed: Must inherit from class 'AsyncJob', but has classes 'File','Item','R6'." # nolint
   )
 })
+
+test_that("Files async_list_file_jobs() method throws error when expected", {
+  # 1. Limit is not valid
+  negative_limit <- list(limit = -1)
+  string_limit <- list(limit = "limit")
+  big_limit <- list(limit = 1500)
+
+  testthat::expect_error(
+    do.call(setup_files_obj$async_list_file_jobs, negative_limit),
+    regexp = "Limit must be integer number between 1 and 100.",
+    fixed = TRUE
+  )
+  testthat::expect_error(
+    do.call(setup_files_obj$async_list_file_jobs, string_limit),
+    regexp = "Limit must be integer number between 1 and 100.",
+    fixed = TRUE
+  )
+  testthat::expect_error(
+    do.call(setup_files_obj$async_list_file_jobs, big_limit),
+    regexp = "Limit must be integer number between 1 and 100.",
+    fixed = TRUE
+  )
+
+  # 2. Offset is not valid
+  negative_offset <- list(offset = -10)
+  string_offset <- list(offset = "offset")
+
+  testthat::expect_error(
+    do.call(setup_files_obj$async_list_file_jobs, negative_offset),
+    regexp = "Offset must be integer number >= 0.",
+    fixed = TRUE
+  )
+  testthat::expect_error(
+    do.call(setup_files_obj$async_list_file_jobs, string_offset),
+    regexp = "Offset must be integer number >= 0.",
+    fixed = TRUE
+  )
+})
