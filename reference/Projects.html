@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sevenbridges2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,7 +36,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>R6 Class representing a projects endpoints.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/v0.2.0/R/class-projects.R" class="external-link"><code>R/class-projects.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/develop/R/class-projects.R" class="external-link"><code>R/class-projects.R</code></a></small>
       <div class="d-none name"><code>Projects.Rd</code></div>
     </div>
 
@@ -118,7 +118,11 @@ More details on how to query projects, you can find in our
 
 
 <dt><code>tags</code></dt>
-<dd><p>The list of project tags.</p></dd>
+<dd><p>A list of project tags used to filter the query results.
+Each tag should be provided as a string within the list, and tags may
+include spaces. For example, both "my_tag_1" and "tag with spaces" are
+valid tag values. The method will return only projects that have all
+the specified tags.</p></dd>
 
 
 <dt><code>limit</code></dt>

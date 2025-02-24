@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sevenbridges2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,17 +36,17 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/sbg/sevenbridges2/blob/v0.2.0/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/sbg/sevenbridges2/blob/develop/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="sevenbridges2-010">sevenbridges2 0.1.0<a class="anchor" aria-label="anchor" href="#sevenbridges2-010"></a></h2><p class="text-muted">CRAN release: 2024-02-03</p>
 <ul><li>Initial CRAN submission.</li>
-</ul></div>
+</ul><hr></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="sevenbridges2-020">sevenbridges2 0.2.0<a class="anchor" aria-label="anchor" href="#sevenbridges2-020"></a></h2><p class="text-muted">CRAN release: 2024-07-02</p>
 <div class="section level3">
-<h3 id="breaking-changes-0-2-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-2-0"></a></h3>
+<h3 id="new-features-0-2-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
 <ul><li>The package now includes support for another category of API calls: bulk actions.</li>
 <li>Bulk actions allow users to perform actions on multiple items with a single call. The following bulk API methods have been added:
 <ul><li>
@@ -75,6 +75,44 @@
 <ul><li>Fix error handling checkers in the core <code><a href="../reference/api.html">api()</a></code> function to ensure compatibility with newer versions of R. The <code><a href="https://rdrr.io/r/base/sets.html" class="external-link">setequal()</a></code> function has been replaced with the custom <code>list_eq()</code> function.</li>
 <li>Fix logic for setting API request header when using Seven Bridges single sign-on token for authentication.</li>
 <li>Set the default value of the <code>fields</code> parameter in the core <code><a href="../reference/api.html">api()</a></code> function to “_all”, ensuring that all available fields are included in the API response for each resource.</li>
+</ul><hr></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="sevenbridges2-030">sevenbridges2 0.3.0<a class="anchor" aria-label="anchor" href="#sevenbridges2-030"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-3-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-3-0"></a></h3>
+<ul><li>Introduced support for <strong>asynchronous bulk actions</strong>, enabling asynchronous operations on multiple items without blocking execution.</li>
+<li>The following <strong>async bulk API methods</strong> have been added:
+<ul><li>
+<code>async_bulk_copy()</code> in the <code>Auth$files</code> path: Copies multiple files and folders while preserving the folder structure. Supports:
+<ul><li>Copying to a subfolder within the same project.</li>
+<li>Copying to another project.</li>
+<li>Copying to a subfolder in a different project.</li>
+</ul></li>
+<li>
+<code>async_bulk_delete()</code> in the <code>Auth$files</code> path: Deletes multiple files or folders asynchronously. Empty and non-empty folders can be deleted.</li>
+<li>
+<code>async_bulk_move()</code> in the <code>Auth$files</code> path: Moves multiple files and folders. Supports:
+<ul><li>Moving to the root folder of a project.</li>
+<li>Moving to a subfolder within the same project or a different project.</li>
+</ul></li>
+<li>
+<code>async_get_copy_job()</code> in the <code>Auth$files</code> path: Retrieves details of an asynchronous bulk copy job.</li>
+<li>
+<code>async_get_delete_job()</code> in the <code>Auth$files</code> path: Retrieves details of an asynchronous bulk deletion job.</li>
+<li>
+<code>async_get_move_job()</code> in the <code>Auth$files</code> path: Retrieves details of an asynchronous bulk move job.</li>
+<li>
+<code>async_list_file_jobs()</code>in the <code>Auth$files</code> path: Lists all active and completed asynchronous bulk jobs initiated by the user.</li>
+</ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="enhancements-and-fixes-0-3-0">Enhancements and fixes<a class="anchor" aria-label="anchor" href="#enhancements-and-fixes-0-3-0"></a></h3>
+<ul><li>Updated the <strong>quickstart.Rmd vignette</strong>:
+<ul><li>Replaced the example app illustrating the <code>Auth$apps$copy()</code> method, as the previous example was outdated.</li>
+<li>Updated example input files for improved clarity and consistency.</li>
+<li>Fixed typos and improved wording for better readability.</li>
+</ul></li>
 </ul></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

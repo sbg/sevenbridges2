@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sevenbridges2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,7 +70,7 @@
             
             <h4 data-toc-skip class="date">2025-02-24</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/v0.2.0/vignettes/quickstart.Rmd" class="external-link"><code>vignettes/quickstart.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/develop/vignettes/quickstart.Rmd" class="external-link"><code>vignettes/quickstart.Rmd</code></a></small>
       <div class="d-none name"><code>quickstart.Rmd</code></div>
     </div>
 
@@ -100,10 +100,10 @@ preserved.</p>
 <div class="section level3">
 <h3 id="r-client-for-the-seven-bridges-api">R Client for the Seven Bridges API<a class="anchor" aria-label="anchor" href="#r-client-for-the-seven-bridges-api"></a>
 </h3>
-<p>In order to use the <code>sevenbridges2</code> package users must
+<p>In order to use the <code>sevenbridges2</code> package, users must
 authenticate themselves first by creating an Auth object and providing
-necessary credentials. You can read more about the authentication types
-in our next chapters.</p>
+the necessary credentials. You can read more about the authentication
+types in our next chapters.</p>
 <p>The <code>sevenbridges2</code> package only supports v2+ versions of
 the API, since versions prior to v2 are not compatible with the Common
 Workflow Language (CWL). This package provides a simple interface for
@@ -112,9 +112,9 @@ accessing and trying out various methods.</p>
 <div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
-<p>The <code>sevenbridges2</code> package is available on CRAN and Seven
-Bridges Github repository.</p>
-<p>To install it from <code>CRAN</code>, use simply:</p>
+<p>The <code>sevenbridges2</code> package is available on CRAN and the
+Seven Bridges GitHub repository.</p>
+<p>To install it from <code>CRAN</code>, simply use:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install package from CRAN</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"sevenbridges2"</span><span class="op">)</span></span></code></pre></div>
@@ -177,18 +177,19 @@ search for items by name. To search and list all items, use
 you’ve received as the result.</p>
 <p><strong><code>Collection</code></strong></p>
 <p>Every API call that returns a list of items (usually the output from
-<code>query()</code> operations), operations), like fetching projects,
-files, apps etc, wraps the results into a general
-<code>Collection</code> class object containing the <code>items</code>
-field from which users may access the items returned. Additional options
-that the <code>Collection</code> class offers are to navigate between
-pages of results, for example, to load next or previous page of results
-by calling <code>next_page()</code> and <code>prev_page()</code>
+<code>query()</code> operations), like fetching projects, files, apps,
+etc., wraps the results into a general <code>Collection</code> class
+object containing the <code>items</code> field from which users may
+access the items returned. Additional options that the
+<code>Collection</code> class offers are to navigate between pages of
+results, for example, to load next or previous page of results by
+calling <code>next_page()</code> and <code>prev_page()</code>
 methods.</p>
-<p>Moreover, users can fetch all results using <code>Collection</code>’s
-<code><a href="https://rdrr.io/r/base/all.html" class="external-link">all()</a></code> method which is a shortcut to send multiple API calls
-for each next page and collect all results. Keep in mind the
-<code>limit</code> used, as well as the API rate limit.</p>
+<p>Moreover, users can fetch all results using the
+<code>Collection</code>’s <code><a href="https://rdrr.io/r/base/all.html" class="external-link">all()</a></code> method, which is a shortcut
+to send multiple API calls for each next page and collect all results.
+Keep in mind the <code>limit</code> used, as well as the API rate
+limit.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create a collection of files</span></span>
 <span><span class="va">public_files</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">query</span><span class="op">(</span>project <span class="op">=</span> <span class="st">"admin/sbg-public-data"</span><span class="op">)</span></span>
@@ -275,8 +276,8 @@ two pieces of information.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://www.sevenbridges.com" class="external-link">"sevenbridges2"</a></span><span class="op">)</span></span></code></pre></div>
-<p>You have three different ways to provide your token. Choose from one
-of the methods below:</p>
+<p>You have three different ways of providing your token. Choose from
+one of the methods below:</p>
 <ol style="list-style-type: decimal">
 <li><p><a href="#method1">Direct authentication.</a> Here you should
 provide your developer token and a base URL for the platform of interest
@@ -301,8 +302,8 @@ specify the names of the system environment variables you want to be
 loaded using the <code>sysenv_token</code> and <code>sysenv_url</code>
 arguments.</p></li>
 <li><p><a href="#method3">Authentication via the user configuration
-file.</a> This file, by default
-<code>$HOME/.sevenbridges/credentials</code>, provides an organized way
+file.</a> By default, this file
+(<code>$HOME/.sevenbridges/credentials</code>) provides an organized way
 to collect and manage all your API authentication information for Seven
 Bridges platforms.</p></li>
 </ol>
@@ -535,7 +536,7 @@ status of the billing group (pending, disabled,…).</p>
 </div>
 <p>Please check
 <code><a href="../articles/Authentication_and_Billing.html">vignette("Authentication_and_Billing", package = "sevenbridges2")</a></code>
-for more technical details about billing informations.</p>
+for more technical details about billing information.</p>
 </div>
 <div class="section level3">
 <h3 id="list-and-query-projects">List and query projects<a class="anchor" aria-label="anchor" href="#list-and-query-projects"></a>
@@ -670,9 +671,9 @@ shown below.</li>
 <span></span>
 <span><span class="co"># Search by ID</span></span>
 <span><span class="va">star_app</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">apps</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span></span>
-<span>  id <span class="op">=</span> <span class="st">"admin/sbg-public-data/rna-seq-alignment-star/0"</span></span>
+<span>  id <span class="op">=</span> <span class="st">"admin/sbg-public-data/rna-seq-alignment-star-2-7-10a"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Now, copy the App your <code>project</code> with a new
+<p>Now, copy the App to your <code>project</code> with a new
 <code>name</code>, following this logic.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Copy app into the project</span></span>
@@ -697,7 +698,7 @@ revision : 0</code></pre>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get public app RNA Sequencing alignment - STAR</span></span>
 <span><span class="va">star_app</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">apps</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span></span>
-<span>  id <span class="op">=</span> <span class="st">"admin/sbg-public-data/rna-seq-alignment-star/0"</span></span>
+<span>  id <span class="op">=</span> <span class="st">"admin/sbg-public-data/rna-seq-alignment-star-2-7-10a"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Copy it into a project</span></span>
@@ -721,8 +722,8 @@ for more technical details about tasks.</p>
 <h4 id="find-your-app-inputs">Find your app inputs<a class="anchor" aria-label="anchor" href="#find-your-app-inputs"></a>
 </h4>
 <p>Once you have copied the public app
-<code>admin/sbg-public-data/rna-seq-alignment-star/0</code> into your
-project, <code>&lt;username&gt;/api-testing</code>, the app
+<code>admin/sbg-public-data/rna-seq-alignment-star-2-7-10a</code> into
+your project, <code>&lt;username&gt;/api-testing</code>, the app
 <code>id</code> in your current project is
 <code>&lt;username&gt;/api-testing/newcopyofstar</code>. Alternatively,
 you can use another app you already have in your project for this
@@ -756,17 +757,17 @@ match the expected data type and name. In the above example, we see two
 required fields:</p>
 <ul>
 <li>
-<strong>fastq:</strong> This input takes a file array in the
+<strong>in_reads:</strong> This input takes a file array in the
 following formats: FASTA, FASTQ, FA, FQ etc.</li>
 <li>
-<strong>genomeFastaFiles:</strong> This is a single reference file
-in the FASTA, FA, FNA or TAR format.</li>
+<strong>in_reference_or_sgg_archive:</strong> This is a single
+reference file in the FASTA, FA, FNA or TAR format.</li>
 </ul>
 <p>We also want to provide a gene feature file:</p>
 <ul>
 <li>
-<strong>sjdbGTFfile:</strong> A file array that can be in the GTF,
-GFF, GFF2, or GFF3 format.</li>
+<strong>in_gene_annotation:</strong> A file array that can be in the
+GTF, GFF, GFF2, or GFF3 format.</li>
 </ul>
 <p>You can find a list of possible input types below:</p>
 <ul>
@@ -794,19 +795,19 @@ as shown in the example below.</li>
 <h4 id="prepare-your-input-files">Prepare your input files<a class="anchor" aria-label="anchor" href="#prepare-your-input-files"></a>
 </h4>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Get reads (fastq) files and and copy them into a project</span></span>
-<span><span class="va">reads_1</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"641c48c425ed1842bd0bf799"</span><span class="op">)</span> <span class="co"># file id</span></span>
+<code class="sourceCode R"><span><span class="co"># Get reads (fastq) files and copy them into a project</span></span>
+<span><span class="va">reads_1</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"5772b6f0507c175267448700"</span><span class="op">)</span> <span class="co"># file id</span></span>
 <span><span class="va">reads_1</span><span class="op">$</span><span class="fu">copy_to</span><span class="op">(</span>project <span class="op">=</span> <span class="va">p</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">reads_2</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"641c48c425ed1842bd0bf835"</span><span class="op">)</span> <span class="co"># file id</span></span>
+<span><span class="va">reads_2</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"5772b6f2507c175267448703"</span><span class="op">)</span> <span class="co"># file id</span></span>
 <span><span class="va">reads_2</span><span class="op">$</span><span class="fu">copy_to</span><span class="op">(</span>project <span class="op">=</span> <span class="va">p</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Get a single file reference file and copy into a project</span></span>
-<span><span class="va">fasta_in</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"641c48c525ed1842bd0bf86a"</span><span class="op">)</span> <span class="co"># file id</span></span>
+<span><span class="va">fasta_in</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"5c614f097369c402a28a3c41"</span><span class="op">)</span> <span class="co"># file id</span></span>
 <span><span class="va">fasta_in</span><span class="op">$</span><span class="fu">copy_to</span><span class="op">(</span>project <span class="op">=</span> <span class="va">p</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Get gtf file and copy into a project</span></span>
-<span><span class="va">gtf_in</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"641c48c425ed1842bd0bf825"</span><span class="op">)</span> <span class="co"># file id</span></span>
+<span><span class="va">gtf_in</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"5c614e5e7369c402a18a3c41"</span><span class="op">)</span> <span class="co"># file id</span></span>
 <span><span class="va">gtf_in</span><span class="op">$</span><span class="fu">copy_to</span><span class="op">(</span>project <span class="op">=</span> <span class="va">p</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Get copied files</span></span>
@@ -827,9 +828,9 @@ as shown in the example below.</li>
 <span>  description <span class="op">=</span> <span class="st">"STAR test"</span>,</span>
 <span>  app <span class="op">=</span> <span class="va">copied_star_app</span>,</span>
 <span>  inputs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    <span class="st">"fastq"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">input_files</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">input_files</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>    <span class="st">"genomeFastaFiles"</span> <span class="op">=</span> <span class="va">input_files</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>    <span class="st">"sjdbGTFfile"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">input_files</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span>    <span class="st">"in_reads"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">input_files</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">input_files</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>    <span class="st">"in_reference_or_sgg_archive"</span> <span class="op">=</span> <span class="va">input_files</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>    <span class="st">"in_gene_annotation"</span> <span class="op">=</span> <span class="va">input_files</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -914,7 +915,7 @@ controlled on the project level or the task level on Seven Bridges
 platforms. Our package follows the same <a href="https://docs.sevenbridges.com/docs/use-spot-instances" class="external-link">logic</a>
 as our platform’s web interface (the current default setting for spot
 instances is <strong>on</strong>).</p>
-<p>For example, when we create a project using Projects resource’s
+<p>For example, when we create a project using the Projects resource’s
 method <code>create()</code>, we can set
 <code>use_interruptible = FALSE</code> to use on-demand instances
 (non-interruptible but more expensive) instead of the spot instances

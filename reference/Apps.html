@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sevenbridges2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,7 +36,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>R6 Class representing apps endpoint</h1>
-      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/v0.2.0/R/class-apps.R" class="external-link"><code>R/class-apps.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/develop/R/class-apps.R" class="external-link"><code>R/class-apps.R</code></a></small>
       <div class="d-none name"><code>Apps.Rd</code></div>
     </div>
 
@@ -116,9 +116,17 @@ the Seven Bridges Platform.</p></dd>
 
 
 <dt><code>query_terms</code></dt>
-<dd><p>Enter one or more search terms to query apps.
-Read more about how to use the query_terms parameter in our
-<a href="https://docs.sevenbridges.com/reference/list-all-apps-available-to-you#query-apps" class="external-link">API documentation</a>.</p></dd>
+<dd><p>A list of search terms used to filter apps based on
+their details. Each term is case-insensitive and can relate to the
+app's name, label, toolkit, toolkit version, category, tagline, or
+description.
+You can provide a single term (e.g., <code>list("Compressor")</code>) or multiple
+terms (e.g., <code>list("Expression", "Abundance")</code>) to search for apps
+that match all the specified terms. If a term matches any part of the
+app's details, the app will be included in the results.
+Search terms can also include phrases
+(e.g., <code>list("Abundance estimates input")</code>), which will search for
+exact matches within app descriptions or other fields.</p></dd>
 
 
 <dt><code>id</code></dt>

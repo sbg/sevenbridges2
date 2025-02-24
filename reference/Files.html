@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sevenbridges2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,7 +36,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>R6 Class representing files endpoints.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/v0.2.0/R/class-files.R" class="external-link"><code>R/class-files.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/develop/R/class-files.R" class="external-link"><code>R/class-files.R</code></a></small>
       <div class="d-none name"><code>Files.Rd</code></div>
     </div>
 
@@ -73,6 +73,13 @@
 <li><p><a href="#method-Files-bulk_get"><code>Files$bulk_get()</code></a></p></li>
 <li><p><a href="#method-Files-bulk_update"><code>Files$bulk_update()</code></a></p></li>
 <li><p><a href="#method-Files-bulk_edit"><code>Files$bulk_edit()</code></a></p></li>
+<li><p><a href="#method-Files-async_bulk_copy"><code>Files$async_bulk_copy()</code></a></p></li>
+<li><p><a href="#method-Files-async_bulk_delete"><code>Files$async_bulk_delete()</code></a></p></li>
+<li><p><a href="#method-Files-async_bulk_move"><code>Files$async_bulk_move()</code></a></p></li>
+<li><p><a href="#method-Files-async_get_copy_job"><code>Files$async_get_copy_job()</code></a></p></li>
+<li><p><a href="#method-Files-async_get_delete_job"><code>Files$async_get_delete_job()</code></a></p></li>
+<li><p><a href="#method-Files-async_get_move_job"><code>Files$async_get_move_job()</code></a></p></li>
+<li><p><a href="#method-Files-async_list_file_jobs"><code>Files$async_list_file_jobs()</code></a></p></li>
 <li><p><a href="#method-Files-clone"><code>Files$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-Files-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
@@ -158,9 +165,11 @@ multiple instances of the same metadata field.</p></dd>
 
 
 <dt><code>tag</code></dt>
-<dd><p>List files containing this tag. Note that the tag must be an
-exact complete string for the results to match. Multiple tags can be
-represented by vector of values.</p></dd>
+<dd><p>Filters the files based on the specified tag(s). Each tag
+must be an exact, complete match, for the results to match. Tags may
+include spaces. Multiple tags should be provided as a vector of
+strings. The method will return files that have any of the specified
+tags.</p></dd>
 
 
 <dt><code>limit</code></dt>
@@ -359,7 +368,6 @@ object which must be of type <code>FOLDER</code>.</p></dd>
                )
 }
 
-
 </code></pre></div><p></p></div>
 </div>
 
@@ -399,7 +407,6 @@ the console.</p>
  a$files$bulk_delete(files = list(File_Object_1, File_Object_2))
 }
 
-
 </code></pre></div><p></p></div>
 </div>
 
@@ -434,7 +441,6 @@ can retrieve the details for per call is 100.</p><div class="section">
                files = list("file_1_ID", "file_2_ID")
               )
 }
-
 
 </code></pre></div><p></p></div>
 </div>
@@ -483,7 +489,6 @@ The keys and values should be strings.</p></li>
                files = list(File_Object_1, File_Object_2)
               )
 }
-
 
 </code></pre></div><p></p></div>
 </div>
@@ -537,15 +542,388 @@ The keys and values should be strings.</p></li>
 </div>
 
 
-</div><p></p><hr><a id="method-Files-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
-<p>The objects of this class are cloneable with this method.</p><div class="section">
+</div><p></p><hr><a id="method-Files-async_bulk_copy"></a><div class="section">
+<h3 id="method-async-bulk-copy-">Method <code>async_bulk_copy()</code><a class="anchor" aria-label="anchor" href="#method-async-bulk-copy-"></a></h3>
+<p>This call lets you perform a bulk copy of files and
+folders. Any underlying folder structure will be preserved.
+You can copy:</p><ul><li><p>to a folder within the same project,</p></li>
+<li><p>to another project,</p></li>
+<li><p>to a folder in another project.</p></li>
+</ul><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Files</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Files</span><span class="op">$</span><span class="fu">async_bulk_copy</span><span class="op">(</span><span class="va">items</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>items</code></dt>
+<dd><p>Nested list of elements containing information about each
+file/folder to be copied. For each element, you must provide:</p>
+<ul><li><p><code>file</code> - The ID of the file or folder you are copying.
+Copying the project root folder is not allowed.
+Use the API call for listing all files to obtain the ID.</p></li>
+<li><p><code>parent</code> - The ID of the folder you are copying files to.
+It should not be used together with <code>project</code>. If <code>project</code> is
+used, the items will be imported to the root of the project
+files. If <code>parent</code> is used, the import will take place into the
+specified folder, within the project to which the folder belongs.</p></li>
+<li><p><code>project</code> - The project you are copying the file to.
+It should not be used together with <code>parent</code>. If <code>parent</code> is
+used, the import will take place into the specified folder,
+within the project to which the folder belongs. If <code>project</code> is
+used, the items will be imported to the root of the project
+files.</p></li>
+<li><p><code>name</code> - Enter the new name for the file if you want to
+rename it in the destination folder.</p></li>
+</ul><p>Example of the list:</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">items</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>          <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>            file <span class="op">=</span> <span class="st">'&lt;file-id-1&gt;'</span>,</span>
+<span>            parent <span class="op">=</span> <span class="st">'&lt;folder-id&gt;'</span></span>
+<span>          <span class="op">)</span>,</span>
+<span>          <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>            file <span class="op">=</span> <span class="st">'&lt;file-id-2&gt;'</span>,</span>
+<span>            project <span class="op">=</span> <span class="st">'&lt;project-id-1&gt;'</span>,</span>
+<span>            name <span class="op">=</span> <span class="st">'copied_file.txt'</span></span>
+<span>          <span class="op">)</span>,</span>
+<span>          <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>            file <span class="op">=</span> <span class="st">'&lt;file-id-3&gt;'</span>,</span>
+<span>            parent <span class="op">=</span> <span class="st">'&lt;parent-id-2&gt;'</span>,</span>
+<span>            name <span class="op">=</span> <span class="st">'copied_file2.txt'</span></span>
+<span>          <span class="op">)</span></span>
+<span>        <span class="op">)</span></span></code></pre><p></p></div>
+<p>Read more on how to <a href="https://docs.sevenbridges.com/reference/copy-multiple-files" class="external-link">perform async copy action on multiple files</a>.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<p><code><a href="AsyncJob.html">AsyncJob</a></code> object.</p>
+</div>
+<div class="section">
+<h4 id="examples-9">Examples<a class="anchor" aria-label="anchor" href="#examples-9"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # Copy multiple files
+ a$files$async_bulk_copy(
+   items = list(
+           list(
+             file = '&lt;file-id-1&gt;',
+             parent = '&lt;folder-id&gt;'
+           ),
+           list(
+             file = '&lt;file-id-2&gt;',
+             project = '&lt;project-id-1&gt;',
+             name = 'copied_file.txt'
+           ),
+           list(
+             file = '&lt;file-id-3&gt;',
+             parent = '&lt;parent-id-2&gt;',
+             name = 'copied_file2.txt'
+           )
+         )
+  )
+}
+
+</code></pre></div><p></p></div>
+</div>
+
+
+</div><p></p><hr><a id="method-Files-async_bulk_delete"></a><div class="section">
+<h3 id="method-async-bulk-delete-">Method <code>async_bulk_delete()</code><a class="anchor" aria-label="anchor" href="#method-async-bulk-delete-"></a></h3>
+<p>This call lets you perform an asynchronous bulk
+deletion of files or folders. Deleting folders which aren't empty is
+allowed.</p><div class="section">
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Files</span><span class="op">$</span><span class="fu">async_bulk_delete</span><span class="op">(</span><span class="va">items</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>items</code></dt>
+<dd><p>List of File objects (both <code>file</code> or <code>folder</code> type) or list
+of IDs of files/folders you want to delete.
+Read more on how to <a href="https://docs.sevenbridges.com/reference/delete-multiple-files-and-folders" class="external-link">perform async delete action on multiple files</a>.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<p><code><a href="AsyncJob.html">AsyncJob</a></code> object.</p>
+</div>
+<div class="section">
+<h4 id="examples-10">Examples<a class="anchor" aria-label="anchor" href="#examples-10"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # Delete multiple files
+ a$files$async_bulk_delete(
+   items = list(file_obj1, file_obj2, "&lt;folder-id-string&gt;", "&lt;file-id&gt;")
+ )
+}
+
+</code></pre></div><p></p></div>
+</div>
+
+
+</div><p></p><hr><a id="method-Files-async_bulk_move"></a><div class="section">
+<h3 id="method-async-bulk-move-">Method <code>async_bulk_move()</code><a class="anchor" aria-label="anchor" href="#method-async-bulk-move-"></a></h3>
+<p>This call lets you perform a bulk move operation of files
+and folders.
+You can move:</p><ul><li><p>to a root project folder,</p></li>
+<li><p>to a subfolder within the same project or a different
+project.</p></li>
+</ul><div class="section">
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Files</span><span class="op">$</span><span class="fu">async_bulk_move</span><span class="op">(</span><span class="va">items</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>items</code></dt>
+<dd><p>Nested list of elements containing information about each
+file/folder to be moved. For each element, you must provide:</p>
+<ul><li><p><code>file</code> - The ID of the file or folder you are moving. Use the
+API call for listing all files or folders to obtain the ID.</p></li>
+<li><p><code>parent</code> - The ID of the folder you are moving the files to,
+which should not be used along with <code>project</code>. If <code>project</code> is
+used, the items will be imported to the root of the project files.
+If <code>parent</code> is used, the import will take place into the
+specified folder, within the project to which the folder belongs.</p></li>
+<li><p><code>project</code> - The project you are moving the files to. It
+should not be used together with <code>parent</code>. If <code>parent</code> is used,
+the import will take place into the specified folder, within the
+project to which the folder belongs. If <code>project</code> is used, the
+items will be imported to the root of the project files.</p></li>
+<li><p><code>name</code> - Enter the new name for the file or folder if you
+want to rename at the destination.</p></li>
+</ul><p>Example of the list:</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">items</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>          <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>            file <span class="op">=</span> <span class="st">'&lt;file-id-1&gt;'</span>,</span>
+<span>            parent <span class="op">=</span> <span class="st">'&lt;folder-id&gt;'</span></span>
+<span>          <span class="op">)</span>,</span>
+<span>          <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>            file <span class="op">=</span> <span class="st">'&lt;file-id-2&gt;'</span>,</span>
+<span>            project <span class="op">=</span> <span class="st">'&lt;project-id-1&gt;'</span>,</span>
+<span>            name <span class="op">=</span> <span class="st">'moved_file.txt'</span></span>
+<span>          <span class="op">)</span>,</span>
+<span>          <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>            file <span class="op">=</span> <span class="st">'&lt;file-id-3&gt;'</span>,</span>
+<span>            parent <span class="op">=</span> <span class="st">'&lt;parent-id-2&gt;'</span>,</span>
+<span>            name <span class="op">=</span> <span class="st">'moved_file2.txt'</span></span>
+<span>          <span class="op">)</span></span>
+<span>        <span class="op">)</span></span></code></pre><p></p></div>
+<p>Read more on how to <a href="https://docs.sevenbridges.com/reference/move-multiple-files-or-folders" class="external-link">perform async move action on multiple files</a>.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="details-2">Details<a class="anchor" aria-label="anchor" href="#details-2"></a></h4>
+<p>Rules for moving files and folders:</p><ul><li><p>The file ID is preserved after the move.</p></li>
+<li><p>The folder ID is changed after the move.</p></li>
+<li><p>The destination must be an existing folder.</p></li>
+<li><p>If the target folder contains a folder with the same
+name, the contents of both folders will be merged.</p></li>
+<li><p>If a file with the same name already exists, the source
+file will be automatically renamed (by adding a numeric
+prefix).</p></li>
+<li><p>You need to have WRITE permissions for both source
+and destination folders.</p></li>
+</ul></div>
+
+<div class="section">
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<p><code><a href="AsyncJob.html">AsyncJob</a></code> object.</p>
+</div>
+<div class="section">
+<h4 id="examples-11">Examples<a class="anchor" aria-label="anchor" href="#examples-11"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # Move multiple files
+ a$files$async_bulk_move(
+   items = list(
+           list(
+             file = '&lt;file-id-1&gt;',
+             parent = '&lt;folder-id&gt;'
+           ),
+           list(
+             file = '&lt;file-id-2&gt;',
+             project = '&lt;project-id-1&gt;',
+             name = 'moved_file.txt'
+           ),
+           list(
+             file = '&lt;file-id-3&gt;',
+             parent = '&lt;parent-id-2&gt;',
+             name = 'moved_file2.txt'
+           )
+         )
+  )
+}
+
+</code></pre></div><p></p></div>
+</div>
+
+
+</div><p></p><hr><a id="method-Files-async_get_copy_job"></a><div class="section">
+<h3 id="method-async-get-copy-job-">Method <code>async_get_copy_job()</code><a class="anchor" aria-label="anchor" href="#method-async-get-copy-job-"></a></h3>
+<p>This call retrieves the details of an asynchronous bulk
+copy job.
+This information will be available for up to a month after the job has
+been completed.</p><div class="section">
+<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Files</span><span class="op">$</span><span class="fu">async_get_copy_job</span><span class="op">(</span><span class="va">job_id</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>job_id</code></dt>
+<dd><p>The ID of the copy job you are querying.
+This ID can be found within the API response for the call for copying
+files.
+The function also accepts an AsyncJob object and extracts the ID.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<p><code><a href="AsyncJob.html">AsyncJob</a></code> object.</p>
+</div>
+<div class="section">
+<h4 id="examples-12">Examples<a class="anchor" aria-label="anchor" href="#examples-12"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # Get details of an async copy job
+ a$files$async_get_copy_job(job_id = "job-id")
+}
+
+</code></pre></div><p></p></div>
+</div>
+
+
+</div><p></p><hr><a id="method-Files-async_get_delete_job"></a><div class="section">
+<h3 id="method-async-get-delete-job-">Method <code>async_get_delete_job()</code><a class="anchor" aria-label="anchor" href="#method-async-get-delete-job-"></a></h3>
+<p>This call retrieves the details of an asynchronous bulk
+deletion job. This information will be available for up to a month
+after the job has been completed.</p><div class="section">
+<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Files</span><span class="op">$</span><span class="fu">async_get_delete_job</span><span class="op">(</span><span class="va">job_id</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-14">Arguments<a class="anchor" aria-label="anchor" href="#arguments-14"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>job_id</code></dt>
+<dd><p>The ID of the delete job you are querying.
+This ID can be found within the API response for the call for deleting
+files.
+The function also accepts an AsyncJob object and extracts the ID.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
+<p><code><a href="AsyncJob.html">AsyncJob</a></code> object.</p>
+</div>
+<div class="section">
+<h4 id="examples-13">Examples<a class="anchor" aria-label="anchor" href="#examples-13"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # Get details of an async delete job
+ a$files$async_get_delete_job(job_id = "job-id")
+}
+
+</code></pre></div><p></p></div>
+</div>
+
+
+</div><p></p><hr><a id="method-Files-async_get_move_job"></a><div class="section">
+<h3 id="method-async-get-move-job-">Method <code>async_get_move_job()</code><a class="anchor" aria-label="anchor" href="#method-async-get-move-job-"></a></h3>
+<p>This call retrieves the details of an asynchronous bulk
+move job. This information will be available for up to a month after
+the job has been completed.</p><div class="section">
+<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Files</span><span class="op">$</span><span class="fu">async_get_move_job</span><span class="op">(</span><span class="va">job_id</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-15">Arguments<a class="anchor" aria-label="anchor" href="#arguments-15"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>job_id</code></dt>
+<dd><p>The ID of the move job you are querying. This ID can be
+found within the API response for the call for moving files.
+The function also accepts an AsyncJob object and extracts the ID.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
+<p>An <code><a href="AsyncJob.html">AsyncJob</a></code> object containing details of the move
+job.</p>
+</div>
+<div class="section">
+<h4 id="examples-14">Examples<a class="anchor" aria-label="anchor" href="#examples-14"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # Get details of an async move job
+ a$files$async_get_move_job(job_id = "job-id")
+}
+
+</code></pre></div><p></p></div>
+</div>
+
+
+</div><p></p><hr><a id="method-Files-async_list_file_jobs"></a><div class="section">
+<h3 id="method-async-list-file-jobs-">Method <code>async_list_file_jobs()</code><a class="anchor" aria-label="anchor" href="#method-async-list-file-jobs-"></a></h3>
+<p>This call retrieves the details for all asynchronous bulk
+jobs you have started. This information will be available for up to a
+month after the job has been completed.</p><div class="section">
+<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Files</span><span class="op">$</span><span class="fu">async_list_file_jobs</span><span class="op">(</span></span>
+<span>  limit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"sevenbridges2"</span><span class="op">)</span><span class="op">$</span><span class="va">limit</span>,</span>
+<span>  offset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"sevenbridges2"</span><span class="op">)</span><span class="op">$</span><span class="va">offset</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-16">Arguments<a class="anchor" aria-label="anchor" href="#arguments-16"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>limit</code></dt>
+<dd><p>The maximum number of collection items to return
+for a single request. Minimum value is <code>1</code>.
+The maximum value is <code>100</code> and the default value is <code>50</code>.
+This is a pagination-specific attribute.</p></dd>
+
+
+<dt><code>offset</code></dt>
+<dd><p>The zero-based starting index in the entire collection
+of the first item to return. The default value is <code>0</code>.
+This is a pagination-specific attribute.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
+<p>A <code><a href="Collection.html">Collection</a></code> object containing a list of
+<code><a href="AsyncJob.html">AsyncJob</a></code> objects.</p>
+</div>
+<div class="section">
+<h4 id="examples-15">Examples<a class="anchor" aria-label="anchor" href="#examples-15"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+ # Get details of the first 5 async jobs
+ a$files$async_list_file_jobs(limit = 5)
+}
+
+</code></pre></div><p></p></div>
+</div>
+
+
+</div><p></p><hr><a id="method-Files-clone"></a><div class="section">
+<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+<p>The objects of this class are cloneable with this method.</p><div class="section">
+<h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Files</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-17">Arguments<a class="anchor" aria-label="anchor" href="#arguments-17"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -626,7 +1004,6 @@ The keys and values should be strings.</p></li>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="co">## Method `Files$bulk_delete`</span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
@@ -642,7 +1019,6 @@ The keys and values should be strings.</p></li>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="co">## Method `Files$bulk_get`</span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
@@ -653,7 +1029,6 @@ The keys and values should be strings.</p></li>
 <span class="r-in"><span>               files <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"file_1_ID"</span>, <span class="st">"file_2_ID"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>              <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
@@ -668,7 +1043,6 @@ The keys and values should be strings.</p></li>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="co">## Method `Files$bulk_edit`</span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
@@ -678,6 +1052,112 @@ The keys and values should be strings.</p></li>
 <span class="r-in"><span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">bulk_edit</span><span class="op">(</span></span></span>
 <span class="r-in"><span>               files <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">File_Object_1</span>, <span class="va">File_Object_2</span><span class="op">)</span></span></span>
 <span class="r-in"><span>              <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Files$async_bulk_copy`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span> <span class="co"># Copy multiple files</span></span></span>
+<span class="r-in"><span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">async_bulk_copy</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>           <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>             file <span class="op">=</span> <span class="st">'&lt;file-id-1&gt;'</span>,</span></span>
+<span class="r-in"><span>             parent <span class="op">=</span> <span class="st">'&lt;folder-id&gt;'</span></span></span>
+<span class="r-in"><span>           <span class="op">)</span>,</span></span>
+<span class="r-in"><span>           <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>             file <span class="op">=</span> <span class="st">'&lt;file-id-2&gt;'</span>,</span></span>
+<span class="r-in"><span>             project <span class="op">=</span> <span class="st">'&lt;project-id-1&gt;'</span>,</span></span>
+<span class="r-in"><span>             name <span class="op">=</span> <span class="st">'copied_file.txt'</span></span></span>
+<span class="r-in"><span>           <span class="op">)</span>,</span></span>
+<span class="r-in"><span>           <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>             file <span class="op">=</span> <span class="st">'&lt;file-id-3&gt;'</span>,</span></span>
+<span class="r-in"><span>             parent <span class="op">=</span> <span class="st">'&lt;parent-id-2&gt;'</span>,</span></span>
+<span class="r-in"><span>             name <span class="op">=</span> <span class="st">'copied_file2.txt'</span></span></span>
+<span class="r-in"><span>           <span class="op">)</span></span></span>
+<span class="r-in"><span>         <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Files$async_bulk_delete`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span> <span class="co"># Delete multiple files</span></span></span>
+<span class="r-in"><span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">async_bulk_delete</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">file_obj1</span>, <span class="va">file_obj2</span>, <span class="st">"&lt;folder-id-string&gt;"</span>, <span class="st">"&lt;file-id&gt;"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Files$async_bulk_move`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span> <span class="co"># Move multiple files</span></span></span>
+<span class="r-in"><span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">async_bulk_move</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>           <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>             file <span class="op">=</span> <span class="st">'&lt;file-id-1&gt;'</span>,</span></span>
+<span class="r-in"><span>             parent <span class="op">=</span> <span class="st">'&lt;folder-id&gt;'</span></span></span>
+<span class="r-in"><span>           <span class="op">)</span>,</span></span>
+<span class="r-in"><span>           <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>             file <span class="op">=</span> <span class="st">'&lt;file-id-2&gt;'</span>,</span></span>
+<span class="r-in"><span>             project <span class="op">=</span> <span class="st">'&lt;project-id-1&gt;'</span>,</span></span>
+<span class="r-in"><span>             name <span class="op">=</span> <span class="st">'moved_file.txt'</span></span></span>
+<span class="r-in"><span>           <span class="op">)</span>,</span></span>
+<span class="r-in"><span>           <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>             file <span class="op">=</span> <span class="st">'&lt;file-id-3&gt;'</span>,</span></span>
+<span class="r-in"><span>             parent <span class="op">=</span> <span class="st">'&lt;parent-id-2&gt;'</span>,</span></span>
+<span class="r-in"><span>             name <span class="op">=</span> <span class="st">'moved_file2.txt'</span></span></span>
+<span class="r-in"><span>           <span class="op">)</span></span></span>
+<span class="r-in"><span>         <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Files$async_get_copy_job`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span> <span class="co"># Get details of an async copy job</span></span></span>
+<span class="r-in"><span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">async_get_copy_job</span><span class="op">(</span>job_id <span class="op">=</span> <span class="st">"job-id"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Files$async_get_delete_job`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span> <span class="co"># Get details of an async delete job</span></span></span>
+<span class="r-in"><span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">async_get_delete_job</span><span class="op">(</span>job_id <span class="op">=</span> <span class="st">"job-id"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Files$async_get_move_job`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span> <span class="co"># Get details of an async move job</span></span></span>
+<span class="r-in"><span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">async_get_move_job</span><span class="op">(</span>job_id <span class="op">=</span> <span class="st">"job-id"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `Files$async_list_file_jobs`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span> <span class="co"># Get details of the first 5 async jobs</span></span></span>
+<span class="r-in"><span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">async_list_file_jobs</span><span class="op">(</span>limit <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
