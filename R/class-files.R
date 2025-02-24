@@ -633,9 +633,9 @@ Files <- R6::R6Class(
     },
 
     # Asynchronous (bulk) action for copying multiple files --------------------
-    #' @description This call lets you perform a bulk copy operation of files
-    #'  and folders. Any underlying folder structure will be preserved.
-    #'  You can copy:
+    #' @description This call lets you perform a bulk copy of files and
+    #' folders. Any underlying folder structure will be preserved.
+    #' You can copy:
     #'  \itemize{
     #'       \item to a folder within the same project,
     #'       \item to another project,
@@ -643,7 +643,7 @@ Files <- R6::R6Class(
     #'       }
     #'
     #' @param items Nested list of elements containing information about each
-    #'  file/folder to be copied. For each element, users must provide:
+    #'  file/folder to be copied. For each element, you must provide:
     #'
     # nolint start
     #'  \itemize{
@@ -651,15 +651,16 @@ Files <- R6::R6Class(
     #'        Copying the project root folder is not allowed.
     #'        Use the API call for listing all files to obtain the ID.
     #'      \item `parent` - The ID of the folder you are copying files to.
-    #'        Should not be used together with project. If project is used,
-    #'        the items will be imported to the root of the project's files.
-    #'        If parent is used, the import will take place into the specified
-    #'        folder, within the project to which the folder belongs.
+    #'        It should not be used together with `project`. If `project` is
+    #'        used, the items will be imported to the root of the project
+    #'        files. If `parent` is used, the import will take place into the
+    #'        specified folder, within the project to which the folder belongs.
     #'      \item `project` - The project you are copying the file to.
-    #'        Should not be used together with parent. If parent is used,
-    #'        the import will take place into the specified folder, within the
-    #'        project to which the folder belongs. If project is used, the
-    #'        items will be imported to the root of the project's files.
+    #'        It should not be used together with `parent`. If `parent` is
+    #'        used, the import will take place into the specified folder,
+    #'        within the project to which the folder belongs. If `project` is
+    #'        used, the items will be imported to the root of the project
+    #'        files.
     #'      \item `name` - Enter the new name for the file if you want to
     #'        rename it in the destination folder.
     #'  }
@@ -732,7 +733,7 @@ Files <- R6::R6Class(
 
         if (is_missing(item[["file"]])) {
           rlang::abort(
-            glue::glue("The file ID must be provided as a string or a File object in element {i}."), # nolint
+            glue::glue("The file ID must be provided as a string or a File object in the element {i}."), # nolint
           )
         } else {
           body_element$file <- check_and_transform_id(item[["file"]],
@@ -743,13 +744,13 @@ Files <- R6::R6Class(
         if (is_missing(item[["project"]]) &&
           is_missing(item[["parent"]])) {
           rlang::abort(
-            glue::glue("Please provide either the destination project or the parent parameter in element {i}.") # nolint
+            glue::glue("Please provide either the destination project or the parent parameter in the element {i}.") # nolint
           )
         }
         if (!is_missing(item[["project"]]) &&
           !is_missing(item[["parent"]])) {
           rlang::abort(
-            glue::glue("Either the destination project or the parent parameter must be provided in element {i}, but not both.") # nolint
+            glue::glue("Either the destination project or the parent parameter must be provided in the element {i}, but not both.") # nolint
           )
         }
         if (!is_missing(item[["project"]])) {
@@ -765,7 +766,7 @@ Files <- R6::R6Class(
           ) &&
             tolower(item[["parent"]]$type) != "folder") {
             rlang::abort(
-              glue::glue("The destination parent directory parameter must contain folder id or File object with type = 'folder' in element {i}.") # nolint
+              glue::glue("The destination parent directory parameter must contain either a folder ID or a File object with type = 'folder' in the element {i}.") # nolint
             )
           }
           body_element$parent <- check_and_transform_id(
@@ -876,33 +877,33 @@ Files <- R6::R6Class(
     #' \itemize{
     #'      \item The file ID is preserved after the move.
     #'      \item The folder ID is changed after the move.
-    #'      \item The destination has to be an existing folder.
+    #'      \item The destination must be an existing folder.
     #'      \item If the target folder contains a folder with the same
     #'       name, the contents of both folders will be merged.
     #'      \item If a file with the same name already exists, the source
     #'       file will be automatically renamed (by adding a numeric
     #'       prefix).
-    #'      \item You need to have WRITE permissions for both the source
+    #'      \item You need to have WRITE permissions for both source
     #'       and destination folders.
     #' }
     #'
     #' @param items Nested list of elements containing information about each
-    #'  file/folder to be moved. For each element, users must provide:
+    #'  file/folder to be moved. For each element, you must provide:
     #'
     # nolint start
     #'  \itemize{
     #'      \item `file` - The ID of the file or folder you are moving. Use the
     #'       API call for listing all files or folders to obtain the ID.
-    #'      \item `parent` - The ID of the folder you are moving files to.
-    #'       Should not be used together with project. If project is used, the
-    #'       items will be imported to the root of the project's files. If
-    #'       parent is used, the import will take place into the specified
-    #'       folder, within the project to which the folder belongs.
-    #'      \item `project` - The project you are moving the files to. Should
-    #'       not be used together with parent. If parent is used, the import
-    #'       will take place into the specified folder, within the project to
-    #'       which the folder belongs. If project is used, the items will be
-    #'       imported to the root of the project's files.
+    #'      \item `parent` - The ID of the folder you are moving the files to,
+    #'       which should not be used along with `project`. If `project` is
+    #'       used, the items will be imported to the root of the project files.
+    #'       If `parent` is used, the import will take place into the
+    #'       specified folder, within the project to which the folder belongs.
+    #'      \item `project` - The project you are moving the files to. It
+    #'       should not be used together with `parent`. If `parent` is used,
+    #'       the import will take place into the specified folder, within the
+    #'       project to which the folder belongs. If `project` is used, the
+    #'       items will be imported to the root of the project files.
     #'      \item `name` - Enter the new name for the file or folder if you
     #'       want to rename at the destination.
     #'  }
@@ -975,7 +976,7 @@ Files <- R6::R6Class(
 
         if (is_missing(item[["file"]])) {
           rlang::abort(
-            glue::glue("The file ID must be provided as a string or a File object in element {i}."), # nolint
+            glue::glue("The file ID must be provided as a string or a File object in the element {i}."), # nolint
           )
         } else {
           body_element$file <- check_and_transform_id(item[["file"]],
@@ -986,13 +987,13 @@ Files <- R6::R6Class(
         if (is_missing(item[["project"]]) &&
           is_missing(item[["parent"]])) {
           rlang::abort(
-            glue::glue("Please provide either the destination project or the parent parameter in element {i}.") # nolint
+            glue::glue("Please provide either the destination project or the parent parameter in the element {i}.") # nolint
           )
         }
         if (!is_missing(item[["project"]]) &&
           !is_missing(item[["parent"]])) {
           rlang::abort(
-            glue::glue("Either the destination project or the parent parameter must be provided in element {i}, but not both.") # nolint
+            glue::glue("Either the destination project or the parent parameter must be provided in the element {i}, but not both.") # nolint
           )
         }
         if (!is_missing(item[["project"]])) {
@@ -1008,7 +1009,7 @@ Files <- R6::R6Class(
           ) &&
             tolower(item[["parent"]]$type) != "folder") {
             rlang::abort(
-              glue::glue("The destination parent directory parameter must contain folder id or File object with type = 'folder' in element {i}.") # nolint
+              glue::glue("The destination parent directory parameter must contain either a folder ID or a File object with type = 'folder' in the element {i}.") # nolint
             )
           }
           body_element$parent <- check_and_transform_id(
@@ -1044,15 +1045,15 @@ Files <- R6::R6Class(
     },
 
     # Get details of asynchronous job for copying multiple files ---------------
-    #' @description This call gets the details of an asynchronous bulk copy job.
+    #' @description This call retrieves the details of an asynchronous bulk
+    #'  copy job.
     #'  This information will be available for up to a month after the job has
     #'  been completed.
     #'
     #' @param job_id The ID of the copy job you are querying.
     #'  This ID can be found within the API response for the call for copying
     #'  files.
-    #'  The function also accepts an AsyncJob object and extracts the ID for
-    #'  you.
+    #'  The function also accepts an AsyncJob object and extracts the ID.
     #'
     #' @importFrom rlang abort
     #' @importFrom glue glue
@@ -1061,7 +1062,7 @@ Files <- R6::R6Class(
     #'
     #' @examples
     #' \dontrun{
-    #'  # Get details of async copy job
+    #'  # Get details of an async copy job
     #'  a$files$async_get_copy_job(job_id = "job-id")
     #' }
     #'
@@ -1087,15 +1088,14 @@ Files <- R6::R6Class(
     },
 
     # Get details of asynchronous job for deleting multiple files -------------
-    #' @description This call gets the details of an asynchronous bulk deletion
-    #'  job. This information will be available for up to a month after the job
-    #'  has been completed.
+    #' @description This call retrieves the details of an asynchronous bulk
+    #'  deletion job. This information will be available for up to a month
+    #'  after the job has been completed.
     #'
     #' @param job_id The ID of the delete job you are querying.
     #'  This ID can be found within the API response for the call for deleting
     #'  files.
-    #'  The function also accepts an AsyncJob object and extracts the ID for
-    #'  you.
+    #'  The function also accepts an AsyncJob object and extracts the ID.
     #'
     #' @importFrom rlang abort
     #' @importFrom glue glue
@@ -1104,7 +1104,7 @@ Files <- R6::R6Class(
     #'
     #' @examples
     #' \dontrun{
-    #'  # Get details of async delete job
+    #'  # Get details of an async delete job
     #'  a$files$async_get_delete_job(job_id = "job-id")
     #' }
     #'
@@ -1130,14 +1130,13 @@ Files <- R6::R6Class(
     },
 
     # Get details of asynchronous job for moving multiple files ---------------
-    #' @description This call gets the details of an asynchronous bulk move
-    #'  job. This information will be available for up to a month after the job
-    #'  has been completed.
+    #' @description This call retrieves the details of an asynchronous bulk
+    #'  move job. This information will be available for up to a month after
+    #'  the job has been completed.
     #'
     #' @param job_id The ID of the move job you are querying. This ID can be
     #'  found within the API response for the call for moving files.
-    #'  The function also accepts an AsyncJob object and extracts the ID for
-    #'  you.
+    #'  The function also accepts an AsyncJob object and extracts the ID.
     #'
     #' @importFrom rlang abort
     #' @importFrom glue glue
@@ -1147,7 +1146,7 @@ Files <- R6::R6Class(
     #'
     #' @examples
     #' \dontrun{
-    #'  # Get details of async move job
+    #'  # Get details of an async move job
     #'  a$files$async_get_move_job(job_id = "job-id")
     #' }
     #'
@@ -1173,7 +1172,7 @@ Files <- R6::R6Class(
     },
 
     # Get details of all asynchronous jobs ---------------------------------
-    #' @description This call gets the details for all asynchronous bulk
+    #' @description This call retrieves the details for all asynchronous bulk
     #'  jobs you have started. This information will be available for up to a
     #'  month after the job has been completed.
     #'

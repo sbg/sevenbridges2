@@ -196,7 +196,7 @@ R6 Class representing Files resource.
 ## ------------------------------------------------
 
 \dontrun{
- # Get details of async copy job
+ # Get details of an async copy job
  a$files$async_get_copy_job(job_id = "job-id")
 }
 
@@ -206,7 +206,7 @@ R6 Class representing Files resource.
 ## ------------------------------------------------
 
 \dontrun{
- # Get details of async delete job
+ # Get details of an async delete job
  a$files$async_get_delete_job(job_id = "job-id")
 }
 
@@ -216,7 +216,7 @@ R6 Class representing Files resource.
 ## ------------------------------------------------
 
 \dontrun{
- # Get details of async move job
+ # Get details of an async move job
  a$files$async_get_move_job(job_id = "job-id")
 }
 
@@ -733,8 +733,8 @@ The maximum number of files you can update the details for per call is
 \if{html}{\out{<a id="method-Files-async_bulk_copy"></a>}}
 \if{latex}{\out{\hypertarget{method-Files-async_bulk_copy}{}}}
 \subsection{Method \code{async_bulk_copy()}}{
-This call lets you perform a bulk copy operation of files
-and folders. Any underlying folder structure will be preserved.
+This call lets you perform a bulk copy of files and
+folders. Any underlying folder structure will be preserved.
 You can copy:
 \itemize{
 \item to a folder within the same project,
@@ -749,22 +749,23 @@ You can copy:
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{items}}{Nested list of elements containing information about each
-file/folder to be copied. For each element, users must provide:
+file/folder to be copied. For each element, you must provide:
 
 \itemize{
 \item \code{file} - The ID of the file or folder you are copying.
 Copying the project root folder is not allowed.
 Use the API call for listing all files to obtain the ID.
 \item \code{parent} - The ID of the folder you are copying files to.
-Should not be used together with project. If project is used,
-the items will be imported to the root of the project's files.
-If parent is used, the import will take place into the specified
-folder, within the project to which the folder belongs.
+It should not be used together with \code{project}. If \code{project} is
+used, the items will be imported to the root of the project
+files. If \code{parent} is used, the import will take place into the
+specified folder, within the project to which the folder belongs.
 \item \code{project} - The project you are copying the file to.
-Should not be used together with parent. If parent is used,
-the import will take place into the specified folder, within the
-project to which the folder belongs. If project is used, the
-items will be imported to the root of the project's files.
+It should not be used together with \code{parent}. If \code{parent} is
+used, the import will take place into the specified folder,
+within the project to which the folder belongs. If \code{project} is
+used, the items will be imported to the root of the project
+files.
 \item \code{name} - Enter the new name for the file if you want to
 rename it in the destination folder.
 }
@@ -883,21 +884,21 @@ project.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{items}}{Nested list of elements containing information about each
-file/folder to be moved. For each element, users must provide:
+file/folder to be moved. For each element, you must provide:
 
 \itemize{
 \item \code{file} - The ID of the file or folder you are moving. Use the
 API call for listing all files or folders to obtain the ID.
-\item \code{parent} - The ID of the folder you are moving files to.
-Should not be used together with project. If project is used, the
-items will be imported to the root of the project's files. If
-parent is used, the import will take place into the specified
-folder, within the project to which the folder belongs.
-\item \code{project} - The project you are moving the files to. Should
-not be used together with parent. If parent is used, the import
-will take place into the specified folder, within the project to
-which the folder belongs. If project is used, the items will be
-imported to the root of the project's files.
+\item \code{parent} - The ID of the folder you are moving the files to,
+which should not be used along with \code{project}. If \code{project} is
+used, the items will be imported to the root of the project files.
+If \code{parent} is used, the import will take place into the
+specified folder, within the project to which the folder belongs.
+\item \code{project} - The project you are moving the files to. It
+should not be used together with \code{parent}. If \code{parent} is used,
+the import will take place into the specified folder, within the
+project to which the folder belongs. If \code{project} is used, the
+items will be imported to the root of the project files.
 \item \code{name} - Enter the new name for the file or folder if you
 want to rename at the destination.
 }
@@ -930,13 +931,13 @@ Rules for moving files and folders:
 \itemize{
 \item The file ID is preserved after the move.
 \item The folder ID is changed after the move.
-\item The destination has to be an existing folder.
+\item The destination must be an existing folder.
 \item If the target folder contains a folder with the same
 name, the contents of both folders will be merged.
 \item If a file with the same name already exists, the source
 file will be automatically renamed (by adding a numeric
 prefix).
-\item You need to have WRITE permissions for both the source
+\item You need to have WRITE permissions for both source
 and destination folders.
 }
 }
@@ -978,7 +979,8 @@ and destination folders.
 \if{html}{\out{<a id="method-Files-async_get_copy_job"></a>}}
 \if{latex}{\out{\hypertarget{method-Files-async_get_copy_job}{}}}
 \subsection{Method \code{async_get_copy_job()}}{
-This call gets the details of an asynchronous bulk copy job.
+This call retrieves the details of an asynchronous bulk
+copy job.
 This information will be available for up to a month after the job has
 been completed.
 \subsection{Usage}{
@@ -991,8 +993,7 @@ been completed.
 \item{\code{job_id}}{The ID of the copy job you are querying.
 This ID can be found within the API response for the call for copying
 files.
-The function also accepts an AsyncJob object and extracts the ID for
-you.}
+The function also accepts an AsyncJob object and extracts the ID.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1002,7 +1003,7 @@ you.}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
- # Get details of async copy job
+ # Get details of an async copy job
  a$files$async_get_copy_job(job_id = "job-id")
 }
 
@@ -1016,9 +1017,9 @@ you.}
 \if{html}{\out{<a id="method-Files-async_get_delete_job"></a>}}
 \if{latex}{\out{\hypertarget{method-Files-async_get_delete_job}{}}}
 \subsection{Method \code{async_get_delete_job()}}{
-This call gets the details of an asynchronous bulk deletion
-job. This information will be available for up to a month after the job
-has been completed.
+This call retrieves the details of an asynchronous bulk
+deletion job. This information will be available for up to a month
+after the job has been completed.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Files$async_get_delete_job(job_id)}\if{html}{\out{</div>}}
 }
@@ -1029,8 +1030,7 @@ has been completed.
 \item{\code{job_id}}{The ID of the delete job you are querying.
 This ID can be found within the API response for the call for deleting
 files.
-The function also accepts an AsyncJob object and extracts the ID for
-you.}
+The function also accepts an AsyncJob object and extracts the ID.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1040,7 +1040,7 @@ you.}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
- # Get details of async delete job
+ # Get details of an async delete job
  a$files$async_get_delete_job(job_id = "job-id")
 }
 
@@ -1054,9 +1054,9 @@ you.}
 \if{html}{\out{<a id="method-Files-async_get_move_job"></a>}}
 \if{latex}{\out{\hypertarget{method-Files-async_get_move_job}{}}}
 \subsection{Method \code{async_get_move_job()}}{
-This call gets the details of an asynchronous bulk move
-job. This information will be available for up to a month after the job
-has been completed.
+This call retrieves the details of an asynchronous bulk
+move job. This information will be available for up to a month after
+the job has been completed.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Files$async_get_move_job(job_id)}\if{html}{\out{</div>}}
 }
@@ -1066,8 +1066,7 @@ has been completed.
 \describe{
 \item{\code{job_id}}{The ID of the move job you are querying. This ID can be
 found within the API response for the call for moving files.
-The function also accepts an AsyncJob object and extracts the ID for
-you.}
+The function also accepts an AsyncJob object and extracts the ID.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1078,7 +1077,7 @@ job.
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
- # Get details of async move job
+ # Get details of an async move job
  a$files$async_get_move_job(job_id = "job-id")
 }
 
@@ -1092,7 +1091,7 @@ job.
 \if{html}{\out{<a id="method-Files-async_list_file_jobs"></a>}}
 \if{latex}{\out{\hypertarget{method-Files-async_list_file_jobs}{}}}
 \subsection{Method \code{async_list_file_jobs()}}{
-This call gets the details for all asynchronous bulk
+This call retrieves the details for all asynchronous bulk
 jobs you have started. This information will be available for up to a
 month after the job has been completed.
 \subsection{Usage}{

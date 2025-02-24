@@ -554,8 +554,8 @@ a$files$delete(file = "<file_object_or_id>")
 
 To delete multiple files at once, you can use async action for bulk delete. 
 It can be called from the `Auth$files` path and accepts a list of file/folder 
-IDs or `File` objects. Non-empty folders are allowed to be deleted together 
-with their content.
+IDs or `File` objects. Deletion of non-empty folders including their content
+is allowed.
 
 ```{r}
 # Delete multiple files
@@ -569,7 +569,7 @@ check its status by reloading the object or by calling the function
 `a$files$async_get_delete_job()`.
 
 ```{r}
-# Reload object to check status
+# Reload object to check its status
 async_delete_job$reload()
 async_delete_job
 
@@ -618,7 +618,7 @@ Any underlying folder structure will be preserved. You can copy:
 file1 <- a$files$get(id = "6435367997d9446ecb66cfb2")
 file2 <- a$files$get(id = "6435367997d9446ecb66cgr2")
 
-# Copy files to the project
+# Copy files to a project
 async_job_copy <- a$files$async_bulk_copy(
   items = list(
     list(
@@ -642,8 +642,8 @@ async_job_copy <- a$files$async_get_copy_job(job_id = "<job-id>")
 async_job_copy
 ```
 
-This operation allows you to perform bulk copy action and to continue your work 
-in R session. The status of the copy operation can be previewed by reloading
+This operation allows you to perform bulk copy action and continue your work 
+in an R session. The status of the copy operation can be previewed by reloading
 the AsyncJob object or by calling the operation `a$files$async_get_copy_job()`.
 
 <div align="right"><a href="#top">top</a></div>
@@ -775,7 +775,7 @@ a$files$bulk_edit(files = list(file_obj_1, file_obj_2))
 The `async_list_file_jobs()` method retrieves details of all asynchronous file 
 jobs (async_copy, async_delete, async_move) in a single API call. 
 This method accepts `limit` and `offset` arguments to control the 
-number of results returned. The output is a `Collection` object containing a 
+number of returned results. The output is a `Collection` object containing a 
 list of `AsyncJob` objects, each with details such as type, ID, status, start 
 and completion time, etc.
 
@@ -860,7 +860,7 @@ folders.
 file1 <- a$files$get(id = "<file-1-id>")
 file2 <- a$files$get(id = "<file-2-id>")
 
-# Move files to the project
+# Move files to a project
 async_job_move <- a$files$async_bulk_move(
   items = list(
     list(
@@ -885,7 +885,7 @@ async_job_move
 ```
 
 This operation enables you to perform a bulk move action while continuing your
-work in the R session. You can check the status of the move operation by
+work in an R session. You can check the status of the move operation by
 reloading the `AsyncJob` object or calling `a$files$async_get_move_job()`.
 
 <div align="right"><a href="#top">top</a></div>

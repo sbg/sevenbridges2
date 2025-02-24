@@ -54,8 +54,8 @@ preserved.
 
 ## R Client for the Seven Bridges API
 
-In order to use the `sevenbridges2` package users must authenticate themselves
-first by creating an Auth object and providing necessary credentials. 
+In order to use the `sevenbridges2` package, users must authenticate themselves
+first by creating an Auth object and providing the necessary credentials. 
 You can read more about the authentication types in our next chapters.
 
 The `sevenbridges2` package only supports v2+ versions of the API, since 
@@ -65,10 +65,10 @@ methods.
 
 ## Installation
 
-The `sevenbridges2` package is available on CRAN and Seven Bridges Github 
+The `sevenbridges2` package is available on CRAN and the Seven Bridges GitHub 
 repository.
 
-To install it from `CRAN`, use simply:
+To install it from `CRAN`, simply use:
 ```{r}
 # Install package from CRAN
 install.packages("sevenbridges2")
@@ -134,16 +134,16 @@ operation within the `Collection` object you've received as the result.
 
 __`Collection`__
 
-Every API call that returns a list of items (usually the output from `query()` operations), operations), like fetching projects, files, apps etc, wraps the 
+Every API call that returns a list of items (usually the output from `query()` operations), like fetching projects, files, apps, etc., wraps the 
 results into a general `Collection` class object containing the `items` field 
 from which users may access the items returned. 
 Additional options that the `Collection` class offers are to navigate between 
 pages of results, for example, to load next or previous page of results by 
 calling `next_page()` and `prev_page()` methods.
 
-Moreover, users can fetch all results using `Collection`'s `all()` method which 
-is a shortcut to send multiple API calls for each next page and collect all 
-results. Keep in mind the `limit` used, as well as the API rate limit.
+Moreover, users can fetch all results using the `Collection`'s `all()` method,
+which is a shortcut to send multiple API calls for each next page and collect
+all results. Keep in mind the `limit` used, as well as the API rate limit.
 
 ```{r}
 # Create a collection of files
@@ -242,7 +242,7 @@ Let's load the package first:
 library("sevenbridges2")
 ```
 
-You have three different ways to provide your token. 
+You have three different ways of providing your token.
 Choose from one of the methods below:
 
 1. [Direct authentication.](#method1) Here you should provide your developer 
@@ -264,8 +264,8 @@ have previously set these environment variables. Alternatively, you can specify
 the names of the system environment variables you want to be loaded using the 
 `sysenv_token` and `sysenv_url` arguments.
 
-3. [Authentication via the user configuration file.](#method3) This file, by 
-default `$HOME/.sevenbridges/credentials`, provides an organized way to collect 
+3. [Authentication via the user configuration file.](#method3) By default, this
+file (`$HOME/.sevenbridges/credentials`) provides an organized way to collect
 and manage all your API authentication information for Seven Bridges platforms.
 
 If you need to be logged into multiple accounts at the same time (which can 
@@ -511,8 +511,8 @@ a$billing_groups$get(id = "<billing_group_id>")
 
 <div align="right"><a href="#top">top</a></div>
 
-Please check `vignette("Authentication_and_Billing", package = "sevenbridges2")` for more technical details about
-billing informations.
+Please check `vignette("Authentication_and_Billing", package = "sevenbridges2")`
+for more technical details about billing information.
 
 ## List and query projects
 
@@ -545,8 +545,8 @@ Note that the output is the `Collection` object and the results (list of
 
 <div align="right"><a href="#top">top</a></div>
 
-Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
-projects.
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")`
+for more technical details about projects.
 
 ## Create a new project
 
@@ -596,8 +596,8 @@ The **new project** is created on the platform. Notice also that the variable
 project. The facility also has several methods that allow you to perform 
 basic platform operations on the project.
 
-Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
-projects.
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")`
+for more technical details about projects.
 
 ## Get details of a specified project
 
@@ -630,8 +630,8 @@ a$projects$get(id = "<your_username_or_division>/api-testing")
   • use_elastic_disk: FALSE
 ```
 
-Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
-apps.
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")`
+for more technical details about apps.
 
 ## Copy app into the project
 
@@ -655,11 +655,11 @@ public_apps <- a$apps$query(
 
 # Search by ID
 star_app <- a$apps$get(
-  id = "admin/sbg-public-data/rna-seq-alignment-star/0"
+  id = "admin/sbg-public-data/rna-seq-alignment-star-2-7-10a"
 )
 ```
 
-Now, copy the App your `project` with a new `name`, following this logic.
+Now, copy the App to your `project` with a new `name`, following this logic.
 
 ```{r}
 # Copy app into the project
@@ -691,7 +691,7 @@ Alternatively, you can copy it from the `App` object.
 ```{r}
 # Get public app RNA Sequencing alignment - STAR
 star_app <- a$apps$get(
-  id = "admin/sbg-public-data/rna-seq-alignment-star/0"
+  id = "admin/sbg-public-data/rna-seq-alignment-star-2-7-10a"
 )
 
 # Copy it into a project
@@ -705,15 +705,15 @@ star_app$copy(
 
 Next, we would like to run a task with this app. Let's see what is required.
 
-Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
-tasks.
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")`
+for more technical details about tasks.
 
 ## Execute a new task
 
 ### Find your app inputs
 
 Once you have copied the public app 
-`admin/sbg-public-data/rna-seq-alignment-star/0` into your project, 
+`admin/sbg-public-data/rna-seq-alignment-star-2-7-10a` into your project, 
 `<username>/api-testing`, the app `id` in your current project is 
 `<username>/api-testing/newcopyofstar`. 
 Alternatively, you can use another app you already have in your project for 
@@ -748,15 +748,15 @@ Locate the IDs of the required inputs. Note that task inputs need to match
 the expected data type and name. In the above example, we see two required 
 fields:
 
-- **fastq:** This input takes a file array in the following formats: FASTA, 
+- **in_reads:** This input takes a file array in the following formats: FASTA, 
 FASTQ, FA, FQ etc.
-- **genomeFastaFiles:** This is a single reference file in the FASTA, FA, FNA 
-or TAR format.
+- **in_reference_or_sgg_archive:** This is a single reference file in the
+FASTA, FA, FNA or TAR format.
 
 We also want to provide a gene feature file:
 
-- **sjdbGTFfile:** A file array that can be in the GTF, GFF, GFF2, or GFF3 
-format.
+- **in_gene_annotation:** A file array that can be in the GTF, GFF, GFF2, or 
+GFF3 format.
 
 You can find a list of possible input types below:
 
@@ -776,19 +776,19 @@ below.
 ### Prepare your input files
 
 ```{r}
-# Get reads (fastq) files and and copy them into a project
-reads_1 <- a$files$get(id = "641c48c425ed1842bd0bf799") # file id
+# Get reads (fastq) files and copy them into a project
+reads_1 <- a$files$get(id = "5772b6f0507c175267448700") # file id
 reads_1$copy_to(project = p)
 
-reads_2 <- a$files$get(id = "641c48c425ed1842bd0bf835") # file id
+reads_2 <- a$files$get(id = "5772b6f2507c175267448703") # file id
 reads_2$copy_to(project = p)
 
 # Get a single file reference file and copy into a project
-fasta_in <- a$files$get(id = "641c48c525ed1842bd0bf86a") # file id
+fasta_in <- a$files$get(id = "5c614f097369c402a28a3c41") # file id
 fasta_in$copy_to(project = p)
 
 # Get gtf file and copy into a project
-gtf_in <- a$files$get(id = "641c48c425ed1842bd0bf825") # file id
+gtf_in <- a$files$get(id = "5c614e5e7369c402a18a3c41") # file id
 gtf_in$copy_to(project = p)
 
 # Get copied files
@@ -808,9 +808,9 @@ tsk <- p$create_task(
   description = "STAR test",
   app = copied_star_app,
   inputs = list(
-    "fastq" = c(input_files[[1]], input_files[[2]]),
-    "genomeFastaFiles" = input_files[[3]],
-    "sjdbGTFfile" = list(input_files[[4]])
+    "in_reads" = c(input_files[[1]], input_files[[2]]),
+    "in_reference_or_sgg_archive" = input_files[[3]],
+    "in_gene_annotation" = input_files[[4]]
   )
 )
 
@@ -832,8 +832,8 @@ copied_star_app$output_matrix()
 
 <div align="right"><a href="#top">top</a></div>
 
-Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
-tasks.
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")`
+for more technical details about tasks.
 
 ## Run a Task
 
@@ -894,8 +894,8 @@ Alternatively, you can delete the draft task if you no longer wish to run it.
 
 <div align="right"><a href="#top">top</a></div>
 
-Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
-running tasks.
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")`
+for more technical details about running tasks.
 
 ## Run tasks using spot instances
 
@@ -906,8 +906,8 @@ Seven Bridges platforms. Our package follows the same [logic](https://docs.seven
 as our platform's web interface (the current default setting for spot instances 
 is **on**).
 
-For example, when we create a project using Projects resource's method `create()`,
-we can set `use_interruptible = FALSE` to use on-demand instances
+For example, when we create a project using the Projects resource's method
+`create()`, we can set `use_interruptible = FALSE` to use on-demand instances
 (non-interruptible but more expensive) instead of the spot instances
 (interruptible but cheaper):
 
@@ -948,8 +948,8 @@ by setting `use_interruptible_instances = FALSE` in `create_task()` explicitly.
 
 <div align="right"><a href="#top">top</a></div>
 
-Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
-running tasks using spot instances.
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")`
+for more technical details about running tasks using spot instances.
 
 ## Execution hints per task run
 
@@ -978,8 +978,8 @@ For details about `execution_settings`, please check [create a new draft task](h
 
 <div align="right"><a href="#top">top</a></div>
 
-Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
-execution hints.
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")`
+for more technical details about execution hints.
 
 ## Draft a batch task
 
@@ -1044,5 +1044,5 @@ child2_details <- child_tasks$items[[2]]$get_execution_details()
 
 <div align="right"><a href="#top">top</a></div>
 
-Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")` for more technical details about
-running batch tasks.
+Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")`
+for more technical details about running batch tasks.

@@ -187,6 +187,7 @@ projectName
 purrr
 px
 Quickstart
+quickstart
 readr
 rect
 renv
@@ -201,6 +202,7 @@ rfranklin
 rlang
 rlang's
 rmarkdown
+Rmd
 RO
 Roboto
 Roxygen
@@ -217,6 +219,7 @@ serviceaccount
 setenv
 sevenbridges
 SevenBridges
+sgg
 SHA
 sjdbGTFfile
 sonarqube
