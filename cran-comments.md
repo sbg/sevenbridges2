@@ -31,21 +31,6 @@ checking installed package size ... NOTE
       doc   5.2Mb
 ```
 
-There is one more NOTE, but only for `devtools::check_win_devel()`:
-
-```
-Found the following (possibly) invalid URLs:
-  URL: https://portal.azure.com/
-    From: man/Volumes.Rd
-    Status: 403
-    Message: Forbidden
-```
-
-- This is a valid URL which passes `urlchecker::url_check()`, but it requires 
-login access.
-- The `Volumes` class and its methods have not been modified in this release.
-
-
 ---
 
 ### 2025-02-24
@@ -78,3 +63,16 @@ checking installed package size ... NOTE
       doc   5.2Mb
 ```
 
+There is one more NOTE, but only for `devtools::check_win_devel()`:
+
+```
+Found the following (possibly) invalid URLs:
+  URL: https://portal.azure.com/
+    From: man/Volumes.Rd
+    Status: 403
+    Message: Forbidden
+```
+
+- This is a valid URL which passes `urlchecker::url_check()`, but it requires 
+login access.
+- The `Volumes` class and its methods have not been modified in this release.
