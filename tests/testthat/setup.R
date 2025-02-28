@@ -854,5 +854,17 @@ asyncjob_res <- list(
 setup_async_job_obj <- asAsyncJob(x = asyncjob_res, auth = setup_auth_object)
 
 
+# Setup Division object
+division_res <- list(
+  id = "some-id",
+  href = "some-href",
+  name = "my-division"
+)
+
+setup_division_obj <- asDivision(x = division_res, auth = setup_auth_object)
+
+# Setup Divisions obj
+setup_divisions_obj <- Divisions$new(auth = setup_auth_object)
+
 # Close session at the end of tests
 withr::defer(teardown_env())

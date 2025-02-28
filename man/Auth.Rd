@@ -204,7 +204,7 @@ platform.}
 \item{\code{volumes}}{Volumes object, for accessing volumes resources on the
 platform.}
 
-\item{\code{tasks}}{Tasks object, for accessing volumes resources on the
+\item{\code{tasks}}{Tasks object, for accessing tasks resources on the
 platform.}
 
 \item{\code{imports}}{Storage imports object, for accessing volume imports
@@ -216,8 +216,11 @@ resources on the platform.}
 \item{\code{invoices}}{Invoices object, for accessing invoice resources on the
 platform.}
 
-\item{\code{billing_groups}}{Billing_groups object, for accessing billing groups
-resources on the platform.}
+\item{\code{billing_groups}}{Billing_groups object, for accessing billing
+groups resources on the platform.}
+
+\item{\code{divisions}}{Divisions object, for accessing divisions resources on
+the platform.}
 }
 \if{html}{\out{</div>}}
 }

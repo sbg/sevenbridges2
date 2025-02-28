@@ -65,7 +65,7 @@ Auth <- R6::R6Class(
     #'  platform.
     volumes = NULL,
 
-    #' @field tasks Tasks object, for accessing volumes resources on the
+    #' @field tasks Tasks object, for accessing tasks resources on the
     #'  platform.
     tasks = NULL,
 
@@ -81,9 +81,13 @@ Auth <- R6::R6Class(
     #'  platform.
     invoices = NULL,
 
-    #' @field billing_groups Billing_groups object, for accessing billing groups
-    #'  resources on the platform.
+    #' @field billing_groups Billing_groups object, for accessing billing
+    #'  groups resources on the platform.
     billing_groups = NULL,
+
+    #' @field divisions Divisions object, for accessing divisions resources on
+    #'  the platform.
+    divisions = NULL,
 
     # Initialize Auth object -------------------------------------------------
     #' @description
@@ -345,8 +349,11 @@ Auth <- R6::R6Class(
       # Invoices resource
       self$invoices <- Invoices$new(self)
 
-      # Billng_groups resousrce
+      # Billing_groups resource
       self$billing_groups <- Billing_groups$new(self)
+
+      # Divisions resource
+      self$divisions <- Divisions$new(self)
     },
 
     # Get token --------------------------------------------------------------
