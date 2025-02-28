@@ -80,7 +80,8 @@ a$divisions$list_all_divisions()
 ## Get details of a division
 
 The following call returns the details of a specified division.
+
 ```{r}
-# List all your divisions
+# Retrieve details of a specified division
 a$divisions$get_division_details(division_id = "division-id")
 ```
