@@ -14,8 +14,8 @@ Divisions <- R6::R6Class(
   public = list(
     #' @field URL List of URL endpoints for this resource.
     URL = list(
-      "list_all_divisions" = "divisions",
-      "get_division_details" = "divisions/{division_id}"
+      "query" = "divisions",
+      "get" = "divisions/{id}"
     ),
 
     # Initialize Divisions object ---------------------------------------------
@@ -39,12 +39,12 @@ Divisions <- R6::R6Class(
     #' @examples
     #' \dontrun{
     #'   # Retrieve a list of all divisions you are a member of
-    #'   a$Divisions$list_all_divisions()
+    #'   a$Divisions$query()
     #' }
-    list_all_divisions = function() {
+    query = function() {
       # nocov start
       params_list <- list(
-        path = glue::glue(self$URL[["list_all_divisions"]])
+        path = glue::glue(self$URL[["query"]])
       )
 
       res <- do.call(
@@ -61,35 +61,34 @@ Divisions <- R6::R6Class(
     # Get details of a division -----------------------------------------------
     #' @description This call returns the details of a specified division.
     #'
-    #' @param division_id The ID of the division you are querying. The function
+    #' @param id The ID of the division you are querying. The function
     #'  also accepts a Division object and extracts the ID.
-    #'
-    #' @importFrom glue glue
+    #' @param ... Other arguments that can be passed to core `api()` function
+    #'  like 'fields', etc.
     #'
     #' @return \code{\link{Division}} object.
     #'
     #' @examples
     #' \dontrun{
     #'   # Retrieve details of a specified division
-    #'   a$Divisions$get_division_details(division_id = "division-id")
+    #'   a$Divisions$get(id = "division-id")
     #' }
-    get_division_details = function(division_id) {
-      if (is_missing(division_id)) {
+    get = function(id, ...) {
+      if (is_missing(id)) {
         rlang::abort(
-          "Please provide the 'division_id' parameter."
+          "Please provide the 'id' parameter."
         )
       }
 
-      division_id <- check_and_transform_id(division_id,
+      id <- check_and_transform_id(id,
         class_name = "Division"
       )
 
       # nocov start
-      path <- glue::glue(self$URL[["get_division_details"]])
-
-      res <- self$auth$api(
-        path = path,
-        method = "GET"
+      res <- super$get(
+        cls = self,
+        id = id,
+        ...
       )
 
       return(asDivision(res, auth = self$auth))

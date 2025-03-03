@@ -6,24 +6,24 @@ test_that("Divisions initialization works", {
   checkmate::assert_r6(
     setup_divisions_obj,
     classes = c("Resource", "Divisions"),
-    public = c("URL", "list_all_divisions", "get_division_details")
+    public = c("URL", "query", "get")
   )
 })
 
-test_that("Divisions get_division_details() throws error when expected", {
+test_that("Divisions get() throws error when expected", {
   # Setup test parameters for test
-  test_bad_id <- list(division_id = 123)
-  test_missing_id <- list(division_id = NULL)
+  test_bad_id <- list(id = 123)
+  test_missing_id <- list(id = NULL)
 
   # Get fails when id 'division_id' parameter is invalid
   testthat::expect_error(
-    do.call(setup_divisions_obj$get_division_details, test_bad_id),
-    regexp = "Assertion on 'division_id' failed: Must be of type 'character', not 'double'.", # nolint
+    do.call(setup_divisions_obj$get, test_bad_id),
+    regexp = "Assertion on 'id' failed: Must be of type 'character', not 'double'.", # nolint
     fixed = TRUE
   )
   testthat::expect_error(
-    do.call(setup_divisions_obj$get_division_details, test_missing_id),
-    regexp = "Please provide the 'division_id' parameter.",
+    do.call(setup_divisions_obj$get, test_missing_id),
+    regexp = "Please provide the 'id' parameter.",
     fixed = TRUE
   )
 })

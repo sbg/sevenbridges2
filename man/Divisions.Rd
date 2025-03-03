@@ -9,21 +9,21 @@ R6 Class representing Divisions resource.
 \examples{
 
 ## ------------------------------------------------
-## Method `Divisions$list_all_divisions`
+## Method `Divisions$query`
 ## ------------------------------------------------
 
 \dontrun{
   # Retrieve a list of all divisions you are a member of
-  a$Divisions$list_all_divisions()
+  a$Divisions$query()
 }
 
 ## ------------------------------------------------
-## Method `Divisions$get_division_details`
+## Method `Divisions$get`
 ## ------------------------------------------------
 
 \dontrun{
   # Retrieve details of a specified division
-  a$Divisions$get_division_details(division_id = "division-id")
+  a$Divisions$get(id = "division-id")
 }
 }
 \section{Super class}{
@@ -40,8 +40,8 @@ R6 Class representing Divisions resource.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-Divisions-new}{\code{Divisions$new()}}
-\item \href{#method-Divisions-list_all_divisions}{\code{Divisions$list_all_divisions()}}
-\item \href{#method-Divisions-get_division_details}{\code{Divisions$get_division_details()}}
+\item \href{#method-Divisions-query}{\code{Divisions$query()}}
+\item \href{#method-Divisions-get}{\code{Divisions$get()}}
 \item \href{#method-Divisions-clone}{\code{Divisions$clone()}}
 }
 }
@@ -49,8 +49,6 @@ R6 Class representing Divisions resource.
 <details open><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Resource" data-id="delete"><a href='../../sevenbridges2/html/Resource.html#method-Resource-delete'><code>sevenbridges2::Resource$delete()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Resource" data-id="get"><a href='../../sevenbridges2/html/Resource.html#method-Resource-get'><code>sevenbridges2::Resource$get()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Resource" data-id="query"><a href='../../sevenbridges2/html/Resource.html#method-Resource-query'><code>sevenbridges2::Resource$query()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -72,14 +70,14 @@ Create new Divisions resource object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Divisions-list_all_divisions"></a>}}
-\if{latex}{\out{\hypertarget{method-Divisions-list_all_divisions}{}}}
-\subsection{Method \code{list_all_divisions()}}{
+\if{html}{\out{<a id="method-Divisions-query"></a>}}
+\if{latex}{\out{\hypertarget{method-Divisions-query}{}}}
+\subsection{Method \code{query()}}{
 This call retrieves a list of all divisions you are a
 member of. Each division's ID, name and URL on platform will be
 returned.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Divisions$list_all_divisions()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Divisions$query()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -89,7 +87,7 @@ A \code{\link{Collection}} of \code{\link{Division}} objects.
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
   # Retrieve a list of all divisions you are a member of
-  a$Divisions$list_all_divisions()
+  a$Divisions$query()
 }
 }
 \if{html}{\out{</div>}}
@@ -98,19 +96,22 @@ A \code{\link{Collection}} of \code{\link{Division}} objects.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Divisions-get_division_details"></a>}}
-\if{latex}{\out{\hypertarget{method-Divisions-get_division_details}{}}}
-\subsection{Method \code{get_division_details()}}{
+\if{html}{\out{<a id="method-Divisions-get"></a>}}
+\if{latex}{\out{\hypertarget{method-Divisions-get}{}}}
+\subsection{Method \code{get()}}{
 This call returns the details of a specified division.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Divisions$get_division_details(division_id)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Divisions$get(id, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{division_id}}{The ID of the division you are querying. The function
+\item{\code{id}}{The ID of the division you are querying. The function
 also accepts a Division object and extracts the ID.}
+
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }
@@ -121,7 +122,7 @@ also accepts a Division object and extracts the ID.}
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
   # Retrieve details of a specified division
-  a$Divisions$get_division_details(division_id = "division-id")
+  a$Divisions$get(id = "division-id")
 }
 }
 \if{html}{\out{</div>}}

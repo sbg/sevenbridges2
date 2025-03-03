@@ -1,5 +1,5 @@
 ---
-title: "Managing Divisions with Seven Bridges API R Client"
+title: "Enterprise actions reference guide for Seven Bridges API R Client"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_document:
@@ -73,7 +73,7 @@ returned.
 a <- Auth$new(platform = "aws-us", token = "<your-token>")
 
 # Query all divisions of which you are a member
-a$divisions$list_all_divisions()
+a$divisions$query()
 ```
 
 
@@ -83,5 +83,5 @@ The following call returns the details of a specified division.
 
 ```{r}
 # Retrieve details of a specified division
-a$divisions$get_division_details(division_id = "division-id")
+a$divisions$get(id = "division-id")
 ```
