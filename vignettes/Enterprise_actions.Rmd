@@ -1,0 +1,87 @@
+---
+title: "Enterprise actions reference guide for Seven Bridges API R Client"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    number_sections: false
+    theme: "flatly"
+    highlight: "textmate"
+    css: "sevenbridges.css"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Managing Divisions with Seven Bridges API R Client}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+<a name="top"></a>
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+# Managing Divisions
+
+Enterprise access to the Platform is available on demand and allows companies
+or organizations to mimic their internal structure and hierarchy on the Seven
+Bridges Platform, thus facilitating simpler and more efficient collaboration.
+
+Enterprise accounts are granted to users through their organizations. The
+organization associated with the Enterprise account may create user groups
+(`Divisions` and `Teams`) composed of Enterprise account holders, which are
+used to enable collaboration between members of the organization.
+
+A `Division` on the Platform is a subgroup of users within an `Enterprise`. Use
+the `Division` entity to replicate the structure and hierarchy of an
+organization, such as departmental groups on the Platform. `Enterprise`
+administrators create `Divisions`, but they can assign `Division`
+administrators to manage them.
+
+A `Team` is a subgroup within a `Division`. Division administrators can create
+`Teams` to simplify adding multiple members to a project at once. A single
+`Division` member can belong to multiple `Teams`.
+
+Division related operations can be accessed through the `divisions` path
+from the `Auth` object.
+
+When fetching a single division, it is represented as a `Division` object,
+which contains the following information:
+
+- `id`: Division ID
+- `name`: Division name
+
+The division object also has additional methods that can be executed directly
+on it, such as: `TO BE ADDED`
+
+
+
+## List all your divisions
+
+The following call returns a Collection with a list of all divisions you are a
+member of. Each division ID, name and URL on the Seven Bridges Platform will be
+returned.
+
+```{r}
+# Authenticate (division authentication token is required)
+a <- Auth$new(platform = "aws-us", token = "<your-token>")
+
+# Query all divisions of which you are a member
+a$divisions$query()
+```
+
+
+## Get details of a division
+
+The following call returns the details of a specified division.
+
+```{r}
+# Retrieve details of a specified division
+a$divisions$get(id = "division-id")
+```
