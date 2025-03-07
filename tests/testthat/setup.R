@@ -866,5 +866,69 @@ setup_division_obj <- asDivision(x = division_res, auth = setup_auth_object)
 # Setup Divisions obj
 setup_divisions_obj <- Divisions$new(auth = setup_auth_object)
 
+# Setup Team object
+team_res <- list(
+  id = "some-id",
+  href = "some-href",
+  name = "my-team"
+)
+
+setup_team_obj <- asTeam(x = team_res, auth = setup_auth_object)
+
+
+# Create a division object and override its auth$user method  to simulate a
+# scenario where the division was fetched by a user with the
+# 'ADMIN' role.
+setup_auth_admin <- Auth$new(from = "file", config_file = credentials_path)
+setup_div_with_admin <- asDivision(x = division_res, auth = setup_auth_admin)
+unlockBinding("user", setup_div_with_admin$auth)
+setup_div_with_admin$auth$user <- function() {
+  list(
+    username = "albus_dumbledore",
+    email = "albus.dumbledore@hogwarts.com",
+    first_name = "Albus",
+    last_name = "Dumbledore",
+    affiliation = "Hogwarts",
+    country = "United Kingdom",
+    role = "ADMIN"
+  )
+}
+
+# Create a division object and override its auth$user method  to simulate a
+# scenario where the division was fetched by a user with the
+# 'MEMBER' role.
+setup_auth_member <- Auth$new(from = "file", config_file = credentials_path)
+setup_div_with_member <- asDivision(x = division_res, auth = setup_auth_member) # nolint
+unlockBinding("user", setup_div_with_member$auth)
+setup_div_with_member$auth$user <- function() {
+  list(
+    username = "hermione_granger",
+    email = "hermione.granger@hogwarts.com",
+    first_name = "Hermione",
+    last_name = "Granger",
+    affiliation = "Hogwarts",
+    country = "United Kingdom",
+    role = "MEMBER"
+  )
+}
+
+# Create a division object and override its auth$user method  to simulate a
+# scenario where the division was fetched by a user with the
+# 'EXTERNAL_COLLABORATOR' role.
+setup_auth_ext_collab <- Auth$new(from = "file", config_file = credentials_path)
+setup_div_with_ext_collab <- asDivision(x = division_res, auth = setup_auth_ext_collab) # nolint
+unlockBinding("user", setup_div_with_ext_collab$auth)
+setup_div_with_ext_collab$auth$user <- function() {
+  list(
+    username = "fleur_delacour",
+    email = "fleur.delacour@beauxbatons.fr",
+    first_name = "Fleur",
+    last_name = "Delacour",
+    affiliation = "Beauxbatons",
+    country = "France",
+    role = "EXTERNAL_COLLABORATOR"
+  )
+}
+
 # Close session at the end of tests
 withr::defer(teardown_env())

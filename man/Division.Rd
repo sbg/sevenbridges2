@@ -36,6 +36,57 @@ R6 Class representing a central resource for managing divisions.
  division_object$reload()
 }
 
+
+## ------------------------------------------------
+## Method `Division$list_teams`
+## ------------------------------------------------
+
+\dontrun{
+  # Get details of a specific division
+  division_obj <- a$divisions$get(id = "division-id")
+
+  # Retrieve a list of division teams you are a member of
+  division_obj$list_teams()
+
+  # Retrieve a list of all teams within the division regardless of
+  # whether you are a member of a team or not
+  division_obj$list_teams(list_all = TRUE)
+}
+
+
+## ------------------------------------------------
+## Method `Division$list_members`
+## ------------------------------------------------
+
+\dontrun{
+  # Get details of a specific division
+  division_obj <- a$divisions$get(id = "division-id")
+
+  # Retrieve a list of all division members
+  division_obj$list_members()
+
+  # Or filter members by role. The following roles are supported:
+  # "MEMBER", "ADMIN", and "EXTERNAL_COLLABORATOR"
+  division_obj$list_members(role = "ADMIN")
+}
+
+
+## ------------------------------------------------
+## Method `Division$remove_member`
+## ------------------------------------------------
+
+\dontrun{
+  # Retrieve details of a specific division
+  division_obj <- a$divisions$get(id = "division-id")
+
+  # Remove a member using their username
+  division_obj$remove_member(user = "division-name/username")
+
+  # Remove a member using a User object
+  members <- division_obj$list_members(role = "MEMBER")
+  member_to_remove <- members$items[[1]]
+  division_obj$remove_member(user = member_to_remove)
+}
 }
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{Division}
@@ -43,6 +94,8 @@ R6 Class representing a central resource for managing divisions.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
+\item{\code{URL}}{List of URL endpoints for this resource.}
+
 \item{\code{id}}{The ID of the division.}
 
 \item{\code{name}}{Division's name.}
@@ -55,6 +108,9 @@ R6 Class representing a central resource for managing divisions.
 \item \href{#method-Division-new}{\code{Division$new()}}
 \item \href{#method-Division-print}{\code{Division$print()}}
 \item \href{#method-Division-reload}{\code{Division$reload()}}
+\item \href{#method-Division-list_teams}{\code{Division$list_teams()}}
+\item \href{#method-Division-list_members}{\code{Division$list_members()}}
+\item \href{#method-Division-remove_member}{\code{Division$remove_member()}}
 \item \href{#method-Division-clone}{\code{Division$clone()}}
 }
 }
@@ -137,6 +193,153 @@ like 'fields', etc.
  division_object$reload()
 }
 
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Division-list_teams"></a>}}
+\if{latex}{\out{\hypertarget{method-Division-list_teams}{}}}
+\subsection{Method \code{list_teams()}}{
+This call retrieves a list of all teams in a division that
+you are a member of. Each team's ID, name as well as your role in the
+team will be returned.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Division$list_teams(list_all = FALSE, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{list_all}}{Boolean. Set this field to \code{TRUE} if you want to list
+all teams within the division (regardless of whether you are a member
+of a team or not). Default value is \code{FALSE}.}
+
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like 'fields', etc.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A \code{\link{Collection}} of \code{\link{Team}} objects.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+  # Get details of a specific division
+  division_obj <- a$divisions$get(id = "division-id")
+
+  # Retrieve a list of division teams you are a member of
+  division_obj$list_teams()
+
+  # Retrieve a list of all teams within the division regardless of
+  # whether you are a member of a team or not
+  division_obj$list_teams(list_all = TRUE)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Division-list_members"></a>}}
+\if{latex}{\out{\hypertarget{method-Division-list_members}{}}}
+\subsection{Method \code{list_members()}}{
+This call retrieves a list of all members of a division. In
+addition, you can list members with a specific role, e.g. all
+administrators within a division.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Division$list_members(
+  role = NULL,
+  limit = getOption("sevenbridges2")$limit,
+  offset = getOption("sevenbridges2")$offset,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{role}}{Filter members by role. Supported roles are \code{ADMIN},
+. \code{MEMBER}, and \code{EXTERNAL_COLLABORATOR}. If \code{NULL} (default), members of
+all roles will be retrieved.}
+
+\item{\code{limit}}{The maximum number of collection items to return
+for a single request. Minimum value is \code{1}.
+The maximum value is \code{100} and the default value is \code{50}.
+This is a pagination-specific attribute.}
+
+\item{\code{offset}}{The zero-based starting index in the entire collection
+of the first item to return. The default value is \code{0}.
+This is a pagination-specific attribute.}
+
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function
+like other query parameters or 'fields', etc.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A \code{\link{Collection}} of \code{\link{User}} objects.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+  # Get details of a specific division
+  division_obj <- a$divisions$get(id = "division-id")
+
+  # Retrieve a list of all division members
+  division_obj$list_members()
+
+  # Or filter members by role. The following roles are supported:
+  # "MEMBER", "ADMIN", and "EXTERNAL_COLLABORATOR"
+  division_obj$list_members(role = "ADMIN")
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Division-remove_member"></a>}}
+\if{latex}{\out{\hypertarget{method-Division-remove_member}{}}}
+\subsection{Method \code{remove_member()}}{
+Removes a specified user from a division. This action
+revokes the user's membership in the division but does not delete their
+Platform account. Note that only users with the \code{ADMIN} role for the
+division can perform this action.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Division$remove_member(user)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{user}}{The Seven Bridges Platform username of the user to be
+removed, specified in the format \code{division-name/username}, or an object
+of class \code{User} that contains the username.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+  # Retrieve details of a specific division
+  division_obj <- a$divisions$get(id = "division-id")
+
+  # Remove a member using their username
+  division_obj$remove_member(user = "division-name/username")
+
+  # Remove a member using a User object
+  members <- division_obj$list_members(role = "MEMBER")
+  member_to_remove <- members$items[[1]]
+  division_obj$remove_member(user = member_to_remove)
+}
 }
 \if{html}{\out{</div>}}
 
