@@ -15,7 +15,7 @@ R6 Class representing teams resource endpoints.
 \dontrun{
   # Retrieve a list of all teams within the division regardless of
   # whether you are a member of a team or not
-  auth$teams$query(division_id = "division-id", list_all = TRUE)
+  a$teams$query(division_id = "division-id", list_all = TRUE)
 }
 
 
@@ -26,6 +26,25 @@ R6 Class representing teams resource endpoints.
 \dontrun{
   # Retrieve details of a specified team
   a$teams$get(id = "team-id")
+}
+
+## ------------------------------------------------
+## Method `Teams$create`
+## ------------------------------------------------
+
+\dontrun{
+  # Create new team
+  a$teams$create(division = "division-id", name = "my-new-team")
+}
+
+
+## ------------------------------------------------
+## Method `Teams$delete`
+## ------------------------------------------------
+
+\dontrun{
+  # Delete a team
+  a$teams$delete(team = "team-id")
 }
 }
 \section{Super class}{
@@ -44,16 +63,11 @@ R6 Class representing teams resource endpoints.
 \item \href{#method-Teams-new}{\code{Teams$new()}}
 \item \href{#method-Teams-query}{\code{Teams$query()}}
 \item \href{#method-Teams-get}{\code{Teams$get()}}
+\item \href{#method-Teams-create}{\code{Teams$create()}}
+\item \href{#method-Teams-delete}{\code{Teams$delete()}}
 \item \href{#method-Teams-clone}{\code{Teams$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-<li><span class="pkg-link" data-pkg="sevenbridges2" data-topic="Resource" data-id="delete"><a href='../../sevenbridges2/html/Resource.html#method-Resource-delete'><code>sevenbridges2::Resource$delete()</code></a></span></li>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Teams-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Teams-new}{}}}
@@ -105,7 +119,7 @@ A \code{\link{Collection}} of \code{\link{Team}} objects.
 \preformatted{\dontrun{
   # Retrieve a list of all teams within the division regardless of
   # whether you are a member of a team or not
-  auth$teams$query(division_id = "division-id", list_all = TRUE)
+  a$teams$query(division_id = "division-id", list_all = TRUE)
 }
 
 }
@@ -143,6 +157,73 @@ like 'fields', etc.}
 \preformatted{\dontrun{
   # Retrieve details of a specified team
   a$teams$get(id = "team-id")
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Teams-create"></a>}}
+\if{latex}{\out{\hypertarget{method-Teams-create}{}}}
+\subsection{Method \code{create()}}{
+This call creates a new team within a specified division.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Teams$create(division, name)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{division}}{The string ID of the division or Division object
+where you want to create a team.}
+
+\item{\code{name}}{Enter the name for the new team.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A \code{\link{Team}} object.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+  # Create new team
+  a$teams$create(division = "division-id", name = "my-new-team")
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Teams-delete"></a>}}
+\if{latex}{\out{\hypertarget{method-Teams-delete}{}}}
+\subsection{Method \code{delete()}}{
+This call deletes a team. By deleting a team, you remove
+the users' membership to the team, but do not remove their accounts
+from the division.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Teams$delete(team, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{team}}{The team ID or Team object that you want to delete.}
+
+\item{\code{...}}{Other arguments that can be passed to core \code{api()} function.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+  # Delete a team
+  a$teams$delete(team = "team-id")
 }
 }
 \if{html}{\out{</div>}}

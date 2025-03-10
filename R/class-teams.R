@@ -18,7 +18,7 @@ Teams <- R6::R6Class(
       "query" = "divisions/{division_id}/teams",
       "get" = "teams/{id}",
       "create" = "teams",
-      "delete" = "teams/{id}"
+      "delete" = "teams"
     ),
 
     #' @description Create new Teams resource object.
@@ -42,11 +42,15 @@ Teams <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
+    #' @importFrom rlang abort
+    #' @importFrom checkmate assert_logical
+    #' @importFrom glue glue
+    #'
     #' @examples
     #' \dontrun{
     #'   # Retrieve a list of all teams within the division regardless of
     #'   # whether you are a member of a team or not
-    #'   auth$teams$query(division_id = "division-id", list_all = TRUE)
+    #'   a$teams$query(division_id = "division-id", list_all = TRUE)
     #' }
     #'
     #' @return A \code{\link{Collection}} of \code{\link{Team}} objects.
@@ -89,6 +93,8 @@ Teams <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
+    #' @importFrom rlang abort
+    #'
     #' @return \code{\link{Team}} object.
     #'
     #' @examples
@@ -116,6 +122,84 @@ Teams <- R6::R6Class(
 
       return(asTeam(res, auth = self$auth))
       # nocov end
+    },
+
+    # Create a team --------------------------------------------
+    #' @description This call creates a new team within a specified division.
+    #'
+    #' @param division The string ID of the division or Division object
+    #'  where you want to create a team.
+    #' @param name Enter the name for the new team.
+    #'
+    #' @importFrom rlang abort
+    #' @importFrom checkmate assert_string
+    #' @examples
+    #' \dontrun{
+    #'   # Create new team
+    #'   a$teams$create(division = "division-id", name = "my-new-team")
+    #' }
+    #'
+    #' @return A \code{\link{Team}} object.
+    create = function(division, name) {
+      if (is_missing(division) || is_missing(name)) {
+        rlang::abort("Division or new team name is missing. Please, provide both parameters.") # nolint
+      }
+      division_id <- check_and_transform_id(division,
+        class_name = "Division",
+        field_name = "id"
+      )
+      checkmate::assert_string(name, null.ok = FALSE)
+
+      body <- list(
+        division = division_id,
+        name = name
+      )
+
+      res <- self$auth$api(
+        path = self$URL[["create"]],
+        method = "POST",
+        body = body
+      )
+
+      return(asTeam(res, auth = self$auth))
+    },
+
+    # Delete a team -----------------------------------------------
+    #' @description This call deletes a team. By deleting a team, you remove
+    #'  the users' membership to the team, but do not remove their accounts
+    #'  from the division.
+    #'
+    #' @param team The team ID or Team object that you want to delete.
+    #' @param ... Other arguments that can be passed to core `api()` function.
+    #'
+    #' @importFrom rlang abort inform
+    #' @importFrom glue glue_col
+    #'
+    #' @examples
+    #' \dontrun{
+    #'   # Delete a team
+    #'   a$teams$delete(team = "team-id")
+    #' }
+    delete = function(team, ...) {
+      if (is_missing(team)) {
+        rlang::abort(
+          "Please provide the team ID as string or as Team object."
+        )
+      }
+
+      id <- check_and_transform_id(team,
+        class_name = "Team"
+      )
+
+      # nocov start
+      res <- super$delete(
+        id = id,
+        ...
+      )
+
+      rlang::inform(
+        glue::glue_col("The team {green {id} } has been deleted successfully.")
+      )
     }
   )
 )
