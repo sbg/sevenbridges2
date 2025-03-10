@@ -221,6 +221,9 @@ groups resources on the platform.}
 
 \item{\code{divisions}}{Divisions object, for accessing divisions resources on
 the platform.}
+
+\item{\code{teams}}{Teams object, for accessing teams resources on
+the platform.}
 }
 \if{html}{\out{</div>}}
 }

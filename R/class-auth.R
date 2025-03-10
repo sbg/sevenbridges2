@@ -89,6 +89,10 @@ Auth <- R6::R6Class(
     #'  the platform.
     divisions = NULL,
 
+    #' @field teams Teams object, for accessing teams resources on
+    #'  the platform.
+    teams = NULL,
+
     # Initialize Auth object -------------------------------------------------
     #' @description
     #'  Create a new Seven Bridges API Authentication object.
@@ -354,6 +358,9 @@ Auth <- R6::R6Class(
 
       # Divisions resource
       self$divisions <- Divisions$new(self)
+
+      # Teams resource
+      self$teams <- Teams$new(self)
     },
 
     # Get token --------------------------------------------------------------
