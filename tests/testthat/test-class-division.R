@@ -78,6 +78,42 @@ test_that("Division list_members method throws errors when expected", {
     fixed = TRUE
   )
   # nolint end
+
+  # Limit parameter is not valid
+  negative_limit <- list(limit = -1)
+  string_limit <- list(limit = "limit")
+  big_limit <- list(limit = 1500)
+
+  testthat::expect_error(
+    do.call(setup_div_with_admin$list_members, negative_limit),
+    regexp = "Limit must be integer number between 1 and 100.",
+    fixed = TRUE
+  )
+  testthat::expect_error(
+    do.call(setup_div_with_admin$list_members, string_limit),
+    regexp = "Limit must be integer number between 1 and 100.",
+    fixed = TRUE
+  )
+  testthat::expect_error(
+    do.call(setup_div_with_admin$list_members, big_limit),
+    regexp = "Limit must be integer number between 1 and 100.",
+    fixed = TRUE
+  )
+
+  # Offset parameter is not valid
+  negative_offset <- list(offset = -10)
+  string_offset <- list(offset = "offset")
+
+  testthat::expect_error(
+    do.call(setup_div_with_admin$list_members, negative_offset),
+    regexp = "Offset must be integer number >= 0.",
+    fixed = TRUE
+  )
+  testthat::expect_error(
+    do.call(setup_div_with_admin$list_members, string_offset),
+    regexp = "Offset must be integer number >= 0.",
+    fixed = TRUE
+  )
 })
 
 test_that("Division remove_member method throws error when expected", {
