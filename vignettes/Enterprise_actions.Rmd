@@ -156,3 +156,65 @@ members <- my_division$list_members(role = "MEMBER")
 member_to_remove <- members$items[[1]]
 my_division$remove_member(user = member_to_remove)
 ```
+
+# Managing teams
+
+As mentioned before, the `Team` entity is the subgroup of the `Division` and
+enterprise users can perform certain actions on created teams too. 
+
+We have created the `Teams` class as `Resource` class, the same we have with
+`Apps`, `Files`, `Projects` etc, beside the `Team` class that stores information
+about a single team. 
+
+`Teams` class helps us organizing our team methods on `Auth` object, therefore,
+on the `auth$teams` path you may find the well known methods for querying teams
+(`query()`), fetching a single team (`get()`), creating a new team (`create()`) 
+and deleting teams (`delete()`). 
+
+Querying teams (`query()`) requires a division parameter provided in form of 
+string (as division ID) or as `Division` object, and it returns a `Collection` 
+of teams user has access to. With parameter `list_all` you can control whether 
+to return all teams regardless of whether you are a member of a team or not.
+
+Method `get()` fetches a single team by its ID provided. 
+
+Creating new teams (`create()`) requires only a `division` parameter where to 
+create a team and a `name` parameter how to name a new team created. 
+
+Deleting teams (`delete()`) is possible by providing a team ID or `Team` object.
+
+Examples of usage are presented below:
+
+```{r}
+# Query all teams in a specific division
+my_teams <- a$teams$query(division = "division-id", list_all = TRUE)
+print(my_teams)
+```
+```
+── 1 ──
+
+── Team ─────────────────────────────────────────────────────────────────────
+• name: <tim-name-1>
+• id: <team-id-1>
+• href: <href-1>
+
+── 2 ──
+
+── Team ─────────────────────────────────────────────────────────────────────
+• name: <tim-name-2>
+• id: <team-id-2>
+• href: <href-2>
+
+```
+```{r}
+# Fetch single team by ID
+my_test_team <- a$teams$get("my-test-team-id")
+print(my_test_team)
+
+# Create new team
+new_team <- a$teams$create(division = "division-id", name = "my-new-team")
+print(new_team)
+
+# Delete a team
+a$teams$delete(team = "my-new-team")
+```

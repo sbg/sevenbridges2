@@ -875,6 +875,9 @@ team_res <- list(
 
 setup_team_obj <- asTeam(x = team_res, auth = setup_auth_object)
 
+# Setup Teams obj
+setup_teams_obj <- Teams$new(auth = setup_auth_object)
+
 # Create a division object and override its auth$user method to simulate a
 # scenario where the division was fetched by a user with the 'ADMIN' role.
 setup_auth_admin <- Auth$new(from = "file", config_file = credentials_path)

@@ -64,9 +64,10 @@ Teams <- R6::R6Class(
       )
 
       checkmate::assert_logical(list_all)
-      list_all <- ifelse(isTRUE(list_all), "true", "false")
 
       # nocov start
+      list_all <- ifelse(isTRUE(list_all), "true", "false")
+
       params_list <- list(
         path = glue::glue(self$URL[["query"]]),
         "_all" = list_all,
