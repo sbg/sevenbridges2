@@ -130,11 +130,10 @@ Division <- R6::R6Class(
     #'
     #' @return A \code{\link{Collection}} of \code{\link{Team}} objects.
     list_teams = function(list_all = FALSE, ...) {
-      # nocov start
       checkmate::assert_logical(list_all)
 
       list_all <- ifelse(isTRUE(list_all), "true", "false")
-
+      # nocov start
       res <- self$auth$api(
         path = glue::glue(self$URL[["list_teams"]]),
         method = "GET",
@@ -187,12 +186,11 @@ Division <- R6::R6Class(
                             limit = getOption("sevenbridges2")$limit,
                             offset = getOption("sevenbridges2")$offset,
                             ...) {
-      # nocov start
       checkmate::assert_choice(role,
         c("MEMBER", "ADMIN", "EXTERNAL_COLLABORATOR"),
         null.ok = TRUE
       )
-
+      # nocov start
       res <- self$auth$api(
         path = glue::glue(self$URL[["list_members"]]),
         method = "GET",
@@ -247,12 +245,11 @@ Division <- R6::R6Class(
         )
       }
 
-      # nocov start
       username <- check_and_transform_id(user,
         class_name = "User",
         field_name = "username"
       )
-
+      # nocov start
       res <- self$auth$api(
         path = glue::glue(self$URL[["remove_member"]]),
         method = "DELETE"

@@ -33,7 +33,7 @@ R6 Class representing a central resource for managing teams.
    auth = auth,
    response = attr(x, "response")
  )
- division_object$reload()
+ team_object$reload()
 }
 
 }
@@ -134,7 +134,7 @@ like 'fields', etc.
    auth = auth,
    response = attr(x, "response")
  )
- division_object$reload()
+ team_object$reload()
 }
 
 }
