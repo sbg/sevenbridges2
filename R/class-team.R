@@ -82,7 +82,7 @@ Team <- R6::R6Class(
     #'    auth = auth,
     #'    response = attr(x, "response")
     #'  )
-    #'  division_object$reload()
+    #'  team_object$reload()
     #' }
     #'
     #' @return \code{\link{Team}} object.
