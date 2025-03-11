@@ -85,3 +85,74 @@ The following call returns the details of a specified division.
 # Retrieve details of a specified division
 a$divisions$get(id = "division-id")
 ```
+
+
+## List all your teams in a division
+
+To retrieve a list of all teams in a division that you are a member of, use the
+`list_teams()` method of a `Division` object. This method returns a
+`Collection` of `Team` objects, each containing the team's ID and name.
+
+If you want to list all teams within the division, regardless of whether you
+are a member, set the `list_all` parameter to `TRUE`.
+
+```{r}
+# Retrieve details of a specified division
+my_division <- a$divisions$get(id = "division-id")
+
+# List division teams you are a member of
+my_division$list_teams()
+
+# List all teams in the division, including those you are not a member of
+my_division$list_teams(list_all = TRUE)
+```
+
+
+## List members of a division
+
+To retrieve a list of all members in a division, use the `list_members()`
+method of a `Division` object. This method returns a `Collection` of `User`
+objects, each containing user details.
+
+If you want to filter members by role, you can specify the `role` parameter. 
+The supported roles are `"ADMIN"`, `"MEMBER"`, and `"EXTERNAL_COLLABORATOR"`.
+The default value for this parameter is `NULL`, meaning that if `role` is not
+provided, members of all roles will be included in the results.
+
+```{r}
+# Retrieve details of a specific division
+my_division <- a$divisions$get(id = "division-id")
+
+# List all members in the division
+my_division$list_members()
+
+# List only members with the "ADMIN" role
+my_division$list_members(role = "ADMIN")
+```
+
+
+## Remove a member from a division
+
+To remove a member from a division, use the `remove_member()` method of a
+`Division` object. This action revokes the user's membership in the division
+but does not delete their Platform account.
+
+Only users with the `ADMIN` role in the division have permission to remove
+members. If a user without `ADMIN` privileges attempts to perform this action,
+an error will be raised.
+
+The user parameter accepts either a username (formatted as
+`"division-name/username"`) or a `User` object.
+
+```{r}
+# Retrieve details of a specific division
+my_division <- a$divisions$get(id = "division-id")
+
+# Remove a member using their username
+my_division$remove_member(user = "division-name/username")
+
+# Remove a member using a User object
+members <- my_division$list_members(role = "MEMBER")
+member_to_remove <- members$items[[1]]
+my_division$remove_member(user = member_to_remove)
+```

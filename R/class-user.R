@@ -143,3 +143,8 @@ asUser <- function(x = NULL, auth = NULL) {
     response = attr(x, "response")
   )
 }
+
+asUserList <- function(x, auth) {
+  obj <- lapply(x$items, asUser, auth = auth)
+  obj
+}
