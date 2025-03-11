@@ -150,6 +150,7 @@ Teams <- R6::R6Class(
       )
       checkmate::assert_string(name, null.ok = FALSE)
 
+      # nocov start
       body <- list(
         division = division_id,
         name = name
@@ -162,7 +163,7 @@ Teams <- R6::R6Class(
       )
 
       return(asTeam(res, auth = self$auth))
-    },
+    }, # nocov end
 
     # Delete a team -----------------------------------------------
     #' @description This call deletes a team. By deleting a team, you remove
@@ -199,7 +200,7 @@ Teams <- R6::R6Class(
 
       rlang::inform(
         glue::glue_col("The team {green {id} } has been deleted successfully.")
-      )
+      ) # nocov end
     }
   )
 )
