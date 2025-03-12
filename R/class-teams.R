@@ -31,8 +31,7 @@ Teams <- R6::R6Class(
 
     # List all teams in a division --------------------------------------------
     #' @description This call retrieves a list of all teams in a division that
-    #'  you are a member of. Each team's ID, name as well as your role in the
-    #'  team will be returned.
+    #'  you are a member of. Each team's ID and name will be returned.
     #'
     #' @param division The string ID of the division or Division object
     #'  you are querying.
@@ -134,6 +133,7 @@ Teams <- R6::R6Class(
     #'
     #' @importFrom rlang abort
     #' @importFrom checkmate assert_string
+    #'
     #' @examples
     #' \dontrun{
     #'   # Create new team

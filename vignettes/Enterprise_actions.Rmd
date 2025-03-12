@@ -216,5 +216,5 @@ new_team <- a$teams$create(division = "division-id", name = "my-new-team")
 print(new_team)
 
 # Delete a team
-a$teams$delete(team = "my-new-team")
+a$teams$delete(team = "my-new-team-id")
 ```
