@@ -580,8 +580,6 @@ Volume <- R6::R6Class(
     #'    permissions = list(read = TRUE, copy = TRUE, write = FALSE,
     #'    admin = FALSE)
     #'  ```
-    #' @importFrom checkmate assert_list assert_subset
-    #' @importFrom glue glue
     #'
     #' @examples
     #' \dontrun{
@@ -612,32 +610,123 @@ Volume <- R6::R6Class(
         class_name = "Member",
         field_name = "username"
       )
-      checkmate::assert_list(permissions,
-        null.ok = FALSE, len = 4,
-        types = "logical"
-      )
-      checkmate::assert_subset(names(permissions),
-        empty.ok = FALSE,
-        choices = c("read", "copy", "write", "admin")
-      )
-      # nocov start
-      path <- glue::glue(self$URL[["members"]])
-
-      body <- list(
-        username = username,
-        permissions = permissions
-      )
-      res <- self$auth$api(
-        path = path,
-        method = "POST",
-        body = body,
-        advance_access = TRUE
+      res <- self$private$add_member_general(username,
+        permissions,
+        type = "USER"
       )
 
       return(asMember(res, auth = self$auth))
-      # nocov end
     },
 
+    # Add team to a volume (Enterprise users) --------------------------------
+    #' @description Add a specific team as a member to a volume.
+    #'  Only enterprise users can add teams to a volume.
+    #'
+    #' @param team The Seven Bridges Platform ID of a team
+    #'  you want to add to the volume or object of class Team containing
+    #'  team's ID.
+    #' @param permissions List of permissions granted to the team being added.
+    #'  Permissions include listing the contents of a volume, importing files
+    #'  from the volume to the Platform, exporting files from the Platform to
+    #'  the volume, and admin privileges. \cr
+    #'  It can contain fields: 'read', 'copy', 'write' and 'admin' with
+    #'  logical fields - TRUE if certain permission is allowed to the team, or
+    #'  FALSE if it's not.
+    #'  Example:
+    #'  ```{r}
+    #'    permissions = list(read = TRUE, copy = TRUE, write = FALSE,
+    #'    admin = FALSE)
+    #'  ```
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume is requested
+    #' volume_object <- Volume$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Add volume member
+    #'  volume_object$add_member_team(
+    #'                 team = <team-id>,
+    #'                 permissions = list(read = TRUE, copy = FALSE)
+    #'               )
+    #' }
+    #'
+    #' @return \code{\link{Team}} object.
+    add_member_team = function(team,
+                               permissions = list(
+                                 read = TRUE,
+                                 copy = FALSE,
+                                 write = FALSE,
+                                 admin = FALSE
+                               )) {
+      team <- check_and_transform_id(team,
+        class_name = "Team",
+        field_name = "id"
+      )
+      res <- self$private$add_member_general(team, permissions, type = "TEAM")
+
+      return(asMember(res, auth = self$auth))
+    },
+    # Add division to a volume (Enterprise users) -----------------------
+    #' @description Add a specific division as a member to a volume.
+    #'  Only enterprise users can add divisions to a volume.
+    #'
+    #' @param division The Seven Bridges Platform ID of a division
+    #'  you want to add to the volume or object of class Division containing
+    #'  division's ID.
+    #' @param permissions List of permissions granted to the division being
+    #'  added. Permissions include listing the contents of a volume, importing
+    #'  files from the volume to the Platform, exporting files from the
+    #'  Platform to the volume, and admin privileges. \cr
+    #'  It can contain fields: 'read', 'copy', 'write' and 'admin' with
+    #'  logical fields - TRUE if certain permission is allowed to the division,
+    #'  or FALSE if it's not.
+    #'  Example:
+    #'  ```{r}
+    #'    permissions = list(read = TRUE, copy = TRUE, write = FALSE,
+    #'    admin = FALSE)
+    #'  ```
+    #'
+    #' @examples
+    #' \dontrun{
+    #' # x is API response when volume is requested
+    #' volume_object <- Volume$new(
+    #'                     res = x,
+    #'                     href = x$href,
+    #'                     auth = auth,
+    #'                     response = attr(x, "response")
+    #'                    )
+    #'
+    #'  # Add volume member
+    #'  volume_object$add_member_division(
+    #'                 division = <division-id>,
+    #'                 permissions = list(read = TRUE, copy = FALSE)
+    #'               )
+    #' }
+    #'
+    #' @return \code{\link{Division}} object.
+    add_member_division = function(division,
+                                   permissions = list(
+                                     read = TRUE,
+                                     copy = FALSE,
+                                     write = FALSE,
+                                     admin = FALSE
+                                   )) {
+      division <- check_and_transform_id(division,
+        class_name = "Division",
+        field_name = "id"
+      )
+      res <- self$private$add_member_general(team,
+        permissions,
+        type = "DIVISION"
+      )
+
+      return(asMember(res, auth = self$auth))
+    },
     # Remove volume members ---------------------------------------------------
     #' @description Remove member from a volume.
     #'  This function removes members from the specified volume.
@@ -914,6 +1003,48 @@ Volume <- R6::R6Class(
         offset = offset,
         ...
       )
+    } # nocov end
+  ),
+  private = list(
+    # Private method to add members to a volume (individual members, teams or
+    # divisions)
+    add_member_general = function(member,
+                                  permissions = list(
+                                    read = TRUE,
+                                    copy = FALSE,
+                                    write = FALSE,
+                                    admin = FALSE
+                                  ),
+                                  type = "USER") {
+      checkmate::assert_list(permissions,
+        null.ok = FALSE, len = 4,
+        types = "logical"
+      )
+      checkmate::assert_subset(names(permissions),
+        empty.ok = FALSE,
+        choices = c("read", "copy", "write", "admin")
+      )
+      checkmate::assert_subset(type,
+        empty.ok = FALSE,
+        choices = c("MEMBER", "TEAM", "DIVISION")
+      )
+      # nocov start
+      path <- glue::glue(self$URL[["members"]])
+
+      body <- list(
+        username = username,
+        permissions = permissions,
+        type = type
+      )
+
+      res <- self$auth$api(
+        path = path,
+        method = "POST",
+        body = body,
+        advance_access = TRUE
+      )
+
+      return(res)
     } # nocov end
   )
 )

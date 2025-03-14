@@ -195,6 +195,48 @@ volume_object <- Volume$new(
 
 
 ## ------------------------------------------------
+## Method `Volume$add_member_team`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Add volume member
+ volume_object$add_member_team(
+                team = <team-id>,
+                permissions = list(read = TRUE, copy = FALSE)
+              )
+}
+
+
+## ------------------------------------------------
+## Method `Volume$add_member_division`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Add volume member
+ volume_object$add_member_division(
+                division = <division-id>,
+                permissions = list(read = TRUE, copy = FALSE)
+              )
+}
+
+
+## ------------------------------------------------
 ## Method `Volume$remove_member`
 ## ------------------------------------------------
 
@@ -340,6 +382,8 @@ set to \code{FALSE}.}
 \item \href{#method-Volume-get_file}{\code{Volume$get_file()}}
 \item \href{#method-Volume-list_members}{\code{Volume$list_members()}}
 \item \href{#method-Volume-add_member}{\code{Volume$add_member()}}
+\item \href{#method-Volume-add_member_team}{\code{Volume$add_member_team()}}
+\item \href{#method-Volume-add_member_division}{\code{Volume$add_member_division()}}
 \item \href{#method-Volume-remove_member}{\code{Volume$remove_member()}}
 \item \href{#method-Volume-get_member}{\code{Volume$get_member()}}
 \item \href{#method-Volume-modify_member_permissions}{\code{Volume$modify_member_permissions()}}
@@ -841,6 +885,130 @@ volume_object <- Volume$new(
  # Add volume member
  volume_object$add_member(
                 user = user,
+                permissions = list(read = TRUE, copy = FALSE)
+              )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-add_member_team"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-add_member_team}{}}}
+\subsection{Method \code{add_member_team()}}{
+Add a specific team as a member to a volume.
+Only enterprise users can add teams to a volume.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$add_member_team(
+  team,
+  permissions = list(read = TRUE, copy = FALSE, write = FALSE, admin = FALSE)
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{team}}{The Seven Bridges Platform ID of a team
+you want to add to the volume or object of class Team containing
+team's ID.}
+
+\item{\code{permissions}}{List of permissions granted to the team being added.
+Permissions include listing the contents of a volume, importing files
+from the volume to the Platform, exporting files from the Platform to
+the volume, and admin privileges. \cr
+It can contain fields: 'read', 'copy', 'write' and 'admin' with
+logical fields - TRUE if certain permission is allowed to the team, or
+FALSE if it's not.
+Example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{  permissions = list(read = TRUE, copy = TRUE, write = FALSE,
+  admin = FALSE)
+}\if{html}{\out{</div>}}}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{Team}} object.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Add volume member
+ volume_object$add_member_team(
+                team = <team-id>,
+                permissions = list(read = TRUE, copy = FALSE)
+              )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-add_member_division"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-add_member_division}{}}}
+\subsection{Method \code{add_member_division()}}{
+Add a specific division as a member to a volume.
+Only enterprise users can add divisions to a volume.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$add_member_division(
+  division,
+  permissions = list(read = TRUE, copy = FALSE, write = FALSE, admin = FALSE)
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{division}}{The Seven Bridges Platform ID of a division
+you want to add to the volume or object of class Division containing
+division's ID.}
+
+\item{\code{permissions}}{List of permissions granted to the division being
+added. Permissions include listing the contents of a volume, importing
+files from the volume to the Platform, exporting files from the
+Platform to the volume, and admin privileges. \cr
+It can contain fields: 'read', 'copy', 'write' and 'admin' with
+logical fields - TRUE if certain permission is allowed to the division,
+or FALSE if it's not.
+Example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{  permissions = list(read = TRUE, copy = TRUE, write = FALSE,
+  admin = FALSE)
+}\if{html}{\out{</div>}}}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{Division}} object.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Add volume member
+ volume_object$add_member_division(
+                division = <division-id>,
                 permissions = list(read = TRUE, copy = FALSE)
               )
 }
