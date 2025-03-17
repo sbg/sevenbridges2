@@ -610,12 +610,14 @@ Volume <- R6::R6Class(
         class_name = "Member",
         field_name = "username"
       )
+      # nocov start
       res <- self$private$add_member_general(username,
         permissions,
         type = "USER"
       )
 
       return(asMember(res, auth = self$auth))
+      # nocov end
     },
 
     # Add team to a volume (Enterprise users) --------------------------------
@@ -669,9 +671,11 @@ Volume <- R6::R6Class(
         class_name = "Team",
         field_name = "id"
       )
+      # nocov start
       res <- self$private$add_member_general(team, permissions, type = "TEAM")
 
       return(asMember(res, auth = self$auth))
+      # nocov end
     },
     # Add division to a volume (Enterprise users) -----------------------
     #' @description Add a specific division as a member to a volume.
@@ -724,20 +728,23 @@ Volume <- R6::R6Class(
         class_name = "Division",
         field_name = "id"
       )
+      # nocov start
       res <- self$private$add_member_general(division,
         permissions,
         type = "DIVISION"
       )
 
       return(asMember(res, auth = self$auth))
+      # nocov end
     },
     # Remove volume members ---------------------------------------------------
     #' @description Remove member from a volume.
     #'  This function removes members from the specified volume.
     #'
-    #' @param user The Seven Bridges Platform username of the person
-    #'  you want to remove from the volume or object of class Member containing
-    #'  user's username.
+    #' @param member The Seven Bridges Platform username of the person
+    #'  you want to remove from the volume, or team ID or division ID
+    #'  (for Enterprise users only) or object of class Member containing
+    #'  member's ID.
     #' @importFrom glue glue glue_col
     #'
     #' @examples
@@ -751,13 +758,13 @@ Volume <- R6::R6Class(
     #'                    )
     #'
     #'  # Remove volume member
-    #'  volume_object$remove_member(user = user)
+    #'  volume_object$remove_member(member = member)
     #' }
     #'
-    remove_member = function(user) {
-      username <- check_and_transform_id(user,
+    remove_member = function(member) {
+      username <- check_and_transform_id(member,
         class_name = "Member",
-        field_name = "username"
+        field_name = "id"
       )
       # nocov start
       path <- glue::glue(self$URL[["member_username"]])
@@ -823,9 +830,10 @@ Volume <- R6::R6Class(
     #'  This function modifies the permissions for a member of a specific
     #'  volume. Note that this does not overwrite all previously set permissions
     #'  for the member.
-    #' @param user The Seven Bridges Platform username of the person
-    #'  you want to modify permissions for or object of class Member containing
-    #'  user's username.
+    #' @param member The Seven Bridges Platform username of the person
+    #'  you want to modify permissions for or team ID or division ID
+    #'  (for Enterprise users only) or object of class Member containing
+    #'  member's ID.
     #' @param permissions List of specific (or all) permissions you want to
     #'  update for the member of the volume.
     #'  Permissions include listing the contents of a volume, importing files
@@ -855,22 +863,22 @@ Volume <- R6::R6Class(
     #'
     #'  # Modify volume member permissions
     #'  volume_object$modify_member_permissions(
-    #'                     user = user,
+    #'                     member = member,
     #'                     permission = list(read = TRUE, copy = TRUE)
     #'                   )
     #' }
     #'
     #' @return \code{\link{Permission}} object.
-    modify_member_permissions = function(user,
+    modify_member_permissions = function(member,
                                          permissions = list(
                                            read = TRUE,
                                            copy = FALSE,
                                            write = FALSE,
                                            admin = FALSE
                                          )) {
-      username <- check_and_transform_id(user,
+      username <- check_and_transform_id(member,
         class_name = "Member",
-        field_name = "username"
+        field_name = "id"
       )
       checkmate::assert_list(permissions,
         null.ok = FALSE, max.len = 4,
@@ -1010,8 +1018,12 @@ Volume <- R6::R6Class(
     } # nocov end
   ),
   private = list(
-    # Private method to add members to a volume (individual members, teams or
-    # divisions)
+    # Private general method to add members to a volume ----------------------
+    # This is a utility function used in public methods add_member,
+    # add_member_team and add_member_division that allow users of different
+    # roles (regular and Enterprise) to add members to the specified volume.
+    # Users can add regular users, teams or divisions which can be specified
+    # with 'type' parameter (allowed values are USER, TEAM or DIVISION).
     add_member_general = function(member,
                                   permissions = list(
                                     read = TRUE,
@@ -1020,6 +1032,7 @@ Volume <- R6::R6Class(
                                     admin = FALSE
                                   ),
                                   type = "USER") {
+      checkmate::assert_string(member, null.ok = FALSE)
       checkmate::assert_list(permissions,
         null.ok = FALSE, len = 4,
         types = "logical"
@@ -1030,7 +1043,7 @@ Volume <- R6::R6Class(
       )
       checkmate::assert_subset(type,
         empty.ok = FALSE,
-        choices = c("MEMBER", "TEAM", "DIVISION")
+        choices = c("USER", "TEAM", "DIVISION")
       )
       # nocov start
       path <- glue::glue(self$URL[["members"]])

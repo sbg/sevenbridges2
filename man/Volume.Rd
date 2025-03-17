@@ -250,7 +250,7 @@ volume_object <- Volume$new(
                    )
 
  # Remove volume member
- volume_object$remove_member(user = user)
+ volume_object$remove_member(member = member)
 }
 
 
@@ -287,7 +287,7 @@ volume_object <- Volume$new(
 
  # Modify volume member permissions
  volume_object$modify_member_permissions(
-                    user = user,
+                    member = member,
                     permission = list(read = TRUE, copy = TRUE)
                   )
 }
@@ -1030,15 +1030,16 @@ volume_object <- Volume$new(
 Remove member from a volume.
 This function removes members from the specified volume.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Volume$remove_member(user)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Volume$remove_member(member)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{user}}{The Seven Bridges Platform username of the person
-you want to remove from the volume or object of class Member containing
-user's username.}
+\item{\code{member}}{The Seven Bridges Platform username of the person
+you want to remove from the volume, or team ID or division ID
+(for Enterprise users only) or object of class Member containing
+member's ID.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1054,7 +1055,7 @@ volume_object <- Volume$new(
                    )
 
  # Remove volume member
- volume_object$remove_member(user = user)
+ volume_object$remove_member(member = member)
 }
 
 }
@@ -1119,7 +1120,7 @@ volume. Note that this does not overwrite all previously set permissions
 for the member.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$modify_member_permissions(
-  user,
+  member,
   permissions = list(read = TRUE, copy = FALSE, write = FALSE, admin = FALSE)
 )}\if{html}{\out{</div>}}
 }
@@ -1127,9 +1128,10 @@ for the member.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{user}}{The Seven Bridges Platform username of the person
-you want to modify permissions for or object of class Member containing
-user's username.}
+\item{\code{member}}{The Seven Bridges Platform username of the person
+you want to modify permissions for or team ID or division ID
+(for Enterprise users only) or object of class Member containing
+member's ID.}
 
 \item{\code{permissions}}{List of specific (or all) permissions you want to
 update for the member of the volume.
@@ -1163,7 +1165,7 @@ volume_object <- Volume$new(
 
  # Modify volume member permissions
  volume_object$modify_member_permissions(
-                    user = user,
+                    member = member,
                     permission = list(read = TRUE, copy = TRUE)
                   )
 }
