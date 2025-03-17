@@ -103,8 +103,7 @@ Division <- R6::R6Class(
 
     # List all teams in a division --------------------------------------------
     #' @description This call retrieves a list of all teams in a division that
-    #'  you are a member of. Each team's ID, name as well as your role in the
-    #'  team will be returned.
+    #'  you are a member of. Each team's ID and name will be returned.
     #'
     #' @param list_all Boolean. Set this field to `TRUE` if you want to list
     #'  all teams within the division (regardless of whether you are a member
