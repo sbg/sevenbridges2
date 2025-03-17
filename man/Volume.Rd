@@ -900,7 +900,8 @@ volume_object <- Volume$new(
 \if{latex}{\out{\hypertarget{method-Volume-add_member_team}{}}}
 \subsection{Method \code{add_member_team()}}{
 Add a specific team as a member to a volume.
-Only enterprise users can add teams to a volume.
+Only Enterprise users that are part of some division can add teams
+to a volume created within that division.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$add_member_team(
   team,
@@ -913,7 +914,8 @@ Only enterprise users can add teams to a volume.
 \describe{
 \item{\code{team}}{The Seven Bridges Platform ID of a team
 you want to add to the volume or object of class Team containing
-team's ID.}
+team's ID. Team must be created within a division where the volume is
+created too.}
 
 \item{\code{permissions}}{List of permissions granted to the team being added.
 Permissions include listing the contents of a volume, importing files
@@ -931,7 +933,7 @@ Example:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\code{\link{Team}} object.
+\code{\link{Member}} object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -962,7 +964,9 @@ volume_object <- Volume$new(
 \if{latex}{\out{\hypertarget{method-Volume-add_member_division}{}}}
 \subsection{Method \code{add_member_division()}}{
 Add a specific division as a member to a volume.
-Only enterprise users can add divisions to a volume.
+Only Enterprise users (with Enterprise accounts) can add divisions to a
+volume that is created with that Enterprise account (not within other
+divisions).
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$add_member_division(
   division,
@@ -993,7 +997,7 @@ Example:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\code{\link{Division}} object.
+\code{\link{Member}} object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}

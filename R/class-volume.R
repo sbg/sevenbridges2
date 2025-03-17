@@ -620,11 +620,13 @@ Volume <- R6::R6Class(
 
     # Add team to a volume (Enterprise users) --------------------------------
     #' @description Add a specific team as a member to a volume.
-    #'  Only enterprise users can add teams to a volume.
+    #'  Only Enterprise users that are part of some division can add teams
+    #'  to a volume created within that division.
     #'
     #' @param team The Seven Bridges Platform ID of a team
     #'  you want to add to the volume or object of class Team containing
-    #'  team's ID.
+    #'  team's ID. Team must be created within a division where the volume is
+    #'  created too.
     #' @param permissions List of permissions granted to the team being added.
     #'  Permissions include listing the contents of a volume, importing files
     #'  from the volume to the Platform, exporting files from the Platform to
@@ -655,7 +657,7 @@ Volume <- R6::R6Class(
     #'               )
     #' }
     #'
-    #' @return \code{\link{Team}} object.
+    #' @return \code{\link{Member}} object.
     add_member_team = function(team,
                                permissions = list(
                                  read = TRUE,
@@ -673,7 +675,9 @@ Volume <- R6::R6Class(
     },
     # Add division to a volume (Enterprise users) -----------------------
     #' @description Add a specific division as a member to a volume.
-    #'  Only enterprise users can add divisions to a volume.
+    #'  Only Enterprise users (with Enterprise accounts) can add divisions to a
+    #'  volume that is created with that Enterprise account (not within other
+    #'  divisions).
     #'
     #' @param division The Seven Bridges Platform ID of a division
     #'  you want to add to the volume or object of class Division containing
@@ -708,7 +712,7 @@ Volume <- R6::R6Class(
     #'               )
     #' }
     #'
-    #' @return \code{\link{Division}} object.
+    #' @return \code{\link{Member}} object.
     add_member_division = function(division,
                                    permissions = list(
                                      read = TRUE,
@@ -720,7 +724,7 @@ Volume <- R6::R6Class(
         class_name = "Division",
         field_name = "id"
       )
-      res <- self$private$add_member_general(team,
+      res <- self$private$add_member_general(division,
         permissions,
         type = "DIVISION"
       )
@@ -1032,7 +1036,7 @@ Volume <- R6::R6Class(
       path <- glue::glue(self$URL[["members"]])
 
       body <- list(
-        username = username,
+        username = member,
         permissions = permissions,
         type = type
       )
