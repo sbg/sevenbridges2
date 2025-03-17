@@ -268,7 +268,7 @@ volume_object <- Volume$new(
                    )
 
  # Get volume member
- volume_object$get_member(user = user)
+ volume_object$get_member(member = member)
 }
 
 
@@ -1071,15 +1071,16 @@ volume_object <- Volume$new(
 Get member's details.
 This function returns member's information.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Volume$get_member(user, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Volume$get_member(member, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{user}}{The Seven Bridges Platform username of the person
-you want to get information about or object of class Member containing
-user's username.}
+\item{\code{member}}{The Seven Bridges Platform username of the person
+you want to get information about, or team ID or division ID
+(for Enterprise users only) or object of class Member containing
+member's ID.}
 
 \item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
@@ -1101,7 +1102,7 @@ volume_object <- Volume$new(
                    )
 
  # Get volume member
- volume_object$get_member(user = user)
+ volume_object$get_member(member = member)
 }
 
 }

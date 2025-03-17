@@ -783,9 +783,10 @@ Volume <- R6::R6Class(
     #' @description Get member's details.
     #'  This function returns member's information.
     #'
-    #' @param user The Seven Bridges Platform username of the person
-    #'  you want to get information about or object of class Member containing
-    #'  user's username.
+    #' @param member The Seven Bridges Platform username of the person
+    #'  you want to get information about, or team ID or division ID
+    #'  (for Enterprise users only) or object of class Member containing
+    #'  member's ID.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
@@ -802,14 +803,14 @@ Volume <- R6::R6Class(
     #'                    )
     #'
     #'  # Get volume member
-    #'  volume_object$get_member(user = user)
+    #'  volume_object$get_member(member = member)
     #' }
     #'
     #' @return \code{\link{Member}} object.
-    get_member = function(user, ...) {
-      username <- check_and_transform_id(user,
+    get_member = function(member, ...) {
+      username <- check_and_transform_id(member,
         class_name = "Member",
-        field_name = "username"
+        field_name = "id"
       )
       # nocov start
       path <- glue::glue(self$URL[["member_username"]])

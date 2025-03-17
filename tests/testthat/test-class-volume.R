@@ -206,23 +206,23 @@ test_that("Volume remove_member method throws error when expected", {
   )
 })
 
-test_that("Volume get_member method throws error when expected", {
-  # Pass invalid user param
+test_that("Volume get_member() method throws error when expected", {
+  # Pass invalid 'member' param
   testthat::expect_error(
     setup_s3_volume_obj$get_member(
-      user = setup_file_obj
+      member = setup_file_obj
     ),
-    regexp = "Assertion on 'user' failed: Must inherit from class 'Member', but has classes 'File','Item','R6'.", # nolint
+    regexp = "Assertion on 'member' failed: Must inherit from class 'Member', but has classes 'File','Item','R6'.", # nolint
     fixed = TRUE
   )
 
-  testthat::expect_error(setup_s3_volume_obj$get_member(user = 1234),
-    regexp = "Assertion on 'user' failed: Must be of type 'character', not 'double'.", # nolint
+  testthat::expect_error(setup_s3_volume_obj$get_member(member = 1234),
+    regexp = "Assertion on 'member' failed: Must be of type 'character', not 'double'.", # nolint
     fixed = TRUE
   )
 })
 
-test_that("Volume modify_member_permissions method throws error when expected", { # nolint
+test_that("Volume modify_member_permissions() method throws error when expected", { # nolint
   # Pass invalid member param
   testthat::expect_error(
     setup_s3_volume_obj$modify_member_permissions(
