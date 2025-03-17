@@ -10,8 +10,9 @@ test_that("Volume initialization works", {
       "URL", "id", "name", "service", "access_mode", "active", "created_on",
       "modified_on", "get_file", "list_contents",
       "delete", "reactivate", "deactivate", "update",
-      "list_members", "get_member", "add_member", "remove_member",
-      "modify_member_permissions", "list_imports", "reload"
+      "list_members", "get_member", "add_member", "add_member_team",
+      "add_member_division", "remove_member", "modify_member_permissions",
+      "list_imports", "reload"
     )
   )
 })

@@ -1025,6 +1025,8 @@ Volume <- R6::R6Class(
     # roles (regular and Enterprise) to add members to the specified volume.
     # Users can add regular users, teams or divisions which can be specified
     # with 'type' parameter (allowed values are USER, TEAM or DIVISION).
+    #' @importFrom checkmate assert_string assert_list assert_subset
+    #' @importFrom glue glue
     add_member_general = function(member,
                                   permissions = list(
                                     read = TRUE,
