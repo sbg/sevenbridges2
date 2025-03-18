@@ -13,7 +13,7 @@ test_that("Volume initialization works", {
       "list_members", "get_member", "add_member", "add_member_team",
       "add_member_division", "remove_member", "modify_member_permissions",
       "list_imports", "reload"
-    )
+    ), private = c("add_member_general")
   )
 })
 

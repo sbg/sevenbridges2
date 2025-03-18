@@ -671,13 +671,13 @@ object or team/division string ID.
 
 ### Adding new members
 
-The function for adding new members to the volume can accept a `Member` object 
-(for example used in a project) or its username. 
+The function for adding new members to the volume allows a `Member` object 
+(for example used in a project) or its username as input. 
 
 ```{r}
 # Add member via username
 aws_iam_user_volume$add_member(
-  member = "<member-username>",
+  user = "<member-username>",
   permissions = list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)
 )
 
@@ -705,7 +705,7 @@ to a volume created in the same division:
 ```{r}
 # Add team via team ID
 aws_iam_user_volume$add_member_team(
-  member = "<team-id>",
+  team = "<team-id>",
   permissions = list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)
 )
 
@@ -730,7 +730,7 @@ default division:
 ```{r}
 # Add division via division ID
 aws_iam_user_volume$add_member_division(
-  member = "<division-id>",
+  division = "<division-id>",
   permissions = list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)
 )
 

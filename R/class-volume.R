@@ -1034,7 +1034,7 @@ Volume <- R6::R6Class(
                                     write = FALSE,
                                     admin = FALSE
                                   ),
-                                  type = "USER") {
+                                  type) {
       checkmate::assert_string(member, null.ok = FALSE)
       checkmate::assert_list(permissions,
         null.ok = FALSE, len = 4,
