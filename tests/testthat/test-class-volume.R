@@ -428,6 +428,18 @@ test_that("Volume add_member_general method for any type throws error when expec
       permissions = list(
         read = TRUE, copy = TRUE, admin = FALSE, write = FALSE
       ),
+      type = NULL
+    ),
+    regexp = "Assertion on 'type' failed: Must be a subset of {'USER','TEAM','DIVISION'}, not empty.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_s3_volume_obj$private$add_member_general(
+      member = "test-username",
+      permissions = list(
+        read = TRUE, copy = TRUE, admin = FALSE, write = FALSE
+      ),
       type = "MEMBER"
     ),
     regexp = "Assertion on 'type' failed: Must be a subset of {'USER','TEAM','DIVISION'}, but has additional elements {'MEMBER'}.", # nolint
