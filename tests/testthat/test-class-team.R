@@ -126,7 +126,7 @@ test_that("Team rename method throws errors when expected", {
     fixed = TRUE
   )
 
-  # 2. Pass invalid user parameter
+  # 2. Pass invalid name parameter
   testthat::expect_error(
     setup_team_obj$rename(
       name = 1234
