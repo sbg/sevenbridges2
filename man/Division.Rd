@@ -204,8 +204,7 @@ like 'fields', etc.
 \if{latex}{\out{\hypertarget{method-Division-list_teams}{}}}
 \subsection{Method \code{list_teams()}}{
 This call retrieves a list of all teams in a division that
-you are a member of. Each team's ID, name as well as your role in the
-team will be returned.
+you are a member of. Each team's ID and name will be returned.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Division$list_teams(list_all = FALSE, ...)}\if{html}{\out{</div>}}
 }

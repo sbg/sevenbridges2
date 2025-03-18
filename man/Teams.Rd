@@ -90,8 +90,7 @@ Create new Teams resource object.
 \if{latex}{\out{\hypertarget{method-Teams-query}{}}}
 \subsection{Method \code{query()}}{
 This call retrieves a list of all teams in a division that
-you are a member of. Each team's ID, name as well as your role in the
-team will be returned.
+you are a member of. Each team's ID and name will be returned.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Teams$query(division, list_all = FALSE, ...)}\if{html}{\out{</div>}}
 }
