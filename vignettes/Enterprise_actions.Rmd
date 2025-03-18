@@ -218,3 +218,89 @@ print(new_team)
 # Delete a team
 a$teams$delete(team = "my-new-team-id")
 ```
+
+
+## Team object methods
+
+When you retrieve a single Team, you can use the following methods to manage
+it:
+
+* list_members()
+* add_member()
+* remove_member()
+* rename()
+* delete()
+
+Your ability to perform these actions depends on your `role` within the
+platform division to which the team belongs. Some operations require `ADMIN`
+privileges, while users with the `MEMBER` or `EXTERNAL_COLLABORATOR` role may
+have limited access. If you attempt an action without sufficient privileges,
+you will receive an error message like:
+
+`Insufficient privileges to access the requested team/member information.`
+
+
+### Listing team members
+
+To retrieve the members of a specific team, use the `list_members()` method on
+a `Team` object:
+
+```{r}
+# Fetch a team by its ID
+my_team <- a$teams$get("my-team-id")
+
+# List the team's members
+my_team$list_members()
+```
+
+
+### Adding a member to a team
+
+You can add a new member to a team using the `add_member()` method on a `Team`
+object:
+
+```{r}
+# Add a team member by providing their username
+my_team$add_member(user = "division-name/username")
+```
+
+Alternatively, you can pass a `User` object to the `user` parameter instead of
+a username.
+
+
+### Removing a team member
+
+You can remove a team member using the `remove_member()` method on a `Team`
+object:
+
+```{r}
+# Remove a team member by providing their username
+my_team$remove_member(user = "division-name/username")
+```
+
+Providing a `User` object would work as well.
+
+
+### Renaming a team
+
+To rename an existing team, use the `rename()` method on a `Team` object and
+provide the new name via the `name` parameter:
+
+```{r}
+# Rename the team
+my_team$rename(name = "new-team-name")
+```
+
+### Deleting a team
+
+If you need to delete a team, use the `delete()` method on the corresponding
+`Team` object:
+
+```{r}
+# Delete the team
+my_team$delete()
+```
+
+After executing this command, you will see a confirmation message in the console:
+
+`The team <team-id> has been deleted.`
