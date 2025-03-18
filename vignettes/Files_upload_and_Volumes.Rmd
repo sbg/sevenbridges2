@@ -696,11 +696,12 @@ aws_iam_user_volume$add_member(
 
 #### Users with ADMIN privileges on divisions or enterprises
 
-Users with ADMIN privileges on divisions or enterprises can add whole teams and
-divisions as members of a specified volume. 
+Users with Enterprise account (not linked to any division) can add whole teams  
+and divisions as members of a specified volume. However, be aware that those  
+users (if MEMBER role) cannot list divisions or fetch single division/team.
 
-Users with ADMIN privileges on some Division can add teams from this division
-to a volume created in the same division:
+Users with ADMIN and MEMBER privileges on some Division can add teams from 
+this division to a volume created in the same division.
 
 ```{r}
 # Add team via team ID
