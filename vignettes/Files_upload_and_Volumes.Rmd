@@ -640,8 +640,12 @@ you can use `list_members()` and `get_member()` operations:
 aws_iam_user_volume$list_members() # limit = 2
 
 # Get single member
-aws_iam_user_volume$get_member(user = "<member-username>")
+aws_iam_user_volume$get_member(member = "<member-username>")
 ```
+
+This action works also with teams and divisions as volume members if ran by
+user with ADMIN account privileges. The input should be either such Member 
+object or team/division string ID.
 
 <div align="right"><a href="#top">top</a></div>
 
@@ -652,25 +656,30 @@ the `Member` class to the `remove_member()` function:
 
 ```{r}
 # Remove member
-aws_iam_user_volume$remove_member("<member-username>")
+aws_iam_user_volume$remove_member(member = "<member-username>")
 
 # Remove member using the Member object
 members <- aws_iam_user_volume$list_members()
 aws_iam_user_volume$remove_member(members$items[[3]])
 ```
 
+This action works also with teams and divisions as volume members if ran by
+user with ADMIN account privileges. The input should be either such Member 
+object or team/division string ID.
+
 <div align="right"><a href="#top">top</a></div>
 
 ### Adding new members
 
-The function for adding new members to the volume can accept a `Member` object 
-(for example used in a project) or its username. 
+The function for adding new members to the volume allows a `Member` object 
+(for example used in a project) or its username as input. 
 
 ```{r}
 # Add member via username
-aws_iam_user_volume$add_member(user = "<member-username>", permissions = list(
-  read = TRUE, copy = TRUE, write = FALSE, admin = FALSE
-))
+aws_iam_user_volume$add_member(
+  user = "<member-username>",
+  permissions = list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)
+)
 
 # Add member via Member object
 aws_iam_user_volume$add_member(
@@ -678,6 +687,61 @@ aws_iam_user_volume$add_member(
     username = "<member-username>",
     id = "<member-username>"
   ),
+  permissions = list(
+    read = TRUE, copy = TRUE, write = FALSE,
+    admin = FALSE
+  )
+)
+```
+
+#### Users with ADMIN privileges on divisions or enterprises
+
+Users with Enterprise account (not linked to any division) can add whole teams  
+and divisions as members of a specified volume. However, be aware that those  
+users (if MEMBER role) cannot list divisions or fetch single division/team.
+
+Users with ADMIN and MEMBER privileges on some Division can add teams from 
+this division to a volume created in the same division.
+
+```{r}
+# Add team via team ID
+aws_iam_user_volume$add_member_team(
+  team = "<team-id>",
+  permissions = list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)
+)
+
+# Add member via Team object
+# Query teams in division and fetch first team to add to a volume
+teams <- a$teams$query(division = "division-id")
+team <- teams$items[[1]]
+
+aws_iam_user_volume$add_member_team(
+  team = team,
+  permissions = list(
+    read = TRUE, copy = TRUE, write = FALSE,
+    admin = FALSE
+  )
+)
+```
+
+Enterprise users with ADMIN privileges that are part of default division can 
+add both divisions and teams from any division to a volume created in this 
+default division:
+
+```{r}
+# Add division via division ID
+aws_iam_user_volume$add_member_division(
+  division = "<division-id>",
+  permissions = list(read = TRUE, copy = TRUE, write = FALSE, admin = FALSE)
+)
+
+# Add member via Division object
+# Query divisions and fetch first division to add to a volume
+divisions <- a$divisions$query()
+division <- divisions$items[[1]]
+
+aws_iam_user_volume$add_member_division(
+  division = division,
   permissions = list(
     read = TRUE, copy = TRUE, write = FALSE,
     admin = FALSE
@@ -695,10 +759,14 @@ privileges they want to change:
 ```{r}
 # Modify member permissions
 aws_iam_user_volume$modify_member_permissions(
-  user = "<member-username>",
+  member = "<member-username>",
   permissions = list(write = TRUE)
 )
 ```
+
+This action works also with teams and divisions as volume members if ran by
+user with ADMIN account privileges. The input should be either such Member 
+object or team/division string ID.
 
 <div align="right"><a href="#top">top</a></div>
 

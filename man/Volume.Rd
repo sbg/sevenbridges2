@@ -195,6 +195,48 @@ volume_object <- Volume$new(
 
 
 ## ------------------------------------------------
+## Method `Volume$add_member_team`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Add volume member
+ volume_object$add_member_team(
+                team = <team-id>,
+                permissions = list(read = TRUE, copy = FALSE)
+              )
+}
+
+
+## ------------------------------------------------
+## Method `Volume$add_member_division`
+## ------------------------------------------------
+
+\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Add volume member
+ volume_object$add_member_division(
+                division = <division-id>,
+                permissions = list(read = TRUE, copy = FALSE)
+              )
+}
+
+
+## ------------------------------------------------
 ## Method `Volume$remove_member`
 ## ------------------------------------------------
 
@@ -208,7 +250,7 @@ volume_object <- Volume$new(
                    )
 
  # Remove volume member
- volume_object$remove_member(user = user)
+ volume_object$remove_member(member = member)
 }
 
 
@@ -226,7 +268,7 @@ volume_object <- Volume$new(
                    )
 
  # Get volume member
- volume_object$get_member(user = user)
+ volume_object$get_member(member = member)
 }
 
 
@@ -245,7 +287,7 @@ volume_object <- Volume$new(
 
  # Modify volume member permissions
  volume_object$modify_member_permissions(
-                    user = user,
+                    member = member,
                     permission = list(read = TRUE, copy = TRUE)
                   )
 }
@@ -340,6 +382,8 @@ set to \code{FALSE}.}
 \item \href{#method-Volume-get_file}{\code{Volume$get_file()}}
 \item \href{#method-Volume-list_members}{\code{Volume$list_members()}}
 \item \href{#method-Volume-add_member}{\code{Volume$add_member()}}
+\item \href{#method-Volume-add_member_team}{\code{Volume$add_member_team()}}
+\item \href{#method-Volume-add_member_division}{\code{Volume$add_member_division()}}
 \item \href{#method-Volume-remove_member}{\code{Volume$remove_member()}}
 \item \href{#method-Volume-get_member}{\code{Volume$get_member()}}
 \item \href{#method-Volume-modify_member_permissions}{\code{Volume$modify_member_permissions()}}
@@ -852,21 +896,150 @@ volume_object <- Volume$new(
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-add_member_team"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-add_member_team}{}}}
+\subsection{Method \code{add_member_team()}}{
+Add a specific team as a member to a volume.
+Only Enterprise users that are part of some division can add teams
+to a volume created within that division.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$add_member_team(
+  team,
+  permissions = list(read = TRUE, copy = FALSE, write = FALSE, admin = FALSE)
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{team}}{The Seven Bridges Platform ID of a team
+you want to add to the volume or object of class Team containing
+team's ID. Team must be created within a division where the volume is
+created too.}
+
+\item{\code{permissions}}{List of permissions granted to the team being added.
+Permissions include listing the contents of a volume, importing files
+from the volume to the Platform, exporting files from the Platform to
+the volume, and admin privileges. \cr
+It can contain fields: 'read', 'copy', 'write' and 'admin' with
+logical fields - TRUE if certain permission is allowed to the team, or
+FALSE if it's not.
+Example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{  permissions = list(read = TRUE, copy = TRUE, write = FALSE,
+  admin = FALSE)
+}\if{html}{\out{</div>}}}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{Member}} object.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Add volume member
+ volume_object$add_member_team(
+                team = <team-id>,
+                permissions = list(read = TRUE, copy = FALSE)
+              )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Volume-add_member_division"></a>}}
+\if{latex}{\out{\hypertarget{method-Volume-add_member_division}{}}}
+\subsection{Method \code{add_member_division()}}{
+Add a specific division as a member to a volume.
+Only Enterprise users (with Enterprise accounts) can add divisions to a
+volume that is created with that Enterprise account (not within other
+divisions).
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Volume$add_member_division(
+  division,
+  permissions = list(read = TRUE, copy = FALSE, write = FALSE, admin = FALSE)
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{division}}{The Seven Bridges Platform ID of a division
+you want to add to the volume or object of class Division containing
+division's ID.}
+
+\item{\code{permissions}}{List of permissions granted to the division being
+added. Permissions include listing the contents of a volume, importing
+files from the volume to the Platform, exporting files from the
+Platform to the volume, and admin privileges. \cr
+It can contain fields: 'read', 'copy', 'write' and 'admin' with
+logical fields - TRUE if certain permission is allowed to the division,
+or FALSE if it's not.
+Example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{  permissions = list(read = TRUE, copy = TRUE, write = FALSE,
+  admin = FALSE)
+}\if{html}{\out{</div>}}}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{Member}} object.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# x is API response when volume is requested
+volume_object <- Volume$new(
+                    res = x,
+                    href = x$href,
+                    auth = auth,
+                    response = attr(x, "response")
+                   )
+
+ # Add volume member
+ volume_object$add_member_division(
+                division = <division-id>,
+                permissions = list(read = TRUE, copy = FALSE)
+              )
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Volume-remove_member"></a>}}
 \if{latex}{\out{\hypertarget{method-Volume-remove_member}{}}}
 \subsection{Method \code{remove_member()}}{
 Remove member from a volume.
 This function removes members from the specified volume.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Volume$remove_member(user)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Volume$remove_member(member)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{user}}{The Seven Bridges Platform username of the person
-you want to remove from the volume or object of class Member containing
-user's username.}
+\item{\code{member}}{The Seven Bridges Platform username of the person
+you want to remove from the volume, or team ID or division ID
+(for Enterprise users only) or object of class Member containing
+member's ID.}
 }
 \if{html}{\out{</div>}}
 }
@@ -882,7 +1055,7 @@ volume_object <- Volume$new(
                    )
 
  # Remove volume member
- volume_object$remove_member(user = user)
+ volume_object$remove_member(member = member)
 }
 
 }
@@ -898,15 +1071,16 @@ volume_object <- Volume$new(
 Get member's details.
 This function returns member's information.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Volume$get_member(user, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Volume$get_member(member, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{user}}{The Seven Bridges Platform username of the person
-you want to get information about or object of class Member containing
-user's username.}
+\item{\code{member}}{The Seven Bridges Platform username of the person
+you want to get information about, or team ID or division ID
+(for Enterprise users only) or object of class Member containing
+member's ID.}
 
 \item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
@@ -928,7 +1102,7 @@ volume_object <- Volume$new(
                    )
 
  # Get volume member
- volume_object$get_member(user = user)
+ volume_object$get_member(member = member)
 }
 
 }
@@ -947,7 +1121,7 @@ volume. Note that this does not overwrite all previously set permissions
 for the member.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$modify_member_permissions(
-  user,
+  member,
   permissions = list(read = TRUE, copy = FALSE, write = FALSE, admin = FALSE)
 )}\if{html}{\out{</div>}}
 }
@@ -955,9 +1129,10 @@ for the member.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{user}}{The Seven Bridges Platform username of the person
-you want to modify permissions for or object of class Member containing
-user's username.}
+\item{\code{member}}{The Seven Bridges Platform username of the person
+you want to modify permissions for or team ID or division ID
+(for Enterprise users only) or object of class Member containing
+member's ID.}
 
 \item{\code{permissions}}{List of specific (or all) permissions you want to
 update for the member of the volume.
@@ -991,7 +1166,7 @@ volume_object <- Volume$new(
 
  # Modify volume member permissions
  volume_object$modify_member_permissions(
-                    user = user,
+                    member = member,
                     permission = list(read = TRUE, copy = TRUE)
                   )
 }

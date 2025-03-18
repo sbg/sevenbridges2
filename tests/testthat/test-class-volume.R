@@ -10,9 +10,10 @@ test_that("Volume initialization works", {
       "URL", "id", "name", "service", "access_mode", "active", "created_on",
       "modified_on", "get_file", "list_contents",
       "delete", "reactivate", "deactivate", "update",
-      "list_members", "get_member", "add_member", "remove_member",
-      "modify_member_permissions", "list_imports", "reload"
-    )
+      "list_members", "get_member", "add_member", "add_member_team",
+      "add_member_division", "remove_member", "modify_member_permissions",
+      "list_imports", "reload"
+    ), private = c("add_member_general")
   )
 })
 
@@ -169,7 +170,7 @@ test_that("Volume get_file method throws error when expected", {
   )
 })
 
-test_that("Volume add_member method throws error when expected", {
+test_that("Volume add_member method for USER type throws error when expected", {
   # Pass invalid user param
   testthat::expect_error(
     setup_s3_volume_obj$add_member(
@@ -186,126 +187,66 @@ test_that("Volume add_member method throws error when expected", {
       permissions = list(read = TRUE, copy = TRUE)
     ),
     regexp = "Assertion on 'user' failed: Must be of type 'character', not 'double'.", # nolint
-    fixed = TRUE
-  )
-
-  # Pass invalid permissions params
-  testthat::expect_error(
-    setup_s3_volume_obj$add_member(
-      user = "test-username",
-      permissions = 1234
-    ),
-    regexp = "Assertion on 'permissions' failed: Must be of type 'list', not 'double'.", # nolint
-    fixed = TRUE
-  )
-
-  testthat::expect_error(
-    setup_s3_volume_obj$add_member(
-      user = "test-username",
-      permissions = list()
-    ),
-    regexp = "Assertion on 'permissions' failed: Must have length 4, but has length 0.", # nolint
-    fixed = TRUE
-  )
-
-  testthat::expect_error(
-    setup_s3_volume_obj$add_member(
-      user = "test-username",
-      permissions = list(read = 123, copy = FALSE, write = 234, admin = FALSE)
-    ),
-    regexp = "Assertion on 'permissions' failed: May only contain the following types: {logical}, but element 1 has type 'numeric'.", # nolint
-    fixed = TRUE
-  )
-
-  testthat::expect_error(
-    setup_s3_volume_obj$add_member(
-      user = "test-username",
-      permissions = list(read = TRUE, copy = TRUE)
-    ),
-    regexp = "Assertion on 'permissions' failed: Must have length 4, but has length 2.", # nolint
-    fixed = TRUE
-  )
-
-  testthat::expect_error(
-    setup_s3_volume_obj$add_member(
-      user = "test-username",
-      permissions = list(
-        read = TRUE, copy = TRUE, admin = FALSE, write = FALSE,
-        run = TRUE
-      )
-    ),
-    regexp = "Assertion on 'permissions' failed: Must have length 4, but has length 5.", # nolint
-    fixed = TRUE
-  )
-
-  testthat::expect_error(
-    setup_s3_volume_obj$add_member(
-      user = "test-username",
-      permissions = list(
-        readme = TRUE, copyme = TRUE, admin = FALSE, write = FALSE
-      )
-    ),
-    regexp = "Assertion on 'names(permissions)' failed: Must be a subset of {'read','copy','write','admin'}, but has additional elements {'readme','copyme'}", # nolint
     fixed = TRUE
   )
 })
 
 test_that("Volume remove_member method throws error when expected", {
-  # Pass invalid user param
+  # Pass invalid member param
   testthat::expect_error(
     setup_s3_volume_obj$remove_member(
-      user = setup_file_obj
+      member = setup_file_obj
     ),
-    regexp = "Assertion on 'user' failed: Must inherit from class 'Member', but has classes 'File','Item','R6'.", # nolint
+    regexp = "Assertion on 'member' failed: Must inherit from class 'Member', but has classes 'File','Item','R6'.", # nolint
     fixed = TRUE
   )
 
-  testthat::expect_error(setup_s3_volume_obj$remove_member(user = 1234),
-    regexp = "Assertion on 'user' failed: Must be of type 'character', not 'double'.", # nolint
+  testthat::expect_error(setup_s3_volume_obj$remove_member(member = 1234),
+    regexp = "Assertion on 'member' failed: Must be of type 'character', not 'double'.", # nolint
     fixed = TRUE
   )
 })
 
-test_that("Volume get_member method throws error when expected", {
-  # Pass invalid user param
+test_that("Volume get_member() method throws error when expected", {
+  # Pass invalid 'member' param
   testthat::expect_error(
     setup_s3_volume_obj$get_member(
-      user = setup_file_obj
+      member = setup_file_obj
     ),
-    regexp = "Assertion on 'user' failed: Must inherit from class 'Member', but has classes 'File','Item','R6'.", # nolint
+    regexp = "Assertion on 'member' failed: Must inherit from class 'Member', but has classes 'File','Item','R6'.", # nolint
     fixed = TRUE
   )
 
-  testthat::expect_error(setup_s3_volume_obj$get_member(user = 1234),
-    regexp = "Assertion on 'user' failed: Must be of type 'character', not 'double'.", # nolint
+  testthat::expect_error(setup_s3_volume_obj$get_member(member = 1234),
+    regexp = "Assertion on 'member' failed: Must be of type 'character', not 'double'.", # nolint
     fixed = TRUE
   )
 })
 
-test_that("Volume modify_member_permissions method throws error when expected", { # nolint
-  # Pass invalid user param
+test_that("Volume modify_member_permissions() method throws error when expected", { # nolint
+  # Pass invalid member param
   testthat::expect_error(
     setup_s3_volume_obj$modify_member_permissions(
-      user = setup_file_obj,
+      member = setup_file_obj,
       permissions = list(read = TRUE, copy = TRUE)
     ),
-    regexp = "Assertion on 'user' failed: Must inherit from class 'Member', but has classes 'File','Item','R6'.", # nolint
+    regexp = "Assertion on 'member' failed: Must inherit from class 'Member', but has classes 'File','Item','R6'.", # nolint
     fixed = TRUE
   )
 
   testthat::expect_error(
     setup_s3_volume_obj$modify_member_permissions(
-      user = 1234,
+      member = 1234,
       permissions = list(read = TRUE, copy = TRUE)
     ),
-    regexp = "Assertion on 'user' failed: Must be of type 'character', not 'double'.", # nolint
+    regexp = "Assertion on 'member' failed: Must be of type 'character', not 'double'.", # nolint
     fixed = TRUE
   )
 
   # Pass invalid permissions params
   testthat::expect_error(
     setup_s3_volume_obj$modify_member_permissions(
-      user = "test-username",
+      member = "test-username",
       permissions = 1234
     ),
     regexp = "Assertion on 'permissions' failed: Must be of type 'list', not 'double'.", # nolint
@@ -314,7 +255,7 @@ test_that("Volume modify_member_permissions method throws error when expected", 
 
   testthat::expect_error(
     setup_s3_volume_obj$modify_member_permissions(
-      user = "test-username",
+      member = "test-username",
       permissions = list()
     ),
     regexp = "Assertion on 'names(permissions)' failed: Must be a subset of {'read','copy','write','admin'}, not empty.", # nolint
@@ -323,7 +264,7 @@ test_that("Volume modify_member_permissions method throws error when expected", 
 
   testthat::expect_error(
     setup_s3_volume_obj$modify_member_permissions(
-      user = "test-username",
+      member = "test-username",
       permissions = list(read = 123, copy = FALSE, admin = FALSE)
     ),
     regexp = "Assertion on 'permissions' failed: May only contain the following types: {logical}, but element 1 has type 'numeric'.", # nolint
@@ -332,7 +273,7 @@ test_that("Volume modify_member_permissions method throws error when expected", 
 
   testthat::expect_error(
     setup_s3_volume_obj$modify_member_permissions(
-      user = "test-username",
+      member = "test-username",
       permissions = list(
         read = TRUE, copy = TRUE, admin = FALSE, write = FALSE,
         run = TRUE
@@ -344,7 +285,7 @@ test_that("Volume modify_member_permissions method throws error when expected", 
 
   testthat::expect_error(
     setup_s3_volume_obj$modify_member_permissions(
-      user = "test-username",
+      member = "test-username",
       permissions = 1234
     ),
     regexp = "Assertion on 'permissions' failed: Must be of type 'list', not 'double'.", # nolint
@@ -353,10 +294,167 @@ test_that("Volume modify_member_permissions method throws error when expected", 
 
   testthat::expect_error(
     setup_s3_volume_obj$modify_member_permissions(
-      user = "test-username",
+      member = "test-username",
       permissions = list(readme = TRUE, copy = TRUE)
     ),
     regexp = "Assertion on 'names(permissions)' failed: Must be a subset of {'read','copy','write','admin'}, but has additional elements {'readme'}", # nolint
+    fixed = TRUE
+  )
+})
+
+test_that("Volume add_member_team method for TEAM type throws error when expected", { # nolint
+  # Pass invalid team param
+  testthat::expect_error(
+    setup_s3_volume_obj$add_member_team(
+      team = setup_file_obj,
+      permissions = list(read = TRUE, copy = TRUE)
+    ),
+    regexp = "Assertion on 'team' failed: Must inherit from class 'Team', but has classes 'File','Item','R6'.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_s3_volume_obj$add_member_team(
+      team = 1234,
+      permissions = list(read = TRUE, copy = TRUE)
+    ),
+    regexp = "Assertion on 'team' failed: Must be of type 'character', not 'double'.", # nolint
+    fixed = TRUE
+  )
+})
+
+test_that("Volume add_member_division method for DIVISION type throws error when expected", { # nolint
+  # Pass invalid division param
+  testthat::expect_error(
+    setup_s3_volume_obj$add_member_division(
+      division = setup_file_obj,
+      permissions = list(read = TRUE, copy = TRUE)
+    ),
+    regexp = "Assertion on 'division' failed: Must inherit from class 'Division', but has classes 'File','Item','R6'.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_s3_volume_obj$add_member_division(
+      division = 1234,
+      permissions = list(read = TRUE, copy = TRUE)
+    ),
+    regexp = "Assertion on 'division' failed: Must be of type 'character', not 'double'.", # nolint
+    fixed = TRUE
+  )
+})
+
+test_that("Volume add_member_general method for any type throws error when expected", { # nolint
+  # 1. Pass invalid 'member' param
+  testthat::expect_error(
+    setup_s3_volume_obj$private$add_member_general(
+      member = NULL
+    ),
+    regexp = "Assertion on 'member' failed: Must be of type 'string', not 'NULL'.", # nolint
+    fixed = TRUE
+  )
+  testthat::expect_error(
+    setup_s3_volume_obj$private$add_member_general(
+      member = 123
+    ),
+    regexp = "Assertion on 'member' failed: Must be of type 'string', not 'double'.", # nolint
+    fixed = TRUE
+  )
+
+  # 2. Pass invalid 'permissions' param
+  testthat::expect_error(
+    setup_s3_volume_obj$private$add_member_general(
+      member = "test-username",
+      permissions = 1234
+    ),
+    regexp = "Assertion on 'permissions' failed: Must be of type 'list', not 'double'.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_s3_volume_obj$private$add_member_general(
+      member = "test-username",
+      permissions = list()
+    ),
+    regexp = "Assertion on 'permissions' failed: Must have length 4, but has length 0.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_s3_volume_obj$private$add_member_general(
+      member = "test-username",
+      permissions = list(read = 123, copy = FALSE, write = 234, admin = FALSE)
+    ),
+    regexp = "Assertion on 'permissions' failed: May only contain the following types: {logical}, but element 1 has type 'numeric'.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_s3_volume_obj$private$add_member_general(
+      member = "test-username",
+      permissions = list(read = TRUE, copy = TRUE)
+    ),
+    regexp = "Assertion on 'permissions' failed: Must have length 4, but has length 2.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_s3_volume_obj$private$add_member_general(
+      member = "test-username",
+      permissions = list(
+        read = TRUE, copy = TRUE, admin = FALSE, write = FALSE,
+        run = TRUE
+      )
+    ),
+    regexp = "Assertion on 'permissions' failed: Must have length 4, but has length 5.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_s3_volume_obj$private$add_member_general(
+      member = "test-username",
+      permissions = list(
+        readme = TRUE, copyme = TRUE, admin = FALSE, write = FALSE
+      )
+    ),
+    regexp = "Assertion on 'names(permissions)' failed: Must be a subset of {'read','copy','write','admin'}, but has additional elements {'readme','copyme'}", # nolint
+    fixed = TRUE
+  )
+
+  # 3. Test invalid 'type' param
+  testthat::expect_error(
+    setup_s3_volume_obj$private$add_member_general(
+      member = "test-username",
+      permissions = list(
+        read = TRUE, copy = TRUE, admin = FALSE, write = FALSE
+      ),
+      type = NULL
+    ),
+    regexp = "Assertion on 'type' failed: Must be a subset of {'USER','TEAM','DIVISION'}, not empty.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_s3_volume_obj$private$add_member_general(
+      member = "test-username",
+      permissions = list(
+        read = TRUE, copy = TRUE, admin = FALSE, write = FALSE
+      ),
+      type = "MEMBER"
+    ),
+    regexp = "Assertion on 'type' failed: Must be a subset of {'USER','TEAM','DIVISION'}, but has additional elements {'MEMBER'}.", # nolint
+    fixed = TRUE
+  )
+
+  testthat::expect_error(
+    setup_s3_volume_obj$private$add_member_general(
+      member = "test-username",
+      permissions = list(
+        read = TRUE, copy = TRUE, admin = FALSE, write = FALSE
+      ),
+      type = 123
+    ),
+    regexp = "Assertion on 'type' failed: Must be a subset of {'USER','TEAM','DIVISION'}, but has different type.", # nolint
     fixed = TRUE
   )
 })
