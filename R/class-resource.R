@@ -38,10 +38,10 @@ Resource <- R6::R6Class(
       }
       path <- args$path
 
-      # Remove path, they are not needed for query parameters
+      # Remove path, it is not needed for query parameters
       args[["path"]] <- NULL
 
-      # Remove advance_access, they are not needed for query parameters
+      # Remove advance_access, it is not needed for query parameters
       adv_access <- extract_common_query_params(args, "advance_access")
       limit <- extract_common_query_params(args, "limit")
       offset <- extract_common_query_params(args, "offset")
@@ -63,7 +63,7 @@ Resource <- R6::R6Class(
     },
 
     # Generic get function ----------------------------------------------
-    #' @description Generic get implementation that fetches single resource
+    #' @description Generic get implementation that fetches a single resource
     #'  from the server.
     #'
     #' @param cls Resource class object.
@@ -107,7 +107,7 @@ Resource <- R6::R6Class(
     },
 
     # Generic delete function ------------------------------------------------
-    #' @description Generic implementation that deletes the resource
+    #' @description Generic implementation to delete a resource
     #'  from the server.
     #'
     #' @param cls Resource class object.
@@ -118,7 +118,7 @@ Resource <- R6::R6Class(
     #' @importFrom glue glue
     delete = function(id, ...) {
       if (is.null(self[["URL"]][["delete"]])) {
-        rlang::abort("Resource can not be deleted!")
+        rlang::abort("Resource cannot be deleted!")
       }
       if (is_missing(id)) {
         rlang::abort("Please provide id parameter!")

@@ -118,7 +118,7 @@ R6 Class representing a central resource for managing divisions.
 \if{html}{\out{<a id="method-Division-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Division-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new Division object
+Create a new Division object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Division$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
@@ -264,7 +264,7 @@ administrators within a division.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{role}}{Filter members by role. Supported roles are \code{ADMIN},
-. \code{MEMBER}, and \code{EXTERNAL_COLLABORATOR}. If \code{NULL} (default), members of
+\code{MEMBER}, and \code{EXTERNAL_COLLABORATOR}. If \code{NULL} (default), members of
 all roles will be retrieved.}
 
 \item{\code{limit}}{The maximum number of collection items to return
@@ -310,7 +310,7 @@ A \code{\link{Collection}} of \code{\link{User}} objects.
 \subsection{Method \code{remove_member()}}{
 Removes a specified user from a division. This action
 revokes the user's membership in the division but does not delete their
-Platform account. Note that only users with the \code{ADMIN} role for the
+Platform account. Note that only users with the \code{ADMIN} role in the
 division can perform this action.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Division$remove_member(user)}\if{html}{\out{</div>}}

@@ -134,7 +134,7 @@ like query parameters, 'fields', etc.}
 \if{html}{\out{<a id="method-Billing_groups-get"></a>}}
 \if{latex}{\out{\hypertarget{method-Billing_groups-get}{}}}
 \subsection{Method \code{get()}}{
-Retrieve a single billing group, specified by its id.
+Retrieve a single billing group, specified by its ID.
 To find the \code{billing_group}, use the call \code{Billing_groups$query()}
 to list all your billing groups. The information returned
 includes the billing group owner, the total balance, and the status of

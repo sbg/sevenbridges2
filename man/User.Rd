@@ -7,7 +7,7 @@
 User object containing user information.
 }
 \details{
-This is main object for Users.
+This is the main object for Users.
 }
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{User}

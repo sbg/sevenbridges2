@@ -21,7 +21,7 @@ volume_prefix_object <- VolumePrefix$new(
                     response = attr(x, "response")
                    )
 
- # Print volume prefix object
+ # Print the Volume Prefix object
  volume_prefix_object$print()
 }
 
@@ -117,7 +117,7 @@ Create a new VolumePrefix object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{res}}{Response containing VolumePrefix object info.}
+\item{\code{res}}{Response containing VolumePrefix object information.}
 
 \item{\code{...}}{Other response arguments.}
 }
@@ -144,7 +144,7 @@ volume_prefix_object <- VolumePrefix$new(
                     response = attr(x, "response")
                    )
 
- # Print volume prefix object
+ # Print the Volume Prefix object
  volume_prefix_object$print()
 }
 
@@ -158,7 +158,7 @@ volume_prefix_object <- VolumePrefix$new(
 \if{html}{\out{<a id="method-VolumePrefix-reload"></a>}}
 \if{latex}{\out{\hypertarget{method-VolumePrefix-reload}{}}}
 \subsection{Method \code{reload()}}{
-Reload VolumePrefix object information.
+Reload the VolumePrefix object information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{VolumePrefix$reload()}\if{html}{\out{</div>}}
 }
@@ -188,7 +188,7 @@ volume_prefix_object <- VolumePrefix$new(
 \if{html}{\out{<a id="method-VolumePrefix-list_contents"></a>}}
 \if{latex}{\out{\hypertarget{method-VolumePrefix-list_contents}{}}}
 \subsection{Method \code{list_contents()}}{
-List volume folder contents.
+List the contents of a volume folder.
 This call lists the contents of a specific volume folder.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{VolumePrefix$list_contents(
@@ -246,8 +246,8 @@ volume_prefix_object <- VolumePrefix$new(
 \if{html}{\out{<a id="method-VolumePrefix-import"></a>}}
 \if{latex}{\out{\hypertarget{method-VolumePrefix-import}{}}}
 \subsection{Method \code{import()}}{
-This call lets you queue a job to import this file or folder
-from a volume into a project on the Platform. \cr
+This call lets you queue a job to import this file or
+folder from a volume into a project on the Platform. \cr
 Essentially, you are importing an item from your cloud storage provider
 (Amazon Web Services, Google Cloud Storage, Azure or Ali Cloud) via the
 volume onto the Platform. \cr
@@ -287,8 +287,9 @@ the complete location (including the prefix) on the volume. \cr
 
 Segments are considered to be separated with forward slashes /.
 Allowed characters in file names are all alphanumeric and special
-characters except forward slash /, while folder names can contain
-alphanumeric and special characters _, - and ..}
+characters except forward slash (/), while folder names can contain
+alphanumeric and special characters underscores (_), hyphens (-), and
+dots (.).}
 
 \item{\code{overwrite}}{Set to \code{TRUE} if you want to overwrite the item if
 another one with the same name already exists at the destination.

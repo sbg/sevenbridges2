@@ -1284,7 +1284,7 @@ The required input should be a nested list of elements for each file you
 want to export containing specific fields: `source_file`, `destination_volume`, 
 `destination_location`, `overwrite` and 
 `properties` that accepts a list with fields: `sse_algorithm`, 
-`sse_aws_kms_key_id` and/or `aws_canned_acl`.
+`sse_aws_kms_key_Id` and/or `aws_canned_acl`.
 
 ```{r}
 ## First, get the project and files you want to export

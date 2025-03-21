@@ -348,7 +348,8 @@ R6 Class representing a central resource for managing projects.
 
 \item{\code{id}}{Project identifier. It consists of project owner's username or
 if you are using Enterprise, then the Division name and project's
-short name in form of \verb{<owner_username>/<project-short-name>} or
+short name in form of \cr
+\verb{<owner_username>/<project-short-name>} or \cr
 \verb{<division-name>/<project-short-name>}.}
 
 \item{\code{name}}{Project's name.}
@@ -388,7 +389,7 @@ and the default value is \code{24}.
 }
 }}
 
-\item{\code{root_folder}}{ID for of the project's root folder.}
+\item{\code{root_folder}}{ID of the project's root folder.}
 
 \item{\code{created_by}}{Username of the person who created the project.}
 
@@ -617,9 +618,9 @@ like 'limit', 'offset', 'fields', etc.}
 \if{html}{\out{<a id="method-Project-delete"></a>}}
 \if{latex}{\out{\hypertarget{method-Project-delete}{}}}
 \subsection{Method \code{delete()}}{
-Method that allows you to delete project from a platform.
-It can only be successfully made if you have admin status for the
-project. \cr
+Method that allows you to delete a project from the
+platform. It can only be successfully made if you have admin status for
+the project. \cr
 Please be careful when using this method and note that calling it will
 permanently delete the project from the platform.
 \subsection{Usage}{
@@ -730,8 +731,8 @@ registering for an account on the Seven Bridges Platform.}
 
 \item{\code{permissions}}{List of permissions that will be associated with the
 project's member. It can contain fields: \code{read}, \code{copy}, \code{write},
-\code{execute} and \code{admin} with logical fields - \code{TRUE} if certain permission
-is allowed to the user, or \code{FALSE} if it's not.
+\code{execute} and \code{admin} with logical fields - \code{TRUE} if certain
+permission is allowed to the user, or \code{FALSE} if it's not.
 Requests to add a project member must include the key permissions.
 However, if you do not include a value for some permission, it will be
 set to \code{FALSE} by default. The exception to this rule is the \code{read}
@@ -793,8 +794,8 @@ be successfully run by a user who has admin privileges in the project.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{user}}{The Seven Bridges Platform username of the person
-you want to remove from the project or object of class Member containing
-user's username.}
+you want to remove from the project or object of class Member
+containing user's username.}
 }
 \if{html}{\out{</div>}}
 }
@@ -889,8 +890,8 @@ Member containing user's username.}
 
 \item{\code{permissions}}{List of permissions that will be associated with the
 project's member. It can contain fields: \code{read}, \code{copy}, \code{write},
-\code{execute} and \code{admin} with logical fields - \code{TRUE} if certain permission
-is allowed to the user, or \code{FALSE} if it's not.
+\code{execute} and \code{admin} with logical fields - \code{TRUE} if certain
+permission is allowed to the user, or \code{FALSE} if it's not.
 Requests to add a project member must include the key permissions.
 However, if you do not include a value for some permission, it will be
 set to \code{FALSE} by default. The exception to this rule is the \code{read}
@@ -1066,7 +1067,7 @@ Get project's root folder object
 \if{html}{\out{<a id="method-Project-list_apps"></a>}}
 \if{latex}{\out{\hypertarget{method-Project-list_apps}{}}}
 \subsection{Method \code{list_apps()}}{
-This call lists all apps in project.
+This call lists all apps in the project.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Project$list_apps(
   query_terms = NULL,
@@ -1232,8 +1233,8 @@ Set the value of status to one of the following values:
 \item{\code{parent}}{Provide task ID or task object of the parent task to
 return all child tasks from that parent.
 A parent task is a task that specifies the criteria by which to
-batch its inputs into a series of further sub-tasks, called child tasks.
-See the documentation on
+batch its inputs into a series of further sub-tasks, called child
+tasks. See the documentation on
 \href{https://docs.sevenbridges.com/docs/about-batch-analyses}{batching tasks}
 for more details on how to run tasks in batches.}
 
@@ -1310,7 +1311,7 @@ like 'fields', etc.}
 \if{html}{\out{<a id="method-Project-list_imports"></a>}}
 \if{latex}{\out{\hypertarget{method-Project-list_imports}{}}}
 \subsection{Method \code{list_imports()}}{
-This call lists imports initiated by particular user
+This call lists imports initiated by a particular user
 into this destination project.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Project$list_imports(
@@ -1382,11 +1383,11 @@ like 'fields', etc.}
 \if{html}{\out{<a id="method-Project-create_task"></a>}}
 \if{latex}{\out{\hypertarget{method-Project-create_task}{}}}
 \subsection{Method \code{create_task()}}{
-This call creates a new task. You can create either a single
-task or a batch task by using the app's default batching, override
-batching, or disable batching completely. A parent task is a task that
-specifies criteria by which to batch its inputs into a series of further
-sub-tasks, called child tasks. the documentation on
+This call creates a new task. You can create either a
+single task or a batch task by using the app's default batching,
+override batching, or disable batching completely. A parent task is a
+task that specifies criteria by which to batch its inputs into a series
+of further sub-tasks, called child tasks. See the documentation on
 \href{https://docs.sevenbridges.com/docs/about-batch-analyses}{batching tasks}
 for more details on batching criteria.
 \subsection{Usage}{
@@ -1479,19 +1480,19 @@ output node locations within nodes_location.
 See below for more details.
 \itemize{
 \item \code{main_location} - Defines the output location for all
-output nodes in the task. Can be a string path within the project in
-which the task is created, for example
+output nodes in the task. Can be a string path within the project
+in which the task is created, for example \cr
 \verb{/Analysis/<task_id>_<task_name>/}
-or a path on an attached volume, such as
-\verb{volumes://volume_name/<project_id>/html}.
+or a path on an attached volume, \cr
+such as \verb{volumes://volume_name/<project_id>/html}.
 Parts of the path enclosed in angle brackets <> are tokens that are
 dynamically replaced with corresponding values during task
 execution.
 \item \code{main_location_alias}: The string location (path) in the
-project that will point to the actual location where the outputs are
-stored. Used if main_location is defined as a volume path (starting
-with volumes://), to provide an easy way of accessing output data
-directly from project files.
+project that will point to the actual location where the outputs
+are stored. Used if main_location is defined as a volume path
+(starting with volumes://), to provide an easy way of accessing
+output data directly from project files.
 \item \code{nodes_override}: Enables defining of output locations
 for output nodes individually through nodes_location (see below).
 Set to \code{TRUE} to be able to define individual locations per output
@@ -1516,9 +1517,9 @@ Example:
 )
 }\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{ In the example above, b64html is the ID of the output node for which
- you want to define the output location, while the parameters are
- defined as follows:
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ In the example above, b64html is the ID of the output node for
+ which you want to define the output location, while the parameters
+ are defined as follows:
 }\if{html}{\out{</div>}}
 
 \itemize{

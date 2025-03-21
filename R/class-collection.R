@@ -3,7 +3,7 @@
 #'
 #' @description
 #' R6 Class representing a resource for managing collections.
-#' Wrapper for Seven Bridges pageable resources.
+#' A wrapper for Seven Bridges pageable resources.
 #' Among the actual collection items it contains information regarding
 #' the total number of entries available on the server and
 #' resource API request URL (href).
@@ -101,7 +101,7 @@ Collection <- R6::R6Class(
     }, # nocov end
 
     # Get next page of results ------------------------------------------------
-    #' @description Return next page of results.
+    #' @description Returns the next page of results.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'advanced_access', 'fields', etc.
@@ -149,7 +149,7 @@ Collection <- R6::R6Class(
     }, # nocov end
 
     # Get previous page of results --------------------------------------------
-    #' @description Return previous page of results.
+    #' @description Returns  the previous page of results.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'advanced_access', 'fields', etc.

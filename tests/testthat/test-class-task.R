@@ -9,7 +9,7 @@ test_that("Task initialization works", {
     public = c(
       "output_location", "outputs", "inputs", "price", "warnings", "errors",
       "execution_status", "execution_settings", "batch_parent", "batch_input",
-      "batch_group", "batch_by", "batch", "use_interruptable_instances",
+      "batch_group", "batch_by", "batch", "use_interruptible_instances",
       "origin", "end_time", "start_time", "created_on", "executed_by",
       "created_by", "app", "project", "description", "status", "name", "id",
       "URL", "auth", "clone", "rerun", "delete", "list_batch_children",

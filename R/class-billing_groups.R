@@ -70,7 +70,7 @@ Billing_groups <- R6::R6Class(
     }, # nocov end
 
     # Get billing group -------------------------------------------------------
-    #' @description Retrieve a single billing group, specified by its id.
+    #' @description Retrieve a single billing group, specified by its ID.
     #'  To find the `billing_group`, use the call `Billing_groups$query()`
     #'  to list all your billing groups. The information returned
     #'  includes the billing group owner, the total balance, and the status of

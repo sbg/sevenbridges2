@@ -19,7 +19,7 @@ R6 Class representing a resource for managing files' uploads.
                     auth = auth
                    )
 
- # Print upload object information
+ # Print the upload object information
  upload_object$print(name = name)
 }
 
@@ -95,7 +95,7 @@ R6 Class representing a resource for managing files' uploads.
 
 \item{\code{upload_id}}{Upload ID received after upload initialization.}
 
-\item{\code{path}}{Relative or absolute path to the file on the local disc.}
+\item{\code{path}}{Relative or absolute path to the file on the local disk.}
 
 \item{\code{project}}{Project's identifier (character).}
 
@@ -194,7 +194,7 @@ Print method for Upload class.
                     auth = auth
                    )
 
- # Print upload object information
+ # Print the upload object information
  upload_object$print(name = name)
 }
 
@@ -208,7 +208,7 @@ Print method for Upload class.
 \if{html}{\out{<a id="method-Upload-init"></a>}}
 \if{latex}{\out{\hypertarget{method-Upload-init}{}}}
 \subsection{Method \code{init()}}{
-Initialize new multipart file upload.
+Initialize a new multipart file upload.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Upload$init()}\if{html}{\out{</div>}}
 }

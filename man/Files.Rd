@@ -296,7 +296,7 @@ specified project or directory within a project, but not the contents
 of the subdirectories. \cr
 To list the contents of a subdirectory, make a new call
 and specify the subdirectory ID as the \code{parent} parameter. \cr
-More information you can find in our
+For more details, see our
 \href{https://docs.sevenbridges.com/reference/list-files-primary-method}{API documentation}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Files$query(
@@ -464,7 +464,7 @@ Copy file/files to the specified project. This call allows
 you to copy files between projects. Unlike the call to copy a file
 between projects, this call lets you batch the copy operation and copy
 a list of files at a time. \cr
-More information you may find
+More information can be found here
 \href{https://docs.sevenbridges.com/reference/copy-files-between-projects}{here}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Files$copy(files, destination_project)}\if{html}{\out{</div>}}

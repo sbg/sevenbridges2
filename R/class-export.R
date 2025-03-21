@@ -27,15 +27,15 @@ Export <- R6::R6Class(
     #'    \item `FAILED`: the export has failed.
     #'  }
     state = NULL,
-    #' @field source List containing source file id that is being exported to
-    #'  the volume.
+    #' @field source List containing the source file ID that is being exported
+    #'  to the volume.
     source = NULL,
-    #' @field destination List containing destination volume id and location
-    #'  (file name) on the volume where the file is being exported.
+    #' @field destination List containing the destination volume ID and
+    #'  location (file name) on the volume where the file is being exported.
     destination = NULL,
-    #' @field overwrite Whether the exported file name was
-    #'  overwritten or not, if another one with the same name had already
-    #'  existed on the volume.
+    #' @field overwrite Indicates whether the exported file name was
+    #'  overwritten if another file with the same name already existed on the
+    #'  volume.
     overwrite = NULL,
     #' @field started_on Time when the export job started.
     started_on = NULL,
@@ -110,7 +110,7 @@ Export <- R6::R6Class(
       x <- x[elements_subset]
 
       x <- purrr::discard(x, .p = is.null)
-      # Remove it's empty (NA)
+      # Remove if it's empty (NA)
       x <- purrr::discard(x, .p = is.na)
 
       if (length(x) == 0) {
@@ -126,7 +126,7 @@ Export <- R6::R6Class(
     },
 
     # Reload Export object ----------------------------------------------------
-    #' @description Reload Export object information.
+    #' @description Refresh the Export object with updated information.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.

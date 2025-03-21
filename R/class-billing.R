@@ -6,7 +6,7 @@
 #' @importFrom R6 R6Class
 #'
 #' @details
-#' This is main object for Billing
+#' This is the main object for Billing
 # nolint start
 Billing <- R6::R6Class(
   # nolint end
@@ -27,7 +27,7 @@ Billing <- R6::R6Class(
     owner = NULL,
     #' @field name Billing group name.
     name = NULL,
-    #' @field type Billing group type
+    #' @field type Billing group type.
     type = NULL,
     #' @field pending Billing group approval status.
     pending = NULL,
@@ -56,7 +56,7 @@ Billing <- R6::R6Class(
 
     # nocov start
     # Print Billing object --------------------------------------------------
-    #' @description Print billing group information as a bullet list.
+    #' @description Prints billing group information as a bullet list.
     #'
     #' @importFrom purrr discard
     #' @importFrom glue glue
@@ -134,7 +134,8 @@ Billing <- R6::R6Class(
     },
 
     # Get analysis breakdown --------------------------------------------------
-    #' @description Method for getting a analysis breakdown for a billing group.
+    #' @description Method for getting an analysis breakdown for a billing
+    #'  group.
     #'
     #' @param offset The zero-based starting index in the entire collection
     #'  of the first item to return. The default value is `0`.

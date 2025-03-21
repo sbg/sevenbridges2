@@ -9,7 +9,7 @@ Member <- R6::R6Class(
   inherit = Item,
   portable = FALSE,
   public = list(
-    #' @field id Member's id.
+    #' @field id Member's ID.
     id = NULL,
     #' @field username Member's username.
     username = NULL,

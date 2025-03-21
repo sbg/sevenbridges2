@@ -85,7 +85,7 @@ a <- Auth$new(token = "<your_token>")
 ```
 
 The above will use the Seven Bridges Platform on AWS since neither `platform` 
-nor `url` were explicitly specified.
+nor `url` was explicitly specified.
 
 ***Note:*** `platform` and `url` should not be specified at the same time.
 
@@ -107,7 +107,7 @@ sevenbridges2:::sbg_set_env(
 )
 ```
 
-See if the environment variables are correctly set:
+You can check whether the environment variables are correctly set:
 
 ```{r}
 # Check environment variables
@@ -362,7 +362,7 @@ The `fields` parameter can be used in the following ways:
 1. No `fields` parameter specified: returns **all fields** for each 
 resource returned (TBD for Apps).
 
-2. The `fields` parameter can be set to a list of fields: for example, 
+2. The `fields` parameter can be set to a list of fields. For example, 
 to return a field's id, name and size for files in a project, you may issue 
 the call `p$list_files(fields = c("id" ,"name", "size"))`.
 
@@ -509,7 +509,7 @@ If something changes in the billing group, you can refresh your `Billing`
 object by reloading it with:
 
 ```{r}
-# Reload Billing objcet
+# Reload Billing object
 my_billing_group$reload()
 ```
 

@@ -158,7 +158,7 @@ test_that("Imports submit_import() throws error when needed", {
   )
   testthat::expect_error(
     do.call(setup_imports_obj$submit_import, proj_parent_provided),
-    regexp = "Either destination project or parent parameter must be proveded, not both.", # nolint
+    regexp = "Either destination project or parent parameter must be provided, not both.", # nolint
     fixed = TRUE
   )
   # 5. Test with invalid project parameter
@@ -385,7 +385,7 @@ test_that("Imports bulk_submit_import() throws error when needed", {
   )
   testthat::expect_error(
     setup_imports_obj$bulk_submit_import(items = list(proj_parent_provided)),
-    regexp = "Either destination project or parent parameter must be proveded in element 1, not both.", # nolint
+    regexp = "Either destination project or parent parameter must be provided in element 1, not both.", # nolint
     fixed = TRUE
   )
   # 6. Test with invalid project parameter

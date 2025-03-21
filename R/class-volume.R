@@ -22,8 +22,8 @@ Volume <- R6::R6Class(
       "member_username" = "storage/volumes/{self$id}/members/{username}",
       "member_permissions" = "storage/volumes/{self$id}/members/{username}/permissions" # nolint
     ),
-    #' @field id Volume ID, constructed from `{division}/{volume_name}`
-    #'  or `{volume_owner}/{volume_name}`.
+    #' @field id Volume ID, constructed from `{division}/{volume_name}` or \cr
+    #'  `{volume_owner}/{volume_name}`.
     id = NULL,
     #' @field name The name of the volume. It must be unique from all
     #'  other volumes for this user. Required if `from_path` parameter
@@ -120,6 +120,7 @@ Volume <- R6::R6Class(
 
     # Reload Volume object ----------------------------------------------------
     #' @description Reload Volume object information.
+    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
@@ -218,9 +219,9 @@ Volume <- R6::R6Class(
     # Deactivate volume -------------------------------------------------------
     #' @description Deactivate volume.
     #'  Once deactivated, you cannot import from, export to, or browse within a
-    #'  volume. As such, the content of the files imported from this volume will
-    #'  no longer be accessible on the Platform. However, you can update the
-    #'  volume and manage members. \cr
+    #'  volume. As such, the content of the files imported from this volume
+    #'  will no longer be accessible on the Platform. However, you can update
+    #'  the volume and manage members. \cr
     #'  Note that you cannot deactivate the volume if you have running imports
     #'  or exports unless you force the operation using the query parameter
     #'  force=TRUE.
@@ -275,6 +276,7 @@ Volume <- R6::R6Class(
     #' @description Reactivate volume.
     #'  This function reactivates the previously deactivated volume by updating
     #'  the `active` field of the volume to `TRUE`.
+    #'
     #' @param ... Other query parameters or arguments that can be passed to
     #'  core `api()` function like 'force'.
     #'  Use it within query parameter, like `query = list(force = TRUE)`.
@@ -375,6 +377,7 @@ Volume <- R6::R6Class(
     # List volume contents ----------------------------------------------------
     #' @description List volume contents.
     #'  This call lists the contents of a specific volume.
+    #'
     #' @param prefix This is parent parameter in volume context. If specified,
     #'  the content of the parent directory on the current volume is listed.
     #' @param limit The maximum number of collection items to return
@@ -539,7 +542,8 @@ Volume <- R6::R6Class(
     #'  volume_object$list_members()
     #' }
     #'
-    #' @return \code{\link{Collection}} containing \code{\link{Member}} objects.
+    #' @return \code{\link{Collection}} containing \code{\link{Member}}
+    #'  objects.
     list_members = function(limit = getOption("sevenbridges2")$limit,
                             offset = getOption("sevenbridges2")$offset,
                             ...) {
@@ -745,6 +749,7 @@ Volume <- R6::R6Class(
     #'  you want to remove from the volume, or team ID or division ID
     #'  (for Enterprise users only) or object of class Member containing
     #'  member's ID.
+    #'
     #' @importFrom glue glue glue_col
     #'
     #' @examples
@@ -829,8 +834,9 @@ Volume <- R6::R6Class(
     # Modify volume member's permissions --------------------------------------
     #' @description Modify volume member's permissions.
     #'  This function modifies the permissions for a member of a specific
-    #'  volume. Note that this does not overwrite all previously set permissions
-    #'  for the member.
+    #'  volume. Note that this does not overwrite all previously set
+    #'  permissions for the member.
+    #'
     #' @param member The Seven Bridges Platform username of the person
     #'  you want to modify permissions for or team ID or division ID
     #'  (for Enterprise users only) or object of class Member containing

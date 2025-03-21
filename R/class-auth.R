@@ -1,7 +1,7 @@
 # nolint start
 #' @title R6 Class Representing Authentication Object
 #'
-#' @description Authentication object with methods to access API endpoints.
+#' @description Authentication object with methods for accessing API endpoints.
 #'  Every object could be requested from this Auth object and any action
 #'  could start from this object using cascading style. Please check
 #'  `vignette("Authentication_and_Billing", package = "sevenbridges2")`
@@ -42,7 +42,8 @@ Auth <- R6::R6Class(
     #' @field profile_name Profile name in the user configuration file.
     profile_name = NULL,
 
-    #' @field fs FS (FileSystem) object, for mount and unmount file system.
+    #' @field fs FS (FileSystem) object, for mounting and unmounting the file
+    #'  system.
     fs = NULL,
 
     #' @field authorization Is the `token` an API
@@ -108,7 +109,7 @@ Auth <- R6::R6Class(
     #'  Default is `"direct"`.
     #'
     #' @param platform The platform to use.
-    #'  If `platform` and `url` are both not specified,
+    #'  If neither `platform` nor `url` is specified
     #'  the default is `"aws-us"` (Seven Bridges Platform - US).
     #'  Other possible values include:
     #'  \itemize{
@@ -120,7 +121,7 @@ Auth <- R6::R6Class(
     #'  }
     #' @param url Base URL for API. Please only use this when you
     #'  want to specify a platform that is not in the `platform` list
-    #'  above, and also leaving `platform` unspecified.
+    #'  above, while leaving `platform` unspecified.
     #'
     #' @param token API authentication token or `access_token` for
     #'  Seven Bridges single sign-on. Authentication token uniquely identifies
@@ -393,8 +394,8 @@ Auth <- R6::R6Class(
     #'  pass arguments to core `api()` function.
     #'
     #' @param limit The maximum number of collection items to return for a
-    #'  single request. Minimum value is `1`. The maximum value is `100` and the
-    #'  default value is `50`.
+    #'  single request. Minimum value is `1`. The maximum value is `100` and
+    #'  the default value is `50`.
     #'  This is a pagination-specific attribute.
     #' @param offset The zero-based starting index in the entire collection of
     #'  the first item to return. The default value is `0`.
@@ -482,9 +483,9 @@ Auth <- R6::R6Class(
 
     # Get rate limit info ----------------------------------------------------
     #' @description Get information about current rate limit. \cr \cr
-    #'  This call returns information about your current rate limit. This is the
-    #'  number of API calls you can make in one hour. This call also returns
-    #'  information about your current instance limit.
+    #'  This call returns information about your current rate limit. This is
+    #'  the number of API calls you can make in one hour. This call also
+    #'  returns information about your current instance limit.
     #' @examples
     #' \dontrun{
     #'  # Authenticate using authentication token
@@ -522,8 +523,8 @@ Auth <- R6::R6Class(
     #'  specified Platform folder, within the project to which the folder
     #'  belongs. If project is used, the call will upload the file to the root
     #'  of the project's files.
-    #' @param filename Optional new file name. By default the uploaded file will
-    #'  have the same name as the original file provided with the `path`
+    #' @param filename Optional new file name. By default the uploaded file
+    #'  will have the same name as the original file provided with the `path`
     #'  parameter. If its name will not change, omit this key.
     #' @param overwrite In case there is already a file with the same name in
     #'  the selected platform project or folder, this option allows you to
@@ -531,9 +532,9 @@ Auth <- R6::R6Class(
     #'  If overwrite is set to `TRUE` and a file already exists under the name
     #'  specified in the request, the existing file will be deleted and a new
     #'  one created in its place.
-    #' @param part_size The preferred size for upload parts in bytes. If omitted
-    #'  or set to a value that is incompatible with the cloud storage provider,
-    #'  a default value will be used.
+    #' @param part_size The preferred size for upload parts in bytes. If
+    #'  omitted or set to a value that is incompatible with the cloud storage
+    #'  provider, a default value will be used.
     #' @param init If `TRUE`, the method will initialize and return the Upload
     #'  object and stop. If `FALSE`, the method will return the Upload object
     #'  and start the upload process immediately.
@@ -714,8 +715,9 @@ Auth <- R6::R6Class(
 
     # Send feedback ----------------------------------------------------------
     #' @description Send feedback to Seven Bridges. \cr \cr
-    #'  Send feedback on ideas, thoughts, and problems via the sevenbridges2 API
-    #'  package with three available types: `idea`, `thought`, and `problem`.
+    #'  Send feedback on ideas, thoughts, and problems via the sevenbridges2
+    #'  API package with three available types: `idea`, `thought`, and
+    #'  `problem`.
     #'  You can send one feedback item per minute.
     #'
     #' @param text Specifies the content for the feedback i.e. feedback text.

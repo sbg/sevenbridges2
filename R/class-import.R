@@ -1,5 +1,5 @@
 # nolint start
-#' @title R6 Class representing an Import
+#' @title R6 Class representing an Import job
 #'
 #' @description
 #' R6 Class representing a resource for managing volume import jobs.
@@ -27,23 +27,21 @@ Import <- R6::R6Class(
     #'    \item `FAILED`: the import has failed.
     #'  }
     state = NULL,
-    #' @field overwrite Whether the imported file/folder name was
-    #'  overwritten or not, if another one with the same name had already
-    #'  existed.
+    #' @field overwrite Indicates whether the imported file or folder name
+    #'  was overwritten if another with the same name already existed.
     overwrite = NULL,
-    #' @field autorename Whether the imported file/folder name was
-    #'  automatically renamed (by prefixing its name with an underscore and
-    #'  number) if another one with the same name had already existed.
+    #' @field autorename Indicates whether the imported file or folder name
+    #'  was automatically renamed (by prefixing its name with an underscore
+    #'  and number) if another with the same name already existed.
     autorename = NULL,
     #' @field preserve_folder_structure Whether the imported folder
     #'  structure was preserved or not.
     preserve_folder_structure = NULL,
-    #' @field source List containing source volume id and source location of the
-    #'  file/folder is being imported to the platform.
+    #' @field source List containing source volume id and source location of
+    #' the file/folder is being imported to the platform.
     source = NULL,
-    #' @field destination List containing destination project id or parent
-    #'  directory id where the file/folder is being imported, together with its
-    #'  name.
+    #' @field destination List containing the source volume ID and the source
+    #'  location of the file or folder being imported to the platform.
     destination = NULL,
     #' @field started_on Time when the import job started.
     started_on = NULL,

@@ -289,7 +289,7 @@ file_object <- File$new(
 
 \item{\code{tags}}{List of tags associated with the file.}
 
-\item{\code{metadata}}{List for metadata associated with the file.}
+\item{\code{metadata}}{List of metadata associated with the file.}
 
 \item{\code{url}}{File download URL.}
 
@@ -297,7 +297,8 @@ file_object <- File$new(
 
 \item{\code{type}}{This can be of type \code{file} or \code{folder}.}
 
-\item{\code{secondary_files}}{Secondary files linked to the file if exist.}
+\item{\code{secondary_files}}{Secondary files linked to the file, if they
+exist.}
 }
 \if{html}{\out{</div>}}
 }
@@ -464,9 +465,8 @@ file_object <- File$new(
 \if{html}{\out{<a id="method-File-update"></a>}}
 \if{latex}{\out{\hypertarget{method-File-update}{}}}
 \subsection{Method \code{update()}}{
-Updates the name, the full set metadata, and tags
+Updates the name, the full set of metadata, and tags
 for a specified file.
-.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{File$update(name = NULL, metadata = NULL, tags = NULL, ...)}\if{html}{\out{</div>}}
 }
@@ -477,8 +477,8 @@ for a specified file.
 \item{\code{name}}{The new name of the file.}
 
 \item{\code{metadata}}{The metadata fields and their values that you want to
-update. This is a named list of key-value pairs. The keys and values are
-strings.}
+update. This is a named list of key-value pairs. The keys and values
+are strings.}
 
 \item{\code{tags}}{The tags you want to update, represented as unnamed list of
 values to add as tags.}
@@ -708,8 +708,8 @@ More details about how to modify metadata, you can find in the
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{metadata_fields}}{Enter a list of key-value pairs of metadata fields
-and metadata values.}
+\item{\code{metadata_fields}}{Enter a list of key-value pairs of metadata
+fields and metadata values.}
 
 \item{\code{overwrite}}{Set to \code{TRUE} if you want to overwrite existing tags.
 Default: \code{FALSE}.}
@@ -873,7 +873,7 @@ file_object <- File$new(
 \if{html}{\out{<a id="method-File-download"></a>}}
 \if{latex}{\out{\hypertarget{method-File-download}{}}}
 \subsection{Method \code{download()}}{
-Download method for File objects. It allows download a
+Download method for File objects. It allows downloading a
 platform file to your local computer. To specify the destination for
 your download, you should provide the path to the destination directory
 as \code{directory_path} parameter.
@@ -930,9 +930,10 @@ file_object <- File$new(
 \if{latex}{\out{\hypertarget{method-File-submit_export}{}}}
 \subsection{Method \code{submit_export()}}{
 This call lets you queue a job to export this file from a
-project on the Platform into a volume. The file selected for export must
-not be a public file or an alias. Aliases are objects stored in your
-cloud storage bucket which have been made available on the Platform.
+project on the Platform into a volume. The file selected for export
+must not be a public file or an alias. Aliases are objects stored in
+your cloud storage bucket which have been made available on the
+Platform.
 The volume you are exporting to must be configured for read-write
 access. To do this, set the \code{access_mode} parameter to \code{RW} when
 creating or modifying a volume.  \cr
@@ -983,7 +984,7 @@ If you would like to export the file into some folder on the volume,
 please add folder name as prefix before file name in form
 \verb{<folder-name>/<file-name>}.}
 
-\item{\code{overwrite}}{Set to \code{TRUE} of you want to overwrite the item that
+\item{\code{overwrite}}{Set to \code{TRUE} if you want to overwrite the item that
 already exists at the destination. Default: \code{FALSE}.}
 
 \item{\code{copy_only}}{If \code{TRUE}, file will be copied to a volume but
@@ -995,7 +996,7 @@ source file will remain on the Platform.}
 exporting to this bucket. Supported values:
 \code{AES256} (SSE-S3 encryption), \code{aws:kms}, \code{null}
 (no server-side encryption). Default: \code{AES256}.
-\item \code{sse_aws_kms_key_id}: Applies to type: \code{s3}.
+\item \code{sse_aws_kms_key_Id}: Applies to type: \code{s3}.
 If AWS KMS encryption is used, this should be set to the required
 KMS key. If not set and \code{aws:kms} is set as \code{sse_algorithm},
 default KMS key is used.

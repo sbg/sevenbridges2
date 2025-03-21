@@ -49,14 +49,14 @@ Task <- R6::R6Class(
     created_on = NULL,
     #' @field start_time Task start time in form of string.
     start_time = NULL,
-    #' @field end_time Task end time in form of string .
+    #' @field end_time Task end time in form of string.
     end_time = NULL,
-    #' @field origin Id of the entity that created the task, e.g.
-    #'  automation run, if task was created by an automation run.
+    #' @field origin ID of the entity that created the task, e.g.,
+    #'  an automation run, if task was created by an automation run.
     origin = NULL,
-    #' @field use_interruptable_instances This field can be `TRUE` or
+    #' @field use_interruptible_instances This field can be `TRUE` or
     #'  `FALSE`. Set this field to `TRUE` to allow the use of spot instances.
-    use_interruptable_instances = NULL,
+    use_interruptible_instances = NULL,
     #' @field batch `TRUE` for batch tasks, `FALSE` for regular and child
     #' tasks (batch this task; if `FALSE`, will not create a batch task).
     batch = NULL,
@@ -76,7 +76,7 @@ Task <- R6::R6Class(
     #' @field execution_status Task execution status list - info about current
     #'  execution status.
     execution_status = NULL,
-    #' @field errors Validations errors list stored as a high-level errors
+    #' @field errors Validation errors list stored as a high-level errors
     #' array property in the API response.
     errors = NULL,
     #' @field warnings Validation warnings list from API response.
@@ -112,8 +112,8 @@ Task <- R6::R6Class(
       self$start_time <- res$start_time
       self$end_time <- res$end_time
       self$origin <- res$origin
-      self$use_interruptable_instances <-
-        res$use_interruptable_instances
+      self$use_interruptible_instances <-
+        res$use_interruptible_instances
       self$batch <- res$batch
       self$batch_by <- res$batch_by
       self$batch_group <- res$batch_group
@@ -213,8 +213,8 @@ Task <- R6::R6Class(
     #' is `DRAFT` can be run.
     #'
     #' @param batch Set this to `FALSE` to disable the default batching
-    #'  for this task. Running a batch task is a recommended way to run multiple
-    #'  tasks considering the API rate limit
+    #'  for this task. Running a batch task is a recommended way to run
+    #'  multiple tasks considering the API rate limit
     #' ([learn more](https://docs.sevenbridges.com/docs/api-rate-limit)).
     #' @param use_interruptible_instances This field can be `TRUE` or
     #'  `FALSE`. Set this field to `TRUE` to allow the use of
@@ -709,10 +709,10 @@ Task <- R6::R6Class(
     #'      dynamically replaced with corresponding values during task
     #'      execution.
     #'    \item `main_location_alias`: The string location (path) in the
-    #'      project that will point to the actual location where the outputs are
-    #'      stored. Used if main_location is defined as a volume path (starting
-    #'      with volumes://), to provide an easy way of accessing output data
-    #'      directly from project files.
+    #'      project that will point to the actual location where the outputs
+    #'      are stored. Used if main_location is defined as a volume path
+    #'      (starting with volumes://), to provide an easy way of accessing
+    #'      output data directly from project files.
     #'    \item `nodes_override`: Enables defining of output locations
     #'      for output nodes individually through nodes_location (see below).
     #'      Set to `TRUE` to be able to define individual locations per output
@@ -736,9 +736,9 @@ Task <- R6::R6Class(
     #'   "output_location_alias" = "/rfranklin/tasks/picard"
     #'  )
     #'  ```
-    #'      In the example above, b64html is the ID of the output node for which
-    #'      you want to define the output location, while the parameters are
-    #'      defined as follows:
+    #'      In the example above, b64html is the ID of the output node for
+    #'      which you want to define the output location, while the parameters
+    #'      are defined as follows:
     #'    \itemize{
     #'      \item `output_location` - Can be a path within the project in which
     #'        the task is created, for example

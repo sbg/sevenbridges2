@@ -4,7 +4,7 @@
 \alias{Auth}
 \title{R6 Class Representing Authentication Object}
 \description{
-Authentication object with methods to access API endpoints.
+Authentication object with methods for accessing API endpoints.
 Every object could be requested from this Auth object and any action
 could start from this object using cascading style. Please check
 \code{vignette("Authentication_and_Billing", package = "sevenbridges2")}
@@ -187,7 +187,8 @@ the auth token.}
 
 \item{\code{profile_name}}{Profile name in the user configuration file.}
 
-\item{\code{fs}}{FS (FileSystem) object, for mount and unmount file system.}
+\item{\code{fs}}{FS (FileSystem) object, for mounting and unmounting the file
+system.}
 
 \item{\code{authorization}}{Is the \code{token} an API
 authentication token (\code{FALSE}) or an access token from the
@@ -276,7 +277,7 @@ directly,
 Default is \code{"direct"}.}
 
 \item{\code{platform}}{The platform to use.
-If \code{platform} and \code{url} are both not specified,
+If neither \code{platform} nor \code{url} is specified
 the default is \code{"aws-us"} (Seven Bridges Platform - US).
 Other possible values include:
 \itemize{
@@ -289,7 +290,7 @@ Other possible values include:
 
 \item{\code{url}}{Base URL for API. Please only use this when you
 want to specify a platform that is not in the \code{platform} list
-above, and also leaving \code{platform} unspecified.}
+above, while leaving \code{platform} unspecified.}
 
 \item{\code{token}}{API authentication token or \code{access_token} for
 Seven Bridges single sign-on. Authentication token uniquely identifies
@@ -399,8 +400,8 @@ pass arguments to core \code{api()} function.
 \code{query} parameters or full \code{url} to some resource.}
 
 \item{\code{limit}}{The maximum number of collection items to return for a
-single request. Minimum value is \code{1}. The maximum value is \code{100} and the
-default value is \code{50}.
+single request. Minimum value is \code{1}. The maximum value is \code{100} and
+the default value is \code{50}.
 This is a pagination-specific attribute.}
 
 \item{\code{offset}}{The zero-based starting index in the entire collection of
@@ -482,9 +483,9 @@ authenticated user will be returned.}
 \if{latex}{\out{\hypertarget{method-Auth-rate_limit}{}}}
 \subsection{Method \code{rate_limit()}}{
 Get information about current rate limit. \cr \cr
-This call returns information about your current rate limit. This is the
-number of API calls you can make in one hour. This call also returns
-information about your current instance limit.
+This call returns information about your current rate limit. This is
+the number of API calls you can make in one hour. This call also
+returns information about your current instance limit.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$rate_limit()}\if{html}{\out{</div>}}
 }
@@ -544,8 +545,8 @@ specified Platform folder, within the project to which the folder
 belongs. If project is used, the call will upload the file to the root
 of the project's files.}
 
-\item{\code{filename}}{Optional new file name. By default the uploaded file will
-have the same name as the original file provided with the \code{path}
+\item{\code{filename}}{Optional new file name. By default the uploaded file
+will have the same name as the original file provided with the \code{path}
 parameter. If its name will not change, omit this key.}
 
 \item{\code{overwrite}}{In case there is already a file with the same name in
@@ -555,9 +556,9 @@ If overwrite is set to \code{TRUE} and a file already exists under the name
 specified in the request, the existing file will be deleted and a new
 one created in its place.}
 
-\item{\code{part_size}}{The preferred size for upload parts in bytes. If omitted
-or set to a value that is incompatible with the cloud storage provider,
-a default value will be used.}
+\item{\code{part_size}}{The preferred size for upload parts in bytes. If
+omitted or set to a value that is incompatible with the cloud storage
+provider, a default value will be used.}
 
 \item{\code{init}}{If \code{TRUE}, the method will initialize and return the Upload
 object and stop. If \code{FALSE}, the method will return the Upload object
@@ -655,8 +656,9 @@ to abort.}
 \if{latex}{\out{\hypertarget{method-Auth-send_feedback}{}}}
 \subsection{Method \code{send_feedback()}}{
 Send feedback to Seven Bridges. \cr \cr
-Send feedback on ideas, thoughts, and problems via the sevenbridges2 API
-package with three available types: \code{idea}, \code{thought}, and \code{problem}.
+Send feedback on ideas, thoughts, and problems via the sevenbridges2
+API package with three available types: \code{idea}, \code{thought}, and
+\code{problem}.
 You can send one feedback item per minute.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Auth$send_feedback(

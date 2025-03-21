@@ -46,7 +46,7 @@ Keep in mind that the same overwrite option will be applied to all items
 exporting to this bucket. Supported values:
 \code{AES256} (SSE-S3 encryption), \code{aws:kms}, \code{null}
 (no server-side encryption). Default: \code{AES256}.
-\item \code{sse_aws_kms_key_id}: Applies to type: \code{s3}.
+\item \code{sse_aws_kms_key_Id}: Applies to type: \code{s3}.
 If AWS KMS encryption is used, this should be set to the required
 KMS key. If not set and \code{aws:kms} is set as \code{sse_algorithm},
 default KMS key is used.
@@ -60,7 +60,7 @@ Keep in mind that the same properties will be applied to all items (files)
 in the resulting list.}
 }
 \value{
-List of body params items for for staring an export job.
+List of body params items for starting an export job.
 }
 \description{
 Utility function to prepare the \code{items} parameter, a list of
@@ -82,15 +82,15 @@ item:
 However, keep in mind that there are certain constraints:
 \itemize{
 \item The same \code{destination_volume} applies to all items in the
-.      resulting list.
+resulting list.
 \item The same applies to \code{overwrite} and \code{properties}
 parameters.
 \item By default, the \code{destination_location} field is populated with
 the source file name. Upon retrieval of the list of items for bulk
-export, you can manually update the \code{destination_location} field
-for each element of the list as needed. Additionally, you have the
-flexibility to manually modify any other fields in the list if
-required.
+export, you can manually update the \cr
+\code{destination_location} field for each element of the list as needed.
+Additionally, you have the flexibility to manually modify any other
+fields in the list if required.
 }
 }
 \examples{

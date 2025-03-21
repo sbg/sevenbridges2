@@ -23,7 +23,7 @@ Division <- R6::R6Class(
     name = NULL,
 
     # Initialize Division object ----------------------------------------------
-    #' @description Create a new Division object
+    #' @description Create a new Division object.
     #'
     #' @param res Response containing the Division object information.
     #'
@@ -152,7 +152,7 @@ Division <- R6::R6Class(
     #'  administrators within a division.
     #'
     #' @param role Filter members by role. Supported roles are `ADMIN`,
-    #' . `MEMBER`, and `EXTERNAL_COLLABORATOR`. If `NULL` (default), members of
+    #'  `MEMBER`, and `EXTERNAL_COLLABORATOR`. If `NULL` (default), members of
     #'  all roles will be retrieved.
     #' @param limit The maximum number of collection items to return
     #'  for a single request. Minimum value is `1`.
@@ -208,7 +208,7 @@ Division <- R6::R6Class(
     # Remove a member from a division -----------------------------------------
     #' @description Removes a specified user from a division. This action
     #'  revokes the user's membership in the division but does not delete their
-    #'  Platform account. Note that only users with the `ADMIN` role for the
+    #'  Platform account. Note that only users with the `ADMIN` role in the
     #'  division can perform this action.
     #'
     #' @param user The Seven Bridges Platform username of the user to be

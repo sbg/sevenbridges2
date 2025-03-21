@@ -7,7 +7,7 @@
 #'
 #' @details
 #'  This object contains information about a selected invoice,
-#'  including the costs for analysis and storage, and the invoice period.
+#'  including costs for analysis, storage, and the invoice period.
 #'
 Invoice <- R6::R6Class(
   "Invoice",
@@ -144,7 +144,7 @@ Invoice <- R6::R6Class(
     },
 
     # Reload Invoice object ---------------------------------------------------
-    #' @description Reload Invoice.
+    #' @description Refresh the Invoice object with updated information.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.

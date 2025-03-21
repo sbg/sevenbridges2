@@ -229,12 +229,12 @@ the task is located in.}
 
 \item{\code{start_time}}{Task start time in form of string.}
 
-\item{\code{end_time}}{Task end time in form of string .}
+\item{\code{end_time}}{Task end time in form of string.}
 
-\item{\code{origin}}{Id of the entity that created the task, e.g.
-automation run, if task was created by an automation run.}
+\item{\code{origin}}{ID of the entity that created the task, e.g.,
+an automation run, if task was created by an automation run.}
 
-\item{\code{use_interruptable_instances}}{This field can be \code{TRUE} or
+\item{\code{use_interruptible_instances}}{This field can be \code{TRUE} or
 \code{FALSE}. Set this field to \code{TRUE} to allow the use of spot instances.}
 
 \item{\code{batch}}{\code{TRUE} for batch tasks, \code{FALSE} for regular and child
@@ -256,7 +256,7 @@ which is the parent of this task).}
 \item{\code{execution_status}}{Task execution status list - info about current
 execution status.}
 
-\item{\code{errors}}{Validations errors list stored as a high-level errors
+\item{\code{errors}}{Validation errors list stored as a high-level errors
 array property in the API response.}
 
 \item{\code{warnings}}{Validation warnings list from API response.}
@@ -398,8 +398,8 @@ is \code{DRAFT} can be run.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{batch}}{Set this to \code{FALSE} to disable the default batching
-for this task. Running a batch task is a recommended way to run multiple
-tasks considering the API rate limit
+for this task. Running a batch task is a recommended way to run
+multiple tasks considering the API rate limit
 (\href{https://docs.sevenbridges.com/docs/api-rate-limit}{learn more}).}
 
 \item{\code{use_interruptible_instances}}{This field can be \code{TRUE} or
@@ -890,10 +890,10 @@ Parts of the path enclosed in angle brackets <> are tokens that are
 dynamically replaced with corresponding values during task
 execution.
 \item \code{main_location_alias}: The string location (path) in the
-project that will point to the actual location where the outputs are
-stored. Used if main_location is defined as a volume path (starting
-with volumes://), to provide an easy way of accessing output data
-directly from project files.
+project that will point to the actual location where the outputs
+are stored. Used if main_location is defined as a volume path
+(starting with volumes://), to provide an easy way of accessing
+output data directly from project files.
 \item \code{nodes_override}: Enables defining of output locations
 for output nodes individually through nodes_location (see below).
 Set to \code{TRUE} to be able to define individual locations per output
@@ -918,9 +918,9 @@ Example:
 )
 }\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{ In the example above, b64html is the ID of the output node for which
- you want to define the output location, while the parameters are
- defined as follows:
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ In the example above, b64html is the ID of the output node for
+ which you want to define the output location, while the parameters
+ are defined as follows:
 }\if{html}{\out{</div>}}
 
 \itemize{

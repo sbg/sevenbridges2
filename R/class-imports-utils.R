@@ -31,7 +31,8 @@
 #' @param volume_items A list of \code{\link{VolumeFile}} or
 #'  \code{\link{VolumePrefix}} objects to be imported.
 #' @param destination_project Destination project ID or \code{\link{Project}}
-#'  object. Not required, but either `destination_project` or
+#'  object. Not required, but either \cr
+#'  `destination_project` or
 #'  `destination_parent` directory must be provided.
 #' @param destination_parent Folder ID or \code{\link{File}} object
 #'  (with `type = 'FOLDER'`). Not required, but either \cr

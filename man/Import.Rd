@@ -2,7 +2,7 @@
 % Please edit documentation in R/class-import.R
 \name{Import}
 \alias{Import}
-\title{R6 Class representing an Import}
+\title{R6 Class representing an Import job}
 \description{
 R6 Class representing a resource for managing volume import jobs.
 }
@@ -62,23 +62,21 @@ R6 Class representing a resource for managing volume import jobs.
 \item \code{FAILED}: the import has failed.
 }}
 
-\item{\code{overwrite}}{Whether the imported file/folder name was
-overwritten or not, if another one with the same name had already
-existed.}
+\item{\code{overwrite}}{Indicates whether the imported file or folder name
+was overwritten if another with the same name already existed.}
 
-\item{\code{autorename}}{Whether the imported file/folder name was
-automatically renamed (by prefixing its name with an underscore and
-number) if another one with the same name had already existed.}
+\item{\code{autorename}}{Indicates whether the imported file or folder name
+was automatically renamed (by prefixing its name with an underscore
+and number) if another with the same name already existed.}
 
 \item{\code{preserve_folder_structure}}{Whether the imported folder
 structure was preserved or not.}
 
-\item{\code{source}}{List containing source volume id and source location of the
-file/folder is being imported to the platform.}
+\item{\code{source}}{List containing source volume id and source location of
+the file/folder is being imported to the platform.}
 
-\item{\code{destination}}{List containing destination project id or parent
-directory id where the file/folder is being imported, together with its
-name.}
+\item{\code{destination}}{List containing the source volume ID and the source
+location of the file or folder being imported to the platform.}
 
 \item{\code{started_on}}{Time when the import job started.}
 

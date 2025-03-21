@@ -17,7 +17,8 @@ prepare_items_for_bulk_import(
 \code{\link{VolumePrefix}} objects to be imported.}
 
 \item{destination_project}{Destination project ID or \code{\link{Project}}
-object. Not required, but either \code{destination_project} or
+object. Not required, but either \cr
+\code{destination_project} or
 \code{destination_parent} directory must be provided.}
 
 \item{destination_parent}{Folder ID or \code{\link{File}} object

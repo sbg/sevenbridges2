@@ -46,7 +46,7 @@ status_check <- function(req, as = "parsed", ...) {
 
   print(content(req, as = as, ...))
   rlang::abort(paste(
-    "Error of unknown type occured: ",
+    "Error of unknown type occurred: ",
     httr::status_code(req)
   ))
 
@@ -56,7 +56,7 @@ status_check <- function(req, as = "parsed", ...) {
 # Check if input value is missing --------------------------------------------
 #' @description This function checks whether the input
 #'  value is a vector of minimum length 1, with no empty
-#'  value and no all missing values.
+#'  value and not all missing values.
 #'  If the input value is not a vector, it checks only if
 #'  the value is set at all (original meaning of 'missing' function)
 #'  in order to be able to use it with other object types.
@@ -255,7 +255,7 @@ check_folder_name <- function(name) {
     rlang::abort("The folder name cannot start with \"__\"")
   }
   if (grepl("\\s", name)) {
-    rlang::abort("The folder name cannot contain spaces in the name.")
+    rlang::abort("The folder name cannot contain spaces.")
   }
 }
 

@@ -94,7 +94,7 @@ test_that("Team remove_member method throws errors when expected", {
 
   testthat::expect_error(
     do.call(setup_team_obj$remove_member, missing_user),
-    regexp = "Please provide a username or a User object to remove the member from the division.", # nolint
+    regexp = "Please provide a username or a User object to remove the member from the team.", # nolint
     fixed = TRUE
   )
 

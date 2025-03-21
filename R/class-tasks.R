@@ -39,10 +39,10 @@ Tasks <- R6::R6Class(
     #' @param status You can filter the returned tasks by their status.
     #'  Set the value of status to one of the following values: `QUEUED`,
     #'  `DRAFT`, `RUNNING`, `COMPLETED`, `ABORTED`, `FAILED`.
-    #' @param parent Provide task ID or Task object of the parent task to return
-    #'  all child tasks from that parent. A parent task is a task that specifies
-    #'  criteria by which to batch its inputs into a series of further
-    #'  sub-tasks, called child tasks. See the documentation on
+    #' @param parent Provide the task ID or Task object of the parent task to
+    #'  return all child tasks. A parent task is a task that
+    #'  specifies criteria by which to batch its inputs into a series of
+    #'  further sub-tasks, called child tasks. See the documentation on
     # nolint start
     #'  [batching tasks](https://docs.sevenbridges.com/docs/about-batch-analyses)
     # nolint end
@@ -64,7 +64,7 @@ Tasks <- R6::R6Class(
     #'  ended until a specified date.
     #' @param order_by Order returned results by the specified field.
     #'  Allowed values: \cr `created_time`, `start_time`, `name`, `end_time` and
-    #'  `created_by`. \cr Sort can be done only by one column. The default
+    #'  `created_by`. \cr Sorting can only be done by one column. The default
     #'  value is `created_time`.
     #' @param order Sort results in ascending or descending order by
     #'  specifying `asc` or `desc`, respectively. Only taken into account if
@@ -185,9 +185,9 @@ Tasks <- R6::R6Class(
     # Get single task -------------------------------------------------------
     #' @description This call returns details of the specified task. The task
     #'  is referred to by its ID, which you can obtain by making the call to
-    #'  list all tasks you can access. The task details include its creator, its
-    #'  start and end time, the number of jobs completed in it, and its input
-    #'  and output files. You can also see the status of the task.
+    #'  list all tasks you can access. The task details include its creator,
+    #'  its start and end time, the number of jobs completed in it, and its
+    #'  input and output files. You can also see the status of the task.
     #'
     #' @param id The ID of the task you are querying.
     #' @param ... Other arguments that can be passed to core `api()` function
@@ -215,10 +215,9 @@ Tasks <- R6::R6Class(
     }, # nocov end
 
     # Delete task  ----------------------------------------------------------
-    #' @description This call deletes a task from the Seven Bridges Platform.
-    #' Tasks are specified by their IDs, which you can obtain by using
-    #' \code{Tasks$query()} to list tasks or by getting a single task
-    #' using \code{Tasks$get()}.
+    #' @description Tasks are identified by their IDs, which can be obtained
+    #'  using \code{Tasks$query()} to list tasks or \code{Tasks$get()} to
+    #'  retrieve a single task.
     #'
     #' @param task \code{\link{Task}} object or task ID.
     #' @param ... Other arguments that can be passed to core `api()` function
@@ -239,12 +238,12 @@ Tasks <- R6::R6Class(
     },
     # nocov end
 
-    # Create a new draft task --------------------------------------------------
-    #' @description This call creates a new task. You can create either a single
-    #'  task or a batch task by using the app's default batching, override
-    #'  batching, or disable batching completely. A parent task is a task that
-    #'  specifies criteria by which to batch its inputs into a series of further
-    #'  sub-tasks, called child tasks. the documentation on
+    # Create a new draft task -------------------------------------------------
+    #' @description This call creates a new task. You can create either a
+    #'  single task or a batch task by using the app's default batching,
+    #'  override batching, or disable batching completely. A parent task is a
+    #'  task that specifies criteria by which to batch its inputs into a series
+    #'  of further sub-tasks, called child tasks. the documentation on
     # nolint start
     #' [batching tasks](https://docs.sevenbridges.com/docs/about-batch-analyses)
     # nolint end
@@ -317,8 +316,8 @@ Tasks <- R6::R6Class(
     #'  See below for more details.
     #'  \itemize{
     #'    \item `main_location` - Defines the output location for all
-    #'      output nodes in the task. Can be a string path within the project in
-    #'      which the task is created, for example \cr
+    #'      output nodes in the task. Can be a string path within the project
+    #'      in which the task is created, for example \cr
     #'      `/Analysis/<task_id>_<task_name>/` \cr
     #'      or a path on an attached volume, such as \cr
     #'      `volumes://volume_name/<project_id>/html`. \cr
@@ -326,10 +325,10 @@ Tasks <- R6::R6Class(
     #'      dynamically replaced with corresponding values during task
     #'      execution.
     #'    \item `main_location_alias`: The string location (path) in the
-    #'      project that will point to the actual location where the outputs are
-    #'      stored. Used if main_location is defined as a volume path (starting
-    #'      with volumes://), to provide an easy way of accessing output data
-    #'      directly from project files.
+    #'      project that will point to the actual location where the outputs
+    #'      are stored. Used if main_location is defined as a volume path
+    #'      (starting with volumes://), to provide an easy way of accessing
+    #'      output data directly from project files.
     #'    \item `nodes_override`: Enables defining of output locations
     #'      for output nodes individually through nodes_location (see below).
     #'      Set to `TRUE` to be able to define individual locations per output
@@ -353,9 +352,9 @@ Tasks <- R6::R6Class(
     #'   "output_location_alias" = "/rfranklin/tasks/picard"
     #'  )
     #'  ```
-    #'      In the example above, b64html is the ID of the output node for which
-    #'      you want to define the output location, while the parameters are
-    #'      defined as follows:
+    #'      In the example above, b64html is the ID of the output node for
+    #'      which you want to define the output location, while the parameters
+    #'      are defined as follows:
     #'    \itemize{
     #'      \item `output_location` - Can be a path within the project in which
     #'        the task is created, for example
@@ -487,7 +486,7 @@ Tasks <- R6::R6Class(
       return(asTask(res, auth = self$auth))
     }, # nocov end
 
-    # Get details of multiple tasks
+    # Get details of multiple tasks -------------------------------------------
     #'
     #' @description This call returns statistics for all specified tasks.
     #'
@@ -538,7 +537,7 @@ Tasks <- R6::R6Class(
     }
   ),
   private = list(
-    # Serialize input values  --------------------------------------------------
+    # Serialize input values  -------------------------------------------------
     #' @importFrom checkmate test_r6
     serialize_inputs = function(input_value) { # nocov start
       if (is.list(input_value)) {
@@ -563,7 +562,7 @@ Tasks <- R6::R6Class(
       return(return_value)
     },
 
-    # Convert input value to File format  --------------------------------------
+    # Convert input value to a File format  -----------------------------------
     #' @importFrom stringr str_to_title
     to_api_file_format = function(file) {
       return(list(

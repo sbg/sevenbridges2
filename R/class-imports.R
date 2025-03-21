@@ -2,7 +2,7 @@
 #' @title R6 Class representing storage imports endpoints
 #'
 #' @description
-#' R6 Class representing storage imports resource endpoints.
+#' R6 Class for managing storage imports resource endpoints.
 #'
 #' @importFrom R6 R6Class
 #' @export
@@ -31,7 +31,7 @@ Imports <- R6::R6Class(
     },
 
     # List import jobs --------------------------------------------------------
-    #' @description This call lists import jobs initiated by particular user.
+    #' @description This call lists import jobs initiated by a particular user.
     #'  Note that when you import a file from your volume on your cloud storage
     #'  provider (Amazon Web Services or Google Cloud Storage), you are
     #'  creating an alias on the Platform which points to the file in your
@@ -194,8 +194,8 @@ Imports <- R6::R6Class(
     #'  exact source folder structure. The default value is `TRUE` if the item
     #'  being imported is a folder. Should not be used if you are importing a
     #'  file. Bear in mind that if you use `preserve_folder_structure = FALSE`,
-    #'  that the response will be the parent folder object containing imported
-    #'  files alongside with other files if they exist.
+    #'  the response will be the parent folder object containing imported files
+    #'  alongside with other files if they exist.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
@@ -243,7 +243,7 @@ Imports <- R6::R6Class(
       }
       if (!is_missing(destination_project) &&
         !is_missing(destination_parent)) {
-        rlang::abort("Either destination project or parent parameter must be proveded, not both.") # nolint
+        rlang::abort("Either destination project or parent parameter must be provided, not both.") # nolint
       }
       if (!is_missing(destination_project)) {
         destination_project <- check_and_transform_id(
@@ -302,7 +302,7 @@ Imports <- R6::R6Class(
     },
 
     # Delete import job ----------------------------------------------------
-    #' @description Deleting import jobs is not possible.
+    #' @description Import jobs cannot be deleted.
     #'
     #' @importFrom rlang inform
     delete = function() {
@@ -398,8 +398,8 @@ Imports <- R6::R6Class(
     #'        the volume.
     #'      \item `destination_project` - Project object or ID to import
     #'        files/folders into. Should not be used together with
-    #'        destination_parent. If project is used, the items will be imported
-    #'        to the root of the project's files.
+    #'        destination_parent. If project is used, the items will be
+    #'        imported to the root of the project's files.
     #'      \item `destination_parent` - File object of type 'folder' or its ID
     #'        to import files/folders into. Should not be used together with
     #'        destination_project. If parent is used, the import will take
@@ -417,10 +417,10 @@ Imports <- R6::R6Class(
     #'      \item `autorename` - Whether to automatically rename the item
     #'        (by prefixing its name with an underscore and number) if another
     #'        one with the same name already exists at the destination.
-    #'      \item `preserve_folder_structure` - Whether to keep the exact source
-    #'        folder structure. The default value is TRUE if the item being
-    #'        imported is a folder. Should not be used if you are importing a
-    #'        file.
+    #'      \item `preserve_folder_structure` - Whether to keep the exact
+    #'        source folder structure. The default value is TRUE if the item
+    #'        being imported is a folder. Should not be used if you are
+    #'        importing a file.
     #'  }
     # nolint end
     #'  Example of the list:
@@ -534,7 +534,7 @@ Imports <- R6::R6Class(
         if (!is_missing(item[["destination_project"]]) &&
           !is_missing(item[["destination_parent"]])) {
           rlang::abort(
-            glue::glue("Either destination project or parent parameter must be proveded in element {i}, not both.") # nolint
+            glue::glue("Either destination project or parent parameter must be provided in element {i}, not both.") # nolint
           )
         }
         if (!is_missing(item[["destination_project"]])) {

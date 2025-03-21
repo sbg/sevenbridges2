@@ -25,7 +25,7 @@ VolumePrefix <- R6::R6Class(
     # Initialize VolumePrefix object ------------------------------------------
     #' @description Create a new VolumePrefix object.
     #'
-    #' @param res Response containing VolumePrefix object info.
+    #' @param res Response containing VolumePrefix object information.
     #' @param ... Other response arguments.
     initialize = function(res = NA, ...) {
       # Initialize Item class
@@ -56,7 +56,7 @@ VolumePrefix <- R6::R6Class(
     #'                     response = attr(x, "response")
     #'                    )
     #'
-    #'  # Print volume prefix object
+    #'  # Print the Volume Prefix object
     #'  volume_prefix_object$print()
     #' }
     #'
@@ -87,7 +87,7 @@ VolumePrefix <- R6::R6Class(
     },
 
     # Reload VolumePrefix object ---------------------------------------------
-    #' @description Reload VolumePrefix object information.
+    #' @description Reload the VolumePrefix object information.
     #'
     #' @examples
     #' \dontrun{
@@ -110,7 +110,7 @@ VolumePrefix <- R6::R6Class(
     }, # nocov end
 
     # List volume folder content ---------------------------------------------
-    #' @description List volume folder contents.
+    #' @description List the contents of a volume folder.
     #'  This call lists the contents of a specific volume folder.
     #'
     #' @param limit The maximum number of collection items to return
@@ -167,8 +167,8 @@ VolumePrefix <- R6::R6Class(
     }, # nocov end
 
     # Start new import job ---------------------------------------------------
-    #' @description This call lets you queue a job to import this file or folder
-    #'  from a volume into a project on the Platform. \cr
+    #' @description This call lets you queue a job to import this file or
+    #'  folder from a volume into a project on the Platform. \cr
     #'  Essentially, you are importing an item from your cloud storage provider
     #'  (Amazon Web Services, Google Cloud Storage, Azure or Ali Cloud) via the
     #'  volume onto the Platform. \cr
@@ -192,8 +192,9 @@ VolumePrefix <- R6::R6Class(
     #'
     #'  Segments are considered to be separated with forward slashes /.
     #'  Allowed characters in file names are all alphanumeric and special
-    #'  characters except forward slash /, while folder names can contain
-    #'  alphanumeric and special characters _, - and ..
+    #'  characters except forward slash (/), while folder names can contain
+    #'  alphanumeric and special characters underscores (_), hyphens (-), and
+    #'  dots (.).
     #'
     #' @param overwrite Set to `TRUE` if you want to overwrite the item if
     #'  another one with the same name already exists at the destination.

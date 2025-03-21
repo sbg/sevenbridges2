@@ -77,7 +77,7 @@ volume_file_object <- VolumeFile$new(
 
 \item{\code{volume}}{Volume id.}
 
-\item{\code{metadata}}{File's metadata if exists.}
+\item{\code{metadata}}{File metadata, if it exists.}
 }
 \if{html}{\out{</div>}}
 }
@@ -158,7 +158,7 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\code{\link{VolumeFile}} object.
+A \code{\link{VolumeFile}} object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -185,8 +185,8 @@ volume_file_object <- VolumeFile$new(
 \if{html}{\out{<a id="method-VolumeFile-import"></a>}}
 \if{latex}{\out{\hypertarget{method-VolumeFile-import}{}}}
 \subsection{Method \code{import()}}{
-This call lets you queue a job to import this file or folder
-from a volume into a project on the Platform. \cr
+This call lets you queue a job to import this file or
+folder from a volume into a project on the Platform. \cr
 Essentially, you are importing an item from your cloud storage provider
 (Amazon Web Services, Google Cloud Storage, Azure or Ali Cloud) via the
 volume onto the Platform. \cr

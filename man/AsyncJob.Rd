@@ -2,7 +2,7 @@
 % Please edit documentation in R/class-AsyncJob.R
 \name{AsyncJob}
 \alias{AsyncJob}
-\title{R6 Class representing a AsyncJob}
+\title{R6 Class representing an AsyncJob}
 \description{
 R6 Class representing a resource for managing asynchronous jobs.
 }
@@ -28,7 +28,7 @@ R6 Class representing a resource for managing asynchronous jobs.
 ## ------------------------------------------------
 
 \dontrun{
- # x is API response when app is requested
+ # x is API response when AsyncJob is requested
  asyncjob_object <- AsyncJob$new(
    res = x,
    href = x$href,
@@ -63,7 +63,7 @@ completed.}
 
 \item{\code{started_on}}{The time and date the job started.}
 
-\item{\code{finished_on}}{The time and date the job has finished.}
+\item{\code{finished_on}}{The time and date the job finished.}
 }
 \if{html}{\out{</div>}}
 }
@@ -129,7 +129,7 @@ Print method for AsyncJob class.
 \if{html}{\out{<a id="method-AsyncJob-reload"></a>}}
 \if{latex}{\out{\hypertarget{method-AsyncJob-reload}{}}}
 \subsection{Method \code{reload()}}{
-Reload AsyncJob object information.
+Reloads AsyncJob object information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AsyncJob$reload(...)}\if{html}{\out{</div>}}
 }
@@ -148,7 +148,7 @@ like 'fields', etc.}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
- # x is API response when app is requested
+ # x is API response when AsyncJob is requested
  asyncjob_object <- AsyncJob$new(
    res = x,
    href = x$href,

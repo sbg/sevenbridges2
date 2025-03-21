@@ -8,7 +8,7 @@ R6 Class representing invoice information.
 }
 \details{
 This object contains information about a selected invoice,
-including the costs for analysis and storage, and the invoice period.
+including costs for analysis, storage, and the invoice period.
 }
 \examples{
 
@@ -134,7 +134,7 @@ Print invoice information as a bullet list.
 \if{html}{\out{<a id="method-Invoice-reload"></a>}}
 \if{latex}{\out{\hypertarget{method-Invoice-reload}{}}}
 \subsection{Method \code{reload()}}{
-Reload Invoice.
+Refresh the Invoice object with updated information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Invoice$reload(...)}\if{html}{\out{</div>}}
 }
