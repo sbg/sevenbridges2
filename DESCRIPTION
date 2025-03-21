@@ -1,7 +1,7 @@
 Package: sevenbridges2
 Type: Package
 Title: The 'Seven Bridges Platform' API Client
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: c(
     person("Marko", "Trifunovic", email = "marko.trifunovic@velsera.com", role = c("aut", "cre")),
     person("Marija", "Gacic", email = "marija.jovanovic@velsera.com", role = c("aut")),
@@ -20,7 +20,7 @@ URL: https://www.sevenbridges.com, https://sbg.github.io/sevenbridges2/,
     https://github.com/sbg/sevenbridges2
 Depends:
     R (>= 4.2.0)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Imports:
     httr,
     R6,
