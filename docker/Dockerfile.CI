@@ -18,4 +18,4 @@ RUN Rscript -e 'if (!requireNamespace("renv", quietly = TRUE)) remotes::install_
 
 RUN Rscript -e 'renv::restore(lockfile = "renv.lock")'
 
-COPY Dockerfile.CI /opt/Dockerfile
+COPY docker/Dockerfile.CI /opt/Dockerfile
