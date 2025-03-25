@@ -79,7 +79,7 @@ login access.
 
 ---
 
-### 2025-03-24
+### 2025-03-25
 
 This release (0.4.0) introduces support for Enterprise API actions in the API
 client library:
