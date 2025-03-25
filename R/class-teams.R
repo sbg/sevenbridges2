@@ -49,7 +49,7 @@ Teams <- R6::R6Class(
     #' \dontrun{
     #'   # Retrieve a list of all teams within the division regardless of
     #'   # whether you are a member of a team or not
-    #'   a$teams$query(division_id = "division-id", list_all = TRUE)
+    #'   a$teams$query(division = "division-id", list_all = TRUE)
     #' }
     #'
     #' @return A \code{\link{Collection}} of \code{\link{Team}} objects.
@@ -143,7 +143,7 @@ Teams <- R6::R6Class(
     #' @return A \code{\link{Team}} object.
     create = function(division, name) {
       if (is_missing(division) || is_missing(name)) {
-        rlang::abort("Division or new team name is missing. Please, provide both parameters.") # nolint
+        rlang::abort("Division or new team name is missing. Please provide both parameters.") # nolint
       }
       division_id <- check_and_transform_id(division,
         class_name = "Division",

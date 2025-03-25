@@ -50,7 +50,7 @@ R6 Class representing a resource for managing project members.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{id}}{Member's id.}
+\item{\code{id}}{Member's ID.}
 
 \item{\code{username}}{Member's username.}
 

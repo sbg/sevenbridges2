@@ -20,7 +20,7 @@ Upload <- R6::R6Class(
     ),
     #' @field upload_id Upload ID received after upload initialization.
     upload_id = NULL,
-    #' @field path Relative or absolute path to the file on the local disc.
+    #' @field path Relative or absolute path to the file on the local disk.
     path = NULL,
     #' @field project Project's identifier (character).
     project = NULL,
@@ -98,7 +98,7 @@ Upload <- R6::R6Class(
     #'                     auth = auth
     #'                    )
     #'
-    #'  # Print upload object information
+    #'  # Print the upload object information
     #'  upload_object$print(name = name)
     #' }
     #'
@@ -119,7 +119,7 @@ Upload <- R6::R6Class(
     }, # nocov end
 
     # Initialize multipart file upload ---------------------------------------
-    #' @description Initialize new multipart file upload.
+    #' @description Initialize a new multipart file upload.
     #'
     #' @importFrom glue glue glue_col
     #' @importFrom rlang abort
@@ -301,7 +301,7 @@ Upload <- R6::R6Class(
       )
       rlang::inform(
         paste0(
-          "Estimated uploading speed: ",
+          "Estimated upload speed: ",
           ceiling(self$file_size / 1024 / 1024 / as.numeric(.diff)),
           " Mb/", attr(.diff, "unit")
         )
@@ -513,8 +513,8 @@ Part <- R6::R6Class(
     # Get upload part info ----------------------------------------------------
     #' @description Get upload part info.
     #'
-    #' @param upload_id Upload object or ID of the upload process that part.
-    #'  belongs to.
+    #' @param upload_id Upload object or ID of the upload process to which the
+    #'  part belongs.
     #'
     #' @importFrom glue glue
     #'

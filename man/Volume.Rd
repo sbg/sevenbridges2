@@ -340,8 +340,8 @@ volume_object <- Volume$new(
 \describe{
 \item{\code{URL}}{List of URL endpoints for this resource.}
 
-\item{\code{id}}{Volume ID, constructed from \code{{division}/{volume_name}}
-or \code{{volume_owner}/{volume_name}}.}
+\item{\code{id}}{Volume ID, constructed from \code{{division}/{volume_name}} or \cr
+\code{{volume_owner}/{volume_name}}.}
 
 \item{\code{name}}{The name of the volume. It must be unique from all
 other volumes for this user. Required if \code{from_path} parameter
@@ -539,9 +539,9 @@ volume_object <- Volume$new(
 \subsection{Method \code{deactivate()}}{
 Deactivate volume.
 Once deactivated, you cannot import from, export to, or browse within a
-volume. As such, the content of the files imported from this volume will
-no longer be accessible on the Platform. However, you can update the
-volume and manage members. \cr
+volume. As such, the content of the files imported from this volume
+will no longer be accessible on the Platform. However, you can update
+the volume and manage members. \cr
 Note that you cannot deactivate the volume if you have running imports
 or exports unless you force the operation using the query parameter
 force=TRUE.
@@ -810,7 +810,8 @@ like 'fields', etc.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\code{\link{Collection}} containing \code{\link{Member}} objects.
+\code{\link{Collection}} containing \code{\link{Member}}
+objects.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1117,8 +1118,8 @@ volume_object <- Volume$new(
 \subsection{Method \code{modify_member_permissions()}}{
 Modify volume member's permissions.
 This function modifies the permissions for a member of a specific
-volume. Note that this does not overwrite all previously set permissions
-for the member.
+volume. Note that this does not overwrite all previously set
+permissions for the member.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Volume$modify_member_permissions(
   member,

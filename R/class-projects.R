@@ -1,8 +1,8 @@
 # nolint start
-#' @title R6 Class representing a projects endpoints.
+#' @title R6 Class representing projects endpoints.
 #'
 #' @description
-#' R6 Class representing Projects resource.
+#' R6 Class representing a Projects resource.
 #'
 #' @importFrom R6 R6Class
 #'
@@ -31,8 +31,8 @@ Projects <- R6::R6Class(
     },
 
     # List projects -----------------------------------------------------------
-    #' @description A method to list all projects available to particular user.
-    #'  If the username is not provided, all projects available to the
+    #' @description A method to list all projects available to a particular
+    #'  user. If the username is not provided, all projects available to the
     #'  currently authenticated user will be listed.
     #'  Otherwise, projects will be listed for the user whose username
     #'  is provided.
@@ -114,12 +114,13 @@ Projects <- R6::R6Class(
     },
 
     # Get project -----------------------------------------------------------
-    #' @description This call creates Project object containing the details
+    #' @description This call creates a Project object containing the details
     #'  of a specified project.
     #'
     #' @param id Project ID. It consists of project owner's username or
     #'  if you are using Enterprise, then the Division name and project's
-    #'  short name in form of `<owner_username>/<project-short-name>` or
+    #'  short name in form of \cr
+    #'  `<owner_username>/<project-short-name>` or \cr
     #'  `<division-name>/<project-short-name>`.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
@@ -144,13 +145,14 @@ Projects <- R6::R6Class(
     }, # nocov end
 
     # Delete project ----------------------------------------------------------
-    #' @description Method that allows you to delete project from a platform.
-    #' It can only be successfully made if you have admin status for the
-    #' project. \cr Projects are specified by their IDs, which you can obtain by
-    #'  using \code{Projects$query()} to list projects or by getting a
+    #' @description Method that allows you to delete a project from the
+    #'  platform. It can only be successfully made if you have admin status for
+    #'  the project. \cr
+    #'  Projects are specified by their IDs, which you can obtain
+    #'  by using \code{Projects$query()} to list projects or by getting a
     #'  single project using \code{Projects$get()}.
-    #' Please be careful when using this method and note that calling it will
-    #' permanently delete the project from the platform.
+    #'  Please be careful when using this method and note that calling it will
+    #'  permanently delete the project from the platform.
     #'
     #' @param project \code{\link{Project}} object or project ID.
     #' @param ... Other arguments that can be passed to core `api()` function
@@ -199,7 +201,8 @@ Projects <- R6::R6Class(
     # nolint start
     #'  [spot instances](https://docs.sevenbridges.com/docs/about-spot-instances).
     # nolint end
-    #' @param use_memoization Set to `FALSE` by default. Set to `TRUE` to enable
+    #' @param use_memoization Set to `FALSE` by default. Set to `TRUE` to
+    #'  enable
     #'  [memoization](https://docs.sevenbridges.com/docs/about-memoization).
     #' @param use_elastic_disk Set to `TRUE` to enable
     #'  [Elastic disk](https://docs.sevenbridges.com/page/elastic-disk).

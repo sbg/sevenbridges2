@@ -111,7 +111,7 @@ VolumeContentCollection <- R6::R6Class(
     # Get next page of results ------------------------------------------------
     #' @description Return next page of results.
     #'
-    #' @param ... Other arguments or query parameters that can be passed to
+    #' @param ... Other arguments or query parameters that can be passed to the
     #'  core `api()` function like 'advance_access', 'fields' etc.
     #'
     #' @importFrom rlang abort
@@ -152,7 +152,7 @@ VolumeContentCollection <- R6::R6Class(
     }, # nocov end
 
     # Get previous page of results --------------------------------------------
-    #' @description Return previous page of results.
+    #' @description Return the previous page of results.
     #'
     #' @importFrom rlang abort
     #'
@@ -178,7 +178,7 @@ VolumeContentCollection <- R6::R6Class(
     # Get all results ---------------------------------------------------------
     #' @description Fetches all available items.
     #'
-    #' @param ... Other arguments or query parameters that can be passed to
+    #' @param ... Other arguments or query parameters that can be passed to the
     #'  core `api()` function like 'advance_access', 'fields' etc.
     #'
     #' @importFrom rlang abort

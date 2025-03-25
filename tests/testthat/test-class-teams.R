@@ -63,14 +63,14 @@ test_that("Teams create() method fails when intended", {
   no_division <- list(division = NULL, name = "new-name")
   testthat::expect_error(
     do.call(setup_teams_obj$create, no_division),
-    regexp = "Division or new team name is missing. Please, provide both parameters.", # nolint
+    regexp = "Division or new team name is missing. Please provide both parameters.", # nolint
     fixed = TRUE
   )
 
   no_name <- list(division = "division-id", name = NULL)
   testthat::expect_error(
     do.call(setup_teams_obj$create, no_name),
-    regexp = "Division or new team name is missing. Please, provide both parameters.", # nolint
+    regexp = "Division or new team name is missing. Please provide both parameters.", # nolint
     fixed = TRUE
   )
 

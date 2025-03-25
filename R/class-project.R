@@ -22,7 +22,8 @@ Project <- R6::R6Class(
     ),
     #' @field id Project identifier. It consists of project owner's username or
     #'  if you are using Enterprise, then the Division name and project's
-    #'  short name in form of `<owner_username>/<project-short-name>` or
+    #'  short name in form of \cr
+    #'  `<owner_username>/<project-short-name>` or \cr
     #'  `<division-name>/<project-short-name>`.
     id = NULL,
     #' @field name Project's name.
@@ -64,7 +65,7 @@ Project <- R6::R6Class(
     #'        }
     #'  }
     settings = NULL,
-    #' @field root_folder ID for of the project's root folder.
+    #' @field root_folder ID of the project's root folder.
     root_folder = NULL,
     #' @field created_by Username of the person who created the project.
     created_by = NULL,
@@ -333,11 +334,11 @@ Project <- R6::R6Class(
     # nocov end
 
     # Delete project ---------------------------------------------------------
-    #' @description Method that allows you to delete project from a platform.
-    #' It can only be successfully made if you have admin status for the
-    #' project. \cr
-    #' Please be careful when using this method and note that calling it will
-    #' permanently delete the project from the platform.
+    #' @description Method that allows you to delete a project from the
+    #'  platform. It can only be successfully made if you have admin status for
+    #'  the project. \cr
+    #'  Please be careful when using this method and note that calling it will
+    #'  permanently delete the project from the platform.
     #'
     #' @importFrom rlang abort inform
     #' @importFrom httr content
@@ -429,8 +430,8 @@ Project <- R6::R6Class(
     #'  registering for an account on the Seven Bridges Platform.
     #' @param permissions List of permissions that will be associated with the
     #'  project's member. It can contain fields: `read`, `copy`, `write`,
-    #'  `execute` and `admin` with logical fields - `TRUE` if certain permission
-    #'  is allowed to the user, or `FALSE` if it's not.
+    #'  `execute` and `admin` with logical fields - `TRUE` if certain
+    #'  permission is allowed to the user, or `FALSE` if it's not.
     #'  Requests to add a project member must include the key permissions.
     #'  However, if you do not include a value for some permission, it will be
     #'  set to `FALSE` by default. The exception to this rule is the `read`
@@ -531,8 +532,8 @@ Project <- R6::R6Class(
     #'  be successfully run by a user who has admin privileges in the project.
     #'
     #' @param user The Seven Bridges Platform username of the person
-    #'  you want to remove from the project or object of class Member containing
-    #'  user's username.
+    #'  you want to remove from the project or object of class Member
+    #'  containing user's username.
     #'
     #' @importFrom rlang abort inform
     #' @importFrom glue glue glue_col
@@ -634,8 +635,8 @@ Project <- R6::R6Class(
     #'  Member containing user's username.
     #' @param permissions List of permissions that will be associated with the
     #'  project's member. It can contain fields: `read`, `copy`, `write`,
-    #'  `execute` and `admin` with logical fields - `TRUE` if certain permission
-    #'  is allowed to the user, or `FALSE` if it's not.
+    #'  `execute` and `admin` with logical fields - `TRUE` if certain
+    #'  permission is allowed to the user, or `FALSE` if it's not.
     #'  Requests to add a project member must include the key permissions.
     #'  However, if you do not include a value for some permission, it will be
     #'  set to `FALSE` by default. The exception to this rule is the `read`
@@ -836,7 +837,7 @@ Project <- R6::R6Class(
     },
 
     # List project's apps ----------------------------------------------------
-    #' @description This call lists all apps in project.
+    #' @description This call lists all apps in the project.
     #'
     #' @param query_terms A list of search terms used to filter apps based on
     #'  their details. Each term is case-insensitive and can relate to the
@@ -951,8 +952,8 @@ Project <- R6::R6Class(
     #' @param parent Provide task ID or task object of the parent task to
     #'  return all child tasks from that parent.
     #'  A parent task is a task that specifies the criteria by which to
-    #'  batch its inputs into a series of further sub-tasks, called child tasks.
-    #'  See the documentation on
+    #'  batch its inputs into a series of further sub-tasks, called child
+    #'  tasks. See the documentation on
     # nolint start
     #'  [batching tasks](https://docs.sevenbridges.com/docs/about-batch-analyses)
     # nolint end
@@ -1041,7 +1042,7 @@ Project <- R6::R6Class(
     },
 
     # List project's import jobs ----------------------------------------------
-    #' @description This call lists imports initiated by particular user
+    #' @description This call lists imports initiated by a particular user
     #'  into this destination project.
     #'
     #' @param volume Volume id or Volume object. List all imports
@@ -1098,11 +1099,11 @@ Project <- R6::R6Class(
     },
 
     # Create new task within project ------------------------------------------
-    #' @description This call creates a new task. You can create either a single
-    #'  task or a batch task by using the app's default batching, override
-    #'  batching, or disable batching completely. A parent task is a task that
-    #'  specifies criteria by which to batch its inputs into a series of further
-    #'  sub-tasks, called child tasks. the documentation on
+    #' @description This call creates a new task. You can create either a
+    #'  single task or a batch task by using the app's default batching,
+    #'  override batching, or disable batching completely. A parent task is a
+    #'  task that specifies criteria by which to batch its inputs into a series
+    #'  of further sub-tasks, called child tasks. See the documentation on
     # nolint start
     #'  [batching tasks](https://docs.sevenbridges.com/docs/about-batch-analyses)
     # nolint end
@@ -1173,19 +1174,19 @@ Project <- R6::R6Class(
     #'  See below for more details.
     #'  \itemize{
     #'    \item `main_location` - Defines the output location for all
-    #'      output nodes in the task. Can be a string path within the project in
-    #'      which the task is created, for example
+    #'      output nodes in the task. Can be a string path within the project
+    #'      in which the task is created, for example \cr
     #'      `/Analysis/<task_id>_<task_name>/`
-    #'      or a path on an attached volume, such as
-    #'      `volumes://volume_name/<project_id>/html`.
+    #'      or a path on an attached volume, \cr
+    #'      such as `volumes://volume_name/<project_id>/html`.
     #'      Parts of the path enclosed in angle brackets <> are tokens that are
     #'      dynamically replaced with corresponding values during task
     #'      execution.
     #'    \item `main_location_alias`: The string location (path) in the
-    #'      project that will point to the actual location where the outputs are
-    #'      stored. Used if main_location is defined as a volume path (starting
-    #'      with volumes://), to provide an easy way of accessing output data
-    #'      directly from project files.
+    #'      project that will point to the actual location where the outputs
+    #'      are stored. Used if main_location is defined as a volume path
+    #'      (starting with volumes://), to provide an easy way of accessing
+    #'      output data directly from project files.
     #'    \item `nodes_override`: Enables defining of output locations
     #'      for output nodes individually through nodes_location (see below).
     #'      Set to `TRUE` to be able to define individual locations per output
@@ -1209,9 +1210,9 @@ Project <- R6::R6Class(
     #'   "output_location_alias" = "/rfranklin/tasks/picard"
     #'  )
     #'  ```
-    #'      In the example above, b64html is the ID of the output node for which
-    #'      you want to define the output location, while the parameters are
-    #'      defined as follows:
+    #'      In the example above, b64html is the ID of the output node for
+    #'      which you want to define the output location, while the parameters
+    #'      are defined as follows:
     #'    \itemize{
     #'      \item `output_location` - Can be a path within the project in which
     #'        the task is created, for example

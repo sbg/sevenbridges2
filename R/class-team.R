@@ -23,7 +23,7 @@ Team <- R6::R6Class(
     name = NULL,
 
     # Initialize Team object
-    #' @description Create a new Team object
+    #' @description Create a new Team object.
     #'
     #' @param res Response containing the Team object information.
     #'
@@ -78,7 +78,7 @@ Team <- R6::R6Class(
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
-    #'  @importFrom rlang inform
+    #' @importFrom rlang inform
     #'
     #' @examples
     #' \dontrun{
@@ -220,7 +220,7 @@ Team <- R6::R6Class(
     remove_member = function(user) {
       if (is_missing(user)) {
         rlang::abort(
-          "Please provide a username or a User object to remove the member from the division." # nolint
+          "Please provide a username or a User object to remove the member from the team." # nolint
         )
       }
 

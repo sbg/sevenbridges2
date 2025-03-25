@@ -61,7 +61,7 @@ test_that("Resource delete works", {
   setup_resource_obj$URL <- list()
   # Query fails when resource doesn't have delete URL
   testthat::expect_error(setup_resource_obj$delete(id = "some_id"),
-    regexp = "Resource can not be deleted!",
+    regexp = "Resource cannot be deleted!",
     fixed = TRUE
   )
 

@@ -130,7 +130,7 @@ R6 Class representing a central resource for managing teams.
 \if{html}{\out{<a id="method-Team-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Team-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new Team object
+Create a new Team object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Team$new(res = NA, ...)}\if{html}{\out{</div>}}
 }
@@ -184,9 +184,7 @@ Reload Team object information.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{...}}{Other arguments that can be passed to core \code{api()} function
-like 'fields', etc.
-
-@importFrom rlang inform}
+like 'fields', etc.}
 }
 \if{html}{\out{</div>}}
 }

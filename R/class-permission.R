@@ -26,7 +26,7 @@ Permission <- R6::R6Class(
     #' @param read User can view file names, metadata, and workflows.
     #'  They cannot view file contents. All members of a project have read
     #'  permissions by default. Even if you try setting read permissions to
-    #'  `FALSE`, they will still default to `TRUE`
+    #'  `FALSE`, they will still default to `TRUE`.
     #' @param copy User can view file content, copy, and download files from a
     #'  project. Set value to `TRUE` to assign the user copy permission.
     #'  Set to `FALSE` to remove copy permission.
@@ -90,7 +90,7 @@ Permission <- R6::R6Class(
       string <- glue::glue("{names(x)}: {x}")
       names(string) <- rep("*", times = length(string))
 
-      cli::cli_h1("Permisions")
+      cli::cli_h1("Permissions")
       cli::cli_li(string)
 
       # Close container elements

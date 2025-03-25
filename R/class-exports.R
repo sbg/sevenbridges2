@@ -31,7 +31,7 @@ Exports <- R6::R6Class(
     },
 
     # List export jobs --------------------------------------------------------
-    #' @description This call lists export jobs initiated by particular user.
+    #' @description This call lists export jobs initiated by a particular user.
     #'  Note that when you export a file from a project on the Platform into a
     #'  volume, you write to your cloud storage bucket.
     #'
@@ -133,9 +133,10 @@ Exports <- R6::R6Class(
 
     # Start new export job ----------------------------------------------------
     #' @description This call lets you queue a job to export a file from a
-    #'  project on the Platform into a volume. The file selected for export must
-    #'  not be a public file or an alias. Aliases are objects stored in your
-    #'  cloud storage bucket which have been made available on the Platform.
+    #'  project on the Platform into a volume. The file selected for export
+    #'  must not be a public file or an alias. Aliases are objects stored in
+    #'  your cloud storage bucket which have been made available on the
+    #'  Platform.
     #'  The volume you are exporting to must be configured for
     #'  read-write access. To do this, set the `access_mode` parameter to
     #'  `RW` when creating or modifying a volume. \cr
@@ -172,8 +173,8 @@ Exports <- R6::R6Class(
     #'  prepended to location before attempting to create the file on the
     #'  volume.
     #'
-    #'  If you would like to export the file into some folder on the volume,
-    #'  please add folder name as prefix before file name in form
+    #'  If you would like to export the file into a folder on the volume,
+    #'  please add the folder name as a prefix before the file name in the form
     #'  `<folder-name>/<file-name>`.
     #' @param overwrite Set to `TRUE` if you want to overwrite the item
     #'  if another one with the same name already exists at the destination.
@@ -185,7 +186,7 @@ Exports <- R6::R6Class(
     #'      exporting to this bucket. Supported values:
     #'      `AES256` (SSE-S3 encryption), `aws:kms`, `null`
     #'      (no server-side encryption). Default: `AES256`.
-    #'    \item `sse_aws_kms_key_id`: Applies to type: `s3`.
+    #'    \item `sse_aws_kms_key_Id`: Applies to type: `s3`.
     #'      If AWS KMS encryption is used, this should be set to the required
     #'      KMS key. If not set and `aws:kms` is set as `sse_algorithm`,
     #'      default KMS key is used.
@@ -280,7 +281,7 @@ Exports <- R6::R6Class(
     },
 
     # Delete export job -------------------------------------------------------
-    #' @description Deleting export jobs is not possible.
+    #' @description Export jobs cannot be deleted.
     #'
     #' @importFrom rlang inform
     delete = function() {
@@ -393,7 +394,7 @@ Exports <- R6::R6Class(
     #'            exporting to this bucket. Supported values:
     #'            `AES256` (SSE-S3 encryption), `aws:kms`, `null`
     #'            (no server-side encryption). Default: `AES256`.
-    #'          \item `sse_aws_kms_key_id`: Applies to type: `s3`.
+    #'          \item `sse_aws_kms_key_Id`: Applies to type: `s3`.
     #'            If AWS KMS encryption is used, this should be set to the
     #'            required KMS key. If not set and `aws:kms` is set as
     #'            `sse_algorithm`, default KMS key is used.
@@ -563,7 +564,7 @@ Exports <- R6::R6Class(
       }
 
       if (length(failed_export_tries) == length(res$items)) {
-        rlang::abort("None of the files can be exported. Please check file export limitations in the API documentation.") # nolint
+        rlang::abort("None of the files could be exported. Please check file export limitations in the API documentation.") # nolint
       }
 
       res$items <- asExportList(res, auth = self$auth, bulk = TRUE)

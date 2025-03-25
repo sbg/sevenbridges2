@@ -1,5 +1,5 @@
 # nolint start
-#' @title R6 Class representing a AsyncJob
+#' @title R6 Class representing an AsyncJob
 #'
 #' @description
 #' R6 Class representing a resource for managing asynchronous jobs.
@@ -31,7 +31,7 @@ AsyncJob <- R6::R6Class(
     failed_files = NULL,
     #' @field started_on The time and date the job started.
     started_on = NULL,
-    #' @field finished_on The time and date the job has finished.
+    #' @field finished_on The time and date the job finished.
     finished_on = NULL,
 
     # Initialize AsyncJob object ----------------------------------------------
@@ -101,14 +101,14 @@ AsyncJob <- R6::R6Class(
     },
 
     # Reload AsyncJob object --------------------------------------------------
-    #' @description Reload AsyncJob object information.
+    #' @description Reloads AsyncJob object information.
     #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
     #' @examples
     #' \dontrun{
-    #'  # x is API response when app is requested
+    #'  # x is API response when AsyncJob is requested
     #'  asyncjob_object <- AsyncJob$new(
     #'    res = x,
     #'    href = x$href,

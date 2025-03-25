@@ -52,7 +52,7 @@ Files <- R6::R6Class(
     #'  of the subdirectories. \cr
     #'  To list the contents of a subdirectory, make a new call
     #'  and specify the subdirectory ID as the `parent` parameter. \cr
-    #'  More information you can find in our
+    #'  For more details, see our
     # nolint start
     #'  [API documentation](https://docs.sevenbridges.com/reference/list-files-primary-method).
     # nolint end
@@ -245,7 +245,7 @@ Files <- R6::R6Class(
     #'  you to copy files between projects. Unlike the call to copy a file
     #'  between projects, this call lets you batch the copy operation and copy
     #'  a list of files at a time. \cr
-    #'  More information you may find
+    #'  More information can be found here
     # nolint start
     #'  [here](https://docs.sevenbridges.com/reference/copy-files-between-projects).
     # nolint end

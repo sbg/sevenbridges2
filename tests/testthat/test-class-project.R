@@ -97,7 +97,7 @@ test_that("Project create_folder method throws error when expected", {
   # Test with spaces_folder_name
   testthat::expect_error(
     do.call(setup_project_obj$create_folder, spaces_folder_name),
-    regexp = "The folder name cannot contain spaces in the name.",
+    regexp = "The folder name cannot contain spaces.",
     fixed = TRUE
   )
   # Test with invalid_folder_name

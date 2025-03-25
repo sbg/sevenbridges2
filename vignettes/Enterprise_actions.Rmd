@@ -29,7 +29,7 @@ knitr::opts_chunk$set(
 
 # Managing Divisions
 
-Enterprise access to the Platform is available on demand and allows companies
+Enterprise access to the Platform is available on demand, and allows companies
 or organizations to mimic their internal structure and hierarchy on the Seven
 Bridges Platform, thus facilitating simpler and more efficient collaboration.
 
@@ -162,9 +162,9 @@ my_division$remove_member(user = member_to_remove)
 As mentioned before, the `Team` entity is the subgroup of the `Division` and
 enterprise users can perform certain actions on created teams too. 
 
-We have created the `Teams` class as `Resource` class, the same we have with
-`Apps`, `Files`, `Projects` etc, beside the `Team` class that stores information
-about a single team. 
+We have created the `Teams` class as a `Resource` class, just like we have for
+`Apps`, `Files`, `Projects`, etc., in addition to the `Team` class,
+which stores information about a single team.
 
 `Teams` class helps us organizing our team methods on `Auth` object, therefore,
 on the `auth$teams` path you may find the well known methods for querying teams
@@ -178,8 +178,8 @@ to return all teams regardless of whether you are a member of a team or not.
 
 Method `get()` fetches a single team by its ID provided. 
 
-Creating new teams (`create()`) requires only a `division` parameter where to 
-create a team and a `name` parameter how to name a new team created. 
+Creating new teams (`create()`) requires only a `division` parameter specifying
+where to create the team, and a `name` parameter for the new team's name. 
 
 Deleting teams (`delete()`) is possible by providing a team ID or `Team` object.
 
@@ -194,14 +194,14 @@ print(my_teams)
 ── 1 ──
 
 ── Team ─────────────────────────────────────────────────────────────────────
-• name: <tim-name-1>
+• name: <team-name-1>
 • id: <team-id-1>
 • href: <href-1>
 
 ── 2 ──
 
 ── Team ─────────────────────────────────────────────────────────────────────
-• name: <tim-name-2>
+• name: <team-name-2>
 • id: <team-id-2>
 • href: <href-2>
 

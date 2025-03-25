@@ -4,7 +4,7 @@
 #' User object containing user information.
 #'
 #' @importFrom R6 R6Class
-#' @details This is main object for Users.
+#' @details This is the main object for Users.
 User <- R6::R6Class(
   "User",
   inherit = Item,
@@ -31,9 +31,9 @@ User <- R6::R6Class(
     address = NULL,
     #' @field city User's city of residence.
     city = NULL,
-    #' @field  state User's state of residence.
+    #' @field state User's state of residence.
     state = NULL,
-    #' @field  country User's country of residence.
+    #' @field country User's country of residence.
     country = NULL,
     #' @field zip_code Zip code for the user's residence.
     zip_code = NULL,

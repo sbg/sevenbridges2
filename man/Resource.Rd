@@ -67,7 +67,7 @@ Generic query implementation that is used by the resources.
 \if{html}{\out{<a id="method-Resource-get"></a>}}
 \if{latex}{\out{\hypertarget{method-Resource-get}{}}}
 \subsection{Method \code{get()}}{
-Generic get implementation that fetches single resource
+Generic get implementation that fetches a single resource
 from the server.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Resource$get(cls, id, ...)}\if{html}{\out{</div>}}
@@ -90,7 +90,7 @@ like 'fields', etc.}
 \if{html}{\out{<a id="method-Resource-delete"></a>}}
 \if{latex}{\out{\hypertarget{method-Resource-delete}{}}}
 \subsection{Method \code{delete()}}{
-Generic implementation that deletes the resource
+Generic implementation to delete a resource
 from the server.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Resource$delete(id, ...)}\if{html}{\out{</div>}}

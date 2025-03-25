@@ -250,7 +250,7 @@ test_that("Files create_folder() throws error when expected", {
   )
   testthat::expect_error(
     do.call(setup_files_obj$create_folder, bad_name_param2),
-    regexp = "The folder name cannot contain spaces in the name.", # nolint
+    regexp = "The folder name cannot contain spaces.", # nolint
     fixed = TRUE
   )
   testthat::expect_error(

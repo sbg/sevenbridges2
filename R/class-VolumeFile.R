@@ -24,7 +24,7 @@ VolumeFile <- R6::R6Class(
     type = NULL,
     #' @field volume Volume id.
     volume = NULL,
-    #' @field metadata File's metadata if exists.
+    #' @field metadata File metadata, if it exists.
     metadata = NULL,
 
     # Initialize VolumeFile object -------------------------------------------
@@ -110,7 +110,7 @@ VolumeFile <- R6::R6Class(
     #'  volume_file_object$reload()
     #' }
     #'
-    #' @return \code{\link{VolumeFile}} object.
+    #' @return A \code{\link{VolumeFile}} object.
     reload = function(...) {
       reload_url <- ""
       if (!is_missing(self$href)) {
@@ -141,8 +141,8 @@ VolumeFile <- R6::R6Class(
     }, # nocov end
 
     # Start new file import job -----------------------------------------------
-    #' @description This call lets you queue a job to import this file or folder
-    #'  from a volume into a project on the Platform. \cr
+    #' @description This call lets you queue a job to import this file or
+    #'  folder from a volume into a project on the Platform. \cr
     #'  Essentially, you are importing an item from your cloud storage provider
     #'  (Amazon Web Services, Google Cloud Storage, Azure or Ali Cloud) via the
     #'  volume onto the Platform. \cr

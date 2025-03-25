@@ -7,7 +7,7 @@
 Rate object containing information about user's rate limit.
 }
 \details{
-This is main object for Rate Limit.
+This is the main object for Rate Limit.
 }
 \section{Super class}{
 \code{\link[sevenbridges2:Item]{sevenbridges2::Item}} -> \code{Rate}

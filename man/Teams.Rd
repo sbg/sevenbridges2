@@ -15,7 +15,7 @@ R6 Class representing teams resource endpoints.
 \dontrun{
   # Retrieve a list of all teams within the division regardless of
   # whether you are a member of a team or not
-  a$teams$query(division_id = "division-id", list_all = TRUE)
+  a$teams$query(division = "division-id", list_all = TRUE)
 }
 
 
@@ -118,7 +118,7 @@ A \code{\link{Collection}} of \code{\link{Team}} objects.
 \preformatted{\dontrun{
   # Retrieve a list of all teams within the division regardless of
   # whether you are a member of a team or not
-  a$teams$query(division_id = "division-id", list_all = TRUE)
+  a$teams$query(division = "division-id", list_all = TRUE)
 }
 
 }

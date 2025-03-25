@@ -41,7 +41,7 @@ File <- R6::R6Class(
     origin = NULL,
     #' @field tags List of tags associated with the file.
     tags = NULL,
-    #' @field metadata List for metadata associated with the file.
+    #' @field metadata List of metadata associated with the file.
     metadata = NULL,
     #' @field url File download URL.
     url = NULL,
@@ -49,7 +49,8 @@ File <- R6::R6Class(
     parent = NULL,
     #' @field type This can be of type `file` or `folder`.
     type = NULL,
-    #' @field secondary_files Secondary files linked to the file if exist.
+    #' @field secondary_files Secondary files linked to the file, if they
+    #'  exist.
     secondary_files = NULL,
 
     # Initialize File object -----------------------------------------------
@@ -259,13 +260,13 @@ File <- R6::R6Class(
     # nocov end
 
     # Update file ------------------------------------------------------------
-    #' @description Updates the name, the full set metadata, and tags
+    #' @description Updates the name, the full set of metadata, and tags
     #' for a specified file.
-    #' .
+    #'
     #' @param name The new name of the file.
     #' @param metadata The metadata fields and their values that you want to
-    #'  update. This is a named list of key-value pairs. The keys and values are
-    #'  strings.
+    #'  update. This is a named list of key-value pairs. The keys and values
+    #'  are strings.
     #' @param tags The tags you want to update, represented as unnamed list of
     #'  values to add as tags.
     #' @param ... Other arguments that can be passed to core `api()` function
@@ -455,10 +456,10 @@ File <- R6::R6Class(
     #' @description This method returns a URL that you can use to download
     #'  the specified file.
     #'
-    #' @importFrom glue glue
-    #'
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
+    #'
+    #' @importFrom glue glue
     #'
     #' @examples
     #' \dontrun{
@@ -533,8 +534,8 @@ File <- R6::R6Class(
     #'  [API documentation](https://docs.sevenbridges.com/reference/modify-a-files-metadata).
     # nolint end
     #'
-    #' @param metadata_fields Enter a list of key-value pairs of metadata fields
-    #'  and metadata values.
+    #' @param metadata_fields Enter a list of key-value pairs of metadata
+    #'  fields and metadata values.
     #' @param overwrite Set to `TRUE` if you want to overwrite existing tags.
     #' Default: `FALSE`.
     #' @param ... Other arguments that can be passed to core `api()` function
@@ -699,7 +700,6 @@ File <- R6::R6Class(
     #' @importFrom glue glue
     #' @importFrom cli cli_h1 cli_li cli_ul cli_end cli_bullets
     #' @importFrom rlang inform abort
-    #' @importFrom glue glue
     #'
     #' @examples
     #' \dontrun{
@@ -726,7 +726,7 @@ File <- R6::R6Class(
     # nocov end
 
     # Download file from platform ---------------------------------------------
-    #' @description Download method for File objects. It allows download a
+    #' @description Download method for File objects. It allows downloading a
     #'  platform file to your local computer. To specify the destination for
     #'  your download, you should provide the path to the destination directory
     #'  as `directory_path` parameter.
@@ -832,9 +832,10 @@ File <- R6::R6Class(
 
     # Export file into a volume ---------------------------------------------
     #' @description This call lets you queue a job to export this file from a
-    #'  project on the Platform into a volume. The file selected for export must
-    #'  not be a public file or an alias. Aliases are objects stored in your
-    #'  cloud storage bucket which have been made available on the Platform.
+    #'  project on the Platform into a volume. The file selected for export
+    #'  must not be a public file or an alias. Aliases are objects stored in
+    #'  your cloud storage bucket which have been made available on the
+    #'  Platform.
     #'  The volume you are exporting to must be configured for read-write
     #'  access. To do this, set the `access_mode` parameter to `RW` when
     #'  creating or modifying a volume.  \cr
@@ -870,7 +871,7 @@ File <- R6::R6Class(
     #'  If you would like to export the file into some folder on the volume,
     #'  please add folder name as prefix before file name in form
     #'  `<folder-name>/<file-name>`.
-    #' @param overwrite Set to `TRUE` of you want to overwrite the item that
+    #' @param overwrite Set to `TRUE` if you want to overwrite the item that
     #'  already exists at the destination. Default: `FALSE`.
     #' @param copy_only If `TRUE`, file will be copied to a volume but
     #'  source file will remain on the Platform.
@@ -880,7 +881,7 @@ File <- R6::R6Class(
     #'      exporting to this bucket. Supported values:
     #'      `AES256` (SSE-S3 encryption), `aws:kms`, `null`
     #'      (no server-side encryption). Default: `AES256`.
-    #'    \item `sse_aws_kms_key_id`: Applies to type: `s3`.
+    #'    \item `sse_aws_kms_key_Id`: Applies to type: `s3`.
     #'      If AWS KMS encryption is used, this should be set to the required
     #'      KMS key. If not set and `aws:kms` is set as `sse_algorithm`,
     #'      default KMS key is used.

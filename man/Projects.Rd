@@ -2,9 +2,9 @@
 % Please edit documentation in R/class-projects.R
 \name{Projects}
 \alias{Projects}
-\title{R6 Class representing a projects endpoints.}
+\title{R6 Class representing projects endpoints.}
 \description{
-R6 Class representing Projects resource.
+R6 Class representing a Projects resource.
 }
 \examples{
 
@@ -102,8 +102,8 @@ Create new Projects resource object.
 \if{html}{\out{<a id="method-Projects-query"></a>}}
 \if{latex}{\out{\hypertarget{method-Projects-query}{}}}
 \subsection{Method \code{query()}}{
-A method to list all projects available to particular user.
-If the username is not provided, all projects available to the
+A method to list all projects available to a particular
+user. If the username is not provided, all projects available to the
 currently authenticated user will be listed.
 Otherwise, projects will be listed for the user whose username
 is provided.
@@ -171,7 +171,7 @@ like other query parameters or 'fields', etc.}
 \if{html}{\out{<a id="method-Projects-get"></a>}}
 \if{latex}{\out{\hypertarget{method-Projects-get}{}}}
 \subsection{Method \code{get()}}{
-This call creates Project object containing the details
+This call creates a Project object containing the details
 of a specified project.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Projects$get(id, ...)}\if{html}{\out{</div>}}
@@ -182,7 +182,8 @@ of a specified project.
 \describe{
 \item{\code{id}}{Project ID. It consists of project owner's username or
 if you are using Enterprise, then the Division name and project's
-short name in form of \verb{<owner_username>/<project-short-name>} or
+short name in form of \cr
+\verb{<owner_username>/<project-short-name>} or \cr
 \verb{<division-name>/<project-short-name>}.}
 
 \item{\code{...}}{Other arguments that can be passed to core \code{api()} function
@@ -212,10 +213,11 @@ like 'fields', etc.}
 \if{html}{\out{<a id="method-Projects-delete"></a>}}
 \if{latex}{\out{\hypertarget{method-Projects-delete}{}}}
 \subsection{Method \code{delete()}}{
-Method that allows you to delete project from a platform.
-It can only be successfully made if you have admin status for the
-project. \cr Projects are specified by their IDs, which you can obtain by
-using \code{Projects$query()} to list projects or by getting a
+Method that allows you to delete a project from the
+platform. It can only be successfully made if you have admin status for
+the project. \cr
+Projects are specified by their IDs, which you can obtain
+by using \code{Projects$query()} to list projects or by getting a
 single project using \code{Projects$get()}.
 Please be careful when using this method and note that calling it will
 permanently delete the project from the platform.
@@ -296,7 +298,8 @@ define the project as open i.e. one which will contain open data.}
 \item{\code{use_interruptible_instances}}{Defines the use of
 \href{https://docs.sevenbridges.com/docs/about-spot-instances}{spot instances}.}
 
-\item{\code{use_memoization}}{Set to \code{FALSE} by default. Set to \code{TRUE} to enable
+\item{\code{use_memoization}}{Set to \code{FALSE} by default. Set to \code{TRUE} to
+enable
 \href{https://docs.sevenbridges.com/docs/about-memoization}{memoization}.}
 
 \item{\code{use_elastic_disk}}{Set to \code{TRUE} to enable

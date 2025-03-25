@@ -18,15 +18,15 @@
 #'  However, keep in mind that there are certain constraints:
 #'  \itemize{
 #'      \item The same `destination_volume` applies to all items in the
-#' .      resulting list.
+#'       resulting list.
 #'      \item The same applies to `overwrite` and `properties`
 #'       parameters.
 #'      \item By default, the `destination_location` field is populated with
 #'       the source file name. Upon retrieval of the list of items for bulk
-#'       export, you can manually update the `destination_location` field
-#'       for each element of the list as needed. Additionally, you have the
-#'       flexibility to manually modify any other fields in the list if
-#'       required.
+#'       export, you can manually update the \cr
+#'       `destination_location` field for each element of the list as needed.
+#'       Additionally, you have the flexibility to manually modify any other
+#'       fields in the list if required.
 #'  }
 #'
 #' @param files A list of \code{\link{File}} objects or list of strings
@@ -58,7 +58,7 @@
 #'      exporting to this bucket. Supported values:
 #'      `AES256` (SSE-S3 encryption), `aws:kms`, `null`
 #'      (no server-side encryption). Default: `AES256`.
-#'    \item `sse_aws_kms_key_id`: Applies to type: `s3`.
+#'    \item `sse_aws_kms_key_Id`: Applies to type: `s3`.
 #'      If AWS KMS encryption is used, this should be set to the required
 #'      KMS key. If not set and `aws:kms` is set as `sse_algorithm`,
 #'      default KMS key is used.
@@ -81,7 +81,7 @@
 # nolint end
 #' @importFrom purrr map
 #'
-#' @return List of body params items for for staring an export job.
+#' @return List of body params items for starting an export job.
 #'
 #' @export
 #'

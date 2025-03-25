@@ -4,7 +4,7 @@
 \alias{Imports}
 \title{R6 Class representing storage imports endpoints}
 \description{
-R6 Class representing storage imports resource endpoints.
+R6 Class for managing storage imports resource endpoints.
 }
 \examples{
 
@@ -143,7 +143,7 @@ Create a new Imports object.
 \if{html}{\out{<a id="method-Imports-query"></a>}}
 \if{latex}{\out{\hypertarget{method-Imports-query}{}}}
 \subsection{Method \code{query()}}{
-This call lists import jobs initiated by particular user.
+This call lists import jobs initiated by a particular user.
 Note that when you import a file from your volume on your cloud storage
 provider (Amazon Web Services or Google Cloud Storage), you are
 creating an alias on the Platform which points to the file in your
@@ -332,8 +332,8 @@ be renamed, not the whole folder.}
 exact source folder structure. The default value is \code{TRUE} if the item
 being imported is a folder. Should not be used if you are importing a
 file. Bear in mind that if you use \code{preserve_folder_structure = FALSE},
-that the response will be the parent folder object containing imported
-files alongside with other files if they exist.}
+the response will be the parent folder object containing imported files
+alongside with other files if they exist.}
 
 \item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
@@ -368,7 +368,7 @@ like 'fields', etc.}
 \if{html}{\out{<a id="method-Imports-delete"></a>}}
 \if{latex}{\out{\hypertarget{method-Imports-delete}{}}}
 \subsection{Method \code{delete()}}{
-Deleting import jobs is not possible.
+Import jobs cannot be deleted.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Imports$delete()}\if{html}{\out{</div>}}
 }
@@ -457,8 +457,8 @@ prepended to the location before attempting to locate the item on
 the volume.
 \item \code{destination_project} - Project object or ID to import
 files/folders into. Should not be used together with
-destination_parent. If project is used, the items will be imported
-to the root of the project's files.
+destination_parent. If project is used, the items will be
+imported to the root of the project's files.
 \item \code{destination_parent} - File object of type 'folder' or its ID
 to import files/folders into. Should not be used together with
 destination_project. If parent is used, the import will take
@@ -476,10 +476,10 @@ slashes ('/').
 \item \code{autorename} - Whether to automatically rename the item
 (by prefixing its name with an underscore and number) if another
 one with the same name already exists at the destination.
-\item \code{preserve_folder_structure} - Whether to keep the exact source
-folder structure. The default value is TRUE if the item being
-imported is a folder. Should not be used if you are importing a
-file.
+\item \code{preserve_folder_structure} - Whether to keep the exact
+source folder structure. The default value is TRUE if the item
+being imported is a folder. Should not be used if you are
+importing a file.
 }
 Example of the list:
 

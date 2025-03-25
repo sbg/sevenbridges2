@@ -74,11 +74,11 @@ To install it from `CRAN`, simply use:
 install.packages("sevenbridges2")
 ```
 
-To install the development version from the `develop` branch on our Github, use
+To install the development version from the `develop` branch on our GitHub, use
 the `remotes` package:
 
 ```{r}
-# Install package from github
+# Install package from GitHub
 remotes::install_github(
   "sbg/sevenbridges2",
   build_vignettes = TRUE, dependencies = TRUE
@@ -540,7 +540,7 @@ demo_projects <- a$projects$query(name = "demo")
 tagged_projects <- a$projects$query(tags = list("demo"))
 ```
 
-Note that the output is the `Collection` object and the results (list of 
+Note that the output is a `Collection` object and the results (list of 
 `Project` objects) can be found within the `items` field.
 
 <div align="right"><a href="#top">top</a></div>
@@ -593,7 +593,7 @@ p <- a$projects$create(
 
 The **new project** is created on the platform. Notice also that the variable 
 `p` is an R6 object with fields that contain information about the platform 
-project. The facility also has several methods that allow you to perform 
+project. This object also provides several methods that allow you to perform
 basic platform operations on the project.
 
 Please check `vignette("Projects_and_Tasks_execution", package = "sevenbridges2")`
@@ -766,7 +766,7 @@ parameter as they are.
 - **file:** This input is a file. However, while some inputs accept only a 
 single file (`File`), other inputs take more than one file (`File` arrays, 
 `FilesList`, or '`File...`' ). This input requires you to pass a single `File` 
-object (for a single file input) or list of `File` objects (for inputs which 
+object (for a single file input) or list of `File` objects (for inputs that
 accept more than one file). 
 You can search for your file by `id` or by `name`, as shown in the example 
 below.
@@ -787,7 +787,7 @@ reads_2$copy_to(project = p)
 fasta_in <- a$files$get(id = "5c614f097369c402a28a3c41") # file id
 fasta_in$copy_to(project = p)
 
-# Get gtf file and copy into a project
+# Get GTF file and copy into a project
 gtf_in <- a$files$get(id = "5c614e5e7369c402a18a3c41") # file id
 gtf_in$copy_to(project = p)
 

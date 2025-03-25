@@ -95,7 +95,7 @@ Invoices <- R6::R6Class(
     #'    auth = auth
     #'  )
     #'
-    #'  # Get single invoice by id
+    #'  # Get a single invoice by id
     #'  invoices_object$get(id = id)
     #' }
     #'

@@ -174,7 +174,7 @@ Return next page of results.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments or query parameters that can be passed to
+\item{\code{...}}{Other arguments or query parameters that can be passed to the
 core \code{api()} function like 'advance_access', 'fields' etc.}
 }
 \if{html}{\out{</div>}}
@@ -205,7 +205,7 @@ vol_con_col_object <- VolumeContentCollection$new(
 \if{html}{\out{<a id="method-VolumeContentCollection-prev_page"></a>}}
 \if{latex}{\out{\hypertarget{method-VolumeContentCollection-prev_page}{}}}
 \subsection{Method \code{prev_page()}}{
-Return previous page of results.
+Return the previous page of results.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{VolumeContentCollection$prev_page()}\if{html}{\out{</div>}}
 }
@@ -244,7 +244,7 @@ Fetches all available items.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Other arguments or query parameters that can be passed to
+\item{\code{...}}{Other arguments or query parameters that can be passed to the
 core \code{api()} function like 'advance_access', 'fields' etc.}
 }
 \if{html}{\out{</div>}}

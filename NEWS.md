@@ -85,3 +85,54 @@ operations on multiple items without blocking execution.
   previous example was outdated.
   - Updated example input files for improved clarity and consistency.
   - Fixed typos and improved wording for better readability.
+  
+---
+  
+# sevenbridges2 0.4.0
+
+## New features
+
+* Introduced support for **Enterprise API actions**, enabling users to manage
+organizational structures such as divisions and teams on the Seven Bridges
+Platform.
+
+* The following Enterprise API classes and methods have been added:
+  - **Division-related methods**:
+    - `query()` and `get()` in the `Auth$divisions` path allow listing all
+      divisions and retrieving a division by ID.
+    - Fetched Division objects support additional methods:
+      - `list_teams()` lists all teams within a division.
+      - `list_members()` retrieves division members, with optional filtering by
+        role.
+      - `remove_member()` removes a member from the division.
+        
+  - **Team-related methods**:
+    - `query()`, `get()`, `create()`, and `delete()` in the `Auth$teams` path
+      allow managing teams within divisions.
+    - Fetched Team objects support the following actions:
+      - `list_members()`, `add_member()`, and `remove_member()` for managing
+        team membership.
+      - `rename()` and `delete()` for modifying or removing a team.
+      
+  - **Added support for managing volume access using Enterprise members:**
+    - New methods in the Volume class:
+      - `add_member_team()` and `add_member_division()` allow adding entire
+        teams or divisions as volume members (for users with appropriate
+        `ADMIN` privileges).
+    - Introduced an internal method `add_member_general()`, which handles
+      the underlying logic for adding volume members. All three public methods
+      — `add_member()`, `add_member_team()`, and `add_member_division()` — now
+      use `add_member_general()` internally to ensure consistency and reduce
+      duplication.
+
+* Added a new vignette `Enterprise_actions.Rmd` covering the full set of
+Enterprise API actions.
+
+* Updated the `Files_upload_and_Volumes.Rmd` vignette to document volume
+sharing with teams and divisions.
+
+## Enhancements and fixes
+
+Fixed typos and refined wording across documentation and code comments for
+improved readability and maintainability.
+

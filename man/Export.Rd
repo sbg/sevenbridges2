@@ -62,15 +62,15 @@ export_object <- Export$new(
 \item \code{FAILED}: the export has failed.
 }}
 
-\item{\code{source}}{List containing source file id that is being exported to
-the volume.}
+\item{\code{source}}{List containing the source file ID that is being exported
+to the volume.}
 
-\item{\code{destination}}{List containing destination volume id and location
-(file name) on the volume where the file is being exported.}
+\item{\code{destination}}{List containing the destination volume ID and
+location (file name) on the volume where the file is being exported.}
 
-\item{\code{overwrite}}{Whether the exported file name was
-overwritten or not, if another one with the same name had already
-existed on the volume.}
+\item{\code{overwrite}}{Indicates whether the exported file name was
+overwritten if another file with the same name already existed on the
+volume.}
 
 \item{\code{started_on}}{Time when the export job started.}
 
@@ -147,7 +147,7 @@ export_object <- Export$new(
 \if{html}{\out{<a id="method-Export-reload"></a>}}
 \if{latex}{\out{\hypertarget{method-Export-reload}{}}}
 \subsection{Method \code{reload()}}{
-Reload Export object information.
+Refresh the Export object with updated information.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Export$reload(...)}\if{html}{\out{</div>}}
 }

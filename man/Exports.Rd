@@ -149,7 +149,7 @@ Create a new Exports object.
 \if{html}{\out{<a id="method-Exports-query"></a>}}
 \if{latex}{\out{\hypertarget{method-Exports-query}{}}}
 \subsection{Method \code{query()}}{
-This call lists export jobs initiated by particular user.
+This call lists export jobs initiated by a particular user.
 Note that when you export a file from a project on the Platform into a
 volume, you write to your cloud storage bucket.
 \subsection{Usage}{
@@ -258,9 +258,10 @@ like 'fields', etc.}
 \if{latex}{\out{\hypertarget{method-Exports-submit_export}{}}}
 \subsection{Method \code{submit_export()}}{
 This call lets you queue a job to export a file from a
-project on the Platform into a volume. The file selected for export must
-not be a public file or an alias. Aliases are objects stored in your
-cloud storage bucket which have been made available on the Platform.
+project on the Platform into a volume. The file selected for export
+must not be a public file or an alias. Aliases are objects stored in
+your cloud storage bucket which have been made available on the
+Platform.
 The volume you are exporting to must be configured for
 read-write access. To do this, set the \code{access_mode} parameter to
 \code{RW} when creating or modifying a volume. \cr
@@ -311,8 +312,8 @@ been configured with a prefix parameter, the value of prefix will be
 prepended to location before attempting to create the file on the
 volume.
 
-If you would like to export the file into some folder on the volume,
-please add folder name as prefix before file name in form
+If you would like to export the file into a folder on the volume,
+please add the folder name as a prefix before the file name in the form
 \verb{<folder-name>/<file-name>}.}
 
 \item{\code{overwrite}}{Set to \code{TRUE} if you want to overwrite the item
@@ -327,7 +328,7 @@ source file will remain on the Platform.}
 exporting to this bucket. Supported values:
 \code{AES256} (SSE-S3 encryption), \code{aws:kms}, \code{null}
 (no server-side encryption). Default: \code{AES256}.
-\item \code{sse_aws_kms_key_id}: Applies to type: \code{s3}.
+\item \code{sse_aws_kms_key_Id}: Applies to type: \code{s3}.
 If AWS KMS encryption is used, this should be set to the required
 KMS key. If not set and \code{aws:kms} is set as \code{sse_algorithm},
 default KMS key is used.
@@ -370,7 +371,7 @@ like 'fields', etc.}
 \if{html}{\out{<a id="method-Exports-delete"></a>}}
 \if{latex}{\out{\hypertarget{method-Exports-delete}{}}}
 \subsection{Method \code{delete()}}{
-Deleting export jobs is not possible.
+Export jobs cannot be deleted.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Exports$delete()}\if{html}{\out{</div>}}
 }
@@ -476,7 +477,7 @@ like:
 exporting to this bucket. Supported values:
 \code{AES256} (SSE-S3 encryption), \code{aws:kms}, \code{null}
 (no server-side encryption). Default: \code{AES256}.
-\item \code{sse_aws_kms_key_id}: Applies to type: \code{s3}.
+\item \code{sse_aws_kms_key_Id}: Applies to type: \code{s3}.
 If AWS KMS encryption is used, this should be set to the
 required KMS key. If not set and \code{aws:kms} is set as
 \code{sse_algorithm}, default KMS key is used.

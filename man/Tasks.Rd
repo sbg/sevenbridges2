@@ -93,10 +93,10 @@ Read more about how to use query parameters properly
 Set the value of status to one of the following values: \code{QUEUED},
 \code{DRAFT}, \code{RUNNING}, \code{COMPLETED}, \code{ABORTED}, \code{FAILED}.}
 
-\item{\code{parent}}{Provide task ID or Task object of the parent task to return
-all child tasks from that parent. A parent task is a task that specifies
-criteria by which to batch its inputs into a series of further
-sub-tasks, called child tasks. See the documentation on
+\item{\code{parent}}{Provide the task ID or Task object of the parent task to
+return all child tasks. A parent task is a task that
+specifies criteria by which to batch its inputs into a series of
+further sub-tasks, called child tasks. See the documentation on
 \href{https://docs.sevenbridges.com/docs/about-batch-analyses}{batching tasks}
 for more details on how to run tasks in batches.}
 
@@ -124,7 +124,7 @@ ended until a specified date.}
 
 \item{\code{order_by}}{Order returned results by the specified field.
 Allowed values: \cr \code{created_time}, \code{start_time}, \code{name}, \code{end_time} and
-\code{created_by}. \cr Sort can be done only by one column. The default
+\code{created_by}. \cr Sorting can only be done by one column. The default
 value is \code{created_time}.}
 
 \item{\code{order}}{Sort results in ascending or descending order by
@@ -158,9 +158,9 @@ like 'fields', etc.}
 \subsection{Method \code{get()}}{
 This call returns details of the specified task. The task
 is referred to by its ID, which you can obtain by making the call to
-list all tasks you can access. The task details include its creator, its
-start and end time, the number of jobs completed in it, and its input
-and output files. You can also see the status of the task.
+list all tasks you can access. The task details include its creator,
+its start and end time, the number of jobs completed in it, and its
+input and output files. You can also see the status of the task.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Tasks$get(id, ...)}\if{html}{\out{</div>}}
 }
@@ -183,10 +183,9 @@ like 'fields', etc.}
 \if{html}{\out{<a id="method-Tasks-delete"></a>}}
 \if{latex}{\out{\hypertarget{method-Tasks-delete}{}}}
 \subsection{Method \code{delete()}}{
-This call deletes a task from the Seven Bridges Platform.
-Tasks are specified by their IDs, which you can obtain by using
-\code{Tasks$query()} to list tasks or by getting a single task
-using \code{Tasks$get()}.
+Tasks are identified by their IDs, which can be obtained
+using \code{Tasks$query()} to list tasks or \code{Tasks$get()} to
+retrieve a single task.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Tasks$delete(task, ...)}\if{html}{\out{</div>}}
 }
@@ -206,11 +205,11 @@ as 'fields', etc.}
 \if{html}{\out{<a id="method-Tasks-create"></a>}}
 \if{latex}{\out{\hypertarget{method-Tasks-create}{}}}
 \subsection{Method \code{create()}}{
-This call creates a new task. You can create either a single
-task or a batch task by using the app's default batching, override
-batching, or disable batching completely. A parent task is a task that
-specifies criteria by which to batch its inputs into a series of further
-sub-tasks, called child tasks. the documentation on
+This call creates a new task. You can create either a
+single task or a batch task by using the app's default batching,
+override batching, or disable batching completely. A parent task is a
+task that specifies criteria by which to batch its inputs into a series
+of further sub-tasks, called child tasks. the documentation on
 \href{https://docs.sevenbridges.com/docs/about-batch-analyses}{batching tasks}
 for more details on batching criteria.
 \subsection{Usage}{
@@ -307,8 +306,8 @@ output node locations within nodes_location.
 See below for more details.
 \itemize{
 \item \code{main_location} - Defines the output location for all
-output nodes in the task. Can be a string path within the project in
-which the task is created, for example \cr
+output nodes in the task. Can be a string path within the project
+in which the task is created, for example \cr
 \verb{/Analysis/<task_id>_<task_name>/} \cr
 or a path on an attached volume, such as \cr
 \verb{volumes://volume_name/<project_id>/html}. \cr
@@ -316,10 +315,10 @@ Parts of the path enclosed in angle brackets <> are tokens that are
 dynamically replaced with corresponding values during task
 execution.
 \item \code{main_location_alias}: The string location (path) in the
-project that will point to the actual location where the outputs are
-stored. Used if main_location is defined as a volume path (starting
-with volumes://), to provide an easy way of accessing output data
-directly from project files.
+project that will point to the actual location where the outputs
+are stored. Used if main_location is defined as a volume path
+(starting with volumes://), to provide an easy way of accessing
+output data directly from project files.
 \item \code{nodes_override}: Enables defining of output locations
 for output nodes individually through nodes_location (see below).
 Set to \code{TRUE} to be able to define individual locations per output
@@ -344,9 +343,9 @@ Example:
 )
 }\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{ In the example above, b64html is the ID of the output node for which
- you want to define the output location, while the parameters are
- defined as follows:
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ In the example above, b64html is the ID of the output node for
+ which you want to define the output location, while the parameters
+ are defined as follows:
 }\if{html}{\out{</div>}}
 
 \itemize{

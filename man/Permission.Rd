@@ -100,7 +100,7 @@ Create a new Permission object.
 \item{\code{read}}{User can view file names, metadata, and workflows.
 They cannot view file contents. All members of a project have read
 permissions by default. Even if you try setting read permissions to
-\code{FALSE}, they will still default to \code{TRUE}}
+\code{FALSE}, they will still default to \code{TRUE}.}
 
 \item{\code{copy}}{User can view file content, copy, and download files from a
 project. Set value to \code{TRUE} to assign the user copy permission.

@@ -5,7 +5,7 @@
 \title{R6 Class representing a Collection of objects}
 \description{
 R6 Class representing a resource for managing collections.
-Wrapper for Seven Bridges pageable resources.
+A wrapper for Seven Bridges pageable resources.
 Among the actual collection items it contains information regarding
 the total number of entries available on the server and
 resource API request URL (href).
@@ -199,7 +199,7 @@ Print method for Collection class.
 \if{html}{\out{<a id="method-Collection-next_page"></a>}}
 \if{latex}{\out{\hypertarget{method-Collection-next_page}{}}}
 \subsection{Method \code{next_page()}}{
-Return next page of results.
+Returns the next page of results.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Collection$next_page(...)}\if{html}{\out{</div>}}
 }
@@ -239,7 +239,7 @@ like 'advanced_access', 'fields', etc.}
 \if{html}{\out{<a id="method-Collection-prev_page"></a>}}
 \if{latex}{\out{\hypertarget{method-Collection-prev_page}{}}}
 \subsection{Method \code{prev_page()}}{
-Return previous page of results.
+Returns  the previous page of results.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Collection$prev_page(...)}\if{html}{\out{</div>}}
 }

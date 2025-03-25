@@ -269,8 +269,7 @@ remember that the project ID should be specified in
 \code{rfranklin/my-project}, or as \verb{<division>/<project-name>}
 depending on the account \cr type.}
 
-\item{\code{name}}{The new name the app will have in the target project.
-Optional.}
+\item{\code{name}}{The new name for the app in the target project (optional).}
 
 \item{\code{strategy}}{The method for copying the app. Supported strategies:
 \itemize{
@@ -284,8 +283,8 @@ app as the copied app.
 }}
 
 \item{\code{use_revision}}{Parameter specifying which app's revision should be
-copied. If set to \code{FALSE} (default), the latest revision of the app will
-be copied.}
+copied. If set to \code{FALSE} (default), the latest revision of the app
+will be copied.}
 
 \item{\code{...}}{Other arguments that can be passed to core \code{api()} function
 like 'fields', etc.}
@@ -383,10 +382,10 @@ Create a new app revision.
 \describe{
 \item{\code{raw}}{A list containing a raw CWL for the app revision you are
 about to create. To generate such a list, you might want to load some
-existing JSON / YAML file. In case that your CWL file is in JSON format,
-please use the \code{fromJSON} function from the \code{jsonlite} package to
-minimize potential problems with parsing the JSON file. If you want to
-load a CWL file in YAML format, it is highly recommended to use the
+existing JSON / YAML file. In case that your CWL file is in JSON
+format, please use the \code{fromJSON} function from the \code{jsonlite} package
+to minimize potential problems with parsing the JSON file. If you want
+to load a CWL file in YAML format, it is highly recommended to use the
 \code{read_yaml} function from the \code{yaml} package. Keep in mind that this
 parameter should not be used together with the \code{file_path} parameter.}
 
@@ -485,9 +484,8 @@ has been copied.
 \if{html}{\out{<a id="method-App-input_matrix"></a>}}
 \if{latex}{\out{\hypertarget{method-App-input_matrix}{}}}
 \subsection{Method \code{input_matrix()}}{
-Get inputs matrix for the app - what are expected inputs
-required or not, with their details about the expected types,
-descriptions etc.
+Get an input matrix for the app, listing expected inputs
+(required or optional) along with their types, descriptions, etc.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App$input_matrix()}\if{html}{\out{</div>}}
 }
@@ -500,9 +498,8 @@ Data frame.
 \if{html}{\out{<a id="method-App-output_matrix"></a>}}
 \if{latex}{\out{\hypertarget{method-App-output_matrix}{}}}
 \subsection{Method \code{output_matrix()}}{
-Get outputs matrix for the app - what are the expected
-outputs of the task running this app, with their details about the
-expected types, descriptions etc.
+Get an output matrix for the app, listing expected outputs
+of tasks that run this app, along with their types, descriptions, etc.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App$output_matrix()}\if{html}{\out{</div>}}
 }
@@ -515,11 +512,11 @@ Data frame.
 \if{html}{\out{<a id="method-App-create_task"></a>}}
 \if{latex}{\out{\hypertarget{method-App-create_task}{}}}
 \subsection{Method \code{create_task()}}{
-This call creates a new task. You can create either a single
-task or a batch task by using the app's default batching, override
-batching, or disable batching completely. A parent task is a task that
-specifies criteria by which to batch its inputs into a series of further
-sub-tasks, called child tasks. The documentation on
+This call creates a new task. You can create either a
+single task or a batch task by using the app's default batching,
+override batching, or disable batching completely. A parent task is a
+task that specifies criteria by which to batch its inputs into a series
+of further sub-tasks, called child tasks. The documentation on
 \href{https://docs.sevenbridges.com/docs/about-batch-analyses}{batching tasks}
 for more details on batching criteria.
 \subsection{Usage}{
@@ -611,8 +608,8 @@ output node locations within nodes_location.
 See below for more details.
 \itemize{
 \item \code{main_location} - Defines the output location for all
-output nodes in the task. Can be a string path within the project in
-which the task is created, for example \cr
+output nodes in the task. Can be a string path within the project
+in which the task is created, for example \cr
 \verb{/Analysis/<task_id>_<task_name>/}
 or a path on an attached volume, \cr such as
 \verb{volumes://volume_name/<project_id>/html}.
@@ -620,10 +617,10 @@ Parts of the path enclosed in angle brackets <> are tokens that are
 dynamically replaced with corresponding values during task
 execution.
 \item \code{main_location_alias}: The string location (path) in the
-project that will point to the actual location where the outputs are
-stored. Used if main_location is defined as a volume path (starting
-with volumes://), to provide an easy way of accessing output data
-directly from project files.
+project that will point to the actual location where the outputs
+are stored. Used if main_location is defined as a volume path
+(starting with volumes://), to provide an easy way of accessing
+output data directly from project files.
 \item \code{nodes_override}: Enables defining of output locations
 for output nodes individually through nodes_location (see below).
 Set to \code{TRUE} to be able to define individual locations per output
@@ -648,9 +645,9 @@ Example:
 )
 }\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{ In the example above, b64html is the ID of the output node for which
- you want to define the output location, while the parameters are
- defined as follows:
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ In the example above, b64html is the ID of the output node for
+ which you want to define the output location, while the parameters
+ are defined as follows:
 }\if{html}{\out{</div>}}
 
 \itemize{

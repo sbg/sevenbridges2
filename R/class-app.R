@@ -144,8 +144,7 @@ App <- R6::R6Class(
     #'  `<project_owner>/<project-name>` format, e.g. \cr
     #'  `rfranklin/my-project`, or as `<division>/<project-name>`
     #'  depending on the account \cr type.
-    #' @param name The new name the app will have in the target project.
-    #'  Optional.
+    #' @param name The new name for the app in the target project (optional).
     #' @param strategy The method for copying the app. Supported strategies:
     #' \itemize{
     #'    \item `clone` - copy all revisions; get updates from the same app as
@@ -157,8 +156,8 @@ App <- R6::R6Class(
     #'    app as the copied app.
     #' }
     #' @param use_revision Parameter specifying which app's revision should be
-    #'  copied. If set to `FALSE` (default), the latest revision of the app will
-    #'  be copied.
+    #'  copied. If set to `FALSE` (default), the latest revision of the app
+    #'  will be copied.
     #' @param ... Other arguments that can be passed to core `api()` function
     #'  like 'fields', etc.
     #'
@@ -314,10 +313,10 @@ App <- R6::R6Class(
     #' [here](https://docs.sevenbridges.com/reference/add-an-app-using-raw-cwl).
     #' @param raw A list containing a raw CWL for the app revision you are
     #'  about to create. To generate such a list, you might want to load some
-    #'  existing JSON / YAML file. In case that your CWL file is in JSON format,
-    #'  please use the `fromJSON` function from the `jsonlite` package to
-    #'  minimize potential problems with parsing the JSON file. If you want to
-    #'  load a CWL file in YAML format, it is highly recommended to use the
+    #'  existing JSON / YAML file. In case that your CWL file is in JSON
+    #'  format, please use the `fromJSON` function from the `jsonlite` package
+    #'  to minimize potential problems with parsing the JSON file. If you want
+    #'  to load a CWL file in YAML format, it is highly recommended to use the
     #'  `read_yaml` function from the `yaml` package. Keep in mind that this
     #'  parameter should not be used together with the `file_path` parameter.
     #' @param from_path A path to a file containing the raw CWL for the app
@@ -479,9 +478,8 @@ App <- R6::R6Class(
     },
 
     # Get inputs info ---------------------------------------------------------
-    #' @description Get inputs matrix for the app - what are expected inputs
-    #'  required or not, with their details about the expected types,
-    #'  descriptions etc.
+    #' @description Get an input matrix for the app, listing expected inputs
+    #'  (required or optional) along with their types, descriptions, etc.
     #'
     #' @return Data frame.
     input_matrix = function() {
@@ -492,9 +490,8 @@ App <- R6::R6Class(
     },
 
     # Get outputs info --------------------------------------------------------
-    #' @description Get outputs matrix for the app - what are the expected
-    #'  outputs of the task running this app, with their details about the
-    #'  expected types, descriptions etc.
+    #' @description Get an output matrix for the app, listing expected outputs
+    #'  of tasks that run this app, along with their types, descriptions, etc.
     #'
     #' @return Data frame.
     output_matrix = function() {
@@ -505,11 +502,11 @@ App <- R6::R6Class(
     },
 
     # Create task ------------------------------------------------------------
-    #' @description This call creates a new task. You can create either a single
-    #'  task or a batch task by using the app's default batching, override
-    #'  batching, or disable batching completely. A parent task is a task that
-    #'  specifies criteria by which to batch its inputs into a series of further
-    #'  sub-tasks, called child tasks. The documentation on
+    #' @description This call creates a new task. You can create either a
+    #'  single task or a batch task by using the app's default batching,
+    #'  override batching, or disable batching completely. A parent task is a
+    #'  task that specifies criteria by which to batch its inputs into a series
+    #'  of further sub-tasks, called child tasks. The documentation on
     # nolint start
     #'  [batching tasks](https://docs.sevenbridges.com/docs/about-batch-analyses)
     # nolint end
@@ -579,8 +576,8 @@ App <- R6::R6Class(
     #'  See below for more details.
     #'  \itemize{
     #'    \item `main_location` - Defines the output location for all
-    #'      output nodes in the task. Can be a string path within the project in
-    #'      which the task is created, for example \cr
+    #'      output nodes in the task. Can be a string path within the project
+    #'      in which the task is created, for example \cr
     #'      `/Analysis/<task_id>_<task_name>/`
     #'      or a path on an attached volume, \cr such as
     #'      `volumes://volume_name/<project_id>/html`.
@@ -588,10 +585,10 @@ App <- R6::R6Class(
     #'      dynamically replaced with corresponding values during task
     #'      execution.
     #'    \item `main_location_alias`: The string location (path) in the
-    #'      project that will point to the actual location where the outputs are
-    #'      stored. Used if main_location is defined as a volume path (starting
-    #'      with volumes://), to provide an easy way of accessing output data
-    #'      directly from project files.
+    #'      project that will point to the actual location where the outputs
+    #'      are stored. Used if main_location is defined as a volume path
+    #'      (starting with volumes://), to provide an easy way of accessing
+    #'      output data directly from project files.
     #'    \item `nodes_override`: Enables defining of output locations
     #'      for output nodes individually through nodes_location (see below).
     #'      Set to `TRUE` to be able to define individual locations per output
@@ -615,9 +612,9 @@ App <- R6::R6Class(
     #'   "output_location_alias" = "/rfranklin/tasks/picard"
     #'  )
     #'  ```
-    #'      In the example above, b64html is the ID of the output node for which
-    #'      you want to define the output location, while the parameters are
-    #'      defined as follows:
+    #'      In the example above, b64html is the ID of the output node for
+    #'      which you want to define the output location, while the parameters
+    #'      are defined as follows:
     #'    \itemize{
     #'      \item `output_location` - Can be a path within the project in which
     #'        the task is created, for example \cr

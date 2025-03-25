@@ -1,8 +1,8 @@
 # nolint start
-#' @title R6 Class representing apps endpoint
+#' @title R6 Class representing the apps endpoint
 #'
 #' @description
-#' R6 Class representing apps resource endpoint.
+#' R6 Class representing the apps resource endpoint.
 #'
 #' @importFrom R6 R6Class
 #'
@@ -25,7 +25,7 @@ Apps <- R6::R6Class(
     ),
 
     # Initialize Apps object --------------------------------------------------
-    #' @description Create new Apps resource object.
+    #' @description Create a new Apps resource object.
     #'
     #' @param ... Other response arguments.
     initialize = function(...) {
@@ -62,10 +62,9 @@ Apps <- R6::R6Class(
     #'  of the first item to return. The default value is `0`.
     #'  This is a pagination-specific attribute.
     #' @param fields Selector specifying a subset of fields to include in the
-    #'  response. For querying apps it is set to return all fields except 'raw'
-    #'  which stores CWL in form of a list. Please be careful when setting to
-    #'  return all fields, since the execution of this API request could be
-    #'  time-consuming.
+    #'  response. For querying apps, it is set to return all fields except
+    #'  'raw' which stores CWL as a list. Be cautious when requesting all
+    #'  fields, as this API request may take a long time to execute.
     #' @param ... Other arguments that can be passed to core `api()` function.
     #'
     #' @importFrom checkmate assert_list assert_string
@@ -134,11 +133,10 @@ Apps <- R6::R6Class(
 
     # Get app ----------------------------------------------------------------
     #' @description This call returns information about the specified app.
-    #'  The app should be one in a project that you can access;
-    #'  this could be an app that has been uploaded to the Seven Bridges
-    #'  Platform by a project member, or a publicly available app that has
-    #'  been copied to the project. \cr
-    #'  More about this operation you can find in our
+    #'  The app must be in a project you can access. It could be an app
+    #'  uploaded to the Seven Bridges Platform by a project member or a public
+    #'  app copied into the project. \cr
+    #'  You can find more details about this operation in our
     # nolint start
     #'  [API documentation](https://docs.sevenbridges.com/reference/get-details-of-an-app).
     # nolint end
@@ -183,10 +181,10 @@ Apps <- R6::R6Class(
     },
 
     # Copy app ----------------------------------------------------------------
-    #' @description This call copies the specified app to the specified project.
-    #'  The app should be one in a project that you can access; this could be an
-    #'  app that has been uploaded to the Seven Bridges Platform by a project
-    #'  member, or a publicly available app that has been copied to the project.
+    #' @description This call copies the specified app to the specified
+    #'  project. The app must be in a project you can access. It could be an
+    #'  app uploaded to the Seven Bridges Platform by a project member or a
+    #'  public app copied into the project.
     #'
     #' @param app App object or the short name of the app you are copying.
     #'  Optionally, to copy a specific revision of the app, use the
@@ -200,7 +198,8 @@ Apps <- R6::R6Class(
     #'  \itemize{
     #'    \item `clone` : copy all revisions; get updates from the same app
     #'      as the copied app (default);
-    #'    \item `direct`: copy latest revision; get updates from the copied app;
+    #'    \item `direct`: copy latest revision; get updates from the copied
+    #'      app;
     #'    \item `clone_direct`: copy all revisions; get updates from the
     #'      copied app;
     #'    \item `transient`: copy latest revision; get updates from the same
@@ -272,8 +271,9 @@ Apps <- R6::R6Class(
     #'
     #' @param raw The body of the request should be a CWL app description saved
     #'  as a `JSON` or `YAML` file. For a template of this description, try
-    #'  making the call to get raw CWL for an app about an app already in one of
-    #'  your projects. Shouldn't be used together with `from_path` parameter.
+    #'  making the call to get raw CWL for an app about an app already in one
+    #'  of your projects. Shouldn't be used together with `from_path`
+    #'  parameter.
     #' @param from_path File containing CWL app description. Shouldn't be used
     #'  together with raw parameter.
     #' @param project String project ID or Project object in which you want to

@@ -2,9 +2,9 @@
 % Please edit documentation in R/class-apps.R
 \name{Apps}
 \alias{Apps}
-\title{R6 Class representing apps endpoint}
+\title{R6 Class representing the apps endpoint}
 \description{
-R6 Class representing apps resource endpoint.
+R6 Class representing the apps resource endpoint.
 }
 \examples{
 
@@ -100,7 +100,7 @@ R6 Class representing apps resource endpoint.
 \if{html}{\out{<a id="method-Apps-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Apps-new}{}}}
 \subsection{Method \code{new()}}{
-Create new Apps resource object.
+Create a new Apps resource object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Apps$new(...)}\if{html}{\out{</div>}}
 }
@@ -166,10 +166,9 @@ of the first item to return. The default value is \code{0}.
 This is a pagination-specific attribute.}
 
 \item{\code{fields}}{Selector specifying a subset of fields to include in the
-response. For querying apps it is set to return all fields except 'raw'
-which stores CWL in form of a list. Please be careful when setting to
-return all fields, since the execution of this API request could be
-time-consuming.}
+response. For querying apps, it is set to return all fields except
+'raw' which stores CWL as a list. Be cautious when requesting all
+fields, as this API request may take a long time to execute.}
 
 \item{\code{...}}{Other arguments that can be passed to core \code{api()} function.}
 }
@@ -200,11 +199,10 @@ time-consuming.}
 \if{latex}{\out{\hypertarget{method-Apps-get}{}}}
 \subsection{Method \code{get()}}{
 This call returns information about the specified app.
-The app should be one in a project that you can access;
-this could be an app that has been uploaded to the Seven Bridges
-Platform by a project member, or a publicly available app that has
-been copied to the project. \cr
-More about this operation you can find in our
+The app must be in a project you can access. It could be an app
+uploaded to the Seven Bridges Platform by a project member or a public
+app copied into the project. \cr
+You can find more details about this operation in our
 \href{https://docs.sevenbridges.com/reference/get-details-of-an-app}{API documentation}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Apps$get(id, revision = NULL, ...)}\if{html}{\out{</div>}}
@@ -248,10 +246,10 @@ like 'fields', etc.}
 \if{html}{\out{<a id="method-Apps-copy"></a>}}
 \if{latex}{\out{\hypertarget{method-Apps-copy}{}}}
 \subsection{Method \code{copy()}}{
-This call copies the specified app to the specified project.
-The app should be one in a project that you can access; this could be an
-app that has been uploaded to the Seven Bridges Platform by a project
-member, or a publicly available app that has been copied to the project.
+This call copies the specified app to the specified
+project. The app must be in a project you can access. It could be an
+app uploaded to the Seven Bridges Platform by a project member or a
+public app copied into the project.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Apps$copy(
   app,
@@ -280,7 +278,8 @@ If its name will not change, omit this key.}
 \itemize{
 \item \code{clone} : copy all revisions; get updates from the same app
 as the copied app (default);
-\item \code{direct}: copy latest revision; get updates from the copied app;
+\item \code{direct}: copy latest revision; get updates from the copied
+app;
 \item \code{clone_direct}: copy all revisions; get updates from the
 copied app;
 \item \code{transient}: copy latest revision; get updates from the same
@@ -334,8 +333,9 @@ This call allows you to add an app using raw CWL.
 \describe{
 \item{\code{raw}}{The body of the request should be a CWL app description saved
 as a \code{JSON} or \code{YAML} file. For a template of this description, try
-making the call to get raw CWL for an app about an app already in one of
-your projects. Shouldn't be used together with \code{from_path} parameter.}
+making the call to get raw CWL for an app about an app already in one
+of your projects. Shouldn't be used together with \code{from_path}
+parameter.}
 
 \item{\code{from_path}}{File containing CWL app description. Shouldn't be used
 together with raw parameter.}

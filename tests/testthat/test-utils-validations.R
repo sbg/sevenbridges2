@@ -164,7 +164,7 @@ test_that("check_folder_name function throws error when expected", {
   )
   testthat::expect_error(
     do.call(check_folder_name, spaces_in_name),
-    regexp = "The folder name cannot contain spaces in the name.",
+    regexp = "The folder name cannot contain spaces.",
     fixed = TRUE
   )
 })

@@ -7,7 +7,7 @@
 R6 Class representing a central resource for managing billing groups.
 }
 \details{
-This is main object for Billing
+This is the main object for Billing
 }
 \examples{
 
@@ -115,7 +115,7 @@ This is main object for Billing
 
 \item{\code{name}}{Billing group name.}
 
-\item{\code{type}}{Billing group type}
+\item{\code{type}}{Billing group type.}
 
 \item{\code{pending}}{Billing group approval status.}
 
@@ -160,7 +160,7 @@ Create a new Billing object.
 \if{html}{\out{<a id="method-Billing-print"></a>}}
 \if{latex}{\out{\hypertarget{method-Billing-print}{}}}
 \subsection{Method \code{print()}}{
-Print billing group information as a bullet list.
+Prints billing group information as a bullet list.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Billing$print()}\if{html}{\out{</div>}}
 }
@@ -231,7 +231,8 @@ like 'limit', 'offset', 'fields', etc.}
 \if{html}{\out{<a id="method-Billing-analysis_breakdown"></a>}}
 \if{latex}{\out{\hypertarget{method-Billing-analysis_breakdown}{}}}
 \subsection{Method \code{analysis_breakdown()}}{
-Method for getting a analysis breakdown for a billing group.
+Method for getting an analysis breakdown for a billing
+group.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Billing$analysis_breakdown(
   date_from = NULL,
