@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sevenbridges2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +41,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/Authentication_and_Billing.html">Authentication and Billing reference guide for Seven Bridges API R Client</a></li>
+    <li><a class="dropdown-item" href="../articles/Enterprise_actions.html">Enterprise actions reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Files_upload_and_Volumes.html">File upload and Volumes reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Projects_and_Tasks_execution.html">Projects, Files, Apps and Tasks execution with Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/quickstart.html">Introduction and Quickstart for Seven Bridges API R Client</a></li>
@@ -68,9 +69,9 @@
 
       <h1>Introduction and Quickstart for Seven Bridges API R Client</h1>
             
-            <h4 data-toc-skip class="date">2025-02-28</h4>
+            <h4 data-toc-skip class="date">2025-03-25</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/v0.3.0/vignettes/quickstart.Rmd" class="external-link"><code>vignettes/quickstart.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/develop/vignettes/quickstart.Rmd" class="external-link"><code>vignettes/quickstart.Rmd</code></a></small>
       <div class="d-none name"><code>quickstart.Rmd</code></div>
     </div>
 
@@ -119,9 +120,9 @@ Seven Bridges GitHub repository.</p>
 <code class="sourceCode R"><span><span class="co"># Install package from CRAN</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"sevenbridges2"</span><span class="op">)</span></span></code></pre></div>
 <p>To install the development version from the <code>develop</code>
-branch on our Github, use the <code>remotes</code> package:</p>
+branch on our GitHub, use the <code>remotes</code> package:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Install package from github</span></span>
+<code class="sourceCode R"><span><span class="co"># Install package from GitHub</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span></span>
 <span>  <span class="st">"sbg/sevenbridges2"</span>,</span>
 <span>  build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -561,7 +562,7 @@ name and tags. The search by name is partial and case-insensitive.</p>
 <span></span>
 <span><span class="co"># Return all projects tagged with "demo"</span></span>
 <span><span class="va">tagged_projects</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">projects</span><span class="op">$</span><span class="fu">query</span><span class="op">(</span>tags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Note that the output is the <code>Collection</code> object and the
+<p>Note that the output is a <code>Collection</code> object and the
 results (list of <code>Project</code> objects) can be found within the
 <code>items</code> field.</p>
 <div align="right">
@@ -612,9 +613,9 @@ for more technical details about projects.</p>
 </div>
 <p>The <strong>new project</strong> is created on the platform. Notice
 also that the variable <code>p</code> is an R6 object with fields that
-contain information about the platform project. The facility also has
-several methods that allow you to perform basic platform operations on
-the project.</p>
+contain information about the platform project. This object also
+provides several methods that allow you to perform basic platform
+operations on the project.</p>
 <p>Please check
 <code><a href="../articles/Projects_and_Tasks_execution.html">vignette("Projects_and_Tasks_execution", package = "sevenbridges2")</a></code>
 for more technical details about projects.</p>
@@ -783,7 +784,7 @@ inputs accept only a single file (<code>File</code>), other inputs take
 more than one file (<code>File</code> arrays, <code>FilesList</code>, or
 ‘<code>File...</code>’ ). This input requires you to pass a single
 <code>File</code> object (for a single file input) or list of
-<code>File</code> objects (for inputs which accept more than one file).
+<code>File</code> objects (for inputs that accept more than one file).
 You can search for your file by <code>id</code> or by <code>name</code>,
 as shown in the example below.</li>
 </ul>
@@ -806,7 +807,7 @@ as shown in the example below.</li>
 <span><span class="va">fasta_in</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"5c614f097369c402a28a3c41"</span><span class="op">)</span> <span class="co"># file id</span></span>
 <span><span class="va">fasta_in</span><span class="op">$</span><span class="fu">copy_to</span><span class="op">(</span>project <span class="op">=</span> <span class="va">p</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Get gtf file and copy into a project</span></span>
+<span><span class="co"># Get GTF file and copy into a project</span></span>
 <span><span class="va">gtf_in</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">files</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"5c614e5e7369c402a18a3c41"</span><span class="op">)</span> <span class="co"># file id</span></span>
 <span><span class="va">gtf_in</span><span class="op">$</span><span class="fu">copy_to</span><span class="op">(</span>project <span class="op">=</span> <span class="va">p</span><span class="op">)</span></span>
 <span></span>

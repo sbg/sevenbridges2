@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sevenbridges2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,6 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Authentication_and_Billing.html">Authentication and Billing reference guide for Seven Bridges API R Client</a></li>
+    <li><a class="dropdown-item" href="../articles/Enterprise_actions.html">Enterprise actions reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Files_upload_and_Volumes.html">File upload and Volumes reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Projects_and_Tasks_execution.html">Projects, Files, Apps and Tasks execution with Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/quickstart.html">Introduction and Quickstart for Seven Bridges API R Client</a></li>
@@ -36,7 +37,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>R6 Class representing a VolumeContentCollection</h1>
-      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/v0.3.0/R/class-volumecontent-collection.R" class="external-link"><code>R/class-volumecontent-collection.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/develop/R/class-volumecontent-collection.R" class="external-link"><code>R/class-volumecontent-collection.R</code></a></small>
       <div class="d-none name"><code>VolumeContentCollection.Rd</code></div>
     </div>
 
@@ -134,7 +135,7 @@ vol_con_col_object &lt;- VolumeContentCollection$new(
 <div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
-<dd><p>Other arguments or query parameters that can be passed to
+<dd><p>Other arguments or query parameters that can be passed to the
 core <code><a href="api.html">api()</a></code> function like 'advance_access', 'fields' etc.</p></dd>
 
 
@@ -162,7 +163,7 @@ vol_con_col_object &lt;- VolumeContentCollection$new(
 
 </div><p></p><hr><a id="method-VolumeContentCollection-prev_page"></a><div class="section">
 <h3 id="method-prev-page-">Method <code>prev_page()</code><a class="anchor" aria-label="anchor" href="#method-prev-page-"></a></h3>
-<p>Return previous page of results.</p><div class="section">
+<p>Return the previous page of results.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">VolumeContentCollection</span><span class="op">$</span><span class="fu">prev_page</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -197,7 +198,7 @@ vol_con_col_object &lt;- VolumeContentCollection$new(
 <div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
-<dd><p>Other arguments or query parameters that can be passed to
+<dd><p>Other arguments or query parameters that can be passed to the
 core <code><a href="api.html">api()</a></code> function like 'advance_access', 'fields' etc.</p></dd>
 
 

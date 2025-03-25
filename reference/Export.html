@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sevenbridges2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,6 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Authentication_and_Billing.html">Authentication and Billing reference guide for Seven Bridges API R Client</a></li>
+    <li><a class="dropdown-item" href="../articles/Enterprise_actions.html">Enterprise actions reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Files_upload_and_Volumes.html">File upload and Volumes reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Projects_and_Tasks_execution.html">Projects, Files, Apps and Tasks execution with Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/quickstart.html">Introduction and Quickstart for Seven Bridges API R Client</a></li>
@@ -36,7 +37,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>R6 Class representing an Export</h1>
-      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/v0.3.0/R/class-export.R" class="external-link"><code>R/class-export.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/develop/R/class-export.R" class="external-link"><code>R/class-export.R</code></a></small>
       <div class="d-none name"><code>Export.Rd</code></div>
     </div>
 
@@ -68,19 +69,19 @@
 
 
 <dt><code>source</code></dt>
-<dd><p>List containing source file id that is being exported to
-the volume.</p></dd>
+<dd><p>List containing the source file ID that is being exported
+to the volume.</p></dd>
 
 
 <dt><code>destination</code></dt>
-<dd><p>List containing destination volume id and location
-(file name) on the volume where the file is being exported.</p></dd>
+<dd><p>List containing the destination volume ID and
+location (file name) on the volume where the file is being exported.</p></dd>
 
 
 <dt><code>overwrite</code></dt>
-<dd><p>Whether the exported file name was
-overwritten or not, if another one with the same name had already
-existed on the volume.</p></dd>
+<dd><p>Indicates whether the exported file name was
+overwritten if another file with the same name already existed on the
+volume.</p></dd>
 
 
 <dt><code>started_on</code></dt>
@@ -164,7 +165,7 @@ export_object &lt;- Export$new(
 
 </div><p></p><hr><a id="method-Export-reload"></a><div class="section">
 <h3 id="method-reload-">Method <code>reload()</code><a class="anchor" aria-label="anchor" href="#method-reload-"></a></h3>
-<p>Reload Export object information.</p><div class="section">
+<p>Refresh the Export object with updated information.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Export</span><span class="op">$</span><span class="fu">reload</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>

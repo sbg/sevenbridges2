@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sevenbridges2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,6 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Authentication_and_Billing.html">Authentication and Billing reference guide for Seven Bridges API R Client</a></li>
+    <li><a class="dropdown-item" href="../articles/Enterprise_actions.html">Enterprise actions reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Files_upload_and_Volumes.html">File upload and Volumes reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Projects_and_Tasks_execution.html">Projects, Files, Apps and Tasks execution with Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/quickstart.html">Introduction and Quickstart for Seven Bridges API R Client</a></li>
@@ -36,7 +37,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/sbg/sevenbridges2/blob/v0.3.0/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/sbg/sevenbridges2/blob/develop/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
@@ -113,7 +114,55 @@
 <li>Updated example input files for improved clarity and consistency.</li>
 <li>Fixed typos and improved wording for better readability.</li>
 </ul></li>
+</ul><hr></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.0" id="sevenbridges2-040">sevenbridges2 0.4.0<a class="anchor" aria-label="anchor" href="#sevenbridges2-040"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-4-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-4-0"></a></h3>
+<ul><li><p>Introduced support for <strong>Enterprise API actions</strong>, enabling users to manage organizational structures such as divisions and teams on the Seven Bridges Platform.</p></li>
+<li>
+<p>The following Enterprise API classes and methods have been added:</p>
+<ul><li>
+<strong>Division-related methods</strong>:
+<ul><li>
+<code>query()</code> and <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code> in the <code>Auth$divisions</code> path allow listing all divisions and retrieving a division by ID.</li>
+<li>Fetched Division objects support additional methods:
+<ul><li>
+<code>list_teams()</code> lists all teams within a division.</li>
+<li>
+<code>list_members()</code> retrieves division members, with optional filtering by role.</li>
+<li>
+<code>remove_member()</code> removes a member from the division.</li>
+</ul></li>
+</ul></li>
+<li>
+<strong>Team-related methods</strong>:
+<ul><li>
+<code>query()</code>, <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code>, <code>create()</code>, and <code>delete()</code> in the <code>Auth$teams</code> path allow managing teams within divisions.</li>
+<li>Fetched Team objects support the following actions:
+<ul><li>
+<code>list_members()</code>, <code>add_member()</code>, and <code>remove_member()</code> for managing team membership.</li>
+<li>
+<code>rename()</code> and <code>delete()</code> for modifying or removing a team.</li>
+</ul></li>
+</ul></li>
+<li>
+<strong>Added support for managing volume access using Enterprise members:</strong>
+<ul><li>New methods in the Volume class:
+<ul><li>
+<code>add_member_team()</code> and <code>add_member_division()</code> allow adding entire teams or divisions as volume members (for users with appropriate <code>ADMIN</code> privileges).</li>
+</ul></li>
+<li>Introduced an internal method <code>add_member_general()</code>, which handles the underlying logic for adding volume members. All three public methods — <code>add_member()</code>, <code>add_member_team()</code>, and <code>add_member_division()</code> — now use <code>add_member_general()</code> internally to ensure consistency and reduce duplication.</li>
+</ul></li>
+</ul></li>
+<li><p>Added a new vignette <code>Enterprise_actions.Rmd</code> covering the full set of Enterprise API actions.</p></li>
+<li><p>Updated the <code>Files_upload_and_Volumes.Rmd</code> vignette to document volume sharing with teams and divisions.</p></li>
 </ul></div>
+<div class="section level3">
+<h3 id="enhancements-and-fixes-0-4-0">Enhancements and fixes<a class="anchor" aria-label="anchor" href="#enhancements-and-fixes-0-4-0"></a></h3>
+<p>Fixed typos and refined wording across documentation and code comments for improved readability and maintainability.</p>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

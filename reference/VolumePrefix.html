@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sevenbridges2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,6 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Authentication_and_Billing.html">Authentication and Billing reference guide for Seven Bridges API R Client</a></li>
+    <li><a class="dropdown-item" href="../articles/Enterprise_actions.html">Enterprise actions reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Files_upload_and_Volumes.html">File upload and Volumes reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Projects_and_Tasks_execution.html">Projects, Files, Apps and Tasks execution with Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/quickstart.html">Introduction and Quickstart for Seven Bridges API R Client</a></li>
@@ -36,7 +37,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>R6 Class representing a VolumePrefix</h1>
-      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/v0.3.0/R/class-VolumePrefix.R" class="external-link"><code>R/class-VolumePrefix.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/develop/R/class-VolumePrefix.R" class="external-link"><code>R/class-VolumePrefix.R</code></a></small>
       <div class="d-none name"><code>VolumePrefix.Rd</code></div>
     </div>
 
@@ -87,7 +88,7 @@
 <div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>res</code></dt>
-<dd><p>Response containing VolumePrefix object info.</p></dd>
+<dd><p>Response containing VolumePrefix object information.</p></dd>
 
 
 <dt><code>...</code></dt>
@@ -115,7 +116,7 @@ volume_prefix_object &lt;- VolumePrefix$new(
                     response = attr(x, "response")
                    )
 
- # Print volume prefix object
+ # Print the Volume Prefix object
  volume_prefix_object$print()
 }
 
@@ -125,7 +126,7 @@ volume_prefix_object &lt;- VolumePrefix$new(
 
 </div><p></p><hr><a id="method-VolumePrefix-reload"></a><div class="section">
 <h3 id="method-reload-">Method <code>reload()</code><a class="anchor" aria-label="anchor" href="#method-reload-"></a></h3>
-<p>Reload VolumePrefix object information.</p><div class="section">
+<p>Reload the VolumePrefix object information.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">VolumePrefix</span><span class="op">$</span><span class="fu">reload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -151,7 +152,7 @@ volume_prefix_object &lt;- VolumePrefix$new(
 
 </div><p></p><hr><a id="method-VolumePrefix-list_contents"></a><div class="section">
 <h3 id="method-list-contents-">Method <code>list_contents()</code><a class="anchor" aria-label="anchor" href="#method-list-contents-"></a></h3>
-<p>List volume folder contents.
+<p>List the contents of a volume folder.
 This call lists the contents of a specific volume folder.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">VolumePrefix</span><span class="op">$</span><span class="fu">list_contents</span><span class="op">(</span></span>
@@ -211,8 +212,8 @@ volume_prefix_object &lt;- VolumePrefix$new(
 
 </div><p></p><hr><a id="method-VolumePrefix-import"></a><div class="section">
 <h3 id="method-import-">Method <code>import()</code><a class="anchor" aria-label="anchor" href="#method-import-"></a></h3>
-<p>This call lets you queue a job to import this file or folder
-from a volume into a project on the Platform. <br>
+<p>This call lets you queue a job to import this file or
+folder from a volume into a project on the Platform. <br>
 Essentially, you are importing an item from your cloud storage provider
 (Amazon Web Services, Google Cloud Storage, Azure or Ali Cloud) via the
 volume onto the Platform. <br>
@@ -255,8 +256,9 @@ If name is omitted, the alias name will default to the last segment of
 the complete location (including the prefix) on the volume. <br></p>
 <p>Segments are considered to be separated with forward slashes /.
 Allowed characters in file names are all alphanumeric and special
-characters except forward slash /, while folder names can contain
-alphanumeric and special characters _, - and ..</p></dd>
+characters except forward slash (/), while folder names can contain
+alphanumeric and special characters underscores (_), hyphens (-), and
+dots (.).</p></dd>
 
 
 <dt><code>overwrite</code></dt>
@@ -349,7 +351,7 @@ volume_prefix_object &lt;- VolumePrefix$new(
 <span class="r-in"><span>                    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"response"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>                   <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="co"># Print volume prefix object</span></span></span>
+<span class="r-in"><span> <span class="co"># Print the Volume Prefix object</span></span></span>
 <span class="r-in"><span> <span class="va">volume_prefix_object</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>

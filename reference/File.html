@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sevenbridges2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,6 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Authentication_and_Billing.html">Authentication and Billing reference guide for Seven Bridges API R Client</a></li>
+    <li><a class="dropdown-item" href="../articles/Enterprise_actions.html">Enterprise actions reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Files_upload_and_Volumes.html">File upload and Volumes reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Projects_and_Tasks_execution.html">Projects, Files, Apps and Tasks execution with Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/quickstart.html">Introduction and Quickstart for Seven Bridges API R Client</a></li>
@@ -36,7 +37,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>R6 Class representing a File</h1>
-      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/v0.3.0/R/class-file.R" class="external-link"><code>R/class-file.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/develop/R/class-file.R" class="external-link"><code>R/class-file.R</code></a></small>
       <div class="d-none name"><code>File.Rd</code></div>
     </div>
 
@@ -92,7 +93,7 @@
 
 
 <dt><code>metadata</code></dt>
-<dd><p>List for metadata associated with the file.</p></dd>
+<dd><p>List of metadata associated with the file.</p></dd>
 
 
 <dt><code>url</code></dt>
@@ -108,7 +109,8 @@
 
 
 <dt><code>secondary_files</code></dt>
-<dd><p>Secondary files linked to the file if exist.</p></dd>
+<dd><p>Secondary files linked to the file, if they
+exist.</p></dd>
 
 
 </dl><p></p></div>
@@ -264,9 +266,8 @@ file_object &lt;- File$new(
 
 </div><p></p><hr><a id="method-File-update"></a><div class="section">
 <h3 id="method-update-">Method <code><a href="https://rdrr.io/r/stats/update.html" class="external-link">update()</a></code><a class="anchor" aria-label="anchor" href="#method-update-"></a></h3>
-<p>Updates the name, the full set metadata, and tags
-for a specified file.
-.</p><div class="section">
+<p>Updates the name, the full set of metadata, and tags
+for a specified file.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">File</span><span class="op">$</span><span class="fu">update</span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, metadata <span class="op">=</span> <span class="cn">NULL</span>, tags <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -279,8 +280,8 @@ for a specified file.
 
 <dt><code>metadata</code></dt>
 <dd><p>The metadata fields and their values that you want to
-update. This is a named list of key-value pairs. The keys and values are
-strings.</p></dd>
+update. This is a named list of key-value pairs. The keys and values
+are strings.</p></dd>
 
 
 <dt><code>tags</code></dt>
@@ -509,8 +510,8 @@ More details about how to modify metadata, you can find in the
 <div class="section">
 <h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>metadata_fields</code></dt>
-<dd><p>Enter a list of key-value pairs of metadata fields
-and metadata values.</p></dd>
+<dd><p>Enter a list of key-value pairs of metadata
+fields and metadata values.</p></dd>
 
 
 <dt><code>overwrite</code></dt>
@@ -673,7 +674,7 @@ file_object &lt;- File$new(
 
 </div><p></p><hr><a id="method-File-download"></a><div class="section">
 <h3 id="method-download-">Method <code>download()</code><a class="anchor" aria-label="anchor" href="#method-download-"></a></h3>
-<p>Download method for File objects. It allows download a
+<p>Download method for File objects. It allows downloading a
 platform file to your local computer. To specify the destination for
 your download, you should provide the path to the destination directory
 as <code>directory_path</code> parameter.</p><div class="section">
@@ -735,9 +736,10 @@ file_object &lt;- File$new(
 </div><p></p><hr><a id="method-File-submit_export"></a><div class="section">
 <h3 id="method-submit-export-">Method <code>submit_export()</code><a class="anchor" aria-label="anchor" href="#method-submit-export-"></a></h3>
 <p>This call lets you queue a job to export this file from a
-project on the Platform into a volume. The file selected for export must
-not be a public file or an alias. Aliases are objects stored in your
-cloud storage bucket which have been made available on the Platform.
+project on the Platform into a volume. The file selected for export
+must not be a public file or an alias. Aliases are objects stored in
+your cloud storage bucket which have been made available on the
+Platform.
 The volume you are exporting to must be configured for read-write
 access. To do this, set the <code>access_mode</code> parameter to <code>RW</code> when
 creating or modifying a volume.  <br></p>
@@ -789,7 +791,7 @@ please add folder name as prefix before file name in form
 
 
 <dt><code>overwrite</code></dt>
-<dd><p>Set to <code>TRUE</code> of you want to overwrite the item that
+<dd><p>Set to <code>TRUE</code> if you want to overwrite the item that
 already exists at the destination. Default: <code>FALSE</code>.</p></dd>
 
 
@@ -803,7 +805,7 @@ source file will remain on the Platform.</p></dd>
 exporting to this bucket. Supported values:
 <code>AES256</code> (SSE-S3 encryption), <code>aws:kms</code>, <code>null</code>
 (no server-side encryption). Default: <code>AES256</code>.</p></li>
-<li><p><code>sse_aws_kms_key_id</code>: Applies to type: <code>s3</code>.
+<li><p><code>sse_aws_kms_key_Id</code>: Applies to type: <code>s3</code>.
 If AWS KMS encryption is used, this should be set to the required
 KMS key. If not set and <code>aws:kms</code> is set as <code>sse_algorithm</code>,
 default KMS key is used.</p></li>

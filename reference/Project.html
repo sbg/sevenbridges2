@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sevenbridges2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,6 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Authentication_and_Billing.html">Authentication and Billing reference guide for Seven Bridges API R Client</a></li>
+    <li><a class="dropdown-item" href="../articles/Enterprise_actions.html">Enterprise actions reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Files_upload_and_Volumes.html">File upload and Volumes reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Projects_and_Tasks_execution.html">Projects, Files, Apps and Tasks execution with Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/quickstart.html">Introduction and Quickstart for Seven Bridges API R Client</a></li>
@@ -36,7 +37,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>R6 Class representing a project.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/v0.3.0/R/class-project.R" class="external-link"><code>R/class-project.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/develop/R/class-project.R" class="external-link"><code>R/class-project.R</code></a></small>
       <div class="d-none name"><code>Project.Rd</code></div>
     </div>
 
@@ -58,8 +59,7 @@
 <dt><code>id</code></dt>
 <dd><p>Project identifier. It consists of project owner's username or
 if you are using Enterprise, then the Division name and project's
-short name in form of <code>&lt;owner_username&gt;/&lt;project-short-name&gt;</code> or
-<code>&lt;division-name&gt;/&lt;project-short-name&gt;</code>.</p></dd>
+short name in form of <br><code>&lt;owner_username&gt;/&lt;project-short-name&gt;</code> or <br><code>&lt;division-name&gt;/&lt;project-short-name&gt;</code>.</p></dd>
 
 
 <dt><code>name</code></dt>
@@ -108,7 +108,7 @@ and the default value is <code>24</code>.</p></li>
 
 
 <dt><code>root_folder</code></dt>
-<dd><p>ID for of the project's root folder.</p></dd>
+<dd><p>ID of the project's root folder.</p></dd>
 
 
 <dt><code>created_by</code></dt>
@@ -345,9 +345,9 @@ like 'limit', 'offset', 'fields', etc.</p></dd>
 
 </div><p></p><hr><a id="method-Project-delete"></a><div class="section">
 <h3 id="method-delete-">Method <code>delete()</code><a class="anchor" aria-label="anchor" href="#method-delete-"></a></h3>
-<p>Method that allows you to delete project from a platform.
-It can only be successfully made if you have admin status for the
-project. <br>
+<p>Method that allows you to delete a project from the
+platform. It can only be successfully made if you have admin status for
+the project. <br>
 Please be careful when using this method and note that calling it will
 permanently delete the project from the platform.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
@@ -460,8 +460,8 @@ registering for an account on the Seven Bridges Platform.</p></dd>
 <dt><code>permissions</code></dt>
 <dd><p>List of permissions that will be associated with the
 project's member. It can contain fields: <code>read</code>, <code>copy</code>, <code>write</code>,
-<code>execute</code> and <code>admin</code> with logical fields - <code>TRUE</code> if certain permission
-is allowed to the user, or <code>FALSE</code> if it's not.
+<code>execute</code> and <code>admin</code> with logical fields - <code>TRUE</code> if certain
+permission is allowed to the user, or <code>FALSE</code> if it's not.
 Requests to add a project member must include the key permissions.
 However, if you do not include a value for some permission, it will be
 set to <code>FALSE</code> by default. The exception to this rule is the <code>read</code>
@@ -518,8 +518,8 @@ be successfully run by a user who has admin privileges in the project.</p><div c
 <h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>user</code></dt>
 <dd><p>The Seven Bridges Platform username of the person
-you want to remove from the project or object of class Member containing
-user's username.</p></dd>
+you want to remove from the project or object of class Member
+containing user's username.</p></dd>
 
 
 </dl><p></p></div>
@@ -613,8 +613,8 @@ Member containing user's username.</p></dd>
 <dt><code>permissions</code></dt>
 <dd><p>List of permissions that will be associated with the
 project's member. It can contain fields: <code>read</code>, <code>copy</code>, <code>write</code>,
-<code>execute</code> and <code>admin</code> with logical fields - <code>TRUE</code> if certain permission
-is allowed to the user, or <code>FALSE</code> if it's not.
+<code>execute</code> and <code>admin</code> with logical fields - <code>TRUE</code> if certain
+permission is allowed to the user, or <code>FALSE</code> if it's not.
 Requests to add a project member must include the key permissions.
 However, if you do not include a value for some permission, it will be
 set to <code>FALSE</code> by default. The exception to this rule is the <code>read</code>
@@ -783,7 +783,7 @@ within this root folder by using this function.</p><div class="section">
 
 </div><p></p><hr><a id="method-Project-list_apps"></a><div class="section">
 <h3 id="method-list-apps-">Method <code>list_apps()</code><a class="anchor" aria-label="anchor" href="#method-list-apps-"></a></h3>
-<p>This call lists all apps in project.</p><div class="section">
+<p>This call lists all apps in the project.</p><div class="section">
 <h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Project</span><span class="op">$</span><span class="fu">list_apps</span><span class="op">(</span></span>
 <span>  query_terms <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -959,8 +959,8 @@ Set the value of status to one of the following values:</p><ul><li><p>QUEUED</p>
 <dd><p>Provide task ID or task object of the parent task to
 return all child tasks from that parent.
 A parent task is a task that specifies the criteria by which to
-batch its inputs into a series of further sub-tasks, called child tasks.
-See the documentation on
+batch its inputs into a series of further sub-tasks, called child
+tasks. See the documentation on
 <a href="https://docs.sevenbridges.com/docs/about-batch-analyses" class="external-link">batching tasks</a>
 for more details on how to run tasks in batches.</p></dd>
 
@@ -1059,7 +1059,7 @@ like 'fields', etc.</p></dd>
 
 </div><p></p><hr><a id="method-Project-list_imports"></a><div class="section">
 <h3 id="method-list-imports-">Method <code>list_imports()</code><a class="anchor" aria-label="anchor" href="#method-list-imports-"></a></h3>
-<p>This call lists imports initiated by particular user
+<p>This call lists imports initiated by a particular user
 into this destination project.</p><div class="section">
 <h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Project</span><span class="op">$</span><span class="fu">list_imports</span><span class="op">(</span></span>
@@ -1132,11 +1132,11 @@ like 'fields', etc.</p></dd>
 
 </div><p></p><hr><a id="method-Project-create_task"></a><div class="section">
 <h3 id="method-create-task-">Method <code>create_task()</code><a class="anchor" aria-label="anchor" href="#method-create-task-"></a></h3>
-<p>This call creates a new task. You can create either a single
-task or a batch task by using the app's default batching, override
-batching, or disable batching completely. A parent task is a task that
-specifies criteria by which to batch its inputs into a series of further
-sub-tasks, called child tasks. the documentation on
+<p>This call creates a new task. You can create either a
+single task or a batch task by using the app's default batching,
+override batching, or disable batching completely. A parent task is a
+task that specifies criteria by which to batch its inputs into a series
+of further sub-tasks, called child tasks. See the documentation on
 <a href="https://docs.sevenbridges.com/docs/about-batch-analyses" class="external-link">batching tasks</a>
 for more details on batching criteria.</p><div class="section">
 <h4 id="usage-18">Usage<a class="anchor" aria-label="anchor" href="#usage-18"></a></h4>
@@ -1231,19 +1231,18 @@ main_location parameter, or individually per each output node, by
 setting the nodes_override parameter to true and defining individual
 output node locations within nodes_location.
 See below for more details.</p><ul><li><p><code>main_location</code> - Defines the output location for all
-output nodes in the task. Can be a string path within the project in
-which the task is created, for example
-<code>/Analysis/&lt;task_id&gt;_&lt;task_name&gt;/</code>
-or a path on an attached volume, such as
-<code>volumes://volume_name/&lt;project_id&gt;/html</code>.
+output nodes in the task. Can be a string path within the project
+in which the task is created, for example <br><code>/Analysis/&lt;task_id&gt;_&lt;task_name&gt;/</code>
+or a path on an attached volume, <br>
+such as <code>volumes://volume_name/&lt;project_id&gt;/html</code>.
 Parts of the path enclosed in angle brackets &lt;&gt; are tokens that are
 dynamically replaced with corresponding values during task
 execution.</p></li>
 <li><p><code>main_location_alias</code>: The string location (path) in the
-project that will point to the actual location where the outputs are
-stored. Used if main_location is defined as a volume path (starting
-with volumes://), to provide an easy way of accessing output data
-directly from project files.</p></li>
+project that will point to the actual location where the outputs
+are stored. Used if main_location is defined as a volume path
+(starting with volumes://), to provide an easy way of accessing
+output data directly from project files.</p></li>
 <li><p><code>nodes_override</code>: Enables defining of output locations
 for output nodes individually through nodes_location (see below).
 Set to <code>TRUE</code> to be able to define individual locations per output
@@ -1261,9 +1260,9 @@ Example:</p>
 <span> <span class="st">"output_location"</span> <span class="op">=</span> <span class="st">"volumes://outputs/tasks/mar-19"</span>,</span>
 <span> <span class="st">"output_location_alias"</span> <span class="op">=</span> <span class="st">"/rfranklin/tasks/picard"</span></span>
 <span><span class="op">)</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a> In the example above, b64html is the ID of the output node <span class="cf">for</span> which</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a> you want to define the output location, <span class="cf">while</span> the parameters are</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a> defined as follows<span class="sc">:</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a> In the example above, b64html is the ID of the output node <span class="cf">for</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a> which you want to define the output location, <span class="cf">while</span> the parameters</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a> are defined as follows<span class="sc">:</span></span></code></pre><p></p></div>
 <ul><li><p><code>output_location</code> - Can be a path within the project in which
 the task is created, for example
 <code>/Analysis/&lt;task_id&gt;_&lt;task_name&gt;/</code>

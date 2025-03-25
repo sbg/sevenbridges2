@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sevenbridges2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,6 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Authentication_and_Billing.html">Authentication and Billing reference guide for Seven Bridges API R Client</a></li>
+    <li><a class="dropdown-item" href="../articles/Enterprise_actions.html">Enterprise actions reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Files_upload_and_Volumes.html">File upload and Volumes reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Projects_and_Tasks_execution.html">Projects, Files, Apps and Tasks execution with Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/quickstart.html">Introduction and Quickstart for Seven Bridges API R Client</a></li>
@@ -36,7 +37,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>R6 Class representing storage exports endpoints</h1>
-      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/v0.3.0/R/class-exports.R" class="external-link"><code>R/class-exports.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/develop/R/class-exports.R" class="external-link"><code>R/class-exports.R</code></a></small>
       <div class="d-none name"><code>Exports.Rd</code></div>
     </div>
 
@@ -89,7 +90,7 @@
 
 </div><p></p><hr><a id="method-Exports-query"></a><div class="section">
 <h3 id="method-query-">Method <code>query()</code><a class="anchor" aria-label="anchor" href="#method-query-"></a></h3>
-<p>This call lists export jobs initiated by particular user.
+<p>This call lists export jobs initiated by a particular user.
 Note that when you export a file from a project on the Platform into a
 volume, you write to your cloud storage bucket.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
@@ -199,9 +200,10 @@ like 'fields', etc.</p></dd>
 </div><p></p><hr><a id="method-Exports-submit_export"></a><div class="section">
 <h3 id="method-submit-export-">Method <code>submit_export()</code><a class="anchor" aria-label="anchor" href="#method-submit-export-"></a></h3>
 <p>This call lets you queue a job to export a file from a
-project on the Platform into a volume. The file selected for export must
-not be a public file or an alias. Aliases are objects stored in your
-cloud storage bucket which have been made available on the Platform.
+project on the Platform into a volume. The file selected for export
+must not be a public file or an alias. Aliases are objects stored in
+your cloud storage bucket which have been made available on the
+Platform.
 The volume you are exporting to must be configured for
 read-write access. To do this, set the <code>access_mode</code> parameter to
 <code>RW</code> when creating or modifying a volume. <br></p>
@@ -252,8 +254,8 @@ a valid key or path to a new file. Please note that if this volume has
 been configured with a prefix parameter, the value of prefix will be
 prepended to location before attempting to create the file on the
 volume.</p>
-<p>If you would like to export the file into some folder on the volume,
-please add folder name as prefix before file name in form
+<p>If you would like to export the file into a folder on the volume,
+please add the folder name as a prefix before the file name in the form
 <code>&lt;folder-name&gt;/&lt;file-name&gt;</code>.</p></dd>
 
 
@@ -272,7 +274,7 @@ source file will remain on the Platform.</p></dd>
 exporting to this bucket. Supported values:
 <code>AES256</code> (SSE-S3 encryption), <code>aws:kms</code>, <code>null</code>
 (no server-side encryption). Default: <code>AES256</code>.</p></li>
-<li><p><code>sse_aws_kms_key_id</code>: Applies to type: <code>s3</code>.
+<li><p><code>sse_aws_kms_key_Id</code>: Applies to type: <code>s3</code>.
 If AWS KMS encryption is used, this should be set to the required
 KMS key. If not set and <code>aws:kms</code> is set as <code>sse_algorithm</code>,
 default KMS key is used.</p></li>
@@ -315,7 +317,7 @@ like 'fields', etc.</p></dd>
 
 </div><p></p><hr><a id="method-Exports-delete"></a><div class="section">
 <h3 id="method-delete-">Method <code>delete()</code><a class="anchor" aria-label="anchor" href="#method-delete-"></a></h3>
-<p>Deleting export jobs is not possible.</p><div class="section">
+<p>Export jobs cannot be deleted.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Exports</span><span class="op">$</span><span class="fu">delete</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -411,7 +413,7 @@ like:</p><ul><li><p><code>sse_algorithm</code> - S3 server-side encryption to us
 exporting to this bucket. Supported values:
 <code>AES256</code> (SSE-S3 encryption), <code>aws:kms</code>, <code>null</code>
 (no server-side encryption). Default: <code>AES256</code>.</p></li>
-<li><p><code>sse_aws_kms_key_id</code>: Applies to type: <code>s3</code>.
+<li><p><code>sse_aws_kms_key_Id</code>: Applies to type: <code>s3</code>.
 If AWS KMS encryption is used, this should be set to the
 required KMS key. If not set and <code>aws:kms</code> is set as
 <code>sse_algorithm</code>, default KMS key is used.</p></li>

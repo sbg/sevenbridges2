@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sevenbridges2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +41,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/Authentication_and_Billing.html">Authentication and Billing reference guide for Seven Bridges API R Client</a></li>
+    <li><a class="dropdown-item" href="../articles/Enterprise_actions.html">Enterprise actions reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Files_upload_and_Volumes.html">File upload and Volumes reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Projects_and_Tasks_execution.html">Projects, Files, Apps and Tasks execution with Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/quickstart.html">Introduction and Quickstart for Seven Bridges API R Client</a></li>
@@ -68,9 +69,9 @@
 
       <h1>File upload and Volumes reference guide for Seven Bridges API R Client</h1>
             
-            <h4 data-toc-skip class="date">2025-02-28</h4>
+            <h4 data-toc-skip class="date">2025-03-25</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/v0.3.0/vignettes/Files_upload_and_Volumes.Rmd" class="external-link"><code>vignettes/Files_upload_and_Volumes.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/develop/vignettes/Files_upload_and_Volumes.Rmd" class="external-link"><code>vignettes/Files_upload_and_Volumes.Rmd</code></a></small>
       <div class="d-none name"><code>Files_upload_and_Volumes.Rmd</code></div>
     </div>
 
@@ -715,7 +716,10 @@ username, you can use <code>list_members()</code> and
 <span><span class="va">aws_iam_user_volume</span><span class="op">$</span><span class="fu">list_members</span><span class="op">(</span><span class="op">)</span> <span class="co"># limit = 2</span></span>
 <span></span>
 <span><span class="co"># Get single member</span></span>
-<span><span class="va">aws_iam_user_volume</span><span class="op">$</span><span class="fu">get_member</span><span class="op">(</span>user <span class="op">=</span> <span class="st">"&lt;member-username&gt;"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">aws_iam_user_volume</span><span class="op">$</span><span class="fu">get_member</span><span class="op">(</span>member <span class="op">=</span> <span class="st">"&lt;member-username&gt;"</span><span class="op">)</span></span></code></pre></div>
+<p>This action works also with teams and divisions as volume members if
+ran by user with ADMIN account privileges. The input should be either
+such Member object or team/division string ID.</p>
 <div align="right">
 <a href="#top">top</a>
 </div>
@@ -728,11 +732,14 @@ object of the <code>Member</code> class to the
 <code>remove_member()</code> function:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Remove member</span></span>
-<span><span class="va">aws_iam_user_volume</span><span class="op">$</span><span class="fu">remove_member</span><span class="op">(</span><span class="st">"&lt;member-username&gt;"</span><span class="op">)</span></span>
+<span><span class="va">aws_iam_user_volume</span><span class="op">$</span><span class="fu">remove_member</span><span class="op">(</span>member <span class="op">=</span> <span class="st">"&lt;member-username&gt;"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Remove member using the Member object</span></span>
 <span><span class="va">members</span> <span class="op">&lt;-</span> <span class="va">aws_iam_user_volume</span><span class="op">$</span><span class="fu">list_members</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">aws_iam_user_volume</span><span class="op">$</span><span class="fu">remove_member</span><span class="op">(</span><span class="va">members</span><span class="op">$</span><span class="va">items</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<p>This action works also with teams and divisions as volume members if
+ran by user with ADMIN account privileges. The input should be either
+such Member object or team/division string ID.</p>
 <div align="right">
 <a href="#top">top</a>
 </div>
@@ -740,14 +747,15 @@ object of the <code>Member</code> class to the
 <div class="section level4">
 <h4 id="adding-new-members">Adding new members<a class="anchor" aria-label="anchor" href="#adding-new-members"></a>
 </h4>
-<p>The function for adding new members to the volume can accept a
+<p>The function for adding new members to the volume allows a
 <code>Member</code> object (for example used in a project) or its
-username.</p>
+username as input.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Add member via username</span></span>
-<span><span class="va">aws_iam_user_volume</span><span class="op">$</span><span class="fu">add_member</span><span class="op">(</span>user <span class="op">=</span> <span class="st">"&lt;member-username&gt;"</span>, permissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  read <span class="op">=</span> <span class="cn">TRUE</span>, copy <span class="op">=</span> <span class="cn">TRUE</span>, write <span class="op">=</span> <span class="cn">FALSE</span>, admin <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">aws_iam_user_volume</span><span class="op">$</span><span class="fu">add_member</span><span class="op">(</span></span>
+<span>  user <span class="op">=</span> <span class="st">"&lt;member-username&gt;"</span>,</span>
+<span>  permissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>read <span class="op">=</span> <span class="cn">TRUE</span>, copy <span class="op">=</span> <span class="cn">TRUE</span>, write <span class="op">=</span> <span class="cn">FALSE</span>, admin <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Add member via Member object</span></span>
 <span><span class="va">aws_iam_user_volume</span><span class="op">$</span><span class="fu">add_member</span><span class="op">(</span></span>
@@ -760,8 +768,61 @@ username.</p>
 <span>    admin <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
+<div class="section level5">
+<h5 id="users-with-admin-privileges-on-divisions-or-enterprises">Users with ADMIN privileges on divisions or enterprises<a class="anchor" aria-label="anchor" href="#users-with-admin-privileges-on-divisions-or-enterprises"></a>
+</h5>
+<p>Users with Enterprise account (not linked to any division) can add
+whole teams<br>
+and divisions as members of a specified volume. However, be aware that
+those<br>
+users (if MEMBER role) cannot list divisions or fetch single
+division/team.</p>
+<p>Users with ADMIN and MEMBER privileges on some Division can add teams
+from this division to a volume created in the same division.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Add team via team ID</span></span>
+<span><span class="va">aws_iam_user_volume</span><span class="op">$</span><span class="fu">add_member_team</span><span class="op">(</span></span>
+<span>  team <span class="op">=</span> <span class="st">"&lt;team-id&gt;"</span>,</span>
+<span>  permissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>read <span class="op">=</span> <span class="cn">TRUE</span>, copy <span class="op">=</span> <span class="cn">TRUE</span>, write <span class="op">=</span> <span class="cn">FALSE</span>, admin <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Add member via Team object</span></span>
+<span><span class="co"># Query teams in division and fetch first team to add to a volume</span></span>
+<span><span class="va">teams</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">teams</span><span class="op">$</span><span class="fu">query</span><span class="op">(</span>division <span class="op">=</span> <span class="st">"division-id"</span><span class="op">)</span></span>
+<span><span class="va">team</span> <span class="op">&lt;-</span> <span class="va">teams</span><span class="op">$</span><span class="va">items</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">aws_iam_user_volume</span><span class="op">$</span><span class="fu">add_member_team</span><span class="op">(</span></span>
+<span>  team <span class="op">=</span> <span class="va">team</span>,</span>
+<span>  permissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    read <span class="op">=</span> <span class="cn">TRUE</span>, copy <span class="op">=</span> <span class="cn">TRUE</span>, write <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>    admin <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Enterprise users with ADMIN privileges that are part of default
+division can add both divisions and teams from any division to a volume
+created in this default division:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Add division via division ID</span></span>
+<span><span class="va">aws_iam_user_volume</span><span class="op">$</span><span class="fu">add_member_division</span><span class="op">(</span></span>
+<span>  division <span class="op">=</span> <span class="st">"&lt;division-id&gt;"</span>,</span>
+<span>  permissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>read <span class="op">=</span> <span class="cn">TRUE</span>, copy <span class="op">=</span> <span class="cn">TRUE</span>, write <span class="op">=</span> <span class="cn">FALSE</span>, admin <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Add member via Division object</span></span>
+<span><span class="co"># Query divisions and fetch first division to add to a volume</span></span>
+<span><span class="va">divisions</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">divisions</span><span class="op">$</span><span class="fu">query</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">division</span> <span class="op">&lt;-</span> <span class="va">divisions</span><span class="op">$</span><span class="va">items</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">aws_iam_user_volume</span><span class="op">$</span><span class="fu">add_member_division</span><span class="op">(</span></span>
+<span>  division <span class="op">=</span> <span class="va">division</span>,</span>
+<span>  permissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    read <span class="op">=</span> <span class="cn">TRUE</span>, copy <span class="op">=</span> <span class="cn">TRUE</span>, write <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>    admin <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div align="right">
 <a href="#top">top</a>
+</div>
 </div>
 </div>
 <div class="section level4">
@@ -769,12 +830,15 @@ username.</p>
 </h4>
 <p>Users can modify specific member’s permissions on the volume by
 providing the privileges they want to change:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Modify member permissions</span></span>
 <span><span class="va">aws_iam_user_volume</span><span class="op">$</span><span class="fu">modify_member_permissions</span><span class="op">(</span></span>
-<span>  user <span class="op">=</span> <span class="st">"&lt;member-username&gt;"</span>,</span>
+<span>  member <span class="op">=</span> <span class="st">"&lt;member-username&gt;"</span>,</span>
 <span>  permissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>write <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
+<p>This action works also with teams and divisions as volume members if
+ran by user with ADMIN account privileges. The input should be either
+such Member object or team/division string ID.</p>
 <div align="right">
 <a href="#top">top</a>
 </div>
@@ -793,7 +857,7 @@ deactivate it and delete all files which have been imported from the
 volume to the platform.</p>
 <p>To reactivate the volume, just use the <code>reactivate()</code>
 function.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Deactivate volume</span></span>
 <span><span class="va">aws_iam_user_volume</span><span class="op">$</span><span class="fu">deactivate</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -809,7 +873,7 @@ function.</p>
 <p>To be able to delete a volume, you first need to deactivate it and
 then delete all files on the Platform that were previously imported from
 the volume.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Deactivate volume</span></span>
 <span><span class="va">aws_iam_user_volume</span><span class="op">$</span><span class="fu">deactivate</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -839,7 +903,7 @@ platform, import start and finish time, status of the job, logs etc.</p>
 </h3>
 <p>To preview and query all import jobs you’ve created use the
 <code>query()</code> function on <code>Auth$imports</code> path:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># List imports</span></span>
 <span><span class="va">all_imports</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">imports</span><span class="op">$</span><span class="fu">query</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -854,7 +918,7 @@ platform, import start and finish time, status of the job, logs etc.</p>
 <p>It is possible to use some query parameters as different criteria for
 filtering results like <code>volume</code>, <code>project</code>,
 <code>state</code> etc:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># List imports with state being RUNNING or FAILED</span></span>
 <span><span class="va">imp_states</span> <span class="op">&lt;-</span> <span class="va">auth</span><span class="op">$</span><span class="va">imports</span><span class="op">$</span><span class="fu">query</span><span class="op">(</span>state <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RUNNING"</span>, <span class="st">"FAILED"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -863,7 +927,7 @@ filtering results like <code>volume</code>, <code>project</code>,
 <p>Listing imports is also available within <code>Project</code> and
 <code>Volume</code> objects, where resulting imports are related to the
 specific project or volume where they’re called from.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Get the volume from which you want to list all imports</span></span>
 <span><span class="va">vol1</span> <span class="op">&lt;-</span> <span class="va">auth</span><span class="op">$</span><span class="va">volumes</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"&lt;volumes_owner_or_division&gt;/&lt;volume-name&gt;"</span><span class="op">)</span></span>
 <span><span class="va">vol1</span><span class="op">$</span><span class="fu">list_imports</span><span class="op">(</span><span class="op">)</span></span>
@@ -880,7 +944,7 @@ specific project or volume where they’re called from.</p>
 </h3>
 <p>Similar to other resource classes, the <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code> method will
 return a single import job object when provided with a job id.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get single import</span></span>
 <span><span class="va">imp_obj</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">imports</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"&lt;import_job_id&gt;"</span><span class="op">)</span></span></code></pre></div>
 <div align="right">
@@ -895,7 +959,7 @@ one bulk action - the <code>bulk_get()</code> method. The accepted input
 can be a list of import job IDs or a list of import job objects (of
 class Import). The result will be a Collection object containing a list
 of (updated) import jobs.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get details of multiple import jobs</span></span>
 <span><span class="va">import_jobs</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">imports</span><span class="op">$</span><span class="fu">bulk_get</span><span class="op">(</span></span>
 <span>  imports <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"&lt;import_job_id-1&gt;"</span>, <span class="st">"&lt;import_job_id-1&gt;"</span><span class="op">)</span></span>
@@ -911,7 +975,7 @@ of (updated) import jobs.</p>
 <code>submit_import()</code> method from the <code>Auth$imports</code>
 path, or directly on the selected <code>VolumeFile</code> object (file
 they want to import) where this function is also available.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## First, get the volume you want to import files from</span></span>
 <span><span class="va">vol1</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">volumes</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"&lt;volume_owner_or_division&gt;/&lt;volume_name&gt;"</span><span class="op">)</span></span>
 <span></span>
@@ -937,12 +1001,12 @@ they want to import) where this function is also available.</p>
 <span>  autorename <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Preview import job details with the <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> method:</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Print Import object</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">imp_job1</span><span class="op">)</span></span></code></pre></div>
 <p>You can also import folders from the volume into the project, with
 the option to preserve or not to preserve folder structure:</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Select one of the volume folders to import</span></span>
 <span><span class="va">volume_folder_import</span> <span class="op">&lt;-</span> <span class="va">vol1_content</span><span class="op">$</span><span class="va">prefixes</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
@@ -973,7 +1037,7 @@ the option to preserve or not to preserve folder structure:</p>
 <p>In order to refresh the import job object and get the up to date info
 about its state, you can always call the <code>reload()</code>
 function:</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Reload import object</span></span>
 <span><span class="va">imp_job1</span><span class="op">$</span><span class="fu">reload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div align="right">
@@ -994,7 +1058,7 @@ file/folder you want to import containing specific fields:
 <code>destination_project</code>, <code>destination_parent</code>,
 <code>name</code>, <code>autorename</code> and
 <code>perserve_folder_structure.</code></p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## First, get the volume you want to import files from</span></span>
 <span><span class="va">vol1</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">volumes</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"&lt;volume_owner_or_division&gt;/&lt;volume_name&gt;"</span><span class="op">)</span></span>
 <span></span>
@@ -1069,7 +1133,7 @@ item: <code>source_volume</code>, <code>source_location</code>,
 items in the resulting list. The <code>preserve_folder_structure</code>
 parameter, if provided, applies exclusively to <code>VolumePrefix</code>
 items.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## First, get the volume you want to import files from</span></span>
 <span><span class="va">vol1</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">volumes</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"&lt;volume_owner_or_division&gt;/&lt;volume_name&gt;"</span><span class="op">)</span></span>
 <span></span>
@@ -1133,7 +1197,7 @@ purpose of exporting their files from the Platform into a cloud bucket
 using volumes. The output is a <code>Collection</code> object storing a
 list of exports in its <code>items</code> field and providing pagination
 options.</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># List exports</span></span>
 <span><span class="va">all_exports</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">exports</span><span class="op">$</span><span class="fu">query</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -1147,7 +1211,7 @@ options.</p>
 <span><span class="va">exp_limit5</span><span class="op">$</span><span class="fu">all</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>It is possible to use some query parameters as different criteria for
 filtering results like <code>volume</code>, <code>state</code> etc:</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># List exports with status RUNNING or FAILED</span></span>
 <span><span class="va">exp_states</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">exports</span><span class="op">$</span><span class="fu">query</span><span class="op">(</span>state <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RUNNING"</span>, <span class="st">"FAILED"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -1158,7 +1222,7 @@ filtering results like <code>volume</code>, <code>state</code> etc:</p>
 <p>Listing exports is also available within <code>Volume</code> objects,
 where results contain all files exported to the specific volume they’re
 being called from.</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get the volume for which you want to list all exports</span></span>
 <span><span class="va">vol1</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">volumes</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"&lt;volume_owner_or_division&gt;/&lt;volume_name&gt;"</span><span class="op">)</span></span>
 <span></span>
@@ -1173,7 +1237,7 @@ being called from.</p>
 </h3>
 <p>Similar to other resource classes, the <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code> method will
 return a single export job object when provided with job id.</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get a single export</span></span>
 <span><span class="va">exp_obj</span> <span class="op">&lt;-</span> <span class="va">auth</span><span class="op">$</span><span class="va">exports</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"&lt;export_job_id&gt;"</span><span class="op">)</span></span></code></pre></div>
 <div align="right">
@@ -1188,7 +1252,7 @@ one bulk action - the <code>bulk_get()</code> method. The accepted input
 can be a list of export job IDs or a list of export job objects (of
 class Export). The result will be a Collection object containing a list
 of (updated) export jobs.</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get details of multiple export jobs</span></span>
 <span><span class="va">export_jobs</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">exports</span><span class="op">$</span><span class="fu">bulk_get</span><span class="op">(</span></span>
 <span>  exports <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"&lt;export_job_id-1&gt;"</span>, <span class="st">"&lt;export_job_id-1&gt;"</span><span class="op">)</span></span>
@@ -1205,7 +1269,7 @@ volume<a class="anchor" aria-label="anchor" href="#submit-a-new-export---export-
 the<br><code>submit_export()</code> method from the <code>auth$exports</code>
 path, or directly on the selected <code>File</code> object (file they
 want to export) where this function is also available.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># First, get the volume you want to export files to</span></span>
 <span><span class="va">vol1</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">volumes</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"&lt;volume_owner_or_division&gt;/&lt;volume_name&gt;"</span><span class="op">)</span></span>
 <span></span>
@@ -1219,7 +1283,7 @@ want to export) where this function is also available.</p>
 <span>  destination_location <span class="op">=</span> <span class="st">"new_volume_file.txt"</span> <span class="co"># new name</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Preview export job details with the <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> method:</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Print export job info</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">exp_job1</span><span class="op">)</span></span></code></pre></div>
 <p>Bear in mind that <strong>folders export</strong> from the platform
@@ -1230,7 +1294,7 @@ that will be added to the package soon.</p>
 providing the <code>prefix</code> within the <code>location</code>
 parameter as a folder name, which will then be virtually created on the
 volume:</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Export file into the folder 'test_folder'</span></span>
 <span><span class="va">exp_job2</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">exports</span><span class="op">$</span><span class="fu">submit_export</span><span class="op">(</span></span>
 <span>  source_file <span class="op">=</span> <span class="va">test_file</span>,</span>
@@ -1264,7 +1328,7 @@ price on the Seven Bridges environment.</li>
 <p>In order to refresh the export job object and get the up to date info
 about its state, you can always call the <code>reload()</code>
 function:</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Reload export object</span></span>
 <span><span class="va">exp_job1</span><span class="op">$</span><span class="fu">reload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div align="right">
@@ -1282,9 +1346,9 @@ and export them into a volume using a single call of the
 you want to export containing specific fields: <code>source_file</code>,
 <code>destination_volume</code>, <code>destination_location</code>,
 <code>overwrite</code> and <code>properties</code> that accepts a list
-with fields: <code>sse_algorithm</code>, <code>sse_aws_kms_key_id</code>
+with fields: <code>sse_algorithm</code>, <code>sse_aws_kms_key_Id</code>
 and/or <code>aws_canned_acl</code>.</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## First, get the project and files you want to export</span></span>
 <span><span class="va">test_proj</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">projects</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"&lt;project_id&gt;"</span><span class="op">)</span></span>
 <span><span class="va">proj_files</span> <span class="op">&lt;-</span> <span class="va">test_proj</span><span class="op">$</span><span class="fu">list_files</span><span class="op">(</span><span class="op">)</span></span>
@@ -1351,7 +1415,7 @@ fields for each item: <code>source_file</code>,
 <code>overwrite</code>, <code>properties</code>.</p>
 <p>Check the function’s documentation and <a href="https://docs.sevenbridges.com/reference/start-a-bulk-export-job" class="external-link">API
 documentation</a> for more details.</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## First, get the project and files you want to export</span></span>
 <span><span class="va">test_proj</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">projects</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"&lt;project_id&gt;"</span><span class="op">)</span></span>
 <span><span class="va">proj_files</span> <span class="op">&lt;-</span> <span class="va">test_proj</span><span class="op">$</span><span class="fu">list_files</span><span class="op">(</span><span class="op">)</span></span>

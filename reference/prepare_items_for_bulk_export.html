@@ -11,7 +11,7 @@ bulk_submit_export() method."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">sevenbridges2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,6 +23,7 @@ bulk_submit_export() method."></head><body>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Authentication_and_Billing.html">Authentication and Billing reference guide for Seven Bridges API R Client</a></li>
+    <li><a class="dropdown-item" href="../articles/Enterprise_actions.html">Enterprise actions reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Files_upload_and_Volumes.html">File upload and Volumes reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Projects_and_Tasks_execution.html">Projects, Files, Apps and Tasks execution with Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/quickstart.html">Introduction and Quickstart for Seven Bridges API R Client</a></li>
@@ -40,7 +41,7 @@ bulk_submit_export() method."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Prepare items for bulk export</h1>
-      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/v0.3.0/R/class-exports-utils.R" class="external-link"><code>R/class-exports-utils.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/develop/R/class-exports-utils.R" class="external-link"><code>R/class-exports-utils.R</code></a></small>
       <div class="d-none name"><code>prepare_items_for_bulk_export.Rd</code></div>
     </div>
 
@@ -101,7 +102,7 @@ will be deleted. <code>FALSE</code> by default.</p>
 exporting to this bucket. Supported values:
 <code>AES256</code> (SSE-S3 encryption), <code>aws:kms</code>, <code>null</code>
 (no server-side encryption). Default: <code>AES256</code>.</p></li>
-<li><p><code>sse_aws_kms_key_id</code>: Applies to type: <code>s3</code>.
+<li><p><code>sse_aws_kms_key_Id</code>: Applies to type: <code>s3</code>.
 If AWS KMS encryption is used, this should be set to the required
 KMS key. If not set and <code>aws:kms</code> is set as <code>sse_algorithm</code>,
 default KMS key is used.</p></li>
@@ -115,7 +116,7 @@ in the resulting list.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>List of body params items for for staring an export job.</p>
+    <p>List of body params items for starting an export job.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -127,15 +128,14 @@ item:</p><ul><li><p><code>source_file</code></p></li>
 <li><p><code>overwrite</code></p></li>
 <li><p><code>properties</code></p></li>
 </ul><p>However, keep in mind that there are certain constraints:</p><ul><li><p>The same <code>destination_volume</code> applies to all items in the
-.      resulting list.</p></li>
+resulting list.</p></li>
 <li><p>The same applies to <code>overwrite</code> and <code>properties</code>
 parameters.</p></li>
 <li><p>By default, the <code>destination_location</code> field is populated with
 the source file name. Upon retrieval of the list of items for bulk
-export, you can manually update the <code>destination_location</code> field
-for each element of the list as needed. Additionally, you have the
-flexibility to manually modify any other fields in the list if
-required.</p></li>
+export, you can manually update the <br><code>destination_location</code> field for each element of the list as needed.
+Additionally, you have the flexibility to manually modify any other
+fields in the list if required.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

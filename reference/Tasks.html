@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sevenbridges2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,6 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Authentication_and_Billing.html">Authentication and Billing reference guide for Seven Bridges API R Client</a></li>
+    <li><a class="dropdown-item" href="../articles/Enterprise_actions.html">Enterprise actions reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Files_upload_and_Volumes.html">File upload and Volumes reference guide for Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/Projects_and_Tasks_execution.html">Projects, Files, Apps and Tasks execution with Seven Bridges API R Client</a></li>
     <li><a class="dropdown-item" href="../articles/quickstart.html">Introduction and Quickstart for Seven Bridges API R Client</a></li>
@@ -36,7 +37,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>R6 Class representing tasks endpoints</h1>
-      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/v0.3.0/R/class-tasks.R" class="external-link"><code>R/class-tasks.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sbg/sevenbridges2/blob/develop/R/class-tasks.R" class="external-link"><code>R/class-tasks.R</code></a></small>
       <div class="d-none name"><code>Tasks.Rd</code></div>
     </div>
 
@@ -120,10 +121,10 @@ Set the value of status to one of the following values: <code>QUEUED</code>,
 
 
 <dt><code>parent</code></dt>
-<dd><p>Provide task ID or Task object of the parent task to return
-all child tasks from that parent. A parent task is a task that specifies
-criteria by which to batch its inputs into a series of further
-sub-tasks, called child tasks. See the documentation on
+<dd><p>Provide the task ID or Task object of the parent task to
+return all child tasks. A parent task is a task that
+specifies criteria by which to batch its inputs into a series of
+further sub-tasks, called child tasks. See the documentation on
 <a href="https://docs.sevenbridges.com/docs/about-batch-analyses" class="external-link">batching tasks</a>
 for more details on how to run tasks in batches.</p></dd>
 
@@ -167,7 +168,7 @@ ended until a specified date.</p></dd>
 <dt><code>order_by</code></dt>
 <dd><p>Order returned results by the specified field.
 Allowed values: <br><code>created_time</code>, <code>start_time</code>, <code>name</code>, <code>end_time</code> and
-<code>created_by</code>. <br> Sort can be done only by one column. The default
+<code>created_by</code>. <br> Sorting can only be done by one column. The default
 value is <code>created_time</code>.</p></dd>
 
 
@@ -211,9 +212,9 @@ like 'fields', etc.</p></dd>
 <h3 id="method-get-">Method <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code><a class="anchor" aria-label="anchor" href="#method-get-"></a></h3>
 <p>This call returns details of the specified task. The task
 is referred to by its ID, which you can obtain by making the call to
-list all tasks you can access. The task details include its creator, its
-start and end time, the number of jobs completed in it, and its input
-and output files. You can also see the status of the task.</p><div class="section">
+list all tasks you can access. The task details include its creator,
+its start and end time, the number of jobs completed in it, and its
+input and output files. You can also see the status of the task.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Tasks</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="va">id</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -238,10 +239,9 @@ like 'fields', etc.</p></dd>
 
 </div><p></p><hr><a id="method-Tasks-delete"></a><div class="section">
 <h3 id="method-delete-">Method <code>delete()</code><a class="anchor" aria-label="anchor" href="#method-delete-"></a></h3>
-<p>This call deletes a task from the Seven Bridges Platform.
-Tasks are specified by their IDs, which you can obtain by using
-<code>Tasks$query()</code> to list tasks or by getting a single task
-using <code>Tasks$get()</code>.</p><div class="section">
+<p>Tasks are identified by their IDs, which can be obtained
+using <code>Tasks$query()</code> to list tasks or <code>Tasks$get()</code> to
+retrieve a single task.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Tasks</span><span class="op">$</span><span class="fu">delete</span><span class="op">(</span><span class="va">task</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -262,11 +262,11 @@ as 'fields', etc.</p></dd>
 
 </div><p></p><hr><a id="method-Tasks-create"></a><div class="section">
 <h3 id="method-create-">Method <code>create()</code><a class="anchor" aria-label="anchor" href="#method-create-"></a></h3>
-<p>This call creates a new task. You can create either a single
-task or a batch task by using the app's default batching, override
-batching, or disable batching completely. A parent task is a task that
-specifies criteria by which to batch its inputs into a series of further
-sub-tasks, called child tasks. the documentation on
+<p>This call creates a new task. You can create either a
+single task or a batch task by using the app's default batching,
+override batching, or disable batching completely. A parent task is a
+task that specifies criteria by which to batch its inputs into a series
+of further sub-tasks, called child tasks. the documentation on
 <a href="https://docs.sevenbridges.com/docs/about-batch-analyses" class="external-link">batching tasks</a>
 for more details on batching criteria.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
@@ -367,17 +367,17 @@ main_location parameter, or individually per each output node, by
 setting the nodes_override parameter to true and defining individual
 output node locations within nodes_location.
 See below for more details.</p><ul><li><p><code>main_location</code> - Defines the output location for all
-output nodes in the task. Can be a string path within the project in
-which the task is created, for example <br><code>/Analysis/&lt;task_id&gt;_&lt;task_name&gt;/</code> <br>
+output nodes in the task. Can be a string path within the project
+in which the task is created, for example <br><code>/Analysis/&lt;task_id&gt;_&lt;task_name&gt;/</code> <br>
 or a path on an attached volume, such as <br><code>volumes://volume_name/&lt;project_id&gt;/html</code>. <br>
 Parts of the path enclosed in angle brackets &lt;&gt; are tokens that are
 dynamically replaced with corresponding values during task
 execution.</p></li>
 <li><p><code>main_location_alias</code>: The string location (path) in the
-project that will point to the actual location where the outputs are
-stored. Used if main_location is defined as a volume path (starting
-with volumes://), to provide an easy way of accessing output data
-directly from project files.</p></li>
+project that will point to the actual location where the outputs
+are stored. Used if main_location is defined as a volume path
+(starting with volumes://), to provide an easy way of accessing
+output data directly from project files.</p></li>
 <li><p><code>nodes_override</code>: Enables defining of output locations
 for output nodes individually through nodes_location (see below).
 Set to <code>TRUE</code> to be able to define individual locations per output
@@ -395,9 +395,9 @@ Example:</p>
 <span> <span class="st">"output_location"</span> <span class="op">=</span> <span class="st">"volumes://outputs/tasks/mar-19"</span>,</span>
 <span> <span class="st">"output_location_alias"</span> <span class="op">=</span> <span class="st">"/rfranklin/tasks/picard"</span></span>
 <span><span class="op">)</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a> In the example above, b64html is the ID of the output node <span class="cf">for</span> which</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a> you want to define the output location, <span class="cf">while</span> the parameters are</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a> defined as follows<span class="sc">:</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a> In the example above, b64html is the ID of the output node <span class="cf">for</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a> which you want to define the output location, <span class="cf">while</span> the parameters</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a> are defined as follows<span class="sc">:</span></span></code></pre><p></p></div>
 <ul><li><p><code>output_location</code> - Can be a path within the project in which
 the task is created, for example
 <code>/Analysis/&lt;task_id&gt;_&lt;task_name&gt;/</code>
